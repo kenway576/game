@@ -66,12 +66,18 @@ export enum GameMode {
   CHAT = 'CHAT'
 }
 
+// 🔥 扩充了 N3 核心语法点
 export enum N3GrammarTopic {
-  GENERAL = 'General',
-  PASSIVE = 'Passive (受身形)',
-  CAUSATIVE = 'Causative (使役形)',
-  CONDITIONAL = 'Conditional (条件形)',
-  RESPECTFUL = 'Keigo (敬語)'
+  GENERAL = 'General (综合练习)',
+  PASSIVE = 'Passive (受身形 - れる/られる)',
+  CAUSATIVE = 'Causative (使役形 - せる/させる)',
+  PASSIVE_CAUSATIVE = 'Causative-Passive (使役受身形 - される)',
+  CONDITIONAL = 'Conditional (条件形 - と/ば/たら/なら)',
+  RESPECTFUL = 'Keigo (敬語 - 尊敬/謙譲/丁寧)',
+  POTENTIAL = 'Potential (可能形 - える/られる)',
+  VOLITIONAL = 'Volitional (意向形 - おう/よう)',
+  TRANSITIVE_INTRANSITIVE = 'Transitive/Intransitive (自他動詞)',
+  GIVING_RECEIVING = 'Giving/Receiving (授受表現 - あげる/もらう/くれる)'
 }
 
 export interface CollectedWord {

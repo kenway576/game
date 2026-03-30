@@ -10,11 +10,12 @@ const API_KEY_STORAGE_KEY = 'kobe_study_user_api_key';
 const MODEL_STORAGE_KEY = 'kobe_study_user_model'; 
 const MAX_SLOTS = 6;
 
+// 确认当前可用的模型列表 (包含最新预览版和经典稳定版)
 const AVAILABLE_MODELS = [
   { value: 'gemini-3-flash-preview',   label: 'Gemini 3 Flash (最新/极速/低延迟)' },
   { value: 'gemini-3-pro-preview',     label: 'Gemini 3 Pro (最新/深度推理)' },
-  { value: 'gemini-2.0-flash-exp',     label: 'Gemini 2.0 Flash Exp' },
-  { value: 'gemini-1.5-flash-latest',  label: 'Gemini 1.5 Flash (经典稳定)' },
+  { value: 'gemini-2.0-flash-exp',     label: 'Gemini 2.0 Flash Exp (最新预览版)' },
+  { value: 'gemini-1.5-flash-latest',  label: 'Gemini 1.5 Flash (经典稳定/免费首选)' },
 ];
 
 const App: React.FC = () => {
@@ -175,7 +176,7 @@ const App: React.FC = () => {
     const WEBHOOK_URL = "https://hook.eu1.make.com/gh39lk2rhsdmoeztkx0sjt378k5rgbay"; 
 
     if (WEBHOOK_URL.includes("YOUR_WEBHOOK_URL_HERE")) {
-      alert("⚠️ 请先在 App.tsx 的 syncToCloud 函数中填入您的 Webhook URL！");
+      alert(T.webhookWarning);
       return;
     }
 
@@ -200,12 +201,12 @@ const App: React.FC = () => {
       });
 
       if(response.ok) {
-        alert("✅ 实验数据已成功上传至云端！感谢您的配合。");
+        alert(T.syncSuccess);
       } else {
         throw new Error("Network response was not ok.");
       }
     } catch (error) {
-      alert("❌ 上传失败，请检查网络或 Webhook URL 是否正确。");
+      alert(T.syncFailed);
       console.error(error);
     } finally {
       setIsSyncing(false);
@@ -538,7 +539,6 @@ const App: React.FC = () => {
 
   const renderSetup = () => {
     return (
-        // 🔥 h-[100dvh] 适配手机屏幕高度
         <div className="min-h-[100dvh] relative overflow-hidden font-sans select-none flex items-center justify-center">
             {renderBackground()}
             <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-4">
@@ -546,7 +546,6 @@ const App: React.FC = () => {
                      <div className="relative group">
                         <div className="absolute -inset-6 bg-red-600 transform -skew-x-12 blur-sm opacity-80 group-hover:scale-110 transition-transform duration-500"></div>
                         <div className="absolute -inset-2 bg-black transform skew-x-12 opacity-80"></div>
-                        {/* 🔥 手机端 text-5xl，电脑端 text-9xl */}
                         <h1 className="relative text-5xl md:text-9xl font-black italic tracking-tighter text-white drop-shadow-[5px_5px_0px_rgba(0,0,0,1)] transform -skew-x-6 select-none" style={{textShadow: '8px 8px 0px #000'}}>
                             KOBE<br/><span className="text-yellow-400">STUDY</span>
                         </h1>
@@ -594,13 +593,11 @@ const App: React.FC = () => {
                                     <input type="text" value={userState.learningGoal} onChange={(e) => setUserState(prev => ({...prev, learningGoal: e.target.value}))} className="w-full bg-zinc-900 border-2 md:border-4 border-white/20 text-white text-base md:text-xl px-4 md:px-6 py-3 md:py-5 font-bold focus:border-yellow-400 focus:bg-zinc-800 outline-none transition-all placeholder-white/10 shadow-inner" placeholder={T.enterGoal} />
                                 </div>
 
-                                {/* API Key & Model Settings */}
                                 <div className="border-t-2 border-white/10 pt-6 mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4">
                                     <div className="group relative">
                                         <label className="absolute -top-3 -left-2 bg-zinc-800 text-gray-400 px-3 py-1 font-bold text-[10px] md:text-xs uppercase transform -skew-x-12 border border-gray-600 z-20">API Key (Optional)</label>
-                                        {/* 🔥 申请 API Key 的链接 */}
                                         <a href="https://aistudio.google.com/api-keys?project=gen-lang-client-0367843531" target="_blank" rel="noreferrer" className="absolute -top-3 right-0 bg-red-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[10px] transform skew-x-12 shadow-sm z-30 flex items-center gap-1">
-                                            <span>🔑 获取免费 Key</span>
+                                            <span>{T.getApiKey}</span>
                                         </a>
                                         <input type="password" value={customApiKey} onChange={handleApiKeyChange} className="w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-sm px-4 md:px-6 py-3 md:py-4 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/10 shadow-inner" placeholder="AIzaSy..." />
                                     </div>
@@ -612,7 +609,6 @@ const App: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* 知情同意打勾框 */}
                                 <div className="group relative flex items-start gap-3 md:gap-4 mt-6 md:mt-8 border-2 border-white/20 p-4 md:p-5 bg-black/50 hover:border-yellow-500/50 transition-colors">
                                     <input 
                                         type="checkbox" 
@@ -622,9 +618,8 @@ const App: React.FC = () => {
                                         className="w-5 h-5 md:w-6 md:h-6 mt-1 accent-red-600 cursor-pointer flex-shrink-0" 
                                     />
                                     <label htmlFor="consent" className="text-[10px] md:text-xs text-gray-300 leading-relaxed cursor-pointer select-none">
-                                        <span className="font-bold text-yellow-500 uppercase tracking-widest block mb-1">[学术知情同意 / Consent]</span>
-                                        我同意将本次游玩的匿名对话数据及游戏设置用于语言学习相关的学术研究分析。<br/>
-                                        (I consent to anonymous data collection of my chat logs and settings for academic research purposes.)
+                                        <span className="font-bold text-yellow-500 uppercase tracking-widest block mb-1">{T.consentTitle}</span>
+                                        {T.consentText}
                                     </label>
                                 </div>
                             </div>
@@ -648,7 +643,6 @@ const App: React.FC = () => {
   };
 
   const renderLobby = () => (
-    // 🔥 h-[100dvh]
     <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col">
       {renderBackground()}
       <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex flex-col md:flex-row justify-between items-start z-40 pointer-events-none gap-4">
@@ -706,7 +700,6 @@ const App: React.FC = () => {
       const lastModelMsg = [...messages].reverse().find(m => m.role === 'model');
 
       return (
-        // 🔥 h-[100dvh]
         <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col" onContextMenu={handleContextMenu} onClick={() => { if(contextMenu) setContextMenu(null); }}>
             <div className="absolute top-1 left-1 z-[200] bg-black/70 text-white text-[8px] md:text-[10px] p-1.5 md:p-2 rounded font-mono"><div>outfit: {currentOutfit || '(empty)'}</div><div>emotion: {currentEmotion}</div><div>model: {customModel}</div></div>
             {renderBackground()}
@@ -723,7 +716,6 @@ const App: React.FC = () => {
             </div>
 
             <div className="absolute inset-0 z-10 flex items-end justify-center pointer-events-none pb-0">
-                 {/* 🔥 手机端调整高度：h-[60dvh] md:h-[85vh] */}
                  <div className="relative h-[60dvh] md:h-[85vh] max-h-[90dvh] w-auto aspect-[45/70] flex items-end justify-center pointer-events-auto transition-all duration-500 shadow-2xl">
                     <CharacterSprite character={activeChar} isSpeaking={lastModelMsg?.role === 'model' && !isLoading && !isDialogueFinished} className={`w-full h-full object-contain tachie-anim-breathe transition-all duration-300`} />
                 </div>
@@ -748,12 +740,12 @@ const App: React.FC = () => {
 
                 {gameMode === GameMode.CHAT && (
                   <div className="absolute top-24 md:top-20 right-2 md:right-4 z-50 flex flex-col gap-1.5 md:gap-2 bg-black/40 p-1.5 md:p-2 rounded-lg backdrop-blur-sm border border-white/10 scale-90 md:scale-100 origin-top-right">
-                    <span className="text-[8px] md:text-[10px] text-white/50 uppercase font-bold text-center">Costume</span>
-                    <button onClick={() => setCurrentOutfit('')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === '' ? 'bg-white text-black border-white' : 'text-white border-white/20 hover:bg-white/10'}`}>校服</button>
-                    <button onClick={() => setCurrentOutfit('casual')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'casual' ? 'bg-pink-500 text-white border-pink-500' : 'text-white border-white/20 hover:bg-white/10'}`}>私服</button>
-                    <button onClick={() => setCurrentOutfit('swim')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'swim' ? 'bg-blue-500 text-white border-blue-500' : 'text-white border-white/20 hover:bg-white/10'}`}>泳装</button>
-                    <button onClick={() => setCurrentOutfit('gym')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'gym' ? 'bg-red-500 text-white border-red-500' : 'text-white border-white/20 hover:bg-white/10'}`}>运动</button>
-                    <button onClick={() => setCurrentOutfit(selectedCharId === 'haku' ? 'prince' : selectedCharId === 'ren' ? 'fantasy' : selectedCharId === 'asuka' ? 'maid' : selectedCharId === 'hikari' ? 'yukata' : selectedCharId === 'rei' ? 'kimono' : 'special')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${['prince','fantasy','maid','yukata','kimono'].includes(currentOutfit) ? 'bg-purple-500 text-white border-purple-500' : 'text-white border-white/20 hover:bg-white/10'}`}>特殊</button>
+                    <span className="text-[8px] md:text-[10px] text-white/50 uppercase font-bold text-center">{T.costume}</span>
+                    <button onClick={() => setCurrentOutfit('')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === '' ? 'bg-white text-black border-white' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.school}</button>
+                    <button onClick={() => setCurrentOutfit('casual')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'casual' ? 'bg-pink-500 text-white border-pink-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.casual}</button>
+                    <button onClick={() => setCurrentOutfit('swim')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'swim' ? 'bg-blue-500 text-white border-blue-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.swim}</button>
+                    <button onClick={() => setCurrentOutfit('gym')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'gym' ? 'bg-red-500 text-white border-red-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.gym}</button>
+                    <button onClick={() => setCurrentOutfit(selectedCharId === 'haku' ? 'prince' : selectedCharId === 'ren' ? 'fantasy' : selectedCharId === 'asuka' ? 'maid' : selectedCharId === 'hikari' ? 'yukata' : selectedCharId === 'rei' ? 'kimono' : 'special')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${['prince','fantasy','maid','yukata','kimono'].includes(currentOutfit) ? 'bg-purple-500 text-white border-purple-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.special}</button>
                   </div>
                 )}
 
@@ -768,11 +760,9 @@ const App: React.FC = () => {
                 {(isDialogueFinished || isLoading) && !currentQuiz && !quizFeedback && (
                     <div className={`w-full max-w-4xl flex gap-2 md:gap-3 transition-all duration-700 ${isDialogueFinished ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
                         <div className="relative flex-1">
-                            {/* 🔥 手机端输入框减小 padding */}
                             <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder="N3..." disabled={isLoading} className="w-full bg-slate-900/90 border-2 border-white/20 rounded-full px-5 py-3 md:px-8 md:py-5 text-white font-medium focus:outline-none focus:border-yellow-500 transition-all backdrop-blur-md text-base md:text-lg shadow-inner" />
                             <div className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-[10px] text-white/30 font-black uppercase tracking-widest hidden sm:block">{T.enterToSend}</div>
                         </div>
-                        {/* 🔥 手机端发送按钮变小 */}
                         <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-6 py-3 md:px-10 md:py-5 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full disabled:opacity-20 flex items-center justify-center gap-2 text-sm md:text-base">{T.send}</button>
                     </div>
                 )}
@@ -808,13 +798,13 @@ const App: React.FC = () => {
     return (
         <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/90 backdrop-blur-xl animate-in fade-in duration-300">
             <div className="w-full max-w-5xl h-[90dvh] md:h-[85dvh] flex flex-col p-4 md:p-8">
-                <div className="flex items-center justify-between mb-6 md:mb-8 border-b-4 border-red-600 pb-2 md:pb-4"><h2 className="text-3xl md:text-5xl font-black text-white italic tracking-tighter uppercase transform -skew-x-6">{saveLoadMode === 'SAVE' ? 'Save Data' : 'Load Data'}</h2><button onClick={() => setSaveLoadMode(null)} className="bg-white text-black font-black px-4 py-1 md:px-6 md:py-2 text-sm md:text-base uppercase hover:bg-red-600 hover:text-white transition-colors transform -skew-x-12">Close</button></div>
+                <div className="flex items-center justify-between mb-6 md:mb-8 border-b-4 border-red-600 pb-2 md:pb-4"><h2 className="text-3xl md:text-5xl font-black text-white italic tracking-tighter uppercase transform -skew-x-6">{saveLoadMode === 'SAVE' ? T.saveData : T.loadData}</h2><button onClick={() => setSaveLoadMode(null)} className="bg-white text-black font-black px-4 py-1 md:px-6 md:py-2 text-sm md:text-base uppercase hover:bg-red-600 hover:text-white transition-colors transform -skew-x-12">{T.close}</button></div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 overflow-y-auto pb-10">
                     {slots.map((slot) => (
                         <div key={slot.index} onClick={() => { if (saveLoadMode === 'SAVE') saveGameToSlot(slot.index); else if (slot.data) loadGameFromSlot(slot.index); }} className={`relative h-40 md:h-48 border-2 md:border-4 transform transition-all duration-200 cursor-pointer overflow-hidden group ${!slot.data ? 'border-white/20 bg-white/5 hover:border-white/50' : 'border-white bg-zinc-900 hover:border-yellow-400 hover:-translate-y-1 hover:shadow-xl'}`}>
                             <div className="absolute -right-2 -bottom-4 md:-right-4 md:-bottom-8 text-7xl md:text-9xl font-black text-white/5 italic select-none pointer-events-none">{slot.index + 1}</div>
                             <div className="p-4 md:p-6 h-full flex flex-col justify-between relative z-10">
-                                {slot.data ? (<><div className="flex justify-between items-start"><div><div className="text-[10px] md:text-xs font-bold text-yellow-500 uppercase tracking-widest mb-1">File {slot.index + 1}</div><div className="text-xl md:text-2xl font-black text-white uppercase italic">{slot.data.meta.playerName}</div></div><div className="text-right"><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleDateString()}</div><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleTimeString()}</div></div></div><div className="space-y-1"><div className="text-[10px] md:text-xs text-white/70 font-bold bg-white/10 inline-block px-2 py-1">{slot.data.meta.topic}</div><div className="text-[8px] md:text-[10px] text-white/40 italic truncate">"{slot.data.meta.previewText}"</div></div></>) : (<div className="h-full flex items-center justify-center flex-col text-white/20"><span className="text-3xl md:text-4xl mb-1 md:mb-2">∅</span><span className="font-black uppercase tracking-widest text-xs md:text-sm">No Data</span></div>)}
+                                {slot.data ? (<><div className="flex justify-between items-start"><div><div className="text-[10px] md:text-xs font-bold text-yellow-500 uppercase tracking-widest mb-1">{T.file} {slot.index + 1}</div><div className="text-xl md:text-2xl font-black text-white uppercase italic">{slot.data.meta.playerName}</div></div><div className="text-right"><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleDateString()}</div><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleTimeString()}</div></div></div><div className="space-y-1"><div className="text-[10px] md:text-xs text-white/70 font-bold bg-white/10 inline-block px-2 py-1">{slot.data.meta.topic}</div><div className="text-[8px] md:text-[10px] text-white/40 italic truncate">"{slot.data.meta.previewText}"</div></div></>) : (<div className="h-full flex items-center justify-center flex-col text-white/20"><span className="text-3xl md:text-4xl mb-1 md:mb-2">∅</span><span className="font-black uppercase tracking-widest text-xs md:text-sm">{T.noData}</span></div>)}
                             </div>
                             <div className={`absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`} />
                         </div>
@@ -834,12 +824,12 @@ const App: React.FC = () => {
                   <button onClick={() => { setSaveLoadMode('LOAD'); }} disabled={!hasAnySave} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 md:p-5 border border-white/10 transition-all disabled:opacity-20"><span className="text-white font-bold tracking-widest uppercase text-sm md:text-base">{T.loadData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
                   
                   <div className="mt-2 md:mt-4 pt-4 border-t border-white/10">
-                     <p className="text-[10px] md:text-xs text-yellow-500 font-bold mb-2 md:mb-3 uppercase tracking-widest">Experiment Data Tools</p>
+                     <p className="text-[10px] md:text-xs text-yellow-500 font-bold mb-2 md:mb-3 uppercase tracking-widest">{T.expDataTools}</p>
                      <button onClick={exportExperimentData} className="w-full group flex items-center justify-between bg-blue-900/30 hover:bg-blue-800/60 p-4 md:p-5 border border-blue-500/30 transition-all mb-2 md:mb-3">
-                         <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">💾 导出为 JSON (本地)</span>
+                         <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{T.exportJson}</span>
                      </button>
                      <button onClick={syncToCloud} disabled={isSyncing} className="w-full group flex items-center justify-between bg-green-900/30 hover:bg-green-800/60 p-4 md:p-5 border border-green-500/30 transition-all disabled:opacity-50">
-                         <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{isSyncing ? '上传中...' : '☁️ 同步到云端 (Webhook)'}</span>
+                         <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{isSyncing ? T.syncing : T.syncCloud}</span>
                      </button>
                   </div>
 
