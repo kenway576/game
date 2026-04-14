@@ -7,7 +7,8 @@ import {
 } from "@google/generative-ai";
 import { Character, ChatMode, N3GrammarTopic, DialoguePage, WordReading, Message, Language } from '../types';
 
-const TIMEOUT_MS = 30000; 
+// 🔥 修复 1：把超时时间从 30 秒延长到 60 秒，给 3.0 Pro 充足的思考时间
+const TIMEOUT_MS = 60000; 
 
 const WARDROBE: Record<string, string[]> = {
   'asuka':  ['casual', 'gym', 'swim', 'maid', 'autumn'],
@@ -66,9 +67,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     
     **PAGE TYPES:**
     - **Type "narration"**: Third-person descriptive text. Describe expressions or actions.
-      - Example: "明日香は頬を赤らめ、そっぽを向いた。"
     - **Type "speech"**: The character's spoken line.
-      - Example: "「別に、あんたのためじゃないんだからね！」"
 
     [SCENE & OUTFIT]
     1. Location: Update 'location' if the narrative moves to a new place.
@@ -78,8 +77,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     Extract 6 to 12 vocabulary words (JLPT N4-N2 level) used in your current response.
 
     [OUTPUT FORMAT - STRICT JSON]
-    You MUST output a single, valid JSON object matching EXACTLY this structure.
-    ⚠️ CRITICAL: DO NOT include your internal thoughts, reasoning process (e.g., "(Wait, I need to generate...)", "(Narration)"), or pseudo-code in the JSON values. Only output the final story text! DO NOT use Markdown blocks inside the strings.
+    You MUST output a single, valid JSON object matching EXACTLY this structure. Do NOT wrap it in Markdown formatting.
     {
       "pages": [
         { "type": "narration", "text": "Descriptive text here..." },
@@ -93,80 +91,79 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     }`;
 };
 
-const responseSchema: Schema = {
-  type: SchemaType.OBJECT,
-  properties: {
-    pages: { type: SchemaType.ARRAY, items: { type: SchemaType.OBJECT, properties: { type: { type: SchemaType.STRING }, text: { type: SchemaType.STRING } } } },
-    vocabulary: { type: SchemaType.ARRAY, items: { type: SchemaType.OBJECT, properties: { word: { type: SchemaType.STRING }, reading: { type: SchemaType.STRING } } } },
-    emotion: { type: SchemaType.STRING },
-    location: { type: SchemaType.STRING },
-    outfit: { type: SchemaType.STRING },
-    quiz: { type: SchemaType.OBJECT, properties: { question: { type: SchemaType.STRING }, options: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }, correctIndex: { type: SchemaType.NUMBER }, explanation: { type: SchemaType.STRING } } },
-  },
-  required: ["pages", "vocabulary", "location"],
-};
+const parseResponse = (rawText: string) => {
+    // 打印原始回复供开发者调试，如果以后再出错，按 F12 就能看到 AI 到底回了什么鬼东西
+    console.log("Raw AI Response:", rawText); 
 
-const parseResponse = (text: string) => {
     try {
-        let cleanJson = text.trim();
-        
-        // 🔥 物理拦截 1：彻底干掉 DeepSeek R1 等推理模型的内置 <think> 标签和内部独白
-        cleanJson = cleanJson.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
-        
-        // 🔥 物理拦截 2：干掉可能导致解析崩溃的 markdown 格式
-        cleanJson = cleanJson.replace(/```json/gi, '').replace(/```/g, '').trim();
-        
-        // 🔥 物理拦截 3：精准锁定 JSON 的大括号范围，抛弃前后的任何废话
-        const jsonStart = cleanJson.indexOf('{');
-        const jsonEnd = cleanJson.lastIndexOf('}');
-        if (jsonStart !== -1 && jsonEnd !== -1) {
-            cleanJson = cleanJson.substring(jsonStart, jsonEnd + 1);
+        if (!rawText) {
+             return { pages: [{ type: 'speech', text: "（AI 返回了空数据，可能是触发了安全拦截，请重试。）" }], vocabulary: [], emotion: "neutral", location: "classroom" };
         }
 
-        const parsed = JSON.parse(cleanJson);
+        let cleanText = rawText.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+        cleanText = cleanText.replace(/```json/gi, '').replace(/```/g, '').trim();
         
-        // 保底逻辑：如果解析出来确实没有对话，或者格式不对
-        if (!parsed.pages || !Array.isArray(parsed.pages) || parsed.pages.length === 0) {
-            parsed.pages = [{ type: 'speech', text: parsed.text || parsed.speech || parsed.message || "（……）" }];
-        } else {
-            parsed.pages = parsed.pages.map((p: any) => {
-                if (typeof p === 'string') return { type: 'speech', text: p };
-                if (typeof p === 'object' && p !== null) {
-                    let textContent = p.text || p.speech || p.dialogue || p.content || p.message || p.narration;
-                    
-                    // 如果还是找不到内容，提取第一个看起来像台词的字符串
-                    if (!textContent && Object.keys(p).length > 0) {
-                        const values = Object.values(p).filter(v => typeof v === 'string' && v !== 'speech' && v !== 'narration');
-                        if (values.length > 0) textContent = values[0];
+        let parsedObj: any = null;
+        
+        const jsonStart = cleanText.indexOf('{');
+        const jsonEnd = cleanText.lastIndexOf('}');
+        if (jsonStart !== -1 && jsonEnd !== -1) {
+            try {
+                parsedObj = JSON.parse(cleanText.substring(jsonStart, jsonEnd + 1));
+            } catch (e) {
+                console.warn("Partial JSON parse failed, falling back to raw text.");
+            }
+        }
+
+        if (parsedObj && Object.keys(parsedObj).length > 0) {
+            let pages = [];
+            
+            if (Array.isArray(parsedObj.pages) && parsedObj.pages.length > 0) {
+                pages = parsedObj.pages.map((p: any) => {
+                    let text = "……";
+                    if (typeof p === 'string') text = p;
+                    else if (typeof p === 'object' && p !== null) {
+                        text = p.text || p.speech || p.content || p.dialogue || p.message || p.narration;
+                        if (!text) {
+                           const vals = Object.values(p).filter(v => typeof v === 'string');
+                           if (vals.length > 0) text = String(vals[0]);
+                        }
                     }
-                    
-                    let typeContent = p.type || 'speech';
-                    if (!p.type && (p.narration || p.action)) typeContent = 'narration';
-
-                    if (textContent) {
-                        // 🔥 物理拦截 4：清理遗漏到文本内部的导演批注 (比如 "Wait, I need to..." 这种)
-                        let finalText = String(textContent);
-                        finalText = finalText.replace(/\(Wait,.*?\)/gi, '')
-                                             .replace(/\(Narration\)/gi, '')
-                                             .replace(/\(Speech\)/gi, '')
-                                             .replace(/\(Text: /gi, '')
-                                             .replace(/\(Type:.*?, text: /gi, '')
-                                             .trim();
-                        
-                        // 清理掉尾部可能多余的括号
-                        if (finalText.endsWith(')')) finalText = finalText.slice(0, -1).trim();
-
-                        return { type: typeContent, text: finalText };
+                    return { type: p.type || 'speech', text: String(text || "……") };
+                });
+            } else {
+                let rootText = parsedObj.text || parsedObj.speech || parsedObj.message || parsedObj.dialogue || parsedObj.content;
+                if (!rootText) {
+                    const stringValues = Object.values(parsedObj).filter(v => typeof v === 'string' && v !== parsedObj.emotion && v !== parsedObj.outfit && v !== parsedObj.location);
+                    if (stringValues.length > 0) {
+                        rootText = stringValues.sort((a: any, b: any) => b.length - a.length)[0];
                     }
                 }
-                return { type: 'speech', text: "……" }; 
-            });
+                pages = [{ type: 'speech', text: rootText || cleanText }];
+            }
+
+            return {
+                pages: pages,
+                vocabulary: Array.isArray(parsedObj.vocabulary) ? parsedObj.vocabulary : [],
+                emotion: parsedObj.emotion || "neutral",
+                location: parsedObj.location || "classroom",
+                outfit: parsedObj.outfit || "",
+                quiz: parsedObj.quiz || null
+            };
         }
-        return parsed;
+
+        if (!cleanText) cleanText = "（……）";
+        return {
+            pages: [{ type: 'speech', text: cleanText }],
+            vocabulary: [],
+            emotion: "neutral",
+            location: "classroom"
+        };
+
     } catch (e) {
-        console.error("JSON Parse Error:", e, text);
+        console.error("Critical extraction failure:", e);
         return { 
-            pages: [{ type: 'speech', text: "（系统提示：角色语言解析失败，请检查模型格式或发送任意字符重试……）" }], 
+            pages: [{ type: 'speech', text: "（系统通信出现未知异常，请点击左上角主菜单重试）" }], 
             vocabulary: [], 
             emotion: "neutral",
             location: "classroom"
@@ -179,17 +176,22 @@ const handleDeepSeekMessage = async (text: string) => {
     
     deepseekHistory.push({ role: "user", content: text });
 
+    const requestBody: any = {
+        model: currentModelName,
+        messages: deepseekHistory,
+    };
+
+    if (currentModelName !== 'deepseek-reasoner') {
+        requestBody.response_format = { type: "json_object" };
+    }
+
     const fetchPromise = fetch("https://api.deepseek.com/chat/completions", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${currentApiKey}`
         },
-        body: JSON.stringify({
-            model: currentModelName,
-            messages: deepseekHistory,
-            response_format: { type: "json_object" } 
-        })
+        body: JSON.stringify(requestBody)
     });
 
     const response = await withTimeout(fetchPromise, TIMEOUT_MS, "DeepSeek API Timeout.");
@@ -257,13 +259,16 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
         currentProvider = 'google';
         const genAI = getGenAI(apiKey);
         const actualGoogleModel = modelName === 'gemini-2.5-flash' ? 'gemini-2.0-flash-exp' : modelName;
-        // 适当降低 temperature，让 Pro 模型不要那么“发散思维”
         const temp = actualGoogleModel.includes('gemini-3') ? 0.7 : 0.85;
 
+        // 🔥 修复 2：彻底删掉 responseSchema，防止 3.0 模型因为格式校验失败直接抛出空数据
         const model = genAI.getGenerativeModel({
             model: actualGoogleModel,
             systemInstruction: sysPrompt,
-            generationConfig: { temperature: temp, responseMimeType: "application/json", responseSchema: responseSchema }
+            generationConfig: { 
+                temperature: temp, 
+                responseMimeType: "application/json" 
+            }
         });
 
         chatSession = model.startChat({ history: [] });

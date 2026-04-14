@@ -362,7 +362,6 @@ const App: React.FC = () => {
       }));
 
     } catch (error: any) {
-      // 🔥 修复黑屏BUG：如果发生错误，必须强行生成一个 pages 对象渲染对话框
       const errMsg: Message = { 
           id: 'err-' + Date.now(), 
           role: 'model', 
@@ -430,7 +429,6 @@ const App: React.FC = () => {
       }));
 
     } catch (error: any) {
-      // 🔥 修复黑屏BUG：如果发生错误，必须强行生成一个 pages 对象渲染对话框
       const modelMsg: Message = { 
           id: 'err-' + Date.now(), 
           role: 'model', 
@@ -672,12 +670,9 @@ const App: React.FC = () => {
              <h2 className="-skew-x-12 text-lg md:text-2xl font-black italic uppercase tracking-tighter">{T.choosePartner}</h2>
              <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.goal}: {userState.learningGoal}</p>
          </div>
+         {/* 🔥 将按钮精简，只保留强大的 System 菜单 */}
          <div className="flex gap-2 pointer-events-auto self-end md:self-auto">
-            {/* 🔥 新增：返回主菜单按钮 (Lobby) */}
-            <button onClick={() => { setGameMode(GameMode.SETUP); setSetupStep('MENU'); }} className="bg-red-700/90 hover:bg-red-500 text-white px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter shadow-xl transition-colors">⌂ {userState.language === 'en' ? 'HOME' : '主菜单'}</button>
-            <button onClick={() => setShowWordbook(true)} className="bg-yellow-600/80 hover:bg-yellow-600 text-gray-900 px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter shadow-xl">{T.wordbook} ({userState.collectedWords.length})</button>
-            <button onClick={() => setShowHistoryLog(true)} className="bg-indigo-600/80 hover:bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter shadow-xl">{T.logs}</button>
-            <button onClick={() => setShowSystemMenu(true)} className="bg-white/10 hover:bg-white/20 text-white px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter">{T.system}</button>
+            <button onClick={() => setShowSystemMenu(true)} className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-sm border border-white/20 backdrop-blur text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all">⚙️ {T.system}</button>
          </div>
       </div>
 
@@ -729,17 +724,13 @@ const App: React.FC = () => {
             {renderBackground()}
             {isTranslating && <div className="absolute top-20 right-4 md:right-6 z-[60] bg-black/80 text-yellow-500 px-3 py-1.5 md:px-4 md:py-2 rounded border border-yellow-500/50 flex items-center gap-2 animate-pulse"><span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.generating}</span></div>}
             
-            <div className="absolute top-0 left-0 w-full z-50 p-4 md:p-6 flex justify-between items-start">
-                <div className="flex gap-2">
-                    {/* 🔥 新增：返回主菜单按钮 (Chat) */}
-                    <button onClick={() => { setGameMode(GameMode.SETUP); setSetupStep('MENU'); }} className="bg-red-700/90 px-3 md:px-6 py-2 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 tracking-widest hover:bg-red-500 transition-all shadow-2xl">⌂ {userState.language === 'en' ? 'HOME' : '主菜单'}</button>
-                    <button onClick={() => setGameMode(GameMode.LOBBY)} className="bg-black/80 px-3 md:px-6 py-2 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 tracking-widest hover:bg-red-700 transition-all shadow-2xl">← {T.exit}</button>
+            <div className="absolute top-0 left-0 w-full z-50 p-4 md:p-6 flex justify-between items-start pointer-events-none">
+                <div className="flex gap-2 pointer-events-auto">
+                    {/* 🔥 极简菜单：把乱七八糟的按钮全装进 System 里 */}
+                    <button onClick={() => setShowSystemMenu(true)} className="bg-black/80 px-5 py-3 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 hover:border-yellow-500 transition-colors uppercase tracking-[0.2em] shadow-xl">⚙️ {T.system}</button>
                 </div>
-                <div className="flex flex-wrap justify-end gap-2 max-w-[70%]">
-                    <button onClick={() => setShowWordbook(true)} className="bg-yellow-600/80 px-3 md:px-4 py-2 text-gray-900 font-black text-[10px] border border-white/20 hover:border-yellow-400 transition-colors uppercase tracking-[0.2em]">{T.wordbook} ({userState.collectedWords.length})</button>
-                    <button onClick={() => setShowHistoryLog(true)} className="bg-indigo-600/80 px-3 md:px-4 py-2 text-white font-black text-[10px] border border-white/20 hover:border-indigo-400 transition-colors uppercase tracking-[0.2em]">{T.logs}</button>
-                    <button onClick={() => setShowSystemMenu(true)} className="bg-black/80 px-3 md:px-4 py-2 text-white font-black text-[10px] border border-white/20 hover:border-yellow-500 transition-colors uppercase tracking-[0.2em]">{T.system}</button>
-                    <div className="bg-black/80 px-3 md:px-4 py-2 text-white/50 text-[10px] font-mono border-b-2 border-red-500 w-full md:w-auto text-right">N3: {userState.playerName.toUpperCase()} | {userState.grammarTopic}</div>
+                <div className="flex flex-wrap justify-end gap-2 max-w-[70%] pointer-events-auto">
+                    <div className="bg-black/80 px-4 py-3 text-white/50 text-[10px] font-mono border-b-2 border-red-500 w-full md:w-auto text-right shadow-xl">N3: {userState.playerName.toUpperCase()} | {userState.grammarTopic}</div>
                 </div>
             </div>
 
@@ -750,7 +741,7 @@ const App: React.FC = () => {
             </div>
 
             {currentQuiz && (
-                   <div className="absolute inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                   <div className="absolute inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm pointer-events-auto">
                        <div className="w-full max-w-2xl bg-white p-6 md:p-8 rounded-sm shadow-2xl border-l-[8px] md:border-l-[12px] border-red-600 transform -skew-x-1 flex flex-col max-h-[90dvh]">
                            <div className="flex justify-between items-start mb-4"><h3 className="text-xs md:text-sm font-black text-red-600 uppercase tracking-tighter">{T.quizHeader}: {userState.grammarTopic}</h3><button onClick={() => setCurrentQuiz(null)} className="text-gray-400 hover:text-red-600 text-xs font-black uppercase">{T.close} [X]</button></div>
                            <div className="overflow-y-auto pr-2"><p className="text-lg md:text-2xl text-gray-900 mb-6 md:mb-8 font-black leading-tight">{currentQuiz.question}</p><div className="grid grid-cols-1 gap-2 md:gap-3 mb-4">{currentQuiz.options?.map((opt: string, idx: number) => (<button key={idx} onClick={() => handleQuizAnswer(idx)} className="bg-gray-100 hover:bg-red-50 text-gray-900 font-bold py-3 md:py-4 px-4 md:px-6 rounded-sm transition-all border-l-4 border-transparent hover:border-red-600 text-left text-sm md:text-base"><span className="text-red-600 mr-3 md:mr-4 italic font-black">{["A", "B", "C", "D"][idx]}.</span> {opt}</button>))}</div></div>
@@ -758,16 +749,16 @@ const App: React.FC = () => {
                    </div>
             )}
 
-            <div className="absolute bottom-0 w-full min-h-[300px] md:min-h-[350px] bg-gradient-to-t from-black via-black/80 to-transparent z-40 pb-6 md:pb-12 px-4 md:px-6 flex flex-col items-center justify-end">
+            <div className="absolute bottom-0 w-full min-h-[300px] md:min-h-[350px] bg-gradient-to-t from-black via-black/80 to-transparent z-40 pb-6 md:pb-12 px-4 md:px-6 flex flex-col items-center justify-end pointer-events-none">
                 {quizFeedback && (
-                    <div className="mb-4 md:mb-6 bg-slate-900/95 backdrop-blur-xl text-white px-6 md:px-8 py-4 md:py-6 rounded-sm shadow-2xl font-bold text-xs md:text-sm border-l-8 border-yellow-500 max-w-2xl z-[110] border-2 border-white/10 w-full">
+                    <div className="mb-4 md:mb-6 bg-slate-900/95 backdrop-blur-xl text-white px-6 md:px-8 py-4 md:py-6 rounded-sm shadow-2xl font-bold text-xs md:text-sm border-l-8 border-yellow-500 max-w-2xl z-[110] border-2 border-white/10 w-full pointer-events-auto">
                         <div className="flex items-start gap-3 md:gap-4"><span className="text-3xl md:text-4xl">💡</span><div className="flex-1"><p className="leading-relaxed whitespace-pre-wrap">{quizFeedback}</p></div></div>
                         <button onClick={handleContinueAfterFeedback} className="mt-4 md:mt-6 w-full py-2.5 md:py-3 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-black uppercase tracking-[0.3em] transition-all rounded-sm shadow-lg">{T.gotIt}</button>
                     </div>
                 )}
 
                 {gameMode === GameMode.CHAT && (
-                  <div className="absolute top-24 md:top-20 right-2 md:right-4 z-50 flex flex-col gap-1.5 md:gap-2 bg-black/40 p-1.5 md:p-2 rounded-lg backdrop-blur-sm border border-white/10 scale-90 md:scale-100 origin-top-right">
+                  <div className="absolute top-24 md:top-20 right-2 md:right-4 z-50 flex flex-col gap-1.5 md:gap-2 bg-black/40 p-1.5 md:p-2 rounded-lg backdrop-blur-sm border border-white/10 scale-90 md:scale-100 origin-top-right pointer-events-auto">
                     <span className="text-[8px] md:text-[10px] text-white/50 uppercase font-bold text-center">{T.costume}</span>
                     <button onClick={() => setCurrentOutfit('')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === '' ? 'bg-white text-black border-white' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.school}</button>
                     <button onClick={() => setCurrentOutfit('casual')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'casual' ? 'bg-pink-500 text-white border-pink-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.casual}</button>
@@ -777,23 +768,25 @@ const App: React.FC = () => {
                   </div>
                 )}
 
-                {!isLoading && lastModelMsg?.pages && !isDialogueFinished && !currentQuiz && (
-                    <DialogueBox key={lastModelMsg.id} character={activeChar} pages={lastModelMsg.pages} vocabulary={lastModelMsg.vocabulary || []} onFinish={onDialogueFinished} />
-                )}
-                
-                {isLoading && (
-                    <div className="w-full max-w-4xl bg-slate-900/90 backdrop-blur-md border-2 border-indigo-500/50 p-6 md:p-10 min-h-[120px] md:min-h-[160px] animate-pulse flex flex-col items-center justify-center mb-4 md:mb-6 shadow-[0_0_30px_rgba(99,102,241,0.3)]"><div className="text-indigo-400 font-black tracking-[0.5em] md:tracking-[0.8em] text-sm md:text-xl mb-2">{T.generating}</div></div>
-                )}
+                <div className="pointer-events-auto w-full max-w-4xl flex flex-col items-center">
+                    {!isLoading && lastModelMsg?.pages && !isDialogueFinished && !currentQuiz && (
+                        <DialogueBox key={lastModelMsg.id} character={activeChar} pages={lastModelMsg.pages} vocabulary={lastModelMsg.vocabulary || []} onFinish={onDialogueFinished} />
+                    )}
+                    
+                    {isLoading && (
+                        <div className="w-full bg-slate-900/90 backdrop-blur-md border-2 border-indigo-500/50 p-6 md:p-10 min-h-[120px] md:min-h-[160px] animate-pulse flex flex-col items-center justify-center mb-4 md:mb-6 shadow-[0_0_30px_rgba(99,102,241,0.3)]"><div className="text-indigo-400 font-black tracking-[0.5em] md:tracking-[0.8em] text-sm md:text-xl mb-2">{T.generating}</div></div>
+                    )}
 
-                {(isDialogueFinished || isLoading) && !currentQuiz && !quizFeedback && (
-                    <div className={`w-full max-w-4xl flex gap-2 md:gap-3 transition-all duration-700 ${isDialogueFinished ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
-                        <div className="relative flex-1">
-                            <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder="N3..." disabled={isLoading} className="w-full bg-slate-900/90 border-2 border-white/20 rounded-full px-5 py-3 md:px-8 md:py-5 text-white font-medium focus:outline-none focus:border-yellow-500 transition-all backdrop-blur-md text-base md:text-lg shadow-inner" />
-                            <div className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-[10px] text-white/30 font-black uppercase tracking-widest hidden sm:block">{T.enterToSend}</div>
+                    {(isDialogueFinished || isLoading) && !currentQuiz && !quizFeedback && (
+                        <div className={`w-full flex gap-2 md:gap-3 transition-all duration-700 ${isDialogueFinished ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
+                            <div className="relative flex-1">
+                                <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder="N3..." disabled={isLoading} className="w-full bg-slate-900/90 border-2 border-white/20 rounded-full px-5 py-3 md:px-8 md:py-5 text-white font-medium focus:outline-none focus:border-yellow-500 transition-all backdrop-blur-md text-base md:text-lg shadow-inner" />
+                                <div className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-[10px] text-white/30 font-black uppercase tracking-widest hidden sm:block">{T.enterToSend}</div>
+                            </div>
+                            <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-6 py-3 md:px-10 md:py-5 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full disabled:opacity-20 flex items-center justify-center gap-2 text-sm md:text-base">{T.send}</button>
                         </div>
-                        <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-6 py-3 md:px-10 md:py-5 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full disabled:opacity-20 flex items-center justify-center gap-2 text-sm md:text-base">{T.send}</button>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
 
             {contextMenu && (
@@ -845,23 +838,43 @@ const App: React.FC = () => {
 
   const renderSystemMenu = () => (
       <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-lg p-4" onClick={() => setShowSystemMenu(false)}>
-          <div className="w-full max-w-lg bg-zinc-900 border-2 border-white/10 p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] transform -skew-x-2" onClick={e => e.stopPropagation()}>
-              <h2 className="text-2xl md:text-3xl font-black text-white italic tracking-tighter mb-6 md:mb-8 border-b-4 border-red-600 pb-2 uppercase">{T.system}</h2>
+          <div className="w-full max-w-lg bg-zinc-900 border-2 border-white/10 p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] transform -skew-x-2 overflow-y-auto max-h-[95dvh]" onClick={e => e.stopPropagation()}>
+              <h2 className="text-2xl md:text-3xl font-black text-white italic tracking-tighter mb-4 border-b-4 border-red-600 pb-2 uppercase">{T.system}</h2>
+              
               <div className="flex flex-col gap-3 md:gap-4">
-                  <button onClick={() => { setSaveLoadMode('SAVE'); }} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 md:p-5 border border-white/10 transition-all"><span className="text-white font-bold tracking-widest uppercase text-sm md:text-base">{T.saveData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
-                  <button onClick={() => { setSaveLoadMode('LOAD'); }} disabled={!hasAnySave} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 md:p-5 border border-white/10 transition-all disabled:opacity-20"><span className="text-white font-bold tracking-widest uppercase text-sm md:text-base">{T.loadData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
+                  {/* 🔥 功能按钮大集合 */}
+                  <div className="grid grid-cols-2 gap-2 md:gap-3 mb-2">
+                      <button onClick={() => { setShowSystemMenu(false); setShowWordbook(true); }} className="bg-yellow-600/90 hover:bg-yellow-500 text-black font-black py-3 md:py-4 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">{T.wordbook} ({userState.collectedWords.length})</button>
+                      <button onClick={() => { setShowSystemMenu(false); setShowHistoryLog(true); }} className="bg-indigo-600/90 hover:bg-indigo-500 text-white font-black py-3 md:py-4 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">{T.logs}</button>
+                  </div>
+
+                  {/* 返回游戏选项 */}
+                  {gameMode === GameMode.CHAT && (
+                      <button onClick={() => { setShowSystemMenu(false); setGameMode(GameMode.LOBBY); }} className="group flex items-center justify-between bg-red-900/30 hover:bg-red-800/60 p-4 border border-red-500/30 transition-all">
+                          <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">🚪 {T.exit} (返回休息室)</span>
+                      </button>
+                  )}
+                  <button onClick={() => { setShowSystemMenu(false); setGameMode(GameMode.SETUP); setSetupStep('MENU'); }} className="group flex items-center justify-between bg-red-900/30 hover:bg-red-800/60 p-4 border border-red-500/30 transition-all">
+                      <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">⌂ {userState.language === 'en' ? 'RETURN TO TITLE' : '返回标题画面'}</span>
+                  </button>
+
+                  <div className="h-px bg-white/10 my-2" />
+
+                  {/* 存档功能 */}
+                  <button onClick={() => { setShowSystemMenu(false); setSaveLoadMode('SAVE'); }} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 border border-white/10 transition-all"><span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{T.saveData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
+                  <button onClick={() => { setShowSystemMenu(false); setSaveLoadMode('LOAD'); }} disabled={!hasAnySave} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 border border-white/10 transition-all disabled:opacity-20"><span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{T.loadData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
                   
                   <div className="mt-2 md:mt-4 pt-4 border-t border-white/10">
                      <p className="text-[10px] md:text-xs text-yellow-500 font-bold mb-2 md:mb-3 uppercase tracking-widest">{T.expDataTools}</p>
-                     <button onClick={exportExperimentData} className="w-full group flex items-center justify-between bg-blue-900/30 hover:bg-blue-800/60 p-4 md:p-5 border border-blue-500/30 transition-all mb-2 md:mb-3">
-                         <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{T.exportJson}</span>
+                     <button onClick={exportExperimentData} className="w-full group flex items-center justify-between bg-blue-900/30 hover:bg-blue-800/60 p-3 md:p-4 border border-blue-500/30 transition-all mb-2">
+                         <span className="text-white font-bold tracking-widest uppercase text-[10px] md:text-xs">{T.exportJson}</span>
                      </button>
-                     <button onClick={syncToCloud} disabled={isSyncing} className="w-full group flex items-center justify-between bg-green-900/30 hover:bg-green-800/60 p-4 md:p-5 border border-green-500/30 transition-all disabled:opacity-50">
-                         <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{isSyncing ? T.syncing : T.syncCloud}</span>
+                     <button onClick={syncToCloud} disabled={isSyncing} className="w-full group flex items-center justify-between bg-green-900/30 hover:bg-green-800/60 p-3 md:p-4 border border-green-500/30 transition-all disabled:opacity-50">
+                         <span className="text-white font-bold tracking-widest uppercase text-[10px] md:text-xs">{isSyncing ? T.syncing : T.syncCloud}</span>
                      </button>
                   </div>
 
-                  <button onClick={() => setShowSystemMenu(false)} className="mt-4 md:mt-6 text-center text-white/40 hover:text-white font-black uppercase text-[10px] md:text-xs tracking-[0.5em] transition-colors">{T.cancel}</button>
+                  <button onClick={() => setShowSystemMenu(false)} className="mt-2 text-center text-white/40 hover:text-white font-black uppercase text-[10px] md:text-xs tracking-[0.5em] transition-colors">{T.cancel}</button>
               </div>
           </div>
       </div>
@@ -879,8 +892,13 @@ const App: React.FC = () => {
   );
 
   const renderHistoryLog = () => (
-    <div className="fixed inset-0 z-[250] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl p-2 md:p-0" onClick={() => setShowHistoryLog(false)}>
-        <div className="w-full max-w-5xl h-[95dvh] md:h-[85dvh] bg-zinc-900 border-2 border-indigo-500/50 shadow-2xl flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
+    // 🔥 新增：在最外层容器增加了 onContextMenu 事件，这样在对话记录里划拉生词也能直接翻译收藏了！
+    <div className="fixed inset-0 z-[250] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl p-2 md:p-0" 
+         onClick={() => { if (contextMenu) setContextMenu(null); else setShowHistoryLog(false); }}
+         onContextMenu={handleContextMenu}
+    >
+        <div className="w-full max-w-5xl h-[95dvh] md:h-[85dvh] bg-zinc-900 border-2 border-indigo-500/50 shadow-2xl flex flex-col overflow-hidden" 
+             onClick={e => { e.stopPropagation(); if (contextMenu) setContextMenu(null); }}>
             <div className="flex items-center justify-between border-b border-white/10 bg-black/40 px-4 md:px-6 py-3 md:py-4"><h2 className="text-indigo-400 font-black uppercase tracking-[0.2em] md:tracking-[0.4em] italic text-sm md:text-base">{T.logs}</h2><button onClick={() => setShowHistoryLog(false)} className="text-white/30 hover:text-red-500 font-black">✕</button></div>
             <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
                 <div className="w-full md:w-64 bg-black/20 border-b md:border-b-0 md:border-r border-white/5 flex md:flex-col overflow-x-auto md:overflow-y-auto shrink-0">{(Object.keys(CHARACTERS) as CharacterId[]).map(id => (<button key={id} onClick={() => setActiveHistoryTab(id)} className={`p-3 md:p-4 flex flex-col md:flex-row items-center gap-2 md:gap-3 transition-all border-b-4 md:border-b-0 md:border-l-4 ${activeHistoryTab === id ? `bg-white/5 ${CHARACTERS[id].color.replace('bg-', 'border-')}` : 'border-transparent opacity-50 hover:opacity-100'}`}><div className={`w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0`}><img src={CHARACTERS[id].emotionMap['neutral']} className="w-full h-full object-cover" alt="" /></div><span className="font-bold text-white text-[10px] md:text-sm uppercase tracking-wider truncate">{userState.language === 'en' ? CHARACTERS[id].nameEn : CHARACTERS[id].name}</span></button>))}</div>
