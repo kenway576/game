@@ -670,7 +670,7 @@ const App: React.FC = () => {
              <h2 className="-skew-x-12 text-lg md:text-2xl font-black italic uppercase tracking-tighter">{T.choosePartner}</h2>
              <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.goal}: {userState.learningGoal}</p>
          </div>
-         {/* 🔥 将按钮精简，只保留强大的 System 菜单 */}
+         {/* 🔥 休息室极简菜单 */}
          <div className="flex gap-2 pointer-events-auto self-end md:self-auto">
             <button onClick={() => setShowSystemMenu(true)} className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-sm border border-white/20 backdrop-blur text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all">⚙️ {T.system}</button>
          </div>
@@ -720,13 +720,13 @@ const App: React.FC = () => {
 
       return (
         <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col" onContextMenu={handleContextMenu} onClick={() => { if(contextMenu) setContextMenu(null); }}>
-            <div className="absolute top-1 left-1 z-[200] bg-black/70 text-white text-[8px] md:text-[10px] p-1.5 md:p-2 rounded font-mono"><div>outfit: {currentOutfit || '(empty)'}</div><div>emotion: {currentEmotion}</div><div>model: {customModel}</div></div>
+            {/* 🔥 开发者调试面板已移除，还给玩家最干净的画面！ */}
             {renderBackground()}
             {isTranslating && <div className="absolute top-20 right-4 md:right-6 z-[60] bg-black/80 text-yellow-500 px-3 py-1.5 md:px-4 md:py-2 rounded border border-yellow-500/50 flex items-center gap-2 animate-pulse"><span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.generating}</span></div>}
             
             <div className="absolute top-0 left-0 w-full z-50 p-4 md:p-6 flex justify-between items-start pointer-events-none">
                 <div className="flex gap-2 pointer-events-auto">
-                    {/* 🔥 极简菜单：把乱七八糟的按钮全装进 System 里 */}
+                    {/* 🔥 聊天界面极简菜单 */}
                     <button onClick={() => setShowSystemMenu(true)} className="bg-black/80 px-5 py-3 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 hover:border-yellow-500 transition-colors uppercase tracking-[0.2em] shadow-xl">⚙️ {T.system}</button>
                 </div>
                 <div className="flex flex-wrap justify-end gap-2 max-w-[70%] pointer-events-auto">
@@ -892,7 +892,6 @@ const App: React.FC = () => {
   );
 
   const renderHistoryLog = () => (
-    // 🔥 新增：在最外层容器增加了 onContextMenu 事件，这样在对话记录里划拉生词也能直接翻译收藏了！
     <div className="fixed inset-0 z-[250] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl p-2 md:p-0" 
          onClick={() => { if (contextMenu) setContextMenu(null); else setShowHistoryLog(false); }}
          onContextMenu={handleContextMenu}
