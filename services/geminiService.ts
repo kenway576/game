@@ -59,28 +59,26 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     You are writing a script for a high-quality Japanese visual novel.
     
     **RULES FOR "PAGES" (CRITICAL):**
-    1. **Output Length**: You MUST generate **5 to 6 pages** (array items) for every single turn. Do not be short.
+    1. **Output Length**: You MUST generate **4 to 6 pages** (array items) for every single turn.
     2. **Separate Action & Speech**:
        - **Do NOT** put actions in parentheses inside speech.
        - **INSTEAD**, create a separate "narration" page BEFORE or AFTER the speech.
     
     **PAGE TYPES:**
-    - **Type "narration"**: Third-person descriptive text. Describe facial expressions, body language, atmosphere, or internal thoughts.
-      - Example: "明日香は頬を赤らめ、机の上にちょこんと座った。上目遣いでこちらを見つめ、もじもじしている。"
-    - **Type "speech"**: The character's spoken line. Use brackets.
-      - Example: "「……ねえ、私のこと、どう思ってるの？」"
+    - **Type "narration"**: Third-person descriptive text. Describe expressions or actions.
+      - Example: "明日香は頬を赤らめ、そっぽを向いた。"
+    - **Type "speech"**: The character's spoken line.
+      - Example: "「別に、あんたのためじゃないんだからね！」"
 
     [SCENE & OUTFIT]
-    1. Location: Update 'location' if the narrative moves to a new place (library, room, beach, etc.).
-    2. Outfit: Update 'outfit' only if the narrative justifies a change (e.g. getting wet -> casual/swim). Codes: [${availableOutfits}]
+    1. Location: Update 'location' if the narrative moves to a new place.
+    2. Outfit: Update 'outfit' only if justified. Codes: [${availableOutfits}]
 
     [VOCABULARY EXTRACTION RULES]
-    You MUST populate the 'vocabulary' array heavily. 
-    1. Extract 6 to 12 words per response.
-    2. Target Difficulty: JLPT N4, N3, N2. Include any Kanji compound used.
+    Extract 6 to 12 vocabulary words (JLPT N4-N2 level) used in your current response.
 
     [OUTPUT FORMAT - STRICT JSON]
-    You must output a single, valid JSON object matching this structure:
+    You MUST output a single, valid JSON object matching EXACTLY this structure (do not change the keys 'type' and 'text'):
     {
       "pages": [
         { "type": "narration", "text": "Descriptive text here..." },
@@ -90,7 +88,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
       "emotion": "neutral" | "happy" | "angry" | "sad" | "shy" | "surprised",
       "location": "classroom",
       "outfit": "casual" | "",
-      "quiz": null (or quiz object)
+      "quiz": null
     }`;
 };
 
@@ -107,14 +105,11 @@ const responseSchema: Schema = {
   required: ["pages", "vocabulary", "location"],
 };
 
-// 🔥 终极解析器：防止任何格式导致的黑屏崩溃
 const parseResponse = (text: string) => {
     try {
         let cleanJson = text.trim();
-        // 暴力移除所有的 markdown 代码块包裹
         cleanJson = cleanJson.replace(/```json/gi, '').replace(/```/g, '').trim();
         
-        // 强行截取第一个 { 和最后一个 } 之间的内容（防止 AI 开头说废话）
         const jsonStart = cleanJson.indexOf('{');
         const jsonEnd = cleanJson.lastIndexOf('}');
         if (jsonStart !== -1 && jsonEnd !== -1) {
@@ -123,21 +118,34 @@ const parseResponse = (text: string) => {
 
         const parsed = JSON.parse(cleanJson);
         
-        // 核心防御：如果 AI 漏发了 pages 数组，强行补上，防止对话框消失导致黑屏
         if (!parsed.pages || !Array.isArray(parsed.pages) || parsed.pages.length === 0) {
-            parsed.pages = [{ type: 'speech', text: parsed.text || "（……默默地看着你）" }];
+            parsed.pages = [{ type: 'speech', text: parsed.text || parsed.speech || parsed.message || "（……）" }];
         } else {
-            // 确保内部结构安全
+            // 🔥 终极土匪提取法：管你 AI 用什么 key，我直接提取内容
             parsed.pages = parsed.pages.map((p: any) => {
                 if (typeof p === 'string') return { type: 'speech', text: p };
-                if (!p || !p.text) return { type: 'speech', text: "……" };
-                return p;
+                if (typeof p === 'object' && p !== null) {
+                    // 疯狂寻找文本内容：查遍所有 AI 可能瞎编的词
+                    let textContent = p.text || p.speech || p.dialogue || p.content || p.message || p.narration;
+                    // 如果还找不到，直接暴力提取对象里的第一个有效字符串
+                    if (!textContent && Object.keys(p).length > 0) {
+                        const values = Object.values(p).filter(v => typeof v === 'string' && v !== 'speech' && v !== 'narration');
+                        if (values.length > 0) textContent = values[0];
+                    }
+                    
+                    let typeContent = p.type || 'speech';
+                    if (!p.type && (p.narration || p.action)) typeContent = 'narration';
+
+                    if (textContent) {
+                        return { type: typeContent, text: String(textContent) };
+                    }
+                }
+                return { type: 'speech', text: "……" }; // 只有在所有方法都失效时才出点点点
             });
         }
         return parsed;
     } catch (e) {
         console.error("JSON Parse Error:", e, text);
-        // 解析彻底失败时的兜底对话框，避免游戏死机
         return { 
             pages: [{ type: 'speech', text: "（系统提示：角色语言解析失败，请检查模型格式或发送任意字符重试……）" }], 
             vocabulary: [], 
@@ -222,9 +230,9 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
         currentProvider = 'deepseek';
         deepseekHistory = [{ 
             role: "system", 
-            content: sysPrompt + "\n\nCRITICAL: You MUST output ONLY valid JSON format. Do not use markdown blocks if possible." 
+            content: sysPrompt + "\n\nCRITICAL: You MUST output ONLY valid JSON format. Follow the exact keys shown in the schema." 
         }];
-        return await handleDeepSeekMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 5-6 pages.");
+        return await handleDeepSeekMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 4-6 pages.");
     } 
     else {
         currentProvider = 'google';
@@ -244,7 +252,7 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
 
         try {
             const result = await withTimeout<GenerateContentResult>(
-                chatSession.sendMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 5-6 pages."),
+                chatSession.sendMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 4-6 pages."),
                 TIMEOUT_MS, "Timeout connecting to AI."
             );
             const parsed = parseResponse(result.response.text());
