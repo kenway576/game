@@ -78,7 +78,8 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     Extract 6 to 12 vocabulary words (JLPT N4-N2 level) used in your current response.
 
     [OUTPUT FORMAT - STRICT JSON]
-    You MUST output a single, valid JSON object matching EXACTLY this structure (do not change the keys 'type' and 'text'):
+    You MUST output a single, valid JSON object matching EXACTLY this structure.
+    ⚠️ CRITICAL: DO NOT include your internal thoughts, reasoning process (e.g., "(Wait, I need to generate...)", "(Narration)"), or pseudo-code in the JSON values. Only output the final story text! DO NOT use Markdown blocks inside the strings.
     {
       "pages": [
         { "type": "narration", "text": "Descriptive text here..." },
@@ -108,8 +109,14 @@ const responseSchema: Schema = {
 const parseResponse = (text: string) => {
     try {
         let cleanJson = text.trim();
+        
+        // 🔥 物理拦截 1：彻底干掉 DeepSeek R1 等推理模型的内置 <think> 标签和内部独白
+        cleanJson = cleanJson.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+        
+        // 🔥 物理拦截 2：干掉可能导致解析崩溃的 markdown 格式
         cleanJson = cleanJson.replace(/```json/gi, '').replace(/```/g, '').trim();
         
+        // 🔥 物理拦截 3：精准锁定 JSON 的大括号范围，抛弃前后的任何废话
         const jsonStart = cleanJson.indexOf('{');
         const jsonEnd = cleanJson.lastIndexOf('}');
         if (jsonStart !== -1 && jsonEnd !== -1) {
@@ -118,16 +125,16 @@ const parseResponse = (text: string) => {
 
         const parsed = JSON.parse(cleanJson);
         
+        // 保底逻辑：如果解析出来确实没有对话，或者格式不对
         if (!parsed.pages || !Array.isArray(parsed.pages) || parsed.pages.length === 0) {
             parsed.pages = [{ type: 'speech', text: parsed.text || parsed.speech || parsed.message || "（……）" }];
         } else {
-            // 🔥 终极土匪提取法：管你 AI 用什么 key，我直接提取内容
             parsed.pages = parsed.pages.map((p: any) => {
                 if (typeof p === 'string') return { type: 'speech', text: p };
                 if (typeof p === 'object' && p !== null) {
-                    // 疯狂寻找文本内容：查遍所有 AI 可能瞎编的词
                     let textContent = p.text || p.speech || p.dialogue || p.content || p.message || p.narration;
-                    // 如果还找不到，直接暴力提取对象里的第一个有效字符串
+                    
+                    // 如果还是找不到内容，提取第一个看起来像台词的字符串
                     if (!textContent && Object.keys(p).length > 0) {
                         const values = Object.values(p).filter(v => typeof v === 'string' && v !== 'speech' && v !== 'narration');
                         if (values.length > 0) textContent = values[0];
@@ -137,10 +144,22 @@ const parseResponse = (text: string) => {
                     if (!p.type && (p.narration || p.action)) typeContent = 'narration';
 
                     if (textContent) {
-                        return { type: typeContent, text: String(textContent) };
+                        // 🔥 物理拦截 4：清理遗漏到文本内部的导演批注 (比如 "Wait, I need to..." 这种)
+                        let finalText = String(textContent);
+                        finalText = finalText.replace(/\(Wait,.*?\)/gi, '')
+                                             .replace(/\(Narration\)/gi, '')
+                                             .replace(/\(Speech\)/gi, '')
+                                             .replace(/\(Text: /gi, '')
+                                             .replace(/\(Type:.*?, text: /gi, '')
+                                             .trim();
+                        
+                        // 清理掉尾部可能多余的括号
+                        if (finalText.endsWith(')')) finalText = finalText.slice(0, -1).trim();
+
+                        return { type: typeContent, text: finalText };
                     }
                 }
-                return { type: 'speech', text: "……" }; // 只有在所有方法都失效时才出点点点
+                return { type: 'speech', text: "……" }; 
             });
         }
         return parsed;
@@ -230,7 +249,7 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
         currentProvider = 'deepseek';
         deepseekHistory = [{ 
             role: "system", 
-            content: sysPrompt + "\n\nCRITICAL: You MUST output ONLY valid JSON format. Follow the exact keys shown in the schema." 
+            content: sysPrompt + "\n\nCRITICAL: You MUST output ONLY valid JSON format. Follow the exact keys shown in the schema. NO <think> tags. NO comments." 
         }];
         return await handleDeepSeekMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 4-6 pages.");
     } 
@@ -238,7 +257,8 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
         currentProvider = 'google';
         const genAI = getGenAI(apiKey);
         const actualGoogleModel = modelName === 'gemini-2.5-flash' ? 'gemini-2.0-flash-exp' : modelName;
-        const temp = actualGoogleModel.includes('gemini-3') ? 1.0 : 0.85;
+        // 适当降低 temperature，让 Pro 模型不要那么“发散思维”
+        const temp = actualGoogleModel.includes('gemini-3') ? 0.7 : 0.85;
 
         const model = genAI.getGenerativeModel({
             model: actualGoogleModel,
