@@ -10,12 +10,14 @@ const API_KEY_STORAGE_KEY = 'kobe_study_user_api_key';
 const MODEL_STORAGE_KEY = 'kobe_study_user_model'; 
 const MAX_SLOTS = 6;
 
-// 确认当前可用的模型列表 (包含最新预览版和经典稳定版)
+// 🔥 扩展后的模型列表：支持 Google 与 DeepSeek
 const AVAILABLE_MODELS = [
-  { value: 'gemini-3-flash-preview',   label: 'Gemini 3 Flash (最新/极速/低延迟)' },
-  { value: 'gemini-3-pro-preview',     label: 'Gemini 3 Pro (最新/深度推理)' },
-  { value: 'gemini-2.0-flash-exp',     label: 'Gemini 2.0 Flash Exp (最新预览版)' },
-  { value: 'gemini-1.5-flash-latest',  label: 'Gemini 1.5 Flash (经典稳定/免费首选)' },
+  { value: 'gemini-2.5-flash',       label: 'Gemini 2.5 Flash (默认推荐)' },
+  { value: 'gemini-3-flash-preview', label: 'Gemini 3.0 Flash (极速预览)' },
+  { value: 'gemini-3-pro-preview',   label: 'Gemini 3.0 Pro (深度推理)' },
+  { value: 'gemini-1.5-flash-latest',label: 'Gemini 1.5 Flash (经典稳定)' },
+  { value: 'deepseek-chat',          label: 'DeepSeek V3 (性价比之王)' },
+  { value: 'deepseek-reasoner',      label: 'DeepSeek R1 (深度思考)' }
 ];
 
 const App: React.FC = () => {
@@ -80,7 +82,8 @@ const App: React.FC = () => {
   const [currentScene, setCurrentScene] = useState<string>(DEFAULT_SCENE);
 
   const [customApiKey, setCustomApiKey] = useState('');
-  const [customModel, setCustomModel] = useState('gemini-3-flash-preview');
+  // 🔥 默认设为 2.5
+  const [customModel, setCustomModel] = useState('gemini-2.5-flash');
 
   const [consentGiven, setConsentGiven] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -595,11 +598,16 @@ const App: React.FC = () => {
 
                                 <div className="border-t-2 border-white/10 pt-6 mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4">
                                     <div className="group relative">
-                                        <label className="absolute -top-3 -left-2 bg-zinc-800 text-gray-400 px-3 py-1 font-bold text-[10px] md:text-xs uppercase transform -skew-x-12 border border-gray-600 z-20">API Key (Optional)</label>
-                                        <a href="https://aistudio.google.com/api-keys?project=gen-lang-client-0367843531" target="_blank" rel="noreferrer" className="absolute -top-3 right-0 bg-red-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[10px] transform skew-x-12 shadow-sm z-30 flex items-center gap-1">
-                                            <span>{T.getApiKey}</span>
-                                        </a>
-                                        <input type="password" value={customApiKey} onChange={handleApiKeyChange} className="w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-sm px-4 md:px-6 py-3 md:py-4 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/10 shadow-inner" placeholder="AIzaSy..." />
+                                        <label className="absolute -top-3 -left-2 bg-zinc-800 text-gray-400 px-3 py-1 font-bold text-[10px] md:text-xs uppercase transform -skew-x-12 border border-gray-600 z-20">API Key (Google / DeepSeek)</label>
+                                        <div className="absolute -top-3 right-0 flex gap-2 z-30">
+                                            <a href="https://platform.deepseek.com/" target="_blank" rel="noreferrer" className="bg-blue-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] transform skew-x-12 shadow-sm flex items-center gap-1">
+                                                <span>🔑 DeepSeek</span>
+                                            </a>
+                                            <a href="https://aistudio.google.com/api-keys?project=gen-lang-client-0367843531" target="_blank" rel="noreferrer" className="bg-red-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] transform skew-x-12 shadow-sm flex items-center gap-1">
+                                                <span>🔑 Google</span>
+                                            </a>
+                                        </div>
+                                        <input type="password" value={customApiKey} onChange={handleApiKeyChange} className="w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-sm px-4 md:px-6 py-3 md:py-4 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/10 shadow-inner" placeholder="在此输入您的 API Key..." />
                                     </div>
                                     <div className="group relative">
                                         <label className="absolute -top-3 -left-2 bg-zinc-800 text-gray-400 px-3 py-1 font-bold text-[10px] md:text-xs uppercase transform -skew-x-12 border border-gray-600 z-20">Model Select</label>
