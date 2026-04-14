@@ -10,7 +10,6 @@ const API_KEY_STORAGE_KEY = 'kobe_study_user_api_key';
 const MODEL_STORAGE_KEY = 'kobe_study_user_model'; 
 const MAX_SLOTS = 6;
 
-// 🔥 扩展后的模型列表：支持 Google 与 DeepSeek
 const AVAILABLE_MODELS = [
   { value: 'gemini-2.5-flash',       label: 'Gemini 2.5 Flash (默认推荐)' },
   { value: 'gemini-3-flash-preview', label: 'Gemini 3.0 Flash (极速预览)' },
@@ -82,7 +81,6 @@ const App: React.FC = () => {
   const [currentScene, setCurrentScene] = useState<string>(DEFAULT_SCENE);
 
   const [customApiKey, setCustomApiKey] = useState('');
-  // 🔥 默认设为 2.5
   const [customModel, setCustomModel] = useState('gemini-2.5-flash');
 
   const [consentGiven, setConsentGiven] = useState(false);
@@ -364,7 +362,15 @@ const App: React.FC = () => {
       }));
 
     } catch (error: any) {
-      setMessages([{ id: 'err', role: 'model', text: `${T.connectionError}: ${error.message}` }]);
+      // 🔥 修复黑屏BUG：如果发生错误，必须强行生成一个 pages 对象渲染对话框
+      const errMsg: Message = { 
+          id: 'err-' + Date.now(), 
+          role: 'model', 
+          text: `${T.connectionError}: ${error.message}`,
+          pages: [{ type: 'speech', text: `(发生连接错误: ${error.message}。请点击左上角【主菜单】更换模型或检查网络。)` }],
+          senderName: 'System'
+      };
+      setMessages([errMsg]);
     } finally {
       setIsLoading(false);
     }
@@ -424,7 +430,15 @@ const App: React.FC = () => {
       }));
 
     } catch (error: any) {
-      setMessages(prev => [...prev, { id: 'err', role: 'model', text: `Error: ${error.message}` }]);
+      // 🔥 修复黑屏BUG：如果发生错误，必须强行生成一个 pages 对象渲染对话框
+      const modelMsg: Message = { 
+          id: 'err-' + Date.now(), 
+          role: 'model', 
+          text: `Error: ${error.message}`,
+          pages: [{ type: 'speech', text: `(通信中断: ${error.message}。请尝试再说一次或点击左上角返回【主菜单】。)` }],
+          senderName: 'System'
+      };
+      setMessages(prev => [...prev, modelMsg]);
     } finally {
       setIsLoading(false);
     }
@@ -659,6 +673,8 @@ const App: React.FC = () => {
              <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.goal}: {userState.learningGoal}</p>
          </div>
          <div className="flex gap-2 pointer-events-auto self-end md:self-auto">
+            {/* 🔥 新增：返回主菜单按钮 (Lobby) */}
+            <button onClick={() => { setGameMode(GameMode.SETUP); setSetupStep('MENU'); }} className="bg-red-700/90 hover:bg-red-500 text-white px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter shadow-xl transition-colors">⌂ {userState.language === 'en' ? 'HOME' : '主菜单'}</button>
             <button onClick={() => setShowWordbook(true)} className="bg-yellow-600/80 hover:bg-yellow-600 text-gray-900 px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter shadow-xl">{T.wordbook} ({userState.collectedWords.length})</button>
             <button onClick={() => setShowHistoryLog(true)} className="bg-indigo-600/80 hover:bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter shadow-xl">{T.logs}</button>
             <button onClick={() => setShowSystemMenu(true)} className="bg-white/10 hover:bg-white/20 text-white px-3 md:px-4 py-2 rounded-sm border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-tighter">{T.system}</button>
@@ -714,7 +730,11 @@ const App: React.FC = () => {
             {isTranslating && <div className="absolute top-20 right-4 md:right-6 z-[60] bg-black/80 text-yellow-500 px-3 py-1.5 md:px-4 md:py-2 rounded border border-yellow-500/50 flex items-center gap-2 animate-pulse"><span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.generating}</span></div>}
             
             <div className="absolute top-0 left-0 w-full z-50 p-4 md:p-6 flex justify-between items-start">
-                <button onClick={() => setGameMode(GameMode.LOBBY)} className="bg-black/80 px-4 md:px-8 py-2 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 tracking-widest hover:bg-red-700 transition-all shadow-2xl">← {T.exit}</button>
+                <div className="flex gap-2">
+                    {/* 🔥 新增：返回主菜单按钮 (Chat) */}
+                    <button onClick={() => { setGameMode(GameMode.SETUP); setSetupStep('MENU'); }} className="bg-red-700/90 px-3 md:px-6 py-2 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 tracking-widest hover:bg-red-500 transition-all shadow-2xl">⌂ {userState.language === 'en' ? 'HOME' : '主菜单'}</button>
+                    <button onClick={() => setGameMode(GameMode.LOBBY)} className="bg-black/80 px-3 md:px-6 py-2 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 tracking-widest hover:bg-red-700 transition-all shadow-2xl">← {T.exit}</button>
+                </div>
                 <div className="flex flex-wrap justify-end gap-2 max-w-[70%]">
                     <button onClick={() => setShowWordbook(true)} className="bg-yellow-600/80 px-3 md:px-4 py-2 text-gray-900 font-black text-[10px] border border-white/20 hover:border-yellow-400 transition-colors uppercase tracking-[0.2em]">{T.wordbook} ({userState.collectedWords.length})</button>
                     <button onClick={() => setShowHistoryLog(true)} className="bg-indigo-600/80 px-3 md:px-4 py-2 text-white font-black text-[10px] border border-white/20 hover:border-indigo-400 transition-colors uppercase tracking-[0.2em]">{T.logs}</button>

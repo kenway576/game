@@ -17,14 +17,12 @@ const WARDROBE: Record<string, string[]> = {
   'haku':   ['casual', 'apron', 'summer', 'prince']
 };
 
-// 🔥 双引擎状态管理
 let currentProvider: 'google' | 'deepseek' = 'google';
-let chatSession: ChatSession | null = null; // 用于 Google
-let deepseekHistory: { role: string, content: string }[] = []; // 用于 DeepSeek
+let chatSession: ChatSession | null = null; 
+let deepseekHistory: { role: string, content: string }[] = []; 
 let currentModelName: string = '';
 let currentApiKey: string = '';
 
-// 1. 获取 AI 实例 (Google)
 const getGenAI = (userApiKey?: string) => {
   const key = userApiKey || (import.meta.env.VITE_GOOGLE_API_KEY as string);
   if (!key) {
@@ -33,7 +31,6 @@ const getGenAI = (userApiKey?: string) => {
   return new GoogleGenerativeAI(key);
 };
 
-// 2. 超时控制
 const withTimeout = <T>(promise: Promise<T>, ms: number, errorMsg: string): Promise<T> => {
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => reject(new Error(errorMsg)), ms);
@@ -44,7 +41,6 @@ const withTimeout = <T>(promise: Promise<T>, ms: number, errorMsg: string): Prom
     });
 };
 
-// 3. Prompt
 const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language) => {
   const personaBase = character.systemPrompt;
   const pedagogicalLang = lang === 'en' ? 'English' : 'Chinese (Simplified)';
@@ -111,19 +107,46 @@ const responseSchema: Schema = {
   required: ["pages", "vocabulary", "location"],
 };
 
+// 🔥 终极解析器：防止任何格式导致的黑屏崩溃
 const parseResponse = (text: string) => {
     try {
         let cleanJson = text.trim();
-        if (cleanJson.startsWith('```json')) cleanJson = cleanJson.replace(/^```json/, '').replace(/```$/, '');
-        else if (cleanJson.startsWith('```')) cleanJson = cleanJson.replace(/^```/, '').replace(/```$/, '');
-        return JSON.parse(cleanJson);
+        // 暴力移除所有的 markdown 代码块包裹
+        cleanJson = cleanJson.replace(/```json/gi, '').replace(/```/g, '').trim();
+        
+        // 强行截取第一个 { 和最后一个 } 之间的内容（防止 AI 开头说废话）
+        const jsonStart = cleanJson.indexOf('{');
+        const jsonEnd = cleanJson.lastIndexOf('}');
+        if (jsonStart !== -1 && jsonEnd !== -1) {
+            cleanJson = cleanJson.substring(jsonStart, jsonEnd + 1);
+        }
+
+        const parsed = JSON.parse(cleanJson);
+        
+        // 核心防御：如果 AI 漏发了 pages 数组，强行补上，防止对话框消失导致黑屏
+        if (!parsed.pages || !Array.isArray(parsed.pages) || parsed.pages.length === 0) {
+            parsed.pages = [{ type: 'speech', text: parsed.text || "（……默默地看着你）" }];
+        } else {
+            // 确保内部结构安全
+            parsed.pages = parsed.pages.map((p: any) => {
+                if (typeof p === 'string') return { type: 'speech', text: p };
+                if (!p || !p.text) return { type: 'speech', text: "……" };
+                return p;
+            });
+        }
+        return parsed;
     } catch (e) {
         console.error("JSON Parse Error:", e, text);
-        return { pages: [{ type: 'speech', text: "系统解析错误，请重试..." }], vocabulary: [], emotion: "neutral" };
+        // 解析彻底失败时的兜底对话框，避免游戏死机
+        return { 
+            pages: [{ type: 'speech', text: "（系统提示：角色语言解析失败，请检查模型格式或发送任意字符重试……）" }], 
+            vocabulary: [], 
+            emotion: "neutral",
+            location: "classroom"
+        };
     }
 };
 
-// 🔥 新增：DeepSeek API 调用逻辑
 const handleDeepSeekMessage = async (text: string) => {
     if (!currentApiKey) throw new Error("Please provide a DeepSeek API Key.");
     
@@ -138,7 +161,7 @@ const handleDeepSeekMessage = async (text: string) => {
         body: JSON.stringify({
             model: currentModelName,
             messages: deepseekHistory,
-            response_format: { type: "json_object" } // DeepSeek V3 专属 JSON 模式
+            response_format: { type: "json_object" } 
         })
     });
 
@@ -166,8 +189,6 @@ const handleDeepSeekMessage = async (text: string) => {
 
 export const translateText = async (text: string, targetLang: Language, apiKey?: string, modelName: string = 'gemini-1.5-flash-latest'): Promise<string> => {
     const target = targetLang === 'en' ? 'English' : 'Chinese (Simplified)';
-    
-    // 如果选用的是 DeepSeek 模型进行翻译
     if (modelName.includes('deepseek')) {
         try {
             const res = await fetch("https://api.deepseek.com/chat/completions", {
@@ -183,7 +204,6 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
         } catch (e) { return "DeepSeek 翻译失败"; }
     }
 
-    // Google 翻译降级逻辑 (防止 2.5 报错)
     const googleTranslateModel = modelName === 'gemini-2.5-flash' ? 'gemini-1.5-flash-latest' : modelName;
     const genAI = getGenAI(apiKey);
     const model = genAI.getGenerativeModel({ model: googleTranslateModel }); 
@@ -198,10 +218,8 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
     currentApiKey = apiKey || '';
     const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang);
 
-    // 🔥 引擎分流判断
     if (modelName.includes('deepseek')) {
         currentProvider = 'deepseek';
-        // DeepSeek 需要手动维护上下文，我们在初始化时将要求注入系统提示词
         deepseekHistory = [{ 
             role: "system", 
             content: sysPrompt + "\n\nCRITICAL: You MUST output ONLY valid JSON format. Do not use markdown blocks if possible." 
@@ -211,9 +229,7 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
     else {
         currentProvider = 'google';
         const genAI = getGenAI(apiKey);
-        // 🔥 隐藏的映射：为了防止 Google API 报错找不到 2.5 模型，我们在底层将其请求转交发给 2.0 实验版
         const actualGoogleModel = modelName === 'gemini-2.5-flash' ? 'gemini-2.0-flash-exp' : modelName;
-        
         const temp = actualGoogleModel.includes('gemini-3') ? 1.0 : 0.85;
 
         const model = genAI.getGenerativeModel({
