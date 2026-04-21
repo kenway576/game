@@ -91,6 +91,7 @@ export interface UserState {
   learningGoal: string;
   grammarTopic: N3GrammarTopic;
   playerName: string;
+  email: string; // 🔥 新增这一行
   collectedWords: CollectedWord[];
   language: Language;
 }

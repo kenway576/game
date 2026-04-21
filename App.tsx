@@ -27,6 +27,7 @@ const App: React.FC = () => {
     learningGoal: '',
     grammarTopic: N3GrammarTopic.GENERAL,
     playerName: 'Gakusei',
+    email: '', // 🔥 邮箱字段已初始化
     collectedWords: [],
     language: 'zh'
   });
@@ -216,6 +217,7 @@ const App: React.FC = () => {
       const payload = {
         timestamp: new Date().toISOString(),
         playerName: userState.playerName,
+        email: userState.email, // 🔥 邮箱已被加入数据同步负载中
         grammarTopic: userState.grammarTopic,
         learningGoal: userState.learningGoal,
         character: selectedCharId,
@@ -537,6 +539,13 @@ const App: React.FC = () => {
                                     <label className="absolute -top-4 -left-2 bg-white text-black px-2 md:px-4 py-1 font-black text-xs md:text-sm uppercase transform -skew-x-12 border-2 border-black group-focus-within:bg-red-500 group-focus-within:text-white transition-colors z-20">{T.codeName}</label>
                                     <input type="text" value={userState.playerName} onChange={(e) => setUserState(prev => ({...prev, playerName: e.target.value}))} className="w-full bg-zinc-900 border-2 md:border-4 border-white/20 text-white text-lg md:text-2xl px-4 md:px-6 py-3 md:py-5 font-bold focus:border-yellow-400 focus:bg-zinc-800 outline-none transition-all placeholder-white/10 shadow-inner" placeholder={T.enterName} />
                                 </div>
+
+                                {/* 🔥 新增：邮箱收集框，完美融入赛博朋克 UI 风格 */}
+                                <div className="group relative mt-4">
+                                    <label className="absolute -top-4 -left-2 bg-white text-black px-2 md:px-4 py-1 font-black text-xs md:text-sm uppercase transform -skew-x-12 border-2 border-black group-focus-within:bg-green-500 group-focus-within:text-white transition-colors z-20">{T.emailLabel || 'Email'}</label>
+                                    <input type="email" value={userState.email} onChange={(e) => setUserState(prev => ({...prev, email: e.target.value}))} className="w-full bg-zinc-900 border-2 md:border-4 border-white/20 text-white text-lg md:text-2xl px-4 md:px-6 py-3 md:py-5 font-bold focus:border-green-400 focus:bg-zinc-800 outline-none transition-all placeholder-white/10 shadow-inner" placeholder={T.emailPlaceholder || 'For notifications...'} />
+                                </div>
+
                                 <div className="group relative mt-4">
                                     <label className="absolute -top-4 -left-2 bg-white text-black px-2 md:px-4 py-1 font-black text-xs md:text-sm uppercase transform -skew-x-12 border-2 border-black group-focus-within:bg-blue-500 group-focus-within:text-white transition-colors z-20">{T.targetGrammar}</label>
                                     <div className="relative">
@@ -704,7 +713,6 @@ const App: React.FC = () => {
 
                     {(isDialogueFinished || isLoading) && !currentQuiz && !quizFeedback && (
                         <div className={`w-full flex flex-col gap-2 transition-all duration-700 ${isDialogueFinished ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
-                            {/* 🔥 优化：提取最后一句台词，并优化排版 */}
                             {lastModelMsg && lastModelMsg.pages && (
                                 <div className="w-full px-5 md:px-8 flex flex-col items-start drop-shadow-lg">
                                     <span className="text-[10px] md:text-xs text-yellow-500/80 font-bold uppercase tracking-widest mb-1">
@@ -717,7 +725,7 @@ const App: React.FC = () => {
                             )}
                             <div className="relative flex w-full gap-2 md:gap-3">
                                 <div className="relative flex-1">
-                                    <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder={T.chatPlaceholder} disabled={isLoading} className="w-full bg-slate-900/90 border-2 border-white/20 rounded-full px-5 py-3 md:px-8 md:py-5 text-white font-medium focus:outline-none focus:border-yellow-500 transition-all backdrop-blur-md text-sm md:text-lg shadow-inner" />
+                                    <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder={T.chatPlaceholder || 'Say something...'} disabled={isLoading} className="w-full bg-slate-900/90 border-2 border-white/20 rounded-full px-5 py-3 md:px-8 md:py-5 text-white font-medium focus:outline-none focus:border-yellow-500 transition-all backdrop-blur-md text-sm md:text-lg shadow-inner" />
                                     <div className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-[10px] text-white/30 font-black uppercase tracking-widest hidden sm:block">{T.enterToSend}</div>
                                 </div>
                                 <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-6 py-3 md:px-10 md:py-5 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full disabled:opacity-20 flex items-center justify-center gap-2 text-sm md:text-base">{T.send}</button>
