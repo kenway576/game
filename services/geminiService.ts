@@ -7,8 +7,10 @@ import {
 } from "@google/generative-ai";
 import { Character, ChatMode, N3GrammarTopic, DialoguePage, WordReading, Message, Language } from '../types';
 
-// 🔥 修复 1：把超时时间从 30 秒延长到 60 秒，给 3.0 Pro 充足的思考时间
 const TIMEOUT_MS = 60000; 
+
+// 🔥 你专属的默认 API 秘钥（藏在代码里不被轻易拷贝）
+const DEFAULT_DEEPSEEK_KEY = "sk-08da833811c94f548d35c6d03f25ab21";
 
 const WARDROBE: Record<string, string[]> = {
   'asuka':  ['casual', 'gym', 'swim', 'maid', 'autumn'],
@@ -20,7 +22,7 @@ const WARDROBE: Record<string, string[]> = {
 
 let currentProvider: 'google' | 'deepseek' = 'google';
 let chatSession: ChatSession | null = null; 
-let deepseekHistory: { role: string, content: string }[] = []; 
+let deepseekHistory: any[] = []; 
 let currentModelName: string = '';
 let currentApiKey: string = '';
 
@@ -46,28 +48,20 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
   const personaBase = character.systemPrompt;
   const pedagogicalLang = lang === 'en' ? 'English' : 'Chinese (Simplified)';
   const availableOutfits = WARDROBE[character.id] ? WARDROBE[character.id].join(', ') : 'none';
-  const quizInstruction = mode === ChatMode.STUDY 
-    ? `4. Quiz (quiz): Include 1 multiple-choice question related to "${topic}". Explanation in ${pedagogicalLang}.`
-    : `4. Quiz (quiz): Set to null.`;
 
   return `${personaBase}
     【IMPORTANT: VISUAL NOVEL NARRATIVE MODE】
-    Target Level: JLPT N3.
-    Current Mode: ${mode === ChatMode.STUDY ? 'STUDY Mode' : 'FREE_TALK Mode'}
+    Target Level: JLPT N3. Current Mode: ${mode === ChatMode.STUDY ? 'STUDY Mode' : 'FREE_TALK Mode'}
     User Language: ${pedagogicalLang}
 
     [WRITING STYLE - LIGHT NOVEL / GALGAME]
-    You are writing a script for a high-quality Japanese visual novel.
+    You are writing a script for a highly immersive Japanese visual novel. The output MUST be extremely rich in detail and emotionally engaging.
     
     **RULES FOR "PAGES" (CRITICAL):**
-    1. **Output Length**: You MUST generate **4 to 6 pages** (array items) for every single turn.
-    2. **Separate Action & Speech**:
-       - **Do NOT** put actions in parentheses inside speech.
-       - **INSTEAD**, create a separate "narration" page BEFORE or AFTER the speech.
-    
-    **PAGE TYPES:**
-    - **Type "narration"**: Third-person descriptive text. Describe expressions or actions.
-    - **Type "speech"**: The character's spoken line.
+    1. **Output Length**: You MUST generate **6 to 10 pages** (array items) per turn. Never give short or boring responses!
+    2. **Rich Narration**: Type "narration" MUST deeply describe the character's subtle facial expressions, gaze, body language, tone of voice, emotional shifts, and the surrounding atmospheric environment. Paint a vivid picture for the player.
+    3. **Expressive Speech**: Type "speech" MUST be emotionally rich, engaging, and naturally conversational. Let the character express their personality fully. Avoid boring one-liners.
+    4. **Separation**: Do NOT put actions in parentheses inside speech. Create a separate "narration" page BEFORE or AFTER the speech.
 
     [SCENE & OUTFIT]
     1. Location: Update 'location' if the narrative moves to a new place.
@@ -80,8 +74,8 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     You MUST output a single, valid JSON object matching EXACTLY this structure. Do NOT wrap it in Markdown formatting.
     {
       "pages": [
-        { "type": "narration", "text": "Descriptive text here..." },
-        { "type": "speech", "text": "「Spoken line here...」" }
+        { "type": "narration", "text": "Detailed descriptive text here..." },
+        { "type": "speech", "text": "「Longer spoken line here...」" }
       ],
       "vocabulary": [ { "word": "漢字", "reading": "かんじ" } ],
       "emotion": "neutral" | "happy" | "angry" | "sad" | "shy" | "surprised",
@@ -92,9 +86,6 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
 };
 
 const parseResponse = (rawText: string) => {
-    // 打印原始回复供开发者调试，如果以后再出错，按 F12 就能看到 AI 到底回了什么鬼东西
-    console.log("Raw AI Response:", rawText); 
-
     try {
         if (!rawText) {
              return { pages: [{ type: 'speech', text: "（AI 返回了空数据，可能是触发了安全拦截，请重试。）" }], vocabulary: [], emotion: "neutral", location: "classroom" };
@@ -179,11 +170,8 @@ const handleDeepSeekMessage = async (text: string) => {
     const requestBody: any = {
         model: currentModelName,
         messages: deepseekHistory,
+        response_format: { type: "json_object" } 
     };
-
-    if (currentModelName !== 'deepseek-reasoner') {
-        requestBody.response_format = { type: "json_object" };
-    }
 
     const fetchPromise = fetch("https://api.deepseek.com/chat/completions", {
         method: "POST",
@@ -202,10 +190,11 @@ const handleDeepSeekMessage = async (text: string) => {
     }
 
     const data = await response.json();
-    const replyText = data.choices[0].message.content;
-    deepseekHistory.push({ role: "assistant", content: replyText });
+    const replyMessage = data.choices[0].message;
+    
+    deepseekHistory.push(replyMessage);
 
-    const parsed = parseResponse(replyText);
+    const parsed = parseResponse(replyMessage.content);
     return { 
         pages: parsed.pages || [], 
         vocabulary: parsed.vocabulary || [], 
@@ -218,13 +207,16 @@ const handleDeepSeekMessage = async (text: string) => {
 
 export const translateText = async (text: string, targetLang: Language, apiKey?: string, modelName: string = 'gemini-1.5-flash-latest'): Promise<string> => {
     const target = targetLang === 'en' ? 'English' : 'Chinese (Simplified)';
+    // 🔥 使用内置默认 Key 作为兜底
+    const activeKey = apiKey || DEFAULT_DEEPSEEK_KEY;
+    
     if (modelName.includes('deepseek')) {
         try {
             const res = await fetch("https://api.deepseek.com/chat/completions", {
                 method: "POST",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` },
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${activeKey}` },
                 body: JSON.stringify({
-                    model: 'deepseek-chat',
+                    model: 'deepseek-v4-flash', 
                     messages: [{ role: "user", content: `Translate the following Japanese text to ${target}. Only provide the translation text: "${text}"` }]
                 })
             });
@@ -234,7 +226,7 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
     }
 
     const googleTranslateModel = modelName === 'gemini-2.5-flash' ? 'gemini-1.5-flash-latest' : modelName;
-    const genAI = getGenAI(apiKey);
+    const genAI = getGenAI(apiKey); // 注意谷歌依然用玩家自己填的 Key（如果不填就报错）
     const model = genAI.getGenerativeModel({ model: googleTranslateModel }); 
     try {
         const result = await model.generateContent(`Translate the following Japanese text to ${target}. Only provide the translation text: "${text}"`);
@@ -242,26 +234,49 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
     } catch (error) { return "Google 翻译失败"; }
 };
 
-export const startChat = async (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, apiKey?: string, modelName: string = 'gemini-2.5-flash', history: Message[] = []) => {
+export const startChat = async (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, apiKey?: string, modelName: string = 'gemini-3-flash-preview', history: Message[] = []) => {
     currentModelName = modelName;
-    currentApiKey = apiKey || '';
+    // 🔥 如果用户没填密码，而且选的是 deepseek 模型，就悄悄用我们的默认密钥
+    currentApiKey = apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
+    
     const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang);
 
     if (modelName.includes('deepseek')) {
         currentProvider = 'deepseek';
         deepseekHistory = [{ 
             role: "system", 
-            content: sysPrompt + "\n\nCRITICAL: You MUST output ONLY valid JSON format. Follow the exact keys shown in the schema. NO <think> tags. NO comments." 
+            content: sysPrompt + "\n\nCRITICAL: You MUST output ONLY valid JSON format. Follow the exact keys shown in the schema. NO comments." 
         }];
-        return await handleDeepSeekMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 4-6 pages.");
+        
+        // 🔥 核心修复：如果在读取存档，将历史消息还原回 deepseek 的“记忆”里！
+        if (history && history.length > 0) {
+            history.forEach(msg => {
+                if (msg.role === 'user') {
+                    deepseekHistory.push({ role: 'user', content: msg.text });
+                } else if (msg.role === 'model') {
+                    const contentStr = JSON.stringify({
+                        pages: msg.pages || [],
+                        vocabulary: msg.vocabulary || [],
+                        emotion: msg.emotion || "neutral",
+                        outfit: msg.outfit || "",
+                        location: msg.location || "classroom",
+                        quiz: msg.quiz || null
+                    });
+                    deepseekHistory.push({ role: 'assistant', content: contentStr });
+                }
+            });
+            // 恢复记忆后直接返回空（不再发送打招呼的话）
+            return { pages: [], vocabulary: [] };
+        }
+
+        return await handleDeepSeekMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 6-10 pages.");
     } 
     else {
         currentProvider = 'google';
-        const genAI = getGenAI(apiKey);
+        const genAI = getGenAI(apiKey); // 如果玩家用谷歌且没填 key，这里会抛错阻止他们
         const actualGoogleModel = modelName === 'gemini-2.5-flash' ? 'gemini-2.0-flash-exp' : modelName;
         const temp = actualGoogleModel.includes('gemini-3') ? 0.7 : 0.85;
 
-        // 🔥 修复 2：彻底删掉 responseSchema，防止 3.0 模型因为格式校验失败直接抛出空数据
         const model = genAI.getGenerativeModel({
             model: actualGoogleModel,
             systemInstruction: sysPrompt,
@@ -271,13 +286,19 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
             }
         });
 
-        chatSession = model.startChat({ history: [] });
+        // 🔥 核心修复：如果是 Google 读取存档，将格式处理好送给 chatSession
+        const googleHistory = history && history.length > 0 ? history.map(msg => ({
+            role: msg.role === 'model' ? 'model' : 'user',
+            parts: [{ text: msg.role === 'model' ? JSON.stringify({ pages: msg.pages || [] }) : msg.text }]
+        })) : [];
 
-        if (Array.isArray(history) && history.length > 0) return { pages: [], vocabulary: [] };
+        chatSession = model.startChat({ history: googleHistory });
+
+        if (history && history.length > 0) return { pages: [], vocabulary: [] };
 
         try {
             const result = await withTimeout<GenerateContentResult>(
-                chatSession.sendMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 4-6 pages."),
+                chatSession.sendMessage("Start the Visual Novel scene. Describe the situation first (narration), then speak. Generate 6-10 pages."),
                 TIMEOUT_MS, "Timeout connecting to AI."
             );
             const parsed = parseResponse(result.response.text());

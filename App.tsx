@@ -10,13 +10,14 @@ const API_KEY_STORAGE_KEY = 'kobe_study_user_api_key';
 const MODEL_STORAGE_KEY = 'kobe_study_user_model'; 
 const MAX_SLOTS = 6;
 
+// 🔥 更新：把 DeepSeek V4 放到最前面并标注
 const AVAILABLE_MODELS = [
-  { value: 'gemini-3-flash-preview', label: 'Gemini 3.0 Flash (默认/最强推荐)' },
-  { value: 'gemini-3-pro-preview',   label: 'Gemini 3.0 Pro (深度推理)' },
+  { value: 'deepseek-v4-flash',      label: 'DeepSeek V4 Flash (默认/内置专线)' },
+  { value: 'deepseek-v4-pro',        label: 'DeepSeek V4 Pro (最强深度思考)' },
+  { value: 'gemini-3-flash-preview', label: 'Gemini 3.0 Flash (谷歌极速预览)' },
+  { value: 'gemini-3-pro-preview',   label: 'Gemini 3.0 Pro (谷歌深度推理)' },
   { value: 'gemini-2.5-flash',       label: 'Gemini 2.0 Flash Exp (稳定预览)' },
-  { value: 'gemini-1.5-flash-latest',label: 'Gemini 1.5 Flash (经典稳定)' },
-  { value: 'deepseek-chat',          label: 'DeepSeek V3 (性价比之王)' },
-  { value: 'deepseek-reasoner',      label: 'DeepSeek R1 (深度思考)' }
+  { value: 'gemini-1.5-flash-latest',label: 'Gemini 1.5 Flash (经典稳定)' }
 ];
 
 const App: React.FC = () => {
@@ -27,7 +28,7 @@ const App: React.FC = () => {
     learningGoal: '',
     grammarTopic: N3GrammarTopic.GENERAL,
     playerName: 'Gakusei',
-    email: '', // 🔥 邮箱字段已初始化
+    email: '', 
     collectedWords: [],
     language: 'zh'
   });
@@ -82,7 +83,8 @@ const App: React.FC = () => {
   const [currentScene, setCurrentScene] = useState<string>(DEFAULT_SCENE);
 
   const [customApiKey, setCustomApiKey] = useState('');
-  const [customModel, setCustomModel] = useState('gemini-3-flash-preview');
+  // 🔥 默认修改为 V4 Flash
+  const [customModel, setCustomModel] = useState('deepseek-v4-flash');
 
   const [consentGiven, setConsentGiven] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -177,10 +179,15 @@ const App: React.FC = () => {
               userState, gameMode, selectedCharId, chatMode, messages, chatHistories, customAssets
           }
       };
-      localStorage.setItem(`${SAVE_SLOT_PREFIX}0`, JSON.stringify(saveData));
-      checkForSaves();
-      setShowAutoSave(true);
-      setTimeout(() => setShowAutoSave(false), 2500);
+      
+      try {
+          localStorage.setItem(`${SAVE_SLOT_PREFIX}0`, JSON.stringify(saveData));
+          checkForSaves();
+          setShowAutoSave(true);
+          setTimeout(() => setShowAutoSave(false), 2500);
+      } catch (e) {
+          console.warn("AutoSave failed: Storage might be full.");
+      }
   };
 
   const exportExperimentData = () => {
@@ -217,7 +224,7 @@ const App: React.FC = () => {
       const payload = {
         timestamp: new Date().toISOString(),
         playerName: userState.playerName,
-        email: userState.email, // 🔥 邮箱已被加入数据同步负载中
+        email: userState.email, 
         grammarTopic: userState.grammarTopic,
         learningGoal: userState.learningGoal,
         character: selectedCharId,
@@ -271,11 +278,17 @@ const App: React.FC = () => {
             userState, gameMode, selectedCharId, chatMode, messages, chatHistories, customAssets
         }
     };
-    localStorage.setItem(`${SAVE_SLOT_PREFIX}${slotIndex}`, JSON.stringify(saveData));
-    checkForSaves();
-    setSaveLoadMode(null);
-    setShowSystemMenu(false);
-    alert(`${T.gameSaved} (Slot ${slotIndex + 1})`);
+    
+    try {
+        localStorage.setItem(`${SAVE_SLOT_PREFIX}${slotIndex}`, JSON.stringify(saveData));
+        checkForSaves();
+        setSaveLoadMode(null);
+        setShowSystemMenu(false);
+        alert(`${T.gameSaved} (Slot ${slotIndex + 1})`);
+    } catch (e) {
+        console.error("Save failed", e);
+        alert("❌ 存档失败：设备存储空间可能已满，请清理浏览器缓存。");
+    }
   };
 
   const loadGameFromSlot = async (slotIndex: number) => {
@@ -305,6 +318,7 @@ const App: React.FC = () => {
         if (data.gameMode === GameMode.CHAT && data.selectedCharId) {
             setIsLoading(true);
             try {
+                // 🔥 修复：将读取出的历史消息传给 AI，重建记忆网络
                 await startChat(
                     CHARACTERS[data.selectedCharId as CharacterId], data.chatMode, data.userState.learningGoal, data.userState.grammarTopic, data.userState.language || 'zh', customApiKey, customModel, data.messages
                 );
@@ -540,7 +554,6 @@ const App: React.FC = () => {
                                     <input type="text" value={userState.playerName} onChange={(e) => setUserState(prev => ({...prev, playerName: e.target.value}))} className="w-full bg-zinc-900 border-2 md:border-4 border-white/20 text-white text-lg md:text-2xl px-4 md:px-6 py-3 md:py-5 font-bold focus:border-yellow-400 focus:bg-zinc-800 outline-none transition-all placeholder-white/10 shadow-inner" placeholder={T.enterName} />
                                 </div>
 
-                                {/* 🔥 新增：邮箱收集框，完美融入赛博朋克 UI 风格 */}
                                 <div className="group relative mt-4">
                                     <label className="absolute -top-4 -left-2 bg-white text-black px-2 md:px-4 py-1 font-black text-xs md:text-sm uppercase transform -skew-x-12 border-2 border-black group-focus-within:bg-green-500 group-focus-within:text-white transition-colors z-20">{T.emailLabel || 'Email'}</label>
                                     <input type="email" value={userState.email} onChange={(e) => setUserState(prev => ({...prev, email: e.target.value}))} className="w-full bg-zinc-900 border-2 md:border-4 border-white/20 text-white text-lg md:text-2xl px-4 md:px-6 py-3 md:py-5 font-bold focus:border-green-400 focus:bg-zinc-800 outline-none transition-all placeholder-white/10 shadow-inner" placeholder={T.emailPlaceholder || 'For notifications...'} />
@@ -567,7 +580,8 @@ const App: React.FC = () => {
                                             <a href="https://platform.deepseek.com/" target="_blank" rel="noreferrer" className="bg-blue-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] transform skew-x-12 shadow-sm flex items-center gap-1"><span>🔑 DeepSeek</span></a>
                                             <a href="https://aistudio.google.com/api-keys?project=gen-lang-client-0367843531" target="_blank" rel="noreferrer" className="bg-red-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] transform skew-x-12 shadow-sm flex items-center gap-1"><span>🔑 Google</span></a>
                                         </div>
-                                        <input type="password" value={customApiKey} onChange={handleApiKeyChange} className="w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-sm px-4 md:px-6 py-3 md:py-4 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/10 shadow-inner" placeholder="在此输入您的 API Key..." />
+                                        {/* 🔥 更新：留空的输入框，提示玩家不填也能玩 */}
+                                        <input type="password" value={customApiKey} onChange={handleApiKeyChange} className="w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-sm px-4 md:px-6 py-3 md:py-4 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/10 shadow-inner" placeholder="留空则自动使用内置 API Key..." />
                                     </div>
                                     <div className="group relative">
                                         <label className="absolute -top-3 -left-2 bg-zinc-800 text-gray-400 px-3 py-1 font-bold text-[10px] md:text-xs uppercase transform -skew-x-12 border border-gray-600 z-20">Model Select</label>
