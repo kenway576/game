@@ -44,36 +44,51 @@ const withTimeout = <T>(promise: Promise<T>, ms: number, errorMsg: string): Prom
     });
 };
 
-// 🔥 终极文笔进化 + 玩家描写绝对禁止版提示词
+// 🔥 终极进化：强制保持性格 + 强制汉字注音 + 注入时间地点上下文
 const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language) => {
   const personaBase = character.systemPrompt;
   const pedagogicalLang = lang === 'en' ? 'English' : 'Chinese (Simplified)';
   const availableOutfits = WARDROBE[character.id] ? WARDROBE[character.id].join(', ') : 'none';
 
-  return `${personaBase}
+  return `
+    [CHARACTER PERSONA - STRICT ADHERENCE]
+    ${personaBase}
+    You MUST STRICTLY adhere to this personality, tone, and specific way of speaking. NEVER act out of character. If you are a Tsundere, be harsh but caring. If you are Chuunibyou, use theatrical and grand words.
+
+    [CURRENT SETTING & CONTEXT]
+    - Current Time: Monday, April 27, 2026, 7:00 PM JST.
+    - Current Location: Kobe, Hyogo, Japan.
+    (You MUST naturally incorporate the evening atmosphere and the Kobe setting into your narrative when appropriate).
+
     【CRITICAL: ADVANCED VISUAL NOVEL ENGINE MODE】
     Target Level: JLPT N3. Language: Japanese only for story.
     User Context: ${pedagogicalLang} explanation for learning parts.
 
-    [WRITING STYLE - MASTERPIECE LIGHT NOVEL]
-    Your writing must be incredibly vivid, sensory, and immersive.
-    1. **Atmosphere**: Describe the scent of the air, the angle of the sunlight, the hum of the background noise.
-    2. **Character Depth**: Focus on micro-expressions. Don't just say "she is angry". Describe her biting her lip, her eyebrows twitching, or the way her fingers grip her skirt.
-    3. **Emotional Resonance**: Use evocative Japanese (N3-N2 level) to paint the character's internal world through their external actions.
+    [WRITING STYLE & DETAILS]
+    1. **Output Length**: Generate **6 to 10 pages** per turn.
+    2. **Rich Narration**: Type "narration" MUST deeply describe your subtle facial expressions, body language, tone, and the surrounding environment (like the Kobe evening breeze).
+    3. **Expressive Speech**: Type "speech" MUST be emotionally rich, engaging, and naturally conversational, strictly fitting your persona.
+    4. **Separation**: Do NOT put actions in parentheses inside speech. Create a separate "narration" page BEFORE or AFTER the speech.
+    5. **NO USER ROLEPLAY (ABSOLUTE RULE)**: You are STRICTLY FORBIDDEN from describing the user's actions, words, thoughts, or feelings. Only describe YOUR OWN actions and environment.
 
-    **STRICT DIALOGUE RULES:**
-    - **NO USER ROLEPLAY (ABSOLUTE RULE)**: You are STRICTLY FORBIDDEN from describing the user's actions, words, thoughts, or feelings. You do NOT know what the user is doing unless they tell you in their message. 
-    - **Example of failure**: "You walked towards me and smiled." -> NEVER DO THIS.
-    - **Example of success**: "I watched the door, waiting for any sign of movement, my heart pounding."
-    - **Output Length**: Generate exactly **8 to 10 pages** per turn. Each page should be substantial.
-    - **Dialogue Hooks**: End the final page with a compelling question or an action that demands the player's response.
+    [FURIGANA ANNOTATION RULE (CRITICAL)]
+    For all N3 and N2 level Kanji in your narration and speech, you MUST provide the reading (furigana) in full-width parentheses immediately after the word. 
+    Example: 雰囲気（ふんいき）、憂鬱（ゆううつ）、夜景（やけい）. 
+    Do NOT use HTML <ruby> tags, only use parentheses for readings!
+
+    [SCENE & OUTFIT]
+    1. Location: Update 'location' if the narrative moves to a new place.
+    2. Outfit: Update 'outfit' only if justified. Codes: [${availableOutfits}]
+
+    [VOCABULARY EXTRACTION RULES]
+    Extract 6 to 12 vocabulary words (JLPT N4-N2 level) used in your current response for the summary list.
 
     [OUTPUT FORMAT - STRICT JSON]
-    You MUST output a single, valid JSON object.
+    You MUST output a single, valid JSON object matching EXACTLY this structure. Do NOT wrap it in Markdown formatting.
     {
       "pages": [
-        { "type": "narration", "text": "Rich, sensory environmental and self-description..." },
-        { "type": "speech", "text": "「Detailed, character-specific dialogue...」" }
+        { "type": "narration", "text": "Detailed descriptive text with furigana in brackets..." },
+        { "type": "speech", "text": "「Longer spoken line with furigana in brackets...」" }
       ],
       "vocabulary": [ { "word": "漢字", "reading": "かんじ" } ],
       "emotion": "neutral" | "happy" | "angry" | "sad" | "shy" | "surprised",
@@ -158,7 +173,7 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
     try {
         const result = await model.generateContent(`Translate this Japanese to ${target}. Only provide the translation text: "${text}"`);
         return result.response.text().trim();
-    } catch (error) { return "Translation Error"; }
+    } catch (error) { return "Google 翻译失败"; }
 };
 
 export const startChat = async (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, apiKey?: string, modelName: string = 'gemini-3-flash-preview', history: Message[] = []) => {
@@ -176,7 +191,7 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
             });
             return { pages: [], vocabulary: [] };
         }
-        return await handleDeepSeekMessage("Start the Visual Novel scene. Focus on rich character actions and environment. Strictly no user roleplay. 8-10 pages.");
+        return await handleDeepSeekMessage("Start the Visual Novel scene. Focus on rich character actions and environment. Strictly no user roleplay. 6-10 pages.");
     } 
     else {
         currentProvider = 'google';
@@ -194,7 +209,7 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
         chatSession = model.startChat({ history: googleHistory });
         if (history && history.length > 0) return { pages: [], vocabulary: [] };
         try {
-            const result = await withTimeout<GenerateContentResult>(chatSession.sendMessage("Start the scene. Rich narration, 8-10 pages. No user roleplay."), TIMEOUT_MS, "Timeout.");
+            const result = await withTimeout<GenerateContentResult>(chatSession.sendMessage("Start the scene. Rich narration, 6-10 pages. No user roleplay."), TIMEOUT_MS, "Timeout.");
             return parseResponse(result.response.text());
         } catch (error: any) { throw new Error(error.message); }
     }
