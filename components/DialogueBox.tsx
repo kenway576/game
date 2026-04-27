@@ -1,202 +1,184 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Character, DialoguePage, WordReading } from '../types';
 
 interface Props {
-  character?: Character;
+  character: Character;
   pages: DialoguePage[];
   vocabulary: WordReading[];
-  onFinish?: () => void;
+  onFinish: () => void;
+}
+
+interface Step {
+  narration: string;
+  speech: string;
 }
 
 const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, onFinish }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [activeWords, setActiveWords] = useState<Set<string>>(new Set());
-  const boxRef = useRef<HTMLDivElement>(null);
+  
+  // 智能组合算法：将动作描写与紧随其后的台词打包，减少点击次数
+  const steps = useMemo(() => {
+    const pairedSteps: Step[] = [];
+    let currentNarration = '';
+    let currentSpeech = '';
 
-  useEffect(() => {
-    setCurrentPage(0);
-    setActiveWords(new Set());
+    pages.forEach(p => {
+      if (p.type === 'narration' || p.type === 'action') {
+        if (currentSpeech) {
+          pairedSteps.push({ narration: currentNarration, speech: currentSpeech });
+          currentNarration = '';
+          currentSpeech = '';
+        }
+        currentNarration += (currentNarration ? ' ' : '') + p.text;
+      } else {
+        currentSpeech += (currentSpeech ? ' ' : '') + p.text;
+        pairedSteps.push({ narration: currentNarration, speech: currentSpeech });
+        currentNarration = '';
+        currentSpeech = '';
+      }
+    });
+    if (currentNarration || currentSpeech) {
+      pairedSteps.push({ narration: currentNarration, speech: currentSpeech });
+    }
+    return pairedSteps;
   }, [pages]);
 
-  const currentPageData = pages[currentPage];
-  const isLastPage = currentPage === pages.length - 1;
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [displayedNarration, setDisplayedNarration] = useState('');
+  const [displayedSpeech, setDisplayedSpeech] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
 
-  const handleBoxClick = (e: React.MouseEvent) => {
-    // Check if user is currently selecting text
-    const selection = window.getSelection();
-    if (selection && selection.toString().length > 0) {
-      // If text is selected, don't advance the dialogue
-      return;
-    }
+  // 🔥 新增：控制单词列表显示的 State，默认不显示
+  const [showVocab, setShowVocab] = useState(false);
 
-    if (isLastPage) {
-      onFinish?.();
-    } else {
-      setCurrentPage(prev => prev + 1);
-      setActiveWords(new Set());
-    }
-  };
+  const step = steps[currentStepIndex];
 
-  const handleJumpToPage = (e: React.MouseEvent, index: number) => {
-    e.stopPropagation();
-    setCurrentPage(index);
-    setActiveWords(new Set());
-  };
+  // 📝 双轨打字机特效
+  useEffect(() => {
+    if (!step) return;
+    
+    let nText = '';
+    let sText = '';
+    let nIndex = 0;
+    let sIndex = 0;
+    setIsTyping(true);
+    setDisplayedNarration('');
+    setDisplayedSpeech('');
+    
+    // 切换到新的一组对话时，重置单词显示状态
+    setShowVocab(false);
 
-  const handlePrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1);
-      setActiveWords(new Set());
-    }
-  };
+    const targetNarration = step.narration || '';
+    const targetSpeech = step.speech || '';
+
+    const interval = setInterval(() => {
+      let updated = false;
+      if (nIndex < targetNarration.length) {
+        nText += targetNarration.charAt(nIndex);
+        setDisplayedNarration(nText);
+        nIndex++;
+        updated = true;
+      } 
+      else if (sIndex < targetSpeech.length) {
+        sText += targetSpeech.charAt(sIndex);
+        setDisplayedSpeech(sText);
+        sIndex++;
+        updated = true;
+      }
+
+      if (!updated) {
+        clearInterval(interval);
+        setIsTyping(false);
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [currentStepIndex, step]);
 
   const handleNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isLastPage) {
-      onFinish?.();
+    // 划词翻译保护：如果玩家正在高亮选词，不要翻页
+    if (window.getSelection()?.toString()) return;
+
+    if (isTyping) {
+      setDisplayedNarration(step?.narration || '');
+      setDisplayedSpeech(step?.speech || '');
+      setIsTyping(false);
+    } else if (currentStepIndex < steps.length - 1) {
+      setCurrentStepIndex(prev => prev + 1);
     } else {
-      setCurrentPage(prev => prev + 1);
-      setActiveWords(new Set());
+      onFinish();
     }
   };
 
-  const toggleWordHint = (e: React.MouseEvent, uniqueId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    // If user is trying to select, don't toggle
-    const selection = window.getSelection();
-    if (selection && selection.toString().length > 0) return;
-
-    setActiveWords(prev => {
-      const next = new Set(prev);
-      if (next.has(uniqueId)) {
-        next.delete(uniqueId);
-      } else {
-        next.add(uniqueId);
-      }
-      return next;
-    });
-  };
-
-  const renderTextWithFurigana = (text: string) => {
-    if (!vocabulary || vocabulary.length === 0) return <span>{text}</span>;
-
-    const sortedVocab = [...vocabulary].sort((a, b) => b.word.length - a.word.length);
-    const pattern = sortedVocab.map(v => v.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-    if (!pattern) return <span>{text}</span>;
-    
-    const regex = new RegExp(`(${pattern})`, 'g');
-    const parts = text.split(regex);
-
-    return parts.map((part, i) => {
-      const vocabItem = vocabulary.find(v => v.word === part);
-      if (vocabItem) {
-        const uniqueId = `${vocabItem.word}-${i}`;
-        const isActive = activeWords.has(uniqueId);
-        return (
-          <span 
-            key={i} 
-            className="relative inline-block mx-1"
-          >
-            <span 
-              className={`transition-all duration-300 border-b-2 py-0.5 px-0.5 rounded-sm cursor-help ${isActive ? 'text-yellow-400 border-yellow-400 bg-yellow-400/10 font-bold' : 'border-dotted border-white/40 hover:text-yellow-300 hover:border-yellow-300 hover:bg-white/5'}`}
-              onClick={(e) => toggleWordHint(e, uniqueId)}
-            >
-              {part}
-            </span>
-            {isActive && (
-              <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-base px-4 py-2 rounded border-2 border-yellow-500 shadow-[0_0_20px_rgba(250,204,21,0.8)] whitespace-nowrap z-[200] animate-in fade-in slide-in-from-bottom-2 duration-200 font-black pointer-events-none">
-                {vocabItem.reading}
-              </span>
-            )}
-          </span>
-        );
-      }
-      return <span key={i} className="relative">{part}</span>;
-    });
-  };
-
-  if (!currentPageData) return null;
+  if (!step) return null;
 
   return (
-    <div className="w-full max-w-4xl mx-auto mb-6 relative z-50 px-4 select-text">
-      {/* Speaker Tag */}
-      {character && currentPageData.type === 'speech' && (
-        <div 
-          className={`absolute -top-6 left-12 z-[60] px-10 py-2 transform -skew-x-12 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.6)] ${character.color}`}
-        >
-          <span className="block transform skew-x-12 text-white font-black text-xl tracking-tighter pointer-events-none">
-            {character.name}
-          </span>
+    <div className="w-full max-w-4xl mx-auto relative font-sans animate-in fade-in slide-in-from-bottom-4 duration-300 flex flex-col items-center gap-2 md:gap-4">
+      
+      {/* 🎬 顶部：动作描写栏 */}
+      {step.narration && (
+        <div className="w-11/12 md:w-3/4 bg-slate-900/70 backdrop-blur-sm border border-blue-400/30 rounded-lg p-3 md:p-4 shadow-lg text-center animate-in fade-in zoom-in-95 duration-500 cursor-pointer" onClick={handleNext}>
+          <p className="text-xs md:text-base text-blue-100/90 font-medium italic tracking-wider leading-relaxed">
+            {displayedNarration}
+          </p>
         </div>
       )}
 
-      {/* Main Dialogue Box */}
-      <div 
-        ref={boxRef}
-        className={`relative bg-slate-900/95 backdrop-blur-xl border-2 p-8 md:p-10 min-h-[180px] max-h-[40vh] overflow-y-auto shadow-2xl transition-all duration-500 clip-message ${
-            currentPageData.type === 'action' ? 'border-indigo-500/60' : 'border-white/30'
-        }`}
-        onClick={handleBoxClick}
-      >
-        <div className={`absolute top-4 left-4 w-3 h-3 rounded-full animate-pulse z-20 pointer-events-none ${currentPageData.type === 'action' ? 'bg-indigo-400' : 'bg-yellow-400'}`} />
+      {/* 💬 底部：角色对话栏 */}
+      <div className={`relative w-full bg-black/85 backdrop-blur-xl border-t-2 border-white/20 p-6 md:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.8)] rounded-sm transition-all duration-300 ${!step.speech ? 'opacity-0 h-0 p-0 overflow-hidden' : 'opacity-100'}`}>
+         
+        {step.speech && (
+          <div className="cursor-pointer" onClick={handleNext}>
+            {/* 角色主题色顶边 */}
+            <div className={`absolute top-0 left-0 w-full h-1 ${character.color} opacity-80`} />
+            
+            {/* 名字牌 */}
+            <div className={`absolute -top-6 md:-top-8 left-4 md:left-8 px-6 md:px-8 py-1 md:py-1.5 ${character.color} text-white font-black italic text-base md:text-xl shadow-[4px_0_0_rgba(0,0,0,0.5)] border-t-2 border-l-2 border-white/30 z-20 transform -skew-x-6`}>
+              <span className="block transform skew-x-6 tracking-widest">{character.name}</span>
+            </div>
 
-        <div 
-          className={`relative h-full pr-8 font-medium text-xl md:text-2xl leading-relaxed tracking-wide z-20 ${
-            currentPageData.type === 'action' ? 'italic text-indigo-200 opacity-80' : 'text-white'
-          }`}
-          style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
-        >
-          {renderTextWithFurigana(currentPageData.text)}
-        </div>
-
-        {/* Page Dots (Clickable) */}
-        <div className="absolute top-4 right-8 flex space-x-2 z-20">
-            {pages.map((_, i) => (
-                <div 
-                  key={i} 
-                  onClick={(e) => handleJumpToPage(e, i)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer border border-transparent hover:border-white/50 ${i === currentPage ? 'bg-yellow-400 scale-125 shadow-[0_0_8px_rgba(250,204,21,0.8)]' : 'bg-white/20 hover:bg-white/40'}`}
-                  title={`Jump to page ${i + 1}`}
-                ></div>
-            ))}
-        </div>
-
-        {/* Navigation Prompt */}
-        <div className="absolute bottom-4 right-6 z-30 flex items-center gap-3">
-          
-          {/* Previous Button */}
-          <div 
-            onClick={handlePrev}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all cursor-pointer ${currentPage > 0 ? 'bg-white/5 border-white/20 hover:bg-white/10 text-white' : 'opacity-0 pointer-events-none'}`}
-          >
-             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
-            </svg>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Prev</span>
+            {/* 台词内容 */}
+            <div className="w-full min-h-[80px] md:min-h-[100px] flex flex-col justify-start pt-2">
+              <p className="text-lg md:text-3xl text-white font-bold leading-loose tracking-wider md:tracking-widest drop-shadow-md" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+                {displayedSpeech}
+              </p>
+            </div>
           </div>
+        )}
 
-          {/* Next Button */}
-          <div 
-            onClick={handleNext}
-            className="flex items-center gap-2 bg-yellow-500/10 px-6 py-2 rounded-full border border-yellow-500/40 transition-all cursor-pointer group hover:bg-yellow-500/20"
-          >
-            <span className="text-xs font-black uppercase tracking-[0.2em] text-yellow-500">
-                {isLastPage ? "Finish" : "Next"}
-            </span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-            </svg>
+        {/* 📚 生词本展示区（带折叠切换功能） */}
+        {!isTyping && currentStepIndex === steps.length - 1 && vocabulary && vocabulary.length > 0 && (
+          <div className="mt-6 pt-4 border-t border-white/10 animate-in fade-in duration-500">
+            <div className="flex justify-between items-center mb-3">
+                <span className="text-[10px] md:text-xs text-yellow-500 font-bold uppercase tracking-widest">New Words / 新出単語</span>
+                {/* 🔥 切换按钮：点击此按钮仅切换显示状态，不触发翻页 */}
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setShowVocab(!showVocab); }}
+                  className="bg-yellow-600/20 hover:bg-yellow-600/40 text-yellow-500 border border-yellow-500/50 px-3 py-1 rounded-full text-[10px] font-black uppercase transition-all flex items-center gap-2"
+                >
+                  <span>{showVocab ? 'Hide' : 'Show'}</span>
+                  <span className={`transform transition-transform duration-300 ${showVocab ? 'rotate-180' : ''}`}>▼</span>
+                </button>
+            </div>
+            
+            {showVocab && (
+              <div className="flex flex-wrap gap-2 md:gap-3 animate-in slide-in-from-top-2 duration-300">
+                {vocabulary.map((v, idx) => (
+                  <div key={idx} className="group relative bg-white/5 hover:bg-white/10 px-3 py-1.5 md:px-4 md:py-2 rounded-sm border border-white/10 transition-colors flex items-baseline gap-2">
+                    <span className="text-white font-bold text-sm md:text-base">{v.word}</span>
+                    <span className="text-yellow-400/80 text-[10px] md:text-xs">{v.reading}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
-        {/* Help Hint */}
-        <div className="absolute bottom-4 left-8 text-[10px] text-white/30 font-bold tracking-widest pointer-events-none italic">
-          ※ 点击词语看读音 | 划词右键翻译与收藏
-        </div>
+        {/* 🔽 闪烁光标（不响应点击，仅作为提示） */}
+        {!isTyping && (
+          <div className={`absolute right-4 md:right-8 bottom-4 md:bottom-6 animate-pulse text-yellow-400 font-black text-xl md:text-3xl pointer-events-none`}>
+            {currentStepIndex === steps.length - 1 ? '■' : '▶'}
+          </div>
+        )}
       </div>
     </div>
   );
