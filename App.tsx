@@ -10,7 +10,6 @@ const API_KEY_STORAGE_KEY = 'kobe_study_user_api_key';
 const MODEL_STORAGE_KEY = 'kobe_study_user_model'; 
 const MAX_SLOTS = 6;
 
-// 🔥 更新：把 DeepSeek V4 放到最前面并标注
 const AVAILABLE_MODELS = [
   { value: 'deepseek-v4-flash',      label: 'DeepSeek V4 Flash (默认/内置专线)' },
   { value: 'deepseek-v4-pro',        label: 'DeepSeek V4 Pro (最强深度思考)' },
@@ -83,12 +82,10 @@ const App: React.FC = () => {
   const [currentScene, setCurrentScene] = useState<string>(DEFAULT_SCENE);
 
   const [customApiKey, setCustomApiKey] = useState('');
-  // 🔥 默认修改为 V4 Flash
   const [customModel, setCustomModel] = useState('deepseek-v4-flash');
 
   const [consentGiven, setConsentGiven] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
-  
   const [showAutoSave, setShowAutoSave] = useState(false);
 
   const bgUrl = SCENE_MAP[currentScene] || SCENE_MAP[DEFAULT_SCENE];
@@ -318,7 +315,6 @@ const App: React.FC = () => {
         if (data.gameMode === GameMode.CHAT && data.selectedCharId) {
             setIsLoading(true);
             try {
-                // 🔥 修复：将读取出的历史消息传给 AI，重建记忆网络
                 await startChat(
                     CHARACTERS[data.selectedCharId as CharacterId], data.chatMode, data.userState.learningGoal, data.userState.grammarTopic, data.userState.language || 'zh', customApiKey, customModel, data.messages
                 );
@@ -338,6 +334,17 @@ const App: React.FC = () => {
   const handleSetupComplete = (name: string, goal: string, topic: N3GrammarTopic) => {
     setUserState(prev => ({ ...prev, playerName: name, learningGoal: goal, grammarTopic: topic }));
     setGameMode(GameMode.LOBBY);
+  };
+
+  // 🔥 场景切换模糊匹配助手函数
+  const updateSceneIfMatched = (locStr: string | undefined) => {
+    if (!locStr) return;
+    const lowerLoc = locStr.toLowerCase().trim();
+    // 只要返回的字段包含地图键名（如 "The Beach" 包含 "beach"），就切场景
+    const matchedKey = Object.keys(SCENE_MAP).find(key => lowerLoc.includes(key));
+    if (matchedKey) {
+        setCurrentScene(matchedKey);
+    }
   };
 
   const enterChat = async (charId: CharacterId, mode: ChatMode) => {
@@ -365,7 +372,8 @@ const App: React.FC = () => {
       setMessages([greetingMsg]);
       setCurrentEmotion(result.emotion || 'neutral');
       if (result.outfit) setCurrentOutfit(result.outfit);
-      if (result.location && SCENE_MAP[result.location]) setCurrentScene(result.location);
+      
+      updateSceneIfMatched(result.location); // 确保第一句话就能切场景
       
       setChatHistories(prev => ({ ...prev, [charId]: [...prev[charId], greetingMsg] }));
 
@@ -410,7 +418,8 @@ const App: React.FC = () => {
       setMessages(prev => [...prev, modelMsg]);
       setCurrentEmotion(response.emotion || 'neutral');
       if (response.outfit !== undefined) setCurrentOutfit(response.outfit);
-      if (response.location && SCENE_MAP[response.location]) setCurrentScene(response.location);
+      
+      updateSceneIfMatched(response.location); // 修复：根据对话动态更新场景背景
       
       setChatHistories(prev => ({ ...prev, [selectedCharId]: [...prev[selectedCharId], modelMsg] }));
 
@@ -580,7 +589,6 @@ const App: React.FC = () => {
                                             <a href="https://platform.deepseek.com/" target="_blank" rel="noreferrer" className="bg-blue-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] transform skew-x-12 shadow-sm flex items-center gap-1"><span>🔑 DeepSeek</span></a>
                                             <a href="https://aistudio.google.com/api-keys?project=gen-lang-client-0367843531" target="_blank" rel="noreferrer" className="bg-red-600/90 text-white hover:bg-yellow-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] transform skew-x-12 shadow-sm flex items-center gap-1"><span>🔑 Google</span></a>
                                         </div>
-                                        {/* 🔥 更新：留空的输入框，提示玩家不填也能玩 */}
                                         <input type="password" value={customApiKey} onChange={handleApiKeyChange} className="w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-sm px-4 md:px-6 py-3 md:py-4 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/10 shadow-inner" placeholder="留空则自动使用内置 API Key..." />
                                     </div>
                                     <div className="group relative">
@@ -663,6 +671,9 @@ const App: React.FC = () => {
       const activeChar = getDynamicAvatar(selectedCharId ? CHARACTERS[selectedCharId] : CHARACTERS[CharacterId.ASUKA]);
       const lastModelMsg = [...messages].reverse().find(m => m.role === 'model');
 
+      // 🔥 提取出最后一句话（只留 speech，过滤掉导致截断乱码的动作描写）
+      const lastSpeechText = lastModelMsg?.pages?.filter(p => p.type === 'speech').pop()?.text || lastModelMsg?.text || '';
+
       return (
         <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col" onContextMenu={handleContextMenu} onClick={() => { if(contextMenu) setContextMenu(null); }}>
             {renderBackground()}
@@ -671,8 +682,6 @@ const App: React.FC = () => {
                 <span className="text-[10px] md:text-xs font-bold text-yellow-500 tracking-widest uppercase animate-pulse">{T.autoSaving}</span>
             </div>
 
-            {isTranslating && <div className="absolute top-20 right-4 md:right-6 z-[60] bg-black/80 text-yellow-500 px-3 py-1.5 md:px-4 md:py-2 rounded border border-yellow-500/50 flex items-center gap-2 animate-pulse"><span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.generating}</span></div>}
-            
             <div className="absolute top-0 left-0 w-full z-50 p-4 md:p-6 flex justify-between items-start pointer-events-none">
                 <div className="flex gap-2 pointer-events-auto">
                     <button onClick={() => setShowSystemMenu(true)} className="bg-black/80 px-5 py-3 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 hover:border-yellow-500 transition-colors uppercase tracking-[0.2em] shadow-xl">⚙️ {T.system}</button>
@@ -683,92 +692,41 @@ const App: React.FC = () => {
             </div>
 
             <div className="absolute inset-0 z-10 flex items-end justify-center pointer-events-none pb-0">
-                 <div className="relative h-[60dvh] md:h-[85vh] max-h-[90dvh] w-auto aspect-[45/70] flex items-end justify-center pointer-events-auto transition-all duration-500 shadow-2xl">
-                    <CharacterSprite character={activeChar} isSpeaking={lastModelMsg?.role === 'model' && !isLoading && !isDialogueFinished} className={`w-full h-full object-contain tachie-anim-breathe transition-all duration-300`} />
+                 <div className="relative h-[55dvh] md:h-[80vh] max-h-[85dvh] w-auto aspect-[45/70] flex items-end justify-center pointer-events-auto transition-all duration-500">
+                    <CharacterSprite character={activeChar} isSpeaking={lastModelMsg?.role === 'model' && !isLoading && !isDialogueFinished} className="w-full h-full object-contain tachie-anim-breathe" />
                 </div>
             </div>
 
-            {currentQuiz && (
-                   <div className="absolute inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm pointer-events-auto">
-                       <div className="w-full max-w-2xl bg-white p-6 md:p-8 rounded-sm shadow-2xl border-l-[8px] md:border-l-[12px] border-red-600 transform -skew-x-1 flex flex-col max-h-[90dvh]">
-                           <div className="flex justify-between items-start mb-4"><h3 className="text-xs md:text-sm font-black text-red-600 uppercase tracking-tighter">{T.quizHeader}: {userState.grammarTopic}</h3><button onClick={() => setCurrentQuiz(null)} className="text-gray-400 hover:text-red-600 text-xs font-black uppercase">{T.close} [X]</button></div>
-                           <div className="overflow-y-auto pr-2"><p className="text-lg md:text-2xl text-gray-900 mb-6 md:mb-8 font-black leading-tight">{currentQuiz.question}</p><div className="grid grid-cols-1 gap-2 md:gap-3 mb-4">{currentQuiz.options?.map((opt: string, idx: number) => (<button key={idx} onClick={() => handleQuizAnswer(idx)} className="bg-gray-100 hover:bg-red-50 text-gray-900 font-bold py-3 md:py-4 px-4 md:px-6 rounded-sm transition-all border-l-4 border-transparent hover:border-red-600 text-left text-sm md:text-base"><span className="text-red-600 mr-3 md:mr-4 italic font-black">{["A", "B", "C", "D"][idx]}.</span> {opt}</button>))}</div></div>
-                       </div>
-                   </div>
-            )}
-
-            <div className="absolute bottom-0 w-full min-h-[300px] md:min-h-[350px] bg-gradient-to-t from-black via-black/80 to-transparent z-40 pb-6 md:pb-12 px-4 md:px-6 flex flex-col items-center justify-end pointer-events-none">
-                {quizFeedback && (
-                    <div className="mb-4 md:mb-6 bg-slate-900/95 backdrop-blur-xl text-white px-6 md:px-8 py-4 md:py-6 rounded-sm shadow-2xl font-bold text-xs md:text-sm border-l-8 border-yellow-500 max-w-2xl z-[110] border-2 border-white/10 w-full pointer-events-auto">
-                        <div className="flex items-start gap-3 md:gap-4"><span className="text-3xl md:text-4xl">💡</span><div className="flex-1"><p className="leading-relaxed whitespace-pre-wrap">{quizFeedback}</p></div></div>
-                        <button onClick={handleContinueAfterFeedback} className="mt-4 md:mt-6 w-full py-2.5 md:py-3 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-black uppercase tracking-[0.3em] transition-all rounded-sm shadow-lg">{T.gotIt}</button>
-                    </div>
-                )}
-
-                {gameMode === GameMode.CHAT && (
-                  <div className="absolute top-24 md:top-20 right-2 md:right-4 z-50 flex flex-col gap-1.5 md:gap-2 bg-black/40 p-1.5 md:p-2 rounded-lg backdrop-blur-sm border border-white/10 scale-90 md:scale-100 origin-top-right pointer-events-auto">
-                    <span className="text-[8px] md:text-[10px] text-white/50 uppercase font-bold text-center">{T.costume}</span>
-                    <button onClick={() => setCurrentOutfit('')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === '' ? 'bg-white text-black border-white' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.school}</button>
-                    <button onClick={() => setCurrentOutfit('casual')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'casual' ? 'bg-pink-500 text-white border-pink-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.casual}</button>
-                    <button onClick={() => setCurrentOutfit('swim')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'swim' ? 'bg-blue-500 text-white border-blue-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.swim}</button>
-                    <button onClick={() => setCurrentOutfit('gym')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${currentOutfit === 'gym' ? 'bg-red-500 text-white border-red-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.gym}</button>
-                    <button onClick={() => setCurrentOutfit(selectedCharId === 'haku' ? 'prince' : selectedCharId === 'ren' ? 'fantasy' : selectedCharId === 'asuka' ? 'maid' : selectedCharId === 'hikari' ? 'yukata' : selectedCharId === 'rei' ? 'kimono' : 'special')} className={`px-2 py-1 md:px-3 md:py-1 text-[10px] md:text-xs rounded border transition-all ${['prince','fantasy','maid','yukata','kimono'].includes(currentOutfit) ? 'bg-purple-500 text-white border-purple-500' : 'text-white border-white/20 hover:bg-white/10'}`}>{T.special}</button>
-                  </div>
-                )}
-
-                <div className="pointer-events-auto w-full max-w-4xl flex flex-col items-center">
-                    {!isLoading && lastModelMsg?.pages && !isDialogueFinished && !currentQuiz && (
+            <div className="absolute bottom-0 w-full min-h-[40vh] bg-gradient-to-t from-black via-black/90 to-transparent z-40 pb-32 md:pb-24 px-4 md:px-8 flex flex-col items-center justify-end pointer-events-none overflow-y-auto">
+                
+                <div className="pointer-events-auto w-full max-w-5xl flex flex-col items-center">
+                    {!isLoading && lastModelMsg?.pages && !isDialogueFinished && (
                         <DialogueBox key={lastModelMsg.id} character={activeChar} pages={lastModelMsg.pages} vocabulary={lastModelMsg.vocabulary || []} onFinish={onDialogueFinished} />
                     )}
                     
                     {isLoading && (
-                        <div className="w-full bg-slate-900/90 backdrop-blur-md border-2 border-indigo-500/50 p-6 md:p-10 min-h-[120px] md:min-h-[160px] animate-pulse flex flex-col items-center justify-center mb-4 md:mb-6 shadow-[0_0_30px_rgba(99,102,241,0.3)]"><div className="text-indigo-400 font-black tracking-[0.5em] md:tracking-[0.8em] text-sm md:text-xl mb-2">{T.generating}</div></div>
+                        <div className="w-full bg-slate-900/90 backdrop-blur-md border-t-2 border-indigo-500 p-8 min-h-[160px] animate-pulse flex flex-col items-center justify-center shadow-2xl">
+                          <div className="text-indigo-400 font-black tracking-[1em] text-lg md:text-2xl">{T.generating}</div>
+                        </div>
                     )}
 
-                    {(isDialogueFinished || isLoading) && !currentQuiz && !quizFeedback && (
-                        <div className={`w-full flex flex-col gap-2 transition-all duration-700 ${isDialogueFinished ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}>
-                            {lastModelMsg && lastModelMsg.pages && (
-                                <div className="w-full px-5 md:px-8 flex flex-col items-start drop-shadow-lg">
-                                    <span className="text-[10px] md:text-xs text-yellow-500/80 font-bold uppercase tracking-widest mb-1">
-                                        ▶ {userState.language === 'en' ? CHARACTERS[selectedCharId!].nameEn : CHARACTERS[selectedCharId!].name}
-                                    </span>
-                                    <span className="text-xs md:text-sm text-white/70 italic line-clamp-2 bg-black/40 px-3 py-1.5 rounded-r-lg rounded-bl-lg border-l-2 border-yellow-500/50 backdrop-blur-sm">
-                                        {lastModelMsg.pages.filter(p => p.type === 'speech').pop()?.text || lastModelMsg.text.slice(-50)}
-                                    </span>
+                    {(isDialogueFinished || isLoading) && !currentQuiz && (
+                        <div className={`w-full flex flex-col gap-4 mt-6 transition-all duration-700 ${isDialogueFinished ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                            {lastModelMsg && (
+                                <div className="w-full px-4 flex flex-col items-start opacity-60">
+                                    <span className="text-[10px] text-yellow-500 font-bold uppercase mb-1">▶ {userState.language === 'en' ? CHARACTERS[selectedCharId!].nameEn : CHARACTERS[selectedCharId!].name}</span>
+                                    {/* 🔥 使用 line-clamp 替代 substring 截断，完美兼容 HTML 的注音显示 */}
+                                    <span className="text-xs text-white italic line-clamp-2 w-full" dangerouslySetInnerHTML={{ __html: lastSpeechText }} />
                                 </div>
                             )}
-                            <div className="relative flex w-full gap-2 md:gap-3">
-                                <div className="relative flex-1">
-                                    <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder={T.chatPlaceholder || 'Say something...'} disabled={isLoading} className="w-full bg-slate-900/90 border-2 border-white/20 rounded-full px-5 py-3 md:px-8 md:py-5 text-white font-medium focus:outline-none focus:border-yellow-500 transition-all backdrop-blur-md text-sm md:text-lg shadow-inner" />
-                                    <div className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 text-[10px] text-white/30 font-black uppercase tracking-widest hidden sm:block">{T.enterToSend}</div>
-                                </div>
-                                <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-6 py-3 md:px-10 md:py-5 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full disabled:opacity-20 flex items-center justify-center gap-2 text-sm md:text-base">{T.send}</button>
+                            <div className="relative flex w-full gap-2 md:gap-4 px-2">
+                                <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder={T.chatPlaceholder} disabled={isLoading} className="w-full bg-slate-900/95 border-2 border-white/20 rounded-full px-6 py-4 md:px-10 md:py-6 text-white text-base md:text-xl focus:outline-none focus:border-yellow-500 transition-all shadow-2xl" />
+                                <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 md:px-14 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full text-sm md:text-lg">SEND</button>
                             </div>
                         </div>
                     )}
                 </div>
             </div>
-
-            {contextMenu && (
-                <div className="fixed z-[300] bg-slate-900 border-2 border-yellow-500 shadow-2xl p-1.5 md:p-2 min-w-[120px] md:min-w-[150px] transform -skew-x-2 animate-in fade-in zoom-in-95 duration-100" style={{ top: contextMenu.y, left: contextMenu.x }}>
-                    <button onClick={handleTranslateSelection} className="w-full text-left px-3 py-1.5 md:px-4 md:py-2 text-white font-black uppercase text-[10px] md:text-xs hover:bg-yellow-500 hover:text-black transition-colors border-b border-white/10">{T.translateBtn}</button>
-                    <button onClick={handleCollectSelection} className="w-full text-left px-3 py-1.5 md:px-4 md:py-2 text-white font-black uppercase text-[10px] md:text-xs hover:bg-indigo-600 transition-colors">{T.collectBtn}</button>
-                </div>
-            )}
-
-            {translationResult && (
-                <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={() => setTranslationResult(null)}>
-                    <div className="w-full max-w-lg bg-slate-900 border-2 border-yellow-500 p-6 md:p-8 shadow-2xl transform skew-x-1" onClick={e => e.stopPropagation()}>
-                        <div className="flex justify-between items-center mb-4 md:mb-6"><h4 className="text-yellow-500 font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs">{T.analysisResult}</h4><button onClick={() => setTranslationResult(null)} className="text-white/40 hover:text-white transition-colors">✕</button></div>
-                        <div className="space-y-4 md:space-y-6">
-                            <div><p className="text-white/50 text-[8px] md:text-[10px] uppercase font-bold mb-1 tracking-widest">Japanese</p><p className="text-white text-base md:text-xl font-bold leading-relaxed">{translationResult.original}</p></div>
-                            <div className="h-px bg-white/10 w-full" />
-                            <div><p className="text-yellow-500/50 text-[8px] md:text-[10px] uppercase font-bold mb-1 tracking-widest">{T.meaning}</p><p className="text-yellow-400 text-lg md:text-2xl font-black leading-tight">{translationResult.translation}</p></div>
-                        </div>
-                        <button onClick={() => setTranslationResult(null)} className="mt-6 md:mt-10 w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-3 md:py-4 text-sm md:text-base uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all shadow-lg">{T.gotIt}</button>
-                    </div>
-                </div>
-            )}
         </div>
       );
   };
@@ -792,7 +750,7 @@ const App: React.FC = () => {
                         }} className={`relative h-40 md:h-48 border-2 md:border-4 transform transition-all duration-200 cursor-pointer overflow-hidden group ${!slot.data ? 'border-white/20 bg-white/5 hover:border-white/50' : 'border-white bg-zinc-900 hover:border-yellow-400 hover:-translate-y-1 hover:shadow-xl'}`}>
                             <div className="absolute -right-2 -bottom-4 md:-right-4 md:-bottom-8 text-7xl md:text-9xl font-black text-white/5 italic select-none pointer-events-none">{slot.index + 1}</div>
                             <div className="p-4 md:p-6 h-full flex flex-col justify-between relative z-10">
-                                {slot.data ? (<><div className="flex justify-between items-start"><div><div className="text-[10px] md:text-xs font-bold text-yellow-500 uppercase tracking-widest mb-1">{slot.index === 0 ? T.autoSaveSlot : `${T.file} ${slot.index + 1}`}</div><div className="text-xl md:text-2xl font-black text-white uppercase italic">{slot.data.meta.playerName}</div></div><div className="text-right"><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleDateString()}</div><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleTimeString()}</div></div></div><div className="space-y-1"><div className="text-[10px] md:text-xs text-white/70 font-bold bg-white/10 inline-block px-2 py-1">{slot.data.meta.topic}</div><div className="text-[8px] md:text-[10px] text-white/40 italic truncate">"{slot.data.meta.previewText}"</div></div></>) : (<div className="h-full flex items-center justify-center flex-col text-white/20"><span className="text-3xl md:text-4xl mb-1 md:mb-2">∅</span><span className="font-black uppercase tracking-widest text-xs md:text-sm">{T.noData}</span></div>)}
+                                {slot.data ? (<><div className="flex justify-between items-start"><div><div className="text-[10px] md:text-xs font-bold text-yellow-500 uppercase tracking-widest mb-1">{slot.index === 0 ? T.autoSaveSlot : `${T.file} ${slot.index + 1}`}</div><div className="text-xl md:text-2xl font-black text-white uppercase italic">{slot.data.meta.playerName}</div></div><div className="text-right"><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleDateString()}</div><div className="text-[8px] md:text-[10px] text-white/50 font-mono">{new Date(slot.data.meta.timestamp).toLocaleTimeString()}</div></div></div><div className="space-y-1"><div className="text-[10px] md:text-xs text-white/70 font-bold bg-white/10 inline-block px-2 py-1">{slot.data.meta.topic}</div><div className="text-[8px] md:text-[10px] text-white/40 italic truncate" dangerouslySetInnerHTML={{__html: `"${slot.data.meta.previewText}"`}}></div></div></>) : (<div className="h-full flex items-center justify-center flex-col text-white/20"><span className="text-3xl md:text-4xl mb-1 md:mb-2">∅</span><span className="font-black uppercase tracking-widest text-xs md:text-sm">{T.noData}</span></div>)}
                             </div>
                             <div className={`absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`} />
                         </div>
@@ -866,7 +824,7 @@ const App: React.FC = () => {
             <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
                 <div className="w-full md:w-64 bg-black/20 border-b md:border-b-0 md:border-r border-white/5 flex md:flex-col overflow-x-auto md:overflow-y-auto shrink-0">{(Object.keys(CHARACTERS) as CharacterId[]).map(id => (<button key={id} onClick={() => setActiveHistoryTab(id)} className={`p-3 md:p-4 flex flex-col md:flex-row items-center gap-2 md:gap-3 transition-all border-b-4 md:border-b-0 md:border-l-4 ${activeHistoryTab === id ? `bg-white/5 ${CHARACTERS[id].color.replace('bg-', 'border-')}` : 'border-transparent opacity-50 hover:opacity-100'}`}><div className={`w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0`}><img src={CHARACTERS[id].emotionMap['neutral']} className="w-full h-full object-cover" alt="" /></div><span className="font-bold text-white text-[10px] md:text-sm uppercase tracking-wider truncate">{userState.language === 'en' ? CHARACTERS[id].nameEn : CHARACTERS[id].name}</span></button>))}</div>
                 <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6 bg-slate-900/50">
-                    {chatHistories[activeHistoryTab].length === 0 ? (<div className="h-full flex items-center justify-center text-white/20 italic font-medium text-sm">No history found.</div>) : (chatHistories[activeHistoryTab].map((msg) => (<div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}><div className="text-[8px] md:text-[10px] uppercase tracking-widest text-white/30 mb-1 px-1">{msg.senderName || (msg.role === 'user' ? 'You' : CHARACTERS[activeHistoryTab].name)}</div><div className={`max-w-[90%] md:max-w-[80%] p-3 md:p-4 rounded-sm text-xs md:text-sm leading-relaxed whitespace-pre-wrap ${msg.role === 'user' ? 'bg-white/10 text-white border border-white/5' : 'bg-indigo-900/20 text-indigo-100 border border-indigo-500/30'}`}>{msg.text}</div></div>)))}
+                    {chatHistories[activeHistoryTab].length === 0 ? (<div className="h-full flex items-center justify-center text-white/20 italic font-medium text-sm">No history found.</div>) : (chatHistories[activeHistoryTab].map((msg) => (<div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}><div className="text-[8px] md:text-[10px] uppercase tracking-widest text-white/30 mb-1 px-1">{msg.senderName || (msg.role === 'user' ? 'You' : CHARACTERS[activeHistoryTab].name)}</div><div className={`max-w-[90%] md:max-w-[80%] p-3 md:p-4 rounded-sm text-xs md:text-sm leading-relaxed whitespace-pre-wrap ${msg.role === 'user' ? 'bg-white/10 text-white border border-white/5' : 'bg-indigo-900/20 text-indigo-100 border border-indigo-500/30'}`} dangerouslySetInnerHTML={{ __html: msg.text }}></div></div>)))}
                     <div ref={historyEndRef} />
                 </div>
             </div>
@@ -911,6 +869,15 @@ styleSheet.innerText = `
   .tachie-anim-speak {
     animation: tachie-speak 0.4s ease-out;
     transform-origin: bottom center;
+  }
+  ruby {
+    ruby-align: center;
+  }
+  rt {
+    font-size: 0.5em;
+    color: #fbbf24; 
+    line-height: 1;
+    transform: translateY(2px);
   }
 `;
 document.head.appendChild(styleSheet);
