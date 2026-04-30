@@ -336,11 +336,9 @@ const App: React.FC = () => {
     setGameMode(GameMode.LOBBY);
   };
 
-  // 🔥 场景切换模糊匹配助手函数
   const updateSceneIfMatched = (locStr: string | undefined) => {
     if (!locStr) return;
     const lowerLoc = locStr.toLowerCase().trim();
-    // 只要返回的字段包含地图键名（如 "The Beach" 包含 "beach"），就切场景
     const matchedKey = Object.keys(SCENE_MAP).find(key => lowerLoc.includes(key));
     if (matchedKey) {
         setCurrentScene(matchedKey);
@@ -373,7 +371,7 @@ const App: React.FC = () => {
       setCurrentEmotion(result.emotion || 'neutral');
       if (result.outfit) setCurrentOutfit(result.outfit);
       
-      updateSceneIfMatched(result.location); // 确保第一句话就能切场景
+      updateSceneIfMatched(result.location);
       
       setChatHistories(prev => ({ ...prev, [charId]: [...prev[charId], greetingMsg] }));
 
@@ -419,7 +417,7 @@ const App: React.FC = () => {
       setCurrentEmotion(response.emotion || 'neutral');
       if (response.outfit !== undefined) setCurrentOutfit(response.outfit);
       
-      updateSceneIfMatched(response.location); // 修复：根据对话动态更新场景背景
+      updateSceneIfMatched(response.location);
       
       setChatHistories(prev => ({ ...prev, [selectedCharId]: [...prev[selectedCharId], modelMsg] }));
 
@@ -458,20 +456,44 @@ const App: React.FC = () => {
     handleSendMessage(prompt);
   };
 
-  const handleContextMenu = (e: React.MouseEvent) => {
+  // 🔥 核心重构：划选文本即时弹出菜单 (支持左键与手机触屏)
+  const handleTextSelection = (e: React.MouseEvent | React.TouchEvent) => {
+    setTimeout(() => {
+      const selection = window.getSelection();
+      const text = selection?.toString().trim();
+      if (text) {
+        let clientX = 0;
+        let clientY = 0;
+        
+        if ('changedTouches' in e && e.changedTouches.length > 0) {
+            clientX = e.changedTouches[0].clientX;
+            clientY = e.changedTouches[0].clientY;
+        } else if ('clientX' in e) {
+            clientX = (e as React.MouseEvent).clientX;
+            clientY = (e as React.MouseEvent).clientY;
+        }
+        
+        // 确保弹窗不会溢出屏幕边缘
+        const safeX = Math.min(Math.max(clientX, 20), window.innerWidth - 160);
+        const safeY = Math.min(Math.max(clientY, 20), window.innerHeight - 100);
+
+        setContextMenu({ x: safeX, y: safeY, text: text });
+      }
+    }, 50); // 极短延迟以确保 DOM 选区已完全更新
+  };
+
+  // 🔥 全局点击控制：只有在没有选中文本时，点击才会关闭菜单
+  const handleGlobalClick = (e: React.MouseEvent) => {
     const selection = window.getSelection()?.toString().trim();
-    if (selection) {
-      e.preventDefault();
-      setContextMenu({ x: e.clientX, y: e.clientY, text: selection });
-    } else {
-      setContextMenu(null);
-    }
+    if (selection) return; 
+    if (contextMenu) setContextMenu(null);
   };
 
   const handleTranslateSelection = async () => {
     if (!contextMenu) return;
     const text = contextMenu.text;
     setContextMenu(null);
+    window.getSelection()?.removeAllRanges(); // 翻译后自动取消高亮
     setIsTranslating(true);
     try {
         const translation = await translateText(text, userState.language, customApiKey, customModel); 
@@ -485,6 +507,7 @@ const App: React.FC = () => {
     if (!contextMenu) return;
     const text = contextMenu.text;
     setContextMenu(null);
+    window.getSelection()?.removeAllRanges(); // 收藏后自动取消高亮
     setIsTranslating(true);
     try {
         const translation = await translateText(text, userState.language, customApiKey, customModel);
@@ -671,11 +694,16 @@ const App: React.FC = () => {
       const activeChar = getDynamicAvatar(selectedCharId ? CHARACTERS[selectedCharId] : CHARACTERS[CharacterId.ASUKA]);
       const lastModelMsg = [...messages].reverse().find(m => m.role === 'model');
 
-      // 🔥 提取出最后一句话（只留 speech，过滤掉导致截断乱码的动作描写）
       const lastSpeechText = lastModelMsg?.pages?.filter(p => p.type === 'speech').pop()?.text || lastModelMsg?.text || '';
 
+      // 🔥 核心重构：将 onMouseUp 和 onTouchEnd 绑定到外层容器，实现即时划词翻译
       return (
-        <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col" onContextMenu={handleContextMenu} onClick={() => { if(contextMenu) setContextMenu(null); }}>
+        <div 
+            className="relative w-full h-[100dvh] overflow-hidden flex flex-col select-auto" 
+            onMouseUp={handleTextSelection}
+            onTouchEnd={handleTextSelection}
+            onClick={handleGlobalClick}
+        >
             {renderBackground()}
             
             <div className={`absolute top-4 right-4 z-[200] bg-black/60 px-3 py-1.5 rounded-sm border border-yellow-500/30 transition-opacity duration-500 pointer-events-none ${showAutoSave ? 'opacity-100' : 'opacity-0'}`}>
@@ -715,18 +743,39 @@ const App: React.FC = () => {
                             {lastModelMsg && (
                                 <div className="w-full px-4 flex flex-col items-start opacity-60">
                                     <span className="text-[10px] text-yellow-500 font-bold uppercase mb-1">▶ {userState.language === 'en' ? CHARACTERS[selectedCharId!].nameEn : CHARACTERS[selectedCharId!].name}</span>
-                                    {/* 🔥 使用 line-clamp 替代 substring 截断，完美兼容 HTML 的注音显示 */}
                                     <span className="text-xs text-white italic line-clamp-2 w-full" dangerouslySetInnerHTML={{ __html: lastSpeechText }} />
                                 </div>
                             )}
                             <div className="relative flex w-full gap-2 md:gap-4 px-2">
-                                <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder={T.chatPlaceholder} disabled={isLoading} className="w-full bg-slate-900/95 border-2 border-white/20 rounded-full px-6 py-4 md:px-10 md:py-6 text-white text-base md:text-xl focus:outline-none focus:border-yellow-500 transition-all shadow-2xl" />
-                                <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 md:px-14 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full text-sm md:text-lg">SEND</button>
+                                <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} placeholder={T.chatPlaceholder} disabled={isLoading} className="w-full bg-slate-900/95 border-2 border-white/20 rounded-full px-6 py-4 md:px-10 md:py-6 text-white text-base md:text-xl focus:outline-none focus:border-yellow-500 transition-all shadow-2xl pointer-events-auto" />
+                                <button onClick={() => handleSendMessage()} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 md:px-14 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full text-sm md:text-lg pointer-events-auto">SEND</button>
                             </div>
                         </div>
                     )}
                 </div>
             </div>
+
+            {/* 翻译/收藏悬浮菜单 */}
+            {contextMenu && (
+                <div className="fixed z-[300] bg-slate-900 border-2 border-yellow-500 shadow-2xl p-1.5 md:p-2 min-w-[120px] md:min-w-[150px] transform -skew-x-2 animate-in fade-in zoom-in-95 duration-100 pointer-events-auto" style={{ top: contextMenu.y, left: contextMenu.x }}>
+                    <button onClick={(e) => { e.stopPropagation(); handleTranslateSelection(); }} className="w-full text-left px-3 py-1.5 md:px-4 md:py-2 text-white font-black uppercase text-[10px] md:text-xs hover:bg-yellow-500 hover:text-black transition-colors border-b border-white/10">{T.translateBtn}</button>
+                    <button onClick={(e) => { e.stopPropagation(); handleCollectSelection(); }} className="w-full text-left px-3 py-1.5 md:px-4 md:py-2 text-white font-black uppercase text-[10px] md:text-xs hover:bg-indigo-600 transition-colors">{T.collectBtn}</button>
+                </div>
+            )}
+
+            {translationResult && (
+                <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 pointer-events-auto" onClick={() => setTranslationResult(null)}>
+                    <div className="w-full max-w-lg bg-slate-900 border-2 border-yellow-500 p-6 md:p-8 shadow-2xl transform skew-x-1" onClick={e => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-4 md:mb-6"><h4 className="text-yellow-500 font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs">{T.analysisResult}</h4><button onClick={() => setTranslationResult(null)} className="text-white/40 hover:text-white transition-colors">✕</button></div>
+                        <div className="space-y-4 md:space-y-6">
+                            <div><p className="text-white/50 text-[8px] md:text-[10px] uppercase font-bold mb-1 tracking-widest">Japanese</p><p className="text-white text-base md:text-xl font-bold leading-relaxed">{translationResult.original}</p></div>
+                            <div className="h-px bg-white/10 w-full" />
+                            <div><p className="text-yellow-500/50 text-[8px] md:text-[10px] uppercase font-bold mb-1 tracking-widest">{T.meaning}</p><p className="text-yellow-400 text-lg md:text-2xl font-black leading-tight">{translationResult.translation}</p></div>
+                        </div>
+                        <button onClick={() => setTranslationResult(null)} className="mt-6 md:mt-10 w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-3 md:py-4 text-sm md:text-base uppercase tracking-[0.2em] md:tracking-[0.4em] transition-all shadow-lg">{T.gotIt}</button>
+                    </div>
+                </div>
+            )}
         </div>
       );
   };
@@ -816,7 +865,6 @@ const App: React.FC = () => {
   const renderHistoryLog = () => (
     <div className="fixed inset-0 z-[250] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl p-2 md:p-0" 
          onClick={() => { if (contextMenu) setContextMenu(null); else setShowHistoryLog(false); }}
-         onContextMenu={handleContextMenu}
     >
         <div className="w-full max-w-5xl h-[95dvh] md:h-[85dvh] bg-zinc-900 border-2 border-indigo-500/50 shadow-2xl flex flex-col overflow-hidden" 
              onClick={e => { e.stopPropagation(); if (contextMenu) setContextMenu(null); }}>
