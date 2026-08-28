@@ -59,6 +59,11 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'yukata_shy': '/images/characters/asuka/yukata_shy.png',
       'winter_neutral': '/images/characters/asuka/winter_pout.png',
       'winter_pout': '/images/characters/asuka/winter_pout.png',
+      'school_blush': '/images/characters/asuka/school_blush.png',
+      'sleep_neutral': '/images/characters/asuka/sleep_yawn.png',
+      'sleep_yawn': '/images/characters/asuka/sleep_yawn.png',
+      'dress_neutral': '/images/characters/asuka/dress_smug.png',
+      'dress_smug': '/images/characters/asuka/dress_smug.png',
     },
     firstMessage: "（ノートを乱暴に机に置き、わざとらしく視線を窓の外に向けながら）……ふん。あんたがまた変な間違いをして恥をかかないように、今日だけは隣にいてあげるわよ。で、何から始めるつもり？早く言いなさいよね！",
     systemPrompt: `ROLE: Asuka (ツンデレ). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`
@@ -500,7 +505,7 @@ export const createCharacterRecord = <T,>(fill: (id: CharacterId) => T): Record<
 
 // 每个角色可切换的服装（原本在 geminiService.ts，移到这里与角色数据放在一起）
 export const WARDROBE: Record<string, string[]> = {
-  [CharacterId.ASUKA]:  ['casual', 'gym', 'swim', 'maid', 'autumn', 'yukata', 'winter'],
+  [CharacterId.ASUKA]:  ['casual', 'gym', 'swim', 'maid', 'autumn', 'yukata', 'winter', 'sleep', 'dress'],
   [CharacterId.HIKARI]: ['casual', 'gym', 'swim', 'yukata', 'autumn', 'maid', 'winter'],
   [CharacterId.REI]:    ['casual', 'lab', 'gym', 'swim', 'kimono', 'maid', 'winter'],
   [CharacterId.REN]:    ['casual', 'gym', 'fantasy', 'butler', 'lecturing', 'sorcerer'],
@@ -586,7 +591,7 @@ export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
 
 // 各角色各等级解锁的服装（键须存在于 WARDROBE 对应角色的列表）
 export const OUTFIT_UNLOCKS: Record<CharacterId, Partial<Record<number, string[]>>> = {
-  [CharacterId.ASUKA]:  { 2: ['casual'], 3: ['gym', 'autumn'], 4: ['swim', 'yukata'], 5: ['maid', 'winter'] },
+  [CharacterId.ASUKA]:  { 2: ['casual', 'sleep'], 3: ['gym', 'autumn'], 4: ['swim', 'yukata'], 5: ['maid', 'winter', 'dress'] },
   [CharacterId.HIKARI]: { 2: ['casual'], 3: ['gym', 'autumn'], 4: ['swim', 'yukata'], 5: ['maid', 'winter'] },
   [CharacterId.REI]:    { 2: ['casual'], 3: ['lab', 'gym'], 4: ['swim', 'winter'], 5: ['kimono', 'maid'] },
   [CharacterId.REN]:    { 2: ['casual'], 3: ['gym', 'lecturing'], 4: ['fantasy', 'sorcerer'], 5: ['butler'] },
