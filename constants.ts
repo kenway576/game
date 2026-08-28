@@ -639,7 +639,7 @@ export const isRomanceCapped = (affection: number, familiarity: number): boolean
 // 好感度升级解锁新服装与新场景。键为等级 (1-5)。
 // 现阶段用已有素材填充；以后新增素材直接往表里加即可。
 // ---------------------------------------------------------
-// 各等级解锁的约会场景（对全角色通用；键须存在于 SCENE_MAP）
+// 各**親密度**等级解锁的场景（对全角色通用；键须存在于 SCENE_MAP）
 export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
   1: ['classroom', 'hallway', 'library', 'rooftop', 'gym', 'street', 'park'],
   2: ['cafe', 'kitchen', 'room'],
@@ -668,25 +668,52 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, Partial<Record<number, s
   // 示例：[CharacterId.ASUKA]: { 2: 'asuka_ch2_friend', 4: 'asuka_ch4_confession' }
 };
 
-export const getUnlockedOutfits = (charId: CharacterId, affection: number): string[] => {
-  const level = getAffectionLevelIndex(affection) + 1;
+// 服装解锁分轴：Lv.2/3 档（私服・体操服・围裙等日常装）由**親密度**解锁——
+// 她愿意让你看到便装，是因为熟；Lv.4/5 档（泳装・和服・礼服等）由**好感度**解锁——
+// 她愿意为你换上，是因为喜欢。表格本身不用改，只是两半各归各的轴。
+export const FAMILIARITY_GATED_OUTFIT_LEVELS = [2, 3];
+export const ROMANCE_GATED_OUTFIT_LEVELS = [4, 5];
+
+export const getUnlockedOutfits = (charId: CharacterId, familiarity: number, affection: number): string[] => {
+  const famLevel = getFamiliarityLevelIndex(familiarity) + 1;
+  const romLevel = getAffectionLevelIndex(affection) + 1;
   const all = WARDROBE[charId] || [];
   const unlockMap = OUTFIT_UNLOCKS[charId] || {};
   const unlocked: string[] = [];
-  for (let lv = 1; lv <= level; lv++) {
+  const take = (lv: number) =>
     (unlockMap[lv] || []).forEach(o => { if (all.includes(o) && !unlocked.includes(o)) unlocked.push(o); });
-  }
+
+  take(1);
+  FAMILIARITY_GATED_OUTFIT_LEVELS.forEach(lv => { if (lv <= famLevel) take(lv); });
+  ROMANCE_GATED_OUTFIT_LEVELS.forEach(lv => { if (lv <= romLevel) take(lv); });
   return unlocked;
 };
 
-export const getUnlockedScenes = (affection: number): string[] => {
-  const level = getAffectionLevelIndex(affection) + 1;
+// 场景解锁只看親密度：能一起去哪里，取决于有多熟，而不是有多喜欢。
+export const getUnlockedScenes = (familiarity: number): string[] => {
+  const level = getFamiliarityLevelIndex(familiarity) + 1;
   const out: string[] = [];
   for (let lv = 1; lv <= level; lv++) {
     (SCENE_UNLOCKS_BY_LEVEL[lv] || []).forEach(s => { if (SCENE_MAP[s] && !out.includes(s)) out.push(s); });
   }
   return out;
 };
+
+// ---------------------------------------------------------
+// 😳 亲密表情门控：好感度不到就不给这张脸。
+// 值 = 需要的好感度等级 (1-5)。低于门槛时该表情不进 AI 的可选词表，
+// 立绘解析也会跳过，避免"路人第一句话就红着脸"。
+// ---------------------------------------------------------
+export const ROMANCE_GATED_EMOTIONS: Record<string, number> = {
+  love: 3,
+  jealous: 3,
+};
+
+export const isEmotionUnlocked = (emotion: string, affection: number): boolean =>
+  (ROMANCE_GATED_EMOTIONS[emotion] ?? 1) <= getAffectionLevelIndex(affection) + 1;
+
+export const filterEmotionsByRomance = (emotions: string[], affection: number): string[] =>
+  emotions.filter(e => isEmotionUnlocked(e, affection));
 
 // ---------------------------------------------------------
 // 👗 玩家换装意图识别：消息里明说"换泳装/私服"等 → 代码直接换装（不靠 AI 自觉）。
