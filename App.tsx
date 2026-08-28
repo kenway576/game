@@ -228,40 +228,60 @@ const App: React.FC = () => {
     if (target === GameMode.SETUP) setSetupStep('MENU');
   };
 
-  // ---------- 好感度 ----------
-  const applyAffection = (charId: CharacterId, rawDelta: number) => {
-    if (!rawDelta) return;
-    const delta = rawDelta * AFFECTION_DELTA_SCALE;
-    const current = affectionMap[charId] || 0;
-    const next = Math.max(0, Math.min(AFFECTION_MAX, current + delta));
-    if (next === current) return;
+  // ---------- 关系（双轴） ----------
+  // 親密度先结算，因为它决定了本回合好感度的天花板：
+  // 不熟的人再怎么聊也不会心动，要推恋爱线得先把人处熟。
+  const applyRelationship = (charId: CharacterId, rawAffection: number, rawFamiliarity: number) => {
+    if (!rawAffection && !rawFamiliarity) return;
 
-    setAffectionMap(prev => ({ ...prev, [charId]: next }));
-    setAffectionToast({ delta, key: Date.now() });
+    const curFam = familiarityMap[charId] ?? getInitialFamiliarity(charId);
+    const famDelta = rawFamiliarity * FAMILIARITY_DELTA_SCALE;
+    const nextFam = Math.max(0, Math.min(FAMILIARITY_MAX, curFam + famDelta));
 
-    // 跨越 100 分边界 = 等级提升 → 触发庆祝画面与升级剧情
-    const prevLevel = getAffectionLevelIndex(current);
-    const nextLevel = getAffectionLevelIndex(next);
-    if (nextLevel > prevLevel) {
-      setLevelUpEvent({ level: nextLevel + 1, key: Date.now() });
-    }
+    const curAff = affectionMap[charId] || 0;
+    const ceiling = getRomanceCeiling(nextFam);
+    const wantedAff = Math.max(0, Math.min(AFFECTION_MAX, curAff + rawAffection * AFFECTION_DELTA_SCALE));
+    // 天花板只挡上涨，不倒扣已有的好感度（避免关系倒退时数值被抹掉）
+    const nextAff = wantedAff > curAff ? Math.min(wantedAff, Math.max(curAff, ceiling)) : wantedAff;
+
+    if (nextFam === curFam && nextAff === curAff) return;
+
+    if (nextFam !== curFam) setFamiliarityMap(prev => ({ ...prev, [charId]: nextFam }));
+    if (nextAff !== curAff) setAffectionMap(prev => ({ ...prev, [charId]: nextAff }));
+    setAffectionToast({ delta: nextAff - curAff, famDelta: nextFam - curFam, key: Date.now() });
+
+    // 跨越等级阈值 → 庆祝画面 + 升级剧情。两条轴同回合升级时，
+    // 优先播放好感度（更稀有、更有戏），親密度那一级下回合自然会补上。
+    const affLeveledTo = getAffectionLevelIndex(nextAff) > getAffectionLevelIndex(curAff)
+      ? getAffectionLevelIndex(nextAff) + 1 : 0;
+    const famLeveledTo = getFamiliarityLevelIndex(nextFam) > getFamiliarityLevelIndex(curFam)
+      ? getFamiliarityLevelIndex(nextFam) + 1 : 0;
+
+    if (affLeveledTo) setLevelUpEvent({ axis: 'affection', level: affLeveledTo, key: Date.now() });
+    else if (famLeveledTo) setLevelUpEvent({ axis: 'familiarity', level: famLeveledTo, key: Date.now() });
   };
 
   // 玩家在升级庆祝画面点击继续 → 触发"关系升级"特别场景
   // TODO 剧情系统：以后改为优先播放 LEVEL_STORIES[charId][level] 的手写剧本
   const handleLevelUpContinue = () => {
     if (!levelUpEvent || !selectedCharId) return;
-    const lv = levelUpEvent.level;
-    const levelDef = AFFECTION_LEVELS[lv - 1];
+    const { axis, level: lv } = levelUpEvent;
     setLevelUpEvent(null);
 
-    const newOutfits = (OUTFIT_UNLOCKS[selectedCharId]?.[lv] || []).join(', ');
-    const newScenes = (SCENE_UNLOCKS_BY_LEVEL[lv] || []).join(', ');
+    // 解锁内容按轴归属：親密度给场景与日常服装，好感度给亲密服装
+    const outfitLevels = axis === 'familiarity' ? FAMILIARITY_GATED_OUTFIT_LEVELS : ROMANCE_GATED_OUTFIT_LEVELS;
+    const newOutfits = outfitLevels.includes(lv) ? (OUTFIT_UNLOCKS[selectedCharId]?.[lv] || []).join(', ') : '';
+    const newScenes = axis === 'familiarity' ? (SCENE_UNLOCKS_BY_LEVEL[lv] || []).join(', ') : '';
+
+    const header = axis === 'familiarity'
+      ? `【システム：プレイヤーとの親密度がLv.${lv}「${FAMILIARITY_LEVELS[lv - 1].labelEn}」に達しました。恋愛的な進展ではありません——「この人には、もう少し本当のことを話してもいい」と思えるようになった、という距離の変化です。呼び方や話し方がここで一段変わることを、さりげなく、しかしはっきり分かる形で見せてください。恋愛感情の描写は絶対に入れないこと。`
+      : `【システム：プレイヤーへの好感度がLv.${lv}「${AFFECTION_LEVELS[lv - 1].labelEn}」に達しました。自分の気持ちが一段深くなったことに気づいてしまう、特別で印象的なシーンをあなたのキャラクター性のままで演出してください。`;
+
     handleSendMessage(
-      `【システム：プレイヤーとの好感度がLv.${lv}「${levelDef.labelEn}」に到達しました。二人の関係が新しい段階に進んだことをはっきり感じさせる、特別で印象的なシーンをあなたのキャラクター性のままで演出してください。` +
+      header +
       (newOutfits ? `新しく解放された服装: ${newOutfits}。` : '') +
       (newScenes ? `新しく行ける場所: ${newScenes}。` : '') +
-      `これらを自然に活用しても良い。最後は必ず質問で終わること。】`
+      `最後は必ず質問で終わること。】`
     );
   };
 
