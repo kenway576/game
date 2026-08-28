@@ -802,6 +802,16 @@ export const DICE_AFFECTION_FLOOR = [0, 0, 0, 1, 1, 2];
 export const getDiceAffectionFloor = (face: number): number =>
   DICE_AFFECTION_FLOOR[Math.max(0, Math.min(5, face - 1))];
 
+// 🎲→🤝 親密度保底：比好感度慷慨得多。
+// 只要好好说了话，人就是会渐渐变熟——哪怕对方还没喜欢上你。
+// 索引 = 点数-1：                1  2  3  4  5  6
+export const DICE_FAMILIARITY_FLOOR = [1, 1, 1, 1, 2, 2];
+export const getDiceFamiliarityFloor = (face: number): number =>
+  DICE_FAMILIARITY_FLOOR[Math.max(0, Math.min(5, face - 1))];
+
+// 📚 答对题的親密度奖励（原始值，会再乘以 FAMILIARITY_DELTA_SCALE）
+export const QUIZ_CORRECT_FAMILIARITY_BONUS = 1;
+
 // ---------------------------------------------------------
 // 😊 表情同义词：AI 输出角色 emotionMap 里没有的表情词时，
 // 按顺序回退到最接近的可用表情，避免"伤心场景却是笑脸"。
