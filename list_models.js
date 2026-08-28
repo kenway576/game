@@ -1,12 +1,12 @@
 // 注意：这里必须用 @google/generative-ai
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require('fs');
-const path = require('path');
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import * as fs from 'fs';
+import * as path from 'path';
 
 // 优先从 .env.local 或系统环境变量读取 API Key
 let apiKey = process.env.VITE_GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
 if (!apiKey) {
-  const envPath = path.resolve(__dirname, '.env.local');
+  const envPath = path.resolve(process.cwd(), '.env.local');
   if (fs.existsSync(envPath)) {
     const envContent = fs.readFileSync(envPath, 'utf8');
     const match = envContent.match(/VITE_GOOGLE_API_KEY\s*=\s*(.+)/);
