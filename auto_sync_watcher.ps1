@@ -1,4 +1,4 @@
-﻿# ==============================================================================
+# ==============================================================================
 # Auto Sync Watcher for Kobe Study Game
 # Automatically detects file changes and pushes them to GitHub in real time
 # ==============================================================================
@@ -34,7 +34,7 @@ $watcher.EnableRaisingEvents = $true
 $watcher.NotifyFilter = [System.IO.NotifyFilters]'FileName, LastWrite, DirectoryName, Size'
 
 # Filter to ignore git internal directories and temporary files
-$ignorePatterns = @('\.git', 'node_modules', '\.tmp', '~$', '\.lock', 'dist', '\.swp')
+$ignorePatterns = @('\.git', 'node_modules', '\.tmp', '~$', '\.lock', 'dist', '\.swp', '\.env\.local')
 
 $changeAction = {
     param($source, $eventArgs)

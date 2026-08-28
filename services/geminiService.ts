@@ -13,7 +13,7 @@ const TIMEOUT_MS = 60000;
 // JSON 字符串内的裸控制字符（换行/制表符等）会导致解析失败，用于修复重试
 const CONTROL_CHARS = new RegExp('[' + String.fromCharCode(0) + '-' + String.fromCharCode(31) + ']+', 'g');
 
-const DEFAULT_DEEPSEEK_KEY = "REDACTED_ROTATE_THIS_KEY";
+const DEFAULT_DEEPSEEK_KEY = (import.meta.env.VITE_DEEPSEEK_API_KEY as string) || "";
 const DEEPSEEK_BASE_URL = "https://api.deepseek.com";
 
 // 'openai' = 一切 OpenAI 兼容接口（DeepSeek / Kimi / Qwen / Ollama / OpenRouter 等）
@@ -31,8 +31,8 @@ const resolveChatUrl = (base: string) => `${base.replace(/\/+$/, '')}/chat/compl
 const isOpenAICompatible = (modelName: string, baseUrl?: string) => !!baseUrl || modelName.includes('deepseek');
 
 const getGenAI = (userApiKey?: string) => {
-  const key = userApiKey || (import.meta.env.VITE_GOOGLE_API_KEY as string);
-  if (!key) throw new Error("No API Key found.");
+  const key = userApiKey || (import.meta.env.VITE_GOOGLE_API_KEY as string) || (import.meta.env.VITE_GEMINI_API_KEY as string) || '';
+  if (!key) throw new Error("No API Key found. Please configure VITE_GOOGLE_API_KEY in .env.local or enter your API key.");
   return new GoogleGenerativeAI(key);
 };
 
