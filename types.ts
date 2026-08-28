@@ -30,6 +30,7 @@ export interface Message {
   outfit?: string;
   location?: string;
   affectionDelta?: number;
+  familiarityDelta?: number;
 }
 
 // 2. 角色与游戏状态
