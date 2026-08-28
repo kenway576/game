@@ -6,7 +6,13 @@ import {
   GenerateContentResult 
 } from "@google/generative-ai";
 import { Character, ChatMode, N3GrammarTopic, DialoguePage, WordReading, Message, Language } from '../types';
-import { WARDROBE, SCENE_MAP, AFFECTION_MAX, getAffectionLevel } from '../constants';
+import {
+  WARDROBE, SCENE_MAP,
+  AFFECTION_MAX, getAffectionLevel,
+  FAMILIARITY_MAX, getFamiliarityLevel, FAMILIARITY_VS_ROMANCE_RULE,
+  getFamiliarityStage, getRelationshipProfile, getRomanceCeiling, isRomanceCapped,
+  filterEmotionsByRomance
+} from '../constants';
 
 const TIMEOUT_MS = 60000;
 
