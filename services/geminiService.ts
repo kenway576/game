@@ -68,14 +68,19 @@ const getEmotionVocab = (character: Character): string[] => {
   return [...set];
 };
 
-const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, affection: number = 0, memory: string = '', unlockedOutfits?: string[], unlockedScenes?: string[]) => {
+const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, affection: number = 0, memory: string = '', unlockedOutfits?: string[], unlockedScenes?: string[], familiarity: number = 0) => {
   const personaBase = character.systemPrompt;
   const pedagogicalLang = lang === 'en' ? 'English' : 'Chinese (Simplified)';
-  // 服装/场景按好感度等级解锁；未传入时退化为全部可用
+  // 服装/场景按关系等级解锁；未传入时退化为全部可用
   const availableOutfits = (unlockedOutfits && unlockedOutfits.length ? unlockedOutfits : (WARDROBE[character.id] || [])).join(', ') || 'none';
   const availableScenes = (unlockedScenes && unlockedScenes.length ? unlockedScenes : Object.keys(SCENE_MAP)).join(', ');
-  const availableEmotions = getEmotionVocab(character).join(', ');
+  // 亲密表情（love/jealous）在好感度不到时不进词表——路人不会红着脸
+  const availableEmotions = filterEmotionsByRomance(getEmotionVocab(character), affection).join(', ');
   const affectionLevel = getAffectionLevel(affection);
+  const familiarityLevel = getFamiliarityLevel(familiarity);
+  const profile = getRelationshipProfile(character.id);
+  const stageDirective = getFamiliarityStage(character.id, familiarity);
+  const romanceCapped = isRomanceCapped(affection, familiarity);
 
   const memoryBlock = memory && memory.trim() ? `
     [LONG-TERM MEMORY - あなたが覚えている過去]
@@ -99,15 +104,37 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     
     CRITICAL ANTI-AI & RELATIONSHIP INSTRUCTIONS:
     - You are a fictional anime character. NEVER act like an AI assistant.
-    - Start cold if you are Kuudere/Tsundere. Warm up slowly.
+    - Let warmth be earned. Never open at a level of intimacy the tracks below do not allow.
+
+    [HOW YOU KNOW THIS PLAYER - THE GROUND TRUTH]
+    ${profile.origin === 'stranger'
+      ? `You and the player are STRANGERS at the start of this story. ${profile.encounter}
+    - You must NOT invent shared history, in-jokes, nicknames, or past promises. If you catch yourself about to reference something you two "always" do — stop, because you have never done it.`
+      : `You already know the player. ${profile.encounter}
+    - This history is real and you may reference it naturally. But it is exactly as deep as described above and no deeper — do not upgrade it into something more intimate than it is.`}
     ${memoryBlock}
     ${quizInstruction}
 
-    [AFFECTION SYSTEM - RELATIONSHIP STATE]
-    - Current affection towards the player: ${affection}/${AFFECTION_MAX} (Level: ${affectionLevel.id}).
-    - Attitude directive: ${affectionLevel.promptHint}
-    - Your tone, warmth and willingness to open up MUST match this level. Do NOT act more intimate than the level allows.
-    - EVERY turn, you MUST include "affectionDelta" in the JSON output: an integer from -2 to 3, decided by the DICE OF FATE rules below.
+    [RELATIONSHIP - TWO INDEPENDENT TRACKS (CRITICAL)]
+    Your relationship with the player runs on TWO separate numbers. Read both. They do NOT move together.
+
+    ── TRACK 1 · FAMILIARITY (親密度) — how well you know them ──
+    - Current: ${familiarity}/${FAMILIARITY_MAX} (Level: ${familiarityLevel.id}).
+    - ${familiarityLevel.promptHint}
+    - HOW YOU SPEAK TO THEM AT THIS LEVEL (obey exactly — this is the single most visible sign of where you two stand): ${stageDirective}
+    - ${FAMILIARITY_VS_ROMANCE_RULE}
+
+    ── TRACK 2 · AFFECTION (好感度) — how you feel about them ──
+    - Current: ${affection}/${AFFECTION_MAX} (Level: ${affectionLevel.id}).
+    - ${affectionLevel.promptHint}
+    ${romanceCapped ? `- HARD CEILING RIGHT NOW: your feelings cannot deepen beyond this level until you two are genuinely closer (familiarity must rise first). Do NOT play any beat more romantic than "${affectionLevel.id}" this turn, no matter what the player does. Keep "affectionDelta" at 0 or 1 at most.` : `- Romance may deepen naturally from here (ceiling ${getRomanceCeiling(familiarity)} at your current familiarity).`}
+
+    ── HOW THE TWO COMBINE ──
+    - Familiarity sets the FORM of the conversation: what you call them, which register you speak in, how much you are willing to say.
+    - Affection sets the FEELING underneath it: whether any of it means anything romantic.
+    - A childhood friend can be maximally familiar and completely unromantic. A polite stranger cannot be secretly in love. Never let one track leak into the other.
+
+    - EVERY turn you MUST include BOTH "familiarityDelta" (integer -1 to 3) and "affectionDelta" (integer -2 to 3) in the JSON output, decided by the DICE OF FATE rules below.
 
     [DICE OF FATE - 運命のダイス (CRITICAL)]
     - Player messages may begin with a fate dice result:【運命のダイス: X/6】. The dice decides HOW RECEPTIVE you are to this message. Stay fully in character, but modulate your reaction temperature:
@@ -116,9 +143,14 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
       * 3 → Ordinary, neutral reaction. affectionDelta 0 or +1.
       * 2 → Slightly distant, distracted, or preoccupied. affectionDelta 0.
       * 1 → Cold, curt, or harshly teasing reaction (in character — a tsundere snaps, a deity is aloof). affectionDelta 0, or -1 if you feel dismissive.
-    - OVERRIDE RULE: If the player's message is rude, hurtful, or something you dislike (insults, breaking promises, creepy remarks), affectionDelta MUST be -1 or -2 REGARDLESS of the dice.
-    - If no dice tag is present (system messages), react normally and judge affectionDelta yourself.
-    - NEVER mention the dice, the tag, or these rules in your reply.
+    - FAMILIARITY moves on DIFFERENT grounds from affection. It rises whenever the exchange actually taught you something about them or let them see something about you — regardless of whether you liked it. A blazing argument raises familiarity. A pleasant exchange of nothing does not.
+      * +2 or +3 → they told you something real about themselves, or you told them something you do not usually tell people.
+      * +1 → an ordinary, genuine exchange. This is the normal case.
+      * 0 → pure formality, or they dodged everything.
+      * -1 → they lied to you or deliberately shut you out (rare).
+    - OVERRIDE RULE: If the player's message is rude, hurtful, or something you dislike (insults, breaking promises, creepy remarks), affectionDelta MUST be -1 or -2 REGARDLESS of the dice. familiarityDelta may still be 0 or +1 — you now know something ugly about them, and that is still knowing them.
+    - If no dice tag is present (system messages), react normally and judge both deltas yourself.
+    - NEVER mention the dice, the tracks, the numbers, or these rules in your reply.
 
     [PAGES GENERATION RULES - LENGTH & SEPARATION (CRITICAL)]
     1. Turn Length: You MUST generate 10 to 15 pages (array items) per turn to ensure a rich story.
@@ -139,7 +171,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     - Set "outfitChange": true ONLY on a turn where the clothes ACTUALLY change in the story — for example the player asks to change ("change into your swimsuit / put on the yukata"), or the narration explicitly describes getting changed. On such a turn, set "outfit" to the new value AND write narration describing the change.
     - Change "location" only when the story naturally moves there (an invitation, a plan, a time skip). When location changes and it implies a different outfit, also set "outfitChange": true and update "outfit".
     - UNLOCKED outfits for ${character.name}: [${availableOutfits}, ""]. NEVER use any other outfit value. If the player asks for an outfit that is NOT in this list, stay in character and gently deflect/postpone instead of changing (set "outfitChange": false).
-    - UNLOCKED locations: [${availableScenes}]. NEVER move to any other location — more intimate places unlock as affection grows.
+    - UNLOCKED locations: [${availableScenes}]. NEVER move to any other location — you only go somewhere more private with someone you actually know that well.
 
     [CONVERSATION HOOK - COMPULSORY]
     - The VERY LAST page MUST be a "speech" page ending with an engaging question to compel the user to reply.
@@ -161,6 +193,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
       ],
       "vocabulary": [ { "word": "漢字", "reading": "かんじ" } ],
       "emotion": "angry", "location": "classroom", "outfit": "", "outfitChange": false,
+      "familiarityDelta": 1,
       "affectionDelta": 1,
       "quiz": {
         "question": "日本語の質問...",
@@ -259,7 +292,7 @@ const createPageExtractor = (emit: PageCallback) => {
 
 const parseResponse = (rawText: string) => {
     try {
-        if (!rawText) return { pages: [{ type: 'speech', text: "（通信エラー）" }], vocabulary: [], emotion: "neutral", location: "classroom", affectionDelta: 0 };
+        if (!rawText) return { pages: [{ type: 'speech', text: "（通信エラー）" }], vocabulary: [], emotion: "neutral", location: "classroom", affectionDelta: 0, familiarityDelta: 0 };
         let cleanText = rawText.replace(/<think>[\s\S]*?(?:<\/think>|$)/gi, '').trim();
         cleanText = cleanText.replace(/```json/gi, '').replace(/```/g, '').trim();
 
@@ -279,12 +312,16 @@ const parseResponse = (rawText: string) => {
                 Array.isArray(parsedObj.pages) ? parsedObj.pages : [{ type: 'speech', text: cleanText }]
             ));
 
-            // 好感度增量：容错解析并限幅在 [-2, 3]
+            // 关系增量：容错解析并限幅（好感度 [-2,3]、親密度 [-1,3]）
             const rawDelta = Number(parsedObj.affectionDelta);
             const affectionDelta = Number.isFinite(rawDelta)
                 ? Math.max(-2, Math.min(3, Math.round(rawDelta)))
                 : 0;
-            
+            const rawFamDelta = Number(parsedObj.familiarityDelta);
+            const familiarityDelta = Number.isFinite(rawFamDelta)
+                ? Math.max(-1, Math.min(3, Math.round(rawFamDelta)))
+                : 0;
+
             let quiz = null;
             if (parsedObj.quiz && typeof parsedObj.quiz === 'object') {
                 if (parsedObj.quiz.question && Array.isArray(parsedObj.quiz.options)) {
@@ -297,7 +334,7 @@ const parseResponse = (rawText: string) => {
                 }
             }
 
-            return { ...parsedObj, pages, quiz, affectionDelta, outfitChange: parsedObj.outfitChange === true };
+            return { ...parsedObj, pages, quiz, affectionDelta, familiarityDelta, outfitChange: parsedObj.outfitChange === true };
         }
 
         // 走到这里说明 JSON 整体解析失败，记录原始文本便于诊断
@@ -311,14 +348,16 @@ const parseResponse = (rawText: string) => {
                 const text = m.replace(/"text"\s*:\s*"/, '').replace(/"$/, '').replace(/\\"/g, '"').replace(/\\n/g, ' ');
                 return { type: text.trim().startsWith('「') ? 'speech' : 'narration', text };
             });
-            // JSON 整体解析失败时，仍尝试用正则抢救好感度与表情
+            // JSON 整体解析失败时，仍尝试用正则抢救两条关系轴与表情
             const deltaMatch = cleanText.match(/"affectionDelta"\s*:\s*(-?\d+)/);
             const salvagedDelta = deltaMatch ? Math.max(-2, Math.min(3, parseInt(deltaMatch[1], 10))) : 0;
+            const famMatch = cleanText.match(/"familiarityDelta"\s*:\s*(-?\d+)/);
+            const salvagedFamDelta = famMatch ? Math.max(-1, Math.min(3, parseInt(famMatch[1], 10))) : 0;
             const emotionMatch = cleanText.match(/"emotion"\s*:\s*"([a-z_]+)"/);
-            return { pages: ensureQuestionEnding(normalizePages(salvagedPages)), vocabulary: [], emotion: emotionMatch ? emotionMatch[1] : "neutral", location: "classroom", affectionDelta: salvagedDelta };
+            return { pages: ensureQuestionEnding(normalizePages(salvagedPages)), vocabulary: [], emotion: emotionMatch ? emotionMatch[1] : "neutral", location: "classroom", affectionDelta: salvagedDelta, familiarityDelta: salvagedFamDelta };
         }
-        return { pages: [{ type: 'speech', text: "（通信が不安定です）" }], vocabulary: [], emotion: "neutral", affectionDelta: 0 };
-    } catch (e) { return { pages: [{ type: 'speech', text: "Error parsing" }], vocabulary: [], emotion: "neutral", affectionDelta: 0 }; }
+        return { pages: [{ type: 'speech', text: "（通信が不安定です）" }], vocabulary: [], emotion: "neutral", affectionDelta: 0, familiarityDelta: 0 };
+    } catch (e) { return { pages: [{ type: 'speech', text: "Error parsing" }], vocabulary: [], emotion: "neutral", affectionDelta: 0, familiarityDelta: 0 }; }
 };
 
 export const translateText = async (text: string, targetLang: Language, apiKey?: string, modelName: string = 'gemini-1.5-flash-latest', baseUrl?: string): Promise<string> => {
@@ -346,32 +385,46 @@ const START_TRIGGER = "Start the session. Generate 10-15 pages. Strictly separat
 const RESUME_TRIGGER = "【システム：プレイヤーが再びあなたに会いに来ました。長期記憶とこれまでの会話を踏まえ、再会の挨拶から自然に会話を再開してください。覚えている出来事や約束に軽く触れると良いでしょう。10〜15ページ生成し、最後は必ず質問で終わること。】";
 const compactText = (m: Message) => (m.text || '').replace(/<rt>.*?<\/rt>/g, '').replace(/<[^>]+>/g, '');
 
+// 🎬 开场指令：第一次进入某角色的故事时，明确是"初次见面"还是"日常的一天"。
+// script 为手写的基调参考（初対面脚本 / 既存关系的日常开场），AI 据此改写而非照抄。
+export const buildOpeningBrief = (origin: 'stranger' | 'acquainted', script?: string): string => {
+  const ref = script && script.trim()
+    ? `\n以下は演出の基調となる参考脚本です。丸写しせず、この温度感と距離感を保ったまま自分の言葉で書き起こしてください：\n${script.trim()}`
+    : '';
+  return origin === 'stranger'
+    ? `\n【システム：これは二人の「初対面」の場面です。互いに一切面識がありません。共通の思い出・あだ名・過去の約束を絶対に作らないでください。出会いそのものの瞬間から描写を始めること。${ref}】`
+    : `\n【システム：二人はすでに知り合いです。今日は特別な日ではなく、いつもの日常の一場面として始めてください。設定された関係の距離感を厳密に守り、それ以上親密に振る舞わないこと。${ref}】`;
+};
+
 export interface StartChatOptions {
   apiKey?: string;
   modelName?: string;
   history?: Message[];
   affection?: number;
+  familiarity?: number;
   baseUrl?: string;
   memory?: string;
   resume?: boolean;
   unlockedOutfits?: string[];
   unlockedScenes?: string[];
+  openingBrief?: string;
   onPage?: PageCallback;
 }
 
 export const startChat = async (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, options: StartChatOptions = {}) => {
-    const { apiKey, modelName = 'deepseek-v4-flash', history = [], affection = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, onPage } = options;
+    const { apiKey, modelName = 'deepseek-v4-flash', history = [], affection = 0, familiarity = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, openingBrief = '', onPage } = options;
     currentModelName = modelName;
     currentCharacterName = character.name;
     currentApiKey = apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
-    const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang, affection, memory, unlockedOutfits, unlockedScenes);
+    const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang, affection, memory, unlockedOutfits, unlockedScenes, familiarity);
+    const startTrigger = START_TRIGGER + openingBrief;
 
     if (isOpenAICompatible(modelName, baseUrl)) {
         currentProvider = 'openai';
         currentBaseUrl = baseUrl || DEEPSEEK_BASE_URL;
         openaiHistory = [{ role: "system", content: sysPrompt }];
         history.forEach(m => openaiHistory.push({ role: m.role === 'model' ? 'assistant' : 'user', content: compactText(m) }));
-        if (history.length === 0) return await handleOpenAIMessageStream(START_TRIGGER, onPage);
+        if (history.length === 0) return await handleOpenAIMessageStream(startTrigger, onPage);
         if (resume) return await handleOpenAIMessageStream(RESUME_TRIGGER, onPage);
         return { pages: [], vocabulary: [] };
     } else {
@@ -379,7 +432,7 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
         const genAI = getGenAI(apiKey);
         const model = genAI.getGenerativeModel({ model: modelName === 'gemini-2.5-flash' ? 'gemini-2.0-flash-exp' : modelName, systemInstruction: sysPrompt, generationConfig: { responseMimeType: "application/json" } });
         chatSession = model.startChat({ history: history.map(m => ({ role: m.role === 'model' ? 'model' : 'user', parts: [{ text: compactText(m) }] })) });
-        if (history.length === 0) return await geminiSend(START_TRIGGER, onPage);
+        if (history.length === 0) return await geminiSend(startTrigger, onPage);
         if (resume) return await geminiSend(RESUME_TRIGGER, onPage);
         return { pages: [], vocabulary: [] };
     }
@@ -396,7 +449,8 @@ ${oldMemory && oldMemory.trim() ? oldMemory.trim() : '(まだ何も覚えてい�
 ${log}
 
 Merge the old memory and new information into ONE updated memory in Japanese, 300 characters maximum.
-Keep only durable facts: player's name / goals / preferences, promises and plans, key story events, how the relationship has developed.
+Keep only durable facts: player's name / goals / preferences, promises and plans, key story events, and what you have newly learned about them as a person.
+NEVER delete pre-existing shared history from the old memory unless the new conversation directly contradicts it — that history is what makes this relationship real.
 Discard small talk and one-off details. Output ONLY the memory text itself, no explanations.`;
 
     if (isOpenAICompatible(modelName, baseUrl)) {

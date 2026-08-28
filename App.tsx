@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, MemoryMap } from './types';
-import { CHARACTERS, SCENE_MAP, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, getDiceAffectionFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL } from './constants';
-import { startChat, sendMessage, translateText, summarizeMemory } from './services/geminiService';
+import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis } from './types';
+import { CHARACTERS, SCENE_MAP, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS } from './constants';
+import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import type { DialoguePage } from './types';
 import Background from './components/Background';
 import SetupScreen from './components/SetupScreen';
@@ -34,19 +34,25 @@ const App: React.FC = () => {
   const [chatHistories, setChatHistories] = useState<Record<CharacterId, Message[]>>(
     createCharacterRecord(() => [] as Message[])
   );
+  // 💗 好感度（恋爱线）：全员从 0 开始，没有例外
   const [affectionMap, setAffectionMap] = useState<AffectionMap>(
     createCharacterRecord(() => 0)
+  );
+  // 🤝 親密度（有多熟）：每个角色的起点由 RELATIONSHIP_PROFILES 决定
+  const [familiarityMap, setFamiliarityMap] = useState<FamiliarityMap>(
+    createCharacterRecord(id => getInitialFamiliarity(id))
   );
   const [affectionToast, setAffectionToast] = useState<AffectionToast | null>(null);
 
   // 🎲 命运骰子：本回合的点数（发送消息时掷出，展示给玩家）
   const [diceRoll, setDiceRoll] = useState<{ value: number; key: number } | null>(null);
 
-  // 💞 好感度升级事件：触发庆祝画面 + 升级剧情
-  const [levelUpEvent, setLevelUpEvent] = useState<{ level: number; key: number } | null>(null);
+  // 💞 关系升级事件：触发庆祝画面 + 升级剧情（区分是哪条轴涨了）
+  const [levelUpEvent, setLevelUpEvent] = useState<{ axis: RelationshipAxis; level: number; key: number } | null>(null);
 
-  // 🧠 长期记忆：每个角色一段滚动摘要；replySinceMemoryRef 记录距上次摘要的回复数
-  const [memoryMap, setMemoryMap] = useState<MemoryMap>(createCharacterRecord(() => ''));
+  // 🧠 长期记忆：每个角色一段滚动摘要（已认识的角色带着共同记忆开局）；
+  // replySinceMemoryRef 记录距上次摘要的回复数
+  const [memoryMap, setMemoryMap] = useState<MemoryMap>(createCharacterRecord(id => getSeedMemory(id)));
   const replySinceMemoryRef = useRef(0);
 
   const [selectedCharId, setSelectedCharId] = useState<CharacterId | null>(null);
