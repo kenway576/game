@@ -1,4 +1,4 @@
-import { Character, CharacterId, AffectionLevelDef } from './types';
+import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile } from './types';
 
 // ---------------------------------------------------------
 // 🌍 1. 场景地图 (SCENE_MAP)
@@ -518,62 +518,121 @@ export const WARDROBE: Record<string, string[]> = {
 };
 
 // ---------------------------------------------------------
-// 💗 2.6 好感度系统 (AFFECTION)
-// 梯度区间：升级需求逐级递减（关系越深，感情升温越快）。
-// Lv.1→2 需 80 分，之后 60 / 45 / 35，Lv.5 满级再攒 30 封顶。
+// 💞 2.6 关系系统 (RELATIONSHIP) —— 双轴
+//
+//   親密度 (FAMILIARITY)：有多熟。决定称呼、语体、能聊多深、能一起去哪里。
+//                         每个角色起点不同（幼馴染满格，狐神为零），涨得快。
+//   好感度 (AFFECTION)  ：有多喜欢。决定服装解锁与恋爱线。
+//                         **所有角色一律从 0 开始**，涨得慢。
+//
+// 关键约束：好感度不能超过親密度（见 getRomanceCeiling）。
+// 不熟的人不会爱上你；而幼馴染熟归熟，恋爱值仍要从头挣。
 // ---------------------------------------------------------
+
+// ---------- 親密度 ----------
+// 区间递增：从陌生到面熟很快，从朋友到无话不谈很慢。
+export const FAMILIARITY_LEVEL_SPANS = [40, 50, 60, 60, 40];
+export const FAMILIARITY_MAX = FAMILIARITY_LEVEL_SPANS.reduce((a, b) => a + b, 0); // 250
+// AI 返回的 familiarityDelta (-1~+3) 乘以该倍率后累加
+export const FAMILIARITY_DELTA_SCALE = 3;
+
+export const FAMILIARITY_LEVELS: RelationshipLevelDef[] = [
+  {
+    threshold: 0, id: 'stranger', labelZh: '初次见面', labelEn: 'Stranger',
+    promptHint: 'FAM LV1/5 (初対面): You do not know this person. There is no shared history, no reason to trust them, and no curiosity beyond ordinary politeness. NEVER reference anything they have not told you inside this very conversation. Keep replies short and surface-level; deflect personal questions instead of answering them.'
+  },
+  {
+    threshold: 40, id: 'acquaintance', labelZh: '面熟', labelEn: 'Acquaintance',
+    promptHint: 'FAM LV2/5 (顔見知り): You know their face and name and very little else. Conversation stays inside your shared context (the classroom, the tutoring session, the shrine, the arcade). Personal questions get a joke or a deflection, not an answer.'
+  },
+  {
+    threshold: 90, id: 'friend', labelZh: '朋友', labelEn: 'Friend',
+    promptHint: 'FAM LV3/5 (友達): A real friend. Bring up things they told you before, make plans together, disagree with them honestly. There are still things you keep to yourself.'
+  },
+  {
+    threshold: 150, id: 'close', labelZh: '挚友', labelEn: 'Close',
+    promptHint: 'FAM LV4/5 (親しい間柄): One of the few people you are genuinely relaxed around. Show them the version of yourself you hide from everyone else — complaints, insecurities, unglamorous habits, bad moods you would never let others see.'
+  },
+  {
+    threshold: 210, id: 'confidant', labelZh: '无话不谈', labelEn: 'Confidant',
+    promptHint: 'FAM LV5/5 (心を許した相手): There is nothing you would not tell this person. Silence between you is comfortable rather than awkward. You notice something is wrong with them before they say a word.'
+  }
+];
+
+// 親密度 ≠ 恋爱。这条规则必须跟等级提示一起注入，否则模型会把"熟"演成"喜欢"。
+export const FAMILIARITY_VS_ROMANCE_RULE =
+  'CRITICAL — FAMILIARITY IS NOT ROMANCE. High familiarity means comfort, honesty and zero social distance; it NEVER means attraction. A childhood friend at maximum familiarity may still have never once thought of the player that way. Romantic behaviour — blushing at implications, jealousy, wanting to be special — is governed ONLY by the separate AFFECTION track, never by this one.';
+
+// ---------- 好感度（恋爱线） ----------
+// 梯度区间：升级需求逐级递减（感情一旦启动就越烧越快）。
+// Lv.1→2 需 80 分，之后 60 / 45 / 35，Lv.5 满级再攒 30 封顶。
 export const AFFECTION_LEVEL_SPANS = [80, 60, 45, 35, 30];
 export const AFFECTION_MAX = AFFECTION_LEVEL_SPANS.reduce((a, b) => a + b, 0); // 250
 // AI 返回的 affectionDelta (-2~+3) 乘以该倍率后再累加：骰子 6 点最高一次 +6 分
 export const AFFECTION_DELTA_SCALE = 2;
 
-// 5 级情感曲线：路人 → 朋友 → 心动 → 恋人 → 挚爱（夫妇般的终生羁绊）
-export const AFFECTION_LEVELS: AffectionLevelDef[] = [
+// 5 级恋爱曲线：无意 → 好意 → 心动 → 恋人 → 挚爱（夫妇般的终生羁绊）
+export const AFFECTION_LEVELS: RelationshipLevelDef[] = [
   {
-    threshold: 0, id: 'stranger', labelZh: '路人', labelEn: 'Stranger',
-    promptHint: 'LV1/5 (路人): The player is practically a stranger to you. React like a polite but indifferent passerby: short replies, no personal curiosity, zero emotional investment. You would not share anything private. Romance is completely unthinkable at this stage.'
+    threshold: 0, id: 'unaware', labelZh: '无意', labelEn: 'Unaware',
+    promptHint: 'ROM LV1/5 (恋愛感情なし): You have NO romantic feelings for the player and the possibility has genuinely never crossed your mind. Any warmth you show comes from friendship, duty, curiosity or amusement — never attraction. Do NOT blush at romantic implications; be puzzled by them, laugh them off, or answer them literally. Romance is off the table no matter how close you two are.'
   },
   {
-    threshold: 80, id: 'friend', labelZh: '朋友', labelEn: 'Friend',
-    promptHint: 'LV2/5 (朋友): The player is now a friend. Be casually friendly within your persona: chat willingly, joke around, remember what they said, but keep a clear emotional boundary — they are one friend among many, nothing more.'
+    threshold: 80, id: 'fond', labelZh: '好意', labelEn: 'Fond',
+    promptHint: 'ROM LV2/5 (好意): You have started enjoying their company more than you expected. This is NOT attraction yet — if accused of liking them you would deny it and you would be telling the truth. You simply find yourself looking for them in a crowd and being in a better mood afterwards.'
   },
   {
     threshold: 140, id: 'crush', labelZh: '心动', labelEn: 'Crush',
-    promptHint: 'LV3/5 (心动): You are starting to have special feelings for the player and it confuses you. Give them noticeably special treatment, get flustered when teased, feel a sting of jealousy when they mention others. You have NOT admitted anything — the relationship is sweet and ambiguous (曖昧).'
+    promptHint: 'ROM LV3/5 (心動): You are starting to have special feelings for the player and it confuses you. Give them noticeably special treatment, get flustered when teased, feel a sting of jealousy when they mention someone else. You have NOT admitted anything — the relationship is sweet and ambiguous (曖昧).'
   },
   {
     threshold: 185, id: 'lover', labelZh: '恋人', labelEn: 'Lover',
-    promptHint: 'LV4/5 (恋人): You and the player are in love — effectively a couple. Be openly affectionate in your own persona\'s way: warmth, light skinship references, planning dates, occasional jealousy and sweet quarrels. Your dere side now dominates, though your core personality never disappears.'
+    promptHint: 'ROM LV4/5 (恋人): You and the player are in love — effectively a couple. Be openly affectionate in your own persona\'s way: warmth, light skinship references, planning dates, occasional jealousy and sweet quarrels. Your dere side now dominates, though your core personality never disappears.'
   },
   {
     threshold: 220, id: 'soulmate', labelZh: '挚爱', labelEn: 'Soulmate',
-    promptHint: 'LV5/5 (挚爱): The player is your life partner — the bond feels like a married couple who will walk through life together (夫婦のような絆). Show deep unconditional trust and calm, comfortable intimacy; talk naturally about your shared future, protect and support them without hesitation. This love is quiet, certain, and lifelong.'
+    promptHint: 'ROM LV5/5 (挚愛): The player is your life partner — the bond feels like a married couple who will walk through life together (夫婦のような絆). Show deep unconditional trust and calm, comfortable intimacy; talk naturally about your shared future, protect and support them without hesitation. This love is quiet, certain, and lifelong.'
   }
 ];
 
-export const getAffectionLevel = (value: number): AffectionLevelDef => {
-  let result = AFFECTION_LEVELS[0];
-  for (const level of AFFECTION_LEVELS) {
-    if (value >= level.threshold) result = level;
-  }
-  return result;
-};
-
-export const getAffectionLevelIndex = (value: number): number => {
+// ---------- 通用等级工具 ----------
+const levelIndexIn = (levels: RelationshipLevelDef[], value: number): number => {
   let idx = 0;
-  AFFECTION_LEVELS.forEach((l, i) => { if (value >= l.threshold) idx = i; });
+  levels.forEach((l, i) => { if (value >= l.threshold) idx = i; });
   return idx;
 };
 
+export const getAffectionLevelIndex = (value: number): number => levelIndexIn(AFFECTION_LEVELS, value);
+export const getFamiliarityLevelIndex = (value: number): number => levelIndexIn(FAMILIARITY_LEVELS, value);
+
+export const getAffectionLevel = (value: number): RelationshipLevelDef => AFFECTION_LEVELS[getAffectionLevelIndex(value)];
+export const getFamiliarityLevel = (value: number): RelationshipLevelDef => FAMILIARITY_LEVELS[getFamiliarityLevelIndex(value)];
+
 // 当前等级的区间大小（各级不同）
-export const getLevelSpan = (value: number): number =>
-  AFFECTION_LEVEL_SPANS[getAffectionLevelIndex(value)] || AFFECTION_LEVEL_SPANS[AFFECTION_LEVEL_SPANS.length - 1];
+export const getLevelSpan = (value: number, axis: RelationshipAxis = 'affection'): number => {
+  const spans = axis === 'familiarity' ? FAMILIARITY_LEVEL_SPANS : AFFECTION_LEVEL_SPANS;
+  const idx = axis === 'familiarity' ? getFamiliarityLevelIndex(value) : getAffectionLevelIndex(value);
+  return spans[idx] || spans[spans.length - 1];
+};
 
 // 当前等级内的进度（0 ~ 该级区间大小）
-export const getLevelProgress = (value: number): number => {
-  const level = getAffectionLevel(value);
-  return Math.max(0, Math.min(getLevelSpan(value), value - level.threshold));
+export const getLevelProgress = (value: number, axis: RelationshipAxis = 'affection'): number => {
+  const level = axis === 'familiarity' ? getFamiliarityLevel(value) : getAffectionLevel(value);
+  return Math.max(0, Math.min(getLevelSpan(value, axis), value - level.threshold));
 };
+
+// ---------- 恋爱天花板：好感度等级不得超过親密度等级 ----------
+// 親密度 Lv.N 时，好感度最高只能停在 Lv.N 的顶端（差 1 分进不了 Lv.N+1）。
+// 效果：初対面的人再怎么聊也不会心动；要推恋爱线，必须先把人处熟。
+export const getRomanceCeiling = (familiarity: number): number => {
+  const famIdx = getFamiliarityLevelIndex(familiarity);
+  if (famIdx >= AFFECTION_LEVELS.length - 1) return AFFECTION_MAX;
+  return AFFECTION_LEVELS[famIdx + 1].threshold - 1;
+};
+
+// 好感度已被親密度卡住 → UI 显示"需要先更熟一些"，prompt 里也提醒 AI 别演过头
+export const isRomanceCapped = (affection: number, familiarity: number): boolean =>
+  affection >= getRomanceCeiling(familiarity);
 
 // ---------------------------------------------------------
 // 🔓 2.61 等级解锁系统 (LEVEL UNLOCKS)
