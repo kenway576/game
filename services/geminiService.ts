@@ -319,8 +319,7 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
     const target = targetLang === 'en' ? 'English' : 'Chinese (Simplified)';
     if (isOpenAICompatible(modelName, baseUrl)) {
         const activeKey = apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
-        // DeepSeek 翻译固定用便宜的 flash 型号；自定义接口用用户指定的模型
-        const translateModel = baseUrl ? modelName : 'deepseek-v4-flash';
+        const translateModel = resolveActualModelName(baseUrl ? modelName : 'deepseek-v4-flash', baseUrl);
         try {
             const res = await fetch(resolveChatUrl(baseUrl || DEEPSEEK_BASE_URL), {
                 method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${activeKey}` },
@@ -339,11 +338,8 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
 
 const START_TRIGGER = "Start the session. Generate 10-15 pages. Strictly separate narration and speech. End with a question.";
 const RESUME_TRIGGER = "【システム：プレイヤーが再びあなたに会いに来ました。長期記憶とこれまでの会話を踏まえ、再会の挨拶から自然に会話を再開してください。覚えている出来事や約束に軽く触れると良いでしょう。10〜15ページ生成し、最後は必ず質問で終わること。】";
-
-// 历史回放时把消息压缩成纯文本（去掉注音等 HTML），节省 token
 const compactText = (m: Message) => (m.text || '').replace(/<rt>.*?<\/rt>/g, '').replace(/<[^>]+>/g, '');
 
-// 会话启动配置（参数太多，收拢为 options 对象）
 export interface StartChatOptions {
   apiKey?: string;
   modelName?: string;
@@ -351,14 +347,14 @@ export interface StartChatOptions {
   affection?: number;
   baseUrl?: string;
   memory?: string;
-  resume?: boolean;            // true：带历史重新进入，生成"重逢问候"；false + 有历史：读档静默恢复
-  unlockedOutfits?: string[];  // 已解锁服装（按好感度等级）
-  unlockedScenes?: string[];   // 已解锁场景
-  onPage?: PageCallback;       // 流式回调：每解析出一页立即回传
+  resume?: boolean;
+  unlockedOutfits?: string[];
+  unlockedScenes?: string[];
+  onPage?: PageCallback;
 }
 
 export const startChat = async (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, options: StartChatOptions = {}) => {
-    const { apiKey, modelName = 'gemini-3-flash-preview', history = [], affection = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, onPage } = options;
+    const { apiKey, modelName = 'deepseek-v4-flash', history = [], affection = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, onPage } = options;
     currentModelName = modelName;
     currentCharacterName = character.name;
     currentApiKey = apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
@@ -383,7 +379,6 @@ export const startChat = async (character: Character, mode: ChatMode, goal: stri
     }
 };
 
-// 🧠 长期记忆摘要：把旧记忆与最近对话合并成一段紧凑的日语记忆（独立请求，不影响聊天会话）
 export const summarizeMemory = async (characterName: string, oldMemory: string, recentMessages: Message[], apiKey?: string, modelName: string = 'deepseek-v4-flash', baseUrl?: string): Promise<string> => {
     const log = recentMessages
         .map(m => `${m.role === 'user' ? 'PLAYER' : characterName}: ${compactText(m).slice(0, 300)}`)
@@ -400,7 +395,7 @@ Discard small talk and one-off details. Output ONLY the memory text itself, no e
 
     if (isOpenAICompatible(modelName, baseUrl)) {
         const activeKey = apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
-        const summaryModel = baseUrl ? modelName : 'deepseek-v4-flash';
+        const summaryModel = resolveActualModelName(baseUrl ? modelName : 'deepseek-v4-flash', baseUrl);
         const res = await withTimeout(fetch(resolveChatUrl(baseUrl || DEEPSEEK_BASE_URL), {
             method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${activeKey}` },
             body: JSON.stringify({ model: summaryModel, messages: [{ role: "user", content: prompt }] })
@@ -416,7 +411,8 @@ Discard small talk and one-off details. Output ONLY the memory text itself, no e
 };
 
 const callOpenAI = async (withJsonFormat: boolean) => {
-    const body: any = { model: currentModelName, messages: openaiHistory };
+    const actualModel = resolveActualModelName(currentModelName, currentBaseUrl !== DEEPSEEK_BASE_URL ? currentBaseUrl : undefined);
+    const body: any = { model: actualModel, messages: openaiHistory };
     if (withJsonFormat) body.response_format = { type: "json_object" };
     return await withTimeout(fetch(resolveChatUrl(currentBaseUrl), {
         method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${currentApiKey}` },
@@ -427,7 +423,6 @@ const callOpenAI = async (withJsonFormat: boolean) => {
 const handleOpenAIMessage = async (text: string) => {
     openaiHistory.push({ role: "user", content: text });
     let response = await callOpenAI(true);
-    // 部分兼容端点不支持 response_format，去掉后重试一次
     if (!response.ok && (response.status === 400 || response.status === 422)) {
         response = await callOpenAI(false);
     }
@@ -437,14 +432,11 @@ const handleOpenAIMessage = async (text: string) => {
             const err = await response.json();
             detail = err?.error?.message || JSON.stringify(err).slice(0, 200);
         } catch (e) {}
-        openaiHistory.pop(); // 请求失败，回滚本轮用户消息，避免污染上下文
+        openaiHistory.pop();
         throw new Error(`API ${response.status}: ${detail || response.statusText}`);
     }
     const data = await response.json();
     let content = String(data.choices?.[0]?.message?.content || '');
-
-    // 推理模型偶发把全部输出写进思考、正文为空 → 去掉 response_format 重试一次
-    // （强制 JSON 模式偶尔诱发空正文；prompt 本身已要求 JSON，解析器能处理裸文本包装）
     if (!content.trim()) {
         const retry = await callOpenAI(false);
         if (retry.ok) {
@@ -456,16 +448,12 @@ const handleOpenAIMessage = async (text: string) => {
         openaiHistory.pop();
         throw new Error("モデルが空の返答を返しました。もう一度送信してください。");
     }
-
-    // 只回传 role+content（reasoning_content 等字段回传会被 API 拒绝）
     openaiHistory.push({ role: "assistant", content });
     return parseResponse(content);
 };
 
-// 每回合附带的规则提醒：对抗长对话中模型对注音/分页/疑问句规则的遗忘
 const TURN_RULES = "\n【システム注意（毎回厳守）：①N3以上の全ての漢字に<ruby>漢字<rt>かんじ</rt></ruby>形式のふりがなを付ける ②pagesは10〜15個に分け、1ページを長くしない ③最後のページは必ず「？」で終わる疑問文のspeechにする ④narrationは必ず三人称（キャラ名や彼女/彼を主語に）で書く。私/僕/俺/あたし等の一人称をnarrationで絶対に使わない】";
 
-// Gemini 发送（支持流式；流式失败自动回退非流式）
 const geminiSend = async (text: string, onPage?: PageCallback) => {
   if (!chatSession) throw new Error("Session lost.");
   if (onPage) {
@@ -494,9 +482,9 @@ const geminiSend = async (text: string, onPage?: PageCallback) => {
   return parseResponse(result.response.text());
 };
 
-// OpenAI 兼容流式发送：SSE 逐块接收；失败逐级回退到非流式（含其自身重试）
 const callOpenAIStream = async (withJsonFormat: boolean) => {
-    const body: any = { model: currentModelName, messages: openaiHistory, stream: true };
+    const actualModel = resolveActualModelName(currentModelName, currentBaseUrl !== DEEPSEEK_BASE_URL ? currentBaseUrl : undefined);
+    const body: any = { model: actualModel, messages: openaiHistory, stream: true };
     if (withJsonFormat) body.response_format = { type: "json_object" };
     return await fetch(resolveChatUrl(currentBaseUrl), {
         method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${currentApiKey}` },
