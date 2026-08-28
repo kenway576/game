@@ -55,6 +55,10 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'swim_shy': '/images/characters/asuka/swim_shy.png',
       'maid_neutral': '/images/characters/asuka/maid_neutral.png',
       'maid_angry': '/images/characters/asuka/maid_angry.png',
+      'yukata_neutral': '/images/characters/asuka/yukata_shy.png',
+      'yukata_shy': '/images/characters/asuka/yukata_shy.png',
+      'winter_neutral': '/images/characters/asuka/winter_pout.png',
+      'winter_pout': '/images/characters/asuka/winter_pout.png',
     },
     firstMessage: "（ノートを乱暴に机に置き、わざとらしく視線を窓の外に向けながら）……ふん。あんたがまた変な間違いをして恥をかかないように、今日だけは隣にいてあげるわよ。で、何から始めるつもり？早く言いなさいよね！",
     systemPrompt: `ROLE: Asuka (ツンデレ). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`
@@ -79,6 +83,10 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'gym_neutral': '/images/characters/hikari/gym_neutral.png',
       'swim_neutral': '/images/characters/hikari/swim_neutral.png',
       'yukata_neutral': '/images/characters/hikari/yukata_neutral.png',
+      'maid_neutral': '/images/characters/hikari/maid_happy.png',
+      'maid_happy': '/images/characters/hikari/maid_happy.png',
+      'winter_neutral': '/images/characters/hikari/winter_happy.png',
+      'winter_happy': '/images/characters/hikari/winter_happy.png',
     },
     firstMessage: "（パッと顔を輝かせ、椅子から身を乗り出してあなたの顔を覗き込む）ねえねえ！今日の授業、最高にワクワクしたと思わない！？さあ、まずは何について話そうか？君の意見を聞かせてよ！",
     systemPrompt: `ROLE: Hikari (元気キャラ). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`
@@ -107,6 +115,10 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'swim_neutral': '/images/characters/rei/swim_neutral.png',
       'swim_shy': '/images/characters/rei/swim_shy.png',
       'kimono_neutral': '/images/characters/rei/kimono_neutral.png',
+      'maid_neutral': '/images/characters/rei/maid_neutral.png',
+      'maid_smile': '/images/characters/rei/maid_neutral.png',
+      'winter_neutral': '/images/characters/rei/winter_thinking.png',
+      'winter_thinking': '/images/characters/rei/winter_thinking.png',
     },
     firstMessage: "（静かに瞬きをし、細い指先で眼鏡の位置を直す）……お疲れ様です。本日の講義内容を整理しました。準備ができ次第始めますが、まずはどの部分から復習したいですか？",
     systemPrompt: `ROLE: Rei (クーデレ). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`
@@ -133,6 +145,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'fantasy_laugh': '/images/characters/ren/fantasy_laugh.png',
       'butler_neutral': '/images/characters/ren/butler_neutral.png',
       'gym_neutral': '/images/characters/ren/gym_neutral.png',
+      'sorcerer_neutral': '/images/characters/ren/sorcerer_laugh.png',
+      'sorcerer_laugh': '/images/characters/ren/sorcerer_laugh.png',
     },
     firstMessage: "（不敵な笑みを浮かべ、マントを翻すように腕を大きく広げる）フッ……待っていたぞ、我が同志よ。さあ、我々の『計画』の進捗を報告してもらおうか。準備はできているな？",
     systemPrompt: `ROLE: Ren (中二病). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`,
@@ -159,6 +173,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'apron_happy': '/images/characters/haku/apron_happy.png',
       'casual_neutral': '/images/characters/haku/casual_neutral.png',
       'summer_neutral': '/images/characters/haku/summer_neutral.png',
+      'kimono_neutral': '/images/characters/haku/kimono_neutral.png',
     },
     firstMessage: "（優雅に一礼し、穏やかな微笑みを向けて手を差し出す）おかえりなさいませ、お嬢様。本日はどのようなご用命でしょうか？まずは、温かいお茶でもお持ちいたしましょうか？",
     systemPrompt: `ROLE: Haku (執事). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`,
@@ -211,6 +226,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'summer_happy':   '/images/characters/inari/summer_happy.png',
       'summer_curious': '/images/characters/inari/summer_curious.png',
       'summer_shy':     '/images/characters/inari/summer_shy.png',
+      'miko_neutral':   '/images/characters/inari/miko_sly.png',
+      'miko_sly':       '/images/characters/inari/miko_sly.png',
     },
     firstMessage: "（社の縁側に腰掛け、九本の尾をゆらりと揺らしながら、金色の瞳で汝を見下ろす）ほほう……妾の社に参るとは、近頃の人間にしては殊勝な心がけじゃな。妾は千年を生きた狐、イナリじゃ。せっかく参ったのじゃ、褒美に何でも教えてやろうぞ。……して、汝。聞きたいのは昔の物語か？それとも日本語の稽古か？さあ、申してみよ。",
     systemPrompt: `ROLE: Inari (千年生きた狐の神・神社の祭神). LANGUAGE: JLPT N3-N2 日本語のみ.
@@ -265,6 +282,8 @@ CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging ques
       'gown_shy':         '/images/characters/miyuki/gown_shy.png',
       'gown_love':        '/images/characters/miyuki/gown_love.png',
       'gown_angry':       '/images/characters/miyuki/gown_angry.png',
+      'apron_neutral':    '/images/characters/miyuki/apron_happy.png',
+      'apron_happy':      '/images/characters/miyuki/apron_happy.png',
     },
     firstMessage: "（ふんわりと微笑みながら、焼きたてのクッキーのお皿をテーブルに置く）あら、いらっしゃい。ちょうどクッキーが焼けたところなのよ。ふふ、いいタイミングね。今、温かい紅茶も淹れてあげるわ。……それで？今日はどんな一日だったのかしら。お姉さんに聞かせてくれる？",
     systemPrompt: `ROLE: Miyuki (年上の隣人お姉さん・白髪の癒し系). LANGUAGE: JLPT N3-N2 日本語のみ.
@@ -481,13 +500,13 @@ export const createCharacterRecord = <T,>(fill: (id: CharacterId) => T): Record<
 
 // 每个角色可切换的服装（原本在 geminiService.ts，移到这里与角色数据放在一起）
 export const WARDROBE: Record<string, string[]> = {
-  [CharacterId.ASUKA]:  ['casual', 'gym', 'swim', 'maid', 'autumn'],
-  [CharacterId.HIKARI]: ['casual', 'gym', 'swim', 'yukata', 'autumn'],
-  [CharacterId.REI]:    ['casual', 'lab', 'gym', 'swim', 'kimono'],
-  [CharacterId.REN]:    ['casual', 'gym', 'fantasy', 'butler', 'lecturing'],
-  [CharacterId.HAKU]:   ['casual', 'apron', 'summer', 'prince'],
-  [CharacterId.INARI]:  ['casual', 'school', 'swim', 'home', 'knit', 'gown', 'summer'],
-  [CharacterId.MIYUKI]: ['summer', 'school', 'cardigan', 'sundress', 'gown'],
+  [CharacterId.ASUKA]:  ['casual', 'gym', 'swim', 'maid', 'autumn', 'yukata', 'winter'],
+  [CharacterId.HIKARI]: ['casual', 'gym', 'swim', 'yukata', 'autumn', 'maid', 'winter'],
+  [CharacterId.REI]:    ['casual', 'lab', 'gym', 'swim', 'kimono', 'maid', 'winter'],
+  [CharacterId.REN]:    ['casual', 'gym', 'fantasy', 'butler', 'lecturing', 'sorcerer'],
+  [CharacterId.HAKU]:   ['casual', 'apron', 'summer', 'prince', 'kimono'],
+  [CharacterId.INARI]:  ['casual', 'school', 'swim', 'home', 'knit', 'gown', 'summer', 'miko'],
+  [CharacterId.MIYUKI]: ['summer', 'school', 'cardigan', 'sundress', 'gown', 'apron'],
   [CharacterId.SORA]:   ['school', 'summer', 'autumn', 'swim', 'maid', 'kimono', 'gown'],
   [CharacterId.NAO]:    ['casual', 'sleep', 'kimono', 'swim', 'maid', 'gown'],
   [CharacterId.MAKI]:   ['school', 'cardigan', 'punk', 'kimono', 'gown', 'swim']
@@ -567,13 +586,13 @@ export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
 
 // 各角色各等级解锁的服装（键须存在于 WARDROBE 对应角色的列表）
 export const OUTFIT_UNLOCKS: Record<CharacterId, Partial<Record<number, string[]>>> = {
-  [CharacterId.ASUKA]:  { 2: ['casual'], 3: ['gym'], 4: ['swim', 'autumn'], 5: ['maid'] },
-  [CharacterId.HIKARI]: { 2: ['casual'], 3: ['gym'], 4: ['swim', 'autumn'], 5: ['yukata'] },
-  [CharacterId.REI]:    { 2: ['casual'], 3: ['lab', 'gym'], 4: ['swim'], 5: ['kimono'] },
-  [CharacterId.REN]:    { 2: ['casual'], 3: ['gym', 'lecturing'], 4: ['fantasy'], 5: ['butler'] },
-  [CharacterId.HAKU]:   { 2: ['casual'], 3: ['apron'], 4: ['summer'], 5: ['prince'] },
-  [CharacterId.INARI]:  { 2: ['casual', 'home'], 3: ['school', 'summer'], 4: ['swim', 'knit'], 5: ['gown'] },
-  [CharacterId.MIYUKI]: { 2: ['cardigan'], 3: ['summer', 'sundress'], 4: ['school'], 5: ['gown'] },
+  [CharacterId.ASUKA]:  { 2: ['casual'], 3: ['gym', 'autumn'], 4: ['swim', 'yukata'], 5: ['maid', 'winter'] },
+  [CharacterId.HIKARI]: { 2: ['casual'], 3: ['gym', 'autumn'], 4: ['swim', 'yukata'], 5: ['maid', 'winter'] },
+  [CharacterId.REI]:    { 2: ['casual'], 3: ['lab', 'gym'], 4: ['swim', 'winter'], 5: ['kimono', 'maid'] },
+  [CharacterId.REN]:    { 2: ['casual'], 3: ['gym', 'lecturing'], 4: ['fantasy', 'sorcerer'], 5: ['butler'] },
+  [CharacterId.HAKU]:   { 2: ['casual'], 3: ['apron'], 4: ['summer', 'kimono'], 5: ['prince'] },
+  [CharacterId.INARI]:  { 2: ['casual', 'home'], 3: ['school', 'summer'], 4: ['swim', 'knit', 'miko'], 5: ['gown'] },
+  [CharacterId.MIYUKI]: { 2: ['cardigan', 'apron'], 3: ['summer', 'sundress'], 4: ['school'], 5: ['gown'] },
   [CharacterId.SORA]:   { 2: ['school'], 3: ['summer', 'autumn'], 4: ['swim', 'kimono'], 5: ['maid', 'gown'] },
   [CharacterId.NAO]:    { 2: ['casual'], 3: ['kimono'], 4: ['swim', 'sleep'], 5: ['maid', 'gown'] },
   [CharacterId.MAKI]:   { 2: ['school', 'cardigan'], 3: ['punk'], 4: ['kimono', 'swim'], 5: ['gown'] }
