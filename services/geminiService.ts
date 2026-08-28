@@ -28,6 +28,14 @@ let currentCharacterName: string = ''; // 用于把旁白里的第一人称改�
 // baseUrl 支持带或不带尾部斜杠；用户按服务商要求自行决定是否包含 /v1
 const resolveChatUrl = (base: string) => `${base.replace(/\/+$/, '')}/chat/completions`;
 
+// 官方 DeepSeek 接口模型映射（将 UI 显示的 deepseek-v4-flash 映射为官方官方模型名 deepseek-chat）
+const resolveActualModelName = (modelName: string, baseUrl?: string): string => {
+  if (baseUrl) return modelName; // 用户自定义 API 保持原名
+  if (modelName === 'deepseek-v4-flash' || modelName === 'deepseek-chat') return 'deepseek-chat';
+  if (modelName === 'deepseek-v4-pro' || modelName === 'deepseek-reasoner') return 'deepseek-reasoner';
+  return modelName;
+};
+
 const isOpenAICompatible = (modelName: string, baseUrl?: string) => !!baseUrl || modelName.includes('deepseek');
 
 const getGenAI = (userApiKey?: string) => {
