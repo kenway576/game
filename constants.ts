@@ -941,12 +941,12 @@ const OUTFIT_REQUEST_KEYWORDS: Record<string, string[]> = {
 const CHANGE_INTENT_KEYWORDS = ['着替え', '着替', '着て', '履い', '穿上', '穿', '换上', '換上', '换成', '換成', '着せ', 'wear', 'change into', 'put on', 'dress', '変身'];
 
 // 返回 { outfit } 若检测到已解锁服装的换装请求；outfit==='' 表示换回默认。无请求返回 null。
-export const detectOutfitRequest = (text: string, charId: CharacterId, affection: number): { outfit: string } | null => {
+export const detectOutfitRequest = (text: string, charId: CharacterId, familiarity: number, affection: number): { outfit: string } | null => {
   if (!text) return null;
   const t = text.toLowerCase();
   const hasIntent = CHANGE_INTENT_KEYWORDS.some(k => t.includes(k.toLowerCase()));
   if (!hasIntent) return null;
-  const unlocked = getUnlockedOutfits(charId, affection);
+  const unlocked = getUnlockedOutfits(charId, familiarity, affection);
   const wardrobe = WARDROBE[charId] || [];
   for (const [outfit, kws] of Object.entries(OUTFIT_REQUEST_KEYWORDS)) {
     if (!kws.some(k => t.includes(k.toLowerCase()))) continue;

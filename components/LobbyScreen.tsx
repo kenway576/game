@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
-import { CharacterId, ChatMode, UserState, CustomAssets, AffectionMap } from '../types';
-import { CHARACTERS, VISIBLE_CHARACTER_IDS } from '../constants';
+import { CharacterId, ChatMode, UserState, CustomAssets, AffectionMap, FamiliarityMap } from '../types';
+import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity } from '../constants';
 import CharacterSprite from './CharacterSprite';
-import AffectionMeter from './AffectionMeter';
+import RelationshipMeter from './AffectionMeter';
 
 interface Props {
   T: Record<string, string>;
@@ -12,6 +12,7 @@ interface Props {
   lobbySelectedChar: CharacterId | null;
   setLobbySelectedChar: (id: CharacterId | null) => void;
   affectionMap: AffectionMap;
+  familiarityMap: FamiliarityMap;
   onEnterChat: (charId: CharacterId, mode: ChatMode) => void;
   onOpenSystemMenu: () => void;
   background: React.ReactNode;
@@ -19,8 +20,13 @@ interface Props {
 
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbySelectedChar,
-  setLobbySelectedChar, affectionMap, onEnterChat, onOpenSystemMenu, background
+  setLobbySelectedChar, affectionMap, familiarityMap, onEnterChat, onOpenSystemMenu, background
 }) => {
+  const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
+  const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
+  // 卡片上显示关系"名称"而不是数字——「朋友 · 无意」比「♥ 130」更说明现在处在哪一步
+  const levelName = (def: { labelZh: string; labelEn: string }) =>
+    userState.language === 'en' ? def.labelEn : def.labelZh;
   // 🎠 横向轮播：固定卡片宽度 + 滚轮横滚 + 箭头翻页，角色再多也放得下
   const scrollRef = useRef<HTMLDivElement>(null);
   const CARD_SCROLL = 340;
@@ -65,7 +71,11 @@ const LobbyScreen: React.FC<Props> = ({
               <div className={`h-1 w-8 md:w-12 mb-2 ${char.color}`}></div>
               <h3 className="text-2xl md:text-4xl font-black text-white italic uppercase tracking-tighter drop-shadow-lg">{userState.language === 'en' ? char.nameEn : char.name}</h3>
               <p className="text-[10px] text-white/70 uppercase tracking-widest hidden md:block">{userState.language === 'en' ? char.roleEn : char.role}</p>
-              <p className="text-pink-400 text-[10px] md:text-xs font-bold mt-1 tracking-widest">♥ {affectionMap[id] ?? 0}</p>
+              <p className="text-[10px] md:text-xs font-bold mt-1 tracking-widest flex items-center gap-2">
+                <span className="text-sky-300">🤝 {levelName(getFamiliarityLevel(famOf(id)))}</span>
+                <span className="text-white/25">·</span>
+                <span className="text-pink-400">♥ {levelName(getAffectionLevel(affOf(id)))}</span>
+              </p>
             </div>
           </div>
         );
@@ -82,7 +92,14 @@ const LobbyScreen: React.FC<Props> = ({
           <div className={`absolute top-0 left-0 w-full h-1 ${CHARACTERS[lobbySelectedChar].color}`} />
           <h2 className={`text-3xl md:text-4xl font-black italic tracking-tighter text-white drop-shadow-md`}>{userState.language === 'en' ? CHARACTERS[lobbySelectedChar].nameEn : CHARACTERS[lobbySelectedChar].name}</h2>
           <p className="text-gray-300 text-center text-xs md:text-sm leading-relaxed px-2 md:px-4">{userState.language === 'en' ? CHARACTERS[lobbySelectedChar].descriptionEn : CHARACTERS[lobbySelectedChar].description}</p>
-          <AffectionMeter value={affectionMap[lobbySelectedChar] ?? 0} language={userState.language} label={T.affection} />
+          <RelationshipMeter
+            familiarity={famOf(lobbySelectedChar)}
+            affection={affOf(lobbySelectedChar)}
+            language={userState.language}
+            familiarityLabel={T.familiarity}
+            affectionLabel={T.affection}
+            cappedLabel={T.romanceCappedHint}
+          />
           <div className="flex flex-col w-full gap-3 md:gap-4 mt-2 md:mt-4">
             <button onClick={() => onEnterChat(lobbySelectedChar, ChatMode.FREE_TALK)} className="group relative w-full overflow-hidden bg-indigo-700 hover:bg-indigo-600 text-white font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl"><span className="relative z-10 flex items-center justify-center gap-3">💬 {T.casualTalk}</span></button>
             <button onClick={() => onEnterChat(lobbySelectedChar, ChatMode.STUDY)} className="group relative w-full overflow-hidden bg-red-700 hover:bg-red-600 text-white font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl"><span className="relative z-10 flex items-center justify-center gap-3">📚 {T.reviewMode}</span></button>

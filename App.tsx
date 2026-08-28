@@ -286,6 +286,16 @@ const App: React.FC = () => {
   };
 
   // ---------- 存档系统 ----------
+  // 双轴之前的旧存档只有 affectionMap。直接补 0 会让"已经攻略到恋人"的角色
+  // 突然退回初対面，所以按当时的好感度等级反推一个等价的親密度起点。
+  const migrateFamiliarityMap = (saved: Partial<FamiliarityMap> | undefined, affection: AffectionMap): FamiliarityMap =>
+    createCharacterRecord(id => {
+      const stored = saved?.[id];
+      if (typeof stored === 'number' && Number.isFinite(stored)) return stored;
+      const equivalent = FAMILIARITY_LEVELS[getAffectionLevelIndex(affection[id] || 0)].threshold;
+      return Math.max(getInitialFamiliarity(id), equivalent);
+    });
+
   // 存档只保留最近的对话（更早内容已在长期记忆摘要里），防止 localStorage 爆仓
   const buildSaveData = (isAutoSave: boolean, hard = false) => {
     const msgLimit = hard ? SAVE_MESSAGES_LIMIT_HARD : SAVE_MESSAGES_LIMIT;
@@ -307,7 +317,7 @@ const App: React.FC = () => {
         userState, gameMode, selectedCharId, chatMode,
         messages: messages.slice(-msgLimit),
         chatHistories: trimmedHistories,
-        customAssets, affectionMap, memoryMap
+        customAssets, affectionMap, familiarityMap, memoryMap
       }
     };
   };
@@ -379,8 +389,11 @@ const App: React.FC = () => {
 
       // 旧存档没有的角色/字段自动补默认值，被删除的角色数据自然忽略
       setChatHistories({ ...createCharacterRecord(() => [] as Message[]), ...(data.chatHistories || {}) });
-      setAffectionMap({ ...createCharacterRecord(() => 0), ...(data.affectionMap || {}) });
-      setMemoryMap({ ...createCharacterRecord(() => ''), ...(data.memoryMap || {}) });
+      const loadedAffection = { ...createCharacterRecord(() => 0), ...(data.affectionMap || {}) };
+      setAffectionMap(loadedAffection);
+      setFamiliarityMap(migrateFamiliarityMap(data.familiarityMap, loadedAffection));
+      // 记忆为空的角色补上预置的共同记忆（旧存档 & 尚未对话过的角色）
+      setMemoryMap(createCharacterRecord(id => (data.memoryMap || {})[id] || getSeedMemory(id)));
 
       setGameMode(data.gameMode);
       setSaveLoadMode(null);
@@ -391,14 +404,15 @@ const App: React.FC = () => {
         setIsLoading(true);
         try {
           const charId = data.selectedCharId as CharacterId;
-          const affectionValue = (data.affectionMap || {})[charId] || 0;
+          const affectionValue = loadedAffection[charId] || 0;
+          const familiarityValue = migrateFamiliarityMap(data.familiarityMap, loadedAffection)[charId];
           await startChat(
             CHARACTERS[charId], data.chatMode, data.userState.learningGoal, data.userState.grammarTopic, data.userState.language || 'zh', {
               apiKey: customApiKey, modelName: effectiveModelName, history: (data.messages || []).slice(-RECENT_HISTORY_COUNT),
-              affection: affectionValue, baseUrl: effectiveBaseUrl,
-              memory: (data.memoryMap || {})[charId] || '', resume: false,
-              unlockedOutfits: getUnlockedOutfits(charId, affectionValue),
-              unlockedScenes: getUnlockedScenes(affectionValue)
+              affection: affectionValue, familiarity: familiarityValue, baseUrl: effectiveBaseUrl,
+              memory: (data.memoryMap || {})[charId] || getSeedMemory(charId), resume: false,
+              unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
+              unlockedScenes: getUnlockedScenes(familiarityValue)
             }
           );
           setIsDialogueFinished(true);
@@ -423,6 +437,7 @@ const App: React.FC = () => {
       activeCharacter: selectedCharId,
       mode: chatMode,
       affectionMap,
+      familiarityMap,
       fullDialogueLog: chatHistories
     };
 
@@ -515,6 +530,7 @@ const App: React.FC = () => {
     replySinceMemoryRef.current = 0;
 
     const affectionValue = affectionMap[charId] || 0;
+    const familiarityValue = familiarityMap[charId] ?? getInitialFamiliarity(charId);
     const fullHistory = chatHistories[charId].filter(m => !m.id.startsWith('err'));
     const pastHistory = fullHistory.slice(-RECENT_HISTORY_COUNT);
     const lastModel = [...fullHistory].reverse().find(m => m.role === 'model');
@@ -526,10 +542,10 @@ const App: React.FC = () => {
         await startChat(
           CHARACTERS[charId], mode, userState.learningGoal, userState.grammarTopic, userState.language, {
             apiKey: customApiKey, modelName: effectiveModelName, history: pastHistory,
-            affection: affectionValue, baseUrl: effectiveBaseUrl,
-            memory: memoryMap[charId] || '', resume: false,
-            unlockedOutfits: getUnlockedOutfits(charId, affectionValue),
-            unlockedScenes: getUnlockedScenes(affectionValue)
+            affection: affectionValue, familiarity: familiarityValue, baseUrl: effectiveBaseUrl,
+            memory: memoryMap[charId] || getSeedMemory(charId), resume: false,
+            unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
+            unlockedScenes: getUnlockedScenes(familiarityValue)
           }
         );
         // 恢复上次最后一条 AI 消息的画面（表情/服装/场景），并把输入框直接就绪
@@ -550,16 +566,26 @@ const App: React.FC = () => {
       return;
     }
 
-    // 🆕 无历史 → 生成初次登场问候（流式）
+    // 🆕 无历史 → 生成开场。陌生角色演"初対面"，已认识的角色演"日常的一天"，
+    // 基调参考各自的手写脚本（firstMeeting / firstMessage）。
+    const profile = getRelationshipProfile(charId);
+    const openingBrief = buildOpeningBrief(
+      profile.origin,
+      profile.origin === 'stranger'
+        ? (profile.firstMeeting || CHARACTERS[charId].firstMessage)
+        : CHARACTERS[charId].firstMessage
+    );
+
     const stream = makeStreamHandler(charId, true);
     try {
       const result = await startChat(
         CHARACTERS[charId], mode, userState.learningGoal, userState.grammarTopic, userState.language, {
           apiKey: customApiKey, modelName: effectiveModelName, history: [],
-          affection: affectionValue, baseUrl: effectiveBaseUrl,
-          memory: memoryMap[charId] || '', resume: false,
-          unlockedOutfits: getUnlockedOutfits(charId, affectionValue),
-          unlockedScenes: getUnlockedScenes(affectionValue),
+          affection: affectionValue, familiarity: familiarityValue, baseUrl: effectiveBaseUrl,
+          memory: memoryMap[charId] || getSeedMemory(charId), resume: false,
+          unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
+          unlockedScenes: getUnlockedScenes(familiarityValue),
+          openingBrief,
           onPage: stream.onPage
         }
       );
@@ -597,8 +623,8 @@ const App: React.FC = () => {
     }
   };
 
-  // opts.diceRoll：外部指定骰子点数（如答题反馈）；opts.bonusAffection：额外好感度（原始值）
-  const handleSendMessage = async (customPrompt?: string, opts?: { diceRoll?: number; bonusAffection?: number }) => {
+  // opts.diceRoll：外部指定骰子点数（如答题反馈）；opts.bonusAffection / bonusFamiliarity：额外关系值（原始值）
+  const handleSendMessage = async (customPrompt?: string, opts?: { diceRoll?: number; bonusAffection?: number; bonusFamiliarity?: number }) => {
     if (!selectedCharId || (isLoading && !customPrompt)) return;
     if (!customPrompt && !inputText.trim()) return;
 
@@ -628,15 +654,17 @@ const App: React.FC = () => {
     // 🎲 掷命运骰子：点数随消息发给 AI，决定回应温度与好感度涨幅。
     // 普通发言现掷；答题反馈等内部指令用 opts.diceRoll 传入的点数。
     // 历史记录里保存的是干净的原文（不含骰子标签）。
+    // 骰子权重按親密度取：越熟的人越容易好好接你的话。
+    const turnFamiliarity = familiarityMap[selectedCharId] ?? getInitialFamiliarity(selectedCharId);
     let outgoingText = currentInput;
-    const roll = opts?.diceRoll ?? (isInternalTrigger ? undefined : rollFateDice(getAffectionLevelIndex(affectionMap[selectedCharId] || 0)));
+    const roll = opts?.diceRoll ?? (isInternalTrigger ? undefined : rollFateDice(getFamiliarityLevelIndex(turnFamiliarity)));
     if (roll !== undefined) {
       setDiceRoll({ value: roll, key: Date.now() });
       outgoingText = `【運命のダイス: ${roll}/6】\n${currentInput}`;
     }
 
     // 👗 换装意图识别：玩家明说"换泳装/私服"等且该服装已解锁 → 提示 AI 配合，并在回复后强制换装（兜底）
-    const requestedOutfit = isInternalTrigger ? null : detectOutfitRequest(currentInput, selectedCharId, affectionMap[selectedCharId] || 0);
+    const requestedOutfit = isInternalTrigger ? null : detectOutfitRequest(currentInput, selectedCharId, turnFamiliarity, affectionMap[selectedCharId] || 0);
     if (requestedOutfit) {
       outgoingText += `\n【システム：プレイヤーの要望通り、服装を「${requestedOutfit.outfit || 'デフォルト(制服/私服)'}」に着替える描写を自然に入れ、JSONに "outfit":"${requestedOutfit.outfit}" と "outfitChange":true を必ず設定すること。】`;
     }
@@ -645,7 +673,7 @@ const App: React.FC = () => {
     try {
       const response = await sendMessage(outgoingText, stream.onPage);
       const modelMsg: Message = {
-        id: stream.state.msgId || (Date.now() + 1).toString(), role: 'model', text: response.pages.map(p => p.text).join(' '), pages: response.pages, vocabulary: response.vocabulary, quiz: response.quiz, emotion: response.emotion, outfit: response.outfit, location: response.location, affectionDelta: response.affectionDelta, senderName: CHARACTERS[selectedCharId].name
+        id: stream.state.msgId || (Date.now() + 1).toString(), role: 'model', text: response.pages.map(p => p.text).join(' '), pages: response.pages, vocabulary: response.vocabulary, quiz: response.quiz, emotion: response.emotion, outfit: response.outfit, location: response.location, affectionDelta: response.affectionDelta, familiarityDelta: response.familiarityDelta, senderName: CHARACTERS[selectedCharId].name
       };
 
       setIsStreaming(false);
@@ -663,13 +691,22 @@ const App: React.FC = () => {
       // 兜底：玩家明确要求换装时，无论 AI 是否配合都强制生效（requestedOutfit.outfit 可为 '' = 换回默认）
       if (requestedOutfit) setCurrentOutfit(requestedOutfit.outfit);
 
-      // 🎲 骰子点数保底：高点数保证最低好感度增量（AI 只能加码不能克扣）。
+      // 🎲 骰子点数保底：高点数保证最低增量（AI 只能加码不能克扣）。
       // 若 AI 判定玩家无礼（返回负值），尊重惩罚、不触发保底。
+      // 親密度保底比好感度慷慨：只要好好说了话，人就是会渐渐变熟。
       const aiDelta = response.affectionDelta || 0;
       const flooredDelta = (roll !== undefined && aiDelta >= 0)
         ? Math.max(aiDelta, getDiceAffectionFloor(roll))
         : aiDelta;
-      applyAffection(selectedCharId, flooredDelta + (opts?.bonusAffection || 0));
+      const aiFamDelta = response.familiarityDelta || 0;
+      const flooredFamDelta = (roll !== undefined && aiFamDelta >= 0)
+        ? Math.max(aiFamDelta, getDiceFamiliarityFloor(roll))
+        : aiFamDelta;
+      applyRelationship(
+        selectedCharId,
+        flooredDelta + (opts?.bonusAffection || 0),
+        flooredFamDelta + (opts?.bonusFamiliarity || 0)
+      );
 
       setChatHistories(prev => ({ ...prev, [selectedCharId]: [...prev[selectedCharId], modelMsg] }));
 
@@ -722,16 +759,18 @@ const App: React.FC = () => {
     setIsLastAnswerCorrect(null);
     if (!selectedCharId) return;
 
-    const levelIndex = getAffectionLevelIndex(affectionMap[selectedCharId] || 0);
+    const levelIndex = getFamiliarityLevelIndex(familiarityMap[selectedCharId] ?? getInitialFamiliarity(selectedCharId));
     const roll = rollFateDice(levelIndex, wasCorrect ? QUIZ_CORRECT_LUCK_LEVELS : 0);
 
     const prompt = wasCorrect
       ? "【システム：プレイヤーは前の問題に正解しました。あなたのキャラクター性格（ツンデレ、クーデレ等）に合わせて褒めてから、次の会話と次のquizを生成してください。】"
       : "【システム：プレイヤーは前の問題に間違えました。あなたのキャラクター性格に合わせて指摘・解説してから、次の会話と次のquizを生成してください。】";
 
+    // 答对题两条轴都有奖励：她高兴（好感度），也更了解你的水平（親密度）
     handleSendMessage(prompt, {
       diceRoll: roll,
-      bonusAffection: wasCorrect ? QUIZ_CORRECT_AFFECTION_BONUS : 0
+      bonusAffection: wasCorrect ? QUIZ_CORRECT_AFFECTION_BONUS : 0,
+      bonusFamiliarity: wasCorrect ? QUIZ_CORRECT_FAMILIARITY_BONUS : 0
     });
   };
 
@@ -760,7 +799,10 @@ const App: React.FC = () => {
   const getDynamicAvatar = (char: Character): Character => {
     const emo = currentEmotion || 'neutral';
     const map = char.emotionMap || {};
-    const candidates = [emo, ...(EMOTION_SYNONYMS[emo] || [])];
+    // 😳 亲密表情（love/jealous）好感度不到就不给：路人不会红着脸。
+    // 模型偶尔仍会输出被门控的表情，这里再兜一次底。
+    const romance = affectionMap[char.id] || 0;
+    const candidates = [emo, ...(EMOTION_SYNONYMS[emo] || [])].filter(c => isEmotionUnlocked(c, romance));
     const pick = (key: string) => map[key] ? { ...char, avatarUrl: map[key] } : null;
 
     if (currentOutfit) {
@@ -812,6 +854,7 @@ const App: React.FC = () => {
           lobbySelectedChar={lobbySelectedChar}
           setLobbySelectedChar={setLobbySelectedChar}
           affectionMap={affectionMap}
+          familiarityMap={familiarityMap}
           onEnterChat={enterChat}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           background={background}
@@ -834,6 +877,7 @@ const App: React.FC = () => {
           setInputText={setInputText}
           showAutoSave={showAutoSave}
           affection={selectedCharId ? (affectionMap[selectedCharId] || 0) : 0}
+          familiarity={selectedCharId ? (familiarityMap[selectedCharId] ?? getInitialFamiliarity(selectedCharId)) : 0}
           affectionToast={affectionToast}
           diceRoll={diceRoll}
           levelUpEvent={levelUpEvent}

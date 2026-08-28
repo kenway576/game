@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Character, Message, QuizData, UserState, CollectedWord } from '../types';
-import { AFFECTION_LEVELS, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL } from '../constants';
+import { Character, Message, QuizData, UserState, CollectedWord, RelationshipAxis } from '../types';
+import { AFFECTION_LEVELS, FAMILIARITY_LEVELS, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS } from '../constants';
 import CharacterSprite from './CharacterSprite';
 import DialogueBox from './DialogueBox';
-import AffectionMeter from './AffectionMeter';
+import RelationshipMeter from './AffectionMeter';
 
 export interface AffectionToast {
-  delta: number;
+  delta: number;       // 好感度变化
+  famDelta: number;    // 親密度变化
   key: number;
 }
 
@@ -16,6 +17,7 @@ export interface DiceRoll {
 }
 
 export interface LevelUpEvent {
+  axis: RelationshipAxis;
   level: number;
   key: number;
 }
@@ -35,6 +37,7 @@ interface Props {
   setInputText: (v: string) => void;
   showAutoSave: boolean;
   affection: number;
+  familiarity: number;
   affectionToast: AffectionToast | null;
   diceRoll: DiceRoll | null;
   levelUpEvent: LevelUpEvent | null;
@@ -53,7 +56,7 @@ interface Props {
 const ChatScreen: React.FC<Props> = ({
   T, userState, character, displayName, messages, isLoading, isStreaming, isDialogueFinished,
   currentQuiz, quizFeedback, inputText, setInputText, showAutoSave,
-  affection, affectionToast, diceRoll, levelUpEvent, onLevelUpContinue,
+  affection, familiarity, affectionToast, diceRoll, levelUpEvent, onLevelUpContinue,
   onSend, onDialogueFinished, onQuizAnswer, onCloseQuiz, onContinueAfterFeedback,
   onOpenSystemMenu, translate, onCollectWord, background
 }) => {
@@ -166,12 +169,19 @@ const ChatScreen: React.FC<Props> = ({
         <span className="text-[10px] md:text-xs font-bold text-yellow-500 tracking-widest uppercase animate-pulse">{T.autoSaving}</span>
       </div>
 
-      {/* 💗 好感度变化提示 */}
-      {affectionToast && affectionToast.delta !== 0 && (
-        <div key={affectionToast.key} className="absolute top-16 right-4 z-[200] pointer-events-none animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <div className={`px-4 py-2 rounded-full border shadow-2xl font-black text-sm md:text-base ${affectionToast.delta > 0 ? 'bg-pink-600/90 border-pink-300 text-white' : 'bg-slate-800/90 border-slate-400 text-slate-200'}`}>
-            ♥ {affectionToast.delta > 0 ? `+${affectionToast.delta}` : affectionToast.delta}
-          </div>
+      {/* 💗 关系变化提示：两条轴各自冒泡，同回合都动时上下并排 */}
+      {affectionToast && (affectionToast.delta !== 0 || affectionToast.famDelta !== 0) && (
+        <div key={affectionToast.key} className="absolute top-16 right-4 z-[200] pointer-events-none flex flex-col items-end gap-2 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          {affectionToast.famDelta !== 0 && (
+            <div className={`px-4 py-2 rounded-full border shadow-2xl font-black text-sm md:text-base ${affectionToast.famDelta > 0 ? 'bg-sky-600/90 border-sky-300 text-white' : 'bg-slate-800/90 border-slate-400 text-slate-200'}`}>
+              🤝 {affectionToast.famDelta > 0 ? `+${affectionToast.famDelta}` : affectionToast.famDelta}
+            </div>
+          )}
+          {affectionToast.delta !== 0 && (
+            <div className={`px-4 py-2 rounded-full border shadow-2xl font-black text-sm md:text-base ${affectionToast.delta > 0 ? 'bg-pink-600/90 border-pink-300 text-white' : 'bg-slate-800/90 border-slate-400 text-slate-200'}`}>
+              ♥ {affectionToast.delta > 0 ? `+${affectionToast.delta}` : affectionToast.delta}
+            </div>
+          )}
         </div>
       )}
 
@@ -181,7 +191,15 @@ const ChatScreen: React.FC<Props> = ({
         </div>
         <div className="flex flex-wrap justify-end gap-2 max-w-[70%] pointer-events-auto">
           <div className="bg-black/80 px-4 py-3 text-white/50 text-[10px] font-mono border-b-2 border-red-500 w-full md:w-auto text-right shadow-xl">N3: {userState.playerName.toUpperCase()} | {userState.grammarTopic}</div>
-          <AffectionMeter value={affection} language={userState.language} label={T.affection} compact />
+          <RelationshipMeter
+            familiarity={familiarity}
+            affection={affection}
+            language={userState.language}
+            familiarityLabel={T.familiarity}
+            affectionLabel={T.affection}
+            cappedLabel={T.romanceCappedHint}
+            compact
+          />
           {diceRoll && displayFace !== null && (
             <div className={`px-4 py-2 border-2 rounded-sm shadow-xl font-black flex items-center gap-2 transition-colors duration-200 ${isRolling ? 'bg-slate-800/90 border-white/50 text-white' : `${diceStyle} dice-landed`}`}>
               <span className={`text-lg leading-none ${isRolling ? 'dice-rolling' : ''}`}>🎲</span>
@@ -197,18 +215,35 @@ const ChatScreen: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* 💞 好感度升级庆祝画面 */}
+      {/* 💞 关系升级庆祝画面：親密度（冷色·更熟了）与好感度（暖色·心动了）观感分明 */}
       {levelUpEvent && (() => {
-        const levelDef = AFFECTION_LEVELS[levelUpEvent.level - 1];
+        const isFam = levelUpEvent.axis === 'familiarity';
+        const lv = levelUpEvent.level;
+        const levelDef = (isFam ? FAMILIARITY_LEVELS : AFFECTION_LEVELS)[lv - 1];
         const label = userState.language === 'en' ? levelDef.labelEn : levelDef.labelZh;
-        const newOutfits = OUTFIT_UNLOCKS[character.id]?.[levelUpEvent.level] || [];
-        const newScenes = SCENE_UNLOCKS_BY_LEVEL[levelUpEvent.level] || [];
+        // 解锁内容按轴归属：親密度给场景与日常服装，好感度给亲密服装
+        const outfitLevels = isFam ? FAMILIARITY_GATED_OUTFIT_LEVELS : ROMANCE_GATED_OUTFIT_LEVELS;
+        const newOutfits = outfitLevels.includes(lv) ? (OUTFIT_UNLOCKS[character.id]?.[lv] || []) : [];
+        const newScenes = isFam ? (SCENE_UNLOCKS_BY_LEVEL[lv] || []) : [];
+        const skin = isFam
+          ? {
+              icon: '🤝', title: T.levelUpFamiliarity,
+              panel: 'from-sky-950/95 to-slate-950/95 border-sky-400/60 shadow-[0_0_80px_rgba(56,189,248,0.35)]',
+              accent: 'text-sky-300', name: 'text-sky-400', glow: 'drop-shadow-[0_0_20px_rgba(56,189,248,0.8)]',
+              button: 'bg-sky-600 hover:bg-sky-500'
+            }
+          : {
+              icon: '💞', title: T.levelUpAffection,
+              panel: 'from-pink-950/95 to-slate-950/95 border-pink-400/60 shadow-[0_0_80px_rgba(236,72,153,0.4)]',
+              accent: 'text-pink-300', name: 'text-pink-400', glow: 'drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]',
+              button: 'bg-pink-600 hover:bg-pink-500'
+            };
         return (
           <div className="absolute inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-md pointer-events-auto animate-in fade-in duration-500">
-            <div className="relative w-full max-w-lg mx-4 bg-gradient-to-b from-pink-950/95 to-slate-950/95 border-2 border-pink-400/60 rounded-sm p-8 md:p-12 text-center shadow-[0_0_80px_rgba(236,72,153,0.4)] animate-in zoom-in-90 duration-500">
-              <div className="text-5xl md:text-6xl mb-4 animate-bounce">💞</div>
-              <p className="text-pink-300 font-black uppercase tracking-[0.4em] text-xs md:text-sm mb-2">{T.levelUpTitle}</p>
-              <h2 className="text-4xl md:text-5xl font-black italic text-white mb-6 drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]">Lv.{levelUpEvent.level} <span className="text-pink-400">{label}</span></h2>
+            <div className={`relative w-full max-w-lg mx-4 bg-gradient-to-b ${skin.panel} border-2 rounded-sm p-8 md:p-12 text-center animate-in zoom-in-90 duration-500`}>
+              <div className="text-5xl md:text-6xl mb-4 animate-bounce">{skin.icon}</div>
+              <p className={`${skin.accent} font-black uppercase tracking-[0.4em] text-xs md:text-sm mb-2`}>{skin.title || T.levelUpTitle}</p>
+              <h2 className={`text-4xl md:text-5xl font-black italic text-white mb-6 ${skin.glow}`}>Lv.{lv} <span className={skin.name}>{label}</span></h2>
               {(newOutfits.length > 0 || newScenes.length > 0) && (
                 <div className="mb-8 space-y-2 text-left bg-black/40 border border-white/10 rounded-sm p-4">
                   {newOutfits.length > 0 && (
@@ -219,7 +254,7 @@ const ChatScreen: React.FC<Props> = ({
                   )}
                 </div>
               )}
-              <button onClick={onLevelUpContinue} className="w-full bg-pink-600 hover:bg-pink-500 text-white font-black py-4 uppercase tracking-[0.3em] text-sm transition-all shadow-xl rounded-sm">{T.levelUpContinue}</button>
+              <button onClick={onLevelUpContinue} className={`w-full ${skin.button} text-white font-black py-4 uppercase tracking-[0.3em] text-sm transition-all shadow-xl rounded-sm`}>{T.levelUpContinue}</button>
             </div>
           </div>
         );
