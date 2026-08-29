@@ -861,6 +861,7 @@ const App: React.FC = () => {
           familiarityMap={familiarityMap}
           onEnterChat={enterChat}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
+          onOpenCgGallery={() => setShowCgGallery(true)}
           background={background}
         />
       )}
