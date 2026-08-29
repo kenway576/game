@@ -919,6 +919,135 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, Partial<Record<number, s
   // 示例：[CharacterId.ASUKA]: { 2: 'asuka_ch2_friend', 4: 'asuka_ch4_confession' }
 };
 
+// ---------------------------------------------------------
+// 🌸 2.62 专属事件 CG 回忆录 (CHARACTER EVENT CGS)
+// 棕色尘埃 2 / 二次元手游高精美画风专属心动回忆
+// ---------------------------------------------------------
+export interface CharacterCgDef {
+  id: string;
+  charId: CharacterId;
+  titleZh: string;
+  titleEn: string;
+  descZh: string;
+  descEn: string;
+  cgUrl: string;
+  unlockAffection: number;
+  quote: string;
+}
+
+export const CHARACTER_CGS: Record<CharacterId, CharacterCgDef> = {
+  [CharacterId.ASUKA]: {
+    id: 'cg_asuka',
+    charId: CharacterId.ASUKA,
+    titleZh: '放学后的余晖',
+    titleEn: 'After-School Twilight',
+    descZh: '夕阳洒满放学后的空教室，飞鸟绞着发梢、脸颊滚烫地望向你……',
+    descEn: 'Sunset paints the empty classroom in gold as Asuka nervously fidgets with her hair ribbon...',
+    cgUrl: '/images/cg/cg_asuka.jpg',
+    unlockAffection: 80,
+    quote: '「……あんたが隣にいないと、なんか調子狂うのよ。ば、バカ言わせないでよね！」'
+  },
+  [CharacterId.HIKARI]: {
+    id: 'cg_hikari',
+    charId: CharacterId.HIKARI,
+    titleZh: '海风与心跳',
+    titleEn: 'Ocean Breeze & Heartbeat',
+    descZh: '盛夏海滩的晚霞与金色浪花，光笑着回过头向你伸出手……',
+    descEn: 'Sunset over summer waves as Hikari reaches out her hand with a radiant smile...',
+    cgUrl: '/images/cg/cg_hikari.jpg',
+    unlockAffection: 80,
+    quote: '「ねえ、君と出会えて本当によかった！この時間、ずっと終わらないでほしいな！」'
+  },
+  [CharacterId.REI]: {
+    id: 'cg_rei',
+    charId: CharacterId.REI,
+    titleZh: '星海下的轻语',
+    titleEn: 'Whispers Beneath the Stars',
+    descZh: '静谧的书房窗前，玲摘下眼镜，在漫天银河与微光中抬头凝视着你……',
+    descEn: 'By the starlit observatory window, Rei gently lowers her glasses and looks at you...',
+    cgUrl: '/images/cg/cg_rei.jpg',
+    unlockAffection: 80,
+    quote: '「……星の光は何万年も旅して届くそうです。私のこの気持ちも、あなたに届いていますか？」'
+  },
+  [CharacterId.NAO]: {
+    id: 'cg_nao',
+    charId: CharacterId.NAO,
+    titleZh: '回廊夏夜的焰火',
+    titleEn: 'Summer Night Fireworks',
+    descZh: '缘侧回廊上并肩而坐，远方的夜空绽放绚烂花火，映红了直深情的侧脸……',
+    descEn: 'Sitting side by side on the veranda under blooming fireworks...',
+    cgUrl: '/images/cg/cg_nao.jpg',
+    unlockAffection: 80,
+    quote: '「小さい頃はずっと一緒が当たり前だったけど……今はね、それ以上の気持ちなんだよ。」'
+  },
+  [CharacterId.MIYUKI]: {
+    id: 'cg_miyuki',
+    charId: CharacterId.MIYUKI,
+    titleZh: '雨过天晴的红茶',
+    titleEn: 'Rain-Cleared Afternoon Tea',
+    descZh: '午后雨歇的温暖公寓中，深雪轻挽白发、微笑着将热红茶递到你手中……',
+    descEn: 'In a rain-washed sunlit apartment, Miyuki hands you a warm cup with tender warmth...',
+    cgUrl: '/images/cg/cg_miyuki.jpg',
+    unlockAffection: 80,
+    quote: '「いつでもここにおいで。あなたの頑張りも弱音も、全部包み込んであげるからね。」'
+  },
+  [CharacterId.INARI]: {
+    id: 'cg_inari',
+    charId: CharacterId.INARI,
+    titleZh: '月华神乐的私语',
+    titleEn: 'Moonlit Kagura Reverie',
+    descZh: '满月高悬的神社秘境红桥上，九尾神狐执起酒盏，金瞳醉意朦胧地轻勾你的指尖……',
+    descEn: 'Under the full moon on a sacred bridge, the nine-tailed deity lifts a sake cup with a tantalizing smile...',
+    cgUrl: '/images/cg/cg_inari.jpg',
+    unlockAffection: 80,
+    quote: '「千年を生きてなお、人の子一人にこれほど心を乱されるとはのう……妾の負けじゃ。」'
+  },
+  [CharacterId.SORA]: {
+    id: 'cg_sora',
+    charId: CharacterId.SORA,
+    titleZh: '傍晚球场的告白',
+    titleEn: 'Sunset Court Confession',
+    descZh: '挥洒汗水的体育馆看台，夕阳勾勒出少女矫健的轮廓，空满脸通红地递上运动饮料……',
+    descEn: 'On the sunlit gym bleachers, Sora hands you a cold drink while blushing intensely...',
+    cgUrl: '/images/cg/cg_sora.jpg',
+    unlockAffection: 80,
+    quote: '「あたし、バスケのことしか頭になかったのに……今は試合中もお前のことばかり見てるっす！」'
+  },
+  [CharacterId.MAKI]: {
+    id: 'cg_maki',
+    charId: CharacterId.MAKI,
+    titleZh: '后台霓虹的距离',
+    titleEn: 'Neon Backstage Distance',
+    descZh: '迷幻霓虹与舞台乐声回荡的后台休息室，真纪抱着电吉他贴近你耳畔轻笑……',
+    descEn: 'In the glow of backstage neon, Maki leans in with her electric guitar and a teasing smirk...',
+    cgUrl: '/images/cg/cg_maki.jpg',
+    unlockAffection: 80,
+    quote: '「センパイ、心拍数上がってんのバレバレやで？……ウチのギターより、ウチに夢中になってや。」'
+  },
+  [CharacterId.REN]: {
+    id: 'cg_ren',
+    charId: CharacterId.REN,
+    titleZh: '命运的结社誓约',
+    titleEn: 'Destined Covenant',
+    descZh: '幽暗灯火下的密室中，莲张开黑翼与契约法阵……',
+    descEn: 'In a dimly lit chamber, Ren spreads his wings of the covenant...',
+    cgUrl: '/images/cg/cg_ren.jpg',
+    unlockAffection: 80,
+    quote: '「我が同志よ、混沌の運命を共に歩もうぞ！」'
+  },
+  [CharacterId.HAKU]: {
+    id: 'cg_haku',
+    charId: CharacterId.HAKU,
+    titleZh: '忠诚的誓约之礼',
+    titleEn: 'Vow of Loyalty',
+    descZh: '月色庭院中，珀单膝跪地，执起你的指尖印下誓约之吻……',
+    descEn: 'In the moonlit courtyard, Haku kneels and kisses your hand...',
+    cgUrl: '/images/cg/cg_haku.jpg',
+    unlockAffection: 80,
+    quote: '「我が主よ。私の全ては、永遠にあなただけのものです。」'
+  }
+};
+
 // 服装解锁分轴：Lv.2/3 档（私服・体操服・围裙等日常装）由**親密度**解锁——
 // 她愿意让你看到便装，是因为熟；Lv.4/5 档（泳装・和服・礼服等）由**好感度**解锁——
 // 她愿意为你换上，是因为喜欢。表格本身不用改，只是两半各归各的轴。
