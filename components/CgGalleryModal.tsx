@@ -60,8 +60,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, onClose }) =>
                     alt={title}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
-                      // 占位预览图
-                      e.currentTarget.src = char.avatarUrl;
+                      e.currentTarget.src = CHARACTER_ROOMS[cg.charId] || char.avatarUrl;
                     }}
                   />
                 ) : (
@@ -100,7 +99,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, onClose }) =>
                 alt={selectedCg.titleZh}
                 className="w-full max-h-[75vh] object-contain rounded-lg border-2 border-yellow-400/80 shadow-[0_0_50px_rgba(234,179,8,0.4)]"
                 onError={(e) => {
-                  e.currentTarget.src = CHARACTERS[selectedCg.charId].avatarUrl;
+                  e.currentTarget.src = CHARACTER_ROOMS[selectedCg.charId] || CHARACTERS[selectedCg.charId].avatarUrl;
                 }}
               />
               <div className="w-full bg-zinc-900/90 border border-white/20 p-4 rounded-lg flex flex-col gap-1 backdrop-blur-md">
