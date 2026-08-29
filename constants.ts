@@ -66,6 +66,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'dress_smug': '/images/characters/asuka/dress_smug.png',
       'kimono_neutral': '/images/characters/asuka/kimono_happy.png',
       'kimono_happy': '/images/characters/asuka/kimono_happy.png',
+      'sport_neutral': '/images/characters/asuka/sport_tennis.png',
+      'sport_tennis': '/images/characters/asuka/sport_tennis.png',
+      'autumn_pout': '/images/characters/asuka/autumn_pout.png',
     },
     firstMessage: "（ノートを乱暴に机に置き、わざとらしく視線を窓の外に向けながら）……ふん。あんたがまた変な間違いをして恥をかかないように、今日だけは隣にいてあげるわよ。で、何から始めるつもり？早く言いなさいよね！",
     systemPrompt: `ROLE: Asuka (ツンデレ). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`
