@@ -11,6 +11,7 @@ import SystemMenu from './components/SystemMenu';
 import WordbookModal from './components/WordbookModal';
 import HistoryLogModal from './components/HistoryLogModal';
 import SaveLoadScreen from './components/SaveLoadScreen';
+import CgGalleryModal from './components/CgGalleryModal';
 
 const App: React.FC = () => {
   // ---------- 全局游戏状态 ----------
