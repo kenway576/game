@@ -11,6 +11,7 @@ interface Props {
   onClose: () => void;
   onOpenWordbook: () => void;
   onOpenHistory: () => void;
+  onOpenCgGallery: () => void;
   onExitToLobby: () => void;
   onReturnTitle: () => void;
   onSaveRequest: () => void;
@@ -21,7 +22,7 @@ interface Props {
 
 const SystemMenu: React.FC<Props> = ({
   T, language, wordCount, showExitToLobby, hasAnySave, isSyncing,
-  onClose, onOpenWordbook, onOpenHistory, onExitToLobby, onReturnTitle,
+  onClose, onOpenWordbook, onOpenHistory, onOpenCgGallery, onExitToLobby, onReturnTitle,
   onSaveRequest, onLoadRequest, onExportJson, onSyncCloud
 }) => (
   <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-lg p-4" onClick={onClose}>
@@ -29,9 +30,10 @@ const SystemMenu: React.FC<Props> = ({
       <h2 className="text-2xl md:text-3xl font-black text-white italic tracking-tighter mb-4 border-b-4 border-red-600 pb-2 uppercase">{T.system}</h2>
 
       <div className="flex flex-col gap-3 md:gap-4">
-        <div className="grid grid-cols-2 gap-2 md:gap-3 mb-2">
+        <div className="grid grid-cols-3 gap-2 md:gap-3 mb-2">
           <button onClick={onOpenWordbook} className="bg-yellow-600/90 hover:bg-yellow-500 text-black font-black py-3 md:py-4 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">{T.wordbook} ({wordCount})</button>
           <button onClick={onOpenHistory} className="bg-indigo-600/90 hover:bg-indigo-500 text-white font-black py-3 md:py-4 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">{T.logs}</button>
+          <button onClick={onOpenCgGallery} className="bg-rose-600/90 hover:bg-rose-500 text-white font-black py-3 md:py-4 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">🌸 {language === 'en' ? 'CGs' : '画廊'}</button>
         </div>
 
         {showExitToLobby && (
