@@ -10,6 +10,14 @@ export const SCENE_MAP: Record<string, string> = {
   'rooftop':   '/images/backgrounds/school_roof.jpg',
   'gym':       '/images/backgrounds/gym.jpg',
   'room':      '/images/backgrounds/my_room.jpg',
+  'room_asuka':  '/images/backgrounds/room_asuka.jpg',
+  'room_hikari': '/images/backgrounds/room_hikari.jpg',
+  'room_rei':    '/images/backgrounds/room_rei.jpg',
+  'room_nao':    '/images/backgrounds/room_nao.jpg',
+  'room_miyuki': '/images/backgrounds/room_miyuki.jpg',
+  'room_inari':  '/images/backgrounds/room_inari.jpg',
+  'room_sora':   '/images/backgrounds/room_sora.jpg',
+  'room_maki':   '/images/backgrounds/room_maki.jpg',
   'kitchen':   '/images/backgrounds/kitchen.jpg',
   'street':    '/images/backgrounds/street.jpg',
   'park':      '/images/backgrounds/park.jpg',
@@ -20,6 +28,20 @@ export const SCENE_MAP: Record<string, string> = {
   'castle':    '/images/backgrounds/castle.jpg',
   'night':     '/images/backgrounds/starry_sky.jpg',
   'festival':  '/images/backgrounds/festival_night.jpg'
+};
+
+// 各角色的专属个人房间背景映射（新海诚唯美画风）
+export const CHARACTER_ROOMS: Record<CharacterId, string> = {
+  [CharacterId.ASUKA]:  '/images/backgrounds/room_asuka.jpg',
+  [CharacterId.HIKARI]: '/images/backgrounds/room_hikari.jpg',
+  [CharacterId.REI]:    '/images/backgrounds/room_rei.jpg',
+  [CharacterId.NAO]:    '/images/backgrounds/room_nao.jpg',
+  [CharacterId.MIYUKI]: '/images/backgrounds/room_miyuki.jpg',
+  [CharacterId.INARI]:  '/images/backgrounds/room_inari.jpg',
+  [CharacterId.SORA]:   '/images/backgrounds/room_sora.jpg',
+  [CharacterId.MAKI]:   '/images/backgrounds/room_maki.jpg',
+  [CharacterId.REN]:    '/images/backgrounds/my_room.jpg',
+  [CharacterId.HAKU]:   '/images/backgrounds/my_room.jpg'
 };
 
 export const DEFAULT_SCENE = 'classroom';
