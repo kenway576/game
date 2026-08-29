@@ -74,6 +74,7 @@ const App: React.FC = () => {
   const [showSystemMenu, setShowSystemMenu] = useState(false);
   const [showHistoryLog, setShowHistoryLog] = useState(false);
   const [showWordbook, setShowWordbook] = useState(false);
+  const [showCgGallery, setShowCgGallery] = useState(false);
   const [saveLoadMode, setSaveLoadMode] = useState<'SAVE' | 'LOAD' | null>(null);
 
   const [activeHistoryTab, setActiveHistoryTab] = useState<CharacterId>(VISIBLE_CHARACTER_IDS[0]);
