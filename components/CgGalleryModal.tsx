@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CharacterId, Language } from '../types';
-import { CHARACTERS, CHARACTER_CGS, CharacterCgDef } from '../constants';
+import { CHARACTERS, CHARACTER_CGS, CHARACTER_ROOMS, CharacterCgDef } from '../constants';
 
 interface Props {
   language: Language;
