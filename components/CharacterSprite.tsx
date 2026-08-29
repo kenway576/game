@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Character } from '../types';
 import { SPRITE_OUTLINE, SPRITE_OUTLINE_WIDTH } from '../constants';
 
 interface Props {
   character: Character;
+  emotion?: string;
   isSpeaking: boolean;
   className?: string;
   // 'height'：按容器高度对齐（所有角色等高，宽图向两侧展开）；'contain'：完整塞进容器
@@ -24,15 +25,94 @@ const buildSpriteFilter = (isSpeaking: boolean) => {
     );
   }
   parts.push('drop-shadow(0 14px 28px rgba(0,0,0,0.55))'); // 柔和落地阴影，增强与场景的融合感
-  parts.push(isSpeaking ? 'brightness(1.06) saturate(1.05)' : 'brightness(0.97)');
+  parts.push(isSpeaking ? 'brightness(1.06) saturate(1.08)' : 'brightness(0.97)');
   return parts.join(' ');
 };
 
-const CharacterSprite: React.FC<Props> = ({ character, isSpeaking, className = "", fit = 'contain' }) => {
-  const [hasError, setHasError] = useState(false);
+// 识别情绪大类以触发对应的 Galgame 动作
+const getEmotionAnimClass = (emo: string): string => {
+  const lower = emo.toLowerCase();
+  if (lower.includes('shock') || lower.includes('surprised') || lower.includes('angry')) {
+    return 'galgame-anim-shock';
+  }
+  if (lower.includes('happy') || lower.includes('laugh') || lower.includes('smile') || lower.includes('cute') || lower.includes('love') || lower.includes('cheer')) {
+    return 'galgame-anim-hop';
+  }
+  if (lower.includes('shy') || lower.includes('pout') || lower.includes('blush') || lower.includes('tea')) {
+    return 'galgame-anim-shy';
+  }
+  if (lower.includes('sad') || lower.includes('worry') || lower.includes('cold') || lower.includes('droop')) {
+    return 'galgame-anim-droop';
+  }
+  if (lower.includes('thinking') || lower.includes('curious') || lower.includes('lecturing') || lower.includes('reading')) {
+    return 'galgame-anim-think';
+  }
+  return 'tachie-anim-speak';
+};
 
-  // 换装/换表情（URL 变化）时重置加载失败状态
-  useEffect(() => { setHasError(false); }, [character.avatarUrl]);
+// 获取 Galgame 情绪气泡符号
+const getEmotionBubbleIcon = (emo: string): string | null => {
+  const lower = emo.toLowerCase();
+  if (lower.includes('shock') || lower.includes('surprised')) return '❗';
+  if (lower.includes('angry')) return '💢';
+  if (lower.includes('love')) return '💖';
+  if (lower.includes('happy') || lower.includes('smile') || lower.includes('cute') || lower.includes('laugh')) return '✨';
+  if (lower.includes('shy') || lower.includes('blush') || lower.includes('pout')) return '💦';
+  if (lower.includes('thinking') || lower.includes('curious')) return '💡';
+  return null;
+};
+
+const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSpeaking, className = "", fit = 'contain' }) => {
+  const [hasError, setHasError] = useState(false);
+  const [activeAnim, setActiveAnim] = useState<string>('');
+  const [bubbleIcon, setBubbleIcon] = useState<string | null>(null);
+  const [pokeCount, setPokeCount] = useState(0);
+  const [isPoked, setIsPoked] = useState(false);
+  const prevUrlRef = useRef(character.avatarUrl);
+
+  // 换装/换表情（URL 变化或 emotion 变化）时触发 Galgame 动态动作与气泡
+  useEffect(() => {
+    setHasError(false);
+    const animClass = getEmotionAnimClass(emotion);
+    const bubble = getEmotionBubbleIcon(emotion);
+
+    setActiveAnim(animClass);
+    setBubbleIcon(bubble);
+
+    const timer = setTimeout(() => {
+      setActiveAnim('');
+    }, 850);
+
+    const bubbleTimer = setTimeout(() => {
+      setBubbleIcon(null);
+    }, 2800);
+
+    prevUrlRef.current = character.avatarUrl;
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(bubbleTimer);
+    };
+  }, [character.avatarUrl, emotion]);
+
+  // 点击/戳一戳立绘互动反馈
+  const handlePoke = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsPoked(true);
+    setPokeCount(prev => prev + 1);
+    
+    // 随机弹出可爱的心情符号
+    const pokeIcons = ['💖', '✨', '🎵', '⭐', '///', '🌸'];
+    const randomIcon = pokeIcons[Math.floor(Math.random() * pokeIcons.length)];
+    setBubbleIcon(randomIcon);
+
+    setTimeout(() => {
+      setIsPoked(false);
+    }, 500);
+
+    setTimeout(() => {
+      setBubbleIcon(null);
+    }, 2000);
+  };
 
   // 如果没有 URL 或已经报错，显示占位符
   if (!character.avatarUrl || hasError) {
@@ -43,15 +123,40 @@ const CharacterSprite: React.FC<Props> = ({ character, isSpeaking, className = "
     );
   }
 
+  // 决定当前立绘的复合动画类名
+  const dynamicAnimClass = isPoked
+    ? 'galgame-anim-poke'
+    : activeAnim
+      ? activeAnim
+      : 'tachie-anim-breathe';
+
   return (
-    <div className={`relative w-full h-full flex items-end justify-center ${className}`}>
-      {/* key=URL：表情变化时强制重新渲染，避免卡在旧图上 */}
+    <div
+      onClick={handlePoke}
+      title="点击与角色互动 ✨"
+      className={`relative w-full h-full flex items-end justify-center cursor-pointer select-none ${className}`}
+    >
+      {/* 💭 Galgame 悬浮情绪/符号气泡 */}
+      {bubbleIcon && (
+        <div className="absolute top-[8%] md:top-[12%] right-[20%] md:right-[26%] z-30 pointer-events-none emotion-bubble">
+          <div className="bg-white/95 text-slate-900 border-2 border-yellow-400 font-black text-xl md:text-2xl px-3 py-1.5 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.4)] flex items-center justify-center backdrop-blur-sm">
+            <span>{bubbleIcon}</span>
+          </div>
+        </div>
+      )}
+
+      {/* 说话时的柔光背晕反馈 */}
+      {isSpeaking && (
+        <div className="absolute inset-x-0 bottom-0 top-1/4 pointer-events-none bg-radial from-yellow-400/15 via-transparent to-transparent z-0 animate-pulse duration-1000" />
+      )}
+
+      {/* key=URL：表情变化时平滑过场与重置动画 */}
       <img
-        key={character.avatarUrl}
+        key={`${character.avatarUrl}_${pokeCount}`}
         src={character.avatarUrl}
         alt={character.name}
         decoding="async"
-        className={`${fit === 'height' ? 'h-full w-auto max-w-none' : 'w-full h-full'} object-contain transition-all duration-300`}
+        className={`${fit === 'height' ? 'h-full w-auto max-w-none' : 'w-full h-full'} object-contain transition-all duration-300 ${dynamicAnimClass}`}
         style={{ filter: buildSpriteFilter(isSpeaking) }}
         onError={(e) => {
           console.error("Image Dead:", character.name, e.currentTarget.src);
@@ -63,3 +168,4 @@ const CharacterSprite: React.FC<Props> = ({ character, isSpeaking, className = "
 };
 
 export default CharacterSprite;
+

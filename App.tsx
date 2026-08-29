@@ -955,24 +955,119 @@ const styleSheet = document.createElement("style");
 styleSheet.innerText = `
   @keyframes tachie-breathe {
     0% { transform: scale(1) translateY(0); }
-    50% { transform: scale(1.02) translateY(-3px); }
+    50% { transform: scale(1.015) translateY(-4px); }
     100% { transform: scale(1) translateY(0); }
   }
   @keyframes tachie-speak {
     0% { transform: translateY(0); }
-    15% { transform: translateY(-4px); }
-    30% { transform: translateY(0); }
-    45% { transform: translateY(-2px); }
+    20% { transform: translateY(-5px); }
+    40% { transform: translateY(-1px); }
+    60% { transform: translateY(-4px); }
+    80% { transform: translateY(-1px); }
     100% { transform: translateY(0); }
   }
   .tachie-anim-breathe {
-    animation: tachie-breathe 5s ease-in-out infinite;
+    animation: tachie-breathe 4.5s ease-in-out infinite;
     transform-origin: bottom center;
     will-change: transform;
   }
   .tachie-anim-speak {
-    animation: tachie-speak 0.4s ease-out;
+    animation: tachie-speak 0.45s ease-out;
     transform-origin: bottom center;
+  }
+
+  /* 🎬 Galgame 动态立绘动画系统 */
+  @keyframes galgame-shock {
+    0%   { transform: translateY(0) scale(1); }
+    10%  { transform: translateY(-16px) scale(1.04); }
+    22%  { transform: translateY(-3px) translateX(-9px) rotate(-2deg); }
+    36%  { transform: translateY(2px) translateX(9px) rotate(2deg); }
+    50%  { transform: translateY(-1px) translateX(-6px) rotate(-1deg); }
+    64%  { transform: translateY(1px) translateX(6px) rotate(1deg); }
+    78%  { transform: translateY(0) translateX(-3px) rotate(-0.5deg); }
+    90%  { transform: translateY(0) translateX(2px) rotate(0deg); }
+    100% { transform: translateY(0) translateX(0) scale(1); }
+  }
+
+  @keyframes galgame-hop {
+    0%   { transform: translateY(0) scale(1); }
+    20%  { transform: translateY(-24px) scale(0.97, 1.05); }
+    40%  { transform: translateY(0) scale(1.04, 0.96); }
+    60%  { transform: translateY(-12px) scale(0.99, 1.02); }
+    80%  { transform: translateY(0) scale(1.01, 0.99); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  @keyframes galgame-shy {
+    0%   { transform: translateY(0) scale(1) rotate(0deg); }
+    22%  { transform: translateY(8px) scale(0.97, 0.98) rotate(-2deg); }
+    45%  { transform: translateY(4px) scale(0.98, 0.99) rotate(2deg); }
+    68%  { transform: translateY(6px) scale(0.97, 0.98) rotate(-1.2deg); }
+    88%  { transform: translateY(2px) scale(0.99, 0.99) rotate(0.6deg); }
+    100% { transform: translateY(0) scale(1) rotate(0deg); }
+  }
+
+  @keyframes galgame-droop {
+    0%   { transform: translateY(0) scale(1); }
+    35%  { transform: translateY(18px) scale(0.97, 0.96) rotate(-1.5deg); }
+    70%  { transform: translateY(12px) scale(0.98, 0.97) rotate(-0.8deg); }
+    100% { transform: translateY(14px) scale(0.98, 0.97) rotate(-1deg); }
+  }
+
+  @keyframes galgame-think {
+    0%   { transform: rotate(0deg) translateY(0); }
+    40%  { transform: rotate(3.5deg) translateY(-8px) scale(1.01); }
+    75%  { transform: rotate(2.5deg) translateY(-5px) scale(1.01); }
+    100% { transform: rotate(2deg) translateY(-4px) scale(1.01); }
+  }
+
+  @keyframes galgame-poke {
+    0%   { transform: scale(1); }
+    25%  { transform: scale(0.92, 1.08) translateY(-14px); }
+    55%  { transform: scale(1.06, 0.94) translateY(3px); }
+    80%  { transform: scale(0.98, 1.02) translateY(-4px); }
+    100% { transform: scale(1) translateY(0); }
+  }
+
+  @keyframes emotion-bubble-pop {
+    0%   { transform: scale(0) translateY(12px); opacity: 0; }
+    50%  { transform: scale(1.3) translateY(-6px); opacity: 1; }
+    75%  { transform: scale(0.92) translateY(0); opacity: 1; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  @keyframes emotion-bubble-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-7px) rotate(4deg); }
+  }
+
+  .galgame-anim-shock {
+    animation: galgame-shock 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform-origin: bottom center;
+  }
+  .galgame-anim-hop {
+    animation: galgame-hop 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    transform-origin: bottom center;
+  }
+  .galgame-anim-shy {
+    animation: galgame-shy 0.85s ease-in-out both;
+    transform-origin: bottom center;
+  }
+  .galgame-anim-droop {
+    animation: galgame-droop 0.95s ease-out both;
+    transform-origin: bottom center;
+  }
+  .galgame-anim-think {
+    animation: galgame-think 0.75s ease-out both;
+    transform-origin: bottom center;
+  }
+  .galgame-anim-poke {
+    animation: galgame-poke 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    transform-origin: bottom center;
+  }
+  .emotion-bubble {
+    animation: emotion-bubble-pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+               emotion-bubble-float 2.2s ease-in-out 0.35s infinite;
   }
   @keyframes dice-shake {
     0%   { transform: rotate(0deg) translateY(0); }

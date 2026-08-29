@@ -211,7 +211,7 @@ const ChatScreen: React.FC<Props> = ({
 
       <div className="absolute inset-0 z-10 flex items-end justify-center pointer-events-none pb-0 overflow-hidden">
         <div className="relative h-[55dvh] md:h-[80vh] max-h-[85dvh] flex items-end justify-center pointer-events-auto transition-all duration-500">
-          <CharacterSprite character={character} isSpeaking={lastModelMsg?.role === 'model' && !isLoading && !isDialogueFinished} fit="height" className="h-full tachie-anim-breathe" />
+          <CharacterSprite character={character} emotion={lastModelMsg?.emotion} isSpeaking={lastModelMsg?.role === 'model' && !isLoading && !isDialogueFinished} fit="height" className="h-full" />
         </div>
       </div>
 
