@@ -582,15 +582,15 @@ export const createCharacterRecord = <T,>(fill: (id: CharacterId) => T): Record<
 
 // 每个角色可切换的服装（原本在 geminiService.ts，移到这里与角色数据放在一起）
 export const WARDROBE: Record<string, string[]> = {
-  [CharacterId.ASUKA]:  ['casual', 'gym', 'swim', 'maid', 'autumn', 'yukata', 'winter', 'sleep', 'dress', 'kimono', 'sport', 'summer'],
+  [CharacterId.ASUKA]:  ['casual', 'gym', 'swim', 'maid', 'autumn', 'yukata', 'winter', 'sleep', 'dress', 'kimono', 'sport', 'summer', 'fantasy'],
   [CharacterId.HIKARI]: ['casual', 'gym', 'swim', 'yukata', 'autumn', 'maid', 'winter', 'sleep', 'sport', 'dress', 'kimono'],
   [CharacterId.REI]:    ['casual', 'lab', 'gym', 'swim', 'kimono', 'maid', 'winter', 'sleep', 'dress', 'yukata', 'autumn'],
   [CharacterId.REN]:    ['casual', 'gym', 'fantasy', 'butler', 'lecturing', 'sorcerer'],
   [CharacterId.HAKU]:   ['casual', 'apron', 'summer', 'prince', 'kimono'],
-  [CharacterId.INARI]:  ['casual', 'school', 'swim', 'home', 'knit', 'gown', 'summer', 'miko'],
-  [CharacterId.MIYUKI]: ['summer', 'school', 'cardigan', 'sundress', 'gown', 'apron'],
+  [CharacterId.INARI]:  ['casual', 'school', 'swim', 'home', 'knit', 'gown', 'summer', 'miko', 'goddess'],
+  [CharacterId.MIYUKI]: ['summer', 'school', 'cardigan', 'sundress', 'gown', 'apron', 'kimono'],
   [CharacterId.SORA]:   ['school', 'summer', 'autumn', 'swim', 'maid', 'kimono', 'gown'],
-  [CharacterId.NAO]:    ['casual', 'sleep', 'kimono', 'swim', 'maid', 'gown'],
+  [CharacterId.NAO]:    ['casual', 'sleep', 'kimono', 'swim', 'maid', 'gown', 'yukata'],
   [CharacterId.MAKI]:   ['school', 'cardigan', 'punk', 'kimono', 'gown', 'swim']
 };
 
@@ -901,15 +901,15 @@ export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
 // 各角色各等级解锁的服装（键须存在于 WARDROBE 对应角色的列表）
 // Lv.2/3 由親密度解锁，Lv.4/5 由好感度解锁——见 getUnlockedOutfits。
 export const OUTFIT_UNLOCKS: Record<CharacterId, Partial<Record<number, string[]>>> = {
-  [CharacterId.ASUKA]:  { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata', 'summer'], 5: ['maid', 'winter', 'dress', 'kimono'] },
+  [CharacterId.ASUKA]:  { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata', 'summer'], 5: ['maid', 'winter', 'dress', 'kimono', 'fantasy'] },
   [CharacterId.HIKARI]: { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata', 'kimono'], 5: ['maid', 'winter', 'dress'] },
   [CharacterId.REI]:    { 2: ['casual', 'sleep'], 3: ['lab', 'gym', 'autumn'], 4: ['swim', 'winter', 'yukata'], 5: ['kimono', 'maid', 'dress'] },
   [CharacterId.REN]:    { 2: ['casual'], 3: ['gym', 'lecturing'], 4: ['fantasy', 'sorcerer'], 5: ['butler'] },
   [CharacterId.HAKU]:   { 2: ['casual'], 3: ['apron'], 4: ['summer', 'kimono'], 5: ['prince'] },
-  [CharacterId.INARI]:  { 2: ['casual', 'home'], 3: ['school', 'summer'], 4: ['swim', 'knit', 'miko'], 5: ['gown'] },
-  [CharacterId.MIYUKI]: { 2: ['cardigan', 'apron'], 3: ['summer', 'sundress'], 4: ['school'], 5: ['gown'] },
+  [CharacterId.INARI]:  { 2: ['casual', 'home'], 3: ['school', 'summer'], 4: ['swim', 'knit', 'miko'], 5: ['gown', 'goddess'] },
+  [CharacterId.MIYUKI]: { 2: ['cardigan', 'apron'], 3: ['summer', 'sundress'], 4: ['school', 'kimono'], 5: ['gown'] },
   [CharacterId.SORA]:   { 2: ['school'], 3: ['summer', 'autumn'], 4: ['swim', 'kimono'], 5: ['maid', 'gown'] },
-  [CharacterId.NAO]:    { 2: ['casual'], 3: ['kimono'], 4: ['swim', 'sleep'], 5: ['maid', 'gown'] },
+  [CharacterId.NAO]:    { 2: ['casual'], 3: ['kimono'], 4: ['swim', 'sleep', 'yukata'], 5: ['maid', 'gown'] },
   [CharacterId.MAKI]:   { 2: ['school', 'cardigan'], 3: ['punk'], 4: ['kimono', 'swim'], 5: ['gown'] }
 };
 
