@@ -1,0 +1,14 @@
+# 音频素材：二进制，不做行尾转换 / 不做 diff
+*.mp3  binary
+*.ogg  binary
+*.wav  binary
+*.m4a  binary
+*.webm binary
+*.flac binary
+
+# 图片素材（仓库里主要是 WebP）
+*.webp binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary

@@ -1,0 +1,34 @@
+{
+  "//": "复制本文件为 manifest.json，删掉你没有的条目。缺的项会自动回退到合成占位音。值可写扩展名（mp3/ogg/wav/m4a/webm）或完整相对路径。",
+  "bgm": {
+    "title": "mp3",
+    "lobby": "mp3",
+    "chat": "mp3"
+  },
+  "sfx": {
+    "click": "mp3",
+    "page": "mp3",
+    "type": "mp3",
+    "send": "mp3",
+    "receive": "mp3",
+    "collect": "mp3",
+    "error": "mp3",
+    "modal_open": "mp3",
+    "modal_close": "mp3",
+    "confirm": "mp3",
+    "affection_up": "mp3",
+    "familiarity_up": "mp3",
+    "relation_down": "mp3",
+    "levelup_affection": "mp3",
+    "levelup_familiarity": "mp3",
+    "unlock": "mp3",
+    "quiz_correct": "mp3",
+    "quiz_wrong": "mp3",
+    "dice_rattle": "mp3",
+    "dice_land_low": "mp3",
+    "dice_land_mid": "mp3",
+    "dice_land_high": "mp3",
+    "enter_chat": "mp3",
+    "leave_chat": "mp3"
+  }
+}
