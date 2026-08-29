@@ -263,42 +263,60 @@ if (LIMIT) plan = plan.slice(0, LIMIT);
 console.log(`计划生成 ${plan.length} 个缺口 × ${CANDIDATES} 候选 = ${plan.length * CANDIDATES} 张`);
 console.log(`预计花费 $${(plan.length * CANDIDATES * 0.02).toFixed(2)}\n`);
 
-let ok = 0, fail = 0;
-for (const [i, job] of plan.entries()) {
-  const outDir = path.join(STAGE, job.char);
+// 展开成一个个任务（缺口 × 候选），并发跑——API 是异步的，串行纯属浪费
+const tasks = [];
+for (const job of plan)
+  for (let c = 1; c <= CANDIDATES; c++)
+    tasks.push({ ...job, cand: c, name: `${job.outName}${CANDIDATES > 1 ? `_c${c}` : ''}.webp` });
+
+// 跳过已经生成过的（断点续跑：中途挂了直接重跑同一条命令即可）
+const todo = tasks.filter(t => !fs.existsSync(path.join(STAGE, t.char, t.name)));
+if (todo.length < tasks.length)
+  console.log(`跳过 ${tasks.length - todo.length} 张已存在的，实际生成 ${todo.length} 张\n`);
+
+const CONC = Number(arg('concurrency', 6));
+let ok = 0, fail = 0, done = 0;
+const failures = [];
+
+const runOne = async (t) => {
+  const outDir = path.join(STAGE, t.char);
   fs.mkdirSync(outDir, { recursive: true });
-
-  // 源图合成到纯白底再送进去：Qwen 本来就返回白底，给它干净白底最可控
-  const inputPng = await sharp(job.srcFile)
-    .resize({ height: 1024, withoutEnlargement: true })
-    .flatten({ background: '#ffffff' })
-    .png().toBuffer();
-  const b64 = inputPng.toString('base64');
-  const prompt = `${EMOTIONS[job.emotion]} ${KEEP} ${lockFor(job.char)}`;
-
-  for (let c = 1; c <= CANDIDATES; c++) {
-    const label = `${job.char}/${job.outName}${CANDIDATES > 1 ? `_c${c}` : ''}`;
-    process.stdout.write(`[${i + 1}/${plan.length}] ${label} … `);
-    try {
-      const url = await await_result(await submit(b64, prompt, Math.floor(Math.random() * 2e9)));
-      const raw = Buffer.from(await (await fetch(url)).arrayBuffer());
-      // 统一转成 RGBA PNG 再去底（Qwen 可能回 jpeg/无 alpha）
-      const rgba = await sharp(raw).ensureAlpha().png().toBuffer();
-      const cut = removeWhiteBg(rgba);
-      const final = await sharp(cut).trim({ threshold: 1 })    // 按 alpha 裁掉空白边
-        .resize({ height: OUT_HEIGHT, withoutEnlargement: true })
-        .webp({ quality: 86, alphaQuality: 90 }).toBuffer();
-      const name = `${job.outName}${CANDIDATES > 1 ? `_c${c}` : ''}.webp`;
-      fs.writeFileSync(path.join(outDir, name), final);
-      console.log(`✅ ${(final.length / 1024).toFixed(0)}KB`);
-      ok++;
-    } catch (e) {
-      console.log(`❌ ${e.message}`);
-      fail++;
-    }
+  try {
+    // 源图合成到纯白底再送进去：Qwen 本来就返回白底，给它干净白底最可控
+    const inputPng = await sharp(t.srcFile)
+      .resize({ height: 1024, withoutEnlargement: true })
+      .flatten({ background: '#ffffff' })
+      .png().toBuffer();
+    const prompt = `${EMOTIONS[t.emotion]} ${KEEP} ${lockFor(t.char)}`;
+    const url = await await_result(await submit(inputPng.toString('base64'), prompt, Math.floor(Math.random() * 2e9)));
+    const raw = Buffer.from(await (await fetch(url)).arrayBuffer());
+    // 统一转成 RGBA PNG 再去底（Qwen 可能回 jpeg/无 alpha）
+    const rgba = await sharp(raw).ensureAlpha().png().toBuffer();
+    const final = await sharp(removeWhiteBg(rgba))
+      .trim({ threshold: 1 })                                  // 按 alpha 裁掉空白边
+      .resize({ height: OUT_HEIGHT, withoutEnlargement: true })
+      .webp({ quality: 86, alphaQuality: 90 }).toBuffer();
+    fs.writeFileSync(path.join(outDir, t.name), final);
+    ok++;
+  } catch (e) {
+    fail++;
+    failures.push(`${t.char}/${t.name}: ${e.message}`);
   }
-}
+  done++;
+  if (done % 10 === 0 || done === todo.length)
+    console.log(`  ${done}/${todo.length}  成功 ${ok}  失败 ${fail}`);
+};
+
+// 简单的并发池
+const queue = [...todo];
+await Promise.all(Array.from({ length: Math.min(CONC, queue.length) }, async () => {
+  while (queue.length) await runOne(queue.shift());
+}));
 
 console.log(`\n完成：成功 ${ok}，失败 ${fail}`);
+if (failures.length) {
+  console.log('失败明细（重跑同一命令会自动续跑这些）：');
+  failures.slice(0, 20).forEach(f => console.log('  ' + f));
+}
 console.log(`结果在 ${path.relative(process.cwd(), STAGE)}/ —— 现在生成联络表：`);
 console.log(`  node scripts/gen-sprites.mjs --sheet ${filterChar || ''}`);
