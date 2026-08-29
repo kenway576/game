@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis } from './types';
-import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS } from './constants';
+import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey } from './types';
+import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import type { DialoguePage } from './types';
 import Background from './components/Background';
@@ -12,6 +12,9 @@ import WordbookModal from './components/WordbookModal';
 import HistoryLogModal from './components/HistoryLogModal';
 import SaveLoadScreen from './components/SaveLoadScreen';
 import CgGalleryModal from './components/CgGalleryModal';
+import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
+import { CalendarModal } from './components/CalendarModal';
+import { StatGainToast } from './components/StatGainToast';
 
 const App: React.FC = () => {
   // ---------- 全局游戏状态 ----------
@@ -75,7 +78,28 @@ const App: React.FC = () => {
   const [showHistoryLog, setShowHistoryLog] = useState(false);
   const [showWordbook, setShowWordbook] = useState(false);
   const [showCgGallery, setShowCgGallery] = useState(false);
+  const [showProtagonistProfile, setShowProtagonistProfile] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [saveLoadMode, setSaveLoadMode] = useState<'SAVE' | 'LOAD' | null>(null);
+
+  // 👤 P5 式主角五维人格属性与关西行事历状态
+  const [protagonistStats, setProtagonistStats] = useState<ProtagonistStats>(INITIAL_PROTAGONIST_STATS);
+  const [gameCalendar, setGameCalendar] = useState<GameCalendar>(INITIAL_CALENDAR_STATE);
+  const [statGainEvent, setStatGainEvent] = useState<StatGainEvent | null>(null);
+
+  const gainStat = (stat: StatKey, amount: number, reasonZh: string, reasonEn: string) => {
+    setProtagonistStats(prev => ({
+      ...prev,
+      [stat]: Math.min(100, Math.max(0, (prev[stat] || 0) + amount))
+    }));
+    setStatGainEvent({
+      stat,
+      amount,
+      reasonZh,
+      reasonEn,
+      timestamp: Date.now()
+    });
+  };
 
   const [activeHistoryTab, setActiveHistoryTab] = useState<CharacterId>(VISIBLE_CHARACTER_IDS[0]);
   const [hasAnySave, setHasAnySave] = useState(false);
@@ -752,6 +776,9 @@ const App: React.FC = () => {
     setIsLastAnswerCorrect(isCorrect);
     const feedbackText = isCorrect ? `✅ ${currentQuiz.explanation}` : `❌ ${currentQuiz.options[currentQuiz.correctIndex]}... ${currentQuiz.explanation}`;
     setQuizFeedback(feedbackText);
+    if (isCorrect) {
+      gainStat('knowledge', 2, '完美解答 N3 语法测验！', 'Answered N3 Grammar Quiz Correctly!');
+    }
     setCurrentQuiz(null);
   };
 
@@ -859,9 +886,13 @@ const App: React.FC = () => {
           setLobbySelectedChar={setLobbySelectedChar}
           affectionMap={affectionMap}
           familiarityMap={familiarityMap}
+          calendar={gameCalendar}
+          stats={protagonistStats}
           onEnterChat={enterChat}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onOpenCgGallery={() => setShowCgGallery(true)}
+          onOpenCalendar={() => setShowCalendar(true)}
+          onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           background={background}
         />
       )}
@@ -911,12 +942,31 @@ const App: React.FC = () => {
           onOpenWordbook={() => { setShowSystemMenu(false); setShowWordbook(true); }}
           onOpenHistory={() => { setShowSystemMenu(false); setShowHistoryLog(true); }}
           onOpenCgGallery={() => { setShowSystemMenu(false); setShowCgGallery(true); }}
+          onOpenProtagonistProfile={() => { setShowSystemMenu(false); setShowProtagonistProfile(true); }}
+          onOpenCalendar={() => { setShowSystemMenu(false); setShowCalendar(true); }}
           onExitToLobby={() => leaveChat(GameMode.LOBBY)}
           onReturnTitle={() => leaveChat(GameMode.SETUP)}
           onSaveRequest={() => { setShowSystemMenu(false); setSaveLoadMode('SAVE'); }}
           onLoadRequest={() => { setShowSystemMenu(false); setSaveLoadMode('LOAD'); }}
           onExportJson={exportExperimentData}
           onSyncCloud={syncToCloud}
+        />
+      )}
+
+      {showProtagonistProfile && (
+        <ProtagonistProfileModal
+          stats={protagonistStats}
+          playerName={userState.playerName}
+          language={userState.language}
+          onClose={() => setShowProtagonistProfile(false)}
+        />
+      )}
+
+      {showCalendar && (
+        <CalendarModal
+          calendar={gameCalendar}
+          language={userState.language}
+          onClose={() => setShowCalendar(false)}
         />
       )}
 
@@ -959,6 +1009,12 @@ const App: React.FC = () => {
           onLoadSlot={loadGameFromSlot}
         />
       )}
+
+      <StatGainToast
+        event={statGainEvent}
+        language={userState.language}
+        onDismiss={() => setStatGainEvent(null)}
+      />
     </div>
   );
 };

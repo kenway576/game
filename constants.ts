@@ -1316,6 +1316,258 @@ emailPlaceholder: "For experiment updates and partner messages...",
     romanceCappedHint: "Spend more time together before feelings can grow",
     unlockOutfits: "NEW OUTFITS",
     unlockScenes: "NEW PLACES",
-    levelUpContinue: "▶ CONTINUE"
+    levelUpContinue: "▶ CONTINUE",
+    protagonistProfile: "PROTAGONIST PROFILE",
+    kansaiCalendar: "KANSAI CALENDAR",
+    statsTitle: "SOCIAL STATS (5-STATS)",
+    statGain: "STAT INCREASED!"
   }
 };
+
+// ==========================================
+// P5 式主角五维人格参数与学园行事历常量
+// ==========================================
+
+export const INITIAL_PROTAGONIST_STATS: ProtagonistStats = {
+  knowledge: 15,    // 知识
+  guts: 10,         // 勇气
+  kindness: 20,     // 体贴
+  charm: 15,        // 魅力
+  proficiency: 10   // 灵巧
+};
+
+export const STAT_METADATA: Record<StatKey, {
+  nameZh: string;
+  nameEn: string;
+  badgeUrl: string;
+  color: string;
+  ranks: { rank: number; nameZh: string; nameEn: string; descZh: string; descEn: string; threshold: number }[];
+}> = {
+  knowledge: {
+    nameZh: '知识 (Knowledge)',
+    nameEn: 'Knowledge',
+    badgeUrl: '/images/ui/stat_knowledge.jpg',
+    color: '#38bdf8', // 天蓝
+    ranks: [
+      { rank: 1, nameZh: '脱线小白', nameEn: 'Oblivious', threshold: 0, descZh: '对复杂的语法规则一头雾水', descEn: 'Confused by complex grammar rules' },
+      { rank: 2, nameZh: '求知若渴', nameEn: 'Curious', threshold: 20, descZh: '能理解常规课本句型与基础变形', descEn: 'Understands standard grammar rules' },
+      { rank: 3, nameZh: '融会贯通', nameEn: 'Scholarly', threshold: 45, descZh: '能敏锐察觉长难句与授受关系', descEn: 'Grasps nuanced sentence structures' },
+      { rank: 4, nameZh: '博古通今', nameEn: 'Encyclopedic', threshold: 75, descZh: '轻松解读古籍典故与高难文法', descEn: 'Easily interprets literature & idioms' },
+      { rank: 5, nameZh: '博闻强识', nameEn: 'Erudite', threshold: 100, descZh: '学识渊博，令丽与明日香叹服', descEn: 'Profound intellect admired by all' }
+    ]
+  },
+  guts: {
+    nameZh: '勇气 (Guts)',
+    nameEn: 'Guts',
+    badgeUrl: '/images/ui/stat_guts.jpg',
+    color: '#ef4444', // 鲜红
+    ranks: [
+      { rank: 1, nameZh: '胆小怯懦', nameEn: 'Timid', threshold: 0, descZh: '面对傲娇或挑衅容易不知所措', descEn: 'Hesitant when facing teasing or pressure' },
+      { rank: 2, nameZh: '初生牛犊', nameEn: 'Bold', threshold: 20, descZh: '敢于开口表达真实心声', descEn: 'Dares to speak your genuine thoughts' },
+      { rank: 3, nameZh: '从容不迫', nameEn: 'Resolute', threshold: 45, descZh: '能从容化解真纪的连珠炮嘲讽', descEn: 'Calmly counteracts teasing' },
+      { rank: 4, nameZh: '无畏勇者', nameEn: 'Fearless', threshold: 75, descZh: '在关键危机中挺身而出保护女孩', descEn: 'Steps forward fearlessly in crisis' },
+      { rank: 5, nameZh: '豪胆英雄', nameEn: 'Lionhearted', threshold: 100, descZh: '直球反撩无所畏惧，气场全开', descEn: 'Unshakable courage and irresistible confidence' }
+    ]
+  },
+  kindness: {
+    nameZh: '体贴 (Kindness)',
+    nameEn: 'Kindness',
+    badgeUrl: '/images/ui/stat_kindness.jpg',
+    color: '#34d399', // 柔绿/粉
+    ranks: [
+      { rank: 1, nameZh: '粗枝大叶', nameEn: 'Inattentive', threshold: 0, descZh: '容易忽略女孩细微的情绪波动', descEn: 'Often misses subtle emotional cues' },
+      { rank: 2, nameZh: '热心诚恳', nameEn: 'Considerate', threshold: 20, descZh: '主动为疲惫的同伴递上温水', descEn: 'Warm and willing to offer daily care' },
+      { rank: 3, nameZh: '善解人意', nameEn: 'Empathetic', threshold: 45, descZh: '敏锐察觉光的逞强与深雪的疲累', descEn: 'Senses unspoken burdens and worries' },
+      { rank: 4, nameZh: '春风化雨', nameEn: 'Nurturing', threshold: 75, descZh: '成为女孩心中最无可替代的避风港', descEn: 'A comforting harbor of emotional safety' },
+      { rank: 5, nameZh: '至善挚诚', nameEn: 'Saintly', threshold: 100, descZh: '温暖融化千年的孤独与冰霜', descEn: 'Profound tenderness that melts all sorrows' }
+    ]
+  },
+  charm: {
+    nameZh: '魅力 (Charm)',
+    nameEn: 'Charm',
+    badgeUrl: '/images/ui/stat_charm.jpg',
+    color: '#ec4899', // 靓粉紫
+    ranks: [
+      { rank: 1, nameZh: '质朴无华', nameEn: 'Plain', threshold: 0, descZh: '在人群中略显低调平凡', descEn: 'Modest and blends into the background' },
+      { rank: 2, nameZh: '清爽亮眼', nameEn: 'Pleasant', threshold: 20, descZh: '举止得体，令人倍感舒适', descEn: 'Clean, approachable and pleasant' },
+      { rank: 3, nameZh: '引人注目', nameEn: 'Magnetic', threshold: 45, descZh: '幽默风趣，容易成为对话焦点', descEn: 'Witty, engaging, and attractive' },
+      { rank: 4, nameZh: '风度翩翩', nameEn: 'Debonair', threshold: 75, descZh: '言谈举止散发独特的成熟自信', descEn: 'Effortlessly captivating and stylish' },
+      { rank: 5, nameZh: '倾国倾城', nameEn: 'Irresistible', threshold: 100, descZh: '举手投足令全员少女心动脸红', descEn: 'Irresistibly charming; makes hearts skip beats' }
+    ]
+  },
+  proficiency: {
+    nameZh: '灵巧 (Proficiency)',
+    nameEn: 'Proficiency',
+    badgeUrl: '/images/ui/stat_proficiency.jpg',
+    color: '#f59e0b', // 琥珀金
+    ranks: [
+      { rank: 1, nameZh: '笨手笨脚', nameEn: 'Clumsy', threshold: 0, descZh: '做家务或手工容易手忙脚乱', descEn: 'Easily tangled up with hands-on tasks' },
+      { rank: 2, nameZh: '熟能生巧', nameEn: 'Handy', threshold: 20, descZh: '能做出像样的手冲咖啡与简单料理', descEn: 'Capable of making neat pour-over coffee & meals' },
+      { rank: 3, nameZh: '得心应手', nameEn: 'Skillful', threshold: 45, descZh: '祭典射击/捞金鱼百发百中', descEn: 'Master of festival games and fine crafts' },
+      { rank: 4, nameZh: '匠心独具', nameEn: 'Artisan', threshold: 75, descZh: '能为女孩亲手制作精致专属礼物', descEn: 'Crafts exquisite bespoke gifts with ease' },
+      { rank: 5, nameZh: '神乎其技', nameEn: 'Masterly', threshold: 100, descZh: '无所不能的巧手与敏锐直觉', descEn: 'Flawless precision and unmatched dexterity' }
+    ]
+  }
+};
+
+export const getStatRankInfo = (stat: StatKey, value: number) => {
+  const meta = STAT_METADATA[stat];
+  if (!meta) return { rank: 1, nameZh: 'Lv.1', nameEn: 'Lv.1', descZh: '', descEn: '', progress: 0 };
+  let currentRank = meta.ranks[0];
+  let nextRankThreshold = 100;
+  for (let i = 0; i < meta.ranks.length; i++) {
+    if (value >= meta.ranks[i].threshold) {
+      currentRank = meta.ranks[i];
+      nextRankThreshold = meta.ranks[i + 1] ? meta.ranks[i + 1].threshold : 100;
+    }
+  }
+  const currentBase = currentRank.threshold;
+  const progressPercent = nextRankThreshold > currentBase
+    ? Math.min(100, Math.max(0, ((value - currentBase) / (nextRankThreshold - currentBase)) * 100))
+    : 100;
+
+  return {
+    ...currentRank,
+    progressPercent,
+    currentValue: value,
+    nextThreshold: nextRankThreshold
+  };
+};
+
+export const INITIAL_CALENDAR_STATE: GameCalendar = {
+  month: 4,
+  day: 12,
+  dayOfWeek: '水 (Wed)',
+  timeSlot: 'afternoon',
+  weather: 'sunny'
+};
+
+export const KANSAI_CALENDAR_EVENTS: CalendarEvent[] = [
+  {
+    id: 'kobe_entrance',
+    month: 4,
+    day: 10,
+    titleZh: '神户海星学园 · 新学期开学',
+    titleEn: 'Kaisei Academy Spring Entrance',
+    city: '神户 (Kobe)',
+    location: '北野坡道校门前',
+    descriptionZh: '坡道落樱缤纷，你作为海外交换留学生正式转入高二B班，与明日香、光相遇。',
+    descriptionEn: 'Cherry blossoms flutter as you transfer to Kaisei Academy and meet Asuka and Hikari.',
+    relatedCharIds: [CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.NAO]
+  },
+  {
+    id: 'kobe_matsuri',
+    month: 5,
+    day: 18,
+    titleZh: '神户祭 · 港口桑巴狂欢大巡游',
+    titleEn: 'Kobe Matsuri Grand Festival',
+    city: '神户 (Kobe)',
+    location: '三宫主干道 & 南京町',
+    descriptionZh: '关西最大港口市民狂欢节！全城载歌载舞，光拉着你在花车人潮中狂欢。',
+    descriptionEn: 'The massive Kobe port festival! Hikari pulls you into the vibrant parade crowd.',
+    relatedCharIds: [CharacterId.HIKARI, CharacterId.SORA, CharacterId.MAKI],
+    isMajorFestival: true
+  },
+  {
+    id: 'kyoto_gion',
+    month: 7,
+    day: 16,
+    titleZh: '京都祇园祭 · 宵山传统屋台',
+    titleEn: 'Kyoto Gion Matsuri (Yoiyama)',
+    city: '京都 (Kyoto)',
+    location: '八坂神社 & 四条通',
+    descriptionZh: '日本三大祭之一！漫步宵山灯笼长廊，稻荷在神明领域倾诉千年的回忆。',
+    descriptionEn: 'One of Japan\'s 3 great festivals. Lanterns illuminate traditional stalls under Inari\'s gaze.',
+    relatedCharIds: [CharacterId.INARI, CharacterId.NAO, CharacterId.MIYUKI],
+    isMajorFestival: true
+  },
+  {
+    id: 'koshien_summer',
+    month: 8,
+    day: 6,
+    titleZh: '阪神甲子园 · 全国高校野球大会',
+    titleEn: 'National High School Baseball at Koshien',
+    city: '西宫 (Nishinomiya)',
+    location: '阪神甲子园球场',
+    descriptionZh: '日本高中热血圣殿！空拉着你在数万人的呐喊声中为青春挥洒汗水与眼泪。',
+    descriptionEn: 'The sacred ground of high school sports. Sora screams and cheers alongside you.',
+    relatedCharIds: [CharacterId.SORA, CharacterId.HIKARI],
+    isMajorFestival: true
+  },
+  {
+    id: 'kobe_fireworks',
+    month: 8,
+    day: 15,
+    titleZh: '神户港海上花火大会',
+    titleEn: 'Minato Kobe Marine Fireworks Festival',
+    city: '神户 (Kobe)',
+    location: '美利坚公园 & Mosaic',
+    descriptionZh: '一万发璀璨烟火在神户港夜空绽放，全员浴衣盛装出席，触发专属心动 CG！',
+    descriptionEn: '10,000 fireworks illuminate the sea. Everyone in yukata; unlocks event CGs!',
+    relatedCharIds: [CharacterId.NAO, CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.MIYUKI],
+    isMajorFestival: true
+  },
+  {
+    id: 'kobe_jazz_art',
+    month: 10,
+    day: 12,
+    titleZh: '神户爵士音乐街 & 六甲山艺术散步',
+    titleEn: 'Kobe Jazz Street & Rokko Art Walk',
+    city: '神户 (Kobe)',
+    location: '北野异人馆地下 Live House & 六甲索道',
+    descriptionZh: '爵士之都的魅力！见证真纪的电吉他燃炸舞台，与深雪在缆车中俯瞰红叶。',
+    descriptionEn: 'Experience Maki\'s electric guitar live show and ride the cable car with Miyuki.',
+    relatedCharIds: [CharacterId.MAKI, CharacterId.MIYUKI, CharacterId.REI]
+  },
+  {
+    id: 'kyoto_autumn_leaves',
+    month: 11,
+    day: 20,
+    titleZh: '京都清水寺 / 东福寺红叶夜间特别拜观',
+    titleEn: 'Kyoto Kiyomizu-dera Autumn Illumination',
+    city: '京都 (Kyoto)',
+    location: '清水寺清水舞台 & 岚山竹林',
+    descriptionZh: '漫山枫红如火，与丽在东福寺通天桥探讨古籍，与深雪撑同一把油纸伞。',
+    descriptionEn: 'Vibrant autumn foliage. Discuss ancient texts with Rei and share an umbrella with Miyuki.',
+    relatedCharIds: [CharacterId.REI, CharacterId.MIYUKI]
+  },
+  {
+    id: 'kobe_luminarie',
+    month: 12,
+    day: 15,
+    titleZh: '神户光之雕刻 (Luminarie) 圣诞灯光节',
+    titleEn: 'Kobe Luminarie Festival of Light',
+    city: '神户 (Kobe)',
+    location: '旧居留地 & 东游园地',
+    descriptionZh: '全球最壮丽的光之长廊！在数十万盏璀璨意大利拱门灯火与冬雪中见证真情告白。',
+    descriptionEn: 'The world-famous Italian light arches. A magical winter night for confessions.',
+    relatedCharIds: [CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.NAO, CharacterId.REI],
+    isMajorFestival: true
+  },
+  {
+    id: 'new_year_hatsumode',
+    month: 1,
+    day: 1,
+    titleZh: '关西三大神社初诣 · 新年初参拜',
+    titleEn: 'New Year Hatsumode Shrine Visit',
+    city: '神户 / 京都',
+    location: '生田神社 & 伏见稻荷大社',
+    descriptionZh: '新年敲响除夜之钟，在生田神社求得第一张恋爱大吉签，西宫神社福男冲刺。',
+    descriptionEn: 'Ring in the New Year! Draw romance fortunes at Ikuta Shrine and sprint with Sora.',
+    relatedCharIds: [CharacterId.INARI, CharacterId.SORA, CharacterId.NAO],
+    isMajorFestival: true
+  },
+  {
+    id: 'valentines_shuraba',
+    month: 2,
+    day: 14,
+    titleZh: '情人节 · 神户港 Mosaic 终极大决战 (修罗场)',
+    titleEn: 'Valentine\'s Day Mosaic Climax (Shuraba)',
+    city: '神户 (Kobe)',
+    location: 'Harborland Mosaic 临海露台',
+    descriptionZh: '全剧终极高潮！是专属真爱手作巧克力告白？还是多线恋爱被 8 位女主角当场抓包的史诗级大修罗场？！',
+    descriptionEn: 'The ultimate climax! Genuine chocolate confessions OR an epic multi-romance Shuraba!',
+    relatedCharIds: [CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.REI, CharacterId.NAO, CharacterId.MIYUKI, CharacterId.INARI, CharacterId.SORA, CharacterId.MAKI],
+    isMajorFestival: true
+  }
+];

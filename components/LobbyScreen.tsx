@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { CharacterId, ChatMode, UserState, CustomAssets, AffectionMap, FamiliarityMap } from '../types';
+import { CharacterId, ChatMode, UserState, CustomAssets, AffectionMap, FamiliarityMap, GameCalendar, ProtagonistStats } from '../types';
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity } from '../constants';
 import CharacterSprite from './CharacterSprite';
 import RelationshipMeter from './AffectionMeter';
@@ -13,15 +13,20 @@ interface Props {
   setLobbySelectedChar: (id: CharacterId | null) => void;
   affectionMap: AffectionMap;
   familiarityMap: FamiliarityMap;
+  calendar: GameCalendar;
+  stats: ProtagonistStats;
   onEnterChat: (charId: CharacterId, mode: ChatMode) => void;
   onOpenSystemMenu: () => void;
   onOpenCgGallery: () => void;
+  onOpenCalendar: () => void;
+  onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
 }
 
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbySelectedChar,
-  setLobbySelectedChar, affectionMap, familiarityMap, onEnterChat, onOpenSystemMenu, onOpenCgGallery, background
+  setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
+  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -46,14 +51,57 @@ const LobbyScreen: React.FC<Props> = ({
   return (
   <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col">
     {background}
-    <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex flex-col md:flex-row justify-between items-start z-40 pointer-events-none gap-4">
-      <div className="bg-black/80 backdrop-blur text-white px-6 md:px-8 py-3 md:py-4 border-l-4 border-yellow-500 skew-x-12 transform origin-top-left pointer-events-auto shadow-2xl">
-        <h2 className="-skew-x-12 text-lg md:text-2xl font-black italic uppercase tracking-tighter">{T.choosePartner}</h2>
+    <div className="absolute top-0 left-0 w-full p-3 md:p-6 flex flex-col md:flex-row justify-between items-start z-40 pointer-events-none gap-3">
+      {/* 标题与目标 */}
+      <div className="bg-black/85 backdrop-blur text-white px-5 md:px-8 py-2.5 md:py-3.5 border-l-4 border-yellow-500 skew-x-12 transform origin-top-left pointer-events-auto shadow-2xl">
+        <h2 className="-skew-x-12 text-base md:text-2xl font-black italic uppercase tracking-tighter">{T.choosePartner}</h2>
         <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.goal}: {userState.learningGoal}</p>
       </div>
-      <div className="flex gap-2 pointer-events-auto self-end md:self-auto">
-        <button onClick={onOpenCgGallery} className="bg-rose-600/80 hover:bg-rose-500 text-white px-4 md:px-5 py-3 rounded-sm border border-rose-400/40 backdrop-blur text-xs font-black uppercase tracking-[0.15em] shadow-xl transition-all">🌸 {userState.language === 'en' ? 'MEMORIES' : '回忆画廊'}</button>
-        <button onClick={onOpenSystemMenu} className="bg-white/10 hover:bg-white/20 text-white px-5 md:px-6 py-3 rounded-sm border border-white/20 backdrop-blur text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all">⚙️ {T.system}</button>
+
+      {/* 右侧 HUD 工具栏：日历、人格五维、画廊与系统菜单 */}
+      <div className="flex flex-wrap items-center gap-2 pointer-events-auto self-end md:self-auto">
+        {/* 日历与时间天气 Badge */}
+        <button
+          onClick={onOpenCalendar}
+          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-amber-500/50 hover:border-amber-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
+        >
+          <span className="text-amber-400 font-black text-xs">
+            📅 {calendar.month}月{calendar.day}日
+          </span>
+          <span className="text-[11px] text-zinc-300 font-bold bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/30">
+            {calendar.timeSlot === 'morning' ? '早晨' : calendar.timeSlot === 'afternoon' ? '放学后' : '夜晚'}
+          </span>
+          <span className="text-xs">☀️</span>
+        </button>
+
+        {/* 主角人格参数 (P5 五维) */}
+        <button
+          onClick={onOpenProtagonistProfile}
+          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-red-500/60 hover:border-red-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
+        >
+          <div className="w-5 h-5 rounded-full overflow-hidden border border-red-400/80">
+            <img src="/images/ui/protagonist_card.jpg" alt="Protagonist" className="w-full h-full object-cover" />
+          </div>
+          <span className="text-xs font-black text-red-400 tracking-wider">
+            {userState.language === 'en' ? 'STATS' : '人格参数'}
+          </span>
+        </button>
+
+        {/* 回忆画廊 */}
+        <button
+          onClick={onOpenCgGallery}
+          className="bg-rose-700/80 hover:bg-rose-600 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-rose-400/40 backdrop-blur text-xs font-black uppercase tracking-wider shadow-lg transition-all"
+        >
+          🌸 {userState.language === 'en' ? 'CGs' : '画廊'}
+        </button>
+
+        {/* 系统菜单 */}
+        <button
+          onClick={onOpenSystemMenu}
+          className="bg-zinc-900/80 hover:bg-zinc-800 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20 backdrop-blur text-xs font-black uppercase tracking-wider shadow-lg transition-all"
+        >
+          ⚙️ {T.system}
+        </button>
       </div>
     </div>
 

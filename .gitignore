@@ -35,6 +35,9 @@ _git-backup-*.bundle
 .env.production.local
 !.env.example
 
+# Claude Code local settings (machine-local, never commit — may contain paths/tokens)
+.claude/settings.local.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

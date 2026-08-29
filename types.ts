@@ -149,3 +149,47 @@ export interface RelationshipProfile {
   // 已认识的角色：预置一段共同记忆，让"过去"从第一句话起就存在
   seedMemory?: string;
 }
+
+// 5. P5 式主角五维人格参数系统 (Protagonist Social Stats)
+export interface ProtagonistStats {
+  knowledge: number;     // 知识 (Knowledge) 0 - 100
+  guts: number;          // 勇气 (Guts) 0 - 100
+  kindness: number;      // 体贴 (Kindness) 0 - 100
+  charm: number;         // 魅力 (Charm) 0 - 100
+  proficiency: number;   // 灵巧 (Proficiency) 0 - 100
+}
+
+export type StatKey = keyof ProtagonistStats;
+
+export interface StatGainEvent {
+  stat: StatKey;
+  amount: number;
+  reasonZh: string;
+  reasonEn: string;
+  timestamp: number;
+}
+
+// 6. 关西四季动态日历与时间系统 (Calendar & Schedule)
+export type TimeSlot = 'morning' | 'afternoon' | 'night';
+
+export interface GameCalendar {
+  month: number;
+  day: number;
+  dayOfWeek: string;
+  timeSlot: TimeSlot;
+  weather: 'sunny' | 'cloudy' | 'rainy' | 'sunset' | 'night';
+}
+
+export interface CalendarEvent {
+  id: string;
+  month: number;
+  day: number;
+  titleZh: string;
+  titleEn: string;
+  city: string;
+  location: string;
+  descriptionZh: string;
+  descriptionEn: string;
+  relatedCharIds: CharacterId[];
+  isMajorFestival?: boolean;
+}
