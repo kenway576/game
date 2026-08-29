@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# 🗜️ 素材：只准 WebP 进仓库。
+# 原始 PNG/JPG 是 AI 出图的全分辨率输出（立绘 ~3MB、背景 ~10MB），
+# 转成 WebP 后小 27 倍且肉眼无差别。新素材丢进 public/images 后跑：
+#   npm run assets
+# 转换完原图会自动移到 .backup-originals/（本地保留，不进 git）。
+public/images/**/*.png
+public/images/**/*.jpg
+public/images/**/*.jpeg
+.backup-originals/
+_git-backup-*.bundle
+
 # Environment variables (Never commit real API keys to git)
 .env
 .env.local

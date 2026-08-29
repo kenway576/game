@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CharacterId, Language } from '../types';
-import { CHARACTERS, CHARACTER_CGS, CHARACTER_ROOMS, CharacterCgDef } from '../constants';
+import { CHARACTERS, CHARACTER_CGS, CHARACTER_ROOMS, VISIBLE_CHARACTER_IDS, CharacterCgDef } from '../constants';
 
 interface Props {
   language: Language;
@@ -11,7 +11,9 @@ interface Props {
 const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, onClose }) => {
   const [selectedCg, setSelectedCg] = useState<CharacterCgDef | null>(null);
 
-  const cgList = Object.values(CHARACTER_CGS);
+  // 只展示大厅里出现的角色：隐藏角色（hidden: true）尚无 CG 素材，
+  // 直接渲染会在画廊里留下裂图。取消隐藏并补上图后会自动出现。
+  const cgList = VISIBLE_CHARACTER_IDS.map(id => CHARACTER_CGS[id]).filter(Boolean);
 
   return (
     <div className="fixed inset-0 z-[220] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4" onClick={onClose}>

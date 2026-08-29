@@ -9,7 +9,9 @@
   "preview": "vite preview",
   "sprites:inspect": "node scripts/inspect-sprites.mjs",
   "sprites:clean": "node scripts/remove-white-bg.mjs",
-  "sprites:crop": "node scripts/crop-sprites.mjs"
+  "sprites:crop": "node scripts/crop-sprites.mjs",
+  "assets:check": "node scripts/compress-assets.mjs",
+  "assets": "node scripts/compress-assets.mjs --write"
  },
  "dependencies": {
   "@google/generative-ai": "^0.24.1",
@@ -24,6 +26,7 @@
   "@types/react-dom": "^19.2.3",
   "@vitejs/plugin-react": "^5.0.0",
   "pngjs": "^7.0.0",
+  "sharp": "^0.35.4",
   "typescript": "~5.8.2",
   "vite": "^6.2.0"
  }
