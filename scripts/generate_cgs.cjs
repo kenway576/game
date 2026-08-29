@@ -1,4 +1,4 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
@@ -122,7 +122,7 @@ async function run() {
   for (const item of CHAR_CGS) {
     const targetFile = path.join(outputDir, item.outputFile);
     console.log('\n========================================');
-    console.log(Generating CG for [] -> ...);
+    console.log('Generating CG for [' + item.charId + '] -> ' + item.outputFile + '...');
 
     try {
       const initRes = await post('https://api.novita.ai/v3/async/qwen-image-txt2img', {
@@ -131,11 +131,11 @@ async function run() {
       });
 
       if (!initRes.task_id) {
-        console.error(Failed to create task for :, initRes);
+        console.error('Failed to create task for ' + item.charId + ':', initRes);
         continue;
       }
 
-      console.log(Task created: . Polling for result...);
+      console.log('Task created: ' + initRes.task_id + '. Polling for result...');
       let imgUrl = null;
 
       for (let attempt = 0; attempt < 50; attempt++) {
@@ -146,25 +146,26 @@ async function run() {
 
         if (status === 'TASK_STATUS_SUCCEED' && poll.images && poll.images[0]) {
           imgUrl = poll.images[0].image_url;
-          console.log(\n[SUCCESS] Image generated for !);
+          console.log('\n[SUCCESS] Image generated for ' + item.charId + '!');
           break;
         }
 
         if (status === 'TASK_STATUS_FAILED') {
-          console.error(\n[FAILED] Task failed for :, poll.task ? poll.task.reason : 'Unknown');
+          console.error('\n[FAILED] Task failed for ' + item.charId + ':', poll.task ? poll.task.reason : 'Unknown');
           break;
         }
       }
 
       if (imgUrl) {
-        console.log(Downloading to ...);
+        console.log('Downloading to ' + targetFile + '...');
         await downloadImage(imgUrl, targetFile);
-        console.log(Saved  successfully! Size:  KB);
+        const sizeKb = (fs.statSync(targetFile).size / 1024).toFixed(1);
+        console.log('Saved ' + item.outputFile + ' successfully! Size: ' + sizeKb + ' KB');
       } else {
-        console.error(Timeout or failure generating );
+        console.error('Timeout or failure generating ' + item.charId);
       }
     } catch (err) {
-      console.error(Error generating :, err.message);
+      console.error('Error generating ' + item.charId + ':', err.message);
     }
   }
 
