@@ -23,6 +23,9 @@ public/images/**/*.jpeg
 .backup-originals/
 _git-backup-*.bundle
 
+# AI 生成立绘的暂存区：审过之后用 --adopt 搬进 public 才入库
+.generated/
+
 # Environment variables (Never commit real API keys to git)
 .env
 .env.local
