@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey } from './types';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
+import { audioManager, handleUiClickSfx } from './services/audioManager';
 import type { DialoguePage } from './types';
 import Background from './components/Background';
 import SetupScreen from './components/SetupScreen';
@@ -136,6 +137,34 @@ const App: React.FC = () => {
     if (storedModelName) setCustomModelName(storedModelName);
   }, []);
 
+  // 🔊 音效系统：init 幂等；BGM 要等首次用户手势解锁后才响（浏览器自动播放策略）。
+  useEffect(() => {
+    audioManager.init();
+    if (audioManager.isUnlocked()) return;
+    const unlock = () => {
+      audioManager.unlock();
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown', unlock);
+      window.removeEventListener('touchstart', unlock);
+    };
+    window.addEventListener('pointerdown', unlock);
+    window.addEventListener('keydown', unlock);
+    window.addEventListener('touchstart', unlock);
+    return () => {
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown', unlock);
+      window.removeEventListener('touchstart', unlock);
+    };
+  }, []);
+
+  // 🎵 按 gameMode 切 BGM（title / lobby / chat），交叉淡入 800ms
+  useEffect(() => {
+    const track = gameMode === GameMode.LOBBY ? 'lobby'
+      : gameMode === GameMode.CHAT ? 'chat'
+      : 'title';
+    audioManager.crossfadeBgm(track, 800);
+  }, [gameMode]);
+
   // OpenAI 兼容自定义接口：选中 custom 时使用用户填写的 Base URL 与模型名
   const isCustomApi = customModel === CUSTOM_MODEL_VALUE;
   const effectiveModelName = isCustomApi ? customModelName.trim() : customModel;
@@ -203,6 +232,15 @@ const App: React.FC = () => {
     }
   }, [messages, isStreaming]);
 
+  // 🔊 主要弹窗开 / 关的提示音（关闭多为点背景遮罩，通用点击音覆盖不到）
+  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || !!saveLoadMode;
+  const prevModalOpenRef = useRef(false);
+  useEffect(() => {
+    if (anyModalOpen === prevModalOpenRef.current) return;
+    prevModalOpenRef.current = anyModalOpen;
+    audioManager.playSfx(anyModalOpen ? 'modal_open' : 'modal_close');
+  }, [anyModalOpen]);
+
   // 🌊 流式骨架消息：第一页到达时创建，之后逐页追加，流结束后由完整结果替换
   const makeStreamHandler = (charId: CharacterId, replaceAll: boolean) => {
     const state = { msgId: null as string | null };
@@ -248,6 +286,7 @@ const App: React.FC = () => {
   // 离开聊天（返回大厅/标题）时固化本次会话的记忆
   const leaveChat = (target: GameMode) => {
     setShowSystemMenu(false);
+    if (gameMode === GameMode.CHAT) audioManager.playSfx('leave_chat'); // 🔊 退出聊天
     if (gameMode === GameMode.CHAT && selectedCharId) {
       updateCharacterMemory(selectedCharId, messages);
       replySinceMemoryRef.current = 0;
@@ -287,6 +326,13 @@ const App: React.FC = () => {
 
     if (affLeveledTo) setLevelUpEvent({ axis: 'affection', level: affLeveledTo, key: Date.now() });
     else if (famLeveledTo) setLevelUpEvent({ axis: 'familiarity', level: famLeveledTo, key: Date.now() });
+
+    // 🔊 关系音效：升级 > 关系下降 > 单纯上涨。好感=暖音色，親密=冷音色。
+    if (affLeveledTo) { audioManager.playSfx('levelup_affection'); audioManager.duckBgm(); }
+    else if (famLeveledTo) { audioManager.playSfx('levelup_familiarity'); audioManager.duckBgm(); }
+    else if (nextAff < curAff || nextFam < curFam) audioManager.playSfx('relation_down');
+    else if (nextAff > curAff) audioManager.playSfx('affection_up');
+    else if (nextFam > curFam) audioManager.playSfx('familiarity_up');
   };
 
   // 玩家在升级庆祝画面点击继续 → 触发"关系升级"特别场景
@@ -295,6 +341,7 @@ const App: React.FC = () => {
     if (!levelUpEvent || !selectedCharId) return;
     const { axis, level: lv } = levelUpEvent;
     setLevelUpEvent(null);
+    audioManager.restoreBgm(); // 庆祝结束，BGM 音量恢复
 
     // 解锁内容按轴归属：親密度给场景与日常服装，好感度给亲密服装
     const outfitLevels = axis === 'familiarity' ? FAMILIARITY_GATED_OUTFIT_LEVELS : ROMANCE_GATED_OUTFIT_LEVELS;
@@ -304,6 +351,8 @@ const App: React.FC = () => {
     const header = axis === 'familiarity'
       ? `【システム：プレイヤーとの親密度がLv.${lv}「${FAMILIARITY_LEVELS[lv - 1].labelEn}」に達しました。恋愛的な進展ではありません——「この人には、もう少し本当のことを話してもいい」と思えるようになった、という距離の変化です。呼び方や話し方がここで一段変わることを、さりげなく、しかしはっきり分かる形で見せてください。恋愛感情の描写は絶対に入れないこと。`
       : `【システム：プレイヤーへの好感度がLv.${lv}「${AFFECTION_LEVELS[lv - 1].labelEn}」に達しました。自分の気持ちが一段深くなったことに気づいてしまう、特別で印象的なシーンをあなたのキャラクター性のままで演出してください。`;
+
+    if (newOutfits || newScenes) audioManager.playSfx('unlock'); // 🔊 解锁服装 / 场景
 
     handleSendMessage(
       header +
@@ -542,6 +591,7 @@ const App: React.FC = () => {
         : '当前选择了自定义 API：请先回到登记页面填写接口地址 (Base URL) 和模型名称 (Model ID)。');
       return;
     }
+    audioManager.playSfx('enter_chat'); // 🔊 进入聊天
     setSelectedCharId(charId);
     setLobbySelectedChar(null);
     setChatMode(mode);
@@ -670,6 +720,7 @@ const App: React.FC = () => {
       turnMessages = [...turnMessages, userMsg];
       setMessages(prev => [...prev, userMsg]);
       setChatHistories(prev => ({ ...prev, [selectedCharId]: [...prev[selectedCharId], userMsg] }));
+      audioManager.playSfx('send'); // 🔊 发送消息
     }
 
     const currentInput = customPrompt || inputText;
@@ -707,6 +758,7 @@ const App: React.FC = () => {
       setIsStreaming(false);
       setMessages(prev => stream.state.msgId ? prev.map(m => m.id === stream.state.msgId ? modelMsg : m) : [...prev, modelMsg]);
       setCurrentEmotion(response.emotion || 'neutral');
+      audioManager.playSfx('receive'); // 🔊 收到 AI 回复
 
       // 👗 换装门控：仅在「场景切换」或「AI 明确标记本回合换衣(outfitChange)」时才换装。
       // 前者应对移动到新场景，后者应对玩家明说"换泳装吧"——同时杜绝无缘无故乱换。
@@ -750,6 +802,7 @@ const App: React.FC = () => {
         id: 'err-' + Date.now(), role: 'model', text: `Error: ${error.message}`, pages: [{ type: 'speech', text: `(通信中断: ${error.message}。请尝试再说一次或点击左上角返回【主菜单】。)` }], senderName: 'System'
       };
       setMessages(prev => stream.state.msgId ? prev.map(m => m.id === stream.state.msgId ? errMsg : m) : [...prev, errMsg]);
+      audioManager.playSfx('error'); // 🔊 通信错误
     } finally {
       setIsLoading(false);
       setIsStreaming(false);
@@ -774,6 +827,7 @@ const App: React.FC = () => {
     if (!currentQuiz) return;
     const isCorrect = index === currentQuiz.correctIndex;
     setIsLastAnswerCorrect(isCorrect);
+    audioManager.playSfx(isCorrect ? 'quiz_correct' : 'quiz_wrong'); // 🔊 答对 / 答错（柔和）
     const feedbackText = isCorrect ? `✅ ${currentQuiz.explanation}` : `❌ ${currentQuiz.options[currentQuiz.correctIndex]}... ${currentQuiz.explanation}`;
     setQuizFeedback(feedbackText);
     if (isCorrect) {
@@ -808,8 +862,10 @@ const App: React.FC = () => {
   // ---------- 单词本 ----------
   const translateForUser = (text: string) => translateText(text, userState.language, customApiKey, effectiveModelName, effectiveBaseUrl);
 
-  const collectWord = (word: CollectedWord) =>
+  const collectWord = (word: CollectedWord) => {
+    audioManager.playSfx('collect'); // 🔊 收藏生词
     setUserState(prev => ({ ...prev, collectedWords: [word, ...prev.collectedWords] }));
+  };
 
   const removeCollectedWord = (id: string) =>
     setUserState(prev => ({ ...prev, collectedWords: prev.collectedWords.filter(w => w.id !== id) }));
@@ -851,7 +907,7 @@ const App: React.FC = () => {
     : '';
 
   return (
-    <div className="antialiased font-sans text-gray-900 selection:bg-yellow-500 selection:text-black w-full h-[100dvh] overflow-hidden bg-black">
+    <div className="antialiased font-sans text-gray-900 selection:bg-yellow-500 selection:text-black w-full h-[100dvh] overflow-hidden bg-black" onClickCapture={handleUiClickSfx}>
       {gameMode === GameMode.SETUP && (
         <SetupScreen
           T={T}

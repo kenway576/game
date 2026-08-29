@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Character, DialoguePage, WordReading } from '../types';
+import { audioManager } from '../services/audioManager';
 
 interface Props {
   character: Character;
@@ -53,10 +54,12 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
       if (nPos < nStr.length) {
         if (nStr[nPos] === '<') { nPos = nStr.indexOf('>', nPos) + 1; } else { nPos++; }
         setDispN(nStr.substring(0, nPos));
+        audioManager.playTypeBlip(); // 🔊 打字音（单例内部节流 + 随机 pitch）
         return true;
       } else if (sPos < sStr.length) {
         if (sStr[sPos] === '<') { sPos = sStr.indexOf('>', sPos) + 1; } else { sPos++; }
         setDispS(sStr.substring(0, sPos));
+        audioManager.playTypeBlip();
         return true;
       }
       return false;
@@ -72,7 +75,7 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
     if (window.getSelection()?.toString().trim()) return;
 
     if (typing) { setDispN(step.narration); setDispS(step.speech); setTyping(false); }
-    else if (idx < steps.length - 1) setIdx(idx + 1);
+    else if (idx < steps.length - 1) { audioManager.playSfx('page'); setIdx(idx + 1); } // 🔊 翻页
     else if (!streaming) onFinish();
     // 流式接收中且已读到最后一页：忽略点击，等待后续页面到达
   };

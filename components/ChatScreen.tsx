@@ -4,6 +4,7 @@ import { AFFECTION_LEVELS, FAMILIARITY_LEVELS, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_
 import CharacterSprite from './CharacterSprite';
 import DialogueBox from './DialogueBox';
 import RelationshipMeter from './AffectionMeter';
+import { audioManager } from '../services/audioManager';
 
 export interface AffectionToast {
   delta: number;       // 好感度变化
@@ -76,6 +77,7 @@ const ChatScreen: React.FC<Props> = ({
   useEffect(() => {
     if (!diceRoll) { setDisplayFace(null); setIsRolling(false); return; }
     setIsRolling(true);
+    audioManager.startDiceRattle(); // 🔊 骰子翻滚 loop
     let ticks = 0;
     const interval = setInterval(() => {
       ticks++;
@@ -83,11 +85,12 @@ const ChatScreen: React.FC<Props> = ({
         clearInterval(interval);
         setDisplayFace(diceRoll.value);
         setIsRolling(false);
+        audioManager.playDiceLand(diceRoll.value); // 🔊 落定音（按点数分三档）
       } else {
         setDisplayFace(1 + Math.floor(Math.random() * 6));
       }
     }, 80);
-    return () => clearInterval(interval);
+    return () => { clearInterval(interval); audioManager.stopDiceRattle(); };
   }, [diceRoll?.key]);
   // 划词菜单与翻译弹窗属于聊天界面的局部交互，状态收在组件内部
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, text: string } | null>(null);

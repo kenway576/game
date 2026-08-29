@@ -1296,7 +1296,14 @@ emailPlaceholder: "用于接收后续实验问卷与搭档留言...",
     romanceCappedHint: "先多相处一段时间，感情才走得下去",
     unlockOutfits: "解锁服装",
     unlockScenes: "解锁场景",
-    levelUpContinue: "▶ 继续"
+    levelUpContinue: "▶ 继续",
+    audioSettings: "音效设置",
+    audioMute: "静音",
+    volMaster: "总音量",
+    volBgm: "音乐",
+    volSfx: "音效",
+    volTyping: "打字音",
+    typingSound: "打字音效"
   },
   en: {
     continue: "CONTINUE", newSession: "NEW SESSION", registration: "REGISTRATION", codeName: "CODE NAME", targetGrammar: "TARGET GRAMMAR (N3)", missionObj: "MISSION OBJECTIVE", startMission: "START MISSION", choosePartner: "CHOOSE PARTNER", goal: "GOAL", wordbook: "WORDBOOK", logs: "CHAT LOGS", system: "SYSTEM", casualTalk: "CASUAL TALK", reviewMode: "REVIEW MODE", exit: "EXIT SESSION", enterName: "ENTER NAME...", enterGoal: "e.g. Order ramen", clearAll: "CLEAR ALL", confirmClear: "Are you sure you want to clear all collected words? This cannot be undone.", emptyWordbook: "YOUR WORDBOOK IS EMPTY", emptyWordbookSub: "Right-click selected text", saveData: "SAVE DATA", loadData: "LOAD DATA", cancel: "CANCEL", gameSaved: "GAME SAVED!", translateBtn: "TRANSLATE", collectBtn: "COLLECT", analysisResult: "ANALYSIS RESULT", meaning: "MEANING", gotIt: "GOT IT", generating: "GENERATING...", enterToSend: "ENTER TO SEND", send: "SEND", quizHeader: "N3 QUIZ", close: "CLOSE", feedbackCorrect: "Correct!", feedbackWrong: "Incorrect.", connectionError: "Connection Error",
@@ -1320,7 +1327,14 @@ emailPlaceholder: "For experiment updates and partner messages...",
     protagonistProfile: "PROTAGONIST PROFILE",
     kansaiCalendar: "KANSAI CALENDAR",
     statsTitle: "SOCIAL STATS (5-STATS)",
-    statGain: "STAT INCREASED!"
+    statGain: "STAT INCREASED!",
+    audioSettings: "AUDIO",
+    audioMute: "MUTE",
+    volMaster: "MASTER",
+    volBgm: "MUSIC",
+    volSfx: "SFX",
+    volTyping: "TYPING",
+    typingSound: "TYPING SOUND"
   }
 };
 
