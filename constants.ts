@@ -27,7 +27,14 @@ export const SCENE_MAP: Record<string, string> = {
   'lab':       '/images/backgrounds/lab.webp',
   'castle':    '/images/backgrounds/castle.webp',
   'night':     '/images/backgrounds/starry_sky.webp',
-  'festival':  '/images/backgrounds/festival_night.webp'
+  'festival':  '/images/backgrounds/festival_night.webp',
+  // 🌸 新增关西核心实景与约会地点
+  'kobe_harbor':    '/images/backgrounds/bg_kobe_harbor_dusk.jpg',
+  'kitano_slope':   '/images/backgrounds/bg_kitano_sakura_slope.jpg',
+  'kyoto_torii':    '/images/backgrounds/bg_kyoto_inari_torii.jpg',
+  'tea_garden':     '/images/backgrounds/bg_tatami_tea_garden.jpg',
+  'jazz_livehouse': '/images/backgrounds/bg_kobe_jazz_livehouse.jpg',
+  'koshien':        '/images/backgrounds/bg_koshien_stadium_sunset.jpg'
 };
 
 // 各角色的专属个人房间背景映射（新海诚唯美画风）
