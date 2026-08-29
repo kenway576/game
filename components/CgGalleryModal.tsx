@@ -14,28 +14,28 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, onClose }) =>
   const cgList = Object.values(CHARACTER_CGS);
 
   return (
-    <div className= fixed inset-0 z-[220] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 onClick={onClose}>
-      <div className=w-full max-w-5xl bg-zinc-950/95 border-2 border-yellow-500/40 rounded-xl p-6 md:p-8 shadow-[0_0_80px_rgba 234 179 8 0.2 ] max-h-[90vh] overflow-y-auto flex flex-col onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[220] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4" onClick={onClose}>
+      <div className="w-full max-w-5xl bg-zinc-950/95 border-2 border-yellow-500/40 rounded-xl p-6 md:p-8 shadow-[0_0_80px_rgba(234,179,8,0.2)] max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
         {/* 标题栏 */}
-        <div className=flex items-center justify-between border-b border-yellow-500/30 pb-4 mb-6>
+        <div className="flex items-center justify-between border-b border-yellow-500/30 pb-4 mb-6">
           <div>
-            <h2 className=text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 tracking-wider>
+            <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 tracking-wider">
               {language === 'en' ? '🌸 MEMORIES & EVENT CG GALLERY' : '🌸 特别回忆 · 事件 CG 画廊'}
             </h2>
-            <p className=text-xs text-white/50 mt-1>
+            <p className="text-xs text-white/50 mt-1">
               {language === 'en' ? 'Unlocked through romantic affection progression with heroines' : '通过与女主角们增进好感度解锁专属心动回忆事件'}
             </p>
           </div>
           <button
             onClick={onClose}
-            className=w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center transition-colors
+            className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center transition-colors"
           >
             ✕
           </button>
         </div>
 
         {/* CG 画廊网格 */}
-        <div className=grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
           {cgList.map((cg) => {
             const char = CHARACTERS[cg.charId];
             const currentAff = affectionMap[cg.charId] || 0;
@@ -47,24 +47,28 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, onClose }) =>
               <div
                 key={cg.id}
                 onClick={() => isUnlocked && setSelectedCg(cg)}
-                className={group relative rounded-lg overflow-hidden border-2 transition-all duration-300 aspect-[16/9] flex flex-col justify-end p-3 }
+                className={`group relative rounded-lg overflow-hidden border-2 transition-all duration-300 aspect-[16/9] flex flex-col justify-end p-3 ${
+                  isUnlocked
+                    ? 'border-yellow-500/60 hover:border-yellow-400 hover:shadow-[0_0_30px_rgba(234,179,8,0.4)] cursor-pointer'
+                    : 'border-white/10 bg-zinc-900/60 opacity-60 cursor-not-allowed'
+                }`}
               >
                 {/* 背景图 */}
                 {isUnlocked ? (
                   <img
                     src={cg.cgUrl}
                     alt={title}
-                    className=absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       // 占位预览图
                       e.currentTarget.src = char.avatarUrl;
                     }}
                   />
                 ) : (
-                  <div className=absolute inset-0 bg-gradient-to-b from-zinc-900 to-black flex flex-col items-center justify-center gap-2 p-4 text-center>
-                    <span className=text-3xl>🔒</span>
-                    <span className=text-[10px] text-white/50>
-                      {language === 'en' ? Requires Affection Lv.2+ () : 好感度达标解锁 (需  点)}
+                  <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 to-black flex flex-col items-center justify-center gap-2 p-4 text-center">
+                    <span className="text-3xl">🔒</span>
+                    <span className="text-[10px] text-white/50">
+                      {language === 'en' ? `Requires Affection Lv.2+ (${cg.unlockAffection})` : `好感度达标解锁 (需 ${cg.unlockAffection} 点)`}
                     </span>
                   </div>
                 )}
