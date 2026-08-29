@@ -28,13 +28,29 @@ export const SCENE_MAP: Record<string, string> = {
   'castle':    '/images/backgrounds/castle.webp',
   'night':     '/images/backgrounds/starry_sky.webp',
   'festival':  '/images/backgrounds/festival_night.webp',
-  // 🌸 新增关西核心实景与约会地点
-  'kobe_harbor':    '/images/backgrounds/bg_kobe_harbor_dusk.jpg',
-  'kitano_slope':   '/images/backgrounds/bg_kitano_sakura_slope.jpg',
-  'kyoto_torii':    '/images/backgrounds/bg_kyoto_inari_torii.jpg',
-  'tea_garden':     '/images/backgrounds/bg_tatami_tea_garden.jpg',
-  'jazz_livehouse': '/images/backgrounds/bg_kobe_jazz_livehouse.jpg',
-  'koshien':        '/images/backgrounds/bg_koshien_stadium_sunset.jpg'
+  // 🌸 关西核心实景与约会地点 (全套新海诚/P5画风)
+  'kobe_harbor':       '/images/backgrounds/bg_kobe_harbor_dusk.jpg',
+  'kitano_slope':      '/images/backgrounds/bg_kitano_sakura_slope.jpg',
+  'kyoto_torii':       '/images/backgrounds/bg_kyoto_inari_torii.jpg',
+  'tea_garden':        '/images/backgrounds/bg_tatami_tea_garden.jpg',
+  'jazz_livehouse':    '/images/backgrounds/bg_kobe_jazz_livehouse.jpg',
+  'koshien':           '/images/backgrounds/bg_koshien_stadium_sunset.jpg',
+  'meriken_park':      '/images/backgrounds/bg_kobe_meriken_park.jpg',
+  'mosaic_night':      '/images/backgrounds/bg_kobe_mosaic_ferris_night.jpg',
+  'rokko_night':       '/images/backgrounds/bg_rokko_night_view.jpg',
+  'arima_onsen':       '/images/backgrounds/bg_arima_onsen_street.jpg',
+  'ikuta_shrine':      '/images/backgrounds/bg_ikuta_shrine_main.jpg',
+  'nankinmachi':       '/images/backgrounds/bg_nankinmachi_chinatown.jpg',
+  'school_library':    '/images/backgrounds/bg_kaisei_library_sunlight.jpg',
+  'music_room':        '/images/backgrounds/bg_kaisei_music_room.jpg',
+  'school_gate':       '/images/backgrounds/bg_school_gate_sakura.jpg',
+  'art_room':          '/images/backgrounds/bg_art_club_room.jpg',
+  'school_terrace':    '/images/backgrounds/bg_kaisei_cafeteria.jpg',
+  'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.jpg',
+  'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.jpg',
+  'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.jpg',
+  'luminarie':         '/images/backgrounds/bg_kobe_luminarie_illumination.jpg',
+  'coastal_platform':  '/images/backgrounds/bg_coastal_train_platform.jpg'
 };
 
 // 各角色的专属个人房间背景映射（新海诚唯美画风）
