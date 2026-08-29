@@ -909,6 +909,7 @@ const App: React.FC = () => {
           onClose={() => setShowSystemMenu(false)}
           onOpenWordbook={() => { setShowSystemMenu(false); setShowWordbook(true); }}
           onOpenHistory={() => { setShowSystemMenu(false); setShowHistoryLog(true); }}
+          onOpenCgGallery={() => { setShowSystemMenu(false); setShowCgGallery(true); }}
           onExitToLobby={() => leaveChat(GameMode.LOBBY)}
           onReturnTitle={() => leaveChat(GameMode.SETUP)}
           onSaveRequest={() => { setShowSystemMenu(false); setSaveLoadMode('SAVE'); }}
@@ -926,6 +927,14 @@ const App: React.FC = () => {
           activeTab={activeHistoryTab}
           setActiveTab={setActiveHistoryTab}
           onClose={() => setShowHistoryLog(false)}
+        />
+      )}
+
+      {showCgGallery && (
+        <CgGalleryModal
+          language={userState.language}
+          affectionMap={affectionMap}
+          onClose={() => setShowCgGallery(false)}
         />
       )}
 

@@ -15,12 +15,13 @@ interface Props {
   familiarityMap: FamiliarityMap;
   onEnterChat: (charId: CharacterId, mode: ChatMode) => void;
   onOpenSystemMenu: () => void;
+  onOpenCgGallery: () => void;
   background: React.ReactNode;
 }
 
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbySelectedChar,
-  setLobbySelectedChar, affectionMap, familiarityMap, onEnterChat, onOpenSystemMenu, background
+  setLobbySelectedChar, affectionMap, familiarityMap, onEnterChat, onOpenSystemMenu, onOpenCgGallery, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -51,7 +52,8 @@ const LobbyScreen: React.FC<Props> = ({
         <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.goal}: {userState.learningGoal}</p>
       </div>
       <div className="flex gap-2 pointer-events-auto self-end md:self-auto">
-        <button onClick={onOpenSystemMenu} className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-sm border border-white/20 backdrop-blur text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all">⚙️ {T.system}</button>
+        <button onClick={onOpenCgGallery} className="bg-rose-600/80 hover:bg-rose-500 text-white px-4 md:px-5 py-3 rounded-sm border border-rose-400/40 backdrop-blur text-xs font-black uppercase tracking-[0.15em] shadow-xl transition-all">🌸 {userState.language === 'en' ? 'MEMORIES' : '回忆画廊'}</button>
+        <button onClick={onOpenSystemMenu} className="bg-white/10 hover:bg-white/20 text-white px-5 md:px-6 py-3 rounded-sm border border-white/20 backdrop-blur text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all">⚙️ {T.system}</button>
       </div>
     </div>
 
