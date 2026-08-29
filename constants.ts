@@ -868,7 +868,7 @@ export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
 // 各角色各等级解锁的服装（键须存在于 WARDROBE 对应角色的列表）
 // Lv.2/3 由親密度解锁，Lv.4/5 由好感度解锁——见 getUnlockedOutfits。
 export const OUTFIT_UNLOCKS: Record<CharacterId, Partial<Record<number, string[]>>> = {
-  [CharacterId.ASUKA]:  { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata'], 5: ['maid', 'winter', 'dress', 'kimono'] },
+  [CharacterId.ASUKA]:  { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata', 'summer'], 5: ['maid', 'winter', 'dress', 'kimono'] },
   [CharacterId.HIKARI]: { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata', 'kimono'], 5: ['maid', 'winter', 'dress'] },
   [CharacterId.REI]:    { 2: ['casual', 'sleep'], 3: ['lab', 'gym', 'autumn'], 4: ['swim', 'winter', 'yukata'], 5: ['kimono', 'maid', 'dress'] },
   [CharacterId.REN]:    { 2: ['casual'], 3: ['gym', 'lecturing'], 4: ['fantasy', 'sorcerer'], 5: ['butler'] },
