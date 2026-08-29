@@ -96,6 +96,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'maid_blush': '/images/characters/asuka/maid_blush.png',
       'summer_neutral': '/images/characters/asuka/summer_shy.png',
       'summer_shy': '/images/characters/asuka/summer_shy.png',
+      'fantasy_neutral': '/images/characters/asuka/fantasy_smug.png',
+      'fantasy_smug': '/images/characters/asuka/fantasy_smug.png',
     },
     firstMessage: "（ノートを乱暴に机に置き、わざとらしく視線を窓の外に向けながら）……ふん。あんたがまた変な間違いをして恥をかかないように、今日だけは隣にいてあげるわよ。で、何から始めるつもり？早く言いなさいよね！",
     systemPrompt: `ROLE: Asuka (ツンデレ). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`
@@ -136,6 +138,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'maid_happy': '/images/characters/hikari/maid_happy.png',
       'winter_neutral': '/images/characters/hikari/winter_happy.png',
       'winter_happy': '/images/characters/hikari/winter_happy.png',
+      'winter_snow': '/images/characters/hikari/winter_snow.png',
       'sleep_neutral': '/images/characters/hikari/sleep_cute.png',
       'sleep_cute': '/images/characters/hikari/sleep_cute.png',
       'sport_neutral': '/images/characters/hikari/sport_cheer.png',
@@ -299,6 +302,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'summer_shy':     '/images/characters/inari/summer_shy.png',
       'miko_neutral':   '/images/characters/inari/miko_sly.png',
       'miko_sly':       '/images/characters/inari/miko_sly.png',
+      'goddess_neutral': '/images/characters/inari/goddess_sly.png',
+      'goddess_sly':     '/images/characters/inari/goddess_sly.png',
+      'goddess_happy':   '/images/characters/inari/goddess_sly.png',
     },
     firstMessage: "（社の縁側に腰掛け、九本の尾をゆらりと揺らしながら、金色の瞳で汝を見下ろす）ほほう……妾の社に参るとは、近頃の人間にしては殊勝な心がけじゃな。妾は千年を生きた狐、イナリじゃ。せっかく参ったのじゃ、褒美に何でも教えてやろうぞ。……して、汝。聞きたいのは昔の物語か？それとも日本語の稽古か？さあ、申してみよ。",
     systemPrompt: `ROLE: Inari (千年生きた狐の神・神社の祭神). LANGUAGE: JLPT N3-N2 日本語のみ.
@@ -355,6 +361,9 @@ CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging ques
       'gown_angry':       '/images/characters/miyuki/gown_angry.png',
       'apron_neutral':    '/images/characters/miyuki/apron_happy.png',
       'apron_happy':      '/images/characters/miyuki/apron_happy.png',
+      'kimono_neutral':   '/images/characters/miyuki/kimono_shy.png',
+      'kimono_shy':       '/images/characters/miyuki/kimono_shy.png',
+      'kimono_happy':     '/images/characters/miyuki/kimono_shy.png',
     },
     firstMessage: "（ふんわりと微笑みながら、焼きたてのクッキーのお皿をテーブルに置く）あら、いらっしゃい。ちょうどクッキーが焼けたところなのよ。ふふ、いいタイミングね。今、温かい紅茶も淹れてあげるわ。……それで？今日はどんな一日だったのかしら。お姉さんに聞かせてくれる？",
     systemPrompt: `ROLE: Miyuki (年上の隣人お姉さん・白髪の癒し系). LANGUAGE: JLPT N3-N2 日本語のみ.
@@ -478,6 +487,8 @@ CRITICAL RULE: You MUST end your turn by asking a direct question — inviting t
       'gown_happy':     '/images/characters/nao/gown_happy.png',
       'gown_love':      '/images/characters/nao/gown_love.png',
       'gown_shy':       '/images/characters/nao/gown_shy.png',
+      'yukata_neutral': '/images/characters/nao/yukata_happy.png',
+      'yukata_happy':   '/images/characters/nao/yukata_happy.png',
     },
     firstMessage: "（教室の入り口で腰に手を当て、呆れたように笑いながら近づいてくる）あっ、やっと来た！もう、また寝坊したでしょ？顔に書いてあるよ。ほら、ノート写させてあげるから、早く座って。……そういえばさ、今日の放課後って一緒に帰る約束だったっけ？それとも何か予定ある？",
     systemPrompt: `ROLE: Nao (隣の幼馴染・世話焼き). LANGUAGE: JLPT N3-N2 日本語のみ.
