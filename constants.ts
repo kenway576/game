@@ -1343,11 +1343,11 @@ emailPlaceholder: "For experiment updates and partner messages...",
 // ==========================================
 
 export const INITIAL_PROTAGONIST_STATS: ProtagonistStats = {
-  knowledge: 15,    // 知识
-  guts: 10,         // 勇气
-  kindness: 20,     // 体贴
-  charm: 15,        // 魅力
-  proficiency: 10   // 灵巧
+  knowledge: 0,     // 知识 0/6 (Rank 1)
+  guts: 0,          // 勇气 0/6 (Rank 1)
+  kindness: 0,      // 体贴 0/6 (Rank 1)
+  charm: 0,         // 魅力 0/6 (Rank 1)
+  proficiency: 0    // 灵巧 0/6 (Rank 1)
 };
 
 export const STAT_METADATA: Record<StatKey, {
@@ -1364,10 +1364,10 @@ export const STAT_METADATA: Record<StatKey, {
     color: '#38bdf8', // 天蓝
     ranks: [
       { rank: 1, nameZh: '脱线小白', nameEn: 'Oblivious', threshold: 0, descZh: '对复杂的语法规则一头雾水', descEn: 'Confused by complex grammar rules' },
-      { rank: 2, nameZh: '求知若渴', nameEn: 'Curious', threshold: 20, descZh: '能理解常规课本句型与基础变形', descEn: 'Understands standard grammar rules' },
-      { rank: 3, nameZh: '融会贯通', nameEn: 'Scholarly', threshold: 45, descZh: '能敏锐察觉长难句与授受关系', descEn: 'Grasps nuanced sentence structures' },
-      { rank: 4, nameZh: '博古通今', nameEn: 'Encyclopedic', threshold: 75, descZh: '轻松解读古籍典故与高难文法', descEn: 'Easily interprets literature & idioms' },
-      { rank: 5, nameZh: '博闻强识', nameEn: 'Erudite', threshold: 100, descZh: '学识渊博，令丽与明日香叹服', descEn: 'Profound intellect admired by all' }
+      { rank: 2, nameZh: '求知若渴', nameEn: 'Curious', threshold: 6, descZh: '能理解常规课本句型与基础变形', descEn: 'Understands standard grammar rules' },
+      { rank: 3, nameZh: '融会贯通', nameEn: 'Scholarly', threshold: 16, descZh: '能敏锐察觉长难句与授受关系', descEn: 'Grasps nuanced sentence structures' },
+      { rank: 4, nameZh: '博古通今', nameEn: 'Encyclopedic', threshold: 30, descZh: '轻松解读古籍典故与高难文法', descEn: 'Easily interprets literature & idioms' },
+      { rank: 5, nameZh: '博闻强识', nameEn: 'Erudite', threshold: 50, descZh: '学识渊博，令丽与明日香叹服', descEn: 'Profound intellect admired by all' }
     ]
   },
   guts: {
@@ -1377,10 +1377,10 @@ export const STAT_METADATA: Record<StatKey, {
     color: '#ef4444', // 鲜红
     ranks: [
       { rank: 1, nameZh: '胆小怯懦', nameEn: 'Timid', threshold: 0, descZh: '面对傲娇或挑衅容易不知所措', descEn: 'Hesitant when facing teasing or pressure' },
-      { rank: 2, nameZh: '初生牛犊', nameEn: 'Bold', threshold: 20, descZh: '敢于开口表达真实心声', descEn: 'Dares to speak your genuine thoughts' },
-      { rank: 3, nameZh: '从容不迫', nameEn: 'Resolute', threshold: 45, descZh: '能从容化解真纪的连珠炮嘲讽', descEn: 'Calmly counteracts teasing' },
-      { rank: 4, nameZh: '无畏勇者', nameEn: 'Fearless', threshold: 75, descZh: '在关键危机中挺身而出保护女孩', descEn: 'Steps forward fearlessly in crisis' },
-      { rank: 5, nameZh: '豪胆英雄', nameEn: 'Lionhearted', threshold: 100, descZh: '直球反撩无所畏惧，气场全开', descEn: 'Unshakable courage and irresistible confidence' }
+      { rank: 2, nameZh: '初生牛犊', nameEn: 'Bold', threshold: 6, descZh: '敢于开口表达真实心声', descEn: 'Dares to speak your genuine thoughts' },
+      { rank: 3, nameZh: '从容不迫', nameEn: 'Resolute', threshold: 16, descZh: '能从容化解真纪的连珠炮嘲讽', descEn: 'Calmly counteracts teasing' },
+      { rank: 4, nameZh: '无畏勇者', nameEn: 'Fearless', threshold: 30, descZh: '在关键危机中挺身而出保护女孩', descEn: 'Steps forward fearlessly in crisis' },
+      { rank: 5, nameZh: '豪胆英雄', nameEn: 'Lionhearted', threshold: 50, descZh: '直球反撩无所畏惧，气场全开', descEn: 'Unshakable courage and irresistible confidence' }
     ]
   },
   kindness: {
@@ -1390,10 +1390,10 @@ export const STAT_METADATA: Record<StatKey, {
     color: '#34d399', // 柔绿/粉
     ranks: [
       { rank: 1, nameZh: '粗枝大叶', nameEn: 'Inattentive', threshold: 0, descZh: '容易忽略女孩细微的情绪波动', descEn: 'Often misses subtle emotional cues' },
-      { rank: 2, nameZh: '热心诚恳', nameEn: 'Considerate', threshold: 20, descZh: '主动为疲惫的同伴递上温水', descEn: 'Warm and willing to offer daily care' },
-      { rank: 3, nameZh: '善解人意', nameEn: 'Empathetic', threshold: 45, descZh: '敏锐察觉光的逞强与深雪的疲累', descEn: 'Senses unspoken burdens and worries' },
-      { rank: 4, nameZh: '春风化雨', nameEn: 'Nurturing', threshold: 75, descZh: '成为女孩心中最无可替代的避风港', descEn: 'A comforting harbor of emotional safety' },
-      { rank: 5, nameZh: '至善挚诚', nameEn: 'Saintly', threshold: 100, descZh: '温暖融化千年的孤独与冰霜', descEn: 'Profound tenderness that melts all sorrows' }
+      { rank: 2, nameZh: '热心诚恳', nameEn: 'Considerate', threshold: 6, descZh: '主动为疲惫的同伴递上温水', descEn: 'Warm and willing to offer daily care' },
+      { rank: 3, nameZh: '善解人意', nameEn: 'Empathetic', threshold: 16, descZh: '敏锐察觉光的逞强与深雪的疲累', descEn: 'Senses unspoken burdens and worries' },
+      { rank: 4, nameZh: '春风化雨', nameEn: 'Nurturing', threshold: 30, descZh: '成为女孩心中最无可替代的避风港', descEn: 'A comforting harbor of emotional safety' },
+      { rank: 5, nameZh: '至善挚诚', nameEn: 'Saintly', threshold: 50, descZh: '温暖融化千年的孤独与冰霜', descEn: 'Profound tenderness that melts all sorrows' }
     ]
   },
   charm: {
@@ -1403,10 +1403,10 @@ export const STAT_METADATA: Record<StatKey, {
     color: '#ec4899', // 靓粉紫
     ranks: [
       { rank: 1, nameZh: '质朴无华', nameEn: 'Plain', threshold: 0, descZh: '在人群中略显低调平凡', descEn: 'Modest and blends into the background' },
-      { rank: 2, nameZh: '清爽亮眼', nameEn: 'Pleasant', threshold: 20, descZh: '举止得体，令人倍感舒适', descEn: 'Clean, approachable and pleasant' },
-      { rank: 3, nameZh: '引人注目', nameEn: 'Magnetic', threshold: 45, descZh: '幽默风趣，容易成为对话焦点', descEn: 'Witty, engaging, and attractive' },
-      { rank: 4, nameZh: '风度翩翩', nameEn: 'Debonair', threshold: 75, descZh: '言谈举止散发独特的成熟自信', descEn: 'Effortlessly captivating and stylish' },
-      { rank: 5, nameZh: '倾国倾城', nameEn: 'Irresistible', threshold: 100, descZh: '举手投足令全员少女心动脸红', descEn: 'Irresistibly charming; makes hearts skip beats' }
+      { rank: 2, nameZh: '清爽亮眼', nameEn: 'Pleasant', threshold: 6, descZh: '举止得体，令人倍感舒适', descEn: 'Clean, approachable and pleasant' },
+      { rank: 3, nameZh: '引人注目', nameEn: 'Magnetic', threshold: 16, descZh: '幽默风趣，容易成为对话焦点', descEn: 'Witty, engaging, and attractive' },
+      { rank: 4, nameZh: '风度翩翩', nameEn: 'Debonair', threshold: 30, descZh: '言谈举止散发独特的成熟自信', descEn: 'Effortlessly captivating and stylish' },
+      { rank: 5, nameZh: '倾国倾城', nameEn: 'Irresistible', threshold: 50, descZh: '举手投足令全员少女心动脸红', descEn: 'Irresistibly charming; makes hearts skip beats' }
     ]
   },
   proficiency: {
@@ -1416,23 +1416,23 @@ export const STAT_METADATA: Record<StatKey, {
     color: '#f59e0b', // 琥珀金
     ranks: [
       { rank: 1, nameZh: '笨手笨脚', nameEn: 'Clumsy', threshold: 0, descZh: '做家务或手工容易手忙脚乱', descEn: 'Easily tangled up with hands-on tasks' },
-      { rank: 2, nameZh: '熟能生巧', nameEn: 'Handy', threshold: 20, descZh: '能做出像样的手冲咖啡与简单料理', descEn: 'Capable of making neat pour-over coffee & meals' },
-      { rank: 3, nameZh: '得心应手', nameEn: 'Skillful', threshold: 45, descZh: '祭典射击/捞金鱼百发百中', descEn: 'Master of festival games and fine crafts' },
-      { rank: 4, nameZh: '匠心独具', nameEn: 'Artisan', threshold: 75, descZh: '能为女孩亲手制作精致专属礼物', descEn: 'Crafts exquisite bespoke gifts with ease' },
-      { rank: 5, nameZh: '神乎其技', nameEn: 'Masterly', threshold: 100, descZh: '无所不能的巧手与敏锐直觉', descEn: 'Flawless precision and unmatched dexterity' }
+      { rank: 2, nameZh: '熟能生巧', nameEn: 'Handy', threshold: 6, descZh: '能做出像样的手冲咖啡与简单料理', descEn: 'Capable of making neat pour-over coffee & meals' },
+      { rank: 3, nameZh: '得心应手', nameEn: 'Skillful', threshold: 16, descZh: '祭典射击/捞金鱼百发百中', descEn: 'Master of festival games and fine crafts' },
+      { rank: 4, nameZh: '匠心独具', nameEn: 'Artisan', threshold: 30, descZh: '能为女孩亲手制作精致专属礼物', descEn: 'Crafts exquisite bespoke gifts with ease' },
+      { rank: 5, nameZh: '神乎其技', nameEn: 'Masterly', threshold: 50, descZh: '无所不能的巧手与敏锐直觉', descEn: 'Flawless precision and unmatched dexterity' }
     ]
   }
 };
 
 export const getStatRankInfo = (stat: StatKey, value: number) => {
   const meta = STAT_METADATA[stat];
-  if (!meta) return { rank: 1, nameZh: 'Lv.1', nameEn: 'Lv.1', descZh: '', descEn: '', progress: 0 };
+  if (!meta) return { rank: 1, nameZh: 'Lv.1', nameEn: 'Lv.1', descZh: '', descEn: '', progressPercent: 0, currentValue: 0, nextThreshold: 6 };
   let currentRank = meta.ranks[0];
-  let nextRankThreshold = 100;
+  let nextRankThreshold = meta.ranks[1] ? meta.ranks[1].threshold : 50;
   for (let i = 0; i < meta.ranks.length; i++) {
     if (value >= meta.ranks[i].threshold) {
       currentRank = meta.ranks[i];
-      nextRankThreshold = meta.ranks[i + 1] ? meta.ranks[i + 1].threshold : 100;
+      nextRankThreshold = meta.ranks[i + 1] ? meta.ranks[i + 1].threshold : 50;
     }
   }
   const currentBase = currentRank.threshold;
