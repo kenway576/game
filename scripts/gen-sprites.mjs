@@ -221,22 +221,30 @@ if (has('sheet')) {
 
 // ---------- 采纳：把暂存区的图搬进 public ----------
 if (has('adopt')) {
-  const char = arg('adopt');
-  const from = path.join(STAGE, char);
-  if (!fs.existsSync(from)) { console.error(`没有 ${from}`); process.exit(1); }
-  // 只搬 *_pick.webp（你重命名过的）或全部 c1（第一候选）
-  const picks = fs.readdirSync(from).filter(f => f.endsWith('.webp') && !f.includes('_c') );
-  if (!picks.length) {
-    console.log('暂存区里没有可采纳的文件。');
-    console.log('把你选中的候选（如 shy_c2.webp）重命名成最终名（shy.webp）后再跑一次 --adopt。');
-    process.exit(0);
+  // 来源是 qc-sprites --pick 产出的 _picked/ 目录（已择优）。
+  // 不传角色名则采纳全部角色。
+  const only = arg('adopt');
+  const chars = (only === true || !only)
+    ? fs.readdirSync(STAGE, { withFileTypes: true }).filter(e => e.isDirectory() && e.name !== 'cg').map(e => e.name)
+    : [only];
+
+  let total = 0, skipped = 0;
+  for (const char of chars) {
+    const from = path.join(STAGE, char, '_picked');
+    if (!fs.existsSync(from)) { console.log(`${char}: 没有 _picked/，先跑 node scripts/qc-sprites.mjs --pick`); continue; }
+    const dest = path.join(CHARS_ROOT, char);
+    let n = 0;
+    for (const f of fs.readdirSync(from).filter(f => f.endsWith('.webp'))) {
+      // 绝不覆盖已有的原始立绘——那些是人工确认过的资产
+      if (fs.existsSync(path.join(dest, f))) { skipped++; continue; }
+      fs.copyFileSync(path.join(from, f), path.join(dest, f));
+      n++;
+    }
+    console.log(`${char.padEnd(9)} 采纳 ${n} 张`);
+    total += n;
   }
-  for (const f of picks) {
-    const dest = path.join(CHARS_ROOT, char, f);
-    fs.copyFileSync(path.join(from, f), dest);
-    console.log(`采纳 ${char}/${f}`);
-  }
-  console.log(`\n✅ 搬入 ${picks.length} 张。记得把新键加进 constants.ts 的 emotionMap。`);
+  console.log(`\n✅ 共采纳 ${total} 张${skipped ? `（跳过 ${skipped} 张已存在的，不覆盖原有立绘）` : ''}`);
+  console.log('下一步：node scripts/sync-emotion-map.mjs --write   把新键登记进 constants.ts');
   process.exit(0);
 }
 

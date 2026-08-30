@@ -91,9 +91,19 @@ for (const char of chars) {
   for (const [base, cands] of Object.entries(groups)) {
     // 源图 = 该套装束的 neutral
     const outfit = base.includes('_') ? base.slice(0, base.lastIndexOf('_')) : '';
-    const srcName = outfit ? `${outfit}_neutral.webp` : 'neutral.webp';
+    // 必须与 gen-sprites 的选源逻辑一致：优先 {服装}_neutral，
+    // 没有就退到该服装的第一张——否则这些缺口会被静默跳过，白生成一场。
+    const liveFiles = fs.readdirSync(path.join(CHARS_ROOT, char)).filter(f => f.endsWith('.webp'));
+    const pre = outfit ? outfit + '_' : '';
+    let srcName = `${pre}neutral.webp`;
+    if (!liveFiles.includes(srcName)) {
+      const alt = outfit
+        ? liveFiles.find(f => f.startsWith(pre))
+        : liveFiles.find(f => !f.includes('_'));
+      if (!alt) continue;
+      srcName = alt;
+    }
     const srcPath = path.join(CHARS_ROOT, char, srcName);
-    if (!fs.existsSync(srcPath)) continue;
     // 源图必须先按 alpha 裁边再比宽高比——生成图是裁过的，
     // 拿它去比一张四周留白的源图，量到的是源图的留白，不是生成质量。
     const srcTrimmed = await sharp(srcPath).trim({ threshold: 1 }).webp().toBuffer();
@@ -127,16 +137,12 @@ for (const char of chars) {
     }
 
     if (has('pick')) {
-      // 胜出者改成最终名，其余候选加 _alt 保留
-      const finalPath = path.join(dir, `${base}.webp`);
-      if (win.f !== `${base}.webp`) {
-        fs.copyFileSync(path.join(dir, win.f), finalPath);
-        for (const s of scored.slice(1)) {
-          const alt = path.join(dir, s.f.replace(/_c(\d+)\.webp$/, '_alt$1.webp'));
-          if (s.f !== win.f) fs.renameSync(path.join(dir, s.f), alt);
-        }
-        if (fs.existsSync(path.join(dir, win.f)) && win.f !== `${base}.webp`) fs.unlinkSync(path.join(dir, win.f));
-      }
+      // 只复制胜出者到 _picked/，不改名不删除原候选——
+      // Vite 的文件监视器盯着这个目录，原地重命名会撞上 EBUSY，
+      // 而且保留全部候选意味着人工想换一张随时能换。
+      const pickDir = path.join(dir, '_picked');
+      fs.mkdirSync(pickDir, { recursive: true });
+      fs.copyFileSync(path.join(dir, win.f), path.join(pickDir, `${base}.webp`));
       picked++;
     }
   }

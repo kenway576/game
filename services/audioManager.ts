@@ -419,10 +419,11 @@ class AudioManager {
     src.onended = () => { try { src.disconnect(); filter.disconnect(); g.disconnect(); } catch { /* ignore */ } };
   }
 
-  private chord(freqs: number[], opts: { dur: number; type?: OscillatorType; gain?: number; bus?: AudioBus; stagger?: number; slide?: number; vibrato?: { rate: number; depth: number } }): void {
+  private chord(freqs: number[], opts: { dur: number; type?: OscillatorType; gain?: number; bus?: AudioBus; when?: number; stagger?: number; slide?: number; vibrato?: { rate: number; depth: number } }): void {
     freqs.forEach((f, i) => this.tone({
       freq: f, dur: opts.dur, type: opts.type, gain: (opts.gain ?? 0.4) / Math.sqrt(freqs.length),
-      bus: opts.bus, when: i * (opts.stagger ?? 0), release: opts.dur * 0.5,
+      // when 是整个和弦的起始偏移，stagger 是弦内各音的错开量——两者叠加
+      bus: opts.bus, when: (opts.when ?? 0) + i * (opts.stagger ?? 0), release: opts.dur * 0.5,
       slideTo: opts.slide ? f * opts.slide : undefined, vibrato: opts.vibrato,
     }));
   }
