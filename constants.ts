@@ -28,29 +28,29 @@ export const SCENE_MAP: Record<string, string> = {
   'castle':    '/images/backgrounds/castle.webp',
   'night':     '/images/backgrounds/starry_sky.webp',
   'festival':  '/images/backgrounds/festival_night.webp',
-  // 🌸 关西核心实景与约会地点 (全套新海诚/P5画风)
-  'kobe_harbor':       '/images/backgrounds/bg_kobe_harbor_dusk.jpg',
-  'kitano_slope':      '/images/backgrounds/bg_kitano_sakura_slope.jpg',
-  'kyoto_torii':       '/images/backgrounds/bg_kyoto_inari_torii.jpg',
-  'tea_garden':        '/images/backgrounds/bg_tatami_tea_garden.jpg',
-  'jazz_livehouse':    '/images/backgrounds/bg_kobe_jazz_livehouse.jpg',
-  'koshien':           '/images/backgrounds/bg_koshien_stadium_sunset.jpg',
-  'meriken_park':      '/images/backgrounds/bg_kobe_meriken_park.jpg',
-  'mosaic_night':      '/images/backgrounds/bg_kobe_mosaic_ferris_night.jpg',
-  'rokko_night':       '/images/backgrounds/bg_rokko_night_view.jpg',
-  'arima_onsen':       '/images/backgrounds/bg_arima_onsen_street.jpg',
-  'ikuta_shrine':      '/images/backgrounds/bg_ikuta_shrine_main.jpg',
-  'nankinmachi':       '/images/backgrounds/bg_nankinmachi_chinatown.jpg',
-  'school_library':    '/images/backgrounds/bg_kaisei_library_sunlight.jpg',
-  'music_room':        '/images/backgrounds/bg_kaisei_music_room.jpg',
-  'school_gate':       '/images/backgrounds/bg_school_gate_sakura.jpg',
-  'art_room':          '/images/backgrounds/bg_art_club_room.jpg',
-  'school_terrace':    '/images/backgrounds/bg_kaisei_cafeteria.jpg',
-  'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.jpg',
-  'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.jpg',
-  'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.jpg',
-  'luminarie':         '/images/backgrounds/bg_kobe_luminarie_illumination.jpg',
-  'coastal_platform':  '/images/backgrounds/bg_coastal_train_platform.jpg'
+  // 🌸 关西核心实景与约会地点 (Google 官方 Gemini 2.5 Flash Image 新海诚超清画风)
+  'kobe_harbor':       '/images/backgrounds/bg_kobe_harbor_dusk.webp',
+  'kitano_slope':      '/images/backgrounds/bg_kitano_sakura_slope.webp',
+  'kyoto_torii':       '/images/backgrounds/bg_kyoto_inari_torii.webp',
+  'tea_garden':        '/images/backgrounds/bg_tatami_tea_garden.webp',
+  'jazz_livehouse':    '/images/backgrounds/bg_kobe_jazz_livehouse.webp',
+  'koshien':           '/images/backgrounds/bg_koshien_stadium_sunset.webp',
+  'meriken_park':      '/images/backgrounds/bg_kobe_meriken_park.webp',
+  'mosaic_night':      '/images/backgrounds/bg_kobe_mosaic_ferris_night.webp',
+  'rokko_night':       '/images/backgrounds/bg_rokko_night_view.webp',
+  'arima_onsen':       '/images/backgrounds/bg_arima_onsen_street.webp',
+  'ikuta_shrine':      '/images/backgrounds/bg_ikuta_shrine_main.webp',
+  'nankinmachi':       '/images/backgrounds/bg_nankinmachi_chinatown.webp',
+  'school_library':    '/images/backgrounds/bg_kaisei_library_sunlight.webp',
+  'music_room':        '/images/backgrounds/bg_kaisei_music_room.webp',
+  'school_gate':       '/images/backgrounds/bg_school_gate_sakura.webp',
+  'art_room':          '/images/backgrounds/bg_art_club_room.webp',
+  'school_terrace':    '/images/backgrounds/bg_kaisei_cafeteria.webp',
+  'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.webp',
+  'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.webp',
+  'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.webp',
+  'luminarie':         '/images/backgrounds/bg_kobe_luminarie_illumination.webp',
+  'coastal_platform':  '/images/backgrounds/bg_coastal_train_platform.webp'
 };
 
 // 各角色的专属个人房间背景映射（新海诚唯美画风）
@@ -1603,7 +1603,7 @@ export const STAT_METADATA: Record<StatKey, {
   knowledge: {
     nameZh: '知识 (Knowledge)',
     nameEn: 'Knowledge',
-    badgeUrl: '/images/ui/stat_knowledge.jpg',
+    badgeUrl: '/images/ui/stat_knowledge.webp',
     color: '#38bdf8', // 天蓝
     ranks: [
       { rank: 1, nameZh: '脱线小白', nameEn: 'Oblivious', threshold: 0, descZh: '对复杂的语法规则一头雾水', descEn: 'Confused by complex grammar rules' },
@@ -1616,7 +1616,7 @@ export const STAT_METADATA: Record<StatKey, {
   guts: {
     nameZh: '勇气 (Guts)',
     nameEn: 'Guts',
-    badgeUrl: '/images/ui/stat_guts.jpg',
+    badgeUrl: '/images/ui/stat_guts.webp',
     color: '#ef4444', // 鲜红
     ranks: [
       { rank: 1, nameZh: '胆小怯懦', nameEn: 'Timid', threshold: 0, descZh: '面对傲娇或挑衅容易不知所措', descEn: 'Hesitant when facing teasing or pressure' },
@@ -1629,7 +1629,7 @@ export const STAT_METADATA: Record<StatKey, {
   kindness: {
     nameZh: '体贴 (Kindness)',
     nameEn: 'Kindness',
-    badgeUrl: '/images/ui/stat_kindness.jpg',
+    badgeUrl: '/images/ui/stat_kindness.webp',
     color: '#34d399', // 柔绿/粉
     ranks: [
       { rank: 1, nameZh: '粗枝大叶', nameEn: 'Inattentive', threshold: 0, descZh: '容易忽略女孩细微的情绪波动', descEn: 'Often misses subtle emotional cues' },
@@ -1642,7 +1642,7 @@ export const STAT_METADATA: Record<StatKey, {
   charm: {
     nameZh: '魅力 (Charm)',
     nameEn: 'Charm',
-    badgeUrl: '/images/ui/stat_charm.jpg',
+    badgeUrl: '/images/ui/stat_charm.webp',
     color: '#ec4899', // 靓粉紫
     ranks: [
       { rank: 1, nameZh: '质朴无华', nameEn: 'Plain', threshold: 0, descZh: '在人群中略显低调平凡', descEn: 'Modest and blends into the background' },
@@ -1655,7 +1655,7 @@ export const STAT_METADATA: Record<StatKey, {
   proficiency: {
     nameZh: '灵巧 (Proficiency)',
     nameEn: 'Proficiency',
-    badgeUrl: '/images/ui/stat_proficiency.jpg',
+    badgeUrl: '/images/ui/stat_proficiency.webp',
     color: '#f59e0b', // 琥珀金
     ranks: [
       { rank: 1, nameZh: '笨手笨脚', nameEn: 'Clumsy', threshold: 0, descZh: '做家务或手工容易手忙脚乱', descEn: 'Easily tangled up with hands-on tasks' },
