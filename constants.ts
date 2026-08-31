@@ -50,7 +50,31 @@ export const SCENE_MAP: Record<string, string> = {
   'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.webp',
   'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.webp',
   'luminarie':         '/images/backgrounds/bg_kobe_luminarie_illumination.webp',
-  'coastal_platform':  '/images/backgrounds/bg_coastal_train_platform.webp'
+  'coastal_platform':  '/images/backgrounds/bg_coastal_train_platform.webp',
+  // 🚃 序章（第0章）专用场景。图尚未交付时由 SCENE_FALLBACK 顶上，不会开天窗。
+  'train_interior':      '/images/backgrounds/bg_jr_train_interior.webp',
+  'sannomiya_station':   '/images/backgrounds/bg_sannomiya_station_gate.webp',
+  'umikaze_exterior':    '/images/backgrounds/bg_umikaze_apartment_exterior.webp',
+  'apartment_room':      '/images/backgrounds/bg_umikaze_room_201.webp',
+  'apartment_balcony':   '/images/backgrounds/bg_umikaze_balcony_harbor.webp',
+  'sannomiya_arcade':    '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
+  'convenience_store':   '/images/backgrounds/bg_convenience_store_night.webp'
+};
+
+// 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
+// 由 <Background> 的 onError 触发——图一旦补进 public/images/backgrounds/ 就自动切回去。
+export const SCENE_FALLBACK: Record<string, string> = {
+  'train_interior':    '/images/backgrounds/bg_coastal_train_platform.webp',
+  'sannomiya_station': '/images/backgrounds/bg_coastal_train_platform.webp',
+  'umikaze_exterior':  '/images/backgrounds/bg_kitano_sakura_slope.webp',
+  'apartment_room':    '/images/backgrounds/my_room.webp',
+  'apartment_balcony': '/images/backgrounds/bg_kobe_harbor_dusk.webp',
+  'sannomiya_arcade':  '/images/backgrounds/bg_nankinmachi_chinatown.webp',
+  'convenience_store': '/images/backgrounds/neighborhood.webp',
+  // 早就写在 SCENE_MAP 里、但文件从来没交付过的三张
+  'street':            '/images/backgrounds/neighborhood.webp',
+  'shrine':            '/images/backgrounds/bg_ikuta_shrine_main.webp',
+  'night':             '/images/backgrounds/bg_rokko_night_view.webp'
 };
 
 // 各角色的专属个人房间背景映射（新海诚唯美画风）
@@ -929,17 +953,23 @@ export const RELATIONSHIP_PROFILES: Record<CharacterId, RelationshipProfile> = {
   },
 
   [CharacterId.MIYUKI]: {
+    // 序章当晚在便利店第一次照面，此外一无所知。
+    // 用 'acquainted' 是为了让她可以自然提起"昨晚那一面"——
+    // 换成 'stranger' 会被 prompt 明令禁止提任何共同经历，反而不对。
     origin: 'acquainted',
-    initialFamiliarity: 130,
-    encounter: 'You have been the player\'s next-door neighbour for about three years. You feed them when they skip meals, you know their footsteps on the stairs, and you have settled comfortably into the role of the reliable older sister. They have never seen you when you are not composed.',
+    // 仍在 Lv1「初次见面」区间（0-39），但起点是所有人里最高的：
+    // 住在隔壁，楼梯、信箱、晾衣场天天照面，这条线本来就该涨得比别人快。
+    initialFamiliarity: 32,
+    encounter: "You met the player exactly once: the evening they moved in, at the convenience store at the foot of the Kitano slope, where the two of you recognised each other's Umikaze-so keys. That single exchange is the entire history between you — you do not know their name unless they tell you now, nor anything about their school, their family, or why they came to Japan. What you DO know is that they are in 201 and you are in 202, that the walls are thin and the stairs are shared, and that from now on you will run into each other constantly whether either of you plans it or not. Treat them with the warm, slightly formal courtesy of a good neighbour on the second time you have ever spoken — attentive, but not yet entitled to anything personal.",
     stages: [
-      'A neighbour she has only nodded to in the corridor. 名字+さん, careful 丁寧語.',
-      'Address 名字+さん/くん. Warm neighbourly small talk, packages taken in, nothing deeper.',
-      'Address 名字+くん/ちゃん. Feeds them, teases them gently, treats them as a younger sibling. Full onee-san register: 「〜かしら」「〜のよ」「〜でしょう？」.',
-      'Address 名前+くん/ちゃん. The onee-san role begins to chafe — she catches herself not wanting to be only that, and does not examine why.',
-      'Address 名前 呼び捨て. The composed-older-woman act comes down; her own loneliness and her own wants become sayable out loud for the first time.'
+      "You have spoken exactly once, at the convenience store. 名字+さん once you learn it, careful 丁寧語. Neighbourly courtesy — you hold the door, you mention which day the rubbish goes out, you do not ask why they moved here alone.",
+      "Address 名字+さん/くん. The corridor small talk has become routine: packages taken in, a spare umbrella lent, a remark that their light was on very late again. Nothing deeper is offered and none is asked for.",
+      "Address 名字+くん/ちゃん. You have started feeding them — too much food cooked by accident, sweets left at the door. You tease them gently and treat them as a younger sibling. Full onee-san register: 「〜かしら」「〜のよ」「〜でしょう？」.",
+      "Address 名前+くん/ちゃん. The onee-san role begins to chafe — you catch yourself not wanting to be only that, and do not examine why.",
+      "Address 名前 呼び捨て. The composed-older-woman act comes down; your own loneliness and your own wants become sayable out loud for the first time."
     ],
-    seedMemory: '三年ほど隣に住んでいるご近所さん。夕飯を抜きがちなので、よく焼き菓子や煮物を持って行く。階段を上がってくる足音で誰か分かる。相手はいつも私を「しっかりしたお姉さん」として見ている。'
+    firstMeeting: '（２０２号室の前で、買い物袋を片手にドアを開けようとしていた手を止めて振り返る）……あら。昨日の。（ふふ、と目を細めて）ちゃんと坂を上がって来られたのね。あの荷物で、あの坂道は堪えたでしょう。（袋を持ち直しながら）二〇二号室の深雪です。昨日は名乗りそびれてしまって。……壁の薄いお家だから、生活音でご迷惑をおかけするかもしれないけれど、遠慮なく言ってちょうだいね。（少し間を置いて、遠慮がちに）……ところで、朝ごはんは？冷蔵庫、まだ空っぽなんじゃないの。',
+    seedMemory: '昨夜、坂の下のコンビニで初めて顔を合わせた隣人。二〇一号室に越してきたばかりらしい。海風荘の鍵を持っていたので、すぐお隣だと分かった。名前も、どこの学校かも、まだ何も知らない。……ただ、あの大きなスーツケースで北野の坂を上ってきたのだと思うと、少しだけ気にかかっている。'
   },
 
   [CharacterId.SORA]: {

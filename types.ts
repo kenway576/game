@@ -68,6 +68,7 @@ export enum ChatMode {
 
 export enum GameMode {
   SETUP = 'SETUP',
+  PROLOGUE = 'PROLOGUE',
   LOBBY = 'LOBBY',
   CHAT = 'CHAT'
 }
@@ -191,3 +192,69 @@ export interface CalendarEvent {
   relatedCharIds: CharacterId[];
   isMajorFestival?: boolean;
 }
+// ---------------------------------------------------------
+// 7. 剧本 / 选项系统 (Story Script & Choice System)
+// 序章等固定剧情走这套数据驱动的播放器，与 AI 对话完全分离。
+// ---------------------------------------------------------
+
+// 一次属性增益。文案分中英，直接喂给 StatGainToast。
+export interface StoryEffect {
+  stat: StatKey;
+  amount: number;
+  reasonZh: string;
+  reasonEn: string;
+}
+
+// 选项的属性门槛。不满足时选项灰掉但仍然可见——
+// 让玩家看见"如果当时勇气再高一点"，这是这套系统的主要驱动力。
+export interface StoryRequirement {
+  stat: StatKey;
+  min: number;
+}
+
+export interface StoryOption {
+  id: string;
+  labelZh: string;
+  labelEn: string;
+  // 选项下方的小字：提示语气或代价，不剧透具体加什么属性
+  hintZh?: string;
+  hintEn?: string;
+  requires?: StoryRequirement;
+  effects?: StoryEffect[];
+  setFlags?: string[];
+  // 选中后插入播放的分支节点，播完自动回到主线
+  then: StoryNode[];
+}
+
+// 便利店等"自由逛"场景里的一件商品
+export interface ShopItem {
+  id: string;
+  price: number;          // 日元
+  nameJp: string;         // 日语原名（学习用）
+  nameZh: string;
+  nameEn: string;
+  descZh: string;
+  descEn: string;
+  emoji: string;
+  effects?: StoryEffect[];
+  setFlags?: string[];
+}
+
+export type StoryNode =
+  // 切背景（可带一个章节标题卡）
+  | { type: 'scene'; scene: string; titleZh?: string; titleEn?: string; subtitleZh?: string; subtitleEn?: string }
+  // 旁白 / 内心独白
+  | { type: 'narration'; zh: string; en: string }
+  // 台词。jp 有值时上方显示日语原文，下方显示译文（本作是日语学习游戏）
+  | { type: 'speech'; speakerZh: string; speakerEn: string; jp?: string; zh: string; en: string; color?: string }
+  // 无条件属性增益（剧情自动给的）
+  | { type: 'effect'; effects: StoryEffect[] }
+  // 分歧选项
+  | { type: 'choice'; promptZh: string; promptEn: string; options: StoryOption[] }
+  // 自由购物（便利店）：预算内随便挑，结算时统一生效
+  | { type: 'shop'; budget: number; promptZh: string; promptEn: string; items: ShopItem[] }
+  // 条件插播：满足 flag 时才播这段（用于回收前面的选择）
+  | { type: 'branch'; ifFlag: string; not?: boolean; then: StoryNode[] };
+
+// 剧情选择留下的痕迹。随存档保存，可注入 AI 的 system prompt。
+export type StoryFlags = Record<string, boolean>;

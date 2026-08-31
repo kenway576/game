@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey } from './types';
-import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE } from './constants';
+import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags } from './types';
+import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
 import type { DialoguePage } from './types';
@@ -16,6 +16,8 @@ import CgGalleryModal from './components/CgGalleryModal';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import { StatGainToast } from './components/StatGainToast';
+import StoryScreen from './components/StoryScreen';
+import { PROLOGUE_SCRIPT } from './story/prologueData';
 
 const App: React.FC = () => {
   // ---------- 全局游戏状态 ----------
@@ -87,6 +89,12 @@ const App: React.FC = () => {
   const [protagonistStats, setProtagonistStats] = useState<ProtagonistStats>(INITIAL_PROTAGONIST_STATS);
   const [gameCalendar, setGameCalendar] = useState<GameCalendar>(INITIAL_CALENDAR_STATE);
   const [statGainEvent, setStatGainEvent] = useState<StatGainEvent | null>(null);
+  // 一次给多个属性时（剧情选项常见）要排队弹，不然后一个会盖掉前一个
+  const [statGainQueue, setStatGainQueue] = useState<StatGainEvent[]>([]);
+
+  // 📖 剧情选择留下的痕迹 + 序章是否已通关（随存档保存）
+  const [storyFlags, setStoryFlags] = useState<StoryFlags>({});
+  const [prologueDone, setPrologueDone] = useState(false);
 
   const gainStat = (stat: StatKey, amount: number, reasonZh: string, reasonEn: string) => {
     setProtagonistStats(prev => ({
@@ -101,6 +109,35 @@ const App: React.FC = () => {
       timestamp: Date.now()
     });
   };
+
+  // 剧本节点一次抛回来的一组增益：数值立刻结算，提示进队列依次弹出
+  const applyStoryEffects = (effects: StoryEffect[]) => {
+    if (!effects.length) return;
+    setProtagonistStats(prev => {
+      const next = { ...prev };
+      effects.forEach(e => {
+        next[e.stat] = Math.min(100, Math.max(0, (next[e.stat] || 0) + e.amount));
+      });
+      return next;
+    });
+    setStatGainQueue(prev => [
+      ...prev,
+      ...effects.map((e, i) => ({
+        stat: e.stat,
+        amount: e.amount,
+        reasonZh: e.reasonZh,
+        reasonEn: e.reasonEn,
+        timestamp: Date.now() + i
+      }))
+    ]);
+  };
+
+  // 队列泵：当前没有提示在显示时，取下一个顶上
+  useEffect(() => {
+    if (statGainEvent || statGainQueue.length === 0) return;
+    setStatGainEvent(statGainQueue[0]);
+    setStatGainQueue(q => q.slice(1));
+  }, [statGainEvent, statGainQueue]);
 
   const [activeHistoryTab, setActiveHistoryTab] = useState<CharacterId>(VISIBLE_CHARACTER_IDS[0]);
   const [hasAnySave, setHasAnySave] = useState(false);
@@ -159,7 +196,7 @@ const App: React.FC = () => {
 
   // 🎵 按 gameMode 切 BGM（title / lobby / chat），交叉淡入 800ms
   useEffect(() => {
-    const track = gameMode === GameMode.LOBBY ? 'lobby'
+    const track = (gameMode === GameMode.LOBBY || gameMode === GameMode.PROLOGUE) ? 'lobby'
       : gameMode === GameMode.CHAT ? 'chat'
       : 'title';
     audioManager.crossfadeBgm(track, 800);
@@ -283,6 +320,36 @@ const App: React.FC = () => {
     }
   };
 
+  // ---------- 序章 (Chapter 0) ----------
+  // 只有「新的开始」会走序章；「继续游戏」读档后直接回大厅。
+  const startPrologue = () => {
+    setStoryFlags({});
+    setPrologueDone(false);
+    setProtagonistStats(INITIAL_PROTAGONIST_STATS);
+    setStatGainEvent(null);
+    setStatGainQueue([]);
+    setCurrentScene('train_interior');
+    setGameMode(GameMode.PROLOGUE);
+  };
+
+  // 序章播完（或被跳过）：记下选择痕迹，进大厅，并立刻自动存档
+  const pendingPrologueSaveRef = useRef(false);
+  const finishPrologue = (flags: StoryFlags) => {
+    setStoryFlags(flags);
+    setPrologueDone(true);
+    setCurrentScene(DEFAULT_SCENE);
+    setGameMode(GameMode.LOBBY);
+    pendingPrologueSaveRef.current = true;
+  };
+
+  // 等 prologueDone / gameMode 真正落到 state 里再存，避免存进过期的值
+  useEffect(() => {
+    if (!pendingPrologueSaveRef.current) return;
+    if (!prologueDone || gameMode !== GameMode.LOBBY) return;
+    pendingPrologueSaveRef.current = false;
+    triggerAutoSave();
+  }, [prologueDone, gameMode]);
+
   // 离开聊天（返回大厅/标题）时固化本次会话的记忆
   const leaveChat = (target: GameMode) => {
     setShowSystemMenu(false);
@@ -387,14 +454,18 @@ const App: React.FC = () => {
         playerName: userState.playerName,
         topic: userState.grammarTopic,
         charId: selectedCharId,
-        previewText: messages.length > 0 ? messages[messages.length - 1].text.substring(0, 30) + '...' : 'No messages',
+        previewText: messages.length > 0
+          ? messages[messages.length - 1].text.substring(0, 30) + '...'
+          : (prologueDone ? (userState.language === 'en' ? 'Prologue cleared' : '序章已通关') : 'No messages'),
         isAutoSave
       },
       data: {
         userState, gameMode, selectedCharId, chatMode,
         messages: messages.slice(-msgLimit),
         chatHistories: trimmedHistories,
-        customAssets, affectionMap, familiarityMap, memoryMap
+        customAssets, affectionMap, familiarityMap, memoryMap,
+        // 🔥 五维人格、行事历与剧情选择：漏存这几项等于玩家的选择读档就作废
+        protagonistStats, gameCalendar, storyFlags, prologueDone
       }
     };
   };
@@ -417,7 +488,9 @@ const App: React.FC = () => {
   };
 
   const triggerAutoSave = () => {
-    if (!selectedCharId) return;
+    // 序章刚打完时还没选过角色，但这份进度必须存下来——
+    // 否则玩家关掉页面后「继续游戏」是灰的，序章得从头再看一遍。
+    if (!selectedCharId && !prologueDone) return;
     if (writeSave(`${SAVE_SLOT_PREFIX}0`, true)) {
       checkForSaves();
       setShowAutoSave(true);
@@ -472,7 +545,14 @@ const App: React.FC = () => {
       // 记忆为空的角色补上预置的共同记忆（旧存档 & 尚未对话过的角色）
       setMemoryMap(createCharacterRecord(id => (data.memoryMap || {})[id] || getSeedMemory(id)));
 
-      setGameMode(data.gameMode);
+      // 旧存档没有这几项：回退到初值，不让读档崩掉
+      setProtagonistStats({ ...INITIAL_PROTAGONIST_STATS, ...(data.protagonistStats || {}) });
+      setGameCalendar({ ...INITIAL_CALENDAR_STATE, ...(data.gameCalendar || {}) });
+      setStoryFlags(data.storyFlags || {});
+      // 老存档一律视为已过序章：他们已经在玩了，不该被拽回序章
+      setPrologueDone(data.prologueDone ?? true);
+
+      setGameMode(data.gameMode === GameMode.PROLOGUE ? GameMode.LOBBY : data.gameMode);
       setSaveLoadMode(null);
       setShowSystemMenu(false);
       setSetupStep('MENU');
@@ -645,13 +725,12 @@ const App: React.FC = () => {
     }
 
     // 🆕 无历史 → 生成开场。陌生角色演"初対面"，已认识的角色演"日常的一天"，
-    // 基调参考各自的手写脚本（firstMeeting / firstMessage）。
+    // 基调参考各自的手写脚本：firstMeeting 是"第一次正经说话"的专用脚本，
+    // 没写的角色回退到 firstMessage（对已认识的角色，那就是日常的一天）。
     const profile = getRelationshipProfile(charId);
     const openingBrief = buildOpeningBrief(
       profile.origin,
-      profile.origin === 'stranger'
-        ? (profile.firstMeeting || CHARACTERS[charId].firstMessage)
-        : CHARACTERS[charId].firstMessage
+      profile.firstMeeting || CHARACTERS[charId].firstMessage
     );
 
     const stream = makeStreamHandler(charId, true);
@@ -900,7 +979,7 @@ const App: React.FC = () => {
     return pick('neutral') || char;
   };
 
-  const background = <Background bgUrl={bgUrl} customBg={customAssets.backgroundImage} />;
+  const background = <Background bgUrl={bgUrl} customBg={customAssets.backgroundImage} fallbackUrl={SCENE_FALLBACK[currentScene]} />;
   const activeChar = getDynamicAvatar(selectedCharId ? CHARACTERS[selectedCharId] : CHARACTERS[ALL_CHARACTER_IDS[0]]);
   const activeCharDisplayName = selectedCharId
     ? (userState.language === 'en' ? CHARACTERS[selectedCharId].nameEn : CHARACTERS[selectedCharId].name)
@@ -917,7 +996,7 @@ const App: React.FC = () => {
           setSetupStep={setSetupStep}
           hasAnySave={hasAnySave}
           onLoadRequest={() => setSaveLoadMode('LOAD')}
-          onComplete={() => setGameMode(GameMode.LOBBY)}
+          onComplete={startPrologue}
           customApiKey={customApiKey}
           onApiKeyChange={handleApiKeyChange}
           customModel={customModel}
@@ -929,6 +1008,18 @@ const App: React.FC = () => {
           consentGiven={consentGiven}
           setConsentGiven={setConsentGiven}
           background={background}
+        />
+      )}
+
+      {gameMode === GameMode.PROLOGUE && (
+        <StoryScreen
+          script={PROLOGUE_SCRIPT}
+          language={userState.language}
+          stats={protagonistStats}
+          background={background}
+          onEffects={applyStoryEffects}
+          onSceneChange={setCurrentScene}
+          onFinish={finishPrologue}
         />
       )}
 
