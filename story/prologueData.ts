@@ -634,12 +634,13 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '店员',
+    speakerZh: '店员小姐',
     speakerEn: 'Store Clerk',
     jp: 'いらっしゃいませ〜！',
     zh: '欢迎光临～！',
     en: 'Welcome!',
-    color: 'bg-teal-500'
+    color: 'bg-teal-500',
+    characterImage: '/images/characters/clerk_misaki_smile.webp'
   },
   {
     type: 'narration',
@@ -874,12 +875,13 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '店员',
+    speakerZh: '店员小姐',
     speakerEn: 'Store Clerk',
     jp: 'レジ袋はご利用ですか？お箸はおつけしますか？',
     zh: '需要塑料袋吗？要给您配一双筷子吗？',
     en: 'Would you like a bag? And shall I add a pair of chopsticks?',
-    color: 'bg-teal-500'
+    color: 'bg-teal-500',
+    characterImage: '/images/characters/clerk_misaki_smile.webp'
   },
   {
     type: 'choice',
@@ -906,12 +908,13 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '店员',
+            speakerZh: '店员小姐',
             speakerEn: 'Store Clerk',
             jp: 'えっ、おおきに！？お兄さん、関西の人ちゃうやろ？うまいなあ！',
             zh: '诶，「おおきに」！？小哥你不是关西人吧？说得真地道啊！',
             en: 'Wait — "ookini"?! You’re not from Kansai, are you? That was good!',
-            color: 'bg-teal-500'
+            color: 'bg-teal-500',
+            characterImage: '/images/characters/clerk_misaki_smile.webp'
           },
           {
             type: 'narration',

@@ -246,8 +246,8 @@ export type StoryNode =
   | { type: 'scene'; scene: string; titleZh?: string; titleEn?: string; subtitleZh?: string; subtitleEn?: string }
   // 旁白 / 内心独白
   | { type: 'narration'; zh: string; en: string }
-  // 台词。jp 有值时上方显示日语原文，下方显示译文（本作是日语学习游戏）
-  | { type: 'speech'; speakerZh: string; speakerEn: string; jp?: string; zh: string; en: string; color?: string }
+  // 台词。jp 有值时上方显示日语原文，下方显示译文（本作是日语学习游戏）；characterImage 可挂载对话时出场的立绘
+  | { type: 'speech'; speakerZh: string; speakerEn: string; jp?: string; zh: string; en: string; color?: string; characterImage?: string }
   // 无条件属性增益（剧情自动给的）
   | { type: 'effect'; effects: StoryEffect[] }
   // 分歧选项

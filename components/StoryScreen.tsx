@@ -197,6 +197,20 @@ const StoryScreen: React.FC<Props> = ({
       {/* 正文区 */}
       <div className="relative z-30 flex-1 flex flex-col justify-end pb-6 md:pb-10 px-3 md:px-8">
 
+        {/* 角色立绘（当台词指定了 characterImage 时展示） */}
+        {node?.type === 'speech' && node.characterImage && (
+          <div className="w-full max-w-4xl mx-auto flex justify-center md:justify-end pr-0 md:pr-12 -mb-8 md:-mb-12 z-20 pointer-events-none animate-in fade-in slide-in-from-bottom-6 duration-400">
+            <img
+              src={node.characterImage}
+              alt={displayText.speaker}
+              className="max-h-[360px] md:max-h-[480px] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)] filter brightness-105"
+              onError={(e) => {
+                (e.currentTarget as HTMLElement).style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+
         {/* 旁白 / 台词 */}
         {(node?.type === 'narration' || node?.type === 'speech') && (
           <div className="w-full max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4">
