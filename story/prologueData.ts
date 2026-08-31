@@ -695,16 +695,55 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         setFlags: ['bought_karaage']
       },
       {
+        id: 'kobe_beef_croquette',
+        price: 220,
+        emoji: '🍘',
+        imageUrl: '/images/items/item_croquette.webp',
+        nameJp: '神戸牛コロッケ',
+        nameZh: '神户牛可乐饼',
+        nameEn: 'Kobe Beef Croquette',
+        descZh: '炸得金黄酥脆。咬开后土豆泥混着牛肉末与洋葱的甜香，油滋滋的满足感。',
+        descEn: 'Crispy and golden. Hot mashed potato sweet with minced beef and onion — pure comfort.',
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '品尝了神户风味的可乐饼', reasonEn: 'Tasted a local Kobe-style croquette' }],
+        setFlags: ['bought_croquette']
+      },
+      {
+        id: 'makunouchi_bento',
+        price: 680,
+        emoji: '🍱',
+        imageUrl: '/images/items/item_bento.webp',
+        nameJp: '特選 幕の内弁当',
+        nameZh: '特选幕内便当',
+        nameEn: 'Makunouchi Bento',
+        descZh: '烤鲑鱼、日式玉子烧、炸虾与炖时蔬俱全。比普通便当贵出不少，但今晚能大快朵颐吃顿饱饭。',
+        descEn: 'Grilled salmon, tamagoyaki, fried prawn and simmered vegetables. Pricey, but a real hearty dinner.',
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '犒劳初抵神户的自己一顿丰盛大餐', reasonEn: 'Treated yourself to a feast on day one' }],
+        setFlags: ['bought_bento']
+      },
+      {
         id: 'cup_noodle',
         price: 210,
         emoji: '🍜',
         imageUrl: '/images/items/item_cup_noodle.webp',
         nameJp: 'カップ麺',
-        nameZh: '杯面',
+        nameZh: '海鲜杯面',
         nameEn: 'Cup Noodles',
         descZh: '留着当明天的备用粮也不错。热水店里就能加。',
         descEn: 'Not a bad emergency ration for tomorrow. They will fill it with hot water right here.',
         setFlags: ['bought_noodle']
+      },
+      {
+        id: 'black_coffee_can',
+        price: 130,
+        emoji: '☕',
+        imageUrl: '/images/items/item_coffee.webp',
+        nameJp: '無糖ブラック缶コーヒー',
+        nameZh: '无糖黑咖啡',
+        nameEn: 'Black Can Coffee',
+        descZh: '冰凉铝罐，深烘焙的苦味很正。今晚整理房间、背单词全靠它提神。',
+        descEn: 'Chilled aluminum can. Strong, dark roast bitterness. Just what you need to unpack and study tonight.',
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '准备靠黑咖啡连夜预习', reasonEn: 'Fueled by black coffee for late study' }],
+        setFlags: ['bought_coffee']
       },
       {
         id: 'tea_ole',
@@ -732,17 +771,17 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         setFlags: ['bought_pudding']
       },
       {
-        id: 'town_magazine',
-        price: 450,
-        emoji: '📖',
-        imageUrl: '/images/items/item_town_magazine.webp',
-        nameJp: 'タウン情報誌（神戸特集）',
-        nameZh: '本地情报志（神户特辑）',
-        nameEn: 'City Guide Magazine (Kobe Special)',
-        descZh: '厚厚一本，全是这座城市的店、路线和活动。有点贵，够买三个饭团了。',
-        descEn: 'A thick issue, all shops and routes and events across the city. Pricey — three rice balls, that.',
-        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '一整本神户，四百五十日元', reasonEn: 'An entire city, for four hundred fifty yen' }],
-        setFlags: ['bought_magazine']
+        id: 'travel_towel_set',
+        price: 380,
+        emoji: '🧺',
+        imageUrl: '/images/items/item_towel.webp',
+        nameJp: '綿100% フェイスタオル',
+        nameZh: '纯棉吸水毛巾',
+        nameEn: 'Cotton Face Towel Set',
+        descZh: '便利店里的生活杂货比百元店贵得多，但今晚洗完澡要是没毛巾可就真傻眼了。救急必备。',
+        descEn: 'Convenience store goods are marked up over the 100-yen shop, but stepping out of the shower without a towel is not an option.',
+        effects: [{ stat: 'proficiency', amount: 1, reasonZh: '未雨绸缪解决了今晚洗漱问题', reasonEn: 'Thought ahead for tonight’s shower' }],
+        setFlags: ['bought_towel']
       },
       {
         id: 'dish_soap',
@@ -756,6 +795,71 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         descEn: 'Not romantic in the slightest. But skip it tonight and you will be scrubbing bowls with cold water in the morning.',
         effects: [{ stat: 'proficiency', amount: 1, reasonZh: '想到了明天早上要刷碗', reasonEn: 'You thought ahead to tomorrow morning’s washing up' }],
         setFlags: ['bought_soap']
+      },
+      {
+        id: 'compact_umbrella',
+        price: 780,
+        emoji: '☂️',
+        imageUrl: '/images/items/item_umbrella.webp',
+        nameJp: '耐風ワンタッチ折りたたみ傘',
+        nameZh: '耐风折叠伞',
+        nameEn: 'Windproof Folding Umbrella',
+        descZh: '六甲山脚下海风大、天气多变。便利店里的伞比超市贵一倍，但带强化伞骨，握在手里安全感拉满。',
+        descEn: 'The foot of Mount Rokko gets wild weather. Double supermarket price, but with a sturdy reinforced frame.',
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '买了应对神户狂风骤雨的耐风伞', reasonEn: 'Prepared for the fierce Kobe wind and rain' }],
+        setFlags: ['bought_umbrella']
+      },
+      {
+        id: 'nail_clipper_set',
+        price: 540,
+        emoji: '✂️',
+        imageUrl: '/images/items/item_clipper.webp',
+        nameJp: '匠の技 ステンレス爪切り',
+        nameZh: '匠之技不锈钢指甲刀',
+        nameEn: 'Craftsman Nail Clipper',
+        descZh: '岐阜县关市名刀厂出品，便利店里最贵的日杂之一。虽然贵得肉疼，但新学期修剪整洁仪容加分。',
+        descEn: 'Made by famous bladesmiths in Seki. Expensive for a convenience item, but neat grooming matters for school.',
+        effects: [{ stat: 'proficiency', amount: 1, reasonZh: '注重个人仪容细节', reasonEn: 'Attentive to grooming details' }],
+        setFlags: ['bought_clipper']
+      },
+      {
+        id: 'lip_balm_cream',
+        price: 460,
+        emoji: '💄',
+        imageUrl: '/images/items/item_lipbalm.webp',
+        nameJp: '薬用リップ＆ハンドクリーム',
+        nameZh: '药用润唇膏＆护手霜',
+        nameEn: 'Lip Balm & Hand Cream',
+        descZh: '神户春天的海风吹得皮肤干燥。给嘴唇和双手一点滋润呵护，明天见新同学清爽自然。',
+        descEn: 'Spring sea breeze dries skin fast. A little care keeps you looking clean and approachable tomorrow.',
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '做好了开学见面的仪容护理', reasonEn: 'Fresh and well-groomed for school' }],
+        setFlags: ['bought_lipbalm']
+      },
+      {
+        id: 'gel_pen_notebook',
+        price: 390,
+        emoji: '📝',
+        imageUrl: '/images/items/item_stationery.webp',
+        nameJp: 'フリクションペン＆Campusノート',
+        nameZh: '可擦中性笔与方格本',
+        nameEn: 'Erasable Pen & Grid Note',
+        descZh: '百乐可擦笔搭配经典的Campus笔记本，明天开学第一堂课与分班考试随时能用上。',
+        descEn: 'A Pilot Frixion erasable pen and a classic Campus grid notebook. Ready for placement tests tomorrow.',
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '为明天的分班摸底备齐了文具', reasonEn: 'Fully equipped with stationery for school' }],
+        setFlags: ['bought_stationery']
+      },
+      {
+        id: 'town_magazine',
+        price: 450,
+        emoji: '📖',
+        imageUrl: '/images/items/item_town_magazine.webp',
+        nameJp: 'タウン情報誌（神戸特集）',
+        nameZh: '本地情报志（神户特辑）',
+        nameEn: 'City Guide Magazine (Kobe Special)',
+        descZh: '厚厚一本，全是这座城市的店、路线和活动。有点贵，够买三个饭团了。',
+        descEn: 'A thick issue, all shops and routes and events across the city. Pricey — three rice balls, that.',
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '一整本神户，四百五十日元', reasonEn: 'An entire city, for four hundred fifty yen' }],
+        setFlags: ['bought_magazine']
       }
     ]
   },
