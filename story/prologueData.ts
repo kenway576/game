@@ -617,7 +617,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'convenience_store',
+    scene: 'convenience_store_exterior',
     titleZh: '坡道口的便利店',
     titleEn: 'The Convenience Store at the Foot of the Slope',
     subtitleZh: '晚上 7:20',
@@ -627,6 +627,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     type: 'narration',
     zh: '绕回坡道口时，一家便利店的白光从玻璃门里泼到人行道上。你推门进去，自动门「ピンポーン」响了一声。',
     en: 'Back at the foot of the slope, the white glare of a convenience store spills across the pavement. You push in, and the door chimes.'
+  },
+  {
+    type: 'scene',
+    scene: 'convenience_store_interior'
   },
   {
     type: 'speech',

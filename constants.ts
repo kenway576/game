@@ -57,8 +57,10 @@ export const SCENE_MAP: Record<string, string> = {
   'umikaze_exterior':    '/images/backgrounds/bg_umikaze_apartment_exterior.webp',
   'apartment_room':      '/images/backgrounds/bg_umikaze_room_201.webp',
   'apartment_balcony':   '/images/backgrounds/bg_umikaze_balcony_harbor.webp',
-  'sannomiya_arcade':    '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
-  'convenience_store':   '/images/backgrounds/bg_convenience_store_night.webp'
+  'sannomiya_arcade':            '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
+  'convenience_store':           '/images/backgrounds/bg_convenience_store_interior.webp',
+  'convenience_store_exterior':  '/images/backgrounds/bg_convenience_store_night.webp',
+  'convenience_store_interior':  '/images/backgrounds/bg_convenience_store_interior.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
