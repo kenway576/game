@@ -315,7 +315,7 @@ const StoryScreen: React.FC<Props> = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                 {shopItems.map(item => {
                   const picked = cart.includes(item.id);
                   const tooExpensive = !picked && item.price > remaining;
@@ -324,34 +324,61 @@ const StoryScreen: React.FC<Props> = ({
                       key={item.id}
                       onClick={() => toggleItem(item)}
                       disabled={tooExpensive}
-                      className={`text-left p-3 md:p-4 border-2 transition-all duration-150
+                      className={`group relative text-left p-3 md:p-4 border-2 transition-all duration-200 overflow-hidden flex gap-3 md:gap-4 items-center
                         ${picked
-                          ? 'bg-yellow-400/90 border-yellow-300 text-black shadow-[0_0_20px_rgba(250,204,21,0.35)]'
+                          ? 'bg-gradient-to-r from-yellow-400 to-amber-300 border-yellow-200 text-black shadow-[0_0_25px_rgba(250,204,21,0.45)] scale-[1.01]'
                           : tooExpensive
                             ? 'bg-black/50 border-white/10 opacity-35 cursor-not-allowed'
-                            : 'bg-zinc-900/80 border-white/15 hover:border-yellow-400/70 hover:bg-zinc-800/80 cursor-pointer'}`}
+                            : 'bg-zinc-900/90 border-white/15 hover:border-yellow-400/80 hover:bg-zinc-800/90 hover:shadow-lg cursor-pointer'}`}
                     >
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl md:text-3xl leading-none mt-0.5">{item.emoji}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-baseline justify-between gap-2">
-                            <span className={`font-black text-sm md:text-lg truncate ${picked ? 'text-black' : 'text-white'}`}>
-                              {item.nameJp}
-                            </span>
-                            <span className={`font-black text-xs md:text-base tabular-nums shrink-0 ${picked ? 'text-black' : 'text-yellow-400'}`}>
-                              ¥{item.price}
-                            </span>
-                          </div>
-                          <div className={`text-[11px] md:text-sm font-bold ${picked ? 'text-black/70' : 'text-white/60'}`}>
-                            {en ? item.nameEn : item.nameZh}
-                          </div>
-                          <div className={`mt-1 text-[10px] md:text-xs leading-snug ${picked ? 'text-black/60' : 'text-white/40'}`}>
-                            {en ? item.descEn : item.descZh}
-                          </div>
-                        </div>
-                        <span className={`shrink-0 text-lg font-black ${picked ? 'text-black' : 'text-white/20'}`}>
-                          {picked ? '✓' : '＋'}
+                      {/* 商品立绘 / 图标 */}
+                      <div className={`relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden border ${picked ? 'border-black/30 bg-black/10' : 'border-white/20 bg-black/40'} flex items-center justify-center`}>
+                        {item.imageUrl ? (
+                          <img
+                            src={item.imageUrl}
+                            alt={item.nameZh}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : null}
+                        <span className="text-3xl md:text-4xl select-none absolute" style={{ zIndex: 0 }}>
+                          {item.emoji}
                         </span>
+                      </div>
+
+                      {/* 商品信息 */}
+                      <div className="flex-1 min-w-0 z-10">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <span className={`font-black text-sm md:text-lg truncate ${picked ? 'text-black' : 'text-white'}`}>
+                            {item.nameJp}
+                          </span>
+                          <span className={`font-black text-sm md:text-base tabular-nums shrink-0 px-2 py-0.5 rounded ${picked ? 'bg-black text-yellow-400' : 'bg-red-600/90 text-white'}`}>
+                            ¥{item.price}
+                          </span>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className={`text-[11px] md:text-sm font-bold ${picked ? 'text-black/80' : 'text-white/70'}`}>
+                            {en ? item.nameEn : item.nameZh}
+                          </span>
+                          {/* 属性增益徽章 */}
+                          {item.effects && item.effects.length > 0 && (
+                            <span className={`text-[9px] md:text-[10px] font-black px-1.5 py-0.2 rounded uppercase ${picked ? 'bg-black/80 text-yellow-300' : 'bg-yellow-400 text-black'}`}>
+                              +{item.effects[0].amount} {STAT_METADATA[item.effects[0].stat]?.nameZh.split(' ')[0] || item.effects[0].stat}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className={`mt-1 text-[10px] md:text-xs leading-snug line-clamp-2 ${picked ? 'text-black/70' : 'text-white/40'}`}>
+                          {en ? item.descEn : item.descZh}
+                        </div>
+                      </div>
+
+                      {/* 选中指示标记 */}
+                      <div className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center font-black text-sm md:text-base border-2 transition-all ${picked ? 'bg-black text-yellow-400 border-black' : 'bg-transparent text-white/30 border-white/20 group-hover:border-yellow-400 group-hover:text-yellow-400'}`}>
+                        {picked ? '✓' : '＋'}
                       </div>
                     </button>
                   );

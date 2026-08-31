@@ -236,6 +236,7 @@ export interface ShopItem {
   descZh: string;
   descEn: string;
   emoji: string;
+  imageUrl?: string;      // 专属商品立绘 / 插画卡片路径
   effects?: StoryEffect[];
   setFlags?: string[];
 }
