@@ -63,8 +63,6 @@ export const CHARACTER_ROOMS: Record<CharacterId, string> = {
   [CharacterId.INARI]:  '/images/backgrounds/room_inari.webp',
   [CharacterId.SORA]:   '/images/backgrounds/room_sora.webp',
   [CharacterId.MAKI]:   '/images/backgrounds/room_maki.webp',
-  [CharacterId.REN]:    '/images/backgrounds/my_room.webp',
-  [CharacterId.HAKU]:   '/images/backgrounds/my_room.webp'
 };
 
 export const DEFAULT_SCENE = 'classroom';
@@ -350,101 +348,6 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     },
     firstMessage: "（静かに瞬きをし、細い指先で眼鏡の位置を直す）……お疲れ様です。本日の講義内容を整理しました。準備ができ次第始めますが、まずはどの部分から復習したいですか？",
     systemPrompt: `ROLE: Rei (クーデレ). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`
-  },
-  [CharacterId.REN]: {
-    id: CharacterId.REN,
-    name: 'Ren',
-    nameEn: 'Ren',
-    role: '秘密結社のリーダー',
-    roleEn: 'Chuunibyou Leader',
-    description: '世界を変えるための「計画」を持つ、尊大で演劇的な男。',
-    descriptionEn: "An arrogant and theatrical man with a 'grand plan'.",
-    avatarUrl: '/images/characters/ren/neutral.webp',
-    color: 'bg-purple-800',
-    emotionMap: {
-      'butler_neutral'  : '/images/characters/ren/butler_neutral.webp',
-      'butler_shy'      : '/images/characters/ren/butler_shy.webp',
-      'casual_cool'     : '/images/characters/ren/casual_cool.webp',
-      'casual_neutral'  : '/images/characters/ren/casual_neutral.webp',
-      'fantasy_laugh'   : '/images/characters/ren/fantasy_laugh.webp',
-      'fantasy_neutral' : '/images/characters/ren/fantasy_neutral.webp',
-      'gym_neutral'     : '/images/characters/ren/gym_neutral.webp',
-      'gym_pose'        : '/images/characters/ren/gym_pose.webp',
-      'laugh'           : '/images/characters/ren/laugh.webp',
-      'lecturing'       : '/images/characters/ren/lecturing.webp',
-      'neutral'         : '/images/characters/ren/neutral.webp',
-      'serious'         : '/images/characters/ren/serious.webp',
-      'shock'           : '/images/characters/ren/shock.webp',
-      'shy'             : '/images/characters/ren/shy.webp',
-      'sorcerer_laugh'  : '/images/characters/ren/sorcerer_laugh.webp',
-      'sorcerer_neutral': '/images/characters/ren/sorcerer_laugh.webp',
-    },
-    firstMessage: "（不敵な笑みを浮かべ、マントを翻すように腕を大きく広げる）フッ……待っていたぞ、我が同志よ。さあ、我々の『計画』の進捗を報告してもらおうか。準備はできているな？",
-    systemPrompt: `ROLE: Ren (中二病). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`,
-    hidden: true
-  },
-  [CharacterId.HAKU]: {
-    id: CharacterId.HAKU,
-    name: 'Haku',
-    nameEn: 'Haku',
-    role: '忠実なる執事',
-    roleEn: 'Loyal Butler',
-    description: 'あなたを「姫（またはお嬢様）」と呼び、献身的に尽くす執事。',
-    descriptionEn: "A butler who calls you 'Princess' and serves you.",
-    avatarUrl: '/images/characters/haku/neutral.webp',
-    color: 'bg-teal-700',
-    emotionMap: {
-      'angry'           : '/images/characters/haku/angry.webp',
-      'apron_angry'     : '/images/characters/haku/apron_angry.webp',
-      'apron_happy'     : '/images/characters/haku/apron_happy.webp',
-      'apron_neutral'   : '/images/characters/haku/apron_neutral.webp',
-      'apron_sad'       : '/images/characters/haku/apron_sad.webp',
-      'apron_shy'       : '/images/characters/haku/apron_shy.webp',
-      'apron_smug'      : '/images/characters/haku/apron_smug.webp',
-      'apron_surprised' : '/images/characters/haku/apron_surprised.webp',
-      'casual_angry'    : '/images/characters/haku/casual_angry.webp',
-      'casual_happy'    : '/images/characters/haku/casual_happy.webp',
-      'casual_neutral'  : '/images/characters/haku/casual_neutral.webp',
-      'casual_sad'      : '/images/characters/haku/casual_sad.webp',
-      'casual_shy'      : '/images/characters/haku/casual_shy.webp',
-      'casual_smile'    : '/images/characters/haku/casual_smile.webp',
-      'casual_smug'     : '/images/characters/haku/casual_smug.webp',
-      'casual_surprised': '/images/characters/haku/casual_surprised.webp',
-      'happy'           : '/images/characters/haku/happy.webp',
-      'kimono_angry'    : '/images/characters/haku/kimono_angry.webp',
-      'kimono_happy'    : '/images/characters/haku/kimono_happy.webp',
-      'kimono_neutral'  : '/images/characters/haku/kimono_neutral.webp',
-      'kimono_sad'      : '/images/characters/haku/kimono_sad.webp',
-      'kimono_shy'      : '/images/characters/haku/kimono_shy.webp',
-      'kimono_smug'     : '/images/characters/haku/kimono_smug.webp',
-      'kimono_surprised': '/images/characters/haku/kimono_surprised.webp',
-      'kneel'           : '/images/characters/haku/kneel.webp',
-      'neutral'         : '/images/characters/haku/neutral.webp',
-      'prince_angry'    : '/images/characters/haku/prince_angry.webp',
-      'prince_happy'    : '/images/characters/haku/prince_happy.webp',
-      'prince_kneel'    : '/images/characters/haku/prince_kneel.webp',
-      'prince_neutral'  : '/images/characters/haku/prince_neutral.webp',
-      'prince_sad'      : '/images/characters/haku/prince_sad.webp',
-      'prince_shy'      : '/images/characters/haku/prince_shy.webp',
-      'prince_smug'     : '/images/characters/haku/prince_smug.webp',
-      'prince_surprised': '/images/characters/haku/prince_surprised.webp',
-      'sad'             : '/images/characters/haku/sad.webp',
-      'shy'             : '/images/characters/haku/shy.webp',
-      'smug'            : '/images/characters/haku/smug.webp',
-      'summer_angry'    : '/images/characters/haku/summer_angry.webp',
-      'summer_happy'    : '/images/characters/haku/summer_happy.webp',
-      'summer_neutral'  : '/images/characters/haku/summer_neutral.webp',
-      'summer_sad'      : '/images/characters/haku/summer_sad.webp',
-      'summer_shy'      : '/images/characters/haku/summer_shy.webp',
-      'summer_smug'     : '/images/characters/haku/summer_smug.webp',
-      'summer_surprised': '/images/characters/haku/summer_surprised.webp',
-      'surprised'       : '/images/characters/haku/surprised.webp',
-      'tea'             : '/images/characters/haku/tea.webp',
-      'worry'           : '/images/characters/haku/worry.webp',
-    },
-    firstMessage: "（優雅に一礼し、穏やかな微笑みを向けて手を差し出す）おかえりなさいませ、お嬢様。本日はどのようなご用命でしょうか？まずは、温かいお茶でもお持ちいたしましょうか？",
-    systemPrompt: `ROLE: Haku (執事). LANGUAGE: JLPT N3-N2 日本語のみ. CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging question related to the topic, forcing them to reply or make a choice.`,
-    hidden: true
   },
   [CharacterId.INARI]: {
     id: CharacterId.INARI,
@@ -828,8 +731,6 @@ export const WARDROBE: Record<string, string[]> = {
   [CharacterId.ASUKA]:  ['casual', 'gym', 'swim', 'maid', 'autumn', 'yukata', 'winter', 'sleep', 'dress', 'kimono', 'sport', 'summer', 'fantasy'],
   [CharacterId.HIKARI]: ['casual', 'gym', 'swim', 'yukata', 'autumn', 'maid', 'winter', 'sleep', 'sport', 'dress', 'kimono'],
   [CharacterId.REI]:    ['casual', 'lab', 'gym', 'swim', 'kimono', 'maid', 'winter', 'sleep', 'dress', 'yukata', 'autumn'],
-  [CharacterId.REN]:    ['casual', 'gym', 'fantasy', 'butler', 'lecturing', 'sorcerer'],
-  [CharacterId.HAKU]:   ['casual', 'apron', 'summer', 'prince', 'kimono'],
   [CharacterId.INARI]:  ['casual', 'school', 'swim', 'home', 'knit', 'gown', 'summer', 'miko', 'goddess'],
   [CharacterId.MIYUKI]: ['summer', 'school', 'cardigan', 'sundress', 'gown', 'apron', 'kimono'],
   [CharacterId.SORA]:   ['school', 'summer', 'autumn', 'swim', 'maid', 'kimono', 'gown'],
@@ -1012,33 +913,7 @@ export const RELATIONSHIP_PROFILES: Record<CharacterId, RelationshipProfile> = {
     seedMemory: '学校から日本語学習のサポート担当として割り当てられた相手。これまで数回、指導の時間を持った。助詞と自動詞・他動詞の使い分けが弱いこと、遅刻はしないことを把握している。私的な話は一度もしていない。'
   },
 
-  [CharacterId.REN]: {
-    origin: 'acquainted',
-    initialFamiliarity: 55,
-    encounter: 'You unilaterally recruited the player into your secret organisation about two weeks ago. They never actually agreed. You address them as 「我が同志」 with total conviction and behave as though a solemn pact exists between you. In reality you know almost nothing about them — the pact is the point, not the person. Yet.',
-    stages: [
-      'She has just decided this one looks useful. Calls them 「そこの者」. Grandiose, theatrical, openly testing them.',
-      'Unilaterally inducted as 「我が同志」. Uses 同志 constantly. The player never agreed to any of this and she has not noticed.',
-      'Address 同志+名字. The chuunibyou performance stays fully intact, but between proclamations she starts checking whether they are actually alright.',
-      'Address 名字 呼び捨て in the seconds when the act slips, then immediately re-drapes the cloak. Lets them glimpse the ordinary person underneath.',
-      'Address 名前. Admits the 秘密結社 was always a device for keeping people near her — and keeps performing it anyway, now as a joke the two of them share.'
-    ],
-    seedMemory: '二週間ほど前、我が秘密結社の「同志」として一方的に勧誘した人間。本人の同意は特に取っていない。名前と、放課後よく図書室にいることは把握している。それ以外はまだ何も知らぬ。'
-  },
 
-  [CharacterId.HAKU]: {
-    origin: 'acquainted',
-    initialFamiliarity: 160,
-    encounter: 'You have served the player\'s household as their butler for years. You know their schedule, their preferences and their moods better than they do. This is deep familiarity within a strict 主従関係 — closeness and hierarchy at the same time.',
-    stages: [
-      'Newly assigned to the household. 「お嬢様/お坊ちゃま」, flawless 敬語, a presence trained to be invisible.',
-      'Has learned the household routine. The same flawless 敬語; the tea arrives before it is requested.',
-      'Knows their habits better than they do. 敬語 unchanged — but which tea he chooses says everything he does not say.',
-      'IMPORTANT: the address stays 「お嬢様/お坊ちゃま」 and the 敬語 NEVER breaks. The 主従の壁 is deliberate, not distance. What changes is that he now voices disagreement and worry out loud instead of swallowing them.',
-      'Uses the player\'s 名前 exactly once, at the moment it matters most, and then returns to 敬語 as though it never happened. The restraint IS the intimacy — never abandon the butler register.'
-    ],
-    seedMemory: '長年お仕えしているご主人様。起床の時間、紅茶の濃さの好み、疲れている時に無口になる癖まで存じ上げている。主従の一線は決して越えぬが、この方の体調と機嫌の変化には誰よりも早く気づく。'
-  },
 
   [CharacterId.INARI]: {
     origin: 'stranger',
@@ -1147,8 +1022,6 @@ export const OUTFIT_UNLOCKS: Record<CharacterId, Partial<Record<number, string[]
   [CharacterId.ASUKA]:  { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata', 'summer'], 5: ['maid', 'winter', 'dress', 'kimono', 'fantasy'] },
   [CharacterId.HIKARI]: { 2: ['casual', 'sleep'], 3: ['gym', 'autumn', 'sport'], 4: ['swim', 'yukata', 'kimono'], 5: ['maid', 'winter', 'dress'] },
   [CharacterId.REI]:    { 2: ['casual', 'sleep'], 3: ['lab', 'gym', 'autumn'], 4: ['swim', 'winter', 'yukata'], 5: ['kimono', 'maid', 'dress'] },
-  [CharacterId.REN]:    { 2: ['casual'], 3: ['gym', 'lecturing'], 4: ['fantasy', 'sorcerer'], 5: ['butler'] },
-  [CharacterId.HAKU]:   { 2: ['casual'], 3: ['apron'], 4: ['summer', 'kimono'], 5: ['prince'] },
   [CharacterId.INARI]:  { 2: ['casual', 'home'], 3: ['school', 'summer'], 4: ['swim', 'knit', 'miko'], 5: ['gown', 'goddess'] },
   [CharacterId.MIYUKI]: { 2: ['cardigan', 'apron'], 3: ['summer', 'sundress'], 4: ['school', 'kimono'], 5: ['gown'] },
   [CharacterId.SORA]:   { 2: ['school'], 3: ['summer', 'autumn'], 4: ['swim', 'kimono'], 5: ['maid', 'gown'] },
@@ -1267,28 +1140,6 @@ export const CHARACTER_CGS: Record<CharacterId, CharacterCgDef> = {
     unlockAffection: 80,
     quote: '「センパイ、心拍数上がってんのバレバレやで？……ウチのギターより、ウチに夢中になってや。」'
   },
-  [CharacterId.REN]: {
-    id: 'cg_ren',
-    charId: CharacterId.REN,
-    titleZh: '命运的结社誓约',
-    titleEn: 'Destined Covenant',
-    descZh: '幽暗灯火下的密室中，莲张开黑翼与契约法阵……',
-    descEn: 'In a dimly lit chamber, Ren spreads his wings of the covenant...',
-    cgUrl: '/images/cg/cg_ren.webp',
-    unlockAffection: 80,
-    quote: '「我が同志よ、混沌の運命を共に歩もうぞ！」'
-  },
-  [CharacterId.HAKU]: {
-    id: 'cg_haku',
-    charId: CharacterId.HAKU,
-    titleZh: '忠诚的誓约之礼',
-    titleEn: 'Vow of Loyalty',
-    descZh: '月色庭院中，珀单膝跪地，执起你的指尖印下誓约之吻……',
-    descEn: 'In the moonlit courtyard, Haku kneels and kisses your hand...',
-    cgUrl: '/images/cg/cg_haku.webp',
-    unlockAffection: 80,
-    quote: '「我が主よ。私の全ては、永遠にあなただけのものです。」'
-  }
 };
 
 // 服装解锁分轴：Lv.2/3 档（私服・体操服・围裙等日常装）由**親密度**解锁——

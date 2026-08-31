@@ -54,8 +54,6 @@ export enum CharacterId {
   ASUKA = 'asuka',
   HIKARI = 'hikari',
   REI = 'rei',
-  REN = 'ren',
-  HAKU = 'haku',
   INARI = 'inari',
   MIYUKI = 'miyuki',
   SORA = 'sora',

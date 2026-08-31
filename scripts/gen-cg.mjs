@@ -61,8 +61,6 @@ const SCENES = {
   inari:  'Redraw her as a cinematic 16:9 event illustration: she reclines on the veranda of a moonlit Shinto shrine, nine fox tails fanned around her glowing faintly, golden eyes fixed on the viewer with ancient amusement, floating blue foxfire orbs drifting through the night air, torii gate silhouetted behind.',
   sora:   'Redraw her as a cinematic 16:9 event illustration: on a school rooftop at dusk after practice, towel around her neck, she leans on the railing and grins sideways at the viewer, sweat catching the last orange light, the city skyline glowing out of focus behind her.',
   maki:   'Redraw her as a cinematic 16:9 event illustration: inside a neon-lit arcade at night, she leans back against an arcade cabinet with headphones around her neck, smirking up at the viewer, saturated pink and cyan neon reflecting off her hair and face, blurred game screens glowing behind her.',
-  ren:    'Redraw her as a cinematic 16:9 event illustration: in a candle-lit abandoned clubroom that she has declared her secret headquarters, she stands with her cloak flaring dramatically, one hand raised in a grand theatrical gesture, eyes gleaming with chuunibyou conviction, candlelight throwing enormous shadows up the walls.',
-  haku:   'Redraw him as a cinematic 16:9 event illustration: a butler in an elegant manor drawing room at dusk, caught mid-bow with one hand over his heart, warm chandelier light behind him, his composed expression softening for just a moment as he looks up at the viewer.',
 };
 
 // 与立绘生成共用的身份锁
@@ -75,8 +73,6 @@ const LOCKS = {
   sora:   'Her eyes MUST be bright amber and her hair MUST be short dark brown.',
   maki:   'Her eyes MUST be green and her hair MUST be pink.',
   inari:  'Her eyes MUST be golden yellow, her hair MUST be long orange-red, and she MUST keep her fox ears and multiple tails.',
-  ren:    'Her eye colour and hair colour MUST match the input image exactly.',
-  haku:   'His eye colour and hair colour MUST match the input image exactly.',
 };
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));

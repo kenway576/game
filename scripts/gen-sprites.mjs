@@ -50,8 +50,6 @@ const LOCKS = {
   sora:   'Her eyes MUST stay bright amber and her hair MUST stay short dark brown.',
   maki:   'Her eyes MUST stay green and her hair MUST stay pink.',
   inari:  'Her eyes MUST stay golden yellow, her hair MUST stay long orange-red, and her fox ears and tails MUST remain unchanged.',
-  ren:    'Her eyes and hair colour MUST stay exactly as in the source image.',
-  haku:   'His eyes and hair colour MUST stay exactly as in the source image.',
 };
 const lockFor = c => LOCKS[c] || 'The eye colour and hair colour MUST stay exactly as in the source image.';
 
