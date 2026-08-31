@@ -869,8 +869,12 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // 【Scene 6b】结账 · 第一次真正的日语对话
   // ==========================================================
   {
+    type: 'scene',
+    scene: 'convenience_store_counter'
+  },
+  {
     type: 'narration',
-    zh: '你把东西放到收银台上。店员利落地扫码，然后抬起头问了一句。',
+    zh: '你把挑选好的东西放到收银台上。店员利落地扫码，然后抬起头问了一句。',
     en: 'You set everything on the counter. The clerk scans it all briskly, then looks up and asks:'
   },
   {
