@@ -61,7 +61,8 @@ export const SCENE_MAP: Record<string, string> = {
   'convenience_store':           '/images/backgrounds/bg_convenience_store_interior.webp',
   'convenience_store_exterior':  '/images/backgrounds/bg_convenience_store_night.webp',
   'convenience_store_interior':  '/images/backgrounds/bg_convenience_store_interior.webp',
-  'convenience_store_counter':   '/images/backgrounds/bg_convenience_store_counter.webp'
+  'convenience_store_counter':   '/images/backgrounds/bg_convenience_store_counter.webp',
+  'grandfather_journal':         '/images/backgrounds/bg_grandfather_journal.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，

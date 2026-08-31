@@ -413,6 +413,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // 【Scene 4b】外祖父的泛黄手账
   // ==========================================================
   {
+    type: 'scene',
+    scene: 'grandfather_journal'
+  },
+  {
     type: 'narration',
     zh: '把书本安顿好之后，你从随身背包里郑重地拿出了最后一样东西——一本厚实的牛皮封面手账。',
     en: 'With everything else settled, you take the last item out of your backpack, carefully: a thick journal bound in worn leather.'
