@@ -39,6 +39,7 @@ _git-backup-*.bundle
 
 # Claude Code local settings (machine-local, never commit — may contain paths/tokens)
 .claude/settings.local.json
+.claude/launch.json
 
 # Editor directories and files
 .vscode/*
