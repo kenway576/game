@@ -19,9 +19,12 @@
 // ============================================================================
 
 import type React from 'react';
+import type { StoryBgmTrack } from '../types';
 
 export type AudioBus = 'bgm' | 'sfx' | 'typing';
-export type BgmTrack = 'title' | 'lobby' | 'chat';
+// 剧本能点名的轨与这里是同一套（types.StoryBgmTrack 是单一事实来源）。
+// train/town/store/night 是序章分场景用的：整段序章共用一首大厅曲太平了。
+export type BgmTrack = StoryBgmTrack;
 
 export interface AudioSettings {
   master: number;        // 0..1 总音量
@@ -696,6 +699,11 @@ class AudioManager {
       title:  { chord: [130.81, 196.00, 261.63, 392.00], type: 'sine',     lp: 900,  lfoRate: 0.05 },   // 沉静、开阔
       lobby:  { chord: [146.83, 220.00, 293.66, 440.00], type: 'triangle', lp: 1400, lfoRate: 0.08, beat: 0.5 }, // 明亮、日常
       chat:   { chord: [110.00, 164.81, 220.00, 329.63], type: 'sine',     lp: 700,  lfoRate: 0.04 },   // 温柔、贴近
+      // ---- 序章分场景 ----
+      train:  { chord: [164.81, 246.94, 329.63, 493.88], type: 'triangle', lp: 1600, lfoRate: 0.11, beat: 0.62 }, // 明亮、向前，像窗外掠过的海
+      town:   { chord: [155.56, 233.08, 311.13, 415.30], type: 'triangle', lp: 1200, lfoRate: 0.07, beat: 0.45 }, // 傍晚的坡道与商店街
+      store:  { chord: [174.61, 261.63, 349.23, 440.00], type: 'square',   lp: 1900, lfoRate: 0.16, beat: 0.9 },  // 便利店白炽灯下的轻快
+      night:  { chord: [98.00,  146.83, 196.00, 293.66], type: 'sine',     lp: 620,  lfoRate: 0.03 },   // 开学前夜，海风与钟表
     };
     const p = presets[track];
     const nodes: Array<{ stop: () => void }> = [];

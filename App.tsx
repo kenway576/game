@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags } from './types';
-import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
+import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult } from './types';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue } from './constants';
+import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
 import type { DialoguePage } from './types';
@@ -16,8 +17,10 @@ import CgGalleryModal from './components/CgGalleryModal';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import { StatGainToast } from './components/StatGainToast';
-import StoryScreen from './components/StoryScreen';
+import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
+import PrologueResultScreen from './components/PrologueResultScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
+import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
 
 const App: React.FC = () => {
   // ---------- 全局游戏状态 ----------
@@ -95,6 +98,10 @@ const App: React.FC = () => {
   // 📖 剧情选择留下的痕迹 + 序章是否已通关（随存档保存）
   const [storyFlags, setStoryFlags] = useState<StoryFlags>({});
   const [prologueDone, setPrologueDone] = useState(false);
+  // 🖼 剧情 CG 解锁记录（好感度 CG 走 affectionMap，这一组靠"你确实经历过"）
+  const [unlockedCgs, setUnlockedCgs] = useState<string[]>([]);
+  // 🏁 序章结算屏：序章播完先停在这一屏，让玩家看见自己的选择被记住了
+  const [prologueResult, setPrologueResult] = useState<PrologueResult | null>(null);
 
   const gainStat = (stat: StatKey, amount: number, reasonZh: string, reasonEn: string) => {
     setProtagonistStats(prev => ({
@@ -194,9 +201,11 @@ const App: React.FC = () => {
     };
   }, []);
 
-  // 🎵 按 gameMode 切 BGM（title / lobby / chat），交叉淡入 800ms
+  // 🎵 按 gameMode 切 BGM（title / lobby / chat），交叉淡入 800ms。
+  // 序章期间由 StoryScreen 按场景自己点曲（列车 / 街道 / 便利店 / 夜），这里不插手。
   useEffect(() => {
-    const track = (gameMode === GameMode.LOBBY || gameMode === GameMode.PROLOGUE) ? 'lobby'
+    if (gameMode === GameMode.PROLOGUE) return;
+    const track = gameMode === GameMode.LOBBY ? 'lobby'
       : gameMode === GameMode.CHAT ? 'chat'
       : 'title';
     audioManager.crossfadeBgm(track, 800);
@@ -322,21 +331,151 @@ const App: React.FC = () => {
 
   // ---------- 序章 (Chapter 0) ----------
   // 只有「新的开始」会走序章；「继续游戏」读档后直接回大厅。
+  // 序章开始时属性归零、关系回到各角色的默认起点——
+  // 序章里挣到的每一点关系，都必须是这一轮真的挣到的。
+  const prologueStatsBeforeRef = useRef<ProtagonistStats>(INITIAL_PROTAGONIST_STATS);
+  const prologueWordCountRef = useRef(0);
+
   const startPrologue = () => {
     setStoryFlags({});
     setPrologueDone(false);
     setProtagonistStats(INITIAL_PROTAGONIST_STATS);
+    // 序章能介绍的人一律从 0 起：她们的"第一天"就是这一天，
+    // 不能一边说"只见过一面"，一边顶着开学前就认识的親密度。
+    setFamiliarityMap(createCharacterRecord(id =>
+      PROLOGUE_INTRODUCIBLE_CHARS.includes(id) ? 0 : getInitialFamiliarity(id)
+    ));
+    setAffectionMap(createCharacterRecord(() => 0));
+    setMemoryMap(createCharacterRecord(id => getSeedMemory(id)));
+    setUnlockedCgs([]);
+    setPrologueResult(null);
     setStatGainEvent(null);
     setStatGainQueue([]);
+    prologueStatsBeforeRef.current = INITIAL_PROTAGONIST_STATS;
+    prologueWordCountRef.current = 0;
+    storyWordKeysRef.current = new Set();
     setCurrentScene('train_interior');
     setGameMode(GameMode.PROLOGUE);
+    // 序章一开始就先落一次盘：这样即使中途关掉页面，
+    // 标题画面的「继续游戏」也是亮的，能直接接回序章而不是重走登记流程。
+    pendingPrologueStartSaveRef.current = true;
   };
 
-  // 序章播完（或被跳过）：记下选择痕迹，进大厅，并立刻自动存档
+  const pendingPrologueStartSaveRef = useRef(false);
+  useEffect(() => {
+    if (!pendingPrologueStartSaveRef.current) return;
+    if (gameMode !== GameMode.PROLOGUE) return;
+    pendingPrologueStartSaveRef.current = false;
+    triggerAutoSave();
+  }, [gameMode]);
+
+  // 剧本给的关系变动：直接加绝对点数（不走 AI 那套 delta × 倍率），
+  // 也不弹升级庆祝——序章的结算统一放到结算屏上讲。
+  const applyStoryRelations = (relations: StoryRelationEffect[]) => {
+    if (!relations.length) return;
+    setFamiliarityMap(prev => {
+      const next = { ...prev };
+      relations.forEach(r => {
+        if (!r.familiarity) return;
+        next[r.char] = Math.max(0, Math.min(FAMILIARITY_MAX, (next[r.char] || 0) + r.familiarity));
+      });
+      return next;
+    });
+    setAffectionMap(prev => {
+      const next = { ...prev };
+      relations.forEach(r => {
+        if (!r.affection) return;
+        next[r.char] = Math.max(0, Math.min(AFFECTION_MAX, (next[r.char] || 0) + r.affection));
+      });
+      return next;
+    });
+  };
+
+  // 剧本台词里的生词进单词本。
+  // 去重键走同步的 ref：StrictMode 会把 effect 跑两遍，
+  // 只靠 setState updater 里判重会把计数算成两倍。
+  const storyWordKeysRef = useRef<Set<string>>(new Set());
+  const collectStoryWords = (words: StoryWord[]) => {
+    if (!words.length) return;
+    const now = Date.now();
+    const fresh: CollectedWord[] = [];
+    words.forEach((w, i) => {
+      const original = w.reading ? `${w.jp}（${w.reading}）` : w.jp;
+      if (storyWordKeysRef.current.has(original)) return;
+      storyWordKeysRef.current.add(original);
+      fresh.push({
+        id: `story-${now}-${i}`,
+        original,
+        translation: userState.language === 'en' ? w.en : w.zh,
+        timestamp: now + i
+      });
+    });
+    if (!fresh.length) return;
+    prologueWordCountRef.current += fresh.length;
+    setUserState(prev => {
+      const known = new Set(prev.collectedWords.map(w => w.original));
+      const add = fresh.filter(f => !known.has(f.original));
+      return add.length ? { ...prev, collectedWords: [...add, ...prev.collectedWords] } : prev;
+    });
+  };
+
+  // 序章痕迹 → AI 的"你们到底认不认识"。
+  // 没有这一步，玩家在便利店主动跟深雪搭过话，正篇第一句仍然是"我们素不相识"。
+  const getEncounterOverride = (charId: CharacterId, flags: StoryFlags = storyFlags, done: boolean = prologueDone) => {
+    const enc = resolvePrologueEncounter(charId, flags, done);
+    return enc ? { origin: enc.origin, encounter: enc.encounter } : undefined;
+  };
+
+  const unlockStoryCg = (cgId: string) => {
+    setUnlockedCgs(prev => (prev.includes(cgId) ? prev : [...prev, cgId]));
+  };
+
+  // 续玩半截序章：把上次已经拿到的东西一次性灌回来
+  const restoreStoryProgress = (payload: StoryRestorePayload) => {
+    setProtagonistStats({ ...INITIAL_PROTAGONIST_STATS, ...payload.stats });
+    if (payload.relations.length) applyStoryRelations(payload.relations);
+    if (payload.words.length) collectStoryWords(payload.words);
+    if (payload.unlockedCgs.length) {
+      setUnlockedCgs(prev => Array.from(new Set([...prev, ...payload.unlockedCgs])));
+    }
+  };
+
+  // 序章播完（或被跳过）：先停在结算屏，不直接甩进大厅
   const pendingPrologueSaveRef = useRef(false);
-  const finishPrologue = (flags: StoryFlags) => {
+  const finishPrologue = (flags: StoryFlags, opts: { skipped: boolean }) => {
     setStoryFlags(flags);
     setPrologueDone(true);
+    setPrologueResult({
+      flags,
+      statsBefore: prologueStatsBeforeRef.current,
+      statsAfter: protagonistStats,
+      wordsLearned: prologueWordCountRef.current,
+      skipped: opts.skipped
+    });
+  };
+
+  // 结算屏上按「进入第 1 章」：把序章的相遇写进各角色的长期记忆，然后进大厅
+  const continueFromPrologue = () => {
+    audioManager.playSfx('confirm');
+    // 序章里没碰上的人：回到她们档案里"开学前就认识了"的那份背景设定
+    setFamiliarityMap(prev => {
+      const next = { ...prev };
+      PROLOGUE_INTRODUCIBLE_CHARS.forEach(id => {
+        if (didMeetInPrologue(id, storyFlags)) return;
+        next[id] = Math.max(next[id] || 0, getInitialFamiliarity(id));
+      });
+      return next;
+    });
+    setMemoryMap(prev => {
+      const next = { ...prev };
+      ALL_CHARACTER_IDS.forEach(id => {
+        const enc = resolvePrologueEncounter(id, storyFlags, true);
+        // 序章决定了她"记得"哪个版本的那天晚上；没相遇的角色记忆留空
+        if (enc) next[id] = enc.seedMemory || '';
+      });
+      return next;
+    });
+    setPrologueResult(null);
     setCurrentScene(DEFAULT_SCENE);
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;
@@ -440,6 +579,16 @@ const App: React.FC = () => {
       return Math.max(getInitialFamiliarity(id), equivalent);
     });
 
+  // 序章中途进度是否还能用（StoryScreen 单独写的那份，与存档槽平行）
+  const hasValidPrologueProgress = (): boolean => {
+    try {
+      const raw = localStorage.getItem(PROLOGUE_PROGRESS_KEY);
+      if (!raw) return false;
+      const p = JSON.parse(raw);
+      return p?.version === PROLOGUE_SCRIPT_VERSION && Array.isArray(p.nodes) && p.idx > 0 && p.idx < p.nodes.length;
+    } catch { return false; }
+  };
+
   // 存档只保留最近的对话（更早内容已在长期记忆摘要里），防止 localStorage 爆仓
   const buildSaveData = (isAutoSave: boolean, hard = false) => {
     const msgLimit = hard ? SAVE_MESSAGES_LIMIT_HARD : SAVE_MESSAGES_LIMIT;
@@ -456,7 +605,11 @@ const App: React.FC = () => {
         charId: selectedCharId,
         previewText: messages.length > 0
           ? messages[messages.length - 1].text.substring(0, 30) + '...'
-          : (prologueDone ? (userState.language === 'en' ? 'Prologue cleared' : '序章已通关') : 'No messages'),
+          : prologueDone
+            ? (userState.language === 'en' ? 'Prologue cleared' : '序章已通关')
+            : gameMode === GameMode.PROLOGUE
+              ? (userState.language === 'en' ? 'Prologue in progress' : '序章进行中')
+              : 'No messages',
         isAutoSave
       },
       data: {
@@ -465,7 +618,7 @@ const App: React.FC = () => {
         chatHistories: trimmedHistories,
         customAssets, affectionMap, familiarityMap, memoryMap,
         // 🔥 五维人格、行事历与剧情选择：漏存这几项等于玩家的选择读档就作废
-        protagonistStats, gameCalendar, storyFlags, prologueDone
+        protagonistStats, gameCalendar, storyFlags, prologueDone, unlockedCgs
       }
     };
   };
@@ -488,9 +641,9 @@ const App: React.FC = () => {
   };
 
   const triggerAutoSave = () => {
-    // 序章刚打完时还没选过角色，但这份进度必须存下来——
+    // 序章期间/刚打完时还没选过角色，但这份进度必须存下来——
     // 否则玩家关掉页面后「继续游戏」是灰的，序章得从头再看一遍。
-    if (!selectedCharId && !prologueDone) return;
+    if (!selectedCharId && !prologueDone && gameMode !== GameMode.PROLOGUE) return;
     if (writeSave(`${SAVE_SLOT_PREFIX}0`, true)) {
       checkForSaves();
       setShowAutoSave(true);
@@ -549,10 +702,20 @@ const App: React.FC = () => {
       setProtagonistStats({ ...INITIAL_PROTAGONIST_STATS, ...(data.protagonistStats || {}) });
       setGameCalendar({ ...INITIAL_CALENDAR_STATE, ...(data.gameCalendar || {}) });
       setStoryFlags(data.storyFlags || {});
+      setUnlockedCgs(Array.isArray(data.unlockedCgs) ? data.unlockedCgs : []);
+      setPrologueResult(null);
       // 老存档一律视为已过序章：他们已经在玩了，不该被拽回序章
       setPrologueDone(data.prologueDone ?? true);
 
-      setGameMode(data.gameMode === GameMode.PROLOGUE ? GameMode.LOBBY : data.gameMode);
+      // 存档停在序章：只要中途进度还在（且是当前剧本版本），就接回序章继续看；
+      // 进度已失效才退回大厅，免得把玩家困在一段播不出来的剧情里。
+      const canResumePrologue = data.gameMode === GameMode.PROLOGUE && hasValidPrologueProgress();
+      setGameMode(
+        data.gameMode === GameMode.PROLOGUE
+          ? (canResumePrologue ? GameMode.PROLOGUE : GameMode.LOBBY)
+          : data.gameMode
+      );
+      if (canResumePrologue) setCurrentScene('train_interior');
       setSaveLoadMode(null);
       setShowSystemMenu(false);
       setSetupStep('MENU');
@@ -569,7 +732,9 @@ const App: React.FC = () => {
               affection: affectionValue, familiarity: familiarityValue, baseUrl: effectiveBaseUrl,
               memory: (data.memoryMap || {})[charId] || getSeedMemory(charId), resume: false,
               unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
-              unlockedScenes: getUnlockedScenes(familiarityValue)
+              unlockedScenes: getUnlockedScenes(familiarityValue),
+              // 读档恢复会话时同样要带上序章痕迹，否则 AI 会退回"素不相识"
+              encounterOverride: getEncounterOverride(charId, data.storyFlags || {}, data.prologueDone ?? true)
             }
           );
           setIsDialogueFinished(true);
@@ -703,7 +868,8 @@ const App: React.FC = () => {
             affection: affectionValue, familiarity: familiarityValue, baseUrl: effectiveBaseUrl,
             memory: memoryMap[charId] || getSeedMemory(charId), resume: false,
             unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
-            unlockedScenes: getUnlockedScenes(familiarityValue)
+            unlockedScenes: getUnlockedScenes(familiarityValue),
+            encounterOverride: getEncounterOverride(charId)
           }
         );
         // 恢复上次最后一条 AI 消息的画面（表情/服装/场景），并把输入框直接就绪
@@ -728,10 +894,11 @@ const App: React.FC = () => {
     // 基调参考各自的手写脚本：firstMeeting 是"第一次正经说话"的专用脚本，
     // 没写的角色回退到 firstMessage（对已认识的角色，那就是日常的一天）。
     const profile = getRelationshipProfile(charId);
+    const encounterOverride = getEncounterOverride(charId);
     const openingBrief = buildOpeningBrief(
-      profile.origin,
+      encounterOverride?.origin || profile.origin,
       profile.firstMeeting || CHARACTERS[charId].firstMessage
-    );
+    ) + buildPrologueBrief(storyFlags, charId);
 
     const stream = makeStreamHandler(charId, true);
     try {
@@ -743,6 +910,7 @@ const App: React.FC = () => {
           unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
           unlockedScenes: getUnlockedScenes(familiarityValue),
           openingBrief,
+          encounterOverride,
           onPage: stream.onPage
         }
       );
@@ -839,12 +1007,17 @@ const App: React.FC = () => {
       setCurrentEmotion(response.emotion || 'neutral');
       audioManager.playSfx('receive'); // 🔊 收到 AI 回复
 
-      // 👗 换装门控：仅在「场景切换」或「AI 明确标记本回合换衣(outfitChange)」时才换装。
-      // 前者应对移动到新场景，后者应对玩家明说"换泳装吧"——同时杜绝无缘无故乱换。
+      // 👗 换装门控：只认 AI 明确标记的 outfitChange。
+      // 这里以前还认「场景切换」，但模型经常只是把 location 的措辞飘一下
+      // （"classroom" → "classroom_window"），场景一变，服装就跟着 outfit 字段
+      // 一起飘，于是同一段对话里她毫无描写地换了身衣服，下一句又换回来。
+      // system prompt 已经明确要求"地点变化若意味着换装，必须同时把 outfitChange
+      // 设为 true"，所以这里只信 outfitChange。模型忘了标记的后果是"衣服没换"，
+      // 比无缘无故乱换安全得多；玩家明说要换装时，下面的 requestedOutfit 会强制生效。
       const matchedScene = resolveSceneKey(response.location);
       const sceneChanged = !!matchedScene && matchedScene !== currentScene;
       if (sceneChanged) setCurrentScene(matchedScene);
-      if ((sceneChanged || response.outfitChange === true) && response.outfit !== undefined) {
+      if (response.outfitChange === true && response.outfit !== undefined) {
         setCurrentOutfit(response.outfit);
       }
       // 兜底：玩家明确要求换装时，无论 AI 是否配合都强制生效（requestedOutfit.outfit 可为 '' = 换回默认）
@@ -963,8 +1136,15 @@ const App: React.FC = () => {
   // 解析优先级：当前服装+表情(含同义词) → 当前服装+中性 → 裸表情(含同义词) → 裸中性 → 默认。
   // 有服装时优先保持服装一致（宁可丢表情也不换回校服），避免立绘"串装"。
   const getDynamicAvatar = (char: Character): Character => {
-    const emo = currentEmotion || 'neutral';
     const map = char.emotionMap || {};
+    // 模型偶尔会把服装一起写进 emotion（返回 "kimono_happy" 而不是 "happy"）。
+    // 这种值恰好也是 emotionMap 的合法键，直接拿去查就会绕过 currentOutfit，
+    // 于是同一个场景里她自己换了身衣服，下一句又换回来。
+    // 所以先把服装前缀剥掉：服装只由 currentOutfit 决定，emotion 只管表情。
+    const rawEmo = currentEmotion || 'neutral';
+    const wardrobe = WARDROBE[char.id] || [];
+    const strayOutfit = wardrobe.find(o => o && rawEmo.startsWith(`${o}_`));
+    const emo = strayOutfit ? rawEmo.slice(strayOutfit.length + 1) : rawEmo;
     // 😳 亲密表情（love/jealous）好感度不到就不给：路人不会红着脸。
     // 模型偶尔仍会输出被门控的表情，这里再兜一次底。
     const romance = affectionMap[char.id] || 0;
@@ -974,6 +1154,11 @@ const App: React.FC = () => {
     if (currentOutfit) {
       for (const c of candidates) { const hit = pick(`${currentOutfit}_${c}`); if (hit) return hit; }
       const nf = pick(`${currentOutfit}_neutral`); if (nf) return nf; // 该服装差分不全时，保住服装、退到中性表情
+      // 该服装连 neutral 都没有：宁可用这套衣服里**任意**一个表情，也不掉回默认那套。
+      // 掉回去的观感是"同一个场景里她突然换了身衣服"，比表情不对劲刺眼得多。
+      const sameOutfit = Object.keys(map).find(k => k.startsWith(`${currentOutfit}_`) && map[k]);
+      if (sameOutfit) return { ...char, avatarUrl: map[sameOutfit] };
+      // 走到这里说明这套服装一张素材都没有（配置写错了），才允许退回默认
     }
     for (const c of candidates) { const hit = pick(c); if (hit) return hit; }
     return pick('neutral') || char;
@@ -1011,15 +1196,30 @@ const App: React.FC = () => {
         />
       )}
 
-      {gameMode === GameMode.PROLOGUE && (
+      {gameMode === GameMode.PROLOGUE && !prologueResult && (
         <StoryScreen
           script={PROLOGUE_SCRIPT}
+          scriptVersion={PROLOGUE_SCRIPT_VERSION}
+          progressKey={PROLOGUE_PROGRESS_KEY}
           language={userState.language}
           stats={protagonistStats}
           background={background}
           onEffects={applyStoryEffects}
+          onRelations={applyStoryRelations}
           onSceneChange={setCurrentScene}
+          onCollectWords={collectStoryWords}
+          onUnlockCg={unlockStoryCg}
+          onRestore={restoreStoryProgress}
           onFinish={finishPrologue}
+        />
+      )}
+
+      {prologueResult && (
+        <PrologueResultScreen
+          language={userState.language}
+          result={prologueResult}
+          familiarityMap={familiarityMap}
+          onContinue={continueFromPrologue}
         />
       )}
 
@@ -1132,6 +1332,7 @@ const App: React.FC = () => {
         <CgGalleryModal
           language={userState.language}
           affectionMap={affectionMap}
+          unlockedCgs={unlockedCgs}
           onClose={() => setShowCgGallery(false)}
         />
       )}

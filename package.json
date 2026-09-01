@@ -11,7 +11,9 @@
   "sprites:clean": "node scripts/remove-white-bg.mjs",
   "sprites:crop": "node scripts/crop-sprites.mjs",
   "assets:check": "node scripts/compress-assets.mjs",
-  "assets": "node scripts/compress-assets.mjs --write"
+  "assets": "node scripts/compress-assets.mjs --write",
+  "sprites:defringe": "node scripts/defringe-sprites.mjs",
+  "sprites:audit-outfits": "node scripts/audit-sprite-outfits.mjs"
  },
  "dependencies": {
   "@google/generative-ai": "^0.24.1",

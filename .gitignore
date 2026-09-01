@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+game/
+game
 
 # 🗜️ 素材：只准 WebP 进仓库。
 # 原始 PNG/JPG 是 AI 出图的全分辨率输出（立绘 ~3MB、背景 ~10MB），

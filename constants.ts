@@ -1,4 +1,4 @@
-import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent } from './types';
+import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags } from './types';
 
 // ---------------------------------------------------------
 // 🌍 1. 场景地图 (SCENE_MAP)
@@ -64,7 +64,16 @@ export const SCENE_MAP: Record<string, string> = {
   'kitano_convenience_store':    '/images/backgrounds/bg_convenience_store_night.webp',
   'convenience_store_interior':  '/images/backgrounds/bg_convenience_store_interior.webp',
   'convenience_store_counter':   '/images/backgrounds/bg_convenience_store_counter.webp',
-  'grandfather_journal':         '/images/backgrounds/bg_grandfather_journal.webp'
+  'grandfather_journal':         '/images/backgrounds/bg_grandfather_journal.webp',
+  // 🍜 神户美食与咖啡圣地（三宫拉面次郎 & 北野坂西村咖啡店）
+  'ramen_jiro_exterior':        '/images/backgrounds/bg_ramen_jiro_exterior.webp',
+  'ramen_shop_interior':        '/images/backgrounds/bg_ramen_shop_interior.webp',
+  'ramen_jiro_bowl':            '/images/backgrounds/bg_ramen_jiro_bowl.webp',
+  'nishimura_coffee_exterior':  '/images/backgrounds/bg_nishimura_coffee_exterior.webp',
+  'nishimura_coffee_salon':     '/images/backgrounds/bg_nishimura_coffee_salon.webp',
+  'nishimura_coffee_bar':       '/images/backgrounds/bg_nishimura_coffee_bar.webp',
+  'nishimura_coffee_window':    '/images/backgrounds/bg_nishimura_coffee_window.webp',
+  'nishimura_coffee_sandwich':  '/images/backgrounds/bg_nishimura_coffee_sandwich.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
@@ -959,14 +968,12 @@ export const RELATIONSHIP_PROFILES: Record<CharacterId, RelationshipProfile> = {
   },
 
   [CharacterId.MIYUKI]: {
-    // 序章当晚在便利店第一次照面，此外一无所知。
-    // 用 'acquainted' 是为了让她可以自然提起"昨晚那一面"——
-    // 换成 'stranger' 会被 prompt 明令禁止提任何共同经历，反而不对。
-    origin: 'acquainted',
-    // 仍在 Lv1「初次见面」区间（0-39），但起点是所有人里最高的：
-    // 住在隔壁，楼梯、信箱、晾衣场天天照面，这条线本来就该涨得比别人快。
-    initialFamiliarity: 32,
-    encounter: "You met the player exactly once: the evening they moved in, at the convenience store at the foot of the Kitano slope, where the two of you recognised each other's Umikaze-so keys. That single exchange is the entire history between you — you do not know their name unless they tell you now, nor anything about their school, their family, or why they came to Japan. What you DO know is that they are in 201 and you are in 202, that the walls are thin and the stairs are shared, and that from now on you will run into each other constantly whether either of you plans it or not. Treat them with the warm, slightly formal courtesy of a good neighbour on the second time you have ever spoken — attentive, but not yet entitled to anything personal.",
+    // ⚠️ 这里是"序章没玩 / 跳过了"时的兜底：两人只是同楼住户，从没说过话。
+    // 序章真正发生了什么由 PROLOGUE_ENCOUNTERS 按 flag 覆写 origin / encounter /
+    // seedMemory —— 玩家那晚是搭话、点头还是别过脸，这条线的起点就完全不同。
+    origin: 'stranger',
+    initialFamiliarity: 0,
+    encounter: "You live in Room 202 of Umikaze-so; someone has just moved into 201. You have never spoken to them and do not know their name, their school, or why they came to Japan — at most you have registered that the room next door is no longer empty. Treat this as a genuine first conversation with a neighbour you have never met.",
     stages: [
       "You have spoken exactly once, at the convenience store. 名字+さん once you learn it, careful 丁寧語. Neighbourly courtesy — you hold the door, you mention which day the rubbish goes out, you do not ask why they moved here alone.",
       "Address 名字+さん/くん. The corridor small talk has become routine: packages taken in, a spare umbrella lent, a remark that their light was on very late again. Nothing deeper is offered and none is asked for.",
@@ -974,8 +981,7 @@ export const RELATIONSHIP_PROFILES: Record<CharacterId, RelationshipProfile> = {
       "Address 名前+くん/ちゃん. The onee-san role begins to chafe — you catch yourself not wanting to be only that, and do not examine why.",
       "Address 名前 呼び捨て. The composed-older-woman act comes down; your own loneliness and your own wants become sayable out loud for the first time."
     ],
-    firstMeeting: '（２０２号室の前で、買い物袋を片手にドアを開けようとしていた手を止めて振り返る）……あら。昨日の。（ふふ、と目を細めて）ちゃんと坂を上がって来られたのね。あの荷物で、あの坂道は堪えたでしょう。（袋を持ち直しながら）二〇二号室の深雪です。昨日は名乗りそびれてしまって。……壁の薄いお家だから、生活音でご迷惑をおかけするかもしれないけれど、遠慮なく言ってちょうだいね。（少し間を置いて、遠慮がちに）……ところで、朝ごはんは？冷蔵庫、まだ空っぽなんじゃないの。',
-    seedMemory: '昨夜、坂の下のコンビニで初めて顔を合わせた隣人。二〇一号室に越してきたばかりらしい。海風荘の鍵を持っていたので、すぐお隣だと分かった。名前も、どこの学校かも、まだ何も知らない。……ただ、あの大きなスーツケースで北野の坂を上ってきたのだと思うと、少しだけ気にかかっている。'
+    firstMeeting: '（２０２号室の前で、買い物袋を片手にドアを開けようとしていた手を止めて振り返る）……あら。もしかして、お隣に越してこられた方？（ふふ、と目を細めて）ちゃんと坂を上がって来られたのね。あの荷物で、あの坂道は堪えたでしょう。（袋を持ち直しながら）二〇二号室の深雪です。……壁の薄いお家だから、生活音でご迷惑をおかけするかもしれないけれど、遠慮なく言ってちょうだいね。（少し間を置いて、遠慮がちに）……ところで、朝ごはんは？冷蔵庫、まだ空っぽなんじゃないの。'
   },
 
   [CharacterId.SORA]: {
@@ -1713,5 +1719,236 @@ export const KANSAI_CALENDAR_EVENTS: CalendarEvent[] = [
     descriptionEn: 'The ultimate climax! Genuine chocolate confessions OR an epic multi-romance Shuraba!',
     relatedCharIds: [CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.REI, CharacterId.NAO, CharacterId.MIYUKI, CharacterId.INARI, CharacterId.SORA, CharacterId.MAKI],
     isMajorFestival: true
+  }
+];
+// ---------------------------------------------------------
+// 📖 序章遗产 (PROLOGUE LEGACY)
+//
+// 序章里做过的事必须在正篇里"算数"，否则那 103 段文本只是过场动画。
+// 这里把 flag 翻译成两件后续系统真正会读的东西：
+//   1) 该角色的 origin / encounter 覆写 —— 决定 AI 开场时到底认不认识你；
+//   2) seedMemory 覆写 —— 决定她"记得"的是哪一个版本的那天晚上。
+// 親密度/好感度的具体数值不在这里配，由剧本节点的 relations 当场结算，
+// 免得同一件事在两个地方各写一遍、还对不上。
+// ---------------------------------------------------------
+export interface PrologueEncounter {
+  char: CharacterId;
+  origin: 'stranger' | 'acquainted';
+  encounter: string;
+  seedMemory: string;
+  labelZh: string;
+  labelEn: string;
+}
+
+// key = 序章 flag。同一个角色只会命中一条（选项之间互斥）。
+export const PROLOGUE_ENCOUNTERS: Record<string, PrologueEncounter> = {
+  prologue_greeted_miyuki: {
+    char: CharacterId.MIYUKI,
+    origin: 'acquainted',
+    encounter: "You met the player exactly once: the evening they moved in, at the convenience store at the foot of the Kitano slope. They spoke to you first — nervously, in careful textbook Japanese — and you walked up the hill together afterwards, you slowing your pace for their shopping bag. You told them to knock next door if anything troubled them. That single evening is the entire history between you: you do not know their name unless they tell you now, nor their school, their family, or why they came to Japan. What you DO know is that they are in 201 and you are in 202, and that they were brave enough to speak first to a stranger on their very first night in a foreign country.",
+    seedMemory: '昨夜、坂の下のコンビニで初めて顔を合わせた隣人。二〇一号室に越してきたばかり。緊張しながらも自分から日本語で話しかけてきて、その後、坂道を並んで上がった。困ったことがあれば隣をノックするように、と伝えてある。名前もどこの学校かもまだ知らない。……ただ、あの大きなスーツケースで北野の坂を上ってきたのだと思うと、少しだけ気にかかっている。',
+    labelZh: '在便利店主动向银发的邻居开口',
+    labelEn: 'You spoke first to the silver-haired neighbour'
+  },
+  prologue_nodded_miyuki: {
+    char: CharacterId.MIYUKI,
+    origin: 'acquainted',
+    encounter: "You crossed paths with the player exactly once: the evening they moved in, at the convenience store at the foot of the Kitano slope. Neither of you managed to say anything beyond a bow and a quiet 「こんばんは」— you both recognised the Umikaze-so keys, and walked up the hill one after the other in silence. You turned back and smiled at them before your door closed. You do not know their name, their school, or anything else. What lingers is only that they were polite, and visibly exhausted, and alone.",
+    seedMemory: '昨夜、坂の下のコンビニで見かけた隣人。二〇一号室に越してきたばかりらしい。会釈を交わしただけで、言葉は「こんばんは」の一言きり。海風荘の鍵を持っていたのでお隣だと分かった。名前も知らない。……ただ、あの大きな荷物と疲れた横顔だけが、少し記憶に残っている。',
+    labelZh: '和银发的邻居互相鞠了一躬',
+    labelEn: 'You and the silver-haired neighbour exchanged a bow'
+  },
+  // ---- 傍晚的目的地：三条路只能选一条，遇到的人也就只有一个 ----
+  prologue_met_rei: {
+    char: CharacterId.REI,
+    origin: 'acquainted',
+    encounter: "You met the player exactly once, and only in passing: the evening before term started, in a narrow alley among the old Western houses in Kitano, where you were standing at a doorway studying an acanthus carving and they nearly walked into you. You did not exchange names, schools, or anything personal, and you have no idea they have just moved to this country. You are not yet their assigned tutor and no tutoring session has ever taken place — if that arrangement comes up, it is news to you. What you remember is the alley, the carving, and that they were the rare sort who stops to look at a doorway.",
+    seedMemory: '学校が始まる前の晩、北野の路地で一度だけすれ違った相手。異人館の扉のアカンサスの彫刻を見ていたところに、ぶつかりそうになった。名前も学校も聞いていない。……ただ、あの路地で足を止めて扉を見上げる人間は、そう多くない。',
+    labelZh: '在北野的窄巷里撞见了她',
+    labelEn: 'You nearly walked into her in a Kitano alley'
+  },
+  prologue_met_hikari: {
+    char: CharacterId.HIKARI,
+    origin: 'acquainted',
+    encounter: "You met the player exactly once: the evening before term started, at the harbour railing in Meriken Park, where you were photographing the Port Tower and spotted them instantly as a fellow foreigner. You are an exchange student who arrived one week ahead of them, and that single week of seniority is the entire basis of your relationship. You did not exchange names — you were too busy talking. You do not know their school, their family, or their story; you only know they had just landed, and that they took a deep breath facing the sea the same way you once did.",
+    seedMemory: '学期が始まる前の晩、メリケンパークの柵のところで一度だけ会った留学生。私より一週間だけ後に着いたばかりらしい。名前は聞きそびれた。……海に向かって深呼吸してるところ、一週間前の自分とそっくりだった。',
+    labelZh: '在神户港的栏杆边被她一眼认出',
+    labelEn: 'She spotted you at the harbour railing on sight'
+  },
+  prologue_met_maki: {
+    char: CharacterId.MAKI,
+    origin: 'acquainted',
+    encounter: "You met the player exactly once: the evening before term started, at a takoyaki griddle in the Sannomiya arcade, where you clocked them as an out-of-towner in about two seconds and said so. You did not learn their name, their school, or that they are an exchange student who had landed that same day. You have no idea they are older than you and no 「センパイ」 relationship exists yet — treat them as some out-of-towner you needled once at a food stall. Full 関西弁 throughout.",
+    seedMemory: '学期始まる前の晩、三宮のアーケードのたこ焼き屋で一回だけ絡んだヤツ。どう見ても地元ちゃうかったから、言うたった。名前も学校も知らん。……まあ、リアクションはそこそこ面白かったけど。',
+    labelZh: '在三宫商店街的章鱼烧摊前被她逮住',
+    labelEn: 'She cornered you at a takoyaki stand in Sannomiya'
+  },
+
+  prologue_avoided_miyuki: {
+    char: CharacterId.MIYUKI,
+    origin: 'stranger',
+    encounter: "You live in Room 202 of Umikaze-so; someone has just moved into 201. You were in the same convenience store the evening they arrived, but neither of you spoke or even properly looked at each other, and you would not connect that person to this one. Treat this as a genuine first conversation: you know nothing about them at all. (If the player themself brings up that night, you may realise it with mild surprise — but you must not raise it first.)",
+    seedMemory: '',
+    labelZh: '在便利店移开了视线，没有打招呼',
+    labelEn: 'You looked away in the store and said nothing'
+  }
+};
+
+// 序章没玩 / 跳过了 / 该角色的相遇根本没触发时的兜底。
+// 老存档（prologueDone 为真但一个 flag 都没有）也走这里。
+export const PROLOGUE_MISSED_ENCOUNTERS: Partial<Record<CharacterId, PrologueEncounter>> = {
+  [CharacterId.MIYUKI]: {
+    char: CharacterId.MIYUKI,
+    origin: 'stranger',
+    encounter: "You live in Room 202 of Umikaze-so and someone has recently moved into 201. You have passed each other on the stairs without ever speaking. You do not know their name, their school, or anything else about them. This is genuinely the first conversation the two of you have had.",
+    seedMemory: '',
+    labelZh: '',
+    labelEn: ''
+  }
+};
+
+// 序章有能力介绍给玩家的角色。
+// 这几位的"第一天"由序章说了算：序章开始时親密度一律归零，
+// 玩家在序章里挣到多少就是多少；真没碰上，才回退到角色档案里
+// 那份"开学前就认识了"的背景设定（见 restoreFamiliarityAfterPrologue）。
+export const PROLOGUE_INTRODUCIBLE_CHARS: CharacterId[] = Array.from(
+  new Set(Object.keys(PROLOGUE_ENCOUNTERS).map(k => PROLOGUE_ENCOUNTERS[k].char))
+);
+
+// 这一轮序章里，到底有没有真的碰上这个人（区别于"错过了"的兜底档）
+export const didMeetInPrologue = (charId: CharacterId, flags: StoryFlags): boolean =>
+  Object.keys(PROLOGUE_ENCOUNTERS).some(k => PROLOGUE_ENCOUNTERS[k].char === charId && flags[k]);
+
+// 当前 flags 下，某角色在序章里到底发生了什么。
+// prologueDone 为假（还没玩序章）时返回 null，用角色自己的默认档案。
+export const resolvePrologueEncounter = (
+  charId: CharacterId,
+  flags: StoryFlags,
+  prologueDone: boolean
+): PrologueEncounter | null => {
+  if (!prologueDone) return null;
+  for (const key of Object.keys(PROLOGUE_ENCOUNTERS)) {
+    const enc = PROLOGUE_ENCOUNTERS[key];
+    if (enc.char === charId && flags[key]) return enc;
+  }
+  return PROLOGUE_MISSED_ENCOUNTERS[charId] ?? null;
+};
+
+// 序章 flag → 注入开场 brief 的一句日语。
+// 不是给玩家看的，是让模型知道"昨晚发生过什么"，好在第一句话里自然接住。
+export const PROLOGUE_BRIEF_LINES: Record<string, string> = {
+  // ---- 深雪（隣人）----
+  prologue_greeted_miyuki: '昨夜、コンビニで相手の方から話しかけてきて、坂道を並んで上がった。',
+  prologue_nodded_miyuki: '昨夜、コンビニで会釈だけを交わした。言葉はほとんど交わしていない。',
+  prologue_miyuki_carried: '坂道で、こちらの買い物袋を一つ持つと自分から申し出てくれた。',
+  prologue_miyuki_groceries: 'この辺りの安いスーパーや特売日を、熱心に聞いてきた。冷蔵庫はまだ空らしい。',
+  prologue_miyuki_named: '別れ際、名前を尋ねてきたので「深雪」と名乗った。相手はもうこちらの名前を知っている。',
+  prologue_miyuki_thanked: '別れ際、きちんと頭を下げて礼を言われた。',
+  prologue_miyuki_wave_back: 'ドアを閉める直前、黙って手を振り返してきた。',
+  // ---- 丽（北野の路地）----
+  prologue_rei_asked: '路地で、扉の彫刻について自分から質問してきた。知りたがる目をしていた。',
+  prologue_rei_journal: '祖父が半世紀前に手描きしたという神戸の古地図を、ためらわず見せてくれた。',
+  // ---- 光（メリケンパーク）----
+  prologue_hikari_answered: 'その日に着いたばかりだと正直に答えてくれた。',
+  prologue_hikari_teased: 'こちらの勢いに押されず、逆に「どうして分かったのか」と聞き返してきた。',
+  // ---- 真纪（三宮のアーケード）----
+  prologue_maki_asked: 'たこ焼きの食べ方を素直に聞いてきた。何も知らんことを隠さへんタイプ。',
+  prologue_maki_kansai: '覚えたての関西弁で「ちゃうで」と返してきた。度胸だけはある。',
+  // ---- 共通の性格 ----
+  prologue_checkout_kansai: '相手は覚えたての関西弁を実地で試そうとするタイプらしい。',
+  prologue_checkout_jp: '相手は教科書どおりの丁寧な日本語を、緊張しながらも最後まで言い切るタイプらしい。',
+  prologue_checkout_gesture: '相手はまだ日本語を口に出すのが怖く、身振りで済ませてしまうところがある。',
+  prologue_helped_mother: '相手は困っている見知らぬ人に、ためらわず手を貸すところがある。',
+  prologue_read_journal_deep: '相手は亡くなった祖父の古い手帳を大切に持っていて、この街に来た理由と関わっているらしい。'
+};
+
+// 把序章痕迹拼成一段给模型的补充说明。与 buildOpeningBrief 拼接使用。
+// 互斥压制：关西腔那个选项同时置了 checkout_jp，两句一起讲会自相矛盾
+const PROLOGUE_BRIEF_SUPPRESS: Record<string, string> = {
+  prologue_checkout_jp: 'prologue_checkout_kansai'
+};
+
+// 只讲给当事人听的痕迹。没登记的 flag 视为"性格类"，对谁都能说。
+// 漏登记的后果很具体：飞鸟会知道你在坡道上替深雪拎了袋子。
+const PROLOGUE_BRIEF_SCOPE: Record<string, CharacterId> = {
+  prologue_miyuki_carried: CharacterId.MIYUKI,
+  prologue_miyuki_groceries: CharacterId.MIYUKI,
+  prologue_miyuki_named: CharacterId.MIYUKI,
+  prologue_miyuki_thanked: CharacterId.MIYUKI,
+  prologue_miyuki_wave_back: CharacterId.MIYUKI,
+  prologue_rei_asked: CharacterId.REI,
+  prologue_rei_journal: CharacterId.REI,
+  prologue_hikari_answered: CharacterId.HIKARI,
+  prologue_hikari_teased: CharacterId.HIKARI,
+  prologue_maki_asked: CharacterId.MAKI,
+  prologue_maki_kansai: CharacterId.MAKI
+};
+
+export const buildPrologueBrief = (flags: StoryFlags, charId: CharacterId): string => {
+  const lines: string[] = [];
+  const enc = PROLOGUE_ENCOUNTERS;
+  Object.keys(PROLOGUE_BRIEF_LINES).forEach(flag => {
+    if (!flags[flag]) return;
+    const suppressor = PROLOGUE_BRIEF_SUPPRESS[flag];
+    if (suppressor && flags[suppressor]) return;
+    // 角色专属的相遇 / 相处细节只讲给当事人听，别的角色不该知道
+    if (enc[flag] && enc[flag].char !== charId) return;
+    const owner = PROLOGUE_BRIEF_SCOPE[flag];
+    if (owner && owner !== charId) return;
+    lines.push(PROLOGUE_BRIEF_LINES[flag]);
+  });
+  if (!lines.length) return '';
+  return `\n【システム：プロローグ（引っ越し当日）で実際に起きたこと。事実として扱い、不自然に列挙せず、必要なときだけ自然に触れること：\n- ${lines.join('\n- ')}\n】`;
+};
+
+// ---------------------------------------------------------
+// 🖼 剧情 CG（非好感度解锁，靠剧情 flag 解锁）
+// CHARACTER_CGS 是好感度奖励；这一组是"你确实经历过"的证据。
+// ---------------------------------------------------------
+export interface StoryCgDef {
+  id: string;
+  titleZh: string;
+  titleEn: string;
+  descZh: string;
+  descEn: string;
+  cgUrl: string;
+  quote: string;
+  chapterZh: string;
+  chapterEn: string;
+}
+
+export const STORY_CGS: StoryCgDef[] = [
+  {
+    id: 'cg_prologue_grandfather_journal',
+    titleZh: '外祖父的泛黄手账',
+    titleEn: "Grandfather's Yellowed Journal",
+    descZh: '搬进 201 室的第一个下午，从行李箱夹层里翻出的那本手账。钢笔字迹已经褪色，夹着一张神户港的旧照片。',
+    descEn: 'Found in the suitcase lining on your first afternoon in Room 201 — faded fountain-pen script, an old photograph of Kobe harbour pressed between the pages.',
+    cgUrl: '/images/cg/cg_prologue_grandfather_journal.webp',
+    quote: '「いつかまた、あの海を見に行きたい。」',
+    chapterZh: '第 0 章 · 海风起航之日',
+    chapterEn: 'Chapter 0 · Day of the Sea Breeze'
+  },
+  {
+    id: 'cg_ramen_jiro_bowl',
+    titleZh: '三宫拉面次郎 · 浓厚豚骨',
+    titleEn: 'Sannomiya Ramen Jiro · Rich Tonkotsu',
+    descZh: '堆如山丘的清脆豆芽与蒜泥、厚切多汁的酱香叉烧，以及热气腾腾的醇厚豚骨浓汤。',
+    descEn: 'A mountain of crisp bean sprouts and minced garlic, thick juicy chashu pork, and steaming rich tonkotsu broth.',
+    cgUrl: '/images/cg/cg_ramen_jiro_bowl.webp',
+    quote: '「ニンニク入れますか？」',
+    chapterZh: '关西食纪 · 三宫街角',
+    chapterEn: 'Kansai Gourmet · Sannomiya Street Corner'
+  },
+  {
+    id: 'cg_nishimura_coffee_sandwich',
+    titleZh: '北野坂西村咖啡 · 晨光早餐',
+    titleEn: 'Kitanozaka Nishimura Coffee · Morning Breakfast',
+    descZh: '昭和二十三年延续至今的甘醇手冲黑咖啡，配上去边松软的日式蛋沙拉与鲜火腿三明治。',
+    descEn: 'Fragrant pour-over coffee carrying tradition since 1948, paired with fluffy egg salad and fresh ham crustless sandwiches.',
+    cgUrl: '/images/cg/cg_nishimura_coffee_sandwich.webp',
+    quote: '「珈琲の香りと、静かな朝の光。」',
+    chapterZh: '关西食纪 · 北野洋馆',
+    chapterEn: 'Kansai Gourmet · Kitano Western House'
   }
 ];

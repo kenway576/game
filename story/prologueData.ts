@@ -1,4 +1,4 @@
-import { StoryNode } from '../types';
+import { StoryNode, CharacterId } from '../types';
 
 // ---------------------------------------------------------
 // 【第0章：海风起航之日】数据化剧本
@@ -15,6 +15,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'train_interior',
+    bgm: 'train',
     titleZh: '第 0 章 · 海风起航之日',
     titleEn: 'Chapter 0 · Day of the Sea Breeze',
     subtitleZh: '4 月 10 日 · JR 关西特急 · 晴',
@@ -110,6 +111,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     speakerZh: '车厢广播',
     speakerEn: 'Train Announcement',
     jp: 'まもなく、三ノ宮、三ノ宮です。JR神戸線、阪神電車、阪急電鉄をご利用のお客様はお乗り換えです。お忘れ物のないよう、ご注意ください……',
+    words: [
+          { jp: "お忘れ物", reading: "おわすれもの", zh: "遗失物品（车站广播固定说法）", en: "forgotten belongings (station announcement)" },
+          { jp: "お乗り換え", reading: "おのりかえ", zh: "换乘", en: "transfer (to another line)" }
+    ],
     zh: '前方到站，三宫，三宫。换乘 JR 神户线、阪神电车、阪急电铁的乘客请在此下车。请注意不要遗忘随身物品……',
     en: 'Arriving shortly at Sannomiya. Passengers transferring to the JR Kobe Line, Hanshin, or Hankyu lines, please change here. Please take care not to leave anything behind...',
     color: 'bg-slate-600'
@@ -135,6 +140,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'sannomiya_station',
+    bgm: 'town',
     titleZh: '三宫站 · 中央出闸口',
     titleEn: 'Sannomiya Station · Central Gates',
     subtitleZh: '下午 3:20 · 人潮与海风',
@@ -177,6 +183,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             speakerZh: '你',
             speakerEn: 'You',
             jp: 'あの、落としましたよ。どうぞ。',
+            words: [
+                  { jp: "落とす", reading: "おとす", zh: "掉落、弄丢", en: "to drop / to let fall" }
+            ],
             zh: '那个，您的东西掉了。请拿好。',
             en: 'Um, excuse me — you dropped this. Here you go.',
             color: 'bg-yellow-500'
@@ -191,6 +200,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             speakerZh: '年轻的母亲',
             speakerEn: 'Young Mother',
             jp: 'あら！ありがとうございます！助かりました！',
+            words: [
+                  { jp: "助かる", reading: "たすかる", zh: "得救了、帮大忙了", en: "to be saved / \"that really helps\"" }
+            ],
             zh: '哎呀！太谢谢您了！真是帮了大忙！',
             en: 'Oh! Thank you so much! You really saved me!',
             color: 'bg-rose-400'
@@ -264,6 +276,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'kitano_slope',
+    bgm: 'town',
     titleZh: '北野异人馆坡道',
     titleEn: 'Kitano Ijinkan Slope',
     subtitleZh: '下午 4:30 · 橘金色的夕阳',
@@ -282,6 +295,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'umikaze_exterior',
+    bgm: 'town',
     titleZh: '「海风庄」· 201 室',
     titleEn: 'Umikaze-so · Room 201'
   },
@@ -302,6 +316,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'apartment_room',
+    bgm: 'lobby',
     titleZh: '海风庄 201 室',
     titleEn: 'Umikaze-so, Room 201'
   },
@@ -313,6 +328,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'apartment_balcony',
+    bgm: 'lobby',
     titleZh: '201 室 · 阳台',
     titleEn: 'Room 201 · Balcony'
   },
@@ -336,7 +352,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'scene',
-    scene: 'apartment_room'
+    scene: 'apartment_room',
+    bgm: 'lobby',
   },
   {
     type: 'narration',
@@ -414,12 +431,24 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'grandfather_journal'
+    scene: 'grandfather_journal',
+    bgm: 'title',
   },
   {
     type: 'narration',
     zh: '把书本安顿好之后，你从随身背包里郑重地拿出了最后一样东西——一本厚实的牛皮封面手账。',
     en: 'With everything else settled, you take the last item out of your backpack, carefully: a thick journal bound in worn leather.'
+  },
+  {
+    // 序章唯一一张 CG。播完永久进回忆图鉴——
+    // 图鉴里那张"你确实经历过"的证据，不该只有好感度能解锁。
+    type: 'cg',
+    cgId: 'cg_prologue_grandfather_journal',
+    imageUrl: '/images/cg/cg_prologue_grandfather_journal.webp',
+    titleZh: '外祖父的泛黄手账',
+    titleEn: "Grandfather's Yellowed Journal",
+    captionZh: '牛皮封面已经被摩挲得发亮，钢笔字迹褪成了浅褐色。书页之间夹着一张神户港的旧照片。',
+    captionEn: 'The leather cover has been worn smooth by handling; the fountain-pen script has faded to pale brown. An old photograph of Kobe harbour is pressed between the pages.'
   },
   {
     type: 'narration',
@@ -518,6 +547,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'kitano_slope',
+    bgm: 'town',
     titleZh: '北野坡道 · 傍晚',
     titleEn: 'Kitano Slope · Evening',
     subtitleZh: '下午 6:10 · 天边最后一点橘色',
@@ -545,7 +575,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         hintZh: '外公的地图上，这一带画得最密',
         hintEn: 'This is the densest part of your grandfather’s map.',
         effects: [{ stat: 'knowledge', amount: 1, reasonZh: '把这一带的路记进了脑子里', reasonEn: 'You mapped the neighborhood into your head' }],
-        setFlags: ['prologue_walk_kitano'],
+        setFlags: ['prologue_walk_kitano', 'prologue_met_rei'],
         then: [
           {
             type: 'narration',
@@ -556,6 +586,178 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             type: 'narration',
             zh: '你绕了三个弯，居然一次都没迷路。原来外公画的那张图，到今天还是准的。',
             en: 'You take three turns and never once lose your bearings. The map your grandfather drew still holds, after all this time.'
+          },
+          // ---- 偶遇 · 石阶上的红框眼镜 ----
+          {
+            type: 'narration',
+            characterImage: '/images/characters/rei/casual_neutral.webp',
+            zh: '转过第四个弯时，你差点撞上一个人。她站在一栋洋馆的石阶前，一手托着摊开的书，一手拿着铅笔，正对着门楣上的雕花较劲。',
+            en: 'On the fourth turn you nearly walk into someone. She is standing at the stone steps of one of the houses, an open book balanced on one hand and a pencil in the other, squaring off against the carving above the door.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生',
+            speakerEn: 'Girl with Glasses',
+            jp: '……すみません、通りますか？',
+            words: [
+              { jp: '通る', reading: 'とおる', zh: '通过、经过', en: 'to pass through' }
+            ],
+            zh: '……不好意思，您要过去吗？',
+            en: '...Excuse me. Did you want to get past?',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '你这才发现自己堵在了窄巷正中间，慌忙侧过身。她轻轻点了下头，视线又回到了门楣上。',
+            en: 'Only now do you notice you are standing squarely in the middle of the alley. You step aside in a hurry. She gives a small nod and returns her attention to the doorway.'
+          },
+          {
+            type: 'choice',
+            promptZh: '她盯着那朵石雕的花，已经盯了很久了。',
+            promptEn: 'She has been staring at that carved flower for a long while now.',
+            options: [
+              {
+                id: 'rei_ask',
+                labelZh: '「あの、これは何ですか？」指着门楣上的雕花问',
+                labelEn: '"Um — what is that?" Point at the carving above the door',
+                hintZh: '外公说过：遇到不懂的，就大大方方地问',
+                hintEn: 'Your grandfather wrote it down: when you do not understand, ask, openly.',
+                effects: [
+                  { stat: 'knowledge', amount: 2, reasonZh: '把这条巷子的来历问明白了', reasonEn: 'You got the history of this alley straight from someone who knew it' },
+                  { stat: 'guts', amount: 1, reasonZh: '对着陌生人主动提了个问题', reasonEn: 'You asked a stranger a question, unprompted' }
+                ],
+                relations: [
+                  { char: CharacterId.REI, familiarity: 12, affection: 2, reasonZh: '问了一个她愿意回答的问题', reasonEn: 'You asked the one kind of question she likes answering' }
+                ],
+                setFlags: ['prologue_rei_asked'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/rei/casual_neutral.webp',
+                    zh: '她转过头，眼镜后面那双眼睛认真地看了你两秒——不是防备，更像是在确认你是真的想知道。',
+                    en: 'She turns. Behind the glasses her eyes study you for two seconds — not wary, more as if confirming that you actually want to know.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '戴眼镜的女生',
+                    speakerEn: 'Girl with Glasses',
+                    characterImage: '/images/characters/rei/casual_neutral.webp',
+                    jp: 'アカンサスです。地中海の植物。……この街の異人館には、なぜか一番多く彫られています。',
+                    words: [
+                      { jp: '彫る', reading: 'ほる', zh: '雕刻', en: 'to carve / to engrave' }
+                    ],
+                    zh: '是老鼠簕。地中海的植物。……不知道为什么，这座城市的异人馆上，刻得最多的就是它。',
+                    en: 'Acanthus. A Mediterranean plant. ...For some reason it is the most commonly carved motif on the Western houses in this city.',
+                    color: 'bg-emerald-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '她说话时语速很慢，每个词都咬得清清楚楚——像是习惯了对听不太懂日语的人说话。',
+                    en: 'She speaks slowly, every word fully articulated — like someone used to talking to people whose Japanese is not there yet.'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/rei/casual_smile.webp',
+                    zh: '你没好意思说：那正是你此刻最需要的语速。',
+                    en: 'You do not have the nerve to tell her that is exactly the speed you needed.'
+                  }
+                ]
+              },
+              {
+                id: 'rei_journal',
+                labelZh: '把外公的手账翻到这一页，递过去给她看',
+                labelEn: "Open your grandfather's journal to this page and hold it out to her",
+                hintZh: '半个世纪前，有人也站在这条巷子里画过图',
+                hintEn: 'Half a century ago someone else stood in this alley and drew it.',
+                effects: [
+                  { stat: 'knowledge', amount: 1, reasonZh: '让两张相隔五十年的地图对上了', reasonEn: 'You laid two maps fifty years apart side by side' },
+                  { stat: 'charm', amount: 1, reasonZh: '把自己最珍贵的东西先递了出去', reasonEn: 'You offered up the thing you treasure most, first' }
+                ],
+                relations: [
+                  { char: CharacterId.REI, familiarity: 14, affection: 3, reasonZh: '让她看见了一张五十年前的手绘地图', reasonEn: 'You showed her a hand-drawn map fifty years old' }
+                ],
+                setFlags: ['prologue_rei_journal'],
+                then: [
+                  {
+                    type: 'narration',
+                    zh: '你从背包里翻出那本牛皮手账，找到画着这一带的那一页，递到她面前。',
+                    en: 'You dig the leather journal out of your bag, find the page with this neighborhood on it, and hold it out to her.'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/rei/casual_neutral.webp',
+                    zh: '她放下自己的书，双手接了过去。翻页的动作很轻，像在处理不属于自己的东西。',
+                    en: 'She sets her own book down and takes it with both hands. She turns the page carefully, the way one handles something that belongs to someone else.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '戴眼镜的女生',
+                    speakerEn: 'Girl with Glasses',
+                    characterImage: '/images/characters/rei/casual_neutral.webp',
+                    jp: '……手描きですか。しかも、この道はもう無くなっているのに、ちゃんと残っている。',
+                    words: [
+                      { jp: '残る', reading: 'のこる', zh: '留下、残存', en: 'to remain / to be left behind' }
+                    ],
+                    zh: '……是手绘的吗。而且，这条路早就不在了，图上却还留着。',
+                    en: '...Hand-drawn. And this street no longer exists — yet here it still is.',
+                    color: 'bg-emerald-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '她盯着那张图看了很久，久到你以为她已经忘了你还站在旁边。',
+                    en: 'She studies the page for a long time — long enough that you begin to think she has forgotten you are standing there.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '戴眼镜的女生',
+                    speakerEn: 'Girl with Glasses',
+                    characterImage: '/images/characters/rei/casual_smile.webp',
+                    jp: '見せてくださって、ありがとうございました。……いい地図です。とても。',
+                    zh: '谢谢您给我看。……这是张好地图。非常好。',
+                    en: 'Thank you for letting me see it. ...It is a good map. A very good one.',
+                    color: 'bg-emerald-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '她把手账还给你，指尖在封面上停了半秒才收回去。',
+                    en: 'She hands the journal back. Her fingertips rest on the cover for half a second before she withdraws them.'
+                  }
+                ]
+              },
+              {
+                id: 'rei_pass',
+                labelZh: '道个歉，侧身走过去',
+                labelEn: 'Apologize and slip past',
+                hintZh: '别打扰人家',
+                hintEn: 'Do not bother her.',
+                effects: [
+                  { stat: 'kindness', amount: 1, reasonZh: '把别人的专注留给了别人', reasonEn: 'You left someone’s concentration where you found it' }
+                ],
+                relations: [
+                  { char: CharacterId.REI, familiarity: 4, reasonZh: '在窄巷里让了一次路', reasonEn: 'You gave way once, in a narrow alley' }
+                ],
+                setFlags: ['prologue_rei_passed'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/rei/casual_neutral.webp',
+                    zh: '你说了句「すみません」侧身让开。她也说了句「すみません」。两个人在窄巷里像两块错开的积木。',
+                    en: 'You say "sumimasen" and step aside. She says "sumimasen" back. The two of you slot past each other in the narrow alley like a pair of mismatched blocks.'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '',
+                    zh: '走出巷口回头看，她还站在那儿，一动不动地对着那扇门。',
+                    en: 'At the mouth of the alley you look back. She is still there, motionless, facing that doorway.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '你忽然有点后悔——刚才那句话，其实可以说得更长一点的。',
+                    en: 'You feel a small pang of regret. That sentence could have been longer than it was.'
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -566,9 +768,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         hintZh: '从阳台上看了一下午，总得走到跟前去',
         hintEn: 'You watched it all afternoon from the balcony. You should stand next to it.',
         effects: [{ stat: 'guts', amount: 1, reasonZh: '对着海湾深吸了一口气', reasonEn: 'You filled your lungs facing the open bay' }],
-        setFlags: ['prologue_walk_harbor'],
+        setFlags: ['prologue_walk_harbor', 'prologue_met_hikari'],
         then: [
-          { type: 'scene', scene: 'kobe_harbor' },
+          { type: 'scene', scene: 'kobe_harbor', bgm: 'town' },
           {
             type: 'narration',
             zh: '一路下坡走了二十分钟，终于站到了海边的栏杆前。港塔的红色霓虹刚刚点亮，海面被切成一条一条晃动的光带。',
@@ -583,6 +785,196 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             type: 'narration',
             zh: '没有人认识你。你可以从头开始做任何人。',
             en: 'Nobody here knows you. You could start over as anyone at all.'
+          },
+          // ---- 偶遇 · 栏杆上的黄色卫衣 ----
+          {
+            type: 'narration',
+            zh: '——就在这时，右手边的栏杆那儿炸开一声惊呼。',
+            en: '—And right then, a yelp goes off at the railing to your right.'
+          },
+          {
+            type: 'narration',
+            characterImage: '/images/characters/hikari/casual_surprised.webp',
+            zh: '一个金发的女生举着手机对准港塔，棒球帽反戴着，整个人几乎要探出栏杆外面去。',
+            en: 'A blonde girl has her phone aimed at the Port Tower, cap on backwards, leaning so far over the railing she is most of the way outside it.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '金发的女生',
+            speakerEn: 'Blonde Girl',
+            characterImage: '/images/characters/hikari/casual_surprised.webp',
+            jp: 'うわ、やば！これ絶対いいやつ撮れた！',
+            words: [
+              { jp: 'やばい', zh: '（口语）绝了 / 糟了，看语气', en: '"insane" / "no way" — slang, good or bad by tone' }
+            ],
+            zh: '哇，绝了！这张绝对拍到好东西了！',
+            en: 'Whoa — no way! I definitely just got a good one!',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '她拍完回过头，正好和你对上视线。然后——她的眼睛一下子亮了。',
+            en: 'She turns from the shot and her eyes land straight on you. And then — they light up.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '金发的女生',
+            speakerEn: 'Blonde Girl',
+            characterImage: '/images/characters/hikari/casual_happy.webp',
+            jp: 'あ！ねえねえ、もしかして留学生？！だよね？！絶対そうだよね？！',
+            words: [
+              { jp: '留学生', reading: 'りゅうがくせい', zh: '留学生', en: 'international student' }
+            ],
+            zh: '啊！那个那个，你该不会也是留学生吧？！是吧？！绝对是吧？！',
+            en: 'Ah! Hey, hey — are you an exchange student?! You are, right?! You totally are, right?!',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '你还没来得及回答，她已经跨了两大步站到你面前，帽檐底下是一张毫无防备的笑脸。',
+            en: 'Before you can answer she has crossed two long strides and is standing in front of you, an entirely unguarded grin under the cap brim.'
+          },
+          {
+            type: 'choice',
+            promptZh: '她的语速比车厢广播还快。',
+            promptEn: 'She talks faster than the train announcements.',
+            options: [
+              {
+                id: 'hikari_answer',
+                labelZh: '「はい、今日、着いたばかりです。」老老实实回答',
+                labelEn: '"Yes. I only got here today." Answer straight',
+                hintZh: '「刚到」这三个字，说出口才发觉是真的',
+                hintEn: 'Only once you say "just arrived" does it become true.',
+                effects: [
+                  { stat: 'guts', amount: 1, reasonZh: '面对连珠炮没有退后半步', reasonEn: 'You did not take a step back from the barrage' }
+                ],
+                relations: [
+                  { char: CharacterId.HIKARI, familiarity: 12, affection: 2, reasonZh: '在海边认下了同为留学生的身份', reasonEn: 'You owned up to being an exchange student too, at the water’s edge' }
+                ],
+                setFlags: ['prologue_hikari_answered'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/hikari/casual_happy.webp',
+                    zh: '「今天」两个字一出口，她整个人都跳了起来。',
+                    en: 'The word "today" is barely out of your mouth before she leaves the ground entirely.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '金发的女生',
+                    speakerEn: 'Blonde Girl',
+                    characterImage: '/images/characters/hikari/casual_happy.webp',
+                    jp: '今日！？今日の今日！？うわー、じゃあ私、あなたの神戸の一日目に映り込んでるじゃん！',
+                    zh: '今天！？今天的今天！？哇——那我不就出现在你神户的第一天里了吗！',
+                    en: 'Today?! Today today?! Whoa — then I am literally in the footage of your first day in Kobe!',
+                    color: 'bg-amber-400'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '她说她比你早来一周，前六天全都用在了迷路上。她说这话的时候一点都不难过，反而像在炫耀。',
+                    en: 'She got here a week ahead of you, she says, and spent six of those days lost. She does not sound sorry about it. She sounds like she is bragging.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '金发的女生',
+                    speakerEn: 'Blonde Girl',
+                    characterImage: '/images/characters/hikari/casual_shy.webp',
+                    jp: '……あのさ。明日から学校でしょ？もし誰とも喋れなかったら、私のこと思い出してよ。ね？',
+                    zh: '……那个啊。你明天就要上学了吧？要是一整天没能跟人说上话，就想想我。好吗？',
+                    en: '...Hey. School starts tomorrow, right? If you get through a whole day without talking to anyone — think of me. Okay?',
+                    color: 'bg-amber-400'
+                  }
+                ]
+              },
+              {
+                id: 'hikari_tease',
+                labelZh: '反问她：「どうして分かったんですか？」',
+                labelEn: '"How could you tell?" Turn the question back on her',
+                hintZh: '你很想知道自己到底哪里写着「刚下飞机」',
+                hintEn: 'You genuinely want to know where it says "fresh off the plane" on you.',
+                effects: [
+                  { stat: 'charm', amount: 2, reasonZh: '被搭话时不但接住了，还打了回去', reasonEn: 'You did not just catch it — you threw it back' }
+                ],
+                relations: [
+                  { char: CharacterId.HIKARI, familiarity: 14, affection: 3, reasonZh: '第一句话就跟她对上了拍子', reasonEn: 'You matched her rhythm from the very first line' }
+                ],
+                setFlags: ['prologue_hikari_teased'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/hikari/casual_smug.webp',
+                    zh: '她「唔」了一声，退后半步，从头到脚把你打量了一遍，然后掰着手指数了起来。',
+                    en: 'She goes "hmm", takes half a step back, looks you over from top to bottom, and starts counting on her fingers.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '金发的女生',
+                    speakerEn: 'Blonde Girl',
+                    characterImage: '/images/characters/hikari/casual_smug.webp',
+                    jp: '一つ、看板を全部読もうとしてる。二つ、歩くの遅い。三つ——さっき、海に向かって深呼吸してたでしょ。私も一週間前、まったく同じことしたもん。',
+                    words: [
+                      { jp: '深呼吸', reading: 'しんこきゅう', zh: '深呼吸', en: 'a deep breath' }
+                    ],
+                    zh: '第一，你想把每块招牌都读一遍。第二，走得慢。第三——你刚才对着海深呼吸了吧。我一周前，做的一模一样。',
+                    en: 'One: you are trying to read every single sign. Two: you walk slowly. Three — you just took a deep breath facing the sea. I did the exact same thing a week ago.',
+                    color: 'bg-amber-400'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '你被说中了，一句话也接不上。她笑得像是赢了一整场比赛。',
+                    en: 'She has you dead to rights and you have nothing to say. She grins like she has won an entire tournament.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '金发的女生',
+                    speakerEn: 'Blonde Girl',
+                    characterImage: '/images/characters/hikari/casual_happy.webp',
+                    jp: 'ね？分かるって。……一週間先輩だからね、私。',
+                    zh: '看吧？我就知道。……毕竟我可是早来了一周的前辈呢。',
+                    en: 'See? I knew it. ...I have a whole week of seniority on you, after all.',
+                    color: 'bg-amber-400'
+                  }
+                ]
+              },
+              {
+                id: 'hikari_nod',
+                labelZh: '被气势压住，只是点了点头',
+                labelEn: 'Get flattened by the momentum, and just nod',
+                hintZh: '脑子里那句日语还在排队',
+                hintEn: 'The Japanese sentence is still queued up somewhere behind your eyes.',
+                effects: [
+                  { stat: 'charm', amount: 1, reasonZh: '笨拙的点头反而把她逗笑了', reasonEn: 'The clumsy nod is what made her laugh' }
+                ],
+                relations: [
+                  { char: CharacterId.HIKARI, familiarity: 6, affection: 1, reasonZh: '在海边被一个陌生人记住了', reasonEn: 'A stranger at the harbour decided to remember you' }
+                ],
+                setFlags: ['prologue_hikari_nodded'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/hikari/casual_happy.webp',
+                    zh: '你只来得及点头。她「哇」地叫了一声，像是猜中了大奖。',
+                    en: 'A nod is all you manage. She lets out a "whoa" like she has just won something.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '金发的女生',
+                    speakerEn: 'Blonde Girl',
+                    characterImage: '/images/characters/hikari/casual_happy.webp',
+                    jp: 'やっぱり！ねえ、日本語まだ大変でしょ？いいのいいの、私も最初は「はい」しか言えなかったから！',
+                    zh: '果然！哎，日语还很吃力吧？没关系没关系，我刚来的时候也只会说「はい」！',
+                    en: 'I knew it! Hey — Japanese is still rough, right? It is fine, it is fine. All I could say at first was "yes" too!',
+                    color: 'bg-amber-400'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '',
+                    zh: '她朝你挥了挥手就跑了，黄色的卫衣很快被人流吞没。你站在原地才想起来——连名字都没问。',
+                    en: 'She waves and takes off, the yellow hoodie swallowed by the crowd within seconds. Standing there, it occurs to you that you never asked her name.'
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -593,9 +985,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         hintZh: '想听听这座城市正常说话的样子',
         hintEn: 'You want to hear how this city talks when it is not announcing train stations.',
         effects: [{ stat: 'charm', amount: 1, reasonZh: '第一次听懂了关西腔的节奏', reasonEn: 'You caught the rhythm of Kansai speech for the first time' }],
-        setFlags: ['prologue_walk_arcade'],
+        setFlags: ['prologue_walk_arcade', 'prologue_met_maki'],
         then: [
-          { type: 'scene', scene: 'sannomiya_arcade' },
+          { type: 'scene', scene: 'sannomiya_arcade', bgm: 'town' },
           {
             type: 'narration',
             zh: '拱顶商店街里灯火通明，人声、关东煮的热气、章鱼烧铁板的滋滋声混成一片。',
@@ -610,6 +1002,176 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             type: 'narration',
             zh: '教科书里从来没有这种声音。你放慢脚步，跟着人流走了整整一条街。',
             en: 'No textbook has ever made this sound. You slow your pace and let the current carry you the whole length of the street.'
+          },
+          // ---- 偶遇 · 章鱼烧摊子前的粉色头发 ----
+          {
+            type: 'narration',
+            characterImage: '/images/characters/maki/punk_neutral.webp',
+            zh: '走到章鱼烧摊子前，你停下来看铁板上翻滚的丸子。旁边站着一个粉色头发的女生，正把一整串举得老高，边吹边跳脚。',
+            en: 'You stop at a takoyaki griddle to watch the balls being turned. Beside you a girl with pink hair is holding a whole skewer up at arm’s length, blowing on it and hopping in place.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '粉发的女生',
+            speakerEn: 'Pink-haired Girl',
+            characterImage: '/images/characters/maki/punk_pout.webp',
+            jp: 'あっつ！……あー、もう、なんでウチ毎回学ばへんのやろ。',
+            words: [
+              { jp: '熱い', reading: 'あつい', zh: '烫、热', en: 'hot (to the touch)' }
+            ],
+            zh: '烫死了！……啊，真是的，我怎么每次都学不乖啊。',
+            en: 'Hot! ...Ugh, seriously, why do I never learn.',
+            color: 'bg-pink-500'
+          },
+          {
+            type: 'narration',
+            zh: '她注意到你在看，眯起眼睛，从头到脚把你打量了一圈。',
+            en: 'She notices you watching, narrows her eyes, and looks you over from head to foot.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '粉发的女生',
+            speakerEn: 'Pink-haired Girl',
+            characterImage: '/images/characters/maki/punk_neutral.webp',
+            jp: '……あんた、この辺の人ちゃうやろ。顔に書いてあるで。',
+            words: [
+              { jp: 'ちゃう', zh: '不是（关西方言，＝違う）', en: '"nope / not that" — Kansai for 違う' }
+            ],
+            zh: '……你不是这一带的人吧。脸上写着呢。',
+            en: '...You are not from around here. It is written on your face.',
+            color: 'bg-pink-500'
+          },
+          {
+            type: 'choice',
+            promptZh: '被一个看上去比你还小的女生一眼看穿了。',
+            promptEn: 'Read at a glance by a girl who looks younger than you.',
+            options: [
+              {
+                id: 'maki_ask',
+                labelZh: '「はい。今日、来ました。」——顺便问她这个怎么吃',
+                labelEn: '"Yes. I arrived today." — and ask her how you are supposed to eat that',
+                hintZh: '铁板上那东西，你是真的不会吃',
+                hintEn: 'You genuinely do not know how to eat the thing on that griddle.',
+                effects: [
+                  { stat: 'guts', amount: 1, reasonZh: '承认了自己是个什么都不懂的外地人', reasonEn: 'You admitted to being the outsider who knows nothing' },
+                  { stat: 'kindness', amount: 1, reasonZh: '把请教的姿态摆得很低', reasonEn: 'You asked to be taught, and meant it' }
+                ],
+                relations: [
+                  { char: CharacterId.MAKI, familiarity: 12, affection: 2, reasonZh: '在章鱼烧摊子前拜了个师', reasonEn: 'You took a lesson at a takoyaki stand' }
+                ],
+                setFlags: ['prologue_maki_asked'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/maki/punk_neutral.webp',
+                    zh: '她眉毛一挑，把那串举到你面前晃了晃。',
+                    en: 'Her eyebrows go up. She waves the skewer in front of your face.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '粉发的女生',
+                    speakerEn: 'Pink-haired Girl',
+                    characterImage: '/images/characters/maki/punk_neutral.webp',
+                    jp: 'こうやって、フーフーしてから一気に。……先っぽ噛んだら中身が噴き出すから、気ぃつけや。',
+                    words: [
+                      { jp: '気をつける', reading: 'きをつける', zh: '小心、注意', en: 'to be careful' }
+                    ],
+                    zh: '像这样，呼呼吹两下，然后一口。……咬尖上的话馅会喷出来，小心点啊。',
+                    en: 'Like this — blow on it, then all in one go. ...Bite the tip and the inside erupts, so watch it.',
+                    color: 'bg-pink-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '你照做了。第一口烫得眼泪都出来了，第二口才尝出味道——外面焦脆，里面是流动的。',
+                    en: 'You do as told. The first bite brings tears. The second one you actually taste: crisp outside, molten within.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '粉发的女生',
+                    speakerEn: 'Pink-haired Girl',
+                    characterImage: '/images/characters/maki/punk_laugh.webp',
+                    jp: 'な？ ……ま、初日にしては悪ないセンスやん。',
+                    zh: '怎么样？……嘛，第一天就这个品味，不算差嘛。',
+                    en: 'Right? ...Eh. Not bad taste, for day one.',
+                    color: 'bg-pink-500'
+                  }
+                ]
+              },
+              {
+                id: 'maki_kansai',
+                labelZh: '用刚听了一整条街的关西腔回一句：「ちゃうで。」',
+                labelEn: '"Chau de." Answer in the Kansai you have been hearing all street',
+                hintZh: '整条商店街都在教你这个尾音',
+                hintEn: 'The whole arcade has been teaching you that ending.',
+                requires: { stat: 'guts', min: 1 },
+                effects: [
+                  { stat: 'charm', amount: 2, reasonZh: '来的第一天就敢学舌关西腔', reasonEn: 'Day one, and already mimicking the local accent' },
+                  { stat: 'guts', amount: 1, reasonZh: '拿一句现学的方言去冒险', reasonEn: 'You gambled on a dialect you learned ten minutes ago' }
+                ],
+                relations: [
+                  { char: CharacterId.MAKI, familiarity: 16, affection: 3, reasonZh: '用关西腔顶了回去，她乐坏了', reasonEn: 'You fired Kansai back at her and she loved it' }
+                ],
+                setFlags: ['prologue_maki_kansai'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/maki/punk_laugh.webp',
+                    zh: '她愣了半秒，然后笑得差点把手里的章鱼烧甩出去。',
+                    en: 'She freezes for half a second, then laughs so hard she nearly launches the takoyaki out of her hand.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '粉发的女生',
+                    speakerEn: 'Pink-haired Girl',
+                    characterImage: '/images/characters/maki/punk_laugh.webp',
+                    jp: '「ちゃうで」やて！発音めっちゃ変やけど！……ええわ、合格。ほな、これも覚えとき——「おおきに」。',
+                    words: [
+                      { jp: 'おおきに', zh: '谢谢（关西方言）', en: 'thank you (Kansai dialect)' }
+                    ],
+                    zh: '还「ちゃうで」呢！发音怪得要死！……行吧，及格。那这个也记着——「おおきに」。',
+                    en: '"Chau de", he says! Your pronunciation is all over the place! ...Fine. You pass. Here, learn this one too — "ookini".',
+                    color: 'bg-pink-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '「おおきに」。你在心里默念了三遍。今晚一定要找个机会用出去。',
+                    en: '"Ookini." You repeat it three times in your head. Tonight you are going to find somewhere to use it.'
+                  }
+                ]
+              },
+              {
+                id: 'maki_leave',
+                labelZh: '笑一笑，转身继续往前走',
+                labelEn: 'Smile, and keep walking',
+                hintZh: '接不上这个速度',
+                hintEn: 'You cannot keep up with that tempo.',
+                effects: [
+                  { stat: 'proficiency', amount: 1, reasonZh: '把慌乱藏进了一个笑里', reasonEn: 'You buried the panic inside a smile' }
+                ],
+                relations: [
+                  { char: CharacterId.MAKI, familiarity: 4, reasonZh: '在摊子前对上过一次视线', reasonEn: 'Your eyes met once, over a griddle' }
+                ],
+                setFlags: ['prologue_maki_left'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '',
+                    zh: '你笑了一下，转身走进人流里。走出十几米回头，她已经在跟摊主用你完全跟不上的语速讨价还价了。',
+                    en: 'You smile and step back into the current. Ten metres on you look back: she is already haggling with the stall owner at a speed you could not follow at all.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '这座城市自己在往前走，不会停下来等你。',
+                    en: 'This city is moving on its own, and it is not going to stop and wait for you.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '这个念头没让你难过——反而让你想快点跟上。',
+                    en: 'The thought does not make you sad. It makes you want to catch up faster.'
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -622,6 +1184,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'convenience_store_exterior',
+    bgm: 'town',
     titleZh: '坡道口的便利店',
     titleEn: 'The Convenience Store at the Foot of the Slope',
     subtitleZh: '晚上 7:20',
@@ -634,17 +1197,21 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'scene',
-    scene: 'convenience_store_interior'
+    scene: 'convenience_store_interior',
+    bgm: 'store',
   },
   {
     type: 'speech',
     speakerZh: '店员小姐',
     speakerEn: 'Store Clerk',
     jp: 'いらっしゃいませ〜！',
+    words: [
+          { jp: "いらっしゃいませ", zh: "欢迎光临（店员用语）", en: "welcome (shop greeting)" }
+    ],
     zh: '欢迎光临～！',
     en: 'Welcome!',
     color: 'bg-teal-500',
-    characterImage: '/images/characters/clerk_misaki_smile.webp'
+    characterImage: '/images/characters/clerk_misaki_welcome.webp'
   },
   {
     type: 'narration',
@@ -866,113 +1433,166 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         effects: [{ stat: 'knowledge', amount: 1, reasonZh: '一整本神户，四百五十日元', reasonEn: 'An entire city, for four hundred fifty yen' }],
         setFlags: ['bought_magazine']
       }
-    ]
+    ],
+    // 买 / 不买是两条路：空手出去的人不会被问「要筷子吗」
+    setFlagsOnPurchase: ['prologue_bought_something'],
+    setFlagsOnEmpty: ['prologue_empty_handed']
   },
 
   // ==========================================================
   // 【Scene 6b】结账 · 第一次真正的日语对话
   // ==========================================================
   {
-    type: 'scene',
-    scene: 'convenience_store_counter'
-  },
-  {
-    type: 'narration',
-    zh: '你把挑选好的东西放到收银台上。店员利落地扫码，然后抬起头问了一句。',
-    en: 'You set everything on the counter. The clerk scans it all briskly, then looks up and asks:'
-  },
-  {
-    type: 'speech',
-    speakerZh: '店员小姐',
-    speakerEn: 'Store Clerk',
-    jp: 'レジ袋はご利用ですか？お箸はおつけしますか？',
-    zh: '需要塑料袋吗？要给您配一双筷子吗？',
-    en: 'Would you like a bag? And shall I add a pair of chopsticks?',
-    color: 'bg-teal-500',
-    characterImage: '/images/characters/clerk_misaki_smile.webp'
-  },
-  {
-    type: 'choice',
-    promptZh: '两句话，语速比听力教材快得多。',
-    promptEn: 'Two sentences, spoken far faster than any listening exercise.',
-    options: [
+    // 空手出去的人不该被问「要不要筷子」：整段结账只在真的买了东西时才播。
+    type: 'branch',
+    ifFlag: 'prologue_bought_something',
+    then: [
       {
-        id: 'checkout_kansai',
-        labelZh: '「袋、お願いします。お箸も一膳……おおきに！」',
-        labelEn: '"A bag please. And one pair of chopsticks... ookini!"',
-        hintZh: '刚在商店街学来的那句关西腔谢谢',
-        hintEn: 'The Kansai thank-you you just picked up in the arcade.',
-        requires: { stat: 'guts', min: 2 },
-        effects: [
-          { stat: 'charm', amount: 2, reasonZh: '来的第一天就用上了关西腔', reasonEn: 'Day one, and already speaking Kansai' },
-          { stat: 'guts', amount: 1, reasonZh: '敢把刚学会的话立刻用出去', reasonEn: 'You used a phrase the same hour you learned it' }
+        type: 'scene',
+        scene: 'convenience_store_counter',
+        bgm: 'store',
+      },
+      {
+        type: 'narration',
+        zh: '你把挑选好的东西放到收银台上。店员利落地扫码，然后抬起头问了一句。',
+        en: 'You set everything on the counter. The clerk scans it all briskly, then looks up and asks:'
+      },
+      {
+        type: 'speech',
+        speakerZh: '店员小姐',
+        speakerEn: 'Store Clerk',
+        jp: 'レジ袋はご利用ですか？お箸はおつけしますか？',
+        words: [
+              { jp: "レジ袋", reading: "レジぶくろ", zh: "收银塑料袋", en: "plastic shopping bag" },
+              { jp: "お箸", reading: "おはし", zh: "筷子", en: "chopsticks" }
         ],
-        setFlags: ['prologue_checkout_kansai', 'prologue_checkout_jp'],
+        zh: '需要塑料袋吗？要给您配一双筷子吗？',
+        en: 'Would you like a bag? And shall I add a pair of chopsticks?',
+        color: 'bg-teal-500',
+        characterImage: '/images/characters/clerk_misaki_think.webp'
+      },
+      {
+        // 去过商店街、被真纪教过「おおきに」的人，这里会想起她
+        type: 'branch',
+        ifFlag: 'prologue_maki_kansai',
         then: [
           {
             type: 'narration',
-            zh: '店员正在装袋的手停了一下，然后笑出了声。',
-            en: 'The clerk’s hands pause mid-bag. Then he laughs out loud.'
-          },
-          {
-            type: 'speech',
-            speakerZh: '店员小姐',
-            speakerEn: 'Store Clerk',
-            jp: 'えっ、おおきに！？お兄さん、関西の人ちゃうやろ？うまいなあ！',
-            zh: '诶，「おおきに」！？小哥你不是关西人吧？说得真地道啊！',
-            en: 'Wait — "ookini"?! You’re not from Kansai, are you? That was good!',
-            color: 'bg-teal-500',
-            characterImage: '/images/characters/clerk_misaki_smile.webp'
-          },
-          {
-            type: 'narration',
-            zh: '你有点不好意思地挠了挠头。走出店门的时候，脚步比进来时轻了一大截。',
-            en: 'You scratch the back of your head, a little embarrassed. Walking out, your step is considerably lighter than it was walking in.'
+            zh: '「おおきに」。商店街那个粉色头发的女生的声音忽然在脑子里响了一下。……现在？就现在用？',
+            en: '"Ookini." The pink-haired girl from the arcade suddenly plays back in your head. ...Now? Right now?'
           }
         ]
       },
       {
-        id: 'checkout_jp',
-        labelZh: '「あ、はい。袋をお願いします。お箸も一膳ください。」',
-        labelEn: '"Ah — yes. A bag, please. And one pair of chopsticks."',
-        hintZh: '一个字一个字地说完，说得很慢',
-        hintEn: 'Word by word, slowly, all the way to the end.',
-        effects: [
-          { stat: 'guts', amount: 1, reasonZh: '把整句话说完了，没有中途放弃', reasonEn: 'You finished the whole sentence without bailing out' }
-        ],
-        setFlags: ['prologue_checkout_jp'],
-        then: [
+        type: 'choice',
+        promptZh: '两句话，语速比听力教材快得多。',
+        promptEn: 'Two sentences, spoken far faster than any listening exercise.',
+        options: [
           {
-            type: 'narration',
-            zh: '你说得很慢，但一个音都没有含糊。店员点点头，把筷子放进袋子，动作一如往常。',
-            en: 'You speak slowly, but you do not slur a single syllable. The clerk nods, drops the chopsticks in the bag, entirely unremarkable about it.'
+            id: 'checkout_kansai',
+            labelZh: '「袋、お願いします。お箸も一膳……おおきに！」',
+            labelEn: '"A bag please. And one pair of chopsticks... ookini!"',
+            hintZh: '关西人道谢时说的那一句',
+            hintEn: 'The way people say thank you around here.',
+            requires: { stat: 'guts', min: 2 },
+            effects: [
+              { stat: 'charm', amount: 2, reasonZh: '来的第一天就用上了关西腔', reasonEn: 'Day one, and already speaking Kansai' },
+              { stat: 'guts', amount: 1, reasonZh: '敢把刚学会的话立刻用出去', reasonEn: 'You used a phrase the same hour you learned it' }
+            ],
+            setFlags: ['prologue_checkout_kansai', 'prologue_checkout_jp'],
+            then: [
+              {
+                type: 'narration',
+                zh: '店员正在装袋的手停了一下，然后笑出了声。',
+                en: 'The clerk’s hands pause mid-bag. Then he laughs out loud.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '店员小姐',
+                speakerEn: 'Store Clerk',
+                jp: 'えっ、おおきに！？お兄さん、関西の人ちゃうやろ？うまいなあ！',
+                words: [
+                      { jp: "おおきに", zh: "谢谢（关西方言）", en: "thank you (Kansai dialect)" },
+                      { jp: "うまい", zh: "说得好、地道", en: "skilful / well done" }
+                ],
+                zh: '诶，「おおきに」！？小哥你不是关西人吧？说得真地道啊！',
+                en: 'Wait — "ookini"?! You’re not from Kansai, are you? That was good!',
+                color: 'bg-teal-500',
+                characterImage: '/images/characters/clerk_misaki_laugh.webp'
+              },
+              {
+                type: 'narration',
+                zh: '你有点不好意思地挠了挠头。走出店门的时候，脚步比进来时轻了一大截。',
+                en: 'You scratch the back of your head, a little embarrassed. Walking out, your step is considerably lighter than it was walking in.'
+              }
+            ]
           },
           {
-            type: 'narration',
-            zh: '——正因为一如往常，你才更高兴。他没有把你当成一个需要特殊照顾的外国人。',
-            en: 'And it is precisely because it was unremarkable that you are pleased. He did not treat you as a foreigner in need of handling.'
+            id: 'checkout_jp',
+            labelZh: '「あ、はい。袋をお願いします。お箸も一膳ください。」',
+            labelEn: '"Ah — yes. A bag, please. And one pair of chopsticks."',
+            hintZh: '一个字一个字地说完，说得很慢',
+            hintEn: 'Word by word, slowly, all the way to the end.',
+            effects: [
+              { stat: 'guts', amount: 1, reasonZh: '把整句话说完了，没有中途放弃', reasonEn: 'You finished the whole sentence without bailing out' }
+            ],
+            setFlags: ['prologue_checkout_jp'],
+            then: [
+              {
+                type: 'narration',
+                zh: '你说得很慢，但一个音都没有含糊。店员点点头，把筷子放进袋子，动作一如往常。',
+                en: 'You speak slowly, but you do not slur a single syllable. The clerk nods, drops the chopsticks in the bag, entirely unremarkable about it.'
+              },
+              {
+                type: 'narration',
+                zh: '——正因为一如往常，你才更高兴。他没有把你当成一个需要特殊照顾的外国人。',
+                en: 'And it is precisely because it was unremarkable that you are pleased. He did not treat you as a foreigner in need of handling.'
+              }
+            ]
+          },
+          {
+            id: 'checkout_gesture',
+            labelZh: '点头，然后用手比划了一下',
+            labelEn: 'Nod, and gesture with your hands',
+            hintZh: '脑子里的句子还没组装好，队伍已经排起来了',
+            hintEn: 'The sentence has not finished assembling in your head, and a queue is forming.',
+            setFlags: ['prologue_checkout_gesture'],
+            then: [
+              {
+                type: 'narration',
+                zh: '你点了点头，又比了个「一」。店员立刻会意，动作麻利地装好袋，还多塞了一张湿纸巾。',
+                en: 'You nod, then hold up one finger. The clerk gets it instantly, bags everything efficiently, and slips in an extra wet wipe.'
+              },
+              {
+                type: 'narration',
+                zh: '他一句多余的话都没说，态度也没有半点变化。你反倒有点懊恼——那句话你明明会说的。',
+                en: 'He says nothing extra and his manner does not change one degree. If anything that makes it worse. You knew that sentence. You could have said it.'
+              }
+            ]
           }
         ]
       },
+    ]
+  },
+  {
+    // 什么都没买的那条路。给的不是东西，是另一段只有这样选才看得到的独白。
+    type: 'branch',
+    ifFlag: 'prologue_empty_handed',
+    then: [
       {
-        id: 'checkout_gesture',
-        labelZh: '点头，然后用手比划了一下',
-        labelEn: 'Nod, and gesture with your hands',
-        hintZh: '脑子里的句子还没组装好，队伍已经排起来了',
-        hintEn: 'The sentence has not finished assembling in your head, and a queue is forming.',
-        setFlags: ['prologue_checkout_gesture'],
-        then: [
-          {
-            type: 'narration',
-            zh: '你点了点头，又比了个「一」。店员立刻会意，动作麻利地装好袋，还多塞了一张湿纸巾。',
-            en: 'You nod, then hold up one finger. The clerk gets it instantly, bags everything efficiently, and slips in an extra wet wipe.'
-          },
-          {
-            type: 'narration',
-            zh: '他一句多余的话都没说，态度也没有半点变化。你反倒有点懊恼——那句话你明明会说的。',
-            en: 'He says nothing extra and his manner does not change one degree. If anything that makes it worse. You knew that sentence. You could have said it.'
-          }
-        ]
+        type: 'narration',
+        zh: '你在货架之间来回走了两趟，最后什么也没拿。钱包里的每一张纸币，接下来都得算着花。',
+        en: 'You walk the aisles twice and end up picking up nothing at all. Every note in your wallet has to be counted from here on.'
+      },
+      {
+        type: 'narration',
+        zh: '经过收银台的时候，店员抬起头，很自然地朝你点了下头——像是在说「只是看看也没关系哦」。',
+        en: 'As you pass the register the clerk looks up and gives you an easy little nod — as if to say that just looking is perfectly fine.'
+      },
+      {
+        type: 'narration',
+        zh: '你也点头回了一下。这是今晚你和这座城市之间，唯一一次不需要说话的交流。',
+        en: 'You nod back. It is the one exchange between you and this city tonight that needed no words at all.'
       }
     ]
   },
@@ -980,13 +1600,34 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // ==========================================================
   // 【Scene 7】偶遇 · 杂志架前的银发
   // ==========================================================
+  // 手里到底有没有袋子，取决于上一场买没买
   {
-    type: 'narration',
-    zh: '提着袋子转身要走的时候，你注意到杂志架前站着一个人。',
-    en: 'Turning to leave with your bag, you notice someone standing at the magazine rack.'
+    type: 'branch',
+    ifFlag: 'prologue_bought_something',
+    then: [
+      {
+        type: 'narration',
+        characterImage: '',   // 店员退场
+        zh: '提着袋子转身要走的时候，你注意到杂志架前站着一个人。',
+        en: 'Turning to leave with your bag, you notice someone standing at the magazine rack.'
+      }
+    ]
+  },
+  {
+    type: 'branch',
+    ifFlag: 'prologue_empty_handed',
+    then: [
+      {
+        type: 'narration',
+        characterImage: '',   // 店员退场
+        zh: '空着手往门口走的时候，你注意到杂志架前站着一个人。',
+        en: 'Walking empty-handed toward the door, you notice someone standing at the magazine rack.'
+      }
+    ]
   },
   {
     type: 'narration',
+    characterImage: '/images/characters/miyuki/thinking.webp',
     zh: '是个年轻女子。一头银白色的长发在便利店的白光下几乎是发亮的，手里拎着一个装了牛奶和鸡蛋的小袋子，正低头翻着一本料理杂志。',
     en: 'A young woman. Her long silver-white hair almost glows under the store’s fluorescent light. A small bag of milk and eggs hangs from one hand while she leafs through a cooking magazine.'
   },
@@ -1015,6 +1656,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           { stat: 'guts', amount: 1, reasonZh: '主动向陌生人迈出了第一步', reasonEn: 'You took the first step toward a stranger' },
           { stat: 'charm', amount: 1, reasonZh: '第一印象留得干净利落', reasonEn: 'You made a clean first impression' }
         ],
+        // 序章唯一一次能真正攒下关系的地方：主动开口 = 邻里关系从"面熟"起步
+        relations: [
+          { char: CharacterId.MIYUKI, familiarity: 32, reasonZh: '和 202 室的邻居说上了话', reasonEn: 'You actually spoke with your neighbour in 202' }
+        ],
         setFlags: ['prologue_greeted_miyuki'],
         then: [
           {
@@ -1022,6 +1667,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             speakerZh: '你',
             speakerEn: 'You',
             jp: 'あの、すみません。もしかして、海風荘の方ですか？今日から二〇一号室に住むことになりまして……',
+            words: [
+                  { jp: "ことになる", zh: "（事情）决定为……、变成……（N3 语法）", en: "it has been decided that... (N3 grammar)" },
+                  { jp: "もしかして", zh: "难道说、莫非", en: "by any chance / could it be" }
+            ],
             zh: '那个，不好意思。请问……您也住在海风庄吗？我今天刚搬进 201 室……',
             en: 'Um, excuse me. Are you — by any chance — also at Umikaze-so? I moved into Room 201 today...',
             color: 'bg-yellow-500'
@@ -1033,9 +1682,14 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
+            characterImage: '/images/characters/miyuki/happy.webp',
             speakerZh: '银发的女子',
             speakerEn: 'Silver-haired Woman',
             jp: 'あら。じゃあ、お隣さんね。二〇二号室です。……ふふ、そんなに緊張しなくても大丈夫よ。',
+            words: [
+                  { jp: "お隣さん", reading: "おとなりさん", zh: "邻居", en: "neighbour" },
+                  { jp: "緊張する", reading: "きんちょうする", zh: "紧张", en: "to be nervous" }
+            ],
             zh: '哎呀。那我们是邻居呢，我住 202 室。……呵呵，不用这么紧张的。',
             en: 'Oh my. Then we are neighbors — Room 202. ...Hmhm, there’s no need to be so tense.',
             color: 'bg-sky-500'
@@ -1051,6 +1705,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               },
               {
                 type: 'speech',
+                characterImage: '/images/characters/miyuki/happy_alt.webp',
                 speakerZh: '银发的女子',
                 speakerEn: 'Silver-haired Woman',
                 jp: '初日から神戸プリン？……ふふ、いい趣味してるわ。',
@@ -1061,18 +1716,314 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             ]
           },
           {
+            type: 'scene',
+            scene: 'kitano_slope',
+            bgm: 'night'
+          },
+          {
             type: 'narration',
-            zh: '你们并肩走出便利店，一起沿着坡道往上走。她的步子放得很慢，刚好是你拎着袋子能跟上的速度。',
-            en: 'You walk out of the store side by side and start up the slope together. She keeps her pace slow — exactly slow enough for someone carrying a bag to keep up.'
+            characterImage: '/images/characters/miyuki/neutral.webp',
+            zh: '你们并肩走出便利店，一起沿着坡道往上走。她的步子放得很慢，刚好是你能跟得上的速度。',
+            en: 'You walk out of the store side by side and start up the slope together. She keeps her pace slow — exactly slow enough for you to stay beside her.'
           },
           {
             type: 'speech',
+            characterImage: '/images/characters/miyuki/neutral.webp',
             speakerZh: '银发的女子',
             speakerEn: 'Silver-haired Woman',
             jp: 'この坂、慣れるまでは大変よ。……何か困ったことがあったら、いつでも隣をノックしてね。',
+            words: [
+                  { jp: "慣れる", reading: "なれる", zh: "习惯、适应", en: "to get used to" },
+                  { jp: "困る", reading: "こまる", zh: "为难、伤脑筋", en: "to be troubled / at a loss" }
+            ],
             zh: '这条坡道，习惯之前挺累人的。……有什么困难的话，随时敲隔壁的门就好。',
             en: 'This hill is hard on you until you get used to it. ...If anything troubles you, knock next door. Any time.',
             color: 'bg-sky-500'
+          },
+
+          // ---- 坡道上的一段路：序章里唯一能真正相处一会儿的人 ----
+          {
+            type: 'choice',
+            promptZh: '坡道还有一半。她的袋子看上去不轻。',
+            promptEn: 'Half the hill still to climb. That bag of hers does not look light.',
+            options: [
+              {
+                id: 'miyuki_carry',
+                labelZh: '「あの、袋、一つ持ちましょうか？」',
+                labelEn: '"Um — shall I carry one of those for you?"',
+                hintZh: '牛奶和鸡蛋，一路上坡',
+                hintEn: 'Milk and eggs. All of it uphill.',
+                effects: [
+                  { stat: 'guts', amount: 1, reasonZh: '第二次主动开口，比第一次容易了一点', reasonEn: 'The second time speaking up came easier than the first' },
+                  { stat: 'kindness', amount: 2, reasonZh: '看见了别人手里的重量', reasonEn: 'You noticed the weight in someone else’s hand' }
+                ],
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 6, affection: 4, reasonZh: '在坡道上替她拎了半程', reasonEn: 'You carried half her load up the hill' }
+                ],
+                setFlags: ['prologue_miyuki_carried'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/thinking.webp',
+                    zh: '她愣了一下，像是没想到会被这么问。',
+                    en: 'She pauses, as if the question had genuinely not occurred to her.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '银发的女子',
+                    speakerEn: 'Silver-haired Woman',
+                    characterImage: '/images/characters/miyuki/happy.webp',
+                    jp: 'あら……いいの？じゃあ、こっちだけ。卵のほう、割らないでね。',
+                    words: [
+                      { jp: '割る', reading: 'わる', zh: '打破、弄碎', en: 'to break / to crack' }
+                    ],
+                    zh: '哎呀……可以吗？那，就这个吧。装鸡蛋那袋，别弄破了哦。',
+                    en: 'Oh my... are you sure? Then — just this one. It has the eggs. Try not to break them.',
+                    color: 'bg-sky-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '袋子比你想的沉。你换了只手，尽量让脚步看起来还很轻松。',
+                    en: 'The bag is heavier than you expected. You switch hands and do your best to keep your stride looking easy.'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/happy_alt.webp',
+                    zh: '她在旁边看了你两眼，没有拆穿，只是把步子又放慢了一点。',
+                    en: 'She glances at you twice, says nothing about it, and simply slows her pace a little further.'
+                  }
+                ]
+              },
+              {
+                id: 'miyuki_groceries',
+                labelZh: '问她这一带哪里买东西便宜',
+                labelEn: 'Ask her where the cheap places to shop are around here',
+                hintZh: '你的冰箱现在还是空的',
+                hintEn: 'Your fridge is still completely empty.',
+                effects: [
+                  { stat: 'knowledge', amount: 2, reasonZh: '把这一带的生活地图问到手了', reasonEn: 'You got the neighborhood’s survival map straight from a local' }
+                ],
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 5, affection: 2, reasonZh: '问了一个只有邻居会问的问题', reasonEn: 'You asked the kind of question only a neighbour asks' }
+                ],
+                setFlags: ['prologue_miyuki_groceries'],
+                then: [
+                  {
+                    type: 'speech',
+                    speakerZh: '你',
+                    speakerEn: 'You',
+                    jp: 'あの、この辺で、安いスーパーとかありますか？',
+                    words: [
+                      { jp: '安い', reading: 'やすい', zh: '便宜', en: 'cheap / inexpensive' }
+                    ],
+                    zh: '那个，这附近有便宜一点的超市吗？',
+                    en: 'Um — is there a cheaper supermarket around here?',
+                    color: 'bg-yellow-500'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/happy.webp',
+                    zh: '她「啊」了一声，忽然认真起来，像是被问到了最擅长的科目。',
+                    en: 'She makes a small "ah", and abruptly turns serious — as if asked about her best subject.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '银发的女子',
+                    speakerEn: 'Silver-haired Woman',
+                    characterImage: '/images/characters/miyuki/happy.webp',
+                    jp: '坂を下りて右に三分。あそこ、夜八時からお惣菜が半額になるの。……あと、火曜日は卵が特売。',
+                    words: [
+                      { jp: '半額', reading: 'はんがく', zh: '半价', en: 'half price' },
+                      { jp: '特売', reading: 'とくばい', zh: '特价、促销', en: 'special sale' }
+                    ],
+                    zh: '下了坡往右走三分钟。那家店晚上八点之后熟食半价哦。……还有，周二鸡蛋特价。',
+                    en: 'Down the hill and right, three minutes. Their prepared food goes half price after eight. ...Also, Tuesdays are egg day.',
+                    color: 'bg-sky-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '你掏出手机想记下来，她已经说到了第四家店。你放弃了，改成用力点头。',
+                    en: 'You pull out your phone to write it down. She is already on the fourth shop. You give up and settle for nodding hard.'
+                  }
+                ]
+              },
+              {
+                id: 'miyuki_silent',
+                labelZh: '什么也不说，只是配合她的步子往上走',
+                labelEn: 'Say nothing, and simply match her pace up the hill',
+                hintZh: '今天已经说了够多的日语了',
+                hintEn: 'You have spoken enough Japanese for one day.',
+                effects: [
+                  { stat: 'charm', amount: 1, reasonZh: '学会了不用说话也不尴尬', reasonEn: 'You learned that silence does not have to be awkward' }
+                ],
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 3, affection: 1, reasonZh: '和她一起安静地走完了这段坡', reasonEn: 'You walked the rest of the hill beside her in silence' }
+                ],
+                setFlags: ['prologue_miyuki_silent'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/neutral.webp',
+                    zh: '你们一句话都没再说。坡道两边的窗子一扇一扇亮起来，里面有电视声、炒菜声、小孩子的叫声。',
+                    en: 'Neither of you says anything more. The windows along the slope light up one by one — a television, a wok, a child shouting.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '你忽然意识到，这些声音从明天起也会是你的日常。',
+                    en: 'It occurs to you that from tomorrow, those sounds will be your ordinary life too.'
+                  }
+                ]
+              }
+            ]
+          },
+
+          // ---- 海风庄门口 ----
+          {
+            type: 'scene',
+            scene: 'umikaze_exterior',
+            bgm: 'night'
+          },
+          {
+            type: 'narration',
+            characterImage: '/images/characters/miyuki/neutral.webp',
+            zh: '坡道尽头，海风庄的门灯亮着一盏昏黄的灯。她在 202 室门口停下来，一边找钥匙一边朝你偏了偏头。',
+            en: 'At the top of the slope a single amber lamp burns over the Umikaze-so entrance. She stops at the door of 202, feeling for her keys, and tilts her head toward you.'
+          },
+          {
+            type: 'choice',
+            promptZh: '道晚安之前——',
+            promptEn: 'Before you say good night—',
+            options: [
+              {
+                id: 'miyuki_name',
+                labelZh: '「あの……お名前、聞いてもいいですか？」',
+                labelEn: '"Um... may I ask your name?"',
+                hintZh: '明天早上在楼梯上再遇见，总不能一直叫「那个」',
+                hintEn: 'You will meet on the stairs tomorrow. You cannot keep calling her "um".',
+                effects: [
+                  { stat: 'guts', amount: 2, reasonZh: '把今天最难开口的一句问了出来', reasonEn: 'You asked the hardest question of the day' }
+                ],
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 6, affection: 5, reasonZh: '问了她的名字，并且记住了', reasonEn: 'You asked her name — and kept it' }
+                ],
+                setFlags: ['prologue_miyuki_named', 'prologue_knows_miyuki_name'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/thinking.webp',
+                    zh: '她摸钥匙的手停住了，回过头看了你一会儿。门灯的光落在她的银发上，边缘是暖色的。',
+                    en: 'Her hand stops on the keys. She turns back and looks at you for a moment. The lamp catches her silver hair and warms its edges.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '银发的女子',
+                    speakerEn: 'Silver-haired Woman',
+                    characterImage: '/images/characters/miyuki/happy.webp',
+                    jp: '……深雪。二〇二号室の、深雪です。',
+                    zh: '……深雪。202 室的，深雪。',
+                    en: '...Miyuki. Miyuki, of Room 202.',
+                    color: 'bg-sky-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '「みゆき」。你在心里把这三个音重复了一遍，生怕明天早上就忘了。',
+                    en: '"Mi-yu-ki." You repeat the three syllables inside your head, afraid of losing them before morning.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '深雪',
+                    speakerEn: 'Miyuki',
+                    characterImage: '/images/characters/miyuki/happy_alt.webp',
+                    jp: 'ふふ。ちゃんと覚えてくれた？……じゃあ、また明日。おやすみなさい。',
+                    words: [
+                      { jp: '覚える', reading: 'おぼえる', zh: '记住', en: 'to remember / to memorize' }
+                    ],
+                    zh: '呵呵。记住了吗？……那么，明天见。晚安。',
+                    en: 'Hmhm. Did you get it? ...See you tomorrow, then. Good night.',
+                    color: 'bg-sky-500'
+                  }
+                ]
+              },
+              {
+                id: 'miyuki_thanks',
+                labelZh: '端端正正地鞠一躬，郑重道谢',
+                labelEn: 'Bow properly, and thank her in earnest',
+                hintZh: '今天她做的事，比「顺路」多得多',
+                hintEn: 'What she did tonight was a good deal more than "on the way".',
+                effects: [
+                  { stat: 'charm', amount: 1, reasonZh: '把谢意说得干净利落', reasonEn: 'You said thank you cleanly and meant it' },
+                  { stat: 'kindness', amount: 1, reasonZh: '记得别人为你多走的那几步', reasonEn: 'You counted the extra steps someone took for you' }
+                ],
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 4, affection: 3, reasonZh: '认真道了谢，她记住了', reasonEn: 'You thanked her properly, and she noticed' }
+                ],
+                setFlags: ['prologue_miyuki_thanked'],
+                then: [
+                  {
+                    type: 'speech',
+                    speakerZh: '你',
+                    speakerEn: 'You',
+                    jp: '今日は、本当にありがとうございました。',
+                    zh: '今天真的非常感谢您。',
+                    en: 'Thank you. Really — for today.',
+                    color: 'bg-yellow-500'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/thinking.webp',
+                    zh: '她似乎没料到会被这么正式地道谢，愣了半秒才摆了摆手。',
+                    en: 'She did not expect to be thanked that formally. It takes her half a second to wave it off.'
+                  },
+                  {
+                    type: 'speech',
+                    speakerZh: '银发的女子',
+                    speakerEn: 'Silver-haired Woman',
+                    characterImage: '/images/characters/miyuki/happy.webp',
+                    jp: 'そんな、たいしたことしてないのに。……でも、ありがとう。ちゃんと言える子で、安心したわ。',
+                    words: [
+                      { jp: '安心する', reading: 'あんしんする', zh: '放心、安心', en: 'to feel relieved / at ease' }
+                    ],
+                    zh: '哎呀，我又没做什么。……不过，谢谢你。是个会好好道谢的孩子，我就放心了。',
+                    en: 'Goodness, I hardly did anything. ...But thank you. It is a relief — you are the sort who says it properly.',
+                    color: 'bg-sky-500'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '「安心了」这三个字，她说得很轻，轻得像是说给自己听的。',
+                    en: '"A relief." She says it quietly — quietly enough that it might have been meant for herself.'
+                  }
+                ]
+              },
+              {
+                id: 'miyuki_wave',
+                labelZh: '举手挥了挥，转身上楼',
+                labelEn: 'Raise a hand, wave, and head up the stairs',
+                hintZh: '今天的日语额度已经用完了',
+                hintEn: 'Your Japanese quota for today is spent.',
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 2, reasonZh: '至少道了别', reasonEn: 'At least you said goodbye' }
+                ],
+                setFlags: ['prologue_miyuki_wave'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '',
+                    zh: '你举起手挥了挥，转身上了铁楼梯。每一级都响得很清脆。',
+                    en: 'You raise a hand, wave, and start up the iron stairs. Every step rings out crisply.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '走到 201 室门口时，你听见楼下 202 的门开了，又轻轻关上。',
+                    en: 'At the door of 201 you hear the door of 202 open below you, and close again softly.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '隔着一堵墙，那是今晚最后一点人声。你站在门口听了三秒，才把钥匙插进锁孔。',
+                    en: 'Through one wall, that is the last human sound of the night. You stand and listen for three seconds before putting your key in the lock.'
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1085,6 +2036,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         effects: [
           { stat: 'kindness', amount: 1, reasonZh: '礼数到了，分寸也到了', reasonEn: 'Courtesy given, and distance respected' }
         ],
+        relations: [
+          { char: CharacterId.MIYUKI, familiarity: 16, reasonZh: '和 202 室的邻居互相认了个脸', reasonEn: 'You and your neighbour in 202 now know each other by sight' }
+        ],
         setFlags: ['prologue_nodded_miyuki'],
         then: [
           {
@@ -1094,6 +2048,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
+            characterImage: '/images/characters/miyuki/neutral.webp',
             speakerZh: '银发的女子',
             speakerEn: 'Silver-haired Woman',
             jp: '……こんばんは。',
@@ -1103,13 +2058,112 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
+            characterImage: '',
             zh: '短短三个字，却让整个便利店的白光都柔和了一点。你们前后脚走出店门，一路上没再说话。',
             en: 'Three quiet syllables, and somehow the harsh store light softens. You leave one after the other, and neither of you says anything more on the way up.'
           },
           {
+            type: 'scene',
+            scene: 'umikaze_exterior',
+            bgm: 'night'
+          },
+          {
             type: 'narration',
+            characterImage: '/images/characters/miyuki/neutral.webp',
             zh: '但在她推开 202 室的门之前，她回过头，又对你笑了一下。',
             en: 'But before she pushes open the door of Room 202, she turns back and smiles at you once more.'
+          },
+          {
+            type: 'choice',
+            promptZh: '她的门还没关上。',
+            promptEn: 'Her door has not closed yet.',
+            options: [
+              {
+                id: 'miyuki_wave_back',
+                labelZh: '举起手，无声地挥了一下',
+                labelEn: 'Raise a hand and wave, without a word',
+                hintZh: '说不出话，手还是能动的',
+                hintEn: 'The words will not come. Your hand still works.',
+                effects: [
+                  { stat: 'charm', amount: 1, reasonZh: '把说不出口的话用手挥了出去', reasonEn: 'You waved the sentence you could not say' }
+                ],
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 4, affection: 2, reasonZh: '在她关门前回了一次礼', reasonEn: 'You answered her before the door closed' }
+                ],
+                setFlags: ['prologue_miyuki_wave_back'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/happy.webp',
+                    zh: '她看见了，眼睛弯了一下，然后才进门。门关上的声音很轻。',
+                    en: 'She sees it. Her eyes curve, and only then does she step inside. The door closes quietly.'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '',
+                    zh: '你在楼梯上站了一会儿。今晚一句完整的话都没说出口，但好像也不算全输。',
+                    en: 'You stand on the stairs a moment. Not one complete sentence tonight — and yet it does not feel like a total loss.'
+                  }
+                ]
+              },
+              {
+                id: 'miyuki_bow_back',
+                labelZh: '也回她一个更深的鞠躬',
+                labelEn: 'Return the bow — deeper than hers',
+                hintZh: '不会说，就把礼数做到底',
+                hintEn: 'If you cannot speak, at least do the courtesy all the way.',
+                effects: [
+                  { stat: 'kindness', amount: 1, reasonZh: '把礼数做到了最后一秒', reasonEn: 'You held the courtesy to the last second' }
+                ],
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 3, affection: 1, reasonZh: '一躬到底，她在门口多站了两秒', reasonEn: 'A deep bow — and she stayed in the doorway two seconds longer' }
+                ],
+                setFlags: ['prologue_miyuki_bow_back'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '/images/characters/miyuki/happy_alt.webp',
+                    zh: '你弯下腰，角度深得有点过分。抬头时她还站在门口，像是被逗到了，忍着笑对你摆了摆手。',
+                    en: 'You bend at the waist — rather deeper than necessary. When you straighten up she is still in the doorway, visibly holding back a laugh, waving you off.'
+                  },
+                  {
+                    type: 'narration',
+                    characterImage: '',
+                    zh: '上楼的时候你才反应过来：那大概是「不用这么客气」的意思。',
+                    en: 'Only on the stairs does it land: that was probably her way of saying you did not need to be so formal.'
+                  }
+                ]
+              },
+              {
+                id: 'miyuki_missed',
+                labelZh: '已经上到二楼了——来不及了',
+                labelEn: 'You are already on the second floor. Too late.',
+                hintZh: '等你想回头的时候，门已经关上了',
+                hintEn: 'By the time you think to turn around, the door has shut.',
+                relations: [
+                  { char: CharacterId.MIYUKI, familiarity: 1, reasonZh: '至少你们对上过一次视线', reasonEn: 'At least your eyes met once tonight' }
+                ],
+                setFlags: ['prologue_miyuki_missed'],
+                then: [
+                  {
+                    type: 'narration',
+                    characterImage: '',
+                    zh: '等你反应过来该回一个什么的时候，楼下的门已经「咔哒」一声关上了。',
+                    en: 'By the time you work out that you should have answered with something, the door below has clicked shut.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '你站在 201 室门口，对着空荡荡的楼梯，把那句迟到的「こんばんは」小声说了一遍。',
+                    en: 'You stand at the door of 201, facing an empty stairwell, and say the belated "good evening" under your breath anyway.'
+                  },
+                  {
+                    type: 'narration',
+                    zh: '没有人听见。但你决定，明天早上要早一点出门。',
+                    en: 'Nobody hears it. But you decide to leave a little earlier tomorrow morning.'
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1123,6 +2177,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
+            characterImage: '',
             zh: '你把视线转向旁边的冰柜，假装在认真研究一排你根本不打算买的饮料。',
             en: 'You turn toward the cooler and pretend to study, very seriously, a row of drinks you have no intention of buying.'
           },
@@ -1132,9 +2187,19 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             en: 'In the corner of your vision, she looks at you for a moment, then closes the magazine and walks quietly to the register.'
           },
           {
+            type: 'scene',
+            scene: 'kitano_slope',
+            bgm: 'night'
+          },
+          {
             type: 'narration',
-            zh: '走出便利店时，坡道上已经没有她的影子了。你拎着袋子一个人往上爬，风比刚才凉。',
-            en: 'By the time you step outside, there is no sign of her on the slope. You climb alone with your bag. The wind is colder than it was.'
+            zh: '走出便利店时，坡道上已经没有她的影子了。你一个人往上爬，风比刚才凉。',
+            en: 'By the time you step outside, there is no sign of her on the slope. You climb alone. The wind is colder than it was.'
+          },
+          {
+            type: 'scene',
+            scene: 'umikaze_exterior',
+            bgm: 'night'
           },
           {
             type: 'narration',
@@ -1152,6 +2217,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'scene',
     scene: 'apartment_room',
+    bgm: 'night',
     titleZh: '海风庄 201 室 · 夜',
     titleEn: 'Umikaze-so, Room 201 · Night',
     subtitleZh: '晚上 8:40 · 窗外是千万级的夜景',
@@ -1161,6 +2227,23 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     type: 'narration',
     zh: '你把明天开学要穿的深蓝色制服熨得平平整整，仔细地把银色校徽别在领口——私立神户海星学园，高二 B 班。',
     en: 'You press tomorrow’s navy uniform flat, and pin the silver crest carefully to the collar. Kobe Kaisei Academy. Second year, Class B.'
+  },
+  {
+    // 什么都没买的人也该有一段属于自己的晚饭
+    type: 'branch',
+    ifFlag: 'prologue_empty_handed',
+    then: [
+      {
+        type: 'narration',
+        zh: '冰箱是空的，柜子也是空的。你灌了一大杯自来水，把肚子先骗过去。',
+        en: 'The fridge is empty. So are the cupboards. You drink a tall glass of tap water and let your stomach believe it for now.'
+      },
+      {
+        type: 'narration',
+        zh: '明天放学后第一件事：去买菜。你把这句话写在便签上，贴在了空荡荡的冰箱门上。',
+        en: 'Tomorrow after school, first thing: groceries. You write it on a sticky note and press it to the empty fridge door.'
+      }
+    ]
   },
   {
     type: 'branch',

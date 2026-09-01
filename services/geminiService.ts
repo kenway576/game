@@ -68,7 +68,7 @@ const getEmotionVocab = (character: Character): string[] => {
   return [...set];
 };
 
-const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, affection: number = 0, memory: string = '', unlockedOutfits?: string[], unlockedScenes?: string[], familiarity: number = 0) => {
+const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, affection: number = 0, memory: string = '', unlockedOutfits?: string[], unlockedScenes?: string[], familiarity: number = 0, encounterOverride?: EncounterOverride) => {
   const personaBase = character.systemPrompt;
   const pedagogicalLang = lang === 'en' ? 'English' : 'Chinese (Simplified)';
   // 服装/场景按关系等级解锁；未传入时退化为全部可用
@@ -79,6 +79,10 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
   const affectionLevel = getAffectionLevel(affection);
   const familiarityLevel = getFamiliarityLevel(familiarity);
   const profile = getRelationshipProfile(character.id);
+  // 序章里到底有没有见过面，由存档里的剧情 flag 决定，不能写死在角色档案里。
+  // 没有覆写（还没打序章 / 与序章无关的角色）时退回角色自己的设定。
+  const origin = encounterOverride?.origin ?? profile.origin;
+  const encounter = encounterOverride?.encounter ?? profile.encounter;
   const stageDirective = getFamiliarityStage(character.id, familiarity);
   const romanceCapped = isRomanceCapped(affection, familiarity);
 
@@ -107,10 +111,10 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     - Let warmth be earned. Never open at a level of intimacy the tracks below do not allow.
 
     [HOW YOU KNOW THIS PLAYER - THE GROUND TRUTH]
-    ${profile.origin === 'stranger'
-      ? `You and the player are STRANGERS at the start of this story. ${profile.encounter}
+    ${origin === 'stranger'
+      ? `You and the player are STRANGERS at the start of this story. ${encounter}
     - You must NOT invent shared history, in-jokes, nicknames, or past promises. If you catch yourself about to reference something you two "always" do — stop, because you have never done it.`
-      : `You already know the player. ${profile.encounter}
+      : `You already know the player. ${encounter}
     - This history is real and you may reference it naturally. But it is exactly as deep as described above and no deeper — do not upgrade it into something more intimate than it is.`}
     ${memoryBlock}
     ${quizInstruction}
@@ -396,8 +400,16 @@ export const buildOpeningBrief = (origin: 'stranger' | 'acquainted', script?: st
     : `\n【システム：二人はすでに知り合いです。今日は特別な日ではなく、いつもの日常の一場面として始めてください。設定された関係の距離感を厳密に守り、それ以上親密に振る舞わないこと。${ref}】`;
 };
 
+// 序章 flag 决定的"你们到底认不认识"。由 App 从存档里的 storyFlags 解析后传入，
+// 覆盖 RELATIONSHIP_PROFILES 里写死的默认关系。
+export interface EncounterOverride {
+  origin: 'stranger' | 'acquainted';
+  encounter: string;
+}
+
 export interface StartChatOptions {
   apiKey?: string;
+  encounterOverride?: EncounterOverride;
   modelName?: string;
   history?: Message[];
   affection?: number;
@@ -412,11 +424,11 @@ export interface StartChatOptions {
 }
 
 export const startChat = async (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, options: StartChatOptions = {}) => {
-    const { apiKey, modelName = 'deepseek-v4-flash', history = [], affection = 0, familiarity = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, openingBrief = '', onPage } = options;
+    const { apiKey, modelName = 'deepseek-v4-flash', history = [], affection = 0, familiarity = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, openingBrief = '', onPage, encounterOverride } = options;
     currentModelName = modelName;
     currentCharacterName = character.name;
     currentApiKey = apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
-    const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang, affection, memory, unlockedOutfits, unlockedScenes, familiarity);
+    const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang, affection, memory, unlockedOutfits, unlockedScenes, familiarity, encounterOverride);
     const startTrigger = START_TRIGGER + openingBrief;
 
     if (isOpenAICompatible(modelName, baseUrl)) {

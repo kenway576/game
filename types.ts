@@ -205,6 +205,28 @@ export interface StoryEffect {
   reasonEn: string;
 }
 
+// 一次关系变动。剧本能直接给親密度/好感度——
+// 没有这个，序章里"主动跟邻居搭话"就只能加魅力，攒不下任何关系。
+export interface StoryRelationEffect {
+  char: CharacterId;
+  familiarity?: number;
+  affection?: number;
+  reasonZh: string;
+  reasonEn: string;
+}
+
+// 剧本台词里挂的生词。节点展示时自动进单词本，
+// 让序章的日语原文真的算"学过"，而不是读完就没了。
+export interface StoryWord {
+  jp: string;
+  reading?: string;
+  zh: string;
+  en: string;
+}
+
+// 剧本可以指定的 BGM 轨（audioManager.BgmTrack 由此派生，保持单一事实来源）
+export type StoryBgmTrack = 'title' | 'lobby' | 'chat' | 'train' | 'town' | 'store' | 'night';
+
 // 选项的属性门槛。不满足时选项灰掉但仍然可见——
 // 让玩家看见"如果当时勇气再高一点"，这是这套系统的主要驱动力。
 export interface StoryRequirement {
@@ -221,6 +243,8 @@ export interface StoryOption {
   hintEn?: string;
   requires?: StoryRequirement;
   effects?: StoryEffect[];
+  // 选中后立刻结算的关系变动（找谁搭话、帮了谁）
+  relations?: StoryRelationEffect[];
   setFlags?: string[];
   // 选中后插入播放的分支节点，播完自动回到主线
   then: StoryNode[];
@@ -238,24 +262,55 @@ export interface ShopItem {
   emoji: string;
   imageUrl?: string;      // 专属商品立绘 / 插画卡片路径
   effects?: StoryEffect[];
+  relations?: StoryRelationEffect[];
   setFlags?: string[];
 }
 
 export type StoryNode =
-  // 切背景（可带一个章节标题卡）
-  | { type: 'scene'; scene: string; titleZh?: string; titleEn?: string; subtitleZh?: string; subtitleEn?: string }
-  // 旁白 / 内心独白
-  | { type: 'narration'; zh: string; en: string }
-  // 台词。jp 有值时上方显示日语原文，下方显示译文（本作是日语学习游戏）；characterImage 可挂载对话时出场的立绘
-  | { type: 'speech'; speakerZh: string; speakerEn: string; jp?: string; zh: string; en: string; color?: string; characterImage?: string }
-  // 无条件属性增益（剧情自动给的）
-  | { type: 'effect'; effects: StoryEffect[] }
+  // 切背景（可带一个章节标题卡）。bgm 省略时沿用上一场的曲子。
+  | { type: 'scene'; scene: string; bgm?: StoryBgmTrack; titleZh?: string; titleEn?: string; subtitleZh?: string; subtitleEn?: string }
+  // 旁白 / 内心独白。characterImage 用来在旁白里让人上下场：
+  // 给路径 = 换上这张立绘，给空串 = 让当前立绘退场，不写 = 保持不变。
+  | { type: 'narration'; zh: string; en: string; words?: StoryWord[]; characterImage?: string }
+  // 台词。jp 有值时上方显示日语原文，下方显示译文（本作是日语学习游戏）；
+  // characterImage 语义同 narration：给路径换立绘、给空串退场、不写则沿用上一张
+  | { type: 'speech'; speakerZh: string; speakerEn: string; jp?: string; zh: string; en: string; color?: string; characterImage?: string; words?: StoryWord[] }
+  // 无条件属性 / 关系增益（剧情自动给的）
+  | { type: 'effect'; effects?: StoryEffect[]; relations?: StoryRelationEffect[] }
+  // 全屏 CG 插画。播放后永久解锁到回忆图鉴。
+  | { type: 'cg'; cgId: string; imageUrl: string; titleZh: string; titleEn: string; captionZh: string; captionEn: string }
   // 分歧选项
   | { type: 'choice'; promptZh: string; promptEn: string; options: StoryOption[] }
-  // 自由购物（便利店）：预算内随便挑，结算时统一生效
-  | { type: 'shop'; budget: number; promptZh: string; promptEn: string; items: ShopItem[] }
+  // 自由购物（便利店）：预算内随便挑，结算时统一生效。
+  // setFlagsOnPurchase / setFlagsOnEmpty 用来分叉后续剧情——
+  // 空手走出去的人不该被店员问「要筷子吗」。
+  | { type: 'shop'; budget: number; promptZh: string; promptEn: string; items: ShopItem[]; setFlagsOnPurchase?: string[]; setFlagsOnEmpty?: string[] }
   // 条件插播：满足 flag 时才播这段（用于回收前面的选择）
   | { type: 'branch'; ifFlag: string; not?: boolean; then: StoryNode[] };
 
 // 剧情选择留下的痕迹。随存档保存，可注入 AI 的 system prompt。
 export type StoryFlags = Record<string, boolean>;
+
+// 序章中途进度。独立于存档槽单独写 localStorage：
+// 关掉页面再回来能接着看，不用把 103 段文本重播一遍。
+export interface StoryProgress {
+  version: string;
+  idx: number;
+  nodes: StoryNode[];
+  flags: StoryFlags;
+  stats: ProtagonistStats;
+  // 已经拿到手的东西也要一起存，否则续玩会把序章前半段的收获吞掉
+  words: StoryWord[];
+  relations: StoryRelationEffect[];
+  unlockedCgs: string[];
+  savedAt: number;
+}
+
+// 序章结算屏的数据
+export interface PrologueResult {
+  flags: StoryFlags;
+  statsBefore: ProtagonistStats;
+  statsAfter: ProtagonistStats;
+  wordsLearned: number;
+  skipped: boolean;
+}
