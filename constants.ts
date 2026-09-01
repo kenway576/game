@@ -87,7 +87,19 @@ export const SCENE_MAP: Record<string, string> = {
   'portliner_sannomiya':           '/images/backgrounds/bg_portliner_sannomiya_platform.webp',
   'sannomiya_junkudo_bookstore':   '/images/backgrounds/bg_sannomiya_junkudo_bookstore.webp',
   'junkudo_bookstore':             '/images/backgrounds/bg_sannomiya_junkudo_bookstore.webp',
-  'sannomiya_bookstore':           '/images/backgrounds/bg_sannomiya_junkudo_bookstore.webp'
+  'sannomiya_bookstore':           '/images/backgrounds/bg_sannomiya_junkudo_bookstore.webp',
+  // 🚊 🏛️ 🎸 神户三宫深度地标（Port Liner 进站闸机、旧居留地十五番馆内外景、高架下 Pia Kobe 唱片街）
+  'portliner_sannomiya_gate':      '/images/backgrounds/bg_portliner_sannomiya_gate.webp',
+  'portliner_gate':                '/images/backgrounds/bg_portliner_sannomiya_gate.webp',
+  'portliner_sannomiya_sunset':    '/images/backgrounds/bg_portliner_sannomiya_sunset.webp',
+  'former_settlement_15_exterior': '/images/backgrounds/bg_former_settlement_15_exterior.webp',
+  'former_settlement_exterior':    '/images/backgrounds/bg_former_settlement_15_exterior.webp',
+  'former_settlement_15_salon':    '/images/backgrounds/bg_former_settlement_15_salon.webp',
+  'former_settlement_salon':       '/images/backgrounds/bg_former_settlement_15_salon.webp',
+  'former_settlement_interior':    '/images/backgrounds/bg_former_settlement_15_salon.webp',
+  'sannomiya_pia_kobe_arcade':     '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
+  'pia_kobe_arcade':               '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
+  'pia_kobe':                      '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
@@ -1066,9 +1078,9 @@ export const getFamiliarityStage = (charId: CharacterId, familiarity: number): s
 // 各**親密度**等级解锁的场景（对全角色通用；键须存在于 SCENE_MAP）
 export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
   1: ['classroom', 'hallway', 'library', 'rooftop', 'gym', 'street', 'park'],
-  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior', 'sannomiya_junkudo_bookstore', 'portliner_sannomiya_platform'],
-  3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform', 'ikuta_shrine_gate', 'ikuta_shrine_forest'],
-  4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi', 'kitano_tenman_shrine_lookout'],
+  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior', 'sannomiya_junkudo_bookstore', 'portliner_sannomiya_gate', 'portliner_sannomiya_platform', 'sannomiya_pia_kobe_arcade'],
+  3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform', 'ikuta_shrine_gate', 'ikuta_shrine_forest', 'former_settlement_15_exterior', 'former_settlement_15_salon'],
+  4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi', 'kitano_tenman_shrine_lookout', 'portliner_sannomiya_sunset'],
   5: ['castle', 'luminarie', 'arima_onsen', 'dotonbori', 'kiyomizu_stage']
 };
 
