@@ -73,7 +73,21 @@ export const SCENE_MAP: Record<string, string> = {
   'nishimura_coffee_salon':     '/images/backgrounds/bg_nishimura_coffee_salon.webp',
   'nishimura_coffee_bar':       '/images/backgrounds/bg_nishimura_coffee_bar.webp',
   'nishimura_coffee_window':    '/images/backgrounds/bg_nishimura_coffee_window.webp',
-  'nishimura_coffee_sandwich':  '/images/backgrounds/bg_nishimura_coffee_sandwich.webp'
+  'nishimura_coffee_sandwich':  '/images/backgrounds/bg_nishimura_coffee_sandwich.webp',
+  // ⛩️ 神户三宫核心地标圣地（生田神社、北野天满神社、Port Liner 轻轨、淳久堂书店）
+  'ikuta_shrine_gate':             '/images/backgrounds/bg_ikuta_shrine_gate.webp',
+  'ikuta_gate':                    '/images/backgrounds/bg_ikuta_shrine_gate.webp',
+  'ikuta_shrine_forest':           '/images/backgrounds/bg_ikuta_shrine_forest.webp',
+  'ikuta_forest':                  '/images/backgrounds/bg_ikuta_shrine_forest.webp',
+  'kitano_tenman_shrine_lookout':  '/images/backgrounds/bg_kitano_tenman_shrine_lookout.webp',
+  'kitano_tenman_shrine':          '/images/backgrounds/bg_kitano_tenman_shrine_lookout.webp',
+  'kitano_lookout':                '/images/backgrounds/bg_kitano_tenman_shrine_lookout.webp',
+  'portliner_sannomiya_platform':  '/images/backgrounds/bg_portliner_sannomiya_platform.webp',
+  'portliner_platform':            '/images/backgrounds/bg_portliner_sannomiya_platform.webp',
+  'portliner_sannomiya':           '/images/backgrounds/bg_portliner_sannomiya_platform.webp',
+  'sannomiya_junkudo_bookstore':   '/images/backgrounds/bg_sannomiya_junkudo_bookstore.webp',
+  'junkudo_bookstore':             '/images/backgrounds/bg_sannomiya_junkudo_bookstore.webp',
+  'sannomiya_bookstore':           '/images/backgrounds/bg_sannomiya_junkudo_bookstore.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
@@ -1052,9 +1066,9 @@ export const getFamiliarityStage = (charId: CharacterId, familiarity: number): s
 // 各**親密度**等级解锁的场景（对全角色通用；键须存在于 SCENE_MAP）
 export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
   1: ['classroom', 'hallway', 'library', 'rooftop', 'gym', 'street', 'park'],
-  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior'],
-  3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform'],
-  4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi'],
+  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior', 'sannomiya_junkudo_bookstore', 'portliner_sannomiya_platform'],
+  3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform', 'ikuta_shrine_gate', 'ikuta_shrine_forest'],
+  4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi', 'kitano_tenman_shrine_lookout'],
   5: ['castle', 'luminarie', 'arima_onsen', 'dotonbori', 'kiyomizu_stage']
 };
 
