@@ -60,6 +60,8 @@ export const SCENE_MAP: Record<string, string> = {
   'sannomiya_arcade':            '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
   'convenience_store':           '/images/backgrounds/bg_convenience_store_interior.webp',
   'convenience_store_exterior':  '/images/backgrounds/bg_convenience_store_night.webp',
+  'convenience_store_night':     '/images/backgrounds/bg_convenience_store_night.webp',
+  'kitano_convenience_store':    '/images/backgrounds/bg_convenience_store_night.webp',
   'convenience_store_interior':  '/images/backgrounds/bg_convenience_store_interior.webp',
   'convenience_store_counter':   '/images/backgrounds/bg_convenience_store_counter.webp',
   'grandfather_journal':         '/images/backgrounds/bg_grandfather_journal.webp'
@@ -1044,10 +1046,10 @@ export const getFamiliarityStage = (charId: CharacterId, familiarity: number): s
 // 各**親密度**等级解锁的场景（对全角色通用；键须存在于 SCENE_MAP）
 export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
   1: ['classroom', 'hallway', 'library', 'rooftop', 'gym', 'street', 'park'],
-  2: ['cafe', 'kitchen', 'room'],
-  3: ['beach', 'shrine', 'lab'],
-  4: ['festival', 'night'],
-  5: ['castle']
+  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior'],
+  3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform'],
+  4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi'],
+  5: ['castle', 'luminarie', 'arima_onsen', 'dotonbori', 'kiyomizu_stage']
 };
 
 // 各角色各等级解锁的服装（键须存在于 WARDROBE 对应角色的列表）

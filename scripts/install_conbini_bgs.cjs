@@ -4,13 +4,19 @@ const path = require('path');
 
 const uploads = [
   {
-    src: 'C:/Users/adm/.gemini/antigravity/brain/7067a92b-54aa-4bc9-bfc4-aa9a64f16b16/.user_uploaded/media_1788195170266.jpg',
-    target: 'public/images/backgrounds/bg_convenience_store_night.webp',
+    src: 'C:/Users/adm/.gemini/antigravity/brain/5aeade40-c8de-4530-87d0-a4afd6a5657f/.user_uploaded/media_1788197570823.jpg',
+    targets: [
+      'public/images/backgrounds/bg_convenience_store_night.webp',
+      'dist/images/backgrounds/bg_convenience_store_night.webp'
+    ],
     name: 'Kitano 24h Convenience Store Exterior (Night)'
   },
   {
     src: 'C:/Users/adm/.gemini/antigravity/brain/7067a92b-54aa-4bc9-bfc4-aa9a64f16b16/.user_uploaded/media_1788195170223.jpg',
-    target: 'public/images/backgrounds/bg_convenience_store_interior.webp',
+    targets: [
+      'public/images/backgrounds/bg_convenience_store_interior.webp',
+      'dist/images/backgrounds/bg_convenience_store_interior.webp'
+    ],
     name: 'Convenience Store Interior (Oden & Shelves)'
   }
 ];
@@ -18,28 +24,27 @@ const uploads = [
 async function processConbini() {
   console.log('Installing Convenience Store exterior and interior backgrounds...');
   for (const item of uploads) {
+    if (!fs.existsSync(item.src)) {
+      console.log(`Skipping missing source: ${item.src}`);
+      continue;
+    }
     const inputBuf = fs.readFileSync(item.src);
     const meta = await sharp(inputBuf).metadata();
     console.log(`\nProcessing ${item.name} (${meta.width}x${meta.height})...`);
 
-    const targetHeight = Math.round(meta.width * (9 / 16));
-    const topOffset = Math.round((meta.height - targetHeight) / 3);
-
     const outBuf = await sharp(inputBuf)
-      .extract({
-        left: 0,
-        top: Math.max(0, topOffset),
-        width: meta.width,
-        height: Math.min(meta.height, targetHeight)
-      })
-      .resize(1280, 720, { fit: 'cover' })
+      .resize(1280, 720, { fit: 'cover', position: 'center' })
       .webp({ quality: 92 })
       .toBuffer();
 
-    fs.writeFileSync(item.target, outBuf);
-    console.log(`  -> Saved ${item.target} (1280x720, ${(outBuf.length / 1024).toFixed(1)} KB) successfully!`);
+    for (const target of item.targets) {
+      const dir = path.dirname(target);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(target, outBuf);
+      console.log(`  -> Saved ${target} (1280x720, ${(outBuf.length / 1024).toFixed(1)} KB) successfully!`);
+    }
   }
-  console.log('\nBoth convenience store backgrounds installed perfectly!');
+  console.log('\nConvenience store backgrounds installed perfectly!');
 }
 
 processConbini();
