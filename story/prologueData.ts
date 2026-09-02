@@ -1498,7 +1498,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             labelEn: '"A bag please. And one pair of chopsticks... ookini!"',
             hintZh: '关西人道谢时说的那一句',
             hintEn: 'The way people say thank you around here.',
-            requires: { stat: 'guts', min: 2 },
+            // 只有被真纪教过「おおきに」的人才看得到这一句。
+            // 之前是拿 guts>=2 当门槛，结果没去过商店街的人也能选——
+            // 等于凭空说出一个游戏从没教过的词。勇气在真纪那一幕已经考过了。
+            requiresFlag: 'prologue_maki_kansai',
             effects: [
               { stat: 'charm', amount: 2, reasonZh: '来的第一天就用上了关西腔', reasonEn: 'Day one, and already speaking Kansai' },
               { stat: 'guts', amount: 1, reasonZh: '敢把刚学会的话立刻用出去', reasonEn: 'You used a phrase the same hour you learned it' }

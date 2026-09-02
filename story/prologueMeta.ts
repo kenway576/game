@@ -9,7 +9,7 @@ import { CharacterId } from '../types';
 
 // 中途存档的版本戳。剧本结构改动后手动 +1，
 // 旧的半截进度会被丢弃而不是错位播放到别人的台词上。
-export const PROLOGUE_SCRIPT_VERSION = '0.5.0';
+export const PROLOGUE_SCRIPT_VERSION = '0.5.1';
 
 // 序章中途进度写在这个键下（独立于存档槽：序章还没打完就还没有"角色"可存）
 export const PROLOGUE_PROGRESS_KEY = 'kobe_study_prologue_progress_v1';

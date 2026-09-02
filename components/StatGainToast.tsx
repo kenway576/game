@@ -5,10 +5,13 @@ import { STAT_METADATA } from '../constants';
 interface Props {
   event: StatGainEvent | null;
   language: Language;
+  // 当前该属性的总值。只显示 "+1" 的话，玩家会把增量当成总数，
+  // 然后奇怪自己"勇气只有 1"为什么能选需要 2 的选项。
+  total?: number;
   onDismiss: () => void;
 }
 
-export const StatGainToast: React.FC<Props> = ({ event, language, onDismiss }) => {
+export const StatGainToast: React.FC<Props> = ({ event, language, total, onDismiss }) => {
   useEffect(() => {
     if (!event) return;
     const timer = setTimeout(() => {
@@ -35,6 +38,11 @@ export const StatGainToast: React.FC<Props> = ({ event, language, onDismiss }) =
           <span className="text-xs font-black text-white" style={{ color: meta.color }}>
             {language === 'en' ? meta.nameEn : meta.nameZh.split(' ')[0]} +{event.amount}
           </span>
+          {typeof total === 'number' && (
+            <span className="text-[11px] font-bold text-zinc-400 tabular-nums">
+              {language === 'en' ? `now ${total}` : `当前 ${total}`}
+            </span>
+          )}
         </div>
         <span className="text-[11px] text-zinc-300">
           {language === 'en' ? event.reasonEn : event.reasonZh}

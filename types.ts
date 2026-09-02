@@ -242,6 +242,10 @@ export interface StoryOption {
   hintZh?: string;
   hintEn?: string;
   requires?: StoryRequirement;
+  // 剧情前提：没有这个 flag 就**根本不显示**这个选项。
+  // 和 requires 的区别：requires 是"你不够勇敢"，选项照样列出来吊着你；
+  // requiresFlag 是"你压根没学过这句话"，列出来只会让玩家莫名其妙。
+  requiresFlag?: string;
   effects?: StoryEffect[];
   // 选中后立刻结算的关系变动（找谁搭话、帮了谁）
   relations?: StoryRelationEffect[];

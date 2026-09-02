@@ -1402,6 +1402,7 @@ const App: React.FC = () => {
       <StatGainToast
         event={statGainEvent}
         language={userState.language}
+        total={statGainEvent ? protagonistStats[statGainEvent.stat] : undefined}
         onDismiss={() => setStatGainEvent(null)}
       />
     </div>

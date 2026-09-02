@@ -707,7 +707,9 @@ const StoryScreen: React.FC<Props> = ({
               </span>
             </div>
             <div className="flex flex-col gap-3">
-              {node.options.map(opt => {
+              {node.options
+                .filter(opt => !opt.requiresFlag || flagsRef.current[opt.requiresFlag])
+                .map(opt => {
                 const ok = meetsRequirement(opt);
                 const reqMeta = opt.requires ? STAT_METADATA[opt.requires.stat] : null;
                 return (
