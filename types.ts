@@ -329,6 +329,16 @@ export type StoryNode =
   // 剧情里问玩家的名字。取代开场的「学员登记」表单：
   // 名字不该在游戏还没开始时填，而该在第一个角色真的开口问你时填。
   | { type: 'nameInput'; promptZh: string; promptEn: string; placeholderZh: string; placeholderEn: string }
+  // 数值分歧：按好感度 / 親密度 / 五维的当前值分叉。
+  // 和 branch 的区别是 branch 判"发生过没有"，check 判"到什么程度了"。
+  // 第③段的「相爱 or 挚友」就靠它——两个结局共用前面的铺垫，只在最后岔开。
+  | {
+      type: 'check';
+      metric: 'affection' | 'familiarity' | StatKey;
+      min: number;
+      then: StoryNode[];
+      otherwise?: StoryNode[];
+    }
   // 随机插播：从 pick 里随机抽一组播出去（重玩时遇到的人不一样）。
   // 抽中的结果会被就地拼进节点表、随进度一起存档，
   // 所以读档回来播的还是同一段，不会刷新一次换一个人。

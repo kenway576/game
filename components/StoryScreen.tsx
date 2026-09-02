@@ -30,6 +30,10 @@ interface Props {
   // 之前写死成"序章"，第一章复用同一个组件时文案就错了。
   chapterNameZh?: string;
   chapterNameEn?: string;
+  // 这段剧本讲的是谁：check 节点判好感度 / 親密度时用。
+  // 序章这类没有特定对象的章节不传，check 判关系时一律当 0。
+  storyAffection?: number;
+  storyFamiliarity?: number;
   // 当前玩家名，用来替换台词里的 {name} 占位符
   playerName: string;
   // nameInput 节点提交时回填给 App
@@ -84,6 +88,7 @@ interface BacklogEntry { speaker: string; main: string; sub: string; }
 const StoryScreen: React.FC<Props> = ({
   script, scriptVersion, progressKey, language, stats, background,
   initialProgress, onOpenSystemMenu, playerName, onSetPlayerName,
+  storyAffection = 0, storyFamiliarity = 0,
   chapterNameZh, chapterNameEn,
   onEffects, onRelations, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
 }) => {
@@ -295,6 +300,14 @@ const StoryScreen: React.FC<Props> = ({
     } else if (node.type === 'branch') {
       const has = !!flagsRef.current[node.ifFlag];
       if (node.not ? !has : has) spliceAfter(node.then);
+      advance();
+    } else if (node.type === 'check') {
+      const value = node.metric === 'affection'
+        ? storyAffection
+        : node.metric === 'familiarity'
+          ? storyFamiliarity
+          : (statsRef.current[node.metric] || 0);
+      spliceAfter(value >= node.min ? node.then : (node.otherwise || []));
       advance();
     } else if (node.type === 'random') {
       // 抽中的那一组就地拼进 nodes，于是它会跟着进度一起存盘 ——

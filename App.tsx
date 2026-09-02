@@ -1534,6 +1534,8 @@ const App: React.FC = () => {
         <StoryScreen
           key={`levelstory-${activeLevelStory.def.id}`}
           script={activeLevelStory.def.script || []}
+          storyAffection={affectionMap[activeLevelStory.charId] || 0}
+          storyFamiliarity={familiarityMap[activeLevelStory.charId] ?? getInitialFamiliarity(activeLevelStory.charId)}
           scriptVersion={`${activeLevelStory.def.id}-v1`}
           progressKey={`kobe_study_story_${activeLevelStory.def.id}`}
           language={userState.language}
