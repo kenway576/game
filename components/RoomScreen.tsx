@@ -1,0 +1,186 @@
+import React, { useState, useMemo } from 'react';
+import { GameCalendar, Language, RoomHotspot, StoryFlags } from '../types';
+import { ROOM_HOTSPOTS, ROOM_VIEW_LINES, getRoomBackground } from '../constants';
+import { audioManager } from '../services/audioManager';
+
+// ---------------------------------------------------------
+// 🏠 海风庄 201 室 —— 可互动的自己的房间
+//
+// 背景按 gameCalendar 的时段 / 天气自动换成同一个房间的对应变体
+// （晴 / 阴 / 夕阳 / 雨 / 夜，家具和镜头完全一致）。
+//
+// 热区坐标用百分比，跟着背景一起缩放；背景本身用 object-cover 铺满，
+// 所以热区和画面上的家具在任何屏幕比例下都对得上。
+//
+// 随剧情解锁：带 requiresFlag 的热区一开始不存在，
+// 玩家推到那一步之后房间里能点的东西才变多。
+// ---------------------------------------------------------
+
+interface Props {
+  language: Language;
+  calendar: GameCalendar;
+  storyFlags: StoryFlags;
+  onClose: () => void;
+  onOpenWordbook: () => void;
+  onSleep: () => void;
+}
+
+const RoomScreen: React.FC<Props> = ({
+  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep
+}) => {
+  const en = language === 'en';
+  const [active, setActive] = useState<{ hotspot: RoomHotspot; text: string } | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  const bg = getRoomBackground(calendar);
+
+  // 解锁了的热区才出现
+  const spots = useMemo(
+    () => ROOM_HOTSPOTS.filter(h => !h.requiresFlag || storyFlags[h.requiresFlag]),
+    [storyFlags]
+  );
+  const lockedCount = ROOM_HOTSPOTS.length - spots.length;
+
+  const pick = (h: RoomHotspot) => {
+    audioManager.playSfx(h.action === 'sleep' ? 'confirm' : 'click');
+
+    if (h.action === 'view') {
+      // 看风景：按当前天气取词。夜里优先按夜景说。
+      const key = calendar.timeSlot === 'night' ? 'night' : calendar.weather;
+      const line = ROOM_VIEW_LINES[key] || ROOM_VIEW_LINES.sunny;
+      setActive({ hotspot: h, text: en ? line.en : line.zh });
+      return;
+    }
+    setActive({ hotspot: h, text: en ? h.linesEn[0] : h.linesZh[0] });
+  };
+
+  const confirmAction = () => {
+    const h = active?.hotspot;
+    setActive(null);
+    if (!h) return;
+    if (h.action === 'wordbook') onOpenWordbook();
+    if (h.action === 'sleep') onSleep();
+  };
+
+  const timeLabel = en
+    ? `${calendar.month}/${calendar.day} · ${calendar.timeSlot}`
+    : `${calendar.month} 月 ${calendar.day} 日 · ${
+        calendar.timeSlot === 'morning' ? '早晨' : calendar.timeSlot === 'afternoon' ? '午后' : '夜里'
+      }`;
+
+  return (
+    <div className="fixed inset-0 z-[120] bg-black overflow-hidden select-none">
+      {/* 背景：同一个房间的当前时段变体 */}
+      <img
+        key={bg}
+        src={bg}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover animate-in fade-in duration-700"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/25 pointer-events-none" />
+
+      {/* 顶栏 */}
+      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 md:px-6 py-3">
+        <div className="bg-black/70 backdrop-blur-sm border border-white/20 px-4 py-1.5 transform -skew-x-12">
+          <span className="block transform skew-x-12 text-[11px] md:text-sm font-black text-white tracking-widest">
+            {en ? 'ROOM 201' : '海风庄 201 室'}
+            <span className="ml-3 text-yellow-400/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
+          </span>
+        </div>
+        <button
+          onClick={onClose}
+          className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
+        >
+          <span className="block transform skew-x-12">{en ? 'Out ▶' : '出门 ▶'}</span>
+        </button>
+      </div>
+
+      {/* 热区 */}
+      {spots.map(h => (
+        <button
+          key={h.id}
+          onClick={() => pick(h)}
+          onMouseEnter={() => setHovered(h.id)}
+          onMouseLeave={() => setHovered(null)}
+          style={{ left: `${h.x}%`, top: `${h.y}%`, width: `${h.w}%`, height: `${h.h}%` }}
+          className={`absolute z-20 rounded-xl transition-all duration-200 flex items-start justify-center
+            ${hovered === h.id
+              ? 'bg-yellow-300/15 ring-2 ring-yellow-300/70 backdrop-blur-[1px]'
+              : 'ring-1 ring-white/0 hover:ring-white/20'}`}
+        >
+          {/* 平时只露一个小光点，指上去才显示名字，免得房间被标签糊满 */}
+          <span
+            className={`mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] md:text-xs font-bold tracking-wider whitespace-nowrap transition-all duration-200
+              ${hovered === h.id
+                ? 'bg-black/85 border-yellow-300/70 text-yellow-200 opacity-100 translate-y-0'
+                : 'bg-black/45 border-white/25 text-white/70 opacity-60 -translate-y-0.5'}`}
+          >
+            <span className="text-sm md:text-base leading-none">{h.icon}</span>
+            {hovered === h.id && <span>{en ? h.labelEn : h.labelZh}</span>}
+          </span>
+        </button>
+      ))}
+
+      {/* 点开之后的文字 */}
+      {active && (
+        <div
+          className="absolute inset-0 z-40 flex items-end justify-center pb-8 md:pb-14 px-4 bg-black/30 backdrop-blur-[2px] animate-in fade-in duration-200"
+          onClick={() => setActive(null)}
+        >
+          <div
+            className="w-full max-w-3xl bg-black/90 backdrop-blur-xl border-t-4 border-yellow-400/70 rounded-t-xl p-6 md:p-9 shadow-2xl animate-in slide-in-from-bottom-4 duration-300"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl md:text-2xl">{active.hotspot.icon}</span>
+              <span className="text-[11px] md:text-xs font-black uppercase tracking-[0.3em] text-yellow-400">
+                {en ? active.hotspot.labelEn : active.hotspot.labelZh}
+              </span>
+            </div>
+            <p className="text-base md:text-2xl text-white font-medium leading-relaxed" style={{ textShadow: '0 3px 8px rgba(0,0,0,0.9)' }}>
+              {active.text}
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3 justify-end">
+              {active.hotspot.action === 'sleep' && (
+                <button
+                  onClick={confirmAction}
+                  className="bg-indigo-600 hover:bg-yellow-400 hover:text-black text-white border-2 border-black px-7 py-2.5 font-black italic tracking-widest transform -skew-x-12 shadow-[5px_5px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all"
+                >
+                  <span className="block transform skew-x-12">{en ? 'SLEEP ▶' : '睡下 ▶'}</span>
+                </button>
+              )}
+              {active.hotspot.action === 'wordbook' && (
+                <button
+                  onClick={confirmAction}
+                  className="bg-yellow-500 hover:bg-yellow-300 text-black border-2 border-black px-7 py-2.5 font-black italic tracking-widest transform -skew-x-12 shadow-[5px_5px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all"
+                >
+                  <span className="block transform skew-x-12">{en ? 'OPEN ▶' : '翻开 ▶'}</span>
+                </button>
+              )}
+              <button
+                onClick={() => setActive(null)}
+                className="bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/25 px-7 py-2.5 font-black italic tracking-widest transform -skew-x-12 transition-all"
+              >
+                <span className="block transform skew-x-12">{en ? 'BACK' : '收回视线'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 还没解锁的东西：只提示有，不剧透是什么 */}
+      {lockedCount > 0 && !active && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+          <span className="text-[10px] md:text-xs text-white/40 tracking-wider">
+            {en
+              ? `${lockedCount} more thing${lockedCount > 1 ? 's' : ''} here will matter later.`
+              : `这个房间里还有 ${lockedCount} 样东西，以后才会有意义。`}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default RoomScreen;

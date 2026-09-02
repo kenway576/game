@@ -70,6 +70,7 @@ export enum GameMode {
   SETUP = 'SETUP',
   PROLOGUE = 'PROLOGUE',
   LOBBY = 'LOBBY',
+  ROOM = 'ROOM',
   CHAT = 'CHAT'
 }
 
@@ -147,6 +148,23 @@ export interface RelationshipProfile {
   firstMeeting?: string;
   // 已认识的角色：预置一段共同记忆，让"过去"从第一句话起就存在
   seedMemory?: string;
+}
+
+// 房间里可以点的东西。
+// 坐标用百分比，跟着背景图一起缩放，不依赖屏幕尺寸。
+export interface RoomHotspot {
+  id: string;
+  // 热区在背景图上的位置（%）
+  x: number; y: number; w: number; h: number;
+  icon: string;
+  labelZh: string; labelEn: string;
+  // 点下去之后说的话（会按天气/时段取不同的一条）
+  linesZh: string[]; linesEn: string[];
+  // 解锁条件：没有就一直在；有就等剧情推到那一步。
+  // 随着故事推进，房间里能点的东西越来越多。
+  requiresFlag?: string;
+  // 特殊行为（睡觉推进时间、看风景给描述……）
+  action?: 'sleep' | 'wordbook' | 'journal' | 'view';
 }
 
 // 5. P5 式主角五维人格参数系统 (Protagonist Social Stats)

@@ -1,4 +1,4 @@
-import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags } from './types';
+import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot } from './types';
 
 // ---------------------------------------------------------
 // 🌍 1. 场景地图 (SCENE_MAP)
@@ -1509,6 +1509,90 @@ emailPlaceholder: "For experiment updates and partner messages...",
 // ==========================================
 // P5 式主角五维人格参数与学园行事历常量
 // ==========================================
+
+// ---------------------------------------------------------
+// 🏠 主角房间（海风庄 201）
+// ---------------------------------------------------------
+
+// 同一个房间的四个天气 / 时段变体。
+// 都是以原图为底图生图改出来的，家具与镜头完全一致，
+// 只换了窗外的景色和照进来的光（见 scripts/gen-room-weather.mjs）。
+const ROOM_BG_BASE = '/images/backgrounds/bg_umikaze_room_201';
+
+export const getRoomBackground = (cal: GameCalendar): string => {
+  if (cal.timeSlot === 'night') return `${ROOM_BG_BASE}_night.webp`;
+  if (cal.weather === 'rainy') return `${ROOM_BG_BASE}_rain.webp`;
+  if (cal.weather === 'cloudy') return `${ROOM_BG_BASE}_cloudy.webp`;
+  if (cal.weather === 'sunset') return `${ROOM_BG_BASE}_sunset.webp`;
+  if (cal.weather === 'night') return `${ROOM_BG_BASE}_night.webp`;
+  return `${ROOM_BG_BASE}.webp`;   // sunny = 原图
+};
+
+// 窗外景色的描述：点「看风景」时按当前天气选一条
+export const ROOM_VIEW_LINES: Record<string, { zh: string; en: string }> = {
+  sunny:  { zh: '海是亮的。摆渡轮在对岸慢慢转，坡下的铁皮屋顶反光刺眼。你看了一会儿，什么都没想。',
+            en: 'The sea is bright. The ferris wheel turns slowly on the far shore, and the tin roofs down the slope throw back the light. You watch for a while and think about nothing at all.' },
+  cloudy: { zh: '海是铅灰色的，天和水的界线模糊成一片。这种天气里，这座城市看上去安静得像在等什么。',
+            en: 'The sea has gone lead-grey, the horizon smudged into the sky. On days like this the city looks quiet, as if it were waiting for something.' },
+  sunset: { zh: '太阳正往海里落。整个房间被染成橘色，连摊开的单词本都是暖的。你突然很想把这一幕写进手账里。',
+            en: 'The sun is going down into the sea. The whole room has turned orange, even the open vocabulary book. You find yourself wanting to write this down in the journal.' },
+  rainy:  { zh: '雨打在阳台的木板上，声音密得像什么人在低声说话。港口完全看不见了。',
+            en: 'Rain drums on the balcony boards, dense enough to sound like someone talking quietly. The harbour has disappeared completely.' },
+  night:  { zh: '山下是千万盏灯。你认不出哪一盏是哪里——但总有一天会认得出来的。',
+            en: 'Ten million lights below the hill. You cannot tell which one is where yet. One day you will.' }
+};
+
+// 房间里可以点的东西。
+// requiresFlag 的那几个一开始不在，剧情推到了才出现。
+export const ROOM_HOTSPOTS: RoomHotspot[] = [
+  {
+    id: 'window', x: 58, y: 8, w: 40, h: 55, icon: '🌊',
+    labelZh: '看窗外', labelEn: 'Look outside',
+    action: 'view',
+    linesZh: [], linesEn: []   // 按天气取 ROOM_VIEW_LINES
+  },
+  {
+    id: 'bed', x: 33, y: 48, w: 27, h: 34, icon: '😴',
+    labelZh: '睡觉', labelEn: 'Sleep',
+    action: 'sleep',
+    linesZh: ['你把自己摔进被子里。今天走的路比你以为的多。'],
+    linesEn: ['You drop yourself into the blanket. You walked further today than you thought.']
+  },
+  {
+    id: 'desk', x: 0, y: 52, w: 32, h: 44, icon: '📖',
+    labelZh: '书桌·单词本', labelEn: 'Desk / wordbook',
+    action: 'wordbook',
+    linesZh: ['摊开的那页还停在今天早上。'],
+    linesEn: ['The open page is still where you left it this morning.']
+  },
+  {
+    id: 'corkboard', x: 22, y: 12, w: 14, h: 24, icon: '🗺',
+    labelZh: '软木板·地图', labelEn: 'Corkboard map',
+    linesZh: ['外公那张地图被你釘在了正中间。去过的地方你都用铅笔打了钩——现在还没几个钩。'],
+    linesEn: ['Your grandfather\u2019s map is pinned dead centre. You tick the places you have been in pencil. There are not many ticks yet.']
+  },
+  {
+    id: 'suitcase', x: 78, y: 55, w: 22, h: 34, icon: '🧳',
+    labelZh: '行李箱', labelEn: 'Suitcase',
+    linesZh: ['还没完全收完。你告诉自己明天一定收——已经连续告诉了好几天了。'],
+    linesEn: ['Still not fully unpacked. You tell yourself you will finish tomorrow. You have been telling yourself that for days.']
+  },
+  {
+    id: 'journal', x: 0, y: 78, w: 20, h: 20, icon: '🕯',
+    labelZh: '外公的手账', labelEn: "Grandfather's journal",
+    action: 'journal',
+    requiresFlag: 'prologue_read_journal_deep',
+    linesZh: ['你又翻了一遍。同一行字，今天读起来不太一样。'],
+    linesEn: ['You read it through again. The same line reads differently today.']
+  },
+  {
+    id: 'plant', x: 88, y: 22, w: 12, h: 26, icon: '🌱',
+    labelZh: '窗边的盆栽', labelEn: 'The potted plant',
+    requiresFlag: 'prologue_name_given',
+    linesZh: ['搬进来那天就在这儿了。不知道是上一个住户留下的，还是房东放的。你给它浇了点水。'],
+    linesEn: ['It was here the day you moved in. You never worked out whether the last tenant left it or the landlord put it there. You water it a little.']
+  }
+];
 
 export const INITIAL_PROTAGONIST_STATS: ProtagonistStats = {
   knowledge: 0,     // 知识 0/6 (Rank 1)

@@ -20,6 +20,7 @@ import { StatGainToast } from './components/StatGainToast';
 import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
 import PrologueResultScreen from './components/PrologueResultScreen';
 import ConsentGate from './components/ConsentGate';
+import RoomScreen from './components/RoomScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
 
@@ -490,6 +491,21 @@ const App: React.FC = () => {
     if (!consentGiven) { setShowConsentGate(true); return; }
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;
+  };
+
+  // 睡一觉 = 推进到第二天早晨。天气随机，房间背景会跟着换。
+  const advanceToNextDay = () => {
+    audioManager.playSfx('confirm');
+    setGameCalendar(prev => {
+      const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
+      return {
+        ...prev,
+        day: prev.day + 1,
+        timeSlot: 'morning',
+        weather: weathers[Math.floor(Math.random() * weathers.length)]
+      };
+    });
+    setGameMode(GameMode.LOBBY);
   };
 
   // 同意之后才真正进大厅
@@ -1297,6 +1313,7 @@ const App: React.FC = () => {
           onEnterChat={enterChat}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onOpenCgGallery={() => setShowCgGallery(true)}
+          onOpenRoom={() => setGameMode(GameMode.ROOM)}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           background={background}
@@ -1424,6 +1441,17 @@ const App: React.FC = () => {
           onClose={() => setSaveLoadMode(null)}
           onSaveSlot={saveGameToSlot}
           onLoadSlot={loadGameFromSlot}
+        />
+      )}
+
+      {gameMode === GameMode.ROOM && (
+        <RoomScreen
+          language={userState.language}
+          calendar={gameCalendar}
+          storyFlags={storyFlags}
+          onClose={() => setGameMode(GameMode.LOBBY)}
+          onOpenWordbook={() => setShowWordbook(true)}
+          onSleep={advanceToNextDay}
         />
       )}
 

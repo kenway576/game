@@ -18,6 +18,7 @@ interface Props {
   onEnterChat: (charId: CharacterId, mode: ChatMode) => void;
   onOpenSystemMenu: () => void;
   onOpenCgGallery: () => void;
+  onOpenRoom: () => void;
   onOpenCalendar: () => void;
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
@@ -26,7 +27,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, background
+  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -60,6 +61,14 @@ const LobbyScreen: React.FC<Props> = ({
 
       {/* 右侧 HUD 工具栏：日历、人格五维、画廊与系统菜单 */}
       <div className="flex flex-wrap items-center gap-2 pointer-events-auto self-end md:self-auto">
+        {/* 回自己房间 */}
+        <button
+          onClick={onOpenRoom}
+          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-sky-500/50 hover:border-sky-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
+        >
+          <span className="text-sky-300 font-black text-xs">🏠 {userState.language === 'en' ? 'MY ROOM' : '回房间'}</span>
+        </button>
+
         {/* 日历与时间天气 Badge */}
         <button
           onClick={onOpenCalendar}
