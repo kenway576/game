@@ -23,6 +23,8 @@ import PrologueResultScreen from './components/PrologueResultScreen';
 import ConsentGate from './components/ConsentGate';
 import RoomScreen from './components/RoomScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
+import { DAY1_SCRIPT } from './story/day1Data';
+import { DAY1_VERSION, DAY1_PROGRESS_KEY } from './story/day1Meta';
 import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
 
 const App: React.FC = () => {
@@ -161,6 +163,9 @@ const App: React.FC = () => {
   const [customModelName, setCustomModelName] = useState('');
   const [consentGiven, setConsentGiven] = useState(false);
   const [showConsentGate, setShowConsentGate] = useState(false);
+  // 第一天（第 1 章）：序章之后、进入自由游玩之前的手写章节
+  const [day1Done, setDay1Done] = useState(false);
+  const [playingDay1, setPlayingDay1] = useState(false);
   // 正在播的专属剧情（手写剧本走 StoryScreen，和序章同一套引擎）
   const [activeLevelStory, setActiveLevelStory] = useState<{ charId: CharacterId; def: LevelStoryDef } | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -364,6 +369,8 @@ const App: React.FC = () => {
     setUserState(prev => ({ ...prev, playerName: '' }));
     // 全新开始：清掉上一轮的半截进度，别让 StoryScreen 又弹"要不要接着看"
     setPendingPrologueProgress(null);
+    setDay1Done(false);
+    setPlayingDay1(false);
     setPrologueSessionKey(k => k + 1);
     try { localStorage.removeItem(PROLOGUE_PROGRESS_KEY); } catch { /* ignore */ }
     setCurrentScene('train_interior');
@@ -515,6 +522,18 @@ const App: React.FC = () => {
   const acceptConsent = () => {
     setConsentGiven(true);
     setShowConsentGate(false);
+    // 同意书之后先过第一天（开学），打完才进自由游玩
+    if (!day1Done) { setPlayingDay1(true); return; }
+    setCurrentScene(DEFAULT_SCENE);
+    setGameMode(GameMode.LOBBY);
+    pendingPrologueSaveRef.current = true;
+  };
+
+  // 第一天播完 → 正式进入自由游玩
+  const finishDay1 = (flags: StoryFlags) => {
+    setStoryFlags(prev => ({ ...prev, ...flags }));
+    setDay1Done(true);
+    setPlayingDay1(false);
     setCurrentScene(DEFAULT_SCENE);
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;
@@ -681,7 +700,7 @@ const App: React.FC = () => {
         chatHistories: trimmedHistories,
         customAssets, affectionMap, familiarityMap, memoryMap,
         // 🔥 五维人格、行事历与剧情选择：漏存这几项等于玩家的选择读档就作废
-        protagonistStats, gameCalendar, storyFlags, prologueDone, unlockedCgs,
+        protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs,
         // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
         // 这样三个存档就是三个不同的位置，而不是都指向同一份共享进度。
         // hard 模式（容量告急）下丢掉它：宁可退回共享进度，也不能让存档整个写不进去。
@@ -773,6 +792,9 @@ const App: React.FC = () => {
       setPrologueResult(null);
       // 老存档一律视为已过序章：他们已经在玩了，不该被拽回序章
       setPrologueDone(data.prologueDone ?? true);
+      // 老存档没有这一项：他们早就在自由游玩了，别把人拽回第一天
+      setDay1Done(data.day1Done ?? true);
+      setPlayingDay1(false);
 
       // 存档停在序章：优先用槽位里自带的那份进度（这才是"这个存档"的位置），
       // 老存档没带就退回共享进度。两个都不可用才退回大厅，
@@ -1277,7 +1299,9 @@ const App: React.FC = () => {
         />
       )}
 
-      {gameMode === GameMode.PROLOGUE && !prologueResult && (
+      {/* 序章。同意书弹出后、第一天开播后都要让位——
+          否则两个 StoryScreen 同时挂载，屏幕上显示的会是序章的台词 */}
+      {gameMode === GameMode.PROLOGUE && !prologueResult && !showConsentGate && !playingDay1 && (
         <StoryScreen
           key={prologueSessionKey}
           script={PROLOGUE_SCRIPT}
@@ -1452,6 +1476,29 @@ const App: React.FC = () => {
           onClose={() => setSaveLoadMode(null)}
           onSaveSlot={saveGameToSlot}
           onLoadSlot={loadGameFromSlot}
+        />
+      )}
+
+      {/* 第 1 章：开学第一天。和专属剧情共用同一套引擎 */}
+      {playingDay1 && (
+        <StoryScreen
+          key="day1"
+          script={DAY1_SCRIPT}
+          scriptVersion={DAY1_VERSION}
+          progressKey={DAY1_PROGRESS_KEY}
+          language={userState.language}
+          stats={protagonistStats}
+          background={background}
+          playerName={userState.playerName}
+          onSetPlayerName={(name) => setUserState(prev => ({ ...prev, playerName: name }))}
+          onOpenSystemMenu={() => setShowSystemMenu(true)}
+          onEffects={applyStoryEffects}
+          onRelations={applyStoryRelations}
+          onSceneChange={setCurrentScene}
+          onCollectWords={collectStoryWords}
+          onUnlockCg={unlockStoryCg}
+          onRestore={restoreStoryProgress}
+          onFinish={finishDay1}
         />
       )}
 
