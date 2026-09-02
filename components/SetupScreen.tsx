@@ -31,21 +31,50 @@ const SetupScreen: React.FC<Props> = ({
   customModelName, onModelNameChange, consentGiven, setConsentGiven, background
 }) => {
   return (
-    <div className="min-h-[100dvh] relative overflow-hidden font-sans select-none flex items-center justify-center">
+    <div className="min-h-[100dvh] relative overflow-hidden font-sans select-none flex items-end md:items-center bg-black">
+      {/* 兜底：主视觉万一没加载出来，底下还是原来那张场景图，不会开天窗 */}
       {background}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-4">
+
+      {/* 🎴 标题主视觉。这张图是按"左边 45% 留给 UI"画的，
+          所以横屏时它满亮度铺满、右对齐——用 Background 那套 60% 透明度会把它糟蹋了。
+
+          竖屏是另一回事：16:9 的图硬塞进 9:19.5，object-cover 会把它放大到
+          只剩最右边那一个人的特写。所以手机上改成"上方一条横幅 + 下方排 UI"，
+          横幅裁在角色那一侧，看得见人，也看得见樱花和城市。*/}
+      <img
+        src="/images/ui/title_key_visual.webp"
+        alt=""
+        className="absolute inset-x-0 top-0 z-0 w-full h-[48dvh] object-cover object-[72%_38%]
+                   md:inset-0 md:h-full md:object-right"
+      />
+      {/* 左侧压暗。标题块和按钮本身都有实底色，所以这层只要够把远景的碎光压住就行——
+          压太重会把日落、港塔和摩天轮全埋掉，而那正是这张图最值钱的部分。
+          渐变是斜的，跟整套 P5 斜切 UI 同一种语言。*/}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{ background: 'linear-gradient(100deg, rgba(0,0,0,0.74) 0%, rgba(0,0,0,0.55) 24%, rgba(0,0,0,0.20) 44%, rgba(0,0,0,0) 60%)' }}
+      />
+      {/* 竖屏专用：横幅底边化进黑色，UI 就落在下半张干净的地方 */}
+      <div
+        className="absolute inset-0 z-[1] md:hidden pointer-events-none"
+        style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.10) 22%, rgba(0,0,0,0.75) 42%, rgba(0,0,0,0.96) 52%, #000 62%)' }}
+      />
+
+      <div className="relative z-10 w-full h-full flex flex-col items-center md:items-start justify-end md:justify-center pb-10 md:pb-0 p-4 md:pl-16 lg:pl-24">
         <div className={`transition-all duration-700 transform ease-in-out ${setupStep === 'MENU' ? 'scale-100 translate-y-0' : 'scale-75 -translate-y-[20vh] opacity-50'}`}>
           <div className="relative group">
             <div className="absolute -inset-6 bg-red-600 transform -skew-x-12 blur-sm opacity-80 group-hover:scale-110 transition-transform duration-500"></div>
             <div className="absolute -inset-2 bg-black transform skew-x-12 opacity-80"></div>
             <h1 className="relative text-5xl md:text-9xl font-black italic tracking-tighter text-white drop-shadow-[5px_5px_0px_rgba(0,0,0,1)] transform -skew-x-6 select-none" style={{textShadow: '8px 8px 0px #000'}}>KOBE<br/><span className="text-yellow-400">STUDY</span></h1>
-            <p className="absolute bottom-2 -right-4 bg-white text-black text-[10px] md:text-xs font-black px-4 py-1 transform skew-x-12 tracking-[0.5em] shadow-[4px_4px_0px_#000]">N3 RESEARCH</p>
+            {/* 竖屏上 logo 变小，这条标签压在 STUDY 上会把整个词吃掉，所以小屏挪到下面去；
+                桌面尺寸下它压在字脚上是有意的，保留原位。*/}
+            <p className="absolute -bottom-5 right-0 md:bottom-2 md:-right-4 bg-white text-black text-[10px] md:text-xs font-black px-4 py-1 transform skew-x-12 tracking-[0.5em] shadow-[4px_4px_0px_#000]">N3 RESEARCH</p>
           </div>
         </div>
 
         {setupStep === 'MENU' && (
-          <div className="mt-20 flex flex-col gap-6 items-center w-full max-w-md animate-in fade-in slide-in-from-bottom-10 duration-500">
-            <div className="flex gap-4 mb-4">
+          <div className="mt-12 md:mt-16 flex flex-col gap-5 items-center md:items-start w-full max-w-md animate-in fade-in slide-in-from-bottom-10 duration-500">
+            <div className="flex gap-4 mb-2">
               <button onClick={() => setUserState(p => ({...p, language: 'zh'}))} className={`px-4 py-2 font-black transform -skew-x-12 border-2 ${userState.language === 'zh' ? 'bg-yellow-400 text-black border-yellow-400' : 'bg-black text-white border-white/30 hover:border-white'}`}>中文</button>
               <button onClick={() => setUserState(p => ({...p, language: 'en'}))} className={`px-4 py-2 font-black transform -skew-x-12 border-2 ${userState.language === 'en' ? 'bg-yellow-400 text-black border-yellow-400' : 'bg-black text-white border-white/30 hover:border-white'}`}>ENGLISH</button>
             </div>
