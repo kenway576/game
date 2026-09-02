@@ -354,6 +354,8 @@ const App: React.FC = () => {
     prologueStatsBeforeRef.current = INITIAL_PROTAGONIST_STATS;
     prologueWordCountRef.current = 0;
     storyWordKeysRef.current = new Set();
+    // 名字清空：序章里深雪送回覧板那一幕才会问，问到之前谁都不会叫你的名字
+    setUserState(prev => ({ ...prev, playerName: '' }));
     // 全新开始：清掉上一轮的半截进度，别让 StoryScreen 又弹"要不要接着看"
     setPendingPrologueProgress(null);
     setPrologueSessionKey(k => k + 1);
@@ -1242,6 +1244,8 @@ const App: React.FC = () => {
           progressKey={PROLOGUE_PROGRESS_KEY}
           initialProgress={pendingPrologueProgress}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
+          playerName={userState.playerName}
+          onSetPlayerName={(name) => setUserState(prev => ({ ...prev, playerName: name }))}
           language={userState.language}
           stats={protagonistStats}
           background={background}

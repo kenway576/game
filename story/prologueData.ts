@@ -2237,6 +2237,110 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     zh: '你把明天开学要穿的深蓝色制服熨得平平整整，仔细地把银色校徽别在领口——私立神户海星学园，高二 B 班。',
     en: 'You press tomorrow’s navy uniform flat, and pin the silver crest carefully to the collar. Kobe Kaisei Academy. Second year, Class B.'
   },
+  // ==========================================================
+  // 【回覧板】深雪敲门 —— 玩家的名字在这里第一次被人问起
+  //
+  // 必须放在主线上：门口那场戏有三条互斥分支，挂在任何一条里
+  // 都会有玩家一路走到最后也没人问过他叫什么。
+  // ==========================================================
+  {
+    type: 'narration',
+    zh: '正要把制服挂上去，门被敋响了。不重，三下，很有分寸。',
+    en: 'You are just hanging the uniform up when there is a knock. Light, three times, carefully measured.'
+  },
+  {
+    type: 'branch',
+    ifFlag: 'prologue_avoided_miyuki',
+    not: true,
+    then: [
+      {
+        type: 'narration',
+        characterImage: '/images/characters/miyuki/neutral.webp',
+        zh: '门外站着的是刚才那位银发的邻居。她换了家居服，手里拿着一个夹着纸的木板夹。',
+        en: 'The silver-haired neighbour from earlier is standing outside, changed into house clothes, holding a wooden clipboard with papers wedged into it.'
+      }
+    ]
+  },
+  {
+    type: 'branch',
+    ifFlag: 'prologue_avoided_miyuki',
+    then: [
+      {
+        type: 'narration',
+        characterImage: '/images/characters/miyuki/neutral.webp',
+        zh: '门外站着一位银发的女子——就是便利店里那个你移开了视线的人。她手里拿着一个夹着纸的木板夹。',
+        en: 'A silver-haired woman is standing outside — the one you looked away from in the convenience store. She is holding a wooden clipboard with papers wedged into it.'
+      }
+    ]
+  },
+  {
+    type: 'speech',
+    speakerZh: '银发的女子',
+    speakerEn: 'Silver-haired Woman',
+    characterImage: '/images/characters/miyuki/neutral.webp',
+    jp: '夜遅くにごめんなさい。回覧板、回しに来ました。',
+    words: [
+      { jp: '回覧板', reading: 'かいらんばん', zh: '居民传阅板（邻里通知轮流传阅）', en: 'neighbourhood circular board' }
+    ],
+    zh: '这么晚了打扰了。我是来送回覧板的。',
+    en: 'Sorry to call so late. I am passing on the neighbourhood circular.',
+    color: 'bg-sky-500'
+  },
+  {
+    type: 'narration',
+    zh: '她把木板夹翻到最后一页。上面是一张手写的住户名单，每个房号后面跟着一个名字。只有「２０１」那一格是空的。',
+    en: 'She turns the clipboard to its last page: a handwritten resident list, a name beside every room number. Only the row marked "201" is blank.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '银发的女子',
+    speakerEn: 'Silver-haired Woman',
+    characterImage: '/images/characters/miyuki/happy.webp',
+    jp: 'ここ、まだ空白なんです。……お名前、伺ってもいいですか？',
+    words: [
+      { jp: '伺う', reading: 'うかがう', zh: '请教、拜听（谦让语）', en: 'to ask (humble)' }
+    ],
+    zh: '这里还空着。……可以请教你的名字吗？',
+    en: 'This one is still empty. ...May I ask your name?',
+    color: 'bg-sky-500'
+  },
+  {
+    type: 'nameInput',
+    promptZh: '钢笔递到了你手里。写下去的这个名字，这座城市里的每一个人都会这样叫你。',
+    promptEn: 'She holds out the pen. Whatever you write here is what everyone in this city will call you.',
+    placeholderZh: '写下你的名字……',
+    placeholderEn: 'Write your name...'
+  },
+  {
+    type: 'narration',
+    characterImage: '/images/characters/miyuki/happy.webp',
+    zh: '她接过木板夹，低头看了一眼，然后轻声把那几个音念了一遍——像是在确认自己没有读错。',
+    en: 'She takes the clipboard back, glances down, and says the syllables once under her breath — as if checking she has them right.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '银发的女子',
+    speakerEn: 'Silver-haired Woman',
+    characterImage: '/images/characters/miyuki/happy_alt.webp',
+    jp: '{name}さん、ですね。……覚えました。',
+    zh: '{name}先生。……我记住了。',
+    en: 'So it is {name}. ...I will remember that.',
+    color: 'bg-sky-500'
+  },
+  {
+    type: 'effect',
+    setFlags: ['prologue_name_given'],
+    relations: [
+      { char: CharacterId.MIYUKI, familiarity: 6, reasonZh: '你的名字写进了这栋楼的住户名单', reasonEn: 'Your name went onto this building\u2019s resident list' }
+    ]
+  },
+  {
+    type: 'narration',
+    characterImage: '',
+    zh: '门关上了。你站在现地想了一会儿——来到这个国家的第一天，你的名字终于被写在了某个地方。',
+    en: 'The door closes. You stand there a moment. Your first day in this country, and your name is finally written down somewhere.'
+  },
+
   {
     // 什么都没买的人也该有一段属于自己的晚饭
     type: 'branch',

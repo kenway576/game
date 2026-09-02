@@ -26,6 +26,10 @@ interface Props {
   initialProgress?: StoryProgress | null;
   // 打开系统菜单（存档 / 读档 / 单词本 / 音量）。序章期间也要能存盘。
   onOpenSystemMenu: () => void;
+  // 当前玩家名，用来替换台词里的 {name} 占位符
+  playerName: string;
+  // nameInput 节点提交时回填给 App
+  onSetPlayerName: (name: string) => void;
   // 属性增益上抛给 App：由 App 统一改数值并弹 StatGainToast
   onEffects: (effects: StoryEffect[]) => void;
   // 関係（親密度/好感度）变动同样上抛
@@ -75,7 +79,7 @@ interface BacklogEntry { speaker: string; main: string; sub: string; }
 
 const StoryScreen: React.FC<Props> = ({
   script, scriptVersion, progressKey, language, stats, background,
-  initialProgress, onOpenSystemMenu,
+  initialProgress, onOpenSystemMenu, playerName, onSetPlayerName,
   onEffects, onRelations, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
 }) => {
   const en = language === 'en';
@@ -118,7 +122,8 @@ const StoryScreen: React.FC<Props> = ({
 
   const node = nodes[idx];
   const isDisplayNode = node?.type === 'narration' || node?.type === 'speech';
-  const isBlockingNode = node?.type === 'choice' || node?.type === 'shop' || node?.type === 'cg';
+  const isBlockingNode = node?.type === 'choice' || node?.type === 'shop'
+    || node?.type === 'cg' || node?.type === 'nameInput';
 
   const advance = useCallback(() => setIdx(i => i + 1), []);
 
@@ -338,19 +343,26 @@ const StoryScreen: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx, nodes]);
 
+  // 台词里的 {name} 换成玩家名。名字是在剧情中途才问到的，
+  // 所以问到之前写死一个称呼会穿帮——用占位符，问到当下立刻生效。
+  const fill = useCallback(
+    (t: string) => (t ? t.replace(/\{name\}/g, playerName || (en ? 'you' : '你')) : t),
+    [playerName, en]
+  );
+
   // ---------- 打字机 ----------
   const displayText = useMemo(() => {
     if (!node) return { main: '', sub: '', speaker: '' };
-    if (node.type === 'narration') return { main: en ? node.en : node.zh, sub: '', speaker: '' };
+    if (node.type === 'narration') return { main: fill(en ? node.en : node.zh), sub: '', speaker: '' };
     if (node.type === 'speech') {
       return {
-        main: node.jp || (en ? node.en : node.zh),
-        sub: node.jp ? (en ? node.en : node.zh) : '',
+        main: fill(node.jp || (en ? node.en : node.zh)),
+        sub: fill(node.jp ? (en ? node.en : node.zh) : ''),
         speaker: en ? node.speakerEn : node.speakerZh
       };
     }
     return { main: '', sub: '', speaker: '' };
-  }, [node, en]);
+  }, [node, en, fill]);
 
   const [typed, setTyped] = useState('');
   const [typing, setTyping] = useState(false);
@@ -454,6 +466,17 @@ const StoryScreen: React.FC<Props> = ({
     if (opt.effects?.length) onEffects(opt.effects);
     applyRelations(opt.relations);
     spliceAfter(opt.then);
+    advance();
+  };
+
+  // ---------- 剧情内问名字 ----------
+  const [nameDraft, setNameDraft] = useState('');
+  const submitName = () => {
+    const v = nameDraft.trim();
+    if (!v) return;
+    audioManager.playSfx('confirm');
+    onSetPlayerName(v);
+    setNameDraft('');
     advance();
   };
 
@@ -695,6 +718,43 @@ const StoryScreen: React.FC<Props> = ({
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {/* 剧情内问名字：取代开场的登记表单 */}
+        {node?.type === 'nameInput' && (
+          <div className="w-full max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-500">
+            <div className="bg-black/85 backdrop-blur-xl border-2 border-white/20 shadow-2xl p-6 md:p-8">
+              <p className="text-base md:text-xl text-blue-100/90 italic mb-5 text-center">
+                {en ? node.promptEn : node.promptZh}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  autoFocus
+                  type="text"
+                  value={nameDraft}
+                  maxLength={16}
+                  data-sfx-silent
+                  onChange={e => setNameDraft(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); submitName(); } }}
+                  placeholder={en ? node.placeholderEn : node.placeholderZh}
+                  className="flex-1 bg-zinc-900 border-2 border-white/25 focus:border-yellow-400 outline-none text-white text-lg md:text-2xl font-bold px-4 py-3 transition-colors"
+                />
+                <button
+                  onClick={submitName}
+                  disabled={!nameDraft.trim()}
+                  data-sfx-silent
+                  className="bg-red-600 hover:bg-yellow-400 hover:text-black text-white border-2 border-black px-8 py-3 font-black italic text-lg tracking-widest transform -skew-x-12 shadow-[6px_6px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <span className="block transform skew-x-12">{en ? 'THIS IS ME' : '就叫这个'}</span>
+                </button>
+              </div>
+              <p className="mt-3 text-[11px] text-white/35 text-center">
+                {en
+                  ? 'Everyone will call you by this from now on — some by name, some by surname, depending on how close you get.'
+                  : '从这里开始，所有人都会这样叫你——是连名带姓、加个「君」，还是直呼其名，看你们后来走到哪一步。'}
+              </p>
+            </div>
           </div>
         )}
 

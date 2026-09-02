@@ -291,6 +291,9 @@ export type StoryNode =
   | { type: 'shop'; budget: number; promptZh: string; promptEn: string; items: ShopItem[]; setFlagsOnPurchase?: string[]; setFlagsOnEmpty?: string[] }
   // 条件插播：满足 flag 时才播这段（用于回收前面的选择）
   | { type: 'branch'; ifFlag: string; not?: boolean; then: StoryNode[] }
+  // 剧情里问玩家的名字。取代开场的「学员登记」表单：
+  // 名字不该在游戏还没开始时填，而该在第一个角色真的开口问你时填。
+  | { type: 'nameInput'; promptZh: string; promptEn: string; placeholderZh: string; placeholderEn: string }
   // 随机插播：从 pick 里随机抽一组播出去（重玩时遇到的人不一样）。
   // 抽中的结果会被就地拼进节点表、随进度一起存档，
   // 所以读档回来播的还是同一段，不会刷新一次换一个人。
