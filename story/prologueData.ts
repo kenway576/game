@@ -1256,7 +1256,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         descZh: '要自己开口跟店员说要哪几样。汤是热的，纸碗烫手。',
         descEn: 'You have to tell the clerk out loud which pieces you want. The broth is hot enough to warm the paper cup through.',
         effects: [{ stat: 'guts', amount: 1, reasonZh: '指着锅，把想要的那两样说出了口', reasonEn: 'You pointed at the pot and said out loud which two you wanted' }],
-        setFlags: ['bought_oden']
+        setFlags: ['bought_oden', 'bought_needs_chopsticks']
       },
       {
         id: 'karaage',
@@ -1268,7 +1268,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         nameEn: 'Fried Chicken',
         descZh: '柜台边现炸的，纸袋捧在手里烫烫的。',
         descEn: 'Fried right there by the counter. The paper bag is hot in your hands.',
-        setFlags: ['bought_karaage']
+        setFlags: ['bought_karaage', 'bought_needs_chopsticks']
       },
       {
         id: 'kobe_beef_croquette',
@@ -1281,7 +1281,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         descZh: '炸得金黄酥脆。咬开后土豆泥混着牛肉末与洋葱的甜香，油滋滋的满足感。',
         descEn: 'Crispy and golden. Hot mashed potato sweet with minced beef and onion — pure comfort.',
         effects: [{ stat: 'charm', amount: 1, reasonZh: '品尝了神户风味的可乐饼', reasonEn: 'Tasted a local Kobe-style croquette' }],
-        setFlags: ['bought_croquette']
+        setFlags: ['bought_croquette', 'bought_needs_chopsticks']
       },
       {
         id: 'makunouchi_bento',
@@ -1294,7 +1294,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         descZh: '烤鲑鱼、日式玉子烧、炸虾与炖时蔬俱全。比普通便当贵出不少，但今晚能大快朵颐吃顿饱饭。',
         descEn: 'Grilled salmon, tamagoyaki, fried prawn and simmered vegetables. Pricey, but a real hearty dinner.',
         effects: [{ stat: 'guts', amount: 1, reasonZh: '犒劳初抵神户的自己一顿丰盛大餐', reasonEn: 'Treated yourself to a feast on day one' }],
-        setFlags: ['bought_bento']
+        setFlags: ['bought_bento', 'bought_needs_chopsticks']
       },
       {
         id: 'cup_noodle',
@@ -1306,7 +1306,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         nameEn: 'Cup Noodles',
         descZh: '留着当明天的备用粮也不错。热水店里就能加。',
         descEn: 'Not a bad emergency ration for tomorrow. They will fill it with hot water right here.',
-        setFlags: ['bought_noodle']
+        setFlags: ['bought_noodle', 'bought_needs_chopsticks']
       },
       {
         id: 'black_coffee_can',
@@ -1465,15 +1465,34 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '店员小姐',
         speakerEn: 'Store Clerk',
-        jp: 'レジ袋はご利用ですか？お箸はおつけしますか？',
+        jp: 'レジ袋はご利用ですか？',
         words: [
-              { jp: "レジ袋", reading: "レジぶくろ", zh: "收银塑料袋", en: "plastic shopping bag" },
-              { jp: "お箸", reading: "おはし", zh: "筷子", en: "chopsticks" }
+              { jp: "レジ袋", reading: "レジぶくろ", zh: "收银塑料袋", en: "plastic shopping bag" }
         ],
-        zh: '需要塑料袋吗？要给您配一双筷子吗？',
-        en: 'Would you like a bag? And shall I add a pair of chopsticks?',
+        zh: '需要塑料袋吗？',
+        en: 'Would you like a bag?',
         color: 'bg-teal-500',
         characterImage: '/images/characters/clerk_misaki_think.webp'
+      },
+      {
+        // 只有买了要趁热吃的东西，才会被问筷子。
+        // 拎着一包毛巾和洗洁精被问"要筷子吗"，那是穿帮。
+        type: 'branch',
+        ifFlag: 'bought_needs_chopsticks',
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '店员小姐',
+            speakerEn: 'Store Clerk',
+            jp: 'お箸はおつけしますか？',
+            words: [
+              { jp: "お箸", reading: "おはし", zh: "筷子", en: "chopsticks" }
+            ],
+            zh: '要给您配一双筷子吗？',
+            en: 'And shall I add a pair of chopsticks?',
+            color: 'bg-teal-500'
+          }
+        ]
       },
       {
         // 去过商店街、被真纪教过「おおきに」的人，这里会想起她
@@ -1494,8 +1513,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         options: [
           {
             id: 'checkout_kansai',
-            labelZh: '「袋、お願いします。お箸も一膳……おおきに！」',
-            labelEn: '"A bag please. And one pair of chopsticks... ookini!"',
+            labelZh: '「袋、お願いします。……おおきに！」',
+            labelEn: '"A bag please... ookini!"',
             hintZh: '关西人道谢时说的那一句',
             hintEn: 'The way people say thank you around here.',
             // 只有被真纪教过「おおきに」的人才看得到这一句。
@@ -1536,8 +1555,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             id: 'checkout_jp',
-            labelZh: '「あ、はい。袋をお願いします。お箸も一膳ください。」',
-            labelEn: '"Ah — yes. A bag, please. And one pair of chopsticks."',
+            labelZh: '「あ、はい。袋をお願いします。」',
+            labelEn: '"Ah — yes. A bag, please."',
             hintZh: '一个字一个字地说完，说得很慢',
             hintEn: 'Word by word, slowly, all the way to the end.',
             effects: [
@@ -1548,8 +1567,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               {
                 type: 'narration',
                 characterImage: '/images/characters/clerk_misaki_bag.webp',
-                zh: '你说得很慢，但一个音都没有含糊。店员点点头，把筷子放进袋子，动作一如往常。',
-                en: 'You speak slowly, but you do not slur a single syllable. The clerk nods, drops the chopsticks in the bag, entirely unremarkable about it.'
+                zh: '你说得很慢，但一个音都没有含糊。店员点点头，手上装袋的动作一如往常。',
+                en: 'You speak slowly, but you do not slur a single syllable. The clerk nods and bags it all, entirely unremarkable about it.'
               },
               {
                 type: 'narration',
@@ -1602,6 +1621,19 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         type: 'narration',
         zh: '你也点头回了一下。这是今晚你和这座城市之间，唯一一次不需要说话的交流。',
         en: 'You nod back. It is the one exchange between you and this city tonight that needed no words at all.'
+      }
+    ]
+  },
+
+  {
+    // 买了要趁热吃的东西才会拿到筷子
+    type: 'branch',
+    ifFlag: 'bought_needs_chopsticks',
+    then: [
+      {
+        type: 'narration',
+        zh: '她往袋子里放了一双筷子，又多塞了一张湿纸巾。',
+        en: 'She slips a pair of chopsticks into the bag, and a wet wipe after them.'
       }
     ]
   },

@@ -1,3 +1,4 @@
+import { ASUKA_STORY_2 } from './story/levelStories/asuka';
 import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode } from './types';
 
 // ---------------------------------------------------------
@@ -1116,6 +1117,16 @@ export interface LevelStoryDef {
 // 每个角色的专属剧情表。写好一个填一个——没填的角色照旧走 AI 即兴，
 // 所以可以一个一个慢慢写，不必等全部写完才能玩。
 export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
+  [CharacterId.ASUKA]: [
+    {
+      id: 'asuka_2_rank',
+      axis: 'affection',
+      level: 3,                 // 好感度 Lv.3「心动」(140)
+      titleZh: '一番じゃないと',
+      titleEn: 'It Has To Be First',
+      script: ASUKA_STORY_2
+    }
+  ],
   // 示例（等剧本写好后填 script）：
   // [CharacterId.ASUKA]: [
   //   { id: 'asuka_1', axis: 'familiarity', level: 3, titleZh: '委員長の放課後', titleEn: 'The Class President After Hours' },
