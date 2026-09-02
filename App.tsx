@@ -1517,6 +1517,27 @@ export default App;
 
 const styleSheet = document.createElement("style");
 styleSheet.innerText = `
+  /* 🏠 房间可交互物的触碰反馈：呼吸光点 + 扩散涟漪 + 点击冲击环。
+     刻意都很慢很淡——房间是待着的地方，不是仪表盘。 */
+  @keyframes room-breathe {
+    0%, 100% { transform: scale(1);    opacity: 0.72; }
+    50%      { transform: scale(1.18); opacity: 1; }
+  }
+  .room-breathe { animation: room-breathe 3.2s ease-in-out infinite; }
+
+  @keyframes room-ping {
+    0%   { transform: translate(-50%, -50%) scale(0.7); opacity: 0.55; }
+    70%  { opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(2.9); opacity: 0; }
+  }
+  .room-ping { animation: room-ping 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+
+  @keyframes room-burst {
+    0%   { transform: translate(-50%, -50%) scale(0.6); opacity: 0.9; }
+    100% { transform: translate(-50%, -50%) scale(4.2); opacity: 0; }
+  }
+  .room-burst { animation: room-burst 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
   @keyframes tachie-breathe {
     0% { transform: scale(1) translateY(0); }
     50% { transform: scale(1.015) translateY(-4px); }

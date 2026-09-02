@@ -31,6 +31,8 @@ const RoomScreen: React.FC<Props> = ({
   const en = language === 'en';
   const [active, setActive] = useState<{ hotspot: RoomHotspot; text: string } | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  // 点下去那一发扩散环：key 变化即重放动画
+  const [burst, setBurst] = useState<{ id: string; key: number } | null>(null);
 
   const bg = getRoomBackground(calendar);
 
@@ -43,6 +45,7 @@ const RoomScreen: React.FC<Props> = ({
 
   const pick = (h: RoomHotspot) => {
     audioManager.playSfx(h.action === 'sleep' ? 'confirm' : 'click');
+    setBurst({ id: h.id, key: Date.now() });
 
     if (h.action === 'view') {
       // 看风景：按当前天气取词。夜里优先按夜景说。
@@ -95,31 +98,85 @@ const RoomScreen: React.FC<Props> = ({
         </button>
       </div>
 
-      {/* 热区 */}
-      {spots.map(h => (
-        <button
-          key={h.id}
-          onClick={() => pick(h)}
-          onMouseEnter={() => setHovered(h.id)}
-          onMouseLeave={() => setHovered(null)}
-          style={{ left: `${h.x}%`, top: `${h.y}%`, width: `${h.w}%`, height: `${h.h}%` }}
-          className={`absolute z-20 rounded-xl transition-all duration-200 flex items-start justify-center
-            ${hovered === h.id
-              ? 'bg-yellow-300/15 ring-2 ring-yellow-300/70 backdrop-blur-[1px]'
-              : 'ring-1 ring-white/0 hover:ring-white/20'}`}
-        >
-          {/* 平时只露一个小光点，指上去才显示名字，免得房间被标签糊满 */}
-          <span
-            className={`mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] md:text-xs font-bold tracking-wider whitespace-nowrap transition-all duration-200
-              ${hovered === h.id
-                ? 'bg-black/85 border-yellow-300/70 text-yellow-200 opacity-100 translate-y-0'
-                : 'bg-black/45 border-white/25 text-white/70 opacity-60 -translate-y-0.5'}`}
+      {/* 热区：不画框，只用光。家具不是矩形，光斑也不该是 */}
+      {spots.map(h => {
+        const on = hovered === h.id;
+        return (
+          <button
+            key={h.id}
+            onClick={() => pick(h)}
+            onMouseEnter={() => setHovered(h.id)}
+            onMouseLeave={() => setHovered(null)}
+            style={{ left: `${h.x}%`, top: `${h.y}%`, width: `${h.w}%`, height: `${h.h}%` }}
+            className="absolute z-20 group focus:outline-none"
+            aria-label={en ? h.labelEn : h.labelZh}
           >
-            <span className="text-sm md:text-base leading-none">{h.icon}</span>
-            {hovered === h.id && <span>{en ? h.labelEn : h.labelZh}</span>}
-          </span>
-        </button>
-      ))}
+            {/* 柔光：椭圆径向渐变，边缘自然散掉，没有可见边界 */}
+            <span
+              aria-hidden
+              className="absolute inset-0 transition-opacity duration-500 ease-out pointer-events-none"
+              style={{
+                opacity: on ? 1 : 0,
+                background:
+                  'radial-gradient(ellipse at center, rgba(255,244,214,0.30) 0%, rgba(255,226,150,0.14) 42%, rgba(255,214,130,0.05) 62%, transparent 76%)'
+              }}
+            />
+
+            {/* 指示器：待机时是一个很轻的呼吸点，悬停时张开成环 */}
+            <span
+              aria-hidden
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+            >
+              <span className="relative block">
+                {/* 缓慢扩散的涟漪，告诉玩家这里可以点 */}
+                <span
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber-100/50 room-ping"
+                  style={{ width: 14, height: 14 }}
+                />
+                {/* 光点本体 */}
+                <span
+                  className="block rounded-full room-breathe transition-all duration-300 ease-out"
+                  style={{
+                    width: on ? 12 : 7,
+                    height: on ? 12 : 7,
+                    background: on
+                      ? 'radial-gradient(circle, #fffdf5 0%, #ffe9b0 60%, rgba(255,214,130,0) 100%)'
+                      : 'radial-gradient(circle, rgba(255,253,245,0.92) 0%, rgba(255,233,176,0.55) 65%, rgba(255,214,130,0) 100%)',
+                    boxShadow: on
+                      ? '0 0 18px 4px rgba(255,224,160,0.55)'
+                      : '0 0 8px 1px rgba(255,224,160,0.28)'
+                  }}
+                />
+              </span>
+            </span>
+
+            {/* 点击冲击环 */}
+            {burst?.id === h.id && (
+              <span
+                key={burst.key}
+                aria-hidden
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-100/80 room-burst pointer-events-none"
+                style={{ width: 18, height: 18 }}
+              />
+            )}
+
+            {/* 标签卡：只在悬停时从下方浮起 */}
+            <span
+              aria-hidden
+              className={`absolute left-1/2 -translate-x-1/2 bottom-full mb-1 whitespace-nowrap transition-all duration-300 ease-out ${
+                on ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1.5 pointer-events-none'
+              }`}
+            >
+              <span className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-black/55 backdrop-blur-md px-3 py-1.5 shadow-[0_6px_20px_rgba(0,0,0,0.45)]">
+                <span className="text-sm md:text-base leading-none">{h.icon}</span>
+                <span className="text-[11px] md:text-xs font-semibold tracking-wide text-amber-50/95">
+                  {en ? h.labelEn : h.labelZh}
+                </span>
+              </span>
+            </span>
+          </button>
+        );
+      })}
 
       {/* 点开之后的文字 */}
       {active && (
