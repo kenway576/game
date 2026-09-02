@@ -1,4 +1,4 @@
-import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot } from './types';
+import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode } from './types';
 
 // ---------------------------------------------------------
 // 🌍 1. 场景地图 (SCENE_MAP)
@@ -635,8 +635,8 @@ CRITICAL RULE: You MUST end your turn by asking a direct question — inviting t
     nameEn: 'Nao',
     role: '隣の幼馴染',
     roleEn: 'Childhood Friend Next Door',
-    description: '小さい頃からずっと一緒の幼馴染。世話焼きでちょっと口うるさいけれど、あなたのことを誰よりもよく知っている。',
-    descriptionEn: 'Your childhood friend who grew up next door. A little nagging, always caring, and knows you better than anyone.',
+    description: '向こうの国で隣に住んでいた幼馴染。一年先に帰国している。世話焼きでちょっと口うるさいけれど、あなたのことを誰よりもよく知っている。',
+    descriptionEn: 'Your childhood friend from ten years of living next door abroad. She came back to Japan a year ahead of you. A little nagging, always caring, and knows you better than anyone here.',
     avatarUrl: '/images/characters/nao/neutral.webp',
     color: 'bg-rose-500',
     emotionMap: {
@@ -1027,7 +1027,7 @@ export const RELATIONSHIP_PROFILES: Record<CharacterId, RelationshipProfile> = {
   [CharacterId.NAO]: {
     origin: 'acquainted',
     initialFamiliarity: 215,
-    encounter: 'You grew up next door to the player. You know their bad habits, their favourite foods, the embarrassing thing they did in third grade, and what their face looks like when they are lying. There is no distance left between you to close. IMPORTANT: this total ease is NOT romance — you have literally never once considered them that way, and the idea would make you laugh. If that ever changes, it must surprise you as much as anyone.',
+    encounter: 'You are Japanese, but you did not grow up in Japan. Your father was posted abroad and your family lived next door to the player for about ten years, in their home country. You grew up together there: you know their bad habits, their favourite foods, the embarrassing thing they did in third grade, and what their face looks like when they are lying. You returned to Japan a year ahead of them to start school here; they have only just arrived in Kobe as an exchange student. You are the ONLY person in this city who has seen them speaking their own language - quick, funny, completely at ease - which is nothing like the halting person everyone else here has met. That gap is yours alone to notice. There is no distance left between you to close. IMPORTANT: this total ease is NOT romance — you have literally never once considered them that way, and the idea would make you laugh. If that ever changes, it must surprise you as much as anyone.',
     stages: [
       'Reachable only if something has gone badly wrong between you. Stiff 丁寧語 from someone who used to be family. Devastating precisely because of how wrong it sounds.',
       'Speaking again, carefully. 名字+くん/ちゃん, the distance obvious and painful to you both.',
@@ -1035,7 +1035,7 @@ export const RELATIONSHIP_PROFILES: Record<CharacterId, RelationshipProfile> = {
       'Address 名前 呼び捨て, complete タメ口, no filter whatsoever.',
       'Address 名前 呼び捨て or an old childhood nickname. Zero distance: walks into their room without knocking, finishes their sentences, nags about vegetables. This is what maximum familiarity looks like — and it is still not romance.'
     ],
-    seedMemory: '小さい頃から隣に住んでいる幼馴染。寝坊癖、好き嫌い、嘘をつく時に目を逸らす癖、小三の時の恥ずかしい事件——全部知っている。よく朝起こしに行き、ノートを写させてやっている。恋愛対象として考えたことは一度もない。'
+    seedMemory: '向こうの国で十年、隣に住んでいた幼馴染。寝坊癖、好き嫌い、嘘をつく時に目を逸らす癖、小三の時の恥ずかしい事件——全部知っている。私は一年先に帰国してこっちの学校に入った。この街であの子の「本来のしゃべり方」を知っているのは、たぶん私だけ。恋愛対象として考えたことは一度もない。'
   },
 
   [CharacterId.MAKI]: {
@@ -1099,9 +1099,38 @@ export const OUTFIT_UNLOCKS: Record<CharacterId, Partial<Record<number, string[]
 
 // 📖 剧情事件占位：等级提升时触发的手写剧情脚本 ID（未来填充）。
 // 现阶段升级时由 AI 即兴演出"关系进入新阶段"的特别场景代替。
-export const LEVEL_STORIES: Partial<Record<CharacterId, Partial<Record<number, string>>>> = {
-  // 示例：[CharacterId.ASUKA]: { 2: 'asuka_ch2_friend', 4: 'asuka_ch4_confession' }
+// 一段专属剧情的触发条件与内容。
+// axis 指定挂在哪条轴上：好感度（恋爱线）还是親密度（有多熟）。
+// 每位角色约三段，风格由角色自己决定——不套同一个模板。
+export interface LevelStoryDef {
+  id: string;
+  axis: RelationshipAxis;
+  // 该轴升到第几级时触发（1~5）
+  level: number;
+  titleZh: string;
+  titleEn: string;
+  // 剧本正文。留空表示"还没写"，此时回退给 AI 即兴演出，游戏不会卡住。
+  script?: StoryNode[];
+}
+
+// 每个角色的专属剧情表。写好一个填一个——没填的角色照旧走 AI 即兴，
+// 所以可以一个一个慢慢写，不必等全部写完才能玩。
+export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
+  // 示例（等剧本写好后填 script）：
+  // [CharacterId.ASUKA]: [
+  //   { id: 'asuka_1', axis: 'familiarity', level: 3, titleZh: '委員長の放課後', titleEn: 'The Class President After Hours' },
+  //   { id: 'asuka_2', axis: 'affection',   level: 3, titleZh: '一番じゃないと',  titleEn: 'It Has To Be First' },
+  //   { id: 'asuka_3', axis: 'affection',   level: 5, titleZh: '放学后的余晖',    titleEn: 'After-School Twilight' }
+  // ]
 };
+
+// 这一次升级有没有对应的手写剧情？没有就返回 null，交给 AI 即兴。
+export const findLevelStory = (
+  charId: CharacterId,
+  axis: RelationshipAxis,
+  level: number
+): LevelStoryDef | null =>
+  (LEVEL_STORIES[charId] || []).find(d => d.axis === axis && d.level === level) || null;
 
 // ---------------------------------------------------------
 // 🌸 2.62 专属事件 CG 回忆录 (CHARACTER EVENT CGS)

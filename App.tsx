@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress } from './types';
-import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue } from './constants';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
 import type { DialoguePage } from './types';
+import type { LevelStoryDef } from './constants';
 import Background from './components/Background';
 import SetupScreen from './components/SetupScreen';
 import LobbyScreen from './components/LobbyScreen';
@@ -160,6 +161,8 @@ const App: React.FC = () => {
   const [customModelName, setCustomModelName] = useState('');
   const [consentGiven, setConsentGiven] = useState(false);
   const [showConsentGate, setShowConsentGate] = useState(false);
+  // 正在播的专属剧情（手写剧本走 StoryScreen，和序章同一套引擎）
+  const [activeLevelStory, setActiveLevelStory] = useState<{ charId: CharacterId; def: LevelStoryDef } | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [showAutoSave, setShowAutoSave] = useState(false);
 
@@ -584,6 +587,14 @@ const App: React.FC = () => {
     const { axis, level: lv } = levelUpEvent;
     setLevelUpEvent(null);
     audioManager.restoreBgm(); // 庆祝结束，BGM 音量恢复
+
+    // 这一级有手写的专属剧情就播它，没有才让 AI 即兴。
+    // 剧本是一个一个写的，所以这两条路要长期共存。
+    const story = findLevelStory(selectedCharId, axis, lv);
+    if (story?.script?.length) {
+      setActiveLevelStory({ charId: selectedCharId, def: story });
+      return;
+    }
 
     // 解锁内容按轴归属：親密度给场景与日常服装，好感度给亲密服装
     const outfitLevels = axis === 'familiarity' ? FAMILIARITY_GATED_OUTFIT_LEVELS : ROMANCE_GATED_OUTFIT_LEVELS;
@@ -1441,6 +1452,33 @@ const App: React.FC = () => {
           onClose={() => setSaveLoadMode(null)}
           onSaveSlot={saveGameToSlot}
           onLoadSlot={loadGameFromSlot}
+        />
+      )}
+
+      {/* 专属剧情：复用序章那套引擎（打字机 / 选项 / 生词 / CG / 存档续玩全都白拿）。
+          剧情播完把 flags 并进全局，让后续剧情和 AI 都知道发生过什么。 */}
+      {activeLevelStory && (
+        <StoryScreen
+          key={`levelstory-${activeLevelStory.def.id}`}
+          script={activeLevelStory.def.script || []}
+          scriptVersion={`${activeLevelStory.def.id}-v1`}
+          progressKey={`kobe_study_story_${activeLevelStory.def.id}`}
+          language={userState.language}
+          stats={protagonistStats}
+          background={background}
+          playerName={userState.playerName}
+          onSetPlayerName={(name) => setUserState(prev => ({ ...prev, playerName: name }))}
+          onOpenSystemMenu={() => setShowSystemMenu(true)}
+          onEffects={applyStoryEffects}
+          onRelations={applyStoryRelations}
+          onSceneChange={setCurrentScene}
+          onCollectWords={collectStoryWords}
+          onUnlockCg={unlockStoryCg}
+          onRestore={restoreStoryProgress}
+          onFinish={(flags) => {
+            setStoryFlags(prev => ({ ...prev, ...flags }));
+            setActiveLevelStory(null);
+          }}
         />
       )}
 
