@@ -1544,13 +1544,14 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             then: [
               {
                 type: 'narration',
+                characterImage: '/images/characters/clerk_misaki_bag.webp',
                 zh: '你说得很慢，但一个音都没有含糊。店员点点头，把筷子放进袋子，动作一如往常。',
                 en: 'You speak slowly, but you do not slur a single syllable. The clerk nods, drops the chopsticks in the bag, entirely unremarkable about it.'
               },
               {
                 type: 'narration',
-                zh: '——正因为一如往常，你才更高兴。他没有把你当成一个需要特殊照顾的外国人。',
-                en: 'And it is precisely because it was unremarkable that you are pleased. He did not treat you as a foreigner in need of handling.'
+                zh: '——正因为一如往常，你才更高兴。她没有把你当成一个需要特殊照顾的外国人。',
+                en: 'And it is precisely because it was unremarkable that you are pleased. She did not treat you as a foreigner in need of handling.'
               }
             ]
           },
@@ -1564,13 +1565,14 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             then: [
               {
                 type: 'narration',
+                characterImage: '/images/characters/clerk_misaki_bag.webp',
                 zh: '你点了点头，又比了个「一」。店员立刻会意，动作麻利地装好袋，还多塞了一张湿纸巾。',
                 en: 'You nod, then hold up one finger. The clerk gets it instantly, bags everything efficiently, and slips in an extra wet wipe.'
               },
               {
                 type: 'narration',
-                zh: '他一句多余的话都没说，态度也没有半点变化。你反倒有点懊恼——那句话你明明会说的。',
-                en: 'He says nothing extra and his manner does not change one degree. If anything that makes it worse. You knew that sentence. You could have said it.'
+                zh: '她一句多余的话都没说，态度也没有半点变化。你反倒有点懊恼——那句话你明明会说的。',
+                en: 'She says nothing extra and her manner does not change one degree. If anything that makes it worse. You knew that sentence. You could have said it.'
               }
             ]
           }
