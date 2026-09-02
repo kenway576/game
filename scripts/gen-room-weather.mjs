@@ -24,7 +24,10 @@ import sharp from 'sharp';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BG = path.join(ROOT, 'public', 'images', 'backgrounds');
-const SOURCE = path.join(BG, 'bg_umikaze_room_201.webp');
+// 默认还是 201 室；--src <名字> 可以换成任何一张背景（不带 bg_ 前缀和扩展名）
+const srcIdx = process.argv.indexOf('--src');
+const BASE = srcIdx >= 0 && process.argv[srcIdx + 1] ? process.argv[srcIdx + 1] : 'umikaze_room_201';
+const SOURCE = path.join(BG, `bg_${BASE}.webp`);
 
 // ---- API key：环境变量优先，其次 .env.local ----
 function readKey() {
@@ -90,7 +93,7 @@ if (!fs.existsSync(SOURCE)) {
   process.exit(1);
 }
 
-const wanted = args.filter(a => !a.startsWith('--'));
+const wanted = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--src');
 const targets = wanted.length ? wanted : Object.keys(VARIANTS);
 for (const t of targets) {
   if (!VARIANTS[t]) { console.error('未知变体:', t, '（--list 看全部）'); process.exit(1); }
@@ -98,17 +101,15 @@ for (const t of targets) {
 
 const readB64 = f => fs.readFileSync(f).toString('base64');
 const srcB64 = readB64(SOURCE);
-const variantPath = n => path.join(BG, `bg_umikaze_room_201_${n}.webp`);
+const variantPath = n => path.join(BG, `bg_${BASE}_${n}.webp`);
 
 // 每次都重申"别动房间"：这是整个脚本成败的关键
 const KEEP = [
   'This is a background illustration for a visual novel.',
-  'Keep the room EXACTLY as it is: identical camera angle and framing, identical furniture in identical positions',
-  '(the wooden desk with the brass lamp and open notebook, the bookshelf, the corkboard with the map and photos,',
-  'the single bed with the striped blue blanket, the open balcony doors with white curtains, the potted plant,',
-  'the open suitcase on the floor, the wooden floorboards).',
-  'Do not move, add, remove, or redesign any object. Do not change the art style or the line work.',
-  'The result must read as the SAME room at a different time of day.'
+  'Keep the location EXACTLY as it is: identical camera angle and framing, identical architecture,',
+  'identical furniture and props in identical positions, identical colours for every object.',
+  'Do not move, add, remove, or redesign anything. Do not change the art style or the line work.',
+  'The result must read as the SAME place at a different time of day.'
 ].join(' ');
 
 function editImage(instruction, baseB64) {
@@ -151,7 +152,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 for (const name of targets) {
   const v = VARIANTS[name];
-  const out = path.join(BG, `bg_umikaze_room_201_${name}.webp`);
+  const out = path.join(BG, `bg_${BASE}_${name}.webp`);
   process.stdout.write(`${v.label.padEnd(4)} (${name}) ... `);
   try {
     // v.from 指定了就以那个变体为底（要求它已经生成过）

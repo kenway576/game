@@ -487,6 +487,8 @@ const StoryScreen: React.FC<Props> = ({
 
   // ---------- 便利店 ----------
   const [cart, setCart] = useState<string[]>([]);
+  // 哪几张商品图加载失败了 → 退回 emoji
+  const [imgFailed, setImgFailed] = useState<Record<string, boolean>>({});
   const shopItems = node?.type === 'shop' ? node.items : [];
   const budget = node?.type === 'shop' ? node.budget : 0;
   const spent = cart.reduce((sum, id) => sum + (shopItems.find(i => i.id === id)?.price || 0), 0);
@@ -857,19 +859,18 @@ const StoryScreen: React.FC<Props> = ({
                     >
                       {/* 商品立绘 / 图标 */}
                       <div className={`relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden border ${picked ? 'border-black/30 bg-black/10' : 'border-white/20 bg-black/40'} flex items-center justify-center`}>
-                        {item.imageUrl ? (
+                        {/* 商品立绘是透明底的：object-contain 不裁切，
+                            emoji 只在图缺失时兜底，否则会透过来盖在商品上 */}
+                        {item.imageUrl && !imgFailed[item.id] ? (
                           <img
                             src={item.imageUrl}
                             alt={item.nameZh}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                            onError={(e) => {
-                              (e.currentTarget as HTMLElement).style.display = 'none';
-                            }}
+                            className="relative z-10 w-full h-full object-contain p-1 transition-transform duration-300 group-hover:scale-110"
+                            onError={() => setImgFailed(f => ({ ...f, [item.id]: true }))}
                           />
-                        ) : null}
-                        <span className="text-3xl md:text-4xl select-none absolute" style={{ zIndex: 0 }}>
-                          {item.emoji}
-                        </span>
+                        ) : (
+                          <span className="text-3xl md:text-4xl select-none">{item.emoji}</span>
+                        )}
                       </div>
 
                       {/* 商品信息 */}

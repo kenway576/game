@@ -167,6 +167,23 @@ export interface RoomHotspot {
   action?: 'sleep' | 'wordbook' | 'journal' | 'view';
 }
 
+// 从 201 室阳台看得见的地标。点开来有图有讲解，
+// 也是把"这座城市"变成玩家真的认得出来的地方的主要手段。
+export interface ViewSpot {
+  id: string;
+  nameJp: string;
+  reading: string;
+  nameZh: string;
+  nameEn: string;
+  // 复用现有背景图，不为此生成新图
+  image: string;
+  descZh: string;
+  descEn: string;
+  word?: StoryWord;
+  // 剧情推到了才认得出来；不写就一开始就能看
+  requiresFlag?: string;
+}
+
 // 5. P5 式主角五维人格参数系统 (Protagonist Social Stats)
 export interface ProtagonistStats {
   knowledge: number;     // 知识 (Knowledge) 0 - 100

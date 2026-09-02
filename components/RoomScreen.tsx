@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { GameCalendar, Language, RoomHotspot, StoryFlags } from '../types';
-import { ROOM_HOTSPOTS, ROOM_VIEW_LINES, getRoomBackground } from '../constants';
+import { GameCalendar, Language, RoomHotspot, StoryFlags, ViewSpot } from '../types';
+import { ROOM_HOTSPOTS, ROOM_VIEW_LINES, WINDOW_VIEW_SPOTS, getRoomBackground } from '../constants';
 import { audioManager } from '../services/audioManager';
 
 // ---------------------------------------------------------
@@ -33,6 +33,9 @@ const RoomScreen: React.FC<Props> = ({
   const [hovered, setHovered] = useState<string | null>(null);
   // 点下去那一发扩散环：key 变化即重放动画
   const [burst, setBurst] = useState<{ id: string; key: number } | null>(null);
+  // 窗外地标面板
+  const [viewOpen, setViewOpen] = useState(false);
+  const [spot, setSpot] = useState<ViewSpot | null>(null);
 
   const bg = getRoomBackground(calendar);
 
@@ -48,10 +51,8 @@ const RoomScreen: React.FC<Props> = ({
     setBurst({ id: h.id, key: Date.now() });
 
     if (h.action === 'view') {
-      // 看风景：按当前天气取词。夜里优先按夜景说。
-      const key = calendar.timeSlot === 'night' ? 'night' : calendar.weather;
-      const line = ROOM_VIEW_LINES[key] || ROOM_VIEW_LINES.sunny;
-      setActive({ hotspot: h, text: en ? line.en : line.zh });
+      // 看窗外：打开地标面板。先给一句当下天气的观感，再让玩家一个个认地方。
+      setViewOpen(true);
       return;
     }
     setActive({ hotspot: h, text: en ? h.linesEn[0] : h.linesZh[0] });
@@ -177,6 +178,79 @@ const RoomScreen: React.FC<Props> = ({
           </button>
         );
       })}
+
+      {/* 窗外：地标一览 + 单个地标的详解 */}
+      {viewOpen && (
+        <div
+          className="absolute inset-0 z-40 bg-black/75 backdrop-blur-sm flex flex-col animate-in fade-in duration-200"
+          onClick={() => { setSpot(null); setViewOpen(false); }}
+        >
+          <div
+            className="m-auto w-full max-w-5xl max-h-[88dvh] overflow-y-auto p-4 md:p-6"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* 当下这一刻的观感，按天气取 */}
+            <p className="text-sm md:text-lg text-amber-50/85 italic leading-relaxed mb-5 text-center">
+              {(() => {
+                const key = calendar.timeSlot === 'night' ? 'night' : calendar.weather;
+                const line = ROOM_VIEW_LINES[key] || ROOM_VIEW_LINES.sunny;
+                return en ? line.en : line.zh;
+              })()}
+            </p>
+
+            {!spot ? (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {WINDOW_VIEW_SPOTS
+                  .filter(v => !v.requiresFlag || storyFlags[v.requiresFlag])
+                  .map(v => (
+                    <button
+                      key={v.id}
+                      onClick={() => { audioManager.playSfx('page'); setSpot(v); }}
+                      className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-white/15 hover:border-amber-200/70 transition-all duration-300 shadow-lg"
+                    >
+                      <img src={v.image} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                      <span className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                        <span className="block text-[11px] md:text-sm font-bold text-white leading-tight">{v.nameJp}</span>
+                        <span className="block text-[9px] md:text-[10px] text-amber-200/70 font-mono">{v.reading}</span>
+                      </span>
+                    </button>
+                  ))}
+              </div>
+            ) : (
+              <div className="animate-in fade-in slide-in-from-bottom-3 duration-300">
+                <div className="relative aspect-[16/9] rounded-lg overflow-hidden border border-white/15 shadow-2xl">
+                  <img src={spot.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                  <span className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-4 md:p-5">
+                    <p className="text-xl md:text-3xl font-black text-white">{spot.nameJp}</p>
+                    <p className="text-[11px] md:text-sm text-amber-200/80 font-mono">{spot.reading}</p>
+                    <p className="text-xs md:text-sm text-white/70 mt-0.5">{en ? spot.nameEn : spot.nameZh}</p>
+                  </div>
+                </div>
+                <p className="mt-4 text-sm md:text-lg text-white/90 leading-relaxed">
+                  {en ? spot.descEn : spot.descZh}
+                </p>
+                {spot.word && (
+                  <span className="mt-3 inline-flex items-baseline gap-2 bg-emerald-500/15 border border-emerald-400/40 rounded px-3 py-1.5">
+                    <span className="text-base font-bold text-emerald-200">{spot.word.jp}</span>
+                    {spot.word.reading && <span className="text-[10px] text-emerald-300/60">{spot.word.reading}</span>}
+                    <span className="text-xs text-white/65">{en ? spot.word.en : spot.word.zh}</span>
+                  </span>
+                )}
+                <div className="mt-5">
+                  <button
+                    onClick={() => setSpot(null)}
+                    className="bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/25 px-6 py-2 font-black italic tracking-widest transform -skew-x-12 transition-all"
+                  >
+                    <span className="block transform skew-x-12">{en ? '◀ ALL' : '◀ 看别处'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* 点开之后的文字 */}
       {active && (
