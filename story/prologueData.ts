@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../types';
+import { REI_PARTING, HIKARI_PARTING, MAKI_PARTING } from './prologueEncounterPartings';
 
 // ---------------------------------------------------------
 // 【第0章：海风起航之日】数据化剧本
@@ -758,7 +759,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 ]
               }
             ]
-          }
+          },
+          ...REI_PARTING
         ]
       },
       {
@@ -975,7 +977,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 ]
               }
             ]
-          }
+          },
+          ...HIKARI_PARTING
         ]
       },
       {
@@ -1172,7 +1175,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 ]
               }
             ]
-          }
+          },
+          ...MAKI_PARTING
         ]
       }
     ]

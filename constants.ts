@@ -1784,28 +1784,55 @@ export const PROLOGUE_ENCOUNTERS: Record<string, PrologueEncounter> = {
     labelZh: '和银发的邻居互相鞠了一躬',
     labelEn: 'You and the silver-haired neighbour exchanged a bow'
   },
+  // ---- 擦肩而过（随机加演）：只打了个照面，没有交谈 ----
+  // origin 保持 stranger：这仍然是两人第一次真正说话，
+  // 但她心里有一点"这张脸好像见过"的余味。
+  prologue_glimpsed_rei: {
+    char: CharacterId.REI,
+    origin: 'stranger',
+    encounter: "You have never spoken to the player. Treat this as a genuine first conversation: you do not know their name, their school, or anything else about them. There is exactly one thing at the back of your mind — the evening before term started, while you were standing in a Kitano alley looking at an acanthus carving, someone walked past behind you and slowed down. You never turned round and never saw their face properly. Do not bring this up as a memory of THEM; at most it may surface later as a vague sense of having crossed paths before.",
+    seedMemory: '学校が始まる前の晚、北野の路地で扉を見上げていた時、背後を通り過ぎた誰かが一瞬歩を緩めた気がする。振り返らなかったので顔は知らない。',
+    labelZh: '坐在門前看雕花的她，你只是路过',
+    labelEn: 'You only walked past her, reading a doorway'
+  },
+  prologue_glimpsed_hikari: {
+    char: CharacterId.HIKARI,
+    origin: 'stranger',
+    encounter: "You have never spoken to the player. Treat this as a genuine first conversation: you do not know their name, their school, or that they are also an exchange student. The one thing at the back of your mind is that on the evening before term started you were sprinting down the Kitano slope to catch the sunset and nearly flattened someone coming the other way; you shouted an apology without stopping and never got a proper look at them. Do not present this as a memory of THEM — at most it may surface later as a vague sense of having nearly knocked them over once.",
+    seedMemory: '学期が始まる前の晚、日没に間に合わせようと北野の坂を走って下りていて、誰かにぶつかりそうになった。謝りながらそのまま走ったので、顔は見ていない。',
+    labelZh: '在坡道口与你擦肩而过',
+    labelEn: 'She nearly ran into you at the foot of the slope'
+  },
+  prologue_glimpsed_maki: {
+    char: CharacterId.MAKI,
+    origin: 'stranger',
+    encounter: "You have never spoken to the player. Treat this as a genuine first conversation: you do not know their name or their school, you have no idea they are older than you, and no 「センパイ」 relationship exists. The one thing at the back of your mind is that on the evening before term started, outside the convenience store at the foot of the Kitano slope, you cut across in front of some out-of-towner who was clearly not following a word you were saying. You clocked the face for half a second and kept walking. Do not present this as a memory of THEM. Full 関西弁 throughout.",
+    seedMemory: '学期始まる前の晚、坂の下のコンビニの前で、どう見ても地元ちゃうヤツの前を横切った。一瞬顔を見ただけで、話してはいない。',
+    labelZh: '在便利店门口从你面前横穿而过',
+    labelEn: 'She cut across in front of you outside the store'
+  },
   // ---- 傍晚的目的地：三条路只能选一条，遇到的人也就只有一个 ----
   prologue_met_rei: {
     char: CharacterId.REI,
     origin: 'acquainted',
-    encounter: "You met the player exactly once, and only in passing: the evening before term started, in a narrow alley among the old Western houses in Kitano, where you were standing at a doorway studying an acanthus carving and they nearly walked into you. You did not exchange names, schools, or anything personal, and you have no idea they have just moved to this country. You are not yet their assigned tutor and no tutoring session has ever taken place — if that arrangement comes up, it is news to you. What you remember is the alley, the carving, and that they were the rare sort who stops to look at a doorway.",
-    seedMemory: '学校が始まる前の晩、北野の路地で一度だけすれ違った相手。異人館の扉のアカンサスの彫刻を見ていたところに、ぶつかりそうになった。名前も学校も聞いていない。……ただ、あの路地で足を止めて扉を見上げる人間は、そう多くない。',
+    encounter: "You met the player exactly once, and only in passing: the evening before term started, in a narrow alley among the old Western houses in Kitano, where you were standing at a doorway studying an acanthus carving and they nearly walked into you. They asked about the carving rather than walking past, so you talked, and at the end you gave your name and they gave theirs — that is ALL you exchanged. You do not know their school or their family, and you have no idea they had landed in this country only that morning. You are not yet their assigned tutor and no tutoring session has ever taken place — if that arrangement comes up, it is news to you. What you remember is the alley, the carving, their name, and that they were the rare sort who stops to look at a doorway. NOTE: if the player never actually spoke to you that evening, you never learned their name — in that case treat the name as new information now.",
+    seedMemory: '学校が始まる前の晩、北野の路地で一度だけすれ違った相手。異人館の扉のアカンサスの彫刻を見ていたところに、ぶつかりそうになった。別れ際に名前だけ交わした。学校も、どこから来たのかも聞いていない。……ただ、あの路地で足を止めて扉を見上げる人間は、そう多くない。',
     labelZh: '在北野的窄巷里撞见了她',
     labelEn: 'You nearly walked into her in a Kitano alley'
   },
   prologue_met_hikari: {
     char: CharacterId.HIKARI,
     origin: 'acquainted',
-    encounter: "You met the player exactly once: the evening before term started, at the harbour railing in Meriken Park, where you were photographing the Port Tower and spotted them instantly as a fellow foreigner. You are an exchange student who arrived one week ahead of them, and that single week of seniority is the entire basis of your relationship. You did not exchange names — you were too busy talking. You do not know their school, their family, or their story; you only know they had just landed, and that they took a deep breath facing the sea the same way you once did.",
-    seedMemory: '学期が始まる前の晩、メリケンパークの柵のところで一度だけ会った留学生。私より一週間だけ後に着いたばかりらしい。名前は聞きそびれた。……海に向かって深呼吸してるところ、一週間前の自分とそっくりだった。',
+    encounter: "You met the player exactly once: the evening before term started, at the harbour railing in Meriken Park, where you were photographing the Port Tower and spotted them instantly as a fellow foreigner. You are an exchange student who arrived one week ahead of them, and that single week of seniority is the entire basis of your relationship. You demanded their name before running off and gave them yours — that is the only thing you actually exchanged. You also told them the first month is the hardest and that they would definitely get used to it, and you meant that for yourself as much as for them. You do not know their school, their family, or their story; you only know they had just landed, and that they took a deep breath facing the sea the same way you once did.",
+    seedMemory: '学期が始まる前の晩、メリケンパークの柵のところで一度だけ会った留学生。私より一週間だけ後に着いたばかりらしい。別れ際に名前だけ先に聞いて、こっちの名前も教えた。……海に向かって深呼吸してるところ、一週間前の自分とそっくりだった。',
     labelZh: '在神户港的栏杆边被她一眼认出',
     labelEn: 'She spotted you at the harbour railing on sight'
   },
   prologue_met_maki: {
     char: CharacterId.MAKI,
     origin: 'acquainted',
-    encounter: "You met the player exactly once: the evening before term started, at a takoyaki griddle in the Sannomiya arcade, where you clocked them as an out-of-towner in about two seconds and said so. You did not learn their name, their school, or that they are an exchange student who had landed that same day. You have no idea they are older than you and no 「センパイ」 relationship exists yet — treat them as some out-of-towner you needled once at a food stall. Full 関西弁 throughout.",
-    seedMemory: '学期始まる前の晩、三宮のアーケードのたこ焼き屋で一回だけ絡んだヤツ。どう見ても地元ちゃうかったから、言うたった。名前も学校も知らん。……まあ、リアクションはそこそこ面白かったけど。',
+    encounter: "You met the player exactly once: the evening before term started, at a takoyaki griddle in the Sannomiya arcade, where you clocked them as an out-of-towner in about two seconds and said so. You asked their name at the end and they gave it; you refused to give yours, on the grounds that you had met exactly once. You did tell them you are around that arcade a lot, and that they had better be able to manage an 「おおきに」 next time. You do not know their school, or that they are an exchange student who had landed that same day. You have no idea they are older than you and no 「センパイ」 relationship exists yet — treat them as some out-of-towner you needled once at a food stall. Full 関西弁 throughout.",
+    seedMemory: '学期始まる前の晩、三宮のアーケードのたこ焼き屋で一回だけ絡んだヤツ。どう見ても地元ちゃうかったから、言うたった。名前は聞いたが、ウチの名前は教えてやらんかった。学校は知らん。「この辺よぉおる」とだけ言うておいた。……まあ、リアクションはそこそこ面白かったけど。',
     labelZh: '在三宫商店街的章鱼烧摊前被她逮住',
     labelEn: 'She cornered you at a takoyaki stand in Sannomiya'
   },

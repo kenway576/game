@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult } from './types';
+import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress } from './types';
 import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
@@ -354,6 +354,10 @@ const App: React.FC = () => {
     prologueStatsBeforeRef.current = INITIAL_PROTAGONIST_STATS;
     prologueWordCountRef.current = 0;
     storyWordKeysRef.current = new Set();
+    // 全新开始：清掉上一轮的半截进度，别让 StoryScreen 又弹"要不要接着看"
+    setPendingPrologueProgress(null);
+    setPrologueSessionKey(k => k + 1);
+    try { localStorage.removeItem(PROLOGUE_PROGRESS_KEY); } catch { /* ignore */ }
     setCurrentScene('train_interior');
     setGameMode(GameMode.PROLOGUE);
     // 序章一开始就先落一次盘：这样即使中途关掉页面，
@@ -579,15 +583,31 @@ const App: React.FC = () => {
       return Math.max(getInitialFamiliarity(id), equivalent);
     });
 
-  // 序章中途进度是否还能用（StoryScreen 单独写的那份，与存档槽平行）
-  const hasValidPrologueProgress = (): boolean => {
+  // 序章中途进度：StoryScreen 每前进一步就写在 PROLOGUE_PROGRESS_KEY 下。
+  // 存档槽要能把这一份一起带走，否则"序章存了三个档"读回来全是同一个位置。
+  const isUsablePrologueProgress = (p: unknown): p is StoryProgress => {
+    const q = p as StoryProgress | null;
+    return !!q && q.version === PROLOGUE_SCRIPT_VERSION
+      && Array.isArray(q.nodes) && q.idx > 0 && q.idx < q.nodes.length;
+  };
+
+  const readPrologueProgress = (): StoryProgress | null => {
     try {
       const raw = localStorage.getItem(PROLOGUE_PROGRESS_KEY);
-      if (!raw) return false;
-      const p = JSON.parse(raw);
-      return p?.version === PROLOGUE_SCRIPT_VERSION && Array.isArray(p.nodes) && p.idx > 0 && p.idx < p.nodes.length;
-    } catch { return false; }
+      if (!raw) return null;
+      const p = JSON.parse(raw) as StoryProgress;
+      return isUsablePrologueProgress(p) ? p : null;
+    } catch { return null; }
   };
+
+  const hasValidPrologueProgress = (): boolean => !!readPrologueProgress();
+
+  // 读档进序章时交给 StoryScreen 的那一份（静默恢复，不再弹"要不要接着看"）
+  const [pendingPrologueProgress, setPendingPrologueProgress] = useState<StoryProgress | null>(null);
+  // StoryScreen 的 key：读档 / 重开时 +1 强制重挂载。
+  // 它只在挂载时读一次 initialProgress，不换 key 的话「在序章里读另一个档」
+  // 只会换掉背景，正文还停在原来那一句上。
+  const [prologueSessionKey, setPrologueSessionKey] = useState(0);
 
   // 存档只保留最近的对话（更早内容已在长期记忆摘要里），防止 localStorage 爆仓
   const buildSaveData = (isAutoSave: boolean, hard = false) => {
@@ -618,7 +638,11 @@ const App: React.FC = () => {
         chatHistories: trimmedHistories,
         customAssets, affectionMap, familiarityMap, memoryMap,
         // 🔥 五维人格、行事历与剧情选择：漏存这几项等于玩家的选择读档就作废
-        protagonistStats, gameCalendar, storyFlags, prologueDone, unlockedCgs
+        protagonistStats, gameCalendar, storyFlags, prologueDone, unlockedCgs,
+        // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
+        // 这样三个存档就是三个不同的位置，而不是都指向同一份共享进度。
+        // hard 模式（容量告急）下丢掉它：宁可退回共享进度，也不能让存档整个写不进去。
+        prologueProgress: (!hard && gameMode === GameMode.PROLOGUE) ? readPrologueProgress() : null
       }
     };
   };
@@ -707,9 +731,23 @@ const App: React.FC = () => {
       // 老存档一律视为已过序章：他们已经在玩了，不该被拽回序章
       setPrologueDone(data.prologueDone ?? true);
 
-      // 存档停在序章：只要中途进度还在（且是当前剧本版本），就接回序章继续看；
-      // 进度已失效才退回大厅，免得把玩家困在一段播不出来的剧情里。
-      const canResumePrologue = data.gameMode === GameMode.PROLOGUE && hasValidPrologueProgress();
+      // 存档停在序章：优先用槽位里自带的那份进度（这才是"这个存档"的位置），
+      // 老存档没带就退回共享进度。两个都不可用才退回大厅，
+      // 免得把玩家困在一段播不出来的剧情里。
+      const slotProgress = isUsablePrologueProgress(data.prologueProgress)
+        ? data.prologueProgress
+        : null;
+      const resumeProgress = data.gameMode === GameMode.PROLOGUE
+        ? (slotProgress || readPrologueProgress())
+        : null;
+      const canResumePrologue = !!resumeProgress;
+      // 交给 StoryScreen 静默恢复；同时把共享进度对齐到这个槽位，
+      // 免得下次从标题画面「继续」时又跳回别的存档的位置。
+      setPendingPrologueProgress(resumeProgress);
+      setPrologueSessionKey(k => k + 1);
+      if (slotProgress) {
+        try { localStorage.setItem(PROLOGUE_PROGRESS_KEY, JSON.stringify(slotProgress)); } catch { /* 存不下就只用内存里这份 */ }
+      }
       setGameMode(
         data.gameMode === GameMode.PROLOGUE
           ? (canResumePrologue ? GameMode.PROLOGUE : GameMode.LOBBY)
@@ -1198,9 +1236,12 @@ const App: React.FC = () => {
 
       {gameMode === GameMode.PROLOGUE && !prologueResult && (
         <StoryScreen
+          key={prologueSessionKey}
           script={PROLOGUE_SCRIPT}
           scriptVersion={PROLOGUE_SCRIPT_VERSION}
           progressKey={PROLOGUE_PROGRESS_KEY}
+          initialProgress={pendingPrologueProgress}
+          onOpenSystemMenu={() => setShowSystemMenu(true)}
           language={userState.language}
           stats={protagonistStats}
           background={background}

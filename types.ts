@@ -276,7 +276,7 @@ export type StoryNode =
   // characterImage 语义同 narration：给路径换立绘、给空串退场、不写则沿用上一张
   | { type: 'speech'; speakerZh: string; speakerEn: string; jp?: string; zh: string; en: string; color?: string; characterImage?: string; words?: StoryWord[] }
   // 无条件属性 / 关系增益（剧情自动给的）
-  | { type: 'effect'; effects?: StoryEffect[]; relations?: StoryRelationEffect[] }
+  | { type: 'effect'; effects?: StoryEffect[]; relations?: StoryRelationEffect[]; setFlags?: string[] }
   // 全屏 CG 插画。播放后永久解锁到回忆图鉴。
   | { type: 'cg'; cgId: string; imageUrl: string; titleZh: string; titleEn: string; captionZh: string; captionEn: string }
   // 分歧选项
@@ -286,7 +286,11 @@ export type StoryNode =
   // 空手走出去的人不该被店员问「要筷子吗」。
   | { type: 'shop'; budget: number; promptZh: string; promptEn: string; items: ShopItem[]; setFlagsOnPurchase?: string[]; setFlagsOnEmpty?: string[] }
   // 条件插播：满足 flag 时才播这段（用于回收前面的选择）
-  | { type: 'branch'; ifFlag: string; not?: boolean; then: StoryNode[] };
+  | { type: 'branch'; ifFlag: string; not?: boolean; then: StoryNode[] }
+  // 随机插播：从 pick 里随机抽一组播出去（重玩时遇到的人不一样）。
+  // 抽中的结果会被就地拼进节点表、随进度一起存档，
+  // 所以读档回来播的还是同一段，不会刷新一次换一个人。
+  | { type: 'random'; pick: StoryNode[][] };
 
 // 剧情选择留下的痕迹。随存档保存，可注入 AI 的 system prompt。
 export type StoryFlags = Record<string, boolean>;

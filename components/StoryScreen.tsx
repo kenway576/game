@@ -21,6 +21,11 @@ interface Props {
   language: Language;
   stats: ProtagonistStats;
   background: React.ReactNode;
+  // 读档进来的那一份进度：直接静默恢复，不再弹"要不要接着看"
+  // （玩家在存档界面已经做过一次选择了，不该再问一遍）
+  initialProgress?: StoryProgress | null;
+  // 打开系统菜单（存档 / 读档 / 单词本 / 音量）。序章期间也要能存盘。
+  onOpenSystemMenu: () => void;
   // 属性增益上抛给 App：由 App 统一改数值并弹 StatGainToast
   onEffects: (effects: StoryEffect[]) => void;
   // 関係（親密度/好感度）变动同样上抛
@@ -70,6 +75,7 @@ interface BacklogEntry { speaker: string; main: string; sub: string; }
 
 const StoryScreen: React.FC<Props> = ({
   script, scriptVersion, progressKey, language, stats, background,
+  initialProgress, onOpenSystemMenu,
   onEffects, onRelations, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
 }) => {
   const en = language === 'en';
@@ -88,6 +94,8 @@ const StoryScreen: React.FC<Props> = ({
   const relationsRef = useRef<StoryRelationEffect[]>([]);
   const cgsRef = useRef<string[]>([]);
   const appliedEffectIdxRef = useRef<Set<number>>(new Set());
+  // random 节点同样只能抽一次：StrictMode 下这个 effect 会跑两遍
+  const pickedRandomIdxRef = useRef<Set<number>>(new Set());
   const statsRef = useRef<ProtagonistStats>(stats);
   statsRef.current = stats;
 
@@ -132,30 +140,8 @@ const StoryScreen: React.FC<Props> = ({
     onRelations(list);
   };
 
-  // ==========================================================
-  // 续玩：进场先看有没有半截进度
-  // ==========================================================
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(progressKey);
-      if (raw) {
-        const p = JSON.parse(raw) as StoryProgress;
-        // 剧本改过之后旧进度会错位到别人的台词上，宁可丢弃也不能错播
-        if (p && p.version === scriptVersion && Array.isArray(p.nodes) && p.idx > 0 && p.idx < p.nodes.length) {
-          setRestoreOffer(p);
-        } else {
-          localStorage.removeItem(progressKey);
-        }
-      }
-    } catch { /* 读不出来就当没有 */ }
-    setRestoreChecked(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const acceptRestore = () => {
-    const p = restoreOffer;
-    if (!p) return;
-    audioManager.playSfx('confirm');
+  // 一份进度落到界面上：续玩弹窗和读档静默恢复共用同一段逻辑
+  const applyProgress = (p: StoryProgress) => {
     flagsRef.current = p.flags || {};
     wordsRef.current = p.words || [];
     relationsRef.current = p.relations || [];
@@ -186,6 +172,42 @@ const StoryScreen: React.FC<Props> = ({
       relations: p.relations || [],
       unlockedCgs: p.unlockedCgs || []
     });
+  };
+
+  const isUsable = (p: StoryProgress | null | undefined): p is StoryProgress =>
+    !!p && p.version === scriptVersion && Array.isArray(p.nodes) && p.idx > 0 && p.idx < p.nodes.length;
+
+  // ==========================================================
+  // 进场：读档带进度就直接接上；否则看 localStorage 里有没有半截进度
+  // ==========================================================
+  useEffect(() => {
+    // 从存档槽进来的：玩家在存档界面已经选过了，不再问第二次
+    if (isUsable(initialProgress)) {
+      applyProgress(initialProgress);
+      setRestoreChecked(true);
+      return;
+    }
+    try {
+      const raw = localStorage.getItem(progressKey);
+      if (raw) {
+        const p = JSON.parse(raw) as StoryProgress;
+        // 剧本改过之后旧进度会错位到别人的台词上，宁可丢弃也不能错播
+        if (isUsable(p)) {
+          setRestoreOffer(p);
+        } else {
+          localStorage.removeItem(progressKey);
+        }
+      }
+    } catch { /* 读不出来就当没有 */ }
+    setRestoreChecked(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const acceptRestore = () => {
+    const p = restoreOffer;
+    if (!p) return;
+    audioManager.playSfx('confirm');
+    applyProgress(p);
     setRestoreOffer(null);
   };
 
@@ -256,11 +278,22 @@ const StoryScreen: React.FC<Props> = ({
         appliedEffectIdxRef.current.add(idx);
         if (node.effects?.length) onEffects(node.effects);
         applyRelations(node.relations);
+        // 剧情自己置的 flag（不经过选项）：擦肩而过这类没有选择的桥段要靠它留痕
+        applyFlags(node.setFlags);
       }
       advance();
     } else if (node.type === 'branch') {
       const has = !!flagsRef.current[node.ifFlag];
       if (node.not ? !has : has) spliceAfter(node.then);
+      advance();
+    } else if (node.type === 'random') {
+      // 抽中的那一组就地拼进 nodes，于是它会跟着进度一起存盘 ——
+      // 读档回来播的还是同一段，不会每次刷新换一个人
+      if (!pickedRandomIdxRef.current.has(idx)) {
+        pickedRandomIdxRef.current.add(idx);
+        const pool = node.pick.filter(b => b?.length);
+        if (pool.length) spliceAfter(pool[Math.floor(Math.random() * pool.length)]);
+      }
       advance();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -521,6 +554,14 @@ const StoryScreen: React.FC<Props> = ({
         </button>
         <button onClick={() => { audioManager.playSfx('click'); setShowPrefs(true); }} className={ctrlBtn}>
           <span className="block transform skew-x-12">⚙</span>
+        </button>
+        {/* 序章也能存盘：序章有 100 多段，不给存档等于逼玩家一口气读完 */}
+        <button
+          onClick={() => { audioManager.playSfx('click'); onOpenSystemMenu(); }}
+          className={ctrlBtn}
+          title={en ? 'Menu — save, load, wordbook' : '菜单 — 存档 / 读档 / 单词本'}
+        >
+          <span className="block transform skew-x-12">{en ? '☰ Menu' : '☰ 菜单'}</span>
         </button>
         <button onClick={() => { audioManager.playSfx('click'); setConfirmSkip(true); }} className={ctrlBtn}>
           <span className="block transform skew-x-12">{en ? 'Skip ▶▶' : '跳过 ▶▶'}</span>

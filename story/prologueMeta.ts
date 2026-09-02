@@ -9,7 +9,7 @@ import { CharacterId } from '../types';
 
 // 中途存档的版本戳。剧本结构改动后手动 +1，
 // 旧的半截进度会被丢弃而不是错位播放到别人的台词上。
-export const PROLOGUE_SCRIPT_VERSION = '0.4.0';
+export const PROLOGUE_SCRIPT_VERSION = '0.5.0';
 
 // 序章中途进度写在这个键下（独立于存档槽：序章还没打完就还没有"角色"可存）
 export const PROLOGUE_PROGRESS_KEY = 'kobe_study_prologue_progress_v1';
@@ -70,6 +70,11 @@ export const PROLOGUE_FLAG_LABELS: Record<string, PrologueFlagLabel> = {
   prologue_maki_asked:     { icon: '🍢', zh: '老老实实请教了章鱼烧怎么吃', en: 'Straight-up asked how you are supposed to eat takoyaki', group: 'attitude' },
   prologue_maki_kansai:    { icon: '🎤', zh: '用现学的关西腔回了她一句「ちゃうで」', en: 'Fired back a freshly-learned Kansai "chau de"', group: 'attitude' },
   prologue_maki_left:      { icon: '🌀', zh: '笑了一下就走进了人流里', en: 'Smiled once and stepped back into the crowd', group: 'attitude' },
+
+  // ---- 擦肩而过（随机加演）：没说上话，但确实碰上了 ----
+  prologue_glimpsed_rei:    { icon: '👓', zh: '路过一扇门，有人正仰头看那朵雕花', en: 'Passed a doorway where someone stood reading the carving', group: 'encounter', char: CharacterId.REI },
+  prologue_glimpsed_hikari: { icon: '🏃', zh: '在坡道口差点被一个金发女生撞上', en: 'A blonde girl nearly ran into you at the foot of the slope', group: 'encounter', char: CharacterId.HIKARI },
+  prologue_glimpsed_maki:   { icon: '💬', zh: '便利店门口有个粉发女生从你面前横穿而过', en: 'A pink-haired girl cut across in front of the store', group: 'encounter', char: CharacterId.MAKI },
 
   // ---- 和深雪一起走的那段坡道 ----
   prologue_miyuki_carried: { icon: '🛍', zh: '在坡道上替她拎了一袋东西', en: 'Carried one of her bags up the hill', group: 'attitude' },
