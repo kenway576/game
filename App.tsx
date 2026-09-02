@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress } from './types';
+import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode } from './types';
 import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, appendDay1Memories, getWeatherScene } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
@@ -22,7 +22,10 @@ import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
 import PrologueResultScreen from './components/PrologueResultScreen';
 import ConsentGate from './components/ConsentGate';
 import RoomScreen from './components/RoomScreen';
+import MapScreen from './components/MapScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
+import { pickEventFor, buildAmbientScript } from './story/mapEvents';
+import type { MapLocation, MapEventDef } from './types';
 import { DAY1_SCRIPT } from './story/day1Data';
 import { DAY1_VERSION, DAY1_PROGRESS_KEY } from './story/day1Meta';
 import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
@@ -168,6 +171,8 @@ const App: React.FC = () => {
   const [playingDay1, setPlayingDay1] = useState(false);
   // 正在播的专属剧情（手写剧本走 StoryScreen，和序章同一套引擎）
   const [activeLevelStory, setActiveLevelStory] = useState<{ charId: CharacterId; def: LevelStoryDef } | null>(null);
+  // 🗺️ 出门：正在走的那一趟。event 为 null 表示今天这地方没戏，播空转旁白。
+  const [activeTrip, setActiveTrip] = useState<{ loc: MapLocation; event: MapEventDef | null; script: StoryNode[] } | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [showAutoSave, setShowAutoSave] = useState(false);
 
@@ -373,10 +378,17 @@ const App: React.FC = () => {
     setPendingPrologueProgress(null);
     setDay1Done(false);
     setPlayingDay1(false);
+    setActiveTrip(null);
     setPrologueSessionKey(k => k + 1);
     try {
       localStorage.removeItem(PROLOGUE_PROGRESS_KEY);
       localStorage.removeItem(DAY1_PROGRESS_KEY);   // 第一章的半截进度也要清
+      // 地图的"新地点"角标也要重来，否则新档一开地图全是看过的
+      localStorage.removeItem('kobe_map_seen_v1');
+      // 出门那些小剧情的半截进度同样清掉
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('kobe_study_trip_'))
+        .forEach(k => localStorage.removeItem(k));
     } catch { /* ignore */ }
     // 序章 = 4 月 10 日，抵达当晚
     setGameCalendar({ month: 4, day: 10, dayOfWeek: '月 (Mon)', timeSlot: 'afternoon', weather: 'sunny' });
@@ -539,6 +551,47 @@ const App: React.FC = () => {
     setGameMode(GameMode.LOBBY);
   };
 
+  // 🗺️ 出门。选好地方 → 看今天这儿有没有戏 → 有就演，没有就给一段空转旁白。
+  const startTrip = (loc: MapLocation) => {
+    const ev = pickEventFor(loc.id, {
+      flags: storyFlags,
+      calendar: gameCalendar,
+      affection: affectionMap,
+      familiarity: familiarityMap
+    });
+    setActiveTrip({
+      loc,
+      event: ev,
+      script: ev ? ev.script : buildAmbientScript(loc, userState.language === 'en' ? 'en' : 'zh')
+    });
+    setGameMode(GameMode.LOBBY);
+  };
+
+  // 出门回来：时段往前走一格。夜里出去的那一趟回来就直接是第二天早上——
+  // 否则夜里可以无限刷，"今天去哪儿"就不是个选择了。
+  const finishTrip = (flags: StoryFlags) => {
+    const trip = activeTrip;
+    setStoryFlags(prev => ({
+      ...prev,
+      ...flags,
+      // 事件 id 同时就是"演过了"的 flag
+      ...(trip?.event ? { [trip.event.id]: true } : {})
+    }));
+    setActiveTrip(null);
+    setCurrentScene(DEFAULT_SCENE);
+    setGameCalendar(prev => {
+      if (prev.timeSlot === 'morning')   return { ...prev, timeSlot: 'afternoon' };
+      if (prev.timeSlot === 'afternoon') return { ...prev, timeSlot: 'night' };
+      const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
+      return {
+        ...prev,
+        day: prev.day + 1,
+        timeSlot: 'morning',
+        weather: weathers[Math.floor(Math.random() * weathers.length)]
+      };
+    });
+  };
+
   // 同意之后才真正进大厅
   const acceptConsent = () => {
     setConsentGiven(true);
@@ -548,7 +601,10 @@ const App: React.FC = () => {
 
   // 第一天播完 → 正式进入自由游玩
   const finishDay1 = (flags: StoryFlags) => {
-    setStoryFlags(prev => ({ ...prev, ...flags }));
+    // day1_done 强制置上：跳过第 1 章的人也算过完了这一天。
+    // 地图的三宫一带、校内社团室都挂在这个 flag 上，
+    // 靠剧本末尾那个 effect 节点的话，一跳过就全锁死了。
+    setStoryFlags(prev => ({ ...prev, ...flags, day1_done: true }));
     // 把今天真正发生过的事并进各人的长期记忆。
     // 没触发的 flag 不留痕迹 —— 角色不该记得玩家没玩过的剧情。
     setMemoryMap(prev => appendDay1Memories(prev, flags));
@@ -1373,6 +1429,7 @@ const App: React.FC = () => {
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onOpenCgGallery={() => setShowCgGallery(true)}
           onOpenRoom={() => setGameMode(GameMode.ROOM)}
+          onOpenMap={() => setGameMode(GameMode.MAP)}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           background={background}
@@ -1531,6 +1588,7 @@ const App: React.FC = () => {
       {/* 专属剧情：复用序章那套引擎（打字机 / 选项 / 生词 / CG / 存档续玩全都白拿）。
           剧情播完把 flags 并进全局，让后续剧情和 AI 都知道发生过什么。 */}
       {activeLevelStory && (
+        <div className="fixed inset-0 z-[130] overflow-hidden">
         <StoryScreen
           key={`levelstory-${activeLevelStory.def.id}`}
           script={activeLevelStory.def.script || []}
@@ -1555,6 +1613,55 @@ const App: React.FC = () => {
             setActiveLevelStory(null);
           }}
         />
+        </div>
+      )}
+
+      {gameMode === GameMode.MAP && !activeTrip && (
+        <MapScreen
+          language={userState.language}
+          calendar={gameCalendar}
+          storyFlags={storyFlags}
+          affection={affectionMap}
+          familiarity={familiarityMap}
+          onClose={() => setGameMode(GameMode.LOBBY)}
+          onTravel={startTrip}
+        />
+      )}
+
+      {activeTrip && (
+        <div className="fixed inset-0 z-[130] overflow-hidden">
+        <StoryScreen
+          key={`trip-${activeTrip.event?.id || activeTrip.loc.id}-${gameCalendar.day}-${gameCalendar.timeSlot}`}
+          script={activeTrip.script}
+          scriptVersion={`${activeTrip.event?.id || `ambient-${activeTrip.loc.id}`}-v1`}
+          progressKey={`kobe_study_trip_${activeTrip.event?.id || activeTrip.loc.id}`}
+          chapterNameZh={activeTrip.event ? activeTrip.event.titleZh : activeTrip.loc.nameZh}
+          chapterNameEn={activeTrip.event ? activeTrip.event.titleEn : activeTrip.loc.nameEn}
+          storyAffection={
+            activeTrip.event && activeTrip.event.chars.length === 1
+              ? (affectionMap[activeTrip.event.chars[0]] || 0)
+              : 0
+          }
+          storyFamiliarity={
+            activeTrip.event && activeTrip.event.chars.length === 1
+              ? (familiarityMap[activeTrip.event.chars[0]] ?? getInitialFamiliarity(activeTrip.event.chars[0]))
+              : 0
+          }
+          language={userState.language}
+          stats={protagonistStats}
+          background={background}
+          playerName={userState.playerName}
+          onSetPlayerName={(name) => setUserState(prev => ({ ...prev, playerName: name }))}
+          onOpenSystemMenu={() => setShowSystemMenu(true)}
+          onEffects={applyStoryEffects}
+          onRelations={applyStoryRelations}
+          onSceneChange={setCurrentScene}
+          onCollectWords={collectStoryWords}
+          onUnlockCg={unlockStoryCg}
+          onRestore={restoreStoryProgress}
+          onFinish={finishTrip}
+        />
+        </div>
       )}
 
       {gameMode === GameMode.ROOM && (

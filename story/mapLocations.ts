@@ -1,0 +1,422 @@
+import { MapLocation, CharacterId } from '../types';
+
+// ---------------------------------------------------------
+// 🗺️ 能去的地方
+//
+// 图全部复用 SCENE_MAP 里已经有的背景，一张新图都不生成。
+// id 就是 SCENE_MAP 的 key。
+//
+// 【解锁链】刻意做成一条能自己往前滚的链，而不是全押在"第几章"上：
+//
+//   开局                  学校核心 + 北野（家附近）
+//   day1_done             三宫一带（第 1 章过完你才知道山下有什么）
+//   ev_sannomiya_first → map_harbor   第一次走到三宫站，看见了往海边去的轻轨
+//   ev_portliner_first → map_far      第一次坐上轻轨，才敢往市外跑
+//   ev_slope_nao       → 西村珈琲     奈绪把你带进去的那家店
+//
+// 也就是说：地图变大靠的是"你真的去过了"，不是靠日期到了。
+// ---------------------------------------------------------
+
+export const MAP_LOCATIONS: MapLocation[] = [
+  // ======================= 学校 =======================
+  {
+    id: 'classroom_morning', district: 'school',
+    nameJp: '一年A組 教室', reading: 'いちねんエーぐみ きょうしつ',
+    nameZh: '1年A班 教室', nameEn: 'Class 1-A',
+    blurbZh: '你的座位在窗边倒数第二排——转学生的标准配置，你已经放弃吐槽了。',
+    blurbEn: 'Your desk is second from the back, by the window. Standard-issue transfer student seating. You have stopped commenting on it.',
+    timeSlots: ['morning', 'afternoon'],
+    regulars: [CharacterId.ASUKA, CharacterId.HIKARI],
+    ambientZh: [
+      '教室里只剩下值日生在擦黑板。粉笔灰在斜进来的光里慢慢往下沉。',
+      '你回座位拿落下的笔记本。桌肚里多了一张不知谁塞的社团招新传单。'
+    ],
+    ambientEn: [
+      'Only the cleaning duty is left, wiping the board. Chalk dust drifts down through the slanted light.',
+      'You come back for a notebook you left behind. Someone has posted a club recruitment flyer into your desk.'
+    ]
+  },
+  {
+    id: 'school_library', district: 'school',
+    nameJp: '図書室', reading: 'としょしつ',
+    nameZh: '图书室', nameEn: 'School Library',
+    blurbZh: '三面书架，一扇朝西的窗。下午三点以后整间屋子会变成蜂蜜色。',
+    blurbEn: 'Shelves on three walls and one west-facing window. After three in the afternoon the whole room turns honey-coloured.',
+    timeSlots: ['afternoon'],
+    regulars: [CharacterId.REI],
+    ambientZh: ['靠窗那个位置空着，但椅子被拉出来了一点点——像是刚有人起身。'],
+    ambientEn: ['The seat by the window is empty, but the chair is pulled out a little. As if someone has just stood up.']
+  },
+  {
+    id: 'rooftop_sunset', district: 'school',
+    nameJp: '屋上', reading: 'おくじょう',
+    nameZh: '天台', nameEn: 'Rooftop',
+    blurbZh: '门上写着「立入禁止」，锁却从来没锁上过。全校都知道，全校都装作不知道。',
+    blurbEn: 'The door says NO ENTRY. The lock has never once been locked. The whole school knows, and the whole school pretends not to.',
+    timeSlots: ['afternoon', 'night'],
+    regulars: [CharacterId.SORA],
+    ambientZh: ['风比楼下大得多。你在护栏边站了一会儿，看见港口那头有一艘船正在慢慢转向。'],
+    ambientEn: ['The wind is much stronger up here. You stand at the rail a while and watch a ship out in the harbour slowly come about.']
+  },
+  {
+    id: 'school_terrace', district: 'school',
+    nameJp: '学生食堂', reading: 'がくせいしょくどう',
+    nameZh: '学生食堂', nameEn: 'Cafeteria',
+    blurbZh: '中午挤得像战场，放学后空得能听见冰箱的声音。乌冬 280 日元。',
+    blurbEn: 'A battlefield at noon, empty enough after school that you can hear the refrigerator. Udon, 280 yen.',
+    regulars: [CharacterId.HIKARI, CharacterId.ASUKA],
+    ambientZh: ['自动售货机吞了你的硬币，又吐了出来。你换了一枚，它才勉强同意。'],
+    ambientEn: ['The vending machine swallows your coin and spits it back. You try another one and it grudgingly consents.']
+  },
+  {
+    id: 'gym', district: 'school',
+    nameJp: '体育館', reading: 'たいいくかん',
+    nameZh: '体育馆', nameEn: 'Gymnasium',
+    blurbZh: '篮球砸在地板上的声音在这里会绕一圈才回来。',
+    blurbEn: 'A basketball hitting this floor takes a full lap around the room before it comes back to you.',
+    timeSlots: ['afternoon'],
+    regulars: [CharacterId.SORA],
+    ambientZh: ['球架下摆着一只没人收的球。你投了一次，没进。'],
+    ambientEn: ['A ball nobody put away sits under the hoop. You take one shot. You miss.']
+  },
+  {
+    id: 'courtyard_rain', district: 'school',
+    nameJp: '中庭', reading: 'なかにわ',
+    nameZh: '中庭', nameEn: 'Courtyard',
+    blurbZh: '四面教学楼围出来的一小块天。下雨的时候这里的声音特别好听。',
+    blurbEn: 'A small square of sky fenced in by four buildings. When it rains, this is the best-sounding place in the school.',
+    regulars: [CharacterId.ASUKA],
+    ambientZh: ['长椅是湿的。你没坐，就站着听了一会儿雨打在铁皮雨棚上的声音。'],
+    ambientEn: ['The bench is wet. You do not sit; you stand and listen to the rain on the tin awning for a while.']
+  },
+  {
+    id: 'music_room', district: 'school',
+    nameJp: '音楽室', reading: 'おんがくしつ',
+    nameZh: '音乐室', nameEn: 'Music Room',
+    blurbZh: '三楼最里面那间。墙上挂着一排作曲家的画像，据说到了晚上眼睛会动——七不思议之一。',
+    blurbEn: 'The far room on the third floor. A row of composer portraits whose eyes are said to move at night. One of the seven school mysteries.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你还没在这栋楼里走全过。',
+    lockedHintEn: 'You have not walked the whole building yet.',
+    timeSlots: ['afternoon'],
+    regulars: [CharacterId.REI],
+    ambientZh: ['钢琴盖是开的。你按了一个键，声音在空屋子里拖得很长。'],
+    ambientEn: ['The piano lid is open. You press one key and the note drags out long in the empty room.']
+  },
+  {
+    id: 'art_room', district: 'school',
+    nameJp: '美術室', reading: 'びじゅつしつ',
+    nameZh: '美术室', nameEn: 'Art Room',
+    blurbZh: '松节油的味道能从走廊那头闻到。石膏像永远缺一只耳朵。',
+    blurbEn: 'You can smell the turpentine from the far end of the corridor. The plaster bust is permanently missing an ear.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你还没在这栋楼里走全过。',
+    lockedHintEn: 'You have not walked the whole building yet.',
+    timeSlots: ['afternoon'],
+    regulars: [CharacterId.HIKARI],
+    ambientZh: ['画架上有一张没画完的港口。颜料还没干透。'],
+    ambientEn: ['An unfinished harbour sits on an easel. The paint has not fully dried.']
+  },
+
+  // ======================= 北野（家附近） =======================
+  {
+    id: 'umikaze_exterior', district: 'kitano',
+    nameJp: '海風荘', reading: 'うみかぜそう',
+    nameZh: '海风庄', nameEn: 'Umikaze Apartments',
+    blurbZh: '你住的地方。二层木造，外墙刷成奶油色，铁楼梯一踩就响。',
+    blurbEn: 'Where you live. Two storeys of timber, cream-painted, with an iron staircase that announces everyone who uses it.',
+    regulars: [CharacterId.MIYUKI, CharacterId.NAO],
+    ambientZh: ['信箱里塞着一张披萨传单和一张水电缴费单。楼上有人在浇花，水滴到了铁栏杆上。'],
+    ambientEn: ['A pizza flyer and a utility bill in the letterbox. Someone upstairs is watering plants; the drips land on the iron rail.']
+  },
+  {
+    id: 'kitano_slope', district: 'kitano',
+    nameJp: '北野坂', reading: 'きたのざか',
+    nameZh: '北野坂', nameEn: 'Kitano Slope',
+    blurbZh: '从山手一路下到三宫的那条坡。走下去五分钟，走上来十五分钟。',
+    blurbEn: 'The slope that runs from the hillside down into Sannomiya. Five minutes down. Fifteen minutes back up.',
+    regulars: [CharacterId.NAO, CharacterId.MIYUKI],
+    ambientZh: ['坡道两边的洋馆一栋接一栋。你走到一半停下来喘了口气，装作是在看风景。'],
+    ambientEn: ['Western houses line the slope one after another. Halfway up you stop for breath and pretend to be admiring the view.']
+  },
+  {
+    id: 'convenience_store', district: 'kitano',
+    nameJp: 'コンビニ 北野店', reading: 'コンビニ きたのてん',
+    nameZh: '便利店 北野店', nameEn: 'Convenience Store (Kitano)',
+    blurbZh: '坡底那家。二十四小时亮着，是这条坡上唯一不会睡的东西。',
+    blurbEn: 'The one at the foot of the slope. Lit twenty-four hours, and the only thing on this hill that never sleeps.',
+    ambientZh: ['关东煮的锅还开着。你在货架前站了三分钟，最后什么也没买就出来了。'],
+    ambientEn: ['The oden pot is still on. You stand at the shelves for three minutes and leave without buying anything.']
+  },
+  {
+    id: 'kitano_lookout', district: 'kitano',
+    nameJp: '北野天満神社', reading: 'きたのてんまんじんじゃ',
+    nameZh: '北野天满神社', nameEn: 'Kitano Tenman Shrine',
+    blurbZh: '坡顶的石阶爬上去，能一眼看到整个港。学问之神，考前这里人特别多。',
+    blurbEn: 'Up the stone steps at the top of the slope, the whole harbour opens at once. God of learning; very crowded before exams.',
+    regulars: [CharacterId.INARI],
+    ambientZh: ['绘马挂了一整排。你随手翻了两张，全是「合格祈願」。'],
+    ambientEn: ['A whole rack of ema plaques. You flip two at random. Both are prayers to pass an exam.']
+  },
+  {
+    id: 'nishimura_coffee_salon', district: 'kitano',
+    nameJp: 'にしむら珈琲店', reading: 'にしむらこーひーてん',
+    nameZh: '西村咖啡店', nameEn: 'Nishimura Coffee',
+    blurbZh: '坡道中段那栋深色木门的店。里面比外面看着大三倍，也安静三倍。',
+    blurbEn: 'The dark-doored place halfway up the slope. Three times bigger inside than it looks, and three times quieter.',
+    requiresFlag: 'ev_slope_nao',
+    lockedHintZh: '你从门口走过好几次了，但没进去过——那种店总得有人先带你进去一次。',
+    lockedHintEn: 'You have walked past the door several times. Never in. Places like that need someone to take you the first time.',
+    regulars: [CharacterId.MIYUKI],
+    ambientZh: ['你点了今日咖啡，坐在最里面。窗外的坡道上有人正吃力地往上走。'],
+    ambientEn: ['You order the coffee of the day and take the deepest seat. Outside, someone is labouring up the slope.']
+  },
+
+  // ======================= 三宫 =======================
+  {
+    id: 'sannomiya_station', district: 'sannomiya',
+    nameJp: '三宮駅', reading: 'さんのみやえき',
+    nameZh: '三宫站', nameEn: 'Sannomiya Station',
+    blurbZh: '神户的心脏。JR、阪急、阪神、地铁、轻轨，五条线全挤在这一个路口。',
+    blurbEn: 'The heart of Kobe. JR, Hankyu, Hanshin, subway and the Port Liner, five lines crammed into one intersection.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    ambientZh: ['闸机口的人流像涨潮。你靠着柱子站了一会儿，看电子屏上的班次一行行往上滚。'],
+    ambientEn: ['The crowd at the gates comes in like a tide. You lean on a pillar and watch the departure board scroll upward.']
+  },
+  {
+    id: 'sannomiya_arcade', district: 'sannomiya',
+    nameJp: 'センター街', reading: 'センターがい',
+    nameZh: '中央商店街', nameEn: 'Center Gai Arcade',
+    blurbZh: '有顶棚的商店街，下雨天也不用打伞。从头走到尾要二十分钟，但没人是走直线的。',
+    blurbEn: 'A covered shopping street; no umbrella needed. Twenty minutes end to end, though nobody walks it in a straight line.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    ambientZh: ['扭蛋机排了一整面墙。你花了三百日元，抽到一只很丑的猫。你留下了它。'],
+    ambientEn: ['A whole wall of capsule machines. Three hundred yen buys you a very ugly cat. You keep it.']
+  },
+  {
+    id: 'pia_kobe_arcade', district: 'sannomiya',
+    nameJp: '高架下 ピアザ神戸', reading: 'こうかした ピアザこうべ',
+    nameZh: '高架下 Piazza 神户', nameEn: 'Under the Tracks',
+    blurbZh: '铁道高架桥底下的一长条店铺。电车开过去的时候天花板会震。',
+    blurbEn: 'A long ribbon of shops beneath the railway viaduct. When a train goes over, the ceiling shakes.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    regulars: [CharacterId.MAKI],
+    ambientZh: ['音游机的声音从深处传出来。有人正在打一首你不认识的曲子，全连。'],
+    ambientEn: ['A rhythm game is going somewhere deep in the arcade. Someone is full-comboing a song you do not know.']
+  },
+  {
+    id: 'ramen_shop_interior', district: 'sannomiya',
+    nameJp: 'ラーメン 太郎', reading: 'ラーメン たろう',
+    nameZh: '拉面 太郎', nameEn: 'Ramen Taro',
+    blurbZh: '八个座位，全是吧台。老板不说话，只在你吃完的时候点一下头。',
+    blurbEn: 'Eight seats, all of them at the counter. The master says nothing, and nods once when you finish.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
+    regulars: [CharacterId.SORA, CharacterId.MAKI],
+    ambientZh: ['你点了一碗普通的。汤是猪骨和小鱼干一起熬的，第一口有点咸，第三口就刚好。'],
+    ambientEn: ['You order the plain one. Pork bone and dried sardine in the same pot: a touch salty at first, exactly right by the third mouthful.']
+  },
+  {
+    id: 'junkudo_bookstore', district: 'sannomiya',
+    nameJp: 'ジュンク堂書店', reading: 'ジュンクどうしょてん',
+    nameZh: '淳久堂书店', nameEn: 'Junkudo Books',
+    blurbZh: '一整栋楼的书。有椅子，而且没人赶你走。',
+    blurbEn: 'An entire building of books. There are chairs, and nobody moves you along.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    regulars: [CharacterId.REI],
+    ambientZh: ['你在语言学习区站了很久，最后买了一本用不上的关西方言词典。'],
+    ambientEn: ['You linger a long time in the language section and buy a Kansai dialect dictionary you do not need.']
+  },
+  {
+    id: 'ikuta_shrine', district: 'sannomiya',
+    nameJp: '生田神社', reading: 'いくたじんじゃ',
+    nameZh: '生田神社', nameEn: 'Ikuta Shrine',
+    blurbZh: '闹市正中的一片林子。红色的楼门一进去，外面的声音就断了一大半。',
+    blurbEn: 'A stand of trees in the middle of downtown. Step through the red gate and most of the noise outside simply stops.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    regulars: [CharacterId.INARI],
+    ambientZh: ['你在赛钱箱前站着，摸遍口袋只找到一枚十日元。你还是投了。'],
+    ambientEn: ['You stand at the offering box, dig through your pockets and come up with a single ten-yen coin. You put it in anyway.']
+  },
+  {
+    id: 'nankinmachi', district: 'sannomiya',
+    nameJp: '南京町', reading: 'なんきんまち',
+    nameZh: '南京町', nameEn: 'Nankinmachi',
+    blurbZh: '红灯笼，蒸笼的白气，从街这头喊到那头的普通话。日本三大中华街之一。',
+    blurbEn: 'Red lanterns, steam off the baskets, Mandarin shouted from one end of the street to the other. One of the three great Chinatowns.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    regulars: [CharacterId.HIKARI],
+    ambientZh: ['你买了一个猪肉包，站在广场边上吃完了。烫，但停不下来。'],
+    ambientEn: ['You buy a pork bun and finish it standing at the edge of the plaza. Too hot, and impossible to stop.']
+  },
+  {
+    id: 'former_settlement_salon', district: 'sannomiya',
+    nameJp: '旧居留地十五番館', reading: 'きゅうきょりゅうち じゅうごばんかん',
+    nameZh: '旧居留地十五番馆', nameEn: 'Former Settlement No. 15',
+    blurbZh: '开港时期外国领事馆改的餐厅。天花板高得离谱，说话都会不自觉放轻。',
+    blurbEn: 'A restaurant inside a consulate from the port-opening era. The ceilings are absurdly high and everyone lowers their voice unasked.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过——旧居留地在再往南一点的地方。',
+    lockedHintEn: 'You have not gone toward the water yet. The old settlement is a little further south.',
+    regulars: [CharacterId.MIYUKI],
+    ambientZh: ['你只点了红茶。杯子和碟子碰在一起的声音在这间屋子里显得很响。'],
+    ambientEn: ['You order only tea. The cup meeting the saucer sounds very loud in this room.']
+  },
+
+  // ======================= 港 =======================
+  {
+    id: 'portliner_platform', district: 'harbor',
+    nameJp: 'ポートライナー', reading: 'ポートライナー',
+    nameZh: 'Port Liner 轻轨', nameEn: 'Port Liner',
+    blurbZh: '无人驾驶的高架轻轨，最前面那节没有司机座，小孩子会抢。',
+    blurbEn: 'A driverless elevated line. The front carriage has no driver seat, and children fight over it.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你在三宫站看见过它的指示牌，但还没走到那一头。',
+    lockedHintEn: 'You have seen the signs for it at Sannomiya, but you have not walked to that end yet.',
+    ambientZh: ['你坐在最前面。轨道在海上转了一个大弯，整座城市在窗子里横着扫过去。'],
+    ambientEn: ['You take the very front. The track swings out over the water in a long curve and the whole city sweeps across the window.']
+  },
+  {
+    id: 'meriken_park', district: 'harbor',
+    nameJp: 'メリケンパーク', reading: 'メリケンパーク',
+    nameZh: '美利坚公园', nameEn: 'Meriken Park',
+    blurbZh: '港塔脚下那片开阔地。风大，永远有人在拍照，永远有人在跑步。',
+    blurbEn: 'The open ground at the foot of the Port Tower. Windy, permanently full of people photographing and people running.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过。',
+    lockedHintEn: 'You have not gone toward the water yet.',
+    ambientZh: ['地震纪念公园那一段护岸至今保持着 1995 年那天塌下去的样子。你站了很久。'],
+    ambientEn: ['A section of the quay is kept exactly as it collapsed in 1995. You stand there for a long time.']
+  },
+  {
+    id: 'kobe_harbor', district: 'harbor',
+    nameJp: 'ハーバーランド', reading: 'ハーバーランド',
+    nameZh: '港湾乐园', nameEn: 'Harborland',
+    blurbZh: '仓库改的商场一路排到水边。傍晚的时候整片海会先变金色再变紫色。',
+    blurbEn: 'Converted warehouses running all the way to the waterfront. At dusk the whole bay goes gold, then purple.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过。',
+    lockedHintEn: 'You have not gone toward the water yet.',
+    ambientZh: ['有人在栈桥上弹吉他，弹得不算好。但没人走开。'],
+    ambientEn: ['Someone is playing guitar out on the boardwalk, not especially well. Nobody leaves.']
+  },
+  {
+    id: 'mosaic_night', district: 'harbor',
+    nameJp: 'モザイク大観覧車', reading: 'モザイクだいかんらんしゃ',
+    nameZh: '马赛克摩天轮', nameEn: 'Mosaic Ferris Wheel',
+    blurbZh: '转一圈十分钟。灯会变色，从你家阳台上都看得见。',
+    blurbEn: 'Ten minutes for one turn. The lights change colour, and you can see it from your own balcony.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过。',
+    lockedHintEn: 'You have not gone toward the water yet.',
+    timeSlots: ['night'],
+    ambientZh: ['你一个人坐了一圈。到最高点的时候，能看见山腰上那一片你住的地方也亮着。'],
+    ambientEn: ['You ride it alone. At the top you can see the hillside where you live, also lit.']
+  },
+
+  // ======================= 远出 =======================
+  {
+    id: 'rokko_night', district: 'far',
+    nameJp: '六甲山', reading: 'ろっこうさん',
+    nameZh: '六甲山', nameEn: 'Mount Rokko',
+    blurbZh: '缆车上去二十分钟。日本三大夜景之一，据说值一千万美元。',
+    blurbEn: 'Twenty minutes up by cable car. One of the three great night views of Japan, allegedly worth ten million dollars.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['night'],
+    ambientZh: ['山上比市区冷了将近十度。你后悔没带外套，但没有下山。'],
+    ambientEn: ['It is nearly ten degrees colder up here. You regret not bringing a coat, and you do not go back down.']
+  },
+  {
+    id: 'arima_onsen', district: 'far',
+    nameJp: '有馬温泉', reading: 'ありまおんせん',
+    nameZh: '有马温泉', nameEn: 'Arima Onsen',
+    blurbZh: '翻过六甲山就是。日本最古老的温泉之一，水是铁锈色的，叫「金泉」。',
+    blurbEn: 'Just over Mount Rokko. One of the oldest hot springs in Japan; the water is rust-coloured and called the golden spring.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    ambientZh: ['你泡了脚汤。旁边的老人问你从哪儿来，然后花了十分钟说明自己也不是本地人。'],
+    ambientEn: ['You use the public foot bath. An old man asks where you are from, then spends ten minutes explaining that he is not local either.']
+  },
+  {
+    id: 'koshien', district: 'far',
+    nameJp: '甲子園球場', reading: 'こうしえんきゅうじょう',
+    nameZh: '甲子园球场', nameEn: 'Koshien Stadium',
+    blurbZh: '往大阪方向坐三十分钟。外墙爬满常春藤。夏天这里会决定一批人的一生。',
+    blurbEn: 'Thirty minutes toward Osaka. Ivy up the outer wall. In summer this place decides the rest of certain people’s lives.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    regulars: [CharacterId.SORA],
+    ambientZh: ['没有比赛的日子，球场安静得不像话。你隔着铁网看了很久那片土。'],
+    ambientEn: ['On a day with no game the stadium is unreasonably quiet. You look at the dirt through the mesh for a long time.']
+  },
+  {
+    id: 'dotonbori', district: 'far',
+    nameJp: '道頓堀', reading: 'どうとんぼり',
+    nameZh: '道顿堀', nameEn: 'Dotonbori',
+    blurbZh: '大阪。招牌比楼还大，声音比招牌还大。神户人来了会小声说「果然是大阪」。',
+    blurbEn: 'Osaka. The signs are bigger than the buildings and the noise is bigger than the signs. Kobe people come here and mutter that it is very Osaka.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    regulars: [CharacterId.MAKI],
+    timeSlots: ['afternoon', 'night'],
+    ambientZh: ['你在桥上被三拨人分别请求帮忙拍照。第三拨你已经很熟练了。'],
+    ambientEn: ['Three separate groups ask you to take their photo on the bridge. By the third you have got quite good at it.']
+  },
+  {
+    id: 'kyoto_torii', district: 'far',
+    nameJp: '伏見稲荷大社', reading: 'ふしみいなりたいしゃ',
+    nameZh: '伏见稻荷大社', nameEn: 'Fushimi Inari Taisha',
+    blurbZh: '京都。一万座鸟居顺着山一路排上去，走到顶要两个小时。全日本稻荷神社的总本宫。',
+    blurbEn: 'Kyoto. Ten thousand torii marching up the mountain; two hours to the top. Head shrine of every Inari shrine in Japan.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    regulars: [CharacterId.INARI],
+    ambientZh: ['走到半山腰人就少了。鸟居之间漏下来的光一段一段的，像有人在给你打拍子。'],
+    ambientEn: ['Halfway up, the crowd thins. Light falls between the torii in regular slices, as if something is keeping time for you.']
+  },
+  {
+    id: 'kiyomizu_stage', district: 'far',
+    nameJp: '清水寺', reading: 'きよみずでら',
+    nameZh: '清水寺', nameEn: 'Kiyomizu-dera',
+    blurbZh: '京都。悬空的木舞台一根钉子都没用。「清水の舞台から飛び降りる」这句话就是从这儿来的。',
+    blurbEn: 'Kyoto. The suspended wooden stage uses not a single nail. The idiom about leaping from the Kiyomizu stage comes from right here.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    ambientZh: ['你排队接了音羽瀑布的水。三道里选一道，你选了中间那道，事后才知道是姻缘。'],
+    ambientEn: ['You queue for the Otowa waterfall. Three streams, and you take the middle one. Only afterwards do you learn that is the one for love.']
+  }
+];
+
+export const DISTRICT_LABELS: Record<string, { zh: string; en: string; jp: string }> = {
+  school:    { zh: '開誠学園',    en: 'Kaisei Academy',  jp: '学校' },
+  kitano:    { zh: '北野 · 山手', en: 'Kitano Hillside', jp: '北野' },
+  sannomiya: { zh: '三宫',        en: 'Sannomiya',       jp: '三宮' },
+  harbor:    { zh: '海边',        en: 'The Waterfront',  jp: '港' },
+  far:       { zh: '远出',        en: 'Further Afield',  jp: '遠出' }
+};
+
+export const DISTRICT_ORDER = ['school', 'kitano', 'sannomiya', 'harbor', 'far'] as const;
+
+export const findLocation = (id: string): MapLocation | undefined =>
+  MAP_LOCATIONS.find(l => l.id === id);

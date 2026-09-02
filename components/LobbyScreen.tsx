@@ -19,6 +19,7 @@ interface Props {
   onOpenSystemMenu: () => void;
   onOpenCgGallery: () => void;
   onOpenRoom: () => void;
+  onOpenMap: () => void;
   onOpenCalendar: () => void;
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
@@ -27,7 +28,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, background
+  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -67,6 +68,14 @@ const LobbyScreen: React.FC<Props> = ({
           className="group bg-zinc-950/90 hover:bg-zinc-900 border border-sky-500/50 hover:border-sky-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
         >
           <span className="text-sky-300 font-black text-xs">🏠 {userState.language === 'en' ? 'MY ROOM' : '回房间'}</span>
+        </button>
+
+        {/* 出门：地图 */}
+        <button
+          onClick={onOpenMap}
+          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-yellow-500/50 hover:border-yellow-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
+        >
+          <span className="text-yellow-300 font-black text-xs">🗺️ {userState.language === 'en' ? 'GO OUT' : '出门'}</span>
         </button>
 
         {/* 日历与时间天气 Badge */}

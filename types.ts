@@ -71,6 +71,7 @@ export enum GameMode {
   PROLOGUE = 'PROLOGUE',
   LOBBY = 'LOBBY',
   ROOM = 'ROOM',
+  MAP = 'MAP',
   CHAT = 'CHAT'
 }
 
@@ -212,6 +213,69 @@ export interface GameCalendar {
   dayOfWeek: string;
   timeSlot: TimeSlot;
   weather: 'sunny' | 'cloudy' | 'rainy' | 'sunset' | 'night';
+}
+
+// ---------------------------------------------------------
+// 🗺️ 地图系统
+//
+// 女神异闻录式：能去的地方一开始很少，剧情推进了才一片片亮起来。
+// 地点本身不是背景图的同义词——它带着"这时候能不能去""谁常在这儿"
+// "去了会撞上什么事"，所以另起一套数据，只借 SCENE_MAP 的图。
+// ---------------------------------------------------------
+
+// 地图上的分区。顺序就是从家往外走的顺序。
+export type MapDistrict = 'school' | 'kitano' | 'sannomiya' | 'harbor' | 'far';
+
+export interface MapLocation {
+  // 同时是 SCENE_MAP 的 key —— 地点的图直接复用已有背景，不生成新图
+  id: string;
+  district: MapDistrict;
+  nameJp: string;
+  reading: string;
+  nameZh: string;
+  nameEn: string;
+  // 一句话说清这是什么地方。地图卡片上就显示这句。
+  blurbZh: string;
+  blurbEn: string;
+  // 什么时段能去。不写 = 全天。
+  timeSlots?: TimeSlot[];
+  // 解锁条件：剧情 flag。不写 = 一开始就能去。
+  requiresFlag?: string;
+  // 没解锁时地图上给的提示。要说"还去不了"，但不能剧透。
+  lockedHintZh?: string;
+  lockedHintEn?: string;
+  // 常在这儿出没的人。地图上先露个名字，让玩家能有目的地挑地方去。
+  regulars?: CharacterId[];
+  // 没有可触发事件时的空转旁白。随机挑一条，让白跑一趟也有东西看。
+  ambientZh?: string[];
+  ambientEn?: string[];
+}
+
+// 地图事件：去某个地方触发的一段剧本。
+// 一个人出场 = 课后小剧情；两个人以上 = 多人剧情。用同一套结构，
+// 因为"条件满足就演"这件事对两者是一样的，分开写只会多一份筛选逻辑。
+export interface MapEventDef {
+  // 同时当作"演过了"的 flag 存进 storyFlags
+  id: string;
+  locationId: string;
+  // 出场角色。空数组 = 纯探索事件（比如第一次走到某个地方，解锁新区域）
+  chars: CharacterId[];
+  titleZh: string;
+  titleEn: string;
+  timeSlots?: TimeSlot[];
+  weather?: GameCalendar['weather'][];
+  // 这些 flag 全部为真才会出现
+  requiresFlags?: string[];
+  // 这些 flag 里有任意一个为真就不出现（用来做互斥的分支事件）
+  forbidsFlags?: string[];
+  // 关系门槛。多人剧情就是在这儿写"两个人都得熟到一定程度"。
+  minAffection?: Partial<Record<CharacterId, number>>;
+  minFamiliarity?: Partial<Record<CharacterId, number>>;
+  // 默认只演一次。设 true 则每次去都可能再演。
+  repeatable?: boolean;
+  // 同时满足条件时，数字大的先演。默认 0。
+  priority?: number;
+  script: StoryNode[];
 }
 
 export interface CalendarEvent {
