@@ -65,7 +65,6 @@ const getEmotionBubbleIcon = (emo: string): string | null => {
 const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSpeaking, className = "", fit = 'contain' }) => {
   const [hasError, setHasError] = useState(false);
   const [activeAnim, setActiveAnim] = useState<string>('');
-  const [bubbleIcon, setBubbleIcon] = useState<string | null>(null);
   const [pokeCount, setPokeCount] = useState(0);
   const [isPoked, setIsPoked] = useState(false);
   const prevUrlRef = useRef(character.avatarUrl);
@@ -74,44 +73,36 @@ const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSp
   useEffect(() => {
     setHasError(false);
     const animClass = getEmotionAnimClass(emotion);
-    const bubble = getEmotionBubbleIcon(emotion);
 
     setActiveAnim(animClass);
-    setBubbleIcon(bubble);
 
     const timer = setTimeout(() => {
       setActiveAnim('');
     }, 850);
 
-    const bubbleTimer = setTimeout(() => {
-      setBubbleIcon(null);
-    }, 2800);
 
     prevUrlRef.current = character.avatarUrl;
     return () => {
       clearTimeout(timer);
-      clearTimeout(bubbleTimer);
     };
   }, [character.avatarUrl, emotion]);
 
-  // 点击/戳一戳立绘互动反馈
+  // 点击立绘的反馈：柔光 + 光尘，落点跟着鼠标。
+  // 不再弹 emoji 气泡——情绪由换立绘表达，头顶顶个符号是十年前的做法。
+  const [touch, setTouch] = useState<{ x: number; y: number; key: number } | null>(null);
+
   const handlePoke = (e: React.MouseEvent) => {
     e.stopPropagation();
+    const box = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setTouch({
+      x: ((e.clientX - box.left) / box.width) * 100,
+      y: ((e.clientY - box.top) / box.height) * 100,
+      key: Date.now()
+    });
     setIsPoked(true);
     setPokeCount(prev => prev + 1);
-    
-    // 随机弹出可爱的心情符号
-    const pokeIcons = ['💖', '✨', '🎵', '⭐', '///', '🌸'];
-    const randomIcon = pokeIcons[Math.floor(Math.random() * pokeIcons.length)];
-    setBubbleIcon(randomIcon);
-
-    setTimeout(() => {
-      setIsPoked(false);
-    }, 500);
-
-    setTimeout(() => {
-      setBubbleIcon(null);
-    }, 2000);
+    setTimeout(() => setIsPoked(false), 620);
+    setTimeout(() => setTouch(null), 1100);
   };
 
   // 如果没有 URL 或已经报错，显示占位符
@@ -133,15 +124,44 @@ const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSp
   return (
     <div
       onClick={handlePoke}
-      title="点击与角色互动 ✨"
+      title=""
       className={`relative w-full h-full flex items-end justify-center cursor-pointer select-none ${className}`}
     >
-      {/* 💭 Galgame 悬浮情绪/符号气泡 */}
-      {bubbleIcon && (
-        <div className="absolute top-[8%] md:top-[12%] right-[20%] md:right-[26%] z-30 pointer-events-none emotion-bubble">
-          <div className="bg-white/95 text-slate-900 border-2 border-yellow-400 font-black text-xl md:text-2xl px-3 py-1.5 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.4)] flex items-center justify-center backdrop-blur-sm">
-            <span>{bubbleIcon}</span>
-          </div>
+      {/* 触摸反馈：落点柔光 + 一圈扩散 + 几粒上浮的光尘 */}
+      {touch && (
+        <div
+          key={touch.key}
+          className="absolute z-30 pointer-events-none"
+          style={{ left: `${touch.x}%`, top: `${touch.y}%`, width: 0, height: 0 }}
+        >
+          {/* 柔光：没有边界的一团暖光 */}
+          <span
+            className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full touch-bloom"
+            style={{
+              width: 150, height: 150,
+              background: 'radial-gradient(circle, rgba(255,248,225,0.55) 0%, rgba(255,226,168,0.22) 38%, rgba(255,214,140,0) 70%)'
+            }}
+          />
+          {/* 扩散环 */}
+          <span
+            className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber-100/70 touch-ring"
+            style={{ width: 26, height: 26 }}
+          />
+          {/* 光尘：五粒，各自的角度和延迟都不同 */}
+          {[0, 1, 2, 3, 4].map(i => (
+            <span
+              key={i}
+              className="absolute rounded-full bg-amber-50 touch-mote"
+              style={{
+                width: i % 2 ? 3 : 4,
+                height: i % 2 ? 3 : 4,
+                left: (i - 2) * 13,
+                top: 0,
+                animationDelay: `${i * 55}ms`,
+                boxShadow: '0 0 8px 2px rgba(255,236,190,0.75)'
+              }}
+            />
+          ))}
         </div>
       )}
 

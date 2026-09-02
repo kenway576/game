@@ -48,11 +48,9 @@ export const SCENE_MAP: Record<string, string> = {
   'art_room':          '/images/backgrounds/bg_art_club_room.webp',
   'school_terrace':    '/images/backgrounds/bg_kaisei_cafeteria.webp',
   'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.webp',
-  // 新补的校内场景
+  // 新补的校内场景（international_office / school_lockers 上面已登记）
   'classroom_morning':  '/images/backgrounds/bg_classroom_morning.webp',
-  'international_office': '/images/backgrounds/bg_international_office.webp',
   'school_hallway_new': '/images/backgrounds/bg_school_hallway.webp',
-  'school_lockers':     '/images/backgrounds/bg_school_lockers_hallway.webp',
   'rooftop_sunset':     '/images/backgrounds/bg_school_rooftop_sunset.webp',
   'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.webp',
   'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.webp',
@@ -1987,6 +1985,69 @@ export const PROLOGUE_ENCOUNTERS: Record<string, PrologueEncounter> = {
 
 // 序章没玩 / 跳过了 / 该角色的相遇根本没触发时的兜底。
 // 老存档（prologueDone 为真但一个 flag 都没有）也走这里。
+// ---------------------------------------------------------
+// 第 1 章（开学第一天）之后，每个角色记得什么。
+//
+// 和序章那套一样按 flag 查，但这里是**追加**在序章记忆之后的：
+// 她昨晚记得什么 + 她今天记得什么 = 她现在知道的全部。
+//
+// 每条都写清楚"她还不知道什么"。不写死这条，模型会自由发挥出
+// 一段玩家根本没玩过的共同回忆——那比说错话更破坏沉浸。
+// ---------------------------------------------------------
+export const DAY1_MEMORIES: Record<string, { char: CharacterId; memory: string }> = {
+  day1_met_asuka: {
+    char: CharacterId.ASUKA,
+    memory: '始業式の日、廊下の角でぶつかってきた編入生。プリントをぶちまけられた。同じクラス。先生から「日本語の授業についていけていない子がいる」と聞いている。……名前と、日本語がまだ危ういことしか知らない。それ以外は何も。'
+  },
+  day1_intro_kansai: {
+    char: CharacterId.ASUKA,
+    memory: '自己紹介で、いきなり関西弁を使った。クラス中が笑った。……正直、あれは想定していなかった。'
+  },
+  day1_intro_stuck: {
+    char: CharacterId.ASUKA,
+    memory: '自己紹介で固まっていたので、クラス全員に聞こえる声で「名前から、ゆっくりでいいわよ」と助け舟を出した。本人には気づかれていないつもりでいる。'
+  },
+  day1_hikari_registered: {
+    char: CharacterId.HIKARI,
+    memory: '始業式の朝、国際交流室で一緒に書類の「続柄」で詰まった。同じ留学生。屋上で昼メシを一緒に食べた。……最初の一週間、毎日ひとりで屋上にいたことを、ぽろっと喋ってしまった。'
+  },
+  day1_met_sora: {
+    char: CharacterId.SORA,
+    memory: '始業式の放課後、体育館に来た編入生。パスを取れずに転がしてた。「体育を教える代わりに日本語を教えろ」という交換条件を勝手に結んだ。名前くらいしか知らん。'
+  },
+  day1_met_rei: {
+    char: CharacterId.REI,
+    memory: '始業式の放課後、図書館で。神戸居留地の建築を調べているところを見られた。誰にも頼まれていない趣味だと説明した。……笑われなかった。それだけです。'
+  },
+  day1_met_maki: {
+    char: CharacterId.MAKI,
+    memory: '始業式の日、三宮のアーケードで。メニューが読めてへんかったから読んだった。「センパイ」って呼んだったけど、名前はまだ知らん。'
+  },
+  day1_met_inari: {
+    char: CharacterId.INARI,
+    memory: '生田の鳥居の下で、古い手描きの地図を持った人の子を見かけた。声をかけたら驚いておった。……あの地図には見覚えがある。本人にはまだ何も明かしておらぬ。'
+  },
+  day1_met_nao: {
+    char: CharacterId.NAO,
+    memory: '始業式の日、坂の下で待っていた。買い物袋を二つ提げて。「初日どうだった」と聞いた。……こっちに来てからのあの子のことは、まだほとんど知らない。'
+  }
+};
+
+// 把第一章的记忆并进角色的长期记忆。
+// 只并"真的发生过"的那几条——没触发的 flag 不会留下任何痕迹。
+export const appendDay1Memories = (
+  memoryMap: Record<CharacterId, string>,
+  flags: StoryFlags
+): Record<CharacterId, string> => {
+  const next = { ...memoryMap };
+  Object.keys(DAY1_MEMORIES).forEach(flag => {
+    if (!flags[flag]) return;
+    const { char, memory } = DAY1_MEMORIES[flag];
+    next[char] = next[char] ? `${next[char]}\n${memory}` : memory;
+  });
+  return next;
+};
+
 export const PROLOGUE_MISSED_ENCOUNTERS: Partial<Record<CharacterId, PrologueEncounter>> = {
   [CharacterId.MIYUKI]: {
     char: CharacterId.MIYUKI,

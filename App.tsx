@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress } from './types';
-import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory } from './constants';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, appendDay1Memories } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
@@ -372,7 +372,10 @@ const App: React.FC = () => {
     setDay1Done(false);
     setPlayingDay1(false);
     setPrologueSessionKey(k => k + 1);
-    try { localStorage.removeItem(PROLOGUE_PROGRESS_KEY); } catch { /* ignore */ }
+    try {
+      localStorage.removeItem(PROLOGUE_PROGRESS_KEY);
+      localStorage.removeItem(DAY1_PROGRESS_KEY);   // 第一章的半截进度也要清
+    } catch { /* ignore */ }
     // 序章 = 4 月 10 日，抵达当晚
     setGameCalendar({ month: 4, day: 10, dayOfWeek: '月 (Mon)', timeSlot: 'afternoon', weather: 'sunny' });
     setCurrentScene('train_interior');
@@ -544,6 +547,9 @@ const App: React.FC = () => {
   // 第一天播完 → 正式进入自由游玩
   const finishDay1 = (flags: StoryFlags) => {
     setStoryFlags(prev => ({ ...prev, ...flags }));
+    // 把今天真正发生过的事并进各人的长期记忆。
+    // 没触发的 flag 不留痕迹 —— 角色不该记得玩家没玩过的剧情。
+    setMemoryMap(prev => appendDay1Memories(prev, flags));
     setDay1Done(true);
     setPlayingDay1(false);
     // 第一章结束 = 4/11 过完。自由游玩从第二天下午开始。
@@ -1321,6 +1327,8 @@ const App: React.FC = () => {
           script={PROLOGUE_SCRIPT}
           scriptVersion={PROLOGUE_SCRIPT_VERSION}
           progressKey={PROLOGUE_PROGRESS_KEY}
+          chapterNameZh="序章"
+          chapterNameEn="the prologue"
           initialProgress={pendingPrologueProgress}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           playerName={userState.playerName}
@@ -1500,6 +1508,8 @@ const App: React.FC = () => {
           script={DAY1_SCRIPT}
           scriptVersion={DAY1_VERSION}
           progressKey={DAY1_PROGRESS_KEY}
+          chapterNameZh="第 1 章"
+          chapterNameEn="Chapter 1"
           language={userState.language}
           stats={protagonistStats}
           background={background}
@@ -1667,13 +1677,38 @@ styleSheet.innerText = `
     100% { transform: rotate(2deg) translateY(-4px) scale(1.01); }
   }
 
+  /* 点击立绘：阻尼式的轻微回弹。
+     幅度刻意压到原来的五分之一——大幅挤压会让立绘看起来像贴纸，
+     现在的二游都是很克制的一下。 */
   @keyframes galgame-poke {
-    0%   { transform: scale(1); }
-    25%  { transform: scale(0.92, 1.08) translateY(-14px); }
-    55%  { transform: scale(1.06, 0.94) translateY(3px); }
-    80%  { transform: scale(0.98, 1.02) translateY(-4px); }
-    100% { transform: scale(1) translateY(0); }
+    0%   { transform: scale(1) translateY(0) rotate(0deg); }
+    18%  { transform: scale(1.012, 0.988) translateY(2px) rotate(-0.5deg); }
+    42%  { transform: scale(0.995, 1.005) translateY(-3px) rotate(0.4deg); }
+    68%  { transform: scale(1.003, 0.997) translateY(1px) rotate(-0.15deg); }
+    100% { transform: scale(1) translateY(0) rotate(0deg); }
   }
+
+  /* 触点柔光 */
+  @keyframes touch-bloom {
+    0%   { opacity: 0;    transform: translate(-50%, -50%) scale(0.5); }
+    18%  { opacity: 0.95; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0;    transform: translate(-50%, -50%) scale(1.35); }
+  }
+  .touch-bloom { animation: touch-bloom 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  @keyframes touch-ring {
+    0%   { opacity: 0.85; transform: translate(-50%, -50%) scale(0.5); }
+    100% { opacity: 0;    transform: translate(-50%, -50%) scale(3.6); }
+  }
+  .touch-ring { animation: touch-ring 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  /* 上浮的光尘 */
+  @keyframes touch-mote {
+    0%   { opacity: 0;   transform: translate(-50%, 0) scale(0.6); }
+    22%  { opacity: 1;   transform: translate(-50%, -18px) scale(1); }
+    100% { opacity: 0;   transform: translate(-50%, -52px) scale(0.5); }
+  }
+  .touch-mote { animation: touch-mote 1s cubic-bezier(0.22, 0.9, 0.3, 1) forwards; }
 
   @keyframes emotion-bubble-pop {
     0%   { transform: scale(0) translateY(12px); opacity: 0; }

@@ -26,6 +26,10 @@ interface Props {
   initialProgress?: StoryProgress | null;
   // 打开系统菜单（存档 / 读档 / 单词本 / 音量）。序章期间也要能存盘。
   onOpenSystemMenu: () => void;
+  // 章节名，用在续玩/跳过弹窗里。不给就说"这一章"——
+  // 之前写死成"序章"，第一章复用同一个组件时文案就错了。
+  chapterNameZh?: string;
+  chapterNameEn?: string;
   // 当前玩家名，用来替换台词里的 {name} 占位符
   playerName: string;
   // nameInput 节点提交时回填给 App
@@ -80,6 +84,7 @@ interface BacklogEntry { speaker: string; main: string; sub: string; }
 const StoryScreen: React.FC<Props> = ({
   script, scriptVersion, progressKey, language, stats, background,
   initialProgress, onOpenSystemMenu, playerName, onSetPlayerName,
+  chapterNameZh, chapterNameEn,
   onEffects, onRelations, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
 }) => {
   const en = language === 'en';
@@ -1028,7 +1033,7 @@ const StoryScreen: React.FC<Props> = ({
           <div className="bg-black border-4 border-white p-8 md:p-12 max-w-lg shadow-[12px_12px_0px_rgba(56,189,248,1)] transform -skew-x-2">
             <div className="transform skew-x-2">
               <h3 className="text-2xl md:text-3xl font-black italic text-white mb-3">
-                {en ? 'Continue the prologue?' : '继续上次的序章？'}
+                {en ? `Continue ${chapterNameEn || 'this chapter'}?` : `继续上次的${chapterNameZh || '这一章'}？`}
               </h3>
               <p className="text-sm md:text-base text-white/60 mb-2 leading-relaxed">
                 {en
@@ -1065,7 +1070,7 @@ const StoryScreen: React.FC<Props> = ({
           <div className="bg-black border-4 border-white p-8 md:p-12 max-w-lg shadow-[12px_12px_0px_rgba(215,38,56,1)] transform -skew-x-2">
             <div className="transform skew-x-2">
               <h3 className="text-2xl md:text-3xl font-black italic text-white mb-3">
-                {en ? 'Skip the prologue?' : '跳过序章？'}
+                {en ? `Skip ${chapterNameEn || 'this chapter'}?` : `跳过${chapterNameZh || '这一章'}？`}
               </h3>
               <p className="text-sm md:text-base text-white/60 mb-4 leading-relaxed">
                 {en
