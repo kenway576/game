@@ -66,9 +66,6 @@ const SetupScreen: React.FC<Props> = ({
             <div className="absolute -inset-6 bg-red-600 transform -skew-x-12 blur-sm opacity-80 group-hover:scale-110 transition-transform duration-500"></div>
             <div className="absolute -inset-2 bg-black transform skew-x-12 opacity-80"></div>
             <h1 className="relative text-5xl md:text-9xl font-black italic tracking-tighter text-white drop-shadow-[5px_5px_0px_rgba(0,0,0,1)] transform -skew-x-6 select-none" style={{textShadow: '8px 8px 0px #000'}}>KOBE<br/><span className="text-yellow-400">STUDY</span></h1>
-            {/* 竖屏上 logo 变小，这条标签压在 STUDY 上会把整个词吃掉，所以小屏挪到下面去；
-                桌面尺寸下它压在字脚上是有意的，保留原位。*/}
-            <p className="absolute -bottom-5 right-0 md:bottom-2 md:-right-4 bg-white text-black text-[10px] md:text-xs font-black px-4 py-1 transform skew-x-12 tracking-[0.5em] shadow-[4px_4px_0px_#000]">N3 RESEARCH</p>
           </div>
         </div>
 

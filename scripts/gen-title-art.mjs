@@ -75,7 +75,10 @@ const CAST = {
   asuka:  'a proud girl with long crimson-red twin tails tied with red ribbons, sharp red eyes, in a white school shirt with a red bow tie and a navy pleated skirt with black knee socks, arms folded',
   hikari: 'a bright cheerful girl with long golden-blonde hair and amber eyes, in orange dungarees over a white tee, laughing with one arm thrown up',
   rei:    'a quiet girl with pale ice-blue chin-length hair and glasses, in a navy blazer and a green plaid skirt, holding a book against her chest, expressionless',
-  sora:   'an athletic dark-skinned tomboy with short brown hair, in an orange basketball jersey, spinning a basketball on one finger, grinning',
+  // 立绘里空是小麦色（日焼け），不是黑人。
+  // 第一版写成 dark-skinned，四张候选全部把她画成了黑人——写提示词时
+  // “肤色”这种词得把范围卡死，模型不会往中间取。
+  sora:   'an athletic Japanese tomboy with short brown hair and a LIGHT SUN-TANNED complexion - lightly bronzed from outdoor sport, definitely NOT dark-skinned and NOT black - in an orange basketball jersey, spinning a basketball on one finger, grinning',
   maki:   'a small pink-haired girl with a side ponytail and a black cat-ear headband, pink headphones round her neck, denim vest over a purple tee and white shorts, smirking',
   nao:    'a girl with brown hair in a ponytail in a school blazer uniform, hands behind her back, warm familiar smile',
   miyuki: 'an elegant older woman with very long straight silver-white hair, in a soft beige cardigan and a long dark skirt, calm and gentle',
