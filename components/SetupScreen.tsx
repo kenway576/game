@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserState, N3GrammarTopic } from '../types';
 import { AVAILABLE_MODELS, CUSTOM_MODEL_VALUE } from '../constants';
+
+// 🎴 标题封面。一张八个人的海报 + 四张"少人多脸"的，轮着播。
+//
+// 为什么是一套：模型出图 1344x768，八个人塞进去每张脸不到一百像素宽，
+// 五官必糊——那是像素不够，不是画得不好。所以除了那张全员海报，
+// 其余每张只放一到三个人，脸能分到三到五倍的像素。
+// 每张还各占一个游戏里真实存在的地点，轮播时顺手把地图也展示了。
+//
+// 五张都是按"左边 45% 留给 UI"画的，所以可以直接换而不用改排版。
+const COVERS = [
+  '/images/ui/title/ensemble.webp',   // 北野坂 · 日落 · 全员
+  '/images/ui/title/school.webp',     // 校门 · 早晨 · 明日香 / 光 / 奈绪
+  '/images/ui/title/night.webp',      // 高架下 · 夜 · 空 / 真希
+  '/images/ui/title/quiet.webp',      // 西村珈琲 · 午后 · 铃 / 深雪
+  '/images/ui/title/shrine.webp'      // 生田神社 · 夜 · 稻荷
+];
+
+const COVER_MS = 8000;
 
 interface Props {
   T: Record<string, string>;
@@ -30,6 +48,14 @@ const SetupScreen: React.FC<Props> = ({
   customModel, onModelChange, customBaseUrl, onBaseUrlChange,
   customModelName, onModelNameChange, consentGiven, setConsentGiven, background
 }) => {
+  // 每次进标题从随机一张开始——固定从第一张起的话，
+  // 玩家每次打开游戏看到的都是同一张，轮播就白做了。
+  const [coverIdx, setCoverIdx] = useState(() => Math.floor(Math.random() * COVERS.length));
+  useEffect(() => {
+    const t = setInterval(() => setCoverIdx(i => (i + 1) % COVERS.length), COVER_MS);
+    return () => clearInterval(t);
+  }, []);
+
   return (
     <div className="min-h-[100dvh] relative overflow-hidden font-sans select-none flex items-end md:items-center bg-black">
       {/* 兜底：主视觉万一没加载出来，底下还是原来那张场景图，不会开天窗 */}
@@ -41,12 +67,21 @@ const SetupScreen: React.FC<Props> = ({
           竖屏是另一回事：16:9 的图硬塞进 9:19.5，object-cover 会把它放大到
           只剩最右边那一个人的特写。所以手机上改成"上方一条横幅 + 下方排 UI"，
           横幅裁在角色那一侧，看得见人，也看得见樱花和城市。*/}
-      <img
-        src="/images/ui/title_key_visual.webp"
-        alt=""
-        className="absolute inset-x-0 top-0 z-0 w-full h-[48dvh] object-cover object-[72%_38%]
-                   md:inset-0 md:h-full md:object-right"
-      />
+      {/* 五张全部挂在 DOM 里靠透明度切换：这样浏览器一开始就把它们都拉下来，
+          轮到谁的时候是直接淡入，而不是先白一下再加载。总共两点五兆，一次性的。*/}
+      {COVERS.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          aria-hidden={i !== coverIdx}
+          className={`absolute inset-x-0 top-0 z-0 w-full h-[48dvh] object-cover object-[72%_38%]
+                      md:inset-0 md:h-full md:object-right
+                      transition-opacity duration-[1600ms] ease-in-out ${
+                        i === coverIdx ? 'opacity-100' : 'opacity-0'
+                      }`}
+        />
+      ))}
       {/* 左侧压暗。标题块和按钮本身都有实底色，所以这层只要够把远景的碎光压住就行——
           压太重会把日落、港塔和摩天轮全埋掉，而那正是这张图最值钱的部分。
           渐变是斜的，跟整套 P5 斜切 UI 同一种语言。*/}

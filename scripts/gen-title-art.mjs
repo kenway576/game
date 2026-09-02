@@ -1,23 +1,34 @@
 // ============================================================================
-// 标题画面主视觉
+// 标题画面主视觉（一套，轮播用）
 //
-// 参考画风：Persona 5: The Phantom X 的官方壁纸（粗而干净的线、高饱和有限色、
-// 黑红对角色块 + 网点、强对角构图）。游戏本身的 UI 就是 P5 那一套，
-// 封面跟 UI 不是一个语言的话，第一屏就散了。
+// 参考画风：Persona 5: The Phantom X 的官方壁纸——粗而干净的线、高饱和有限色、
+// 黑红蓝斜切色块 + 网点、强对角构图。游戏本身的 UI 就是 P5 那一套。
 //
-// 硬约束（比"好看"更重要的那几条）：
-//   · 16:9，标题画面是横的
-//   · **左侧三分之一必须是空的**——KOBE STUDY 的标题块和两个大按钮压在那儿。
-//     生成的图再好看，主体压在左边就白做了。
-//   · 画面里不能有任何文字。logo 是 UI 画的，图里再冒出假字只会打架。
+// 【为什么是一套而不是一张】
+// 模型出图是 1344x768。八个人塞进这个分辨率，一张脸只剩不到一百像素宽，
+// 五官就是糊的——再怎么调提示词也救不回来，那是像素不够，不是画得不好。
+// 所以除了一张全员海报，其余几张各只放一到三个人：同样的画布，
+// 每张脸能分到三到五倍的像素，脸才画得出来。
+// 顺便每张换一个游戏里真实存在的地点，标题轮播时也顺手展示了地图。
+//
+// 【硬约束】
+//   · 16:9
+//   · 左侧 45% 必须干净——KOBE STUDY 的标题块和两个按钮压在那儿。
+//     这条得用百分比写死，"左三分之一保持安静"模型完全不当回事。
+//   · 画面里不能有任何文字。
+//
+// 【不要用 --edit 修脸】
+// 图生图会把整张图重渲染一遍，线条一轮比一轮糊，改一个小地方也是全图重画。
+// 发色、肤色这类问题的正确做法是改 CAST 里的描述然后重出，不是拿成品去修。
+// --edit 留着，但只适合"我认了这张会掉一档画质"的场合。
 //
 // 用法：
-//   GEMINI_API_KEY=xxx node scripts/gen-title-art.mjs          # 出全部候选
-//   GEMINI_API_KEY=xxx node scripts/gen-title-art.mjs group    # 只出指定的
+//   GEMINI_API_KEY=xxx node scripts/gen-title-art.mjs              # 出全部
+//   GEMINI_API_KEY=xxx node scripts/gen-title-art.mjs ensemble     # 只出指定的
 //   GEMINI_API_KEY=xxx node scripts/gen-title-art.mjs --list
+//   GEMINI_API_KEY=xxx node scripts/gen-title-art.mjs --edit <图> "<改什么>"
 //
-// 出到 .generated/title/，挑中哪张再手动拷进 public/images/ui/。
-// .generated/ 不进版本库。
+// 出到 .generated/title/（不进版本库），挑中的再拷进 public/images/ui/title/。
 // ============================================================================
 import fs from 'fs';
 import path from 'path';
@@ -41,137 +52,108 @@ function readKey() {
   return '';
 }
 
-// 画风。这一段所有候选共用，改它等于改整套。
+// 画风。这一段所有图共用，改它等于改整套。
 const STYLE = [
   'Key visual illustration for a Japanese romance visual novel, drawn in the style of Persona 5: The Phantom X promotional art.',
   'Bold clean confident linework, high-saturation limited palette, flat graphic cel shading with hard shadow edges.',
   'Graphic design elements woven into the artwork: sharp diagonal colour blocks, halftone dot fields, angular geometric shards.',
-  'Strong diagonal composition, dramatic contrast, glossy anime finish, extremely high detail on faces and hair.',
+  'Strong diagonal composition, dramatic contrast, glossy anime finish.',
+  'THE FACES MATTER MOST: draw every face large, clean and beautiful - crisp eyelash linework, sharp catchlights in the eyes,',
+  'clear pupils and irises, delicate eyebrows, smooth even skin shading. No smudged, muddy or blurred features.',
   'Cinematic 16:9 widescreen game title screen.',
   'ABSOLUTELY NO TEXT, no letters, no words, no logos, no watermarks, no signature anywhere in the image.'
 ].join(' ');
 
-// 构图约束。这段也是所有候选共用的——它保护的是 UI，不是画面。
+// 构图约束。保护的是 UI，不是画面。
 const LAYOUT = [
-  'CRITICAL LAYOUT REQUIREMENT: the LEFT THIRD of the frame must stay visually calm and uncluttered',
-  '- only sky, distant water or a soft colour field there, with no faces and no busy detail,',
-  'because a large game logo and two big menu buttons will be placed over that area.',
-  'All characters and all busy detail belong in the CENTRE and RIGHT of the frame.'
+  'HARD COMPOSITION RULE, obey this before anything else: the leftmost 45 percent of the image is background only',
+  '- sky, distant scenery, or a soft colour field. No person, no face and no bright busy detail may enter that area,',
+  'because a large game logo and two big menu buttons sit there. The nearest character begins at 48 percent from the left edge.'
 ].join(' ');
 
-// 神户。这座城市是这个游戏真正的主角，封面必须一眼认得出来。
-const KOBE = [
-  'The setting is Kobe, Japan, seen from the top of the Kitano slope looking down toward the sea:',
-  'Western-style hillside houses with green copper roofs and ivy lining a steep street,',
-  'the dense lights of the Sannomiya downtown below, the harbour beyond it,',
-  'the red lattice Kobe Port Tower and a large illuminated ferris wheel on the waterfront,',
-  'and the Rokko mountain ridge behind. Late April, cherry blossom petals drifting through the air.',
-  'The hour is the ten minutes between sunset and night: a deep orange-to-violet sky, the city lights just switched on.'
-].join(' ');
-
-// 角色设定。描述必须精确到"一眼能认出是谁"的那几个特征，
-// 形容词堆多了模型反而会糊成一团。
+// 角色设定。只写"一眼能认出是谁"的那几个特征——形容词堆多了模型反而糊成一团。
 const CAST = {
-  asuka:  'a proud girl with long crimson-red twin tails tied with red ribbons, sharp red eyes, in a white school shirt with a red bow tie and a navy pleated skirt with black knee socks, arms folded',
-  hikari: 'a bright cheerful girl with long golden-blonde hair and amber eyes, in orange dungarees over a white tee, laughing with one arm thrown up',
-  rei:    'a quiet girl with pale ice-blue chin-length hair and glasses, in a navy blazer and a green plaid skirt, holding a book against her chest, expressionless',
-  // 立绘里空是小麦色（日焼け），不是黑人。
-  // 第一版写成 dark-skinned，四张候选全部把她画成了黑人——写提示词时
-  // “肤色”这种词得把范围卡死，模型不会往中间取。
-  sora:   'an athletic Japanese tomboy with short brown hair and a LIGHT SUN-TANNED complexion - lightly bronzed from outdoor sport, definitely NOT dark-skinned and NOT black - in an orange basketball jersey, spinning a basketball on one finger, grinning',
-  maki:   'a small pink-haired girl with a side ponytail and a black cat-ear headband, pink headphones round her neck, denim vest over a purple tee and white shorts, smirking',
-  nao:    'a girl with brown hair in a ponytail in a school blazer uniform, hands behind her back, warm familiar smile',
-  miyuki: 'an elegant older woman with very long straight silver-white hair, in a soft beige cardigan and a long dark skirt, calm and gentle',
-  inari:  'a fox deity with long orange hair, fox ears and several large fox tails, in an ornate teal and gold crane-patterned kimono, holding a gold folding fan, pale blue fox-fire floating around her'
+  asuka:  'a proud girl with long crimson-red twin tails tied with red ribbons and sharp red eyes, in a white school shirt with a big red bow tie and a navy pleated skirt',
+  hikari: 'a bright cheerful girl with long golden-blonde hair, one stray ahoge and warm amber eyes, in orange dungarees over a white tee',
+  rei:    'a quiet girl with pale ice-blue chin-length hair, thin glasses and pale grey-blue eyes, in a navy blazer and a green plaid skirt, holding a book',
+  // 立绘里空是小麦色（日焼け），不是黑人。第一版写成 dark-skinned，
+  // 四张候选全部把她画成了黑人——肤色这种词必须把范围卡死，模型不会往中间取。
+  // “假小子”写成 tomboy 的后果是模型直接画个男生。
+  // 得把“她是女孩”和“她帅”分开说：面部先锁成少女，气质再给到中性。
+  sora:   'a seventeen-year-old JAPANESE GIRL who plays basketball - unmistakably feminine: a soft rounded jawline, big bright eyes with long lashes, delicate brows, a small nose - with short tousled brown hair in a boyish cut and a LIGHT SUN-TANNED complexion, lightly bronzed from outdoor sport, definitely NOT dark-skinned and NOT black, in an orange basketball jersey. She reads as a cheerful sporty schoolgirl, never as a boy',
+  maki:   'a small pink-haired girl with a side ponytail, a black cat-ear headband and pink headphones round her neck, denim vest over a purple tee and white shorts',
+  nao:    'a girl with warm brown hair in a ponytail and brown eyes, in a navy school blazer with a red ribbon tie',
+  // “older woman” 被画成了四十多岁。她是年上的邻居お姉さん，不是中年人。
+  miyuki: 'a graceful young woman of about twenty-four - a smooth youthful face with no wrinkles and no heavy makeup, gentle grey eyes, a soft quiet smile - with very long straight silver-white hair, in a soft beige cardigan and a long dark skirt',
+  // 稻荷的头发反复被画成银色，要写死，而且要和深雪的银发拉开距离。
+  inari:  'a fox deity with long BRIGHT ORANGE hair (never white, never silver), golden eyes, fox ears and several large orange fox tails, in a vivid teal and gold kimono patterned with white cranes, holding a gold folding fan, pale blue fox-fire drifting around her'
 };
 
 const c = (...ids) => ids.map(id => CAST[id]).join('; ');
 
+// 一套五张。第一张是海报，其余四张是"少人多脸"。
 const CANDIDATES = {
-  // A. 全员群像。热闹、像发售海报。风险是八张脸都会变小。
-  group: [
-    KOBE,
-    'Eight anime girls are arranged down the slope in depth, NOT in a straight row:',
-    'in the foreground on the right, large and fully detailed,', c('asuka', 'hikari'), '.',
-    'A step behind them, slightly smaller,', c('sora', 'maki'), '.',
-    'Further down the slope, smaller again and softly out of focus,', c('rei', 'nao'), '.',
-    'Furthest away, near the bottom of the slope, small and half in silhouette against the city lights,', c('miyuki', 'inari'), '.',
-    'They are looking back up the hill toward the viewer, as if waiting for someone to catch up.',
-    LAYOUT
+  // ① 全员海报。人最多、脸最小，但一套里必须有一张把八个人都摆出来。
+  ensemble: [
+    LAYOUT,
+    'The setting is Kobe, Japan, from the top of the Kitano slope looking down to the sea:',
+    'Western hillside houses with green copper roofs, the lights of downtown below, the harbour beyond,',
+    'the red lattice Kobe Port Tower and a lit ferris wheel on the waterfront, the Rokko ridge behind.',
+    'Late April, cherry petals in the air, the ten minutes between sunset and night: deep orange-to-violet sky, city lights just on.',
+    'EXACTLY EIGHT girls stand on the slope in the right 55 percent, staggered in depth so their heads sit at different heights - not a flat row.',
+    'All eight faces are clearly drawn and beautiful. Nearest:', c('asuka', 'maki'), '.',
+    'Behind them:', c('hikari', 'nao'), '. Behind those:', c('sora', 'rei'), '.',
+    'Furthest, still fully drawn:', c('miyuki', 'inari'), '.',
+    'A cherry tree in full bloom leans in from the top right. They are turned back up the hill toward the viewer.'
   ].join(' '),
 
-  // A2. group 的修版。第一版里稻荷的头发跑成了银色、奈绪和深雪远到看不清，
-  //     而"看不清"对恋爱游戏的封面是致命的——每个人都得卖得出去。
-  //     所以这版把八个人压进三层而不是四层，最远的一层也保留五官。
-  group2: [
-    KOBE,
-    'Eight anime girls are arranged down the slope in three layers of depth, NOT in a straight row.',
-    'They are ALL clearly visible with readable faces - none of them is a distant dot.',
-    'FRONT LAYER, right side, large and fully detailed:', c('asuka', 'hikari'), '.',
-    'MIDDLE LAYER, just behind and to their left, three quarters that size but still fully detailed faces:',
-    c('sora', 'maki', 'nao'), '.',
-    'BACK LAYER, a few steps further down the slope, half that size, softly lit by the city behind them but with faces still drawn:',
-    c('rei', 'miyuki', 'inari'), '.',
-    'IMPORTANT character corrections: the fox deity has BRIGHT ORANGE hair, not white and not silver,',
-    'and her kimono is vivid teal and gold. The basketball player is unmistakably a girl, athletic and feminine.',
-    'The whole group is looking back up the hill toward the viewer, as if waiting for someone to catch up.',
-    LAYOUT
+  // ② 校门的早上。三个人，脸能画大。
+  school: [
+    LAYOUT,
+    'Morning at a Japanese high school gate in Kobe under a huge cherry tree in full bloom, petals falling thickly,',
+    'the sea visible far below between the buildings, clean spring light, blue sky.',
+    'EXACTLY THREE girls in the right 55 percent, close to the viewer, seen from the waist up, faces large and beautifully rendered:',
+    c('asuka', 'hikari', 'nao'), '.',
+    'They walk toward the viewer together, mid-conversation: one laughing, one exasperated, one warm and amused.'
   ].join(' '),
 
-  // A3. 定稿方向。group 的纵深 + group2 的"八个人都看得清"，
-  //     再把左侧留白说成一条硬边界——前两版都把人画进了标题要压的位置，
-  //     "左三分之一保持安静"这种说法模型显然不当回事，得给百分比。
-  group3: [
-    KOBE,
-    'HARD COMPOSITION RULE, obey this before anything else: the leftmost 40 percent of the image contains',
-    'ONLY the sunset sky, the distant harbour and the city lights far below. No person, no tree, no roof,',
-    'no bright graphic shape may enter that area. The nearest character begins at 45 percent from the left edge.',
-    'Everything else is packed into the right 55 percent of the frame.',
-    'Eight anime girls stand on the slope in that right-hand area, staggered in depth so their heads sit at different heights,',
-    'nearer ones larger and lower, further ones smaller and higher - not a flat straight line.',
-    'There must be EXACTLY EIGHT girls - count them - and all eight have clearly drawn, readable faces.',
-    'Nearest, at the front:', c('asuka', 'maki'), '.',
-    'Immediately behind them:', c('hikari', 'nao'), '.',
-    'The girl with the brown ponytail and the school blazer must NOT be omitted; she stands shoulder to shoulder with the blonde one.',
-    'Behind that pair:', c('sora', 'rei'), '.',
-    'Furthest back, still fully drawn:', c('miyuki', 'inari'), '.',
-    'IMPORTANT: the fox deity has BRIGHT ORANGE hair, never white or silver.',
-    'The basketball player is unmistakably a teenage GIRL with a clearly feminine face and figure, not a boy.',
-    'The girl with the book wears glasses.',
-    'A cherry tree in full bloom leans in from the top right corner, petals blowing left across the empty sky.',
-    'They are turned back up the hill toward the viewer, as if waiting for someone to catch up.'
+  // ③ 夜里的高架下。两个人，霓虹，最像 bestdori 卡面的一张。
+  night: [
+    LAYOUT,
+    'Night under a railway viaduct in Sannomiya, Kobe: a narrow arcade of tiny shops, game cabinets glowing,',
+    'wet asphalt reflecting pink and cyan neon, a train blurring past overhead, steam rising from a ramen counter.',
+    'The left 45 percent is that alley itself, fully painted in depth - shopfronts, glowing signs, the wet road running away from the viewer.',
+    'It must be a real painted street, NOT a flat block of graphic colour.',
+    'EXACTLY TWO girls stand in the right 55 percent, seen from the WAIST UP - a medium shot, not a head-and-shoulders close-up,',
+    'so their whole upper bodies and the street behind them are both visible. Faces beautifully rendered, lit from below by the neon:',
+    c('sora', 'maki'), '.',
+    'The small pink-haired one smirks up at the taller one, who is laughing with her head tipped back.'
   ].join(' '),
 
-  // B. 四人前景 + 四人剪影。脸少一半，每张脸就能大一倍。
-  four: [
-    KOBE,
-    'Four anime girls stand together in the centre-right foreground, large and fully detailed, at slightly different distances:',
-    c('asuka', 'hikari', 'sora', 'inari'), '.',
-    'Behind and below them, four more distant figures are rendered only as backlit silhouettes against the city lights,',
-    'their shapes readable but their faces not shown: one with very long straight hair, one with a ponytail,',
-    'one small one with a side ponytail and headphones, one with a book held to her chest.',
-    LAYOUT
+  // ④ 安静的下午。两个人，暖光，整套里最柔的一张。
+  quiet: [
+    LAYOUT,
+    'Late afternoon inside an old Kobe coffee house on the Kitano slope: dark wood panelling, brass lamps, tall windows,',
+    'low honey-coloured sunlight cutting the room in long bars, dust turning in the light, cups and saucers on the tables.',
+    'The left 45 percent is the rest of that room, fully painted - empty tables, the panelled wall, a window with the slope outside',
+    '- softly lit and out of focus. It must be a real painted interior, not a flat gradient or an empty colour field.',
+    'EXACTLY TWO people in the right 55 percent, seated at a window table, CROPPED CLOSE - heads and shoulders only,',
+    'their faces filling much of the right half of the frame, beautifully rendered and rim-lit by the window:', c('rei', 'miyuki'), '.',
+    'The younger one is reading; the older one watches her, faintly amused.',
+    'Even though this is the calmest image of the set, KEEP THE FULL PERSONA 5 GRAPHIC STYLE:',
+    'thick confident black linework, high-saturation colour, hard-edged cel shadows, halftone dot fields and diagonal colour shards.',
+    'Do NOT drift into a soft, thin-lined, pastel, watercolour or painterly look - it must match the other posters in the set.'
   ].join(' '),
 
-  // C. 主角背影 + 全员剪影。零一致性风险，最"开场"，但认不出是谁。
-  silhouette: [
-    KOBE,
-    'In the lower left foreground, seen from behind and in near silhouette, a schoolboy with a shoulder bag stands at the top of the slope, small against the view, one hand on the railing.',
-    'Down the slope ahead of him, eight girls stand scattered at different distances, all rendered as clean backlit silhouettes rimmed in orange light against the city below, faces not visible;',
-    'their outlines are distinct from one another: twin tails, a ponytail, a bob with glasses, an athletic short crop,',
-    'a small one with a side ponytail and headphones, very long straight hair, a dungaree girl with one arm raised, and one with fox ears and several tails.',
-    'The mood is the first evening of something, expansive and a little lonely.',
-    LAYOUT
-  ].join(' '),
-
-  // D. 双人主视觉。最接近 bestdori 卡面的密度，最好看，但只卖两个人。
-  duo: [
-    KOBE,
-    'Two anime girls dominate the centre-right of the frame, large, close to the viewer, fully detailed and beautifully rendered:',
-    c('asuka', 'hikari'), '.',
-    'They are mid-motion on the slope, one turning back toward the viewer, cherry petals blowing across them.',
-    'Far below on the slope, six much smaller distant figures walk on ahead, rendered as soft backlit silhouettes with no visible faces.',
-    LAYOUT
+  // ⑤ 神社的夜。单人，脸最大，整套里最贵气的一张。
+  shrine: [
+    LAYOUT,
+    'Night at Ikuta Shrine in the middle of downtown Kobe: a vermilion torii gate, ancient camphor trees,',
+    'stone lanterns lit, a gravel path, the neon of the city glowing faintly through the trees behind.',
+    'EXACTLY ONE character in the right 55 percent, large, close to the viewer, seen from the knees up,',
+    'her face rendered in the highest detail in the whole set:', CAST.inari, '.',
+    'She stands on the gravel looking straight at the viewer with a sly knowing smile, fan half raised,',
+    'her tails fanned out behind her, the pale blue fox-fire lighting her face from below.'
   ].join(' ')
 };
 
@@ -185,49 +167,6 @@ const key = readKey();
 if (!key) {
   console.error('找不到 API key：GEMINI_API_KEY=... node scripts/gen-title-art.mjs');
   process.exit(1);
-}
-
-// --edit <源图> <指令>：拿现成的图改，不重新抽
-const editIdx = args.indexOf('--edit');
-if (editIdx >= 0) {
-  const src = args[editIdx + 1];
-  const instruction = args.slice(editIdx + 2).join(' ');
-  if (!src || !instruction) { console.error('用法: --edit <源图路径> <改什么>'); process.exit(1); }
-  fs.mkdirSync(OUT_DIR, { recursive: true });
-  const out = path.join(OUT_DIR, path.basename(src, path.extname(src)) + '_edit.webp');
-  process.stdout.write('editing ... ');
-  const raw = await generate(instruction, src);
-  await sharp(raw).resize(1920, 1080, { fit: 'cover' }).webp({ quality: 92 }).toFile(out);
-  console.log('OK →', path.relative(ROOT, out));
-  process.exit(0);
-}
-
-const wanted = args.filter(a => !a.startsWith('--'));
-const targets = wanted.length ? wanted : Object.keys(CANDIDATES);
-for (const t of targets) {
-  if (!CANDIDATES[t]) { console.error('未知候选:', t, '（--list 看全部）'); process.exit(1); }
-}
-fs.mkdirSync(OUT_DIR, { recursive: true });
-
-// 图生图。整张重抽的代价是“这次对了那次又错了”——八个人里修一个人的发色，
-// 重抽等于把另外七个人也重新赌一遍。所以局部改就走这条路：
-//   node scripts/gen-title-art.mjs --edit .generated/title/group3.webp "<改什么>"
-function generate(prompt, refPath) {
-  if (refPath) {
-    const payload = JSON.stringify({
-      contents: [{ parts: [
-        { inline_data: { mime_type: 'image/webp', data: fs.readFileSync(refPath).toString('base64') } },
-        { text: prompt }
-      ] }],
-      generationConfig: { imageConfig: { aspectRatio: '16:9' } }
-    });
-    return post(payload);
-  }
-  const payload = JSON.stringify({
-    contents: [{ parts: [{ text: `${STYLE}\n\n${prompt}` }] }],
-    generationConfig: { imageConfig: { aspectRatio: '16:9' } }
-  });
-  return post(payload);
 }
 
 function post(payload) {
@@ -257,16 +196,51 @@ function post(payload) {
   });
 }
 
+function generate(prompt, refPath) {
+  const parts = refPath
+    ? [
+        { inline_data: { mime_type: 'image/webp', data: fs.readFileSync(refPath).toString('base64') } },
+        { text: prompt }
+      ]
+    : [{ text: `${STYLE}\n\n${prompt}` }];
+  return post(JSON.stringify({
+    contents: [{ parts }],
+    generationConfig: { imageConfig: { aspectRatio: '16:9' } }
+  }));
+}
+
+// --edit <源图> <指令>：图生图。会掉画质，见文件头的说明。
+const editIdx = args.indexOf('--edit');
+if (editIdx >= 0) {
+  const src = args[editIdx + 1];
+  const instruction = args.slice(editIdx + 2).join(' ');
+  if (!src || !instruction) { console.error('用法: --edit <源图路径> <改什么>'); process.exit(1); }
+  fs.mkdirSync(OUT_DIR, { recursive: true });
+  const out = path.join(OUT_DIR, path.basename(src, path.extname(src)) + '_edit.webp');
+  process.stdout.write('editing ... ');
+  const raw = await generate(instruction, src);
+  await sharp(raw).resize(1920, 1080, { fit: 'cover' }).webp({ quality: 94 }).toFile(out);
+  console.log('OK →', path.relative(ROOT, out));
+  process.exit(0);
+}
+
+const wanted = args.filter(a => !a.startsWith('--'));
+const targets = wanted.length ? wanted : Object.keys(CANDIDATES);
+for (const t of targets) {
+  if (!CANDIDATES[t]) { console.error('未知候选:', t, '（--list 看全部）'); process.exit(1); }
+}
+fs.mkdirSync(OUT_DIR, { recursive: true });
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 for (const name of targets) {
-  process.stdout.write(`${name.padEnd(12)} ... `);
+  process.stdout.write(`${name.padEnd(10)} ... `);
   try {
     const raw = await generate(CANDIDATES[name], null);
     const meta = await sharp(raw).metadata();
-    // 生成分辨率通常不到 1080p，标题画面是铺满的，放大一档观感好不少
-    const out = path.join(OUT_DIR, `${name}.webp`);
-    await sharp(raw).resize(1920, 1080, { fit: 'cover' }).webp({ quality: 92 }).toFile(out);
+    // 放大一档：标题画面是铺满的，1344 宽在 1080p 屏上会看出软
+    await sharp(raw).resize(1920, 1080, { fit: 'cover' })
+      .webp({ quality: 94 }).toFile(path.join(OUT_DIR, `${name}.webp`));
     console.log(`OK  ${meta.width}x${meta.height} → 1920x1080`);
   } catch (e) {
     console.log('失败:', e.message);
