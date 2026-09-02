@@ -33,6 +33,7 @@ export interface AudioSettings {
   typing: number;        // 0..1
   muted: boolean;
   typingEnabled: boolean; // 打字音单独可关
+  bgmEnabled: boolean;    // 背景音乐单独可关（区别于把音量拉到 0：音量值会留着）
 }
 
 const STORAGE_KEY = 'kobe_study_audio_v1';
@@ -45,6 +46,7 @@ export const DEFAULT_AUDIO_SETTINGS: AudioSettings = {
   typing: 0.35,
   muted: false,
   typingEnabled: true,
+  bgmEnabled: true,
 };
 
 // ---- SFX 注册表：name -> { 相对音量, 总线, 是否循环 } -----------------------
@@ -198,6 +200,19 @@ class AudioManager {
   setTypingEnabled(enabled: boolean): void { this.update({ typingEnabled: enabled }); }
   toggleTyping(): void { this.update({ typingEnabled: !this.settings.typingEnabled }); }
 
+  setBgmEnabled(enabled: boolean): void {
+    this.update({ bgmEnabled: enabled });
+    if (enabled && this.unlocked && !this.currentBgm && this.pendingBgm) {
+      const t = this.pendingBgm;
+      this.pendingBgm = null;
+      this.crossfadeBgm(t, 600);
+    }
+    // 重新打开时把当前场景该放的曲子接上。
+    // 关掉期间 crossfadeBgm 仍然记着 currentBgm，只是总线被压到 0，
+    // 所以这里不需要重新起播，恢复音量就够了。
+  }
+  toggleBgm(): void { this.setBgmEnabled(!this.settings.bgmEnabled); }
+
   private update(patch: Partial<AudioSettings>): void {
     this.settings = { ...this.settings, ...patch };
     this.persist();
@@ -218,8 +233,8 @@ class AudioManager {
   private persist(): void {
     try {
       // 只存这几个键，跟约定一致
-      const { master, bgm, sfx, typing, muted, typingEnabled } = this.settings;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ master, bgm, sfx, typing, muted, typingEnabled }));
+      const { master, bgm, sfx, typing, muted, typingEnabled, bgmEnabled } = this.settings;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ master, bgm, sfx, typing, muted, typingEnabled, bgmEnabled }));
     } catch { /* 隐私模式等 */ }
   }
 
@@ -235,7 +250,7 @@ class AudioManager {
       } catch { try { g.gain.value = target; } catch { /* ignore */ } }
     };
     ramp(this.masterGain, this.settings.muted ? 0 : this.settings.master);
-    ramp(this.busGain.bgm, this.settings.bgm * (this.bgmDucked ? 0.35 : 1));
+    ramp(this.busGain.bgm, this.settings.bgmEnabled ? this.settings.bgm * (this.bgmDucked ? 0.35 : 1) : 0);
     ramp(this.busGain.sfx, this.settings.sfx);
     ramp(this.busGain.typing, this.settings.typing);
   }
@@ -635,6 +650,8 @@ class AudioManager {
   crossfadeBgm(track: BgmTrack, ms = 800): void {
     if (!this.ctx || !this.busGain) { this.pendingBgm = track; return; }
     if (!this.unlocked) { this.pendingBgm = track; return; }
+    // BGM 关着的时候不起振荡器：白白占着 CPU，一个音也听不见
+    if (!this.settings.bgmEnabled) { this.pendingBgm = track; return; }
     if (this.currentBgm?.track === track) return;
 
     const ctx = this.ctx;

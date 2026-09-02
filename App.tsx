@@ -19,6 +19,7 @@ import { CalendarModal } from './components/CalendarModal';
 import { StatGainToast } from './components/StatGainToast';
 import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
 import PrologueResultScreen from './components/PrologueResultScreen';
+import ConsentGate from './components/ConsentGate';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
 
@@ -157,6 +158,7 @@ const App: React.FC = () => {
   const [customBaseUrl, setCustomBaseUrl] = useState('');
   const [customModelName, setCustomModelName] = useState('');
   const [consentGiven, setConsentGiven] = useState(false);
+  const [showConsentGate, setShowConsentGate] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [showAutoSave, setShowAutoSave] = useState(false);
 
@@ -482,6 +484,18 @@ const App: React.FC = () => {
       return next;
     });
     setPrologueResult(null);
+    setCurrentScene(DEFAULT_SCENE);
+    // 序章不产生实验数据，大厅之后每一句对话都会 —— 同意书卡在这一刻，
+    // 而不是玩家还没看到游戏长什么样的开局。已经同意过的存档不再问第二次。
+    if (!consentGiven) { setShowConsentGate(true); return; }
+    setGameMode(GameMode.LOBBY);
+    pendingPrologueSaveRef.current = true;
+  };
+
+  // 同意之后才真正进大厅
+  const acceptConsent = () => {
+    setConsentGiven(true);
+    setShowConsentGate(false);
     setCurrentScene(DEFAULT_SCENE);
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;
@@ -1342,6 +1356,16 @@ const App: React.FC = () => {
           onLoadRequest={() => { setShowSystemMenu(false); setSaveLoadMode('LOAD'); }}
           onExportJson={exportExperimentData}
           onSyncCloud={syncToCloud}
+          userState={userState}
+          setUserState={setUserState}
+          customApiKey={customApiKey}
+          onApiKeyChange={handleApiKeyChange}
+          customModel={customModel}
+          onModelChange={handleModelChange}
+          customBaseUrl={customBaseUrl}
+          onBaseUrlChange={handleBaseUrlChange}
+          customModelName={customModelName}
+          onModelNameChange={handleModelNameChange}
         />
       )}
 
@@ -1400,6 +1424,16 @@ const App: React.FC = () => {
           onClose={() => setSaveLoadMode(null)}
           onSaveSlot={saveGameToSlot}
           onLoadSlot={loadGameFromSlot}
+        />
+      )}
+
+      {showConsentGate && (
+        <ConsentGate
+          language={userState.language}
+          T={T}
+          email={userState.email}
+          onEmailChange={(v) => setUserState(prev => ({ ...prev, email: v }))}
+          onAgree={acceptConsent}
         />
       )}
 
