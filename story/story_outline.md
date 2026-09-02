@@ -160,12 +160,12 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
 | ② | 知らない顔 | `kaisei_cafeteria` | 她第一次意识到"有她不知道的你"——她只见过母语环境里的你（呼应 0-2 方案 A） |
 | ③ | 十年分の距離 | `school_gate_sakura` + CG | |
 
-#### 空 Sora — 田径部王牌
+#### 空 Sora — 篮球部王牌
 | 段 | 标题 | 场景 | 内容 |
 |---|---|---|---|
-| ① | 交換条件 | `gym` | 你教她日语文法，她教你跑步。等价交换 |
-| ② | 肩の話 | `koshien_stadium_sunset` | 那个还在痛的肩膀（她的 seedMemory 里已经埋了） |
-| ③ | ゴールの向こう | `koshien_stadium_sunset` + CG | |
+| ① | 交換条件 | `gym` | 你教她日语文法，她教你投篮。等价交换 |
+| ② | 肩の話 | `gym` | 那个还在痛的肩膀（她的 seedMemory 里已经埋了） |
+| ③ | ゴールの向こう | `school_rooftop_sunset` + CG | |
 
 #### 深雪 Miyuki — 隔壁独居大姐姐
 | 段 | 标题 | 场景 | 内容 |
@@ -198,7 +198,7 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
 | 6 | 二年B班走廊 | `school_hallway` | **明日香**相撞（沿用现草稿，序章不受影响） | — |
 | 7 | 教室 · 自我介绍 | `school` | 用日语做自我介绍 | **回收序章 flag**：关西腔／标准语／手势 三选一，对应 `prologue_checkout_*` |
 | 8 | 午休 | `kaisei_cafeteria` | 光 + 明日香同桌，第一次三人对话 | — |
-| 9 | **放学后（主分叉）** | 三选一 | 决定**谁的第①段先解锁** | 田径部`gym`→空／图书馆`kaisei_library_sunlight`→铃／商店街`sannomiya_pia_kobe_arcade`→真希 |
+| 9 | **放学后（主分叉）** | 三选一 | 决定**谁的第①段先解锁** | 篮球部`gym`→空／图书馆`kaisei_library_sunlight`→铃／商店街`sannomiya_pia_kobe_arcade`→真希 |
 | 10 | 傍晚 | `ikuta_shrine_gate` 或 `neighborhood` | **稻荷**（走神社路线）或 **奈绪**（走回家路线） | 承 9 的选择 |
 | 11 | 夜 · 201 室 | `umikaze_room_201` | 在手账上写下第一天。结算屏 → 进入自由游玩 | — |
 

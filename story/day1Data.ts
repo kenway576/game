@@ -58,6 +58,35 @@ export const DAY1_SCRIPT: StoryNode[] = [
     en: 'You slide your grandfather’s journal into the side pocket of your bag. You cannot say why; it just makes the day feel more possible.'
   },
   {
+    type: 'narration',
+    zh: '书包上肩的时候，你忽然从外面看了自己一眼。',
+    en: 'As the bag settles onto your shoulder, you catch a glimpse of your own situation from the outside.'
+  },
+  {
+    type: 'narration',
+    zh: '转学生。开学第一天。一个人住。海边的坡道小城。四月，樱花刚好开到最满。',
+    en: 'Transfer student. First day of term. Living alone. A hillside town by the sea. April, with the blossom timed to the day.'
+  },
+  {
+    type: 'narration',
+    zh: '……这个开局你见过。不止见过一次。',
+    en: '...You have seen this opening before. More than once.'
+  },
+  {
+    type: 'narration',
+    zh: '你把手账翻到最后一页，在最上面写了一行：「即视感 · 计数」。下面记了第一条——转学生、第一天、海边、樱花。',
+    en: 'You turn the journal to its last page and write a heading across the top: DEJA VU, A TALLY. Underneath goes the first entry: transfer student, first day, seaside, blossom.'
+  },
+  {
+    type: 'narration',
+    zh: '外公要是知道他的手账最后被这么用，大概会说点什么。但今天你需要点乐子。',
+    en: 'Your grandfather would probably have had something to say about his journal ending up in this use. But today you need the entertainment.'
+  },
+  {
+    type: 'effect',
+    setFlags: ['day1_meta_list']
+  },
+  {
     type: 'choice',
     promptZh: '出门前还有五分钟。',
     promptEn: 'Five minutes before you have to go.',
@@ -227,6 +256,16 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
+    zh: '下楼的时候你在心里添了第二条：隔壁住着一位温柔的、年长的、独居的女性。',
+    en: 'On the way down you add a second entry in your head: a gentle, older, unattached woman lives next door.'
+  },
+  {
+    type: 'narration',
+    zh: '你为自己感到一点点羞耻。但还是记下了。',
+    en: 'You feel faintly ashamed of yourself. You keep it anyway.'
+  },
+  {
+    type: 'narration',
     characterImage: '',
     zh: '「行ってきます」——这句你会说。你说完自己愣了一下：这是你到日本以后，第一次对人说这句话。',
     en: '"Itte-kimasu." That one you can say. And having said it, you catch yourself: it is the first time you have said it to anyone in this country.'
@@ -287,6 +326,22 @@ export const DAY1_SCRIPT: StoryNode[] = [
         ]
       }
     ]
+  },
+
+  {
+    type: 'narration',
+    zh: '第三条：满坡的樱花、迎面的山风、上学要爬的坡。',
+    en: 'Third entry: a slope full of blossom, a headwind off the hill, a climb to get to school.'
+  },
+  {
+    type: 'narration',
+    zh: '照这个走法，接下来该有人在拐角处撞上你，把一叠纸撒得满地都是。最好嘴里还叼着一片吐司。',
+    en: 'At this rate somebody ought to walk into you at a corner next and put a stack of paper all over the floor. Ideally with a slice of toast in their mouth.'
+  },
+  {
+    type: 'narration',
+    zh: '你笑了一声，继续往上走。',
+    en: 'You snort, and keep climbing.'
   },
 
   // ==========================================================
@@ -545,6 +600,97 @@ export const DAY1_SCRIPT: StoryNode[] = [
     color: 'bg-red-600'
   },
   {
+    type: 'choice',
+    promptZh: '你手里还捏着半张讲义。今天早上那句玩笑正堵在喉咙口。',
+    promptEn: 'You are still holding half a handout. This morning\u2019s joke is sitting right at the top of your throat.',
+    options: [
+      {
+        id: 'day1_meta_say',
+        labelZh: '\u300c……抱歉。不过我今天早上刚预言过这一幕。\u300d',
+        labelEn: '"...Sorry. I predicted this exact scene this morning, though."',
+        hintZh: '说出口就收不回来了',
+        hintEn: 'There is no taking this one back.',
+        effects: [{ stat: 'guts', amount: 2, reasonZh: '你对一个刚认识三十秒的人说了实话', reasonEn: 'You told the truth to someone you had known for thirty seconds' }],
+        relations: [{ char: CharacterId.ASUKA, familiarity: 14, affection: 4, reasonZh: '她第一次没接上话', reasonEn: 'For once she had no line ready' }],
+        setFlags: ['day1_meta_said'],
+        then: [
+          {
+            type: 'narration',
+            zh: '她捡纸的手停在半空。',
+            en: 'Her hand stops halfway to the next sheet.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '明日香',
+            speakerEn: 'Asuka',
+            characterImage: `${ASUKA}surprised.webp`,
+            jp: '……はい？',
+            zh: '……啊？',
+            en: '...I beg your pardon?',
+            color: 'bg-red-600'
+          },
+          {
+            type: 'narration',
+            zh: '你把手账最后一页翻给她看。三条整整齐齐地列在那儿，第四条你刚在心里写完：拐角、撞人、讲义满天飞。',
+            en: 'You show her the last page of the journal. Three entries laid out in a neat column, and a fourth you had just finished writing in your head: corner, collision, handouts everywhere.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '明日香',
+            speakerEn: 'Asuka',
+            characterImage: `${ASUKA}angry.webp`,
+            jp: '……あのね。人を、そういう、記号みたいに数えるの、やめてくれる？',
+            words: [{ jp: '記号', reading: 'きごう', zh: '符号、记号', en: 'sign / symbol' }],
+            zh: '……我说你啊。别把人当成那种符号一条条数，行吗？',
+            en: '...Listen. Could you stop counting people off like they were symbols?',
+            color: 'bg-red-600'
+          },
+          {
+            type: 'narration',
+            zh: '她一边说一边把纸从你手里抽回去，耳朵尖有点红。',
+            en: 'She pulls the sheets out of your hands as she says it. The tips of her ears have gone a little red.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '明日香',
+            speakerEn: 'Asuka',
+            characterImage: `${ASUKA}neutral.webp`,
+            jp: '……で。あと何個残ってるのよ、そのリスト。',
+            zh: '……然后呢。那张清单，还剩几条。',
+            en: '...So. How many are left on that list of yours.',
+            color: 'bg-red-600'
+          },
+          {
+            type: 'narration',
+            zh: '她问了。而且她自己好像没意识到自己问了。',
+            en: 'She asked. And she does not appear to have noticed that she asked.'
+          }
+        ]
+      },
+      {
+        id: 'day1_meta_swallow',
+        labelZh: '咽回去，专心捡纸',
+        labelEn: 'Swallow it and keep picking up paper',
+        hintZh: '第一天，别把人吓跑',
+        hintEn: 'Day one. Do not frighten anybody off.',
+        effects: [{ stat: 'kindness', amount: 1, reasonZh: '你把一个只对自己好笑的笑话咽了回去', reasonEn: 'You swallowed a joke that was only funny to you' }],
+        relations: [{ char: CharacterId.ASUKA, familiarity: 6, affection: 2, reasonZh: '你把纸按页码理好了才递过去', reasonEn: 'You put the pages back in order before handing them over' }],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把最后一张纸递过去，什么也没说。她道了声谢，站起来走了。',
+            en: 'You hand over the last sheet without saying anything. She thanks you, stands, and goes.'
+          },
+          {
+            type: 'narration',
+            zh: '第四条在心里记上了：拐角、撞人、讲义满天飞、红色双马尾。全中。',
+            en: 'The fourth entry goes down in your head anyway: corner, collision, handouts everywhere, red twin-tails. Full marks.'
+          }
+        ]
+      }
+    ]
+  },
+  {
     type: 'narration',
     zh: '她把散落的讲义在膝上「咚咚」地磕齐，站起身，抽出一份递给你。动作干脆得没有一丝多余。',
     en: 'She taps the handouts square against her knee, stands, and pulls one off the top for you. Not a wasted movement anywhere.'
@@ -604,6 +750,16 @@ export const DAY1_SCRIPT: StoryNode[] = [
     type: 'narration',
     zh: '你站在讲台边上。喉咙发紧。昨晚在便利店收银台前的那三秒钟，忽然又回来了。',
     en: 'You stand at the edge of the platform. Your throat closes. Those three seconds at the convenience store counter last night come back all at once.'
+  },
+  {
+    type: 'narration',
+    zh: '你扫了一眼教室。窗边倒数第二排空着一张桌子。你已经知道那是谁的了。第五条。',
+    en: 'You scan the room. There is an empty desk by the window, second from the back. You already know whose it is. Fifth entry.'
+  },
+  {
+    type: 'narration',
+    zh: '数清单其实是个挺好用的办法——只要还在数，脑子里就还腾得出地方放紧张以外的东西。',
+    en: 'The tally turns out to be a useful trick. As long as you are counting, there is room left in your head for something other than being afraid.'
   },
   {
     type: 'choice',
@@ -743,8 +899,28 @@ export const DAY1_SCRIPT: StoryNode[] = [
     en: 'She says it lightly, as though it happened to someone else. Then she changes the subject at once and offers you half a curry bun.'
   },
   {
+    type: 'narration',
+    zh: '第六条你其实已经想好了。屋顶、看得见海的午休、把你一路拽上来的同班同学。',
+    en: 'You already had the sixth entry worked out. The roof, lunch with a view of the sea, the classmate who hauled you up here.'
+  },
+  {
+    type: 'narration',
+    zh: '但你没写。',
+    en: 'You do not write it.'
+  },
+  {
+    type: 'narration',
+    zh: '因为「毎日ここで昼メシ食っとった。誰とも喋らんで」这一句，不在任何一条套路里。',
+    en: 'Because "I ate lunch up here every day, and I did not talk to anybody" is not on anyone\u2019s list of clich\u00e9s.'
+  },
+  {
+    type: 'narration',
+    zh: '你接过那半个咖喱面包，说了声谢谢。手账留在书包里，整个下午都没再拿出来。',
+    en: 'You take the half of the curry bun and say thank you. The journal stays in your bag. You do not take it out again all afternoon.'
+  },
+  {
     type: 'effect',
-    setFlags: ['day1_roof_lunch'],
+    setFlags: ['day1_roof_lunch', 'day1_meta_closed'],
     relations: [{ char: CharacterId.HIKARI, familiarity: 8, affection: 4, reasonZh: '她把自己那一周说出来了，虽然只说了一句', reasonEn: 'She told you about that week. One sentence of it, anyway' }]
   },
 
@@ -835,6 +1011,53 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'narration',
         zh: '扉页上那片樱花已经开始变干了。你把它往里挪了挪，压平。',
         en: 'The petal in the front is already drying out. You nudge it further in and press it flat.'
+      }
+    ]
+  },
+  {
+    type: 'branch',
+    ifFlag: 'day1_meta_list',
+    then: [
+      {
+        type: 'narration',
+        zh: '往前翻一页，是早上那张清单。五条。',
+        en: 'One page back is this morning\u2019s list. Five entries.'
+      },
+      {
+        type: 'narration',
+        zh: '你从头看了一遍。每一条都成立。转学生、坡道、樱花、拐角撞人、窗边倒数第二排——准得像照着教科书排的。',
+        en: 'You read down it. Every line holds. Transfer student, the slope, the blossom, the collision at the corner, the window seat second from the back. As exact as if it had been set from a textbook.'
+      },
+      {
+        type: 'narration',
+        zh: '然后你开始想清单上没有的那些。',
+        en: 'And then you start thinking about the things that are not on it.'
+      },
+      {
+        type: 'narration',
+        zh: '「最初の一週間、誰とも喋らんで」——这句不在上面。',
+        en: '"That first week, I did not talk to anybody." That is not on it.'
+      },
+      {
+        type: 'branch',
+        ifFlag: 'day1_meta_said',
+        then: [
+          {
+            type: 'narration',
+            zh: '「あと何個残ってるのよ」——这句也不在。说这句的人当时耳朵是红的。',
+            en: '"How many are left on that list." That is not on it either. The person who said it had gone red at the ears.'
+          }
+        ]
+      },
+      {
+        type: 'narration',
+        zh: '套路负责把人送到门口。进了门之后的事，清单上一条也没有。',
+        en: 'The formula gets you as far as the door. Nothing on the other side of it made the list.'
+      },
+      {
+        type: 'narration',
+        zh: '你把那一页轻轻撕了下来，对折，夹回扉页——和那片北野的樱花放在一起。',
+        en: 'You tear the page out, fold it once, and tuck it back inside the front cover, next to the Kitano petal.'
       }
     ]
   },

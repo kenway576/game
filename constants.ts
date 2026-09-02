@@ -2095,6 +2095,10 @@ export const DAY1_MEMORIES: Record<string, { char: CharacterId; memory: string }
     char: CharacterId.ASUKA,
     memory: '始業式の日、廊下の角でぶつかってきた編入生。プリントをぶちまけられた。同じクラス。先生から「日本語の授業についていけていない子がいる」と聞いている。……名前と、日本語がまだ危ういことしか知らない。それ以外は何も。'
   },
+  day1_meta_said: {
+    char: CharacterId.ASUKA,
+    memory: '廊下でぶつかってきた編入生が、「今朝この場面を予言した」と言って手帳を見せてきた。人を記号みたいに数えるリストだった。失礼だと思う。……なのについ「あと何個残ってるの」と聞いてしまった。'
+  },
   day1_intro_kansai: {
     char: CharacterId.ASUKA,
     memory: '自己紹介で、いきなり関西弁を使った。クラス中が笑った。……正直、あれは想定していなかった。'
