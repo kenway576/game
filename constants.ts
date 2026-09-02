@@ -2123,6 +2123,26 @@ export const DAY1_MEMORIES: Record<string, { char: CharacterId; memory: string }
     char: CharacterId.INARI,
     memory: '生田の鳥居の下で、古い手描きの地図を持った人の子を見かけた。声をかけたら驚いておった。……あの地図には見覚えがある。本人にはまだ何も明かしておらぬ。'
   },
+  day1_sora_trope: {
+    char: CharacterId.SORA,
+    memory: '体育館で「転校生・放課後・誰もおらん体育館、この展開どっかで見た」とか言い出したヤツ。めっちゃ笑た。実際そのあと夕陽まで差し込んできて、二人で吹いた。'
+  },
+  day1_rei_trope: {
+    char: CharacterId.REI,
+    memory: '図書館で「宇宙人が作った観測端末なのでは」と言われました。……否定はしませんでした。そのあと冗談だと伝えましたが、どちらが冗談だったかは説明していません。'
+  },
+  day1_maki_trope: {
+    char: CharacterId.MAKI,
+    memory: 'アーケードで「関西弁の生意気な後輩ってキャラ、よう知ってる」て言われた。……当たってんのがいちばんムカつく。'
+  },
+  day1_inari_trope: {
+    char: CharacterId.INARI,
+    memory: '鳥居の下で「このゲーム、超常ルートあるやろ」というようなことを言うた人の子。そういう言い方をした者は、これで四人目じゃ。……前の三人のことは、まだ話しておらぬ。'
+  },
+  day1_nao_trope: {
+    char: CharacterId.NAO,
+    memory: '坂の下で「その立ち位置、幼馴染って言うんだよ」と言われた。「幼馴染は負ける相場」と返してしまった。……冗談ってことにした。本気だったかどうかは、自分でもよく分かっていない。'
+  },
   day1_met_nao: {
     char: CharacterId.NAO,
     memory: '始業式の日、坂の下で待っていた。買い物袋を二つ提げて。「初日どうだった」と聞いた。……こっちに来てからのあの子のことは、まだほとんど知らない。'
