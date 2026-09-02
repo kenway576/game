@@ -330,7 +330,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'hallway',
+    scene: 'international_office',
     bgm: 'lobby',
     titleZh: '本馆二楼 · 国际交流室',
     titleEn: 'Main Building 2F · International Exchange Room'
@@ -496,7 +496,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'hallway',
+    scene: 'school_lockers',
     bgm: 'lobby'
   },
   {
@@ -587,7 +587,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'classroom',
+    scene: 'classroom_morning',
     bgm: 'lobby',
     titleZh: '二年 B 班',
     titleEn: 'Class 2-B'
@@ -750,7 +750,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'classroom',
+    scene: 'rooftop_sunset',
     bgm: 'town',
     titleZh: '放学后',
     titleEn: 'After School',

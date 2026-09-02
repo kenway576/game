@@ -373,6 +373,8 @@ const App: React.FC = () => {
     setPlayingDay1(false);
     setPrologueSessionKey(k => k + 1);
     try { localStorage.removeItem(PROLOGUE_PROGRESS_KEY); } catch { /* ignore */ }
+    // 序章 = 4 月 10 日，抵达当晚
+    setGameCalendar({ month: 4, day: 10, dayOfWeek: '月 (Mon)', timeSlot: 'afternoon', weather: 'sunny' });
     setCurrentScene('train_interior');
     setGameMode(GameMode.PROLOGUE);
     // 序章一开始就先落一次盘：这样即使中途关掉页面，
@@ -496,11 +498,25 @@ const App: React.FC = () => {
     });
     setPrologueResult(null);
     setCurrentScene(DEFAULT_SCENE);
-    // 序章不产生实验数据，大厅之后每一句对话都会 —— 同意书卡在这一刻，
-    // 而不是玩家还没看到游戏长什么样的开局。已经同意过的存档不再问第二次。
-    if (!consentGiven) { setShowConsentGate(true); return; }
+    goAfterPrologue(consentGiven);
+  };
+
+  // 序章之后该去哪：同意书 → 第一章 → 大厅。
+  // 抽出来是因为这段逻辑有两个入口（结算屏、同意书），
+  // 之前只在同意书里启动第一章，结果"已经同意过"的人直接掉进大厅、
+  // 整个第一章被跳过。
+  const goAfterPrologue = (hasConsent: boolean) => {
+    if (!hasConsent) { setShowConsentGate(true); return; }
+    if (!day1Done) { startDay1(); return; }
+    setCurrentScene(DEFAULT_SCENE);
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;
+  };
+
+  // 第一章 = 4 月 11 日，开学。日历要跟着走，不然大厅显示的日期和剧情对不上。
+  const startDay1 = () => {
+    setGameCalendar({ month: 4, day: 11, dayOfWeek: '火 (Tue)', timeSlot: 'morning', weather: 'sunny' });
+    setPlayingDay1(true);
   };
 
   // 睡一觉 = 推进到第二天早晨。天气随机，房间背景会跟着换。
@@ -522,11 +538,7 @@ const App: React.FC = () => {
   const acceptConsent = () => {
     setConsentGiven(true);
     setShowConsentGate(false);
-    // 同意书之后先过第一天（开学），打完才进自由游玩
-    if (!day1Done) { setPlayingDay1(true); return; }
-    setCurrentScene(DEFAULT_SCENE);
-    setGameMode(GameMode.LOBBY);
-    pendingPrologueSaveRef.current = true;
+    goAfterPrologue(true);
   };
 
   // 第一天播完 → 正式进入自由游玩
@@ -534,6 +546,8 @@ const App: React.FC = () => {
     setStoryFlags(prev => ({ ...prev, ...flags }));
     setDay1Done(true);
     setPlayingDay1(false);
+    // 第一章结束 = 4/11 过完。自由游玩从第二天下午开始。
+    setGameCalendar({ month: 4, day: 12, dayOfWeek: '水 (Wed)', timeSlot: 'afternoon', weather: 'sunny' });
     setCurrentScene(DEFAULT_SCENE);
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;

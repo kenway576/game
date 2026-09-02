@@ -5,10 +5,10 @@ import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, Relatio
 // 🌍 1. 场景地图 (SCENE_MAP)
 // ---------------------------------------------------------
 export const SCENE_MAP: Record<string, string> = {
-  'classroom': '/images/backgrounds/school.webp',
-  'hallway':   '/images/backgrounds/school_hallway.webp',
+  'classroom': '/images/backgrounds/bg_classroom_morning.webp',
+  'hallway':   '/images/backgrounds/bg_school_hallway.webp',
   'library':   '/images/backgrounds/library.webp',
-  'rooftop':   '/images/backgrounds/school_roof.webp',
+  'rooftop':   '/images/backgrounds/bg_school_rooftop_sunset.webp',
   'gym':       '/images/backgrounds/gym.webp',
   'room':      '/images/backgrounds/my_room.webp',
   'room_asuka':  '/images/backgrounds/room_asuka.webp',
@@ -48,6 +48,12 @@ export const SCENE_MAP: Record<string, string> = {
   'art_room':          '/images/backgrounds/bg_art_club_room.webp',
   'school_terrace':    '/images/backgrounds/bg_kaisei_cafeteria.webp',
   'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.webp',
+  // 新补的校内场景
+  'classroom_morning':  '/images/backgrounds/bg_classroom_morning.webp',
+  'international_office': '/images/backgrounds/bg_international_office.webp',
+  'school_hallway_new': '/images/backgrounds/bg_school_hallway.webp',
+  'school_lockers':     '/images/backgrounds/bg_school_lockers_hallway.webp',
+  'rooftop_sunset':     '/images/backgrounds/bg_school_rooftop_sunset.webp',
   'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.webp',
   'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.webp',
   'luminarie':         '/images/backgrounds/bg_kobe_luminarie_illumination.webp',
@@ -66,6 +72,8 @@ export const SCENE_MAP: Record<string, string> = {
   'convenience_store_interior':  '/images/backgrounds/bg_convenience_store_interior.webp',
   'convenience_store_counter':   '/images/backgrounds/bg_convenience_store_counter.webp',
   'grandfather_journal':         '/images/backgrounds/bg_grandfather_journal.webp',
+  'international_office':        '/images/backgrounds/bg_international_office.webp',
+  'school_lockers':              '/images/backgrounds/bg_school_lockers_hallway.webp',
   // 🍜 神户美食与咖啡圣地（三宫拉面次郎 & 北野坂西村咖啡店）
   'ramen_jiro_exterior':        '/images/backgrounds/bg_ramen_jiro_exterior.webp',
   'ramen_shop_interior':        '/images/backgrounds/bg_ramen_shop_interior.webp',
