@@ -75,6 +75,7 @@ export enum GameMode {
   STORE = 'STORE',      // 百元店 / 渔具店
   GARDEN = 'GARDEN',    // 阳台 / 天台的花盆
   FISHING = 'FISHING',  // 海边钓鱼
+  CAFETERIA = 'CAFETERIA',  // 学生食堂
   CHAT = 'CHAT'
 }
 

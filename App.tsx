@@ -18,6 +18,8 @@ import CgGalleryModal from './components/CgGalleryModal';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
+import CafeteriaScreen from './components/CafeteriaScreen';
+import { CafeteriaItem, tastedFlag } from './data/cafeteriaData';
 import KobeMapModal from './components/KobeMapModal';
 import { StatGainToast } from './components/StatGainToast';
 import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
@@ -199,6 +201,7 @@ const App: React.FC = () => {
   // 🌱🎣 课余生活：钱包 / 背包 / 花盆 / 鱼图鉴，合成一份存
   const [life, setLife] = useState<LifeState>(INITIAL_LIFE_STATE);
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
+  const [inCafeteria, setInCafeteria] = useState(false);
   const [activeGarden, setActiveGarden] = useState<'balcony' | 'rooftop' | null>(null);
   const [inKitchen, setInKitchen] = useState(false);
   const [activeFishing, setActiveFishing] = useState<MapLocation | null>(null);
@@ -632,6 +635,7 @@ const App: React.FC = () => {
     if (!ev) {
       if (loc.id === 'hyakkin_store') { setCurrentScene(loc.id); setActiveStore('hyakkin'); setGameMode(GameMode.STORE); return; }
       if (loc.id === 'tackle_shop')   { setCurrentScene(loc.id); setActiveStore('tackle');  setGameMode(GameMode.STORE); return; }
+      if (loc.id === 'school_terrace') { setCurrentScene(loc.id); setInCafeteria(true); setGameMode(GameMode.CAFETERIA); return; }
       if (FISHING_SPOTS.includes(loc.id)) { setCurrentScene(loc.id); setActiveFishing(loc); setGameMode(GameMode.FISHING); return; }
       // 天台只有在真摆了盆的时候才当花园开。一个盆都没有还跳花园界面，
       // 等于把天台原本那段空转旁白也吞掉了，白跑一趟还什么都没看见。
@@ -645,6 +649,15 @@ const App: React.FC = () => {
       script: ev ? ev.script : buildAmbientScript(loc, userState.language === 'en' ? 'en' : 'zh')
     });
     setGameMode(GameMode.LOBBY);
+  };
+
+  // 食堂点一份。第一次吃某样东西会记一个 flag——
+  // 主角那句感想只在第一次说，而且剧情里也能拿这个 flag 来提。
+  const eatAtCafeteria = (item: CafeteriaItem, firstTime: boolean) => {
+    setLife(l => ({ ...l, yen: Math.max(0, l.yen - item.price) }));
+    applyStoryEffects(item.effects);
+    if (firstTime) setStoryFlags(prev => ({ ...prev, [tastedFlag(item.id)]: true }));
+    if (item.word) collectStoryWords([item.word]);
   };
 
   // ---- 休闲系统的几个回调 ----
@@ -730,7 +743,7 @@ const App: React.FC = () => {
     }));
     if (trip?.event?.chars?.length) markMet(trip.event.chars);
     setActiveTrip(null);
-    setActiveStore(null); setActiveFishing(null);
+    setActiveStore(null); setActiveFishing(null); setInCafeteria(false);
     // 出门那一趟的剧本是叠在大厅上播的，所以以前不用管 gameMode。
     // 但店和钓点是自己占一个 gameMode 的，回来必须显式切回大厅——
     // 否则 activeStore 清空之后 gameMode 还停在 STORE，屏幕上什么都不剩。
@@ -1859,6 +1872,18 @@ const App: React.FC = () => {
           onFinish={finishTrip}
         />
         </div>
+      )}
+
+      {gameMode === GameMode.CAFETERIA && inCafeteria && (
+        <CafeteriaScreen
+          language={userState.language}
+          calendar={gameCalendar}
+          storyFlags={storyFlags}
+          yen={life.yen}
+          slotsLeft={slotsLeftToday(gameCalendar)}
+          onClose={() => { setInCafeteria(false); finishTrip({}); }}
+          onEat={eatAtCafeteria}
+        />
       )}
 
       {gameMode === GameMode.STORE && activeStore && (

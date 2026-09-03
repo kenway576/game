@@ -116,6 +116,43 @@ const SHEETS = {
       'dish_bento', 'dish_himawari_seeds', null, 'dish_taimeshi',
       null, null, null, null
     ]
+  },
+  // 食堂那十样。菜单是照着背景图上的菜单牌写的，所以图也得画成
+  // 学校食堂端出来的样子——不锈钢餐盘、纸盘子、保鲜膜，
+  // 而不是餐厅摆盘。这一点写不写差别很大。
+  cafeteria: {
+    // 餐盘和纸盘的边缘太淡，算不进"墨"，于是一份定食被拆成了三块
+    // （米饭、炸猪排、腌菜各一个框）。把粘连距离放大到 5%（约 50px）
+    // 就能把同一份餐盘上的东西并回一个物件——格子之间隔着 250px，
+    // 放到 50px 也不会把隔壁那道菜吸过来。
+    detect: { lum: 190, sat: 60, gap: 0.05 },
+    // 米饭、饭团、纸盘、保鲜膜都是白的，只有真·纯白才当背景
+    cut: { bgLum: 249, bgSat: 6 },
+    prompt: [
+      'The items are Japanese SCHOOL CAFETERIA food, served the way a school canteen serves it -',
+      'melamine trays, paper plates, cling film, plain bowls - not restaurant plating:',
+      '1 a set meal tray holding a breaded pork cutlet, a bowl of rice, a bowl of miso soup and pickles,',
+      '2 a bowl of udon noodles in pale clear broth with one big square of golden fried tofu on top,',
+      '3 an oval plate of Japanese curry rice, sweet brown curry over white rice,',
+      '4 a hot dog bun stuffed with fried yakisoba noodles, a stripe of mayonnaise and red pickled ginger on top,',
+      '5 a bread roll with a fried potato croquette inside and brown sauce,',
+      '6 a paper plate of five pieces of Japanese fried chicken karaage with a lemon wedge,',
+      '7 two triangular rice balls wrapped in nori and clear film,',
+      '8 a square bamboo tray of cold soba noodles with a small cup of dipping sauce beside it,',
+      '9 a single golden fried potato croquette on a small paper sheet,',
+      '10 an old-fashioned glass milk bottle with a paper cap,',
+      '11 a stainless steel cafeteria tray, empty, 12 a pair of disposable wooden chopsticks in a paper sleeve,',
+      '13 a small paper cup of green tea, 14 a plastic soy sauce fish bottle,',
+      '15 a crumpled paper napkin, 16 an empty paper plate.'
+    ].join(' '),
+    // 按 --boxes 数出来的实际顺序填，不是按提示词里列的顺序：
+    // 模型把炸鸡提到了第 5 格，还多画了一份炸鸡和一份荞麦面。
+    ids: [
+      'caf_teishoku', 'caf_kitsune_udon', 'caf_curry', 'caf_yakisoba_pan',
+      'caf_karaage', 'caf_korokke_pan', null, 'caf_onigiri',
+      'caf_croquette', 'caf_milk', 'caf_zarusoba', null,
+      null, null, null
+    ]
   }
 };
 
@@ -151,12 +188,17 @@ function post(payload, key) {
 // 判据和立绘那套一样——原始背景是死白没有明暗，画出来的白（米饭、盘子）
 // 一定带阴影。所以"小块 + 几乎全是纯白"的封闭区域才清掉，
 // 盘子和米饭那种又大又有层次的一律不动。
-async function cutWhite(buf) {
+async function cutWhite(buf, opt = {}) {
+  // 门槛可以按拼版调。默认那一档是照鱼和蔬菜定的——它们身上没有白色。
+  // 食堂这批不一样：米饭、纸盘、饭团、保鲜膜全是白的，
+  // 用默认门槛一灌，米饭被当成背景抠没了，定食只剩几个空碗。
+  // 所以这张要把门槛收到"只有纯白才算背景"。
+  const BG_LUM = opt.bgLum ?? 233, BG_SAT = opt.bgSat ?? 16;
   const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const W = info.width, H = info.height, N = W * H;
   const lum = p => { const i = p * 4; return 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]; };
   const sat = p => { const i = p * 4; return Math.max(data[i], data[i+1], data[i+2]) - Math.min(data[i], data[i+1], data[i+2]); };
-  const bgLike = p => lum(p) > 233 && sat(p) < 16;
+  const bgLike = p => lum(p) > BG_LUM && sat(p) < BG_SAT;
   const nbrs = p => {
     const x = p % W, y = (p - x) / W, o = [];
     if (x + 1 < W) o.push(p + 1);
@@ -316,6 +358,29 @@ if (args.includes('--sheets')) {
   process.exit(0);
 }
 
+// --boxes：把检测到的格子编号画在拼版上。
+// ids 数组必须和"检测出来的顺序"一一对应，而模型画东西的顺序跟提示词里
+// 列的顺序经常不一样（食堂那张就把炸鸡提前了、荞麦面画了两份）。
+// 靠肉眼数格子对不上号，所以先看一眼编号图再填 ids。
+if (args.includes('--boxes')) {
+  const only = args.filter(a => !a.startsWith('--'));
+  for (const name of (only.length ? only : Object.keys(SHEETS))) {
+    const src = path.join(RAW_DIR, `sheet_${name}.png`);
+    if (!fs.existsSync(src)) { console.log('没有拼版:', src); continue; }
+    const { boxes, W, H } = await findItems(src, SHEETS[name].detect);
+    const el = boxes.map((b, i) =>
+      `<rect x="${b.x0}" y="${b.y0}" width="${b.x1 - b.x0}" height="${b.y1 - b.y0}" ` +
+      `fill="none" stroke="#e11d48" stroke-width="3"/>` +
+      `<text x="${b.x0 + 6}" y="${b.y0 + 34}" font-size="34" font-weight="800" fill="#e11d48">${i + 1}</text>`
+    ).join('');
+    const ov = Buffer.from(`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">${el}</svg>`);
+    const out = path.join(RAW_DIR, `boxes_${name}.png`);
+    await sharp(src).composite([{ input: ov }]).png().toFile(out);
+    console.log(`${name}: ${boxes.length} 个物件 → ${path.relative(ROOT, out)}`);
+  }
+  process.exit(0);
+}
+
 if (args.includes('--slice')) {
   const only = args.filter(a => !a.startsWith('--'));
   const names = only.length ? only : Object.keys(SHEETS);
@@ -341,7 +406,7 @@ if (args.includes('--slice')) {
         width: Math.min(W - left, b.x1 - b.x0 + 1 + m * 2),
         height: Math.min(H - top, b.y1 - b.y0 + 1 + m * 2)
       }).png().toBuffer();
-      const icon = await cutWhite(cell);
+      const icon = await cutWhite(cell, SHEETS[name].cut || {});
       if (!icon) continue;
       fs.writeFileSync(path.join(OUT_DIR, `${id}.webp`), icon);
       n++;
