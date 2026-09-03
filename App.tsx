@@ -18,6 +18,7 @@ import CgGalleryModal from './components/CgGalleryModal';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
+import KobeMapModal from './components/KobeMapModal';
 import { StatGainToast } from './components/StatGainToast';
 import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
 import PrologueResultScreen from './components/PrologueResultScreen';
@@ -31,6 +32,7 @@ import FishDexModal from './components/FishDexModal';
 import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
+import { beenFlag } from './story/kobeMap';
 import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
 import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
@@ -114,6 +116,7 @@ const App: React.FC = () => {
   const [showProtagonistProfile, setShowProtagonistProfile] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
+  const [showKobeMap, setShowKobeMap] = useState(false);
   const [saveLoadMode, setSaveLoadMode] = useState<'SAVE' | 'LOAD' | null>(null);
 
   // 👤 P5 式主角五维人格属性与关西行事历状态
@@ -617,6 +620,9 @@ const App: React.FC = () => {
   // 但第一次去仍然让剧情事件先播（比如第一次走到三宫站那段），所以顺序是
   // "有事件先演事件，没事件才直接开门"。
   const startTrip = (loc: MapLocation) => {
+    // 到过就记一笔。写在最前面是因为下面店、钓点、花园各自 return 走了，
+    // 记在后面的话这三种地方永远上不了外公那张地图。
+    setStoryFlags(prev => (prev[beenFlag(loc.id)] ? prev : { ...prev, [beenFlag(loc.id)]: true }));
     const ev = pickEventFor(loc.id, {
       flags: storyFlags,
       calendar: gameCalendar,
@@ -1694,6 +1700,14 @@ const App: React.FC = () => {
         />
       )}
 
+      {showKobeMap && (
+        <KobeMapModal
+          language={userState.language}
+          storyFlags={storyFlags}
+          onClose={() => setShowKobeMap(false)}
+        />
+      )}
+
       {showCalendar && (
         <CalendarModal
           calendar={gameCalendar}
@@ -1921,6 +1935,7 @@ const App: React.FC = () => {
           plotCount={life.plots.filter(p => p.site === 'balcony').length}
           onOpenBalcony={() => { setActiveGarden('balcony'); setGameMode(GameMode.GARDEN); }}
           onOpenKitchen={() => setInKitchen(true)}
+          onOpenKobeMap={() => setShowKobeMap(true)}
         />
       )}
 

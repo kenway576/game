@@ -28,10 +28,12 @@ interface Props {
   plotCount: number;
   onOpenBalcony: () => void;
   onOpenKitchen: () => void;
+  // 软木板上钉的那张地图。点开是真的一张神户地图，不是一句旁白
+  onOpenKobeMap: () => void;
 }
 
 const RoomScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep, plotCount, onOpenBalcony, onOpenKitchen
+  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep, plotCount, onOpenBalcony, onOpenKitchen, onOpenKobeMap
 }) => {
   const en = language === 'en';
   const [active, setActive] = useState<{ hotspot: RoomHotspot; text: string } | null>(null);
@@ -58,6 +60,7 @@ const RoomScreen: React.FC<Props> = ({
     setBurst({ id: h.id, key: Date.now() });
 
     if (h.action === 'card') { setCardOpen(true); return; }
+    if (h.action === 'kobemap') { onOpenKobeMap(); return; }
     if (h.action === 'view') {
       // 看窗外：打开地标面板。先给一句当下天气的观感，再让玩家一个个认地方。
       setViewOpen(true);

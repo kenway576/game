@@ -1809,6 +1809,7 @@ export const ROOM_HOTSPOTS: RoomHotspot[] = [
   {
     id: 'corkboard', x: 22, y: 12, w: 14, h: 24, icon: '🗺',
     labelZh: '软木板·地图', labelEn: 'Corkboard map',
+    action: 'kobemap',
     linesZh: ['外公那张地图被你釘在了正中间。去过的地方你都用铅笔打了钩——现在还没几个钩。'],
     linesEn: ['Your grandfather\u2019s map is pinned dead centre. You tick the places you have been in pencil. There are not many ticks yet.']
   },

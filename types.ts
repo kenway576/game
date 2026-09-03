@@ -168,7 +168,7 @@ export interface RoomHotspot {
   // 随着故事推进，房间里能点的东西越来越多。
   requiresFlag?: string;
   // 特殊行为（睡觉推进时间、看风景给描述……）
-  action?: 'sleep' | 'wordbook' | 'journal' | 'view' | 'card';
+  action?: 'sleep' | 'wordbook' | 'journal' | 'view' | 'card' | 'kobemap';
 }
 
 // 从 201 室阳台看得见的地标。点开来有图有讲解，
