@@ -7,7 +7,7 @@ import { SCENE_MAP, SCENE_FALLBACK, CHARACTERS } from '../constants';
 import { MAP_LOCATIONS, DISTRICT_LABELS, DISTRICT_ORDER } from '../story/mapLocations';
 import {
   EventContext, isLocationUnlocked, isLocationOpenNow, locationHasEvent,
-  pickEventFor, getTimeCost, slotsLeftToday, AFTERSCHOOL_SLOTS
+  pickEventFor, getTimeCost, slotsLeftToday, AFTERSCHOOL_SLOTS, mapSceneFor
 } from '../story/mapEvents';
 import { audioManager } from '../services/audioManager';
 
@@ -52,6 +52,8 @@ const NAME_ZH: Record<string, string> = {
   miyuki: '深雪', sora: '空', nao: '奈绪', maki: '真希'
 };
 
+// 地图上给哪张图：优先用这个地方登记的"门脸"。
+// 挑去哪儿的时候，玩家想看的是外观——决定去不去的是门脸，不是屋里长什么样。
 const bgOf = (id: string) => SCENE_MAP[id] || SCENE_FALLBACK[id] || SCENE_MAP['street'];
 
 const MapScreen: React.FC<Props> = ({
@@ -242,7 +244,7 @@ const MapScreen: React.FC<Props> = ({
           <div className="relative flex-1 min-h-0">
             <img
               key={selected.id}
-              src={bgOf(selected.id)}
+              src={bgOf(mapSceneFor(selected))}
               alt=""
               className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${
                 selUnlocked ? '' : 'grayscale brightness-[0.25]'

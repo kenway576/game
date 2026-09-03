@@ -46,6 +46,20 @@ export const SCENE_MAP: Record<string, string> = {
   'kobe_harbor':       '/images/backgrounds/bg_kobe_harbor_dusk.webp',
   'kitano_slope':      '/images/backgrounds/bg_kitano_sakura_slope.webp',
   'kyoto_torii':       '/images/backgrounds/bg_kyoto_inari_torii.webp',
+  // 伏见稻荷那一套：白天的千本鸟居、夜里的千本鸟居、参道上那条挤满狐狸的商店街。
+  // 三张图一直躺在文件夹里没人引用——现在挂到 kyoto_torii 的 nightScene / extraScenes 上。
+  'inari_torii_day':   '/images/backgrounds/bg_inari_torii_day.webp',
+  'inari_torii_night': '/images/backgrounds/bg_inari_torii_night.webp',
+  'inari_sando':       '/images/backgrounds/bg_inari_sando_shops.webp',
+  // 有马在山上（三百多米），四月市区樱花开着，山里的背阴处还压着雪。
+  'arima_snow_street': '/images/backgrounds/bg_arima_snow_street.webp',
+  // 两个新地方
+  'suma_aquarium':     '/images/backgrounds/bg_suma_aquarium_tunnel.webp',
+  'oji_amusement_park': '/images/backgrounds/bg_oji_amusement_park.webp',
+  // 同一间屋子的第二张图：这张窗外有樱花，四月的时候用它
+  'international_office_window': '/images/backgrounds/bg_international_office.webp',
+  // 中庭晴天那张。courtyard_rain 是下雨那张，这张一直没挂上去
+  'courtyard_tree':    '/images/backgrounds/bg_school_courtyard.webp',
   'tea_garden':        '/images/backgrounds/bg_tatami_tea_garden.webp',
   'jazz_livehouse':    '/images/backgrounds/bg_kobe_jazz_livehouse.webp',
   'koshien':           '/images/backgrounds/bg_koshien_stadium_sunset.webp',

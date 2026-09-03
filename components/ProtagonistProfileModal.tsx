@@ -52,12 +52,15 @@ export const ProtagonistProfileModal: React.FC<Props> = ({
           {/* 左侧：主角官方卡面与基本档案 */}
           <div className="md:col-span-5 flex flex-col items-center gap-4 bg-zinc-950/80 border border-white/10 p-4 rounded-xl shadow-inner">
             <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-red-500/40 shadow-[0_0_25px_rgba(239,68,68,0.2)] group">
+              {/* 同样是后缀写错：卡面是 .webp。退路那张 asuka/neutral.png
+              也不存在（立绘全是 .webp），所以这个面板从来没显示出过图。
+              退路换成主角自己的立绘——这里本来就该是他。 */}
               <img
-                src="/images/ui/protagonist_card.jpg"
+                src="/images/ui/protagonist_card.webp"
                 alt="Protagonist"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 onError={(e) => {
-                  e.currentTarget.src = '/images/characters/asuka/neutral.png';
+                  e.currentTarget.src = '/images/characters/protagonist/school_neutral.webp';
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />

@@ -646,7 +646,7 @@ const App: React.FC = () => {
     setActiveTrip({
       loc,
       event: ev,
-      script: ev ? ev.script : buildAmbientScript(loc, userState.language === 'en' ? 'en' : 'zh')
+      script: ev ? ev.script : buildAmbientScript(loc, userState.language === 'en' ? 'en' : 'zh', gameCalendar)
     });
     setGameMode(GameMode.LOBBY);
   };

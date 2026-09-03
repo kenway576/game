@@ -90,9 +90,21 @@ export const canAffordLocation = (
   return getTimeCost(loc, ev) <= slotsLeftToday(calendar);
 };
 
+// 这一趟该看见哪张图。
+// 夜里有专门的夜景就用夜景；否则在这个地方的几张图里随机挑一张。
+// 挑图和挑旁白是分开随机的：同一句话配不同的画面，重复去的观感差别更大。
+export const sceneFor = (loc: MapLocation, calendar: GameCalendar): string => {
+  if (calendar.timeSlot === 'night' && loc.nightScene) return loc.nightScene;
+  const pool = [loc.id, ...(loc.extraScenes || [])];
+  return pool[Math.floor(Math.random() * pool.length)];
+};
+
+// 地图上预览用哪张。挑地方的时候看的是门脸，不是屋里。
+export const mapSceneFor = (loc: MapLocation): string => loc.mapScene || loc.id;
+
 // 白跑一趟也得有东西看。没有事件可演时，用这个地方自己的空转旁白
 // 拼一小段——一句景，一点点属性，然后回大厅。
-export const buildAmbientScript = (loc: MapLocation, language: 'zh' | 'en'): StoryNode[] => {
+export const buildAmbientScript = (loc: MapLocation, language: 'zh' | 'en', calendar: GameCalendar): StoryNode[] => {
   const zh = loc.ambientZh && loc.ambientZh.length
     ? loc.ambientZh
     : ['你在这儿待了一会儿。今天没有什么特别的事发生。'];
@@ -101,7 +113,7 @@ export const buildAmbientScript = (loc: MapLocation, language: 'zh' | 'en'): Sto
     : ['You spend a while here. Nothing in particular happens today.'];
   const i = Math.floor(Math.random() * zh.length);
   return [
-    { type: 'scene', scene: loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+    { type: 'scene', scene: sceneFor(loc, calendar), bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
     { type: 'narration', zh: zh[i] || zh[0], en: en[i] || en[0] },
     {
       type: 'effect',

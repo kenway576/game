@@ -365,6 +365,19 @@ export interface MapLocation {
   // 没有可触发事件时的空转旁白。随机挑一条，让白跑一趟也有东西看。
   ambientZh?: string[];
   ambientEn?: string[];
+
+  // ---- 同一个地方的别的图（都是 SCENE_MAP 的 key）----
+  //
+  // 一个地方只挂一张图的代价是：素材里那些外观图、夜景图、另一个角度，
+  // 全都没有地方可以出现。而玩家在地图上挑地方的时候，
+  // 他想看的本来就是**外观**——决定去不去看的是门脸，不是里面长什么样。
+  //
+  // mapScene   地图预览用这张。通常是外观。
+  // nightScene 夜里去的时候换这张。
+  // extraScenes 白跑一趟（空转旁白）时随机换一张，重复去不会永远同一张。
+  mapScene?: string;
+  nightScene?: string;
+  extraScenes?: string[];
 }
 
 // 地图事件：去某个地方触发的一段剧本。

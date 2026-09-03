@@ -78,12 +78,15 @@ export const CalendarModal: React.FC<Props> = ({
 
         {/* 头部实景大图 Banner */}
         <div className="relative w-full h-44 overflow-hidden border-b border-white/10 flex-shrink-0">
+          {/* 后缀是 .webp。以前这里写的 .jpg，主图 404 之后退到的那张
+              room_asuka.jpg 同样不存在，结果日历顶上一直挂着个碎图标。
+              退路也换成实际存在的一张神户全景。 */}
           <img
-            src="/images/ui/calendar_header.jpg"
+            src="/images/ui/calendar_header.webp"
             alt="Kobe City Panorama"
             className="w-full h-full object-cover"
             onError={(e) => {
-              e.currentTarget.src = '/images/backgrounds/room_asuka.jpg';
+              e.currentTarget.src = '/images/backgrounds/bg_kobe_harbor_dusk.webp';
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />

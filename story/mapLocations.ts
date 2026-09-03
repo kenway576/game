@@ -73,6 +73,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '学生食堂', nameEn: 'Cafeteria',
     blurbZh: '中午挤得像战场，放学后空得能听见冰箱的声音。乌冬 280 日元。',
     blurbEn: 'A battlefield at noon, empty enough after school that you can hear the refrigerator. Udon, 280 yen.',
+    mapScene: 'kaisei_cafeteria_hall',
     timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.HIKARI, CharacterId.ASUKA],
     ambientZh: ['自动售货机吞了你的硬币，又吐了出来。你换了一枚，它才勉强同意。'],
@@ -84,6 +85,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '体育馆', nameEn: 'Gymnasium',
     blurbZh: '篮球砸在地板上的声音在这里会绕一圈才回来。',
     blurbEn: 'A basketball hitting this floor takes a full lap around the room before it comes back to you.',
+    extraScenes: ['kaisei_gym_interior'],
     timeSlots: ['afternoon'],
     regulars: [CharacterId.SORA],
     ambientZh: ['球架下摆着一只没人收的球。你投了一次，没进。'],
@@ -95,6 +97,8 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '中庭', nameEn: 'Courtyard',
     blurbZh: '四面教学楼围出来的一小块天。下雨的时候这里的声音特别好听。',
     blurbEn: 'A small square of sky fenced in by four buildings. When it rains, this is the best-sounding place in the school.',
+    mapScene: 'courtyard_tree',
+    extraScenes: ['courtyard_tree'],
     timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.ASUKA],
     ambientZh: ['长椅是湿的。你没坐，就站着听了一会儿雨打在铁皮雨棚上的声音。'],
@@ -120,6 +124,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '美术室', nameEn: 'Art Room',
     blurbZh: '松节油的味道能从走廊那头闻到。石膏像永远缺一只耳朵。',
     blurbEn: 'You can smell the turpentine from the far end of the corridor. The plaster bust is permanently missing an ear.',
+    extraScenes: ['kaisei_art_room'],
     requiresFlag: 'day1_done',
     lockedHintZh: '你还没在这栋楼里走全过。',
     lockedHintEn: 'You have not walked the whole building yet.',
@@ -169,6 +174,28 @@ export const MAP_LOCATIONS: MapLocation[] = [
 
   // ======================= 北野（家附近） =======================
   {
+    // 第一天遇见光的那间屋子。之后就再也没有入口能回去了——
+    // 而它恰恰是这个游戏里唯一一个"留学生的地盘"。
+    id: 'international_office', district: 'school',
+    nameJp: '国際交流サロン', reading: 'こくさいこうりゅうサロン',
+    nameZh: '国际交流室', nameEn: 'International Exchange Room',
+    blurbZh: '一张大桌子、三面书架、一个地球仪。墙上贴满了历年的活动照片，照片里的人一年一换。',
+    blurbEn: 'One big table, shelves on three sides, a globe. The wall is covered in photographs from previous years, and the faces in them change annually.',
+    extraScenes: ['international_office_window'],
+    timeSlots: ['morning', 'afternoon'],
+    regulars: [CharacterId.HIKARI],
+    ambientZh: [
+      '桌上摊着别人没填完的表格。你看了一眼，发现自己现在能读懂大半了。',
+      '书架最下层有一本很旧的相册。翻到某一页，有个人的站姿和光一模一样，但那是三年前。',
+      '地球仪上有一个被摸得发白的地方。你转过去看，是你来的那个方向。'
+    ],
+    ambientEn: [
+      'Somebody has left a half-filled form on the table. You glance at it and find that you can now read most of it.',
+      'There is an old photo album on the bottom shelf. On one page somebody is standing exactly the way Hikari stands, but the year is three years ago.',
+      'One patch of the globe has been rubbed pale. You turn it round to look. It is the direction you came from.'
+    ]
+  },
+  {
     id: 'umikaze_exterior', district: 'kitano',
     nameJp: '海風荘', reading: 'うみかぜそう',
     nameZh: '海风庄', nameEn: 'Umikaze Apartments',
@@ -206,6 +233,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '北野天满神社', nameEn: 'Kitano Tenman Shrine',
     blurbZh: '坡顶的石阶爬上去，能一眼看到整个港。学问之神，考前这里人特别多。',
     blurbEn: 'Up the stone steps at the top of the slope, the whole harbour opens at once. God of learning; very crowded before exams.',
+    mapScene: 'kitano_tenman_shrine',
     timeSlots: ['afternoon', 'night'],
     regulars: [CharacterId.INARI],
     ambientZh: ['绘马挂了一整排。你随手翻了两张，全是「合格祈願」。'],
@@ -217,6 +245,8 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '西村咖啡店', nameEn: 'Nishimura Coffee',
     blurbZh: '坡道中段那栋深色木门的店。里面比外面看着大三倍，也安静三倍。',
     blurbEn: 'The dark-doored place halfway up the slope. Three times bigger inside than it looks, and three times quieter.',
+    mapScene: 'nishimura_coffee_exterior',
+    extraScenes: ['nishimura_coffee_bar', 'nishimura_coffee_window'],
     requiresFlag: 'ev_slope_nao',
     lockedHintZh: '你从门口走过好几次了，但没进去过——那种店总得有人先带你进去一次。',
     lockedHintEn: 'You have walked past the door several times. Never in. Places like that need someone to take you the first time.',
@@ -232,6 +262,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '风见鸡馆前广场', nameEn: 'Weathercock House Square',
     blurbZh: '北野真正的中心。红砖的风见鸡馆立在坡顶，屋顶那只铁公鸡是这一带所有明信片的主角。',
     blurbEn: 'The actual centre of Kitano. The red-brick Weathercock House stands at the top of the slope, and the iron cockerel on its roof is on every postcard sold in this district.',
+    extraScenes: ['kazamidori_square'],
     timeSlots: ['morning', 'afternoon'],
     ambientZh: ['广场上有人在拉小提琴，琴盒开着。你投了一百日元，他冲你点了下头，没停。'],
     ambientEn: ['Someone is playing violin with the case open. You drop in a hundred yen; he nods at you without stopping.']
@@ -242,6 +273,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '纯喫茶', nameEn: 'Old-Style Coffee House',
     blurbZh: '天鹅绒座椅、玻璃糖罐、虹吸壶。「纯喫茶」的意思是不卖酒——这个词本身就是一个时代的化石。',
     blurbEn: 'Velvet seats, a glass sugar jar, a siphon brewer. Junkissa means it serves no alcohol; the word itself is a fossil of another era.',
+    mapScene: 'retro_kissaten_exterior',
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -257,6 +289,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '三宫站', nameEn: 'Sannomiya Station',
     blurbZh: '神户的心脏。JR、阪急、阪神、地铁、轻轨，五条线全挤在这一个路口。',
     blurbEn: 'The heart of Kobe. JR, Hankyu, Hanshin, subway and the Port Liner, five lines crammed into one intersection.',
+    mapScene: 'portliner_gate',
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -283,6 +316,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '高架下 Piazza 神户', nameEn: 'Under the Tracks',
     blurbZh: '铁道高架桥底下的一长条店铺。电车开过去的时候天花板会震。',
     blurbEn: 'A long ribbon of shops beneath the railway viaduct. When a train goes over, the ceiling shakes.',
+    extraScenes: ['pia_kobe'],
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -297,6 +331,8 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '拉面 太郎', nameEn: 'Ramen Taro',
     blurbZh: '八个座位，全是吧台。老板不说话，只在你吃完的时候点一下头。',
     blurbEn: 'Eight seats, all of them at the counter. The master says nothing, and nods once when you finish.',
+    mapScene: 'ramen_jiro_exterior',
+    extraScenes: ['ramen_jiro_bowl'],
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -311,6 +347,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '淳久堂书店', nameEn: 'Junkudo Books',
     blurbZh: '一整栋楼的书。有椅子，而且没人赶你走。',
     blurbEn: 'An entire building of books. There are chairs, and nobody moves you along.',
+    mapScene: 'sannomiya_bookstore',
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -325,6 +362,8 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '生田神社', nameEn: 'Ikuta Shrine',
     blurbZh: '闹市正中的一片林子。红色的楼门一进去，外面的声音就断了一大半。',
     blurbEn: 'A stand of trees in the middle of downtown. Step through the red gate and most of the noise outside simply stops.',
+    mapScene: 'ikuta_gate',
+    extraScenes: ['ikuta_forest'],
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -353,6 +392,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '百元店', nameEn: 'Hundred-Yen Shop',
     blurbZh: '商店街拐进去的那家。花盆、种子、剪刀、装什么都行的塑料箱——一层楼的杂物，标价大多是 110。',
     blurbEn: 'Off the arcade, one floor of everything: pots, seeds, scissors, plastic boxes for things you do not own yet. Most of it is 110 yen.',
+    mapScene: 'hundred_yen_shop_exterior',
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -379,6 +419,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '旧居留地十五番馆', nameEn: 'Former Settlement No. 15',
     blurbZh: '开港时期外国领事馆改的餐厅。天花板高得离谱，说话都会不自觉放轻。',
     blurbEn: 'A restaurant inside a consulate from the port-opening era. The ceilings are absurdly high and everyone lowers their voice unasked.',
+    mapScene: 'former_settlement_exterior',
     requiresFlag: 'map_harbor',
     lockedHintZh: '你还没往海那边走过——旧居留地在再往南一点的地方。',
     lockedHintEn: 'You have not gone toward the water yet. The old settlement is a little further south.',
@@ -409,6 +450,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '拉面「刻下历史」', nameEn: 'Rekishi wo Kizame',
     blurbZh: '店名的意思是「刻下历史」。豚骨酱油，蒜可以自己加到失去理智。吃完一整天嘴里都是那个味道。',
     blurbEn: 'The name means "carve your name into history". Pork bone and soy, with as much garlic as you have the nerve to ask for. You taste it for the rest of the day.',
+    mapScene: 'ramen_rekishi_exterior',
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
@@ -452,6 +494,8 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: 'Port Liner 轻轨', nameEn: 'Port Liner',
     blurbZh: '无人驾驶的高架轻轨，最前面那节没有司机座，小孩子会抢。',
     blurbEn: 'A driverless elevated line. The front carriage has no driver seat, and children fight over it.',
+    mapScene: 'portliner_gate',
+    extraScenes: ['portliner_sannomiya'],
     requiresFlag: 'map_harbor',
     lockedHintZh: '你在三宫站看见过它的指示牌，但还没走到那一头。',
     lockedHintEn: 'You have seen the signs for it at Sannomiya, but you have not walked to that end yet.',
@@ -508,6 +552,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '须磨海岸', nameEn: 'Suma Beach',
     blurbZh: '从三宫坐电车二十分钟。市区里能有一片真正的沙滩，是神户被夹在山和海之间才捡到的便宜。',
     blurbEn: 'Twenty minutes by train from Sannomiya. A real sand beach inside the city is a bargain that comes only of Kobe being pinned between the mountains and the sea.',
+    extraScenes: ['suma_beach_alt'],
     requiresFlag: 'map_harbor',
     lockedHintZh: '你还没往海那边走过。',
     lockedHintEn: 'You have not gone toward the water yet.',
@@ -522,6 +567,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '须磨海钓公园', nameEn: 'Suma Fishing Pier',
     blurbZh: '一条伸进海里的堤。沙底浅海，上来的东西和市区那些石壁完全不一样——鲽鱼只有这儿有。',
     blurbEn: 'A pier running straight out into the sea. Shallow water over sand, so what comes up is nothing like the harbour walls in town. Flounder only happen here.',
+    extraScenes: ['fishing_pier'],
     requiresFlag: 'map_harbor',
     lockedHintZh: '你还没往海那边走过。',
     lockedHintEn: 'You have not gone toward the water yet.',
@@ -530,6 +576,54 @@ export const MAP_LOCATIONS: MapLocation[] = [
   },
 
   {
+    // 须磨海浜水族园。神户人从小学远足开始就来这儿，
+    // 那条鲨鱼隧道是所有人共同的记忆点。
+    id: 'suma_aquarium', district: 'harbor',
+    nameJp: '須磨海浜水族園', reading: 'すまかいひんすいぞくえん',
+    nameZh: '须磨海滨水族园', nameEn: 'Suma Aqualife Park',
+    blurbZh: '本地人叫它「スマスイ」。穿过那条弧形的隧道时，鳐鱼会贴着头顶滑过去，整条通道是蓝的。',
+    blurbEn: 'Everyone here calls it Sumasui. In the curved tunnel the rays slide past overhead and the whole passage goes blue.',
+    mapScene: 'suma_aquarium',
+    timeSlots: ['morning', 'afternoon'],
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '往西还有很长一段海岸线，你还没走到过。',
+    lockedHintEn: 'The coast runs a long way west. You have not been that far yet.',
+    regulars: [CharacterId.REI, CharacterId.NAO],
+    ambientZh: [
+      '隧道里没有别人。鳐鱼从头顶滑过去的时候，影子在地上走了一遍。',
+      '你在水母那一缸前面站了很久。旁边的说明牌写着它们没有心脏也没有脑子，就这么活了六亿年。',
+      '出口的纪念品店在放一段循环的海豚广播。你听懂了其中三个词，这比上个月多了两个。'
+    ],
+    ambientEn: [
+      'There is nobody else in the tunnel. A ray goes over and its shadow crosses the floor.',
+      'You stand a long time at the jellyfish tank. The card says they have neither heart nor brain and have been managing for six hundred million years.',
+      'The gift shop is looping a recorded dolphin announcement. You catch three words of it, which is two more than last month.'
+    ]
+  },
+  {
+    // 王子公园的游园地。就在王子动物园隔壁，那座摩天轮从战后开到现在，
+    // 神户人管它叫「動物園の観覧車」——它比动物园本身还老一点。
+    id: 'oji_amusement_park', district: 'sannomiya',
+    nameJp: '王子公園 遊園地', reading: 'おうじこうえん ゆうえんち',
+    nameZh: '王子公园 游园地', nameEn: 'Oji Park Fairground',
+    blurbZh: '动物园里那一小块游乐场。设施都很旧，票要单买，一次两百日元。摩天轮转一圈能看见整片灘区。',
+    blurbEn: 'The little fairground inside the zoo. Everything is old, tickets are bought one ride at a time, two hundred yen each. One turn of the wheel shows you the whole of Nada.',
+    mapScene: 'oji_amusement_park',
+    timeSlots: ['morning', 'afternoon'],
+    requiresFlag: 'day1_done',
+    regulars: [CharacterId.HIKARI, CharacterId.MAKI],
+    ambientZh: [
+      '旋转木马在空转，没有人坐。音乐是一段很旧的曲子，你觉得在哪儿听过。',
+      '摩天轮的售票窗口贴着一张纸：「風が強い日は止めます」。今天风不大。',
+      '你买了一张票，一个人坐了一圈。从最高点能看见海，还能看见学校那片屋顶。'
+    ],
+    ambientEn: [
+      'The carousel is turning with nobody on it. The music is something old that you feel you have heard before.',
+      'A sheet of paper on the ticket window says they stop the wheel on windy days. Today is not windy.',
+      'You buy one ticket and ride it alone. From the top you can see the sea, and the roofs of the school.'
+    ]
+  },
+  {
     id: 'nada_onsen', district: 'far',
     timeSlots: ['afternoon', 'night'],
     timeCost: 2,   // 泡完汤浑身发软，哪儿也去不了了
@@ -537,6 +631,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '滩温泉', nameEn: 'Nada Onsen',
     blurbZh: '市区里的天然温泉，从地底下打上来的。四百四十日元，本地老头能在里面泡掉一整个下午。',
     blurbEn: 'A natural hot spring inside the city, pumped up from underground. Four hundred and forty yen, and the local old men spend a whole afternoon in it.',
+    mapScene: 'nada_onsen_exterior',
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
@@ -551,6 +646,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '六甲山', nameEn: 'Mount Rokko',
     blurbZh: '缆车上去二十分钟。日本三大夜景之一，据说值一千万美元。',
     blurbEn: 'Twenty minutes up by cable car. One of the three great night views of Japan, allegedly worth ten million dollars.',
+    extraScenes: ['kikuseidai_night', 'rokko_kikuseidai_pavilion'],
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
@@ -564,6 +660,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '有马温泉', nameEn: 'Arima Onsen',
     blurbZh: '翻过六甲山就是。日本最古老的温泉之一，水是铁锈色的，叫「金泉」。',
     blurbEn: 'Just over Mount Rokko. One of the oldest hot springs in Japan; the water is rust-coloured and called the golden spring.',
+    extraScenes: ['arima_snow_street'],
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
@@ -605,6 +702,9 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '伏见稻荷大社', nameEn: 'Fushimi Inari Taisha',
     blurbZh: '京都。一万座鸟居顺着山一路排上去，走到顶要两个小时。全日本稻荷神社的总本宫。',
     blurbEn: 'Kyoto. Ten thousand torii marching up the mountain; two hours to the top. Head shrine of every Inari shrine in Japan.',
+    mapScene: 'inari_torii_day',
+    nightScene: 'inari_torii_night',
+    extraScenes: ['inari_sando', 'inari_torii_day'],
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
