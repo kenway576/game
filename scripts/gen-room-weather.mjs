@@ -31,15 +31,22 @@ const SOURCE = path.join(BG, `bg_${BASE}.webp`);
 
 // ---- API key：环境变量优先，其次 .env.local ----
 function readKey() {
-  if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
-  if (process.env.VITE_GEMINI_API_KEY) return process.env.VITE_GEMINI_API_KEY;
-  if (process.env.VITE_GOOGLE_API_KEY) return process.env.VITE_GOOGLE_API_KEY;
+  const NAMES = ['GEMINI_API_KEY', 'GOOGLE_API_KEY', 'VITE_GEMINI_API_KEY', 'VITE_GOOGLE_API_KEY'];
+  for (const k of NAMES) if (process.env[k]) return process.env[k];
+
+  // 按**变量名的优先级**取，不是按文件里出现的先后。
+  // .env.local 里同一个名字可能写了两次（上面是作废的旧 key，下面是故意留空的），
+  // 所以：同名取最后一次，空值跳过，再按 NAMES 的顺序挑。
   const envPath = path.join(ROOT, '.env.local');
   if (!fs.existsSync(envPath)) return '';
+  const found = {};
   for (const line of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
-    const m = line.match(/^\s*(?:export\s+)?(VITE_GOOGLE_API_KEY|VITE_GEMINI_API_KEY|GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.+)\s*$/);
-    if (m) return m[2].trim().replace(/^["']|["']$/g, '');
+    const m = line.match(/^\s*(?:export\s+)?([A-Z_]+)\s*=\s*(.*)$/);
+    if (!m) continue;
+    const val = m[2].trim().replace(/^["']|["']$/g, '');
+    if (val) found[m[1]] = val; else delete found[m[1]];
   }
+  for (const k of NAMES) if (found[k]) return found[k];
   return '';
 }
 

@@ -15,7 +15,13 @@ const COVERS = [
   '/images/ui/title/school.webp',     // 校门 · 早晨 · 明日香 / 光 / 奈绪
   '/images/ui/title/night.webp',      // 高架下 · 夜 · 空 / 真希
   '/images/ui/title/quiet.webp',      // 西村珈琲 · 午后 · 铃 / 深雪
-  '/images/ui/title/shrine.webp'      // 生田神社 · 夜 · 稻荷
+  '/images/ui/title/shrine.webp',     // 生田神社 · 夜 · 稻荷
+  // 第二批。前五张全在四月，轮播久了会觉得这游戏只有一个季节。
+  '/images/ui/title/summer.webp',     // 须磨海岸 · 盛夏 · 空 / 光 / 真希
+  '/images/ui/title/festival.webp',   // 夏祭 · 浴衣 · 明日香 / 奈绪
+  '/images/ui/title/rainy.webp',      // 梅雨 · 校门口 · 明日香
+  '/images/ui/title/winter.webp',     // 六甲摘星台 · 雪夜 · 铃 / 深雪
+  '/images/ui/title/autumn.webp'      // 王子动物园 · 秋 · 光 / 奈绪 / 稻荷
 ];
 
 const COVER_MS = 8000;

@@ -202,6 +202,23 @@ export const DEFAULT_SCENE = 'classroom';
 // 🎭 2. 角色数据 (CHARACTERS)
 // 🔥 更新：强化了初次登场台词和系统提示词，强制 AI 进行引导式提问
 // ---------------------------------------------------------
+// 🎴 大厅选人界面专用的立绘。
+//
+// 剧情里那 462 张是"表情差分"：正面、站直、手垂着，为的是好换表情。
+// 选人界面是每次进游戏看到的第一屏，用差分图当门面太亏，
+// 所以每人另出一张有姿势、有衣服、有表情的。只有大厅用，剧情引擎完全不碰。
+// 缺哪个就自动退回该角色的 neutral 立绘。
+export const LOBBY_PORTRAITS: Partial<Record<CharacterId, string>> = {
+  [CharacterId.ASUKA]:  '/images/ui/lobby/asuka.webp',
+  [CharacterId.HIKARI]: '/images/ui/lobby/hikari.webp',
+  [CharacterId.REI]:    '/images/ui/lobby/rei.webp',
+  [CharacterId.INARI]:  '/images/ui/lobby/inari.webp',
+  [CharacterId.MIYUKI]: '/images/ui/lobby/miyuki.webp',
+  [CharacterId.SORA]:   '/images/ui/lobby/sora.webp',
+  [CharacterId.NAO]:    '/images/ui/lobby/nao.webp',
+  [CharacterId.MAKI]:   '/images/ui/lobby/maki.webp'
+};
+
 export const CHARACTERS: Record<CharacterId, Character> = {
   [CharacterId.ASUKA]: {
     id: CharacterId.ASUKA,

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { CharacterId, ChatMode, UserState, CustomAssets, AffectionMap, FamiliarityMap, GameCalendar, ProtagonistStats } from '../types';
-import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity } from '../constants';
+import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity, LOBBY_PORTRAITS } from '../constants';
 import CharacterSprite from './CharacterSprite';
 import RelationshipMeter from './AffectionMeter';
 
@@ -127,7 +127,9 @@ const LobbyScreen: React.FC<Props> = ({
       {VISIBLE_CHARACTER_IDS.map((id, index) => {
         const char = CHARACTERS[id];
         const shouldLoad = visibleLobbyChars.has(id);
-        const displayChar = { ...char, avatarUrl: customAssets.characters[id] || (shouldLoad ? char.avatarUrl : '') };
+        // 大厅优先用专属立绘；没有就退回该角色的 neutral 差分
+        const portrait = LOBBY_PORTRAITS[id] || char.avatarUrl;
+        const displayChar = { ...char, avatarUrl: customAssets.characters[id] || (shouldLoad ? portrait : '') };
         return (
           <div key={id} className={`group relative flex-none w-[85vw] md:w-[320px] lg:w-[340px] snap-center h-full border-r border-white/5 overflow-hidden cursor-pointer bg-black/40 transition-opacity duration-300`} onClick={() => setLobbySelectedChar(id)}>
             <div className={`absolute inset-0 opacity-0 md:group-hover:opacity-20 transition-opacity duration-300 ${char.color} bg-gradient-to-t from-black via-transparent to-transparent`}></div>

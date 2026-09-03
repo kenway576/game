@@ -40,15 +40,22 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = path.join(ROOT, '.generated', 'title');
 
 function readKey() {
-  for (const k of ['GEMINI_API_KEY', 'VITE_GEMINI_API_KEY', 'VITE_GOOGLE_API_KEY', 'GOOGLE_API_KEY']) {
-    if (process.env[k]) return process.env[k];
-  }
+  const NAMES = ['GEMINI_API_KEY', 'GOOGLE_API_KEY', 'VITE_GEMINI_API_KEY', 'VITE_GOOGLE_API_KEY'];
+  for (const k of NAMES) if (process.env[k]) return process.env[k];
+
+  // 按**变量名的优先级**取，不是按文件里出现的先后。
+  // .env.local 里同一个名字可能写了两次（上面是作废的旧 key，下面是故意留空的），
+  // 所以：同名取最后一次，空值跳过，再按 NAMES 的顺序挑。
   const envPath = path.join(ROOT, '.env.local');
   if (!fs.existsSync(envPath)) return '';
+  const found = {};
   for (const line of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
-    const m = line.match(/^\s*(?:export\s+)?(VITE_GOOGLE_API_KEY|VITE_GEMINI_API_KEY|GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*(.+)\s*$/);
-    if (m) return m[2].trim().replace(/^["']|["']$/g, '');
+    const m = line.match(/^\s*(?:export\s+)?([A-Z_]+)\s*=\s*(.*)$/);
+    if (!m) continue;
+    const val = m[2].trim().replace(/^["']|["']$/g, '');
+    if (val) found[m[1]] = val; else delete found[m[1]];
   }
+  for (const k of NAMES) if (found[k]) return found[k];
   return '';
 }
 
@@ -154,6 +161,65 @@ const CANDIDATES = {
     'her face rendered in the highest detail in the whole set:', CAST.inari, '.',
     'She stands on the gravel looking straight at the viewer with a sly knowing smile, fan half raised,',
     'her tails fanned out behind her, the pale blue fox-fire lighting her face from below.'
+  ].join(' '),
+
+  // ---- 第二批。前五张全是四月，轮播久了会觉得这游戏只有一个季节。
+  //      这五张分掉夏、祭、雨、冬、秋，并且用上新加的须磨海岸、
+  //      王子动物园、六甲摘星台几张背景。 ----
+
+  // 6 盛夏 · 须磨海岸。整套里最亮最吵的一张。
+  summer: [
+    LAYOUT,
+    'High summer on Suma beach in Kobe: white sand, a hard blue sea, the Awaji island ridge low on the horizon,',
+    'a breakwater running out to the right, heat shimmer, a sky of towering white cloud. Blinding midday light.',
+    'EXACTLY THREE girls in the right 55 percent, close to the viewer, seen from the thighs up, faces large and beautifully rendered,',
+    'in summer clothes worn over swimsuits - open shirts, shorts, a straw hat:', c('sora', 'hikari', 'maki'), '.',
+    'They are mid-run toward the viewer at the edge of the surf, kicking up water, all three laughing.'
+  ].join(' '),
+
+  // 7 夏祭 · 浴衣。二游封面的必修课，缺了会被说没诚意。
+  festival: [
+    LAYOUT,
+    'A summer night festival at a Japanese shrine: rows of paper lanterns overhead, food stalls glowing behind,',
+    'and fireworks opening high in the black sky, their light falling over everything below.',
+    'EXACTLY TWO girls in the right 55 percent, close to the viewer, seen from the knees up, faces large and beautifully rendered,',
+    'both wearing summer yukata with obi sashes, hair pinned up:', c('asuka', 'nao'), '.',
+    'One is looking up at the fireworks; the other has turned to the viewer instead, holding a candy apple.'
+  ].join(' '),
+
+  // 8 梅雨 · 校门口。整套里情绪最重的一张，只放一个人。
+  rainy: [
+    LAYOUT,
+    'The rainy season at a Japanese school gate in the evening: heavy rain, wet asphalt throwing the light back,',
+    'a row of streetlamps just coming on, soaked hydrangeas along the wall. The whole image is blue-grey except the lamps.',
+    'EXACTLY ONE girl in the right 55 percent, large and close to the viewer, seen from the waist up,',
+    'her face rendered in the finest detail in the set, holding a clear vinyl umbrella with rain running down it:',
+    CAST['asuka'], '.',
+    'She has just turned back toward the viewer, caught between annoyed and something she will not admit to.',
+    'Raindrops are lit against the dark. Quiet and charged.',
+    'Every part of the canvas is fully painted artwork. Do NOT leave any area blank, and never draw a',
+    'grey and white checkerboard pattern anywhere - that is a transparency placeholder, not scenery.'
+  ].join(' '),
+
+  // 9 冬 · 六甲摘星台。整套里最冷最安静的一张。
+  winter: [
+    LAYOUT,
+    'A winter night on the Kikuseidai lookout on Mount Rokko above Kobe: the whole city spread far below as a field of light,',
+    'the black bay beyond it, snow lying along the stone railing, breath visible in the freezing air, a clear starry sky.',
+    'EXACTLY TWO people in the right 55 percent, close to the viewer, seen from the waist up, faces large and beautifully rendered,',
+    'in winter coats, scarves and gloves:', c('rei', 'miyuki'), '.',
+    'They stand at the railing with the city behind them. The younger one looks out; the older one is watching her.'
+  ].join(' '),
+
+  // 10 秋 · 王子动物园。整套里最轻松的一张。
+  autumn: [
+    LAYOUT,
+    'An autumn afternoon at Oji Zoo in Kobe: a small old-fashioned red and white ferris wheel turning behind,',
+    'ginkgo trees gone yellow, fallen leaves across the path, warm low sunlight, a few balloons.',
+    'EXACTLY THREE characters in the right 55 percent, close to the viewer, seen from the waist up, faces large and beautifully rendered,',
+    'in autumn clothes, cardigans and a scarf:', c('hikari', 'nao', 'inari'), '.',
+    'The fox deity is completely out of place among the balloons and entirely unbothered by it, fan raised against the sun.',
+    'The other two are laughing at something just outside the frame.'
   ].join(' ')
 };
 
