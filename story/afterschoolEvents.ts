@@ -152,6 +152,78 @@ const EV_RAMEN_SORA: MapEventDef = {
               en: 'You finish it. It takes forty minutes. Sora says nothing the whole time; she just sits and watches, the way you watch the last minute of a game.'
             }
           ]
+        },
+        {
+          id: 'ramen_sora_pay',
+          labelZh: '坐下，点最小的一碗，然后偷偷问老板她那四碗多少钱',
+          labelEn: 'Sit, order the smallest bowl — then quietly ask the master what her four came to',
+          hintZh: '运动包很旧，鞋也是',
+          hintEn: 'The sports bag is old. So are the shoes.',
+          effects: [
+            { stat: 'kindness', amount: 2, reasonZh: '你注意到了她没打算让人注意的事', reasonEn: 'You noticed the thing she was not planning to have noticed' },
+            { stat: 'proficiency', amount: 1, reasonZh: '你压低声音的时机挑得不错', reasonEn: 'You picked a decent moment to lower your voice' }
+          ],
+          relations: [{ char: CharacterId.SORA, familiarity: 14, affection: 7, reasonZh: '她没让你付，但她记住了', reasonEn: 'She did not let you pay. She remembered anyway' }],
+          then: [
+            {
+              type: 'narration',
+              zh: '你在她旁边坐下，点了最便宜的那碗。趁她低头喝汤，你朝老板比了个手势，又指了指那一摞碗。',
+              en: 'You sit down beside her and order the cheapest bowl. While she is bent over her broth, you catch the master’s eye and point at the stack.'
+            },
+            {
+              type: 'narration',
+              zh: '老板看了你一眼，没说话，只是用手指在台面上写了个数字：0。',
+              en: 'The master looks at you, says nothing, and writes a number on the counter with one finger: 0.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '空', speakerEn: 'Sora',
+              characterImage: `${SORA}neutral.webp`,
+              jp: '……あ、それ聞いた？',
+              zh: '……啊，你问了？',
+              en: '...Ah. You asked, did you.',
+              color: 'bg-orange-500'
+            },
+            {
+              type: 'narration',
+              zh: '她没抬头。筷子还在碗里搅着。',
+              en: 'She does not look up. Her chopsticks keep moving in the bowl.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '空', speakerEn: 'Sora',
+              characterImage: `${SORA}neutral.webp`,
+              jp: 'ここ、大将がバスケ部のOBやねん。「食え」って言われたら、食うしかないやろ。',
+              words: [{ jp: '食う', reading: 'くう', zh: '吃（较随便的说法）', en: 'to eat (blunt / casual)' }],
+              zh: '这儿的老板是篮球部的学长。被他说「吃」，那就只能吃啊。',
+              en: 'The master here played for the basketball club. When he says eat, what are you going to do.',
+              color: 'bg-orange-500'
+            },
+            {
+              type: 'narration',
+              zh: '她说完终于抬起头，很快地看了你一眼，又移开。',
+              en: 'She finally looks up, glances at you once, quickly, and away again.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '空', speakerEn: 'Sora',
+              characterImage: `${SORA}happy.webp`,
+              jp: '……で？何が言いたいん。奢ってくれるとか、そういうやつ？',
+              zh: '……所以呢？想说什么。要请我之类的？',
+              en: '...So? What is it you want to say. Something about buying me dinner?',
+              color: 'bg-orange-500'
+            },
+            {
+              type: 'narration',
+              zh: '你摇了摇头，说下次吧。她「哼」了一声，把最后一口汤喝完了。',
+              en: 'You shake your head and say some other time. She snorts and finishes the last of the broth.'
+            },
+            {
+              type: 'narration',
+              zh: '走出店门的时候她走在前面，突然说了一句：「……那句『下次』，我记着了啊。」',
+              en: 'On the way out she is walking ahead of you when she says, without turning round: "...I am holding you to that. The next time."'
+            }
+          ]
         }
       ]
     },
@@ -329,6 +401,73 @@ const EV_BOOKSTORE_REI: MapEventDef = {
               en: 'She does not finish the sentence. But this time she smiles. Very slightly, for perhaps half a second.'
             }
           ]
+        },
+        {
+          id: 'rei_book_show',
+          labelZh: '什么也不说，把手按在自己胸口上',
+          labelEn: 'Say nothing. Put your hand flat on your own chest',
+          hintZh: '比喻没法用查的。只能指给她看',
+          hintEn: 'You cannot look a metaphor up. You can only point at it.',
+          effects: [
+            { stat: 'charm', amount: 2, reasonZh: '你把一个词从纸上搬到了身体上', reasonEn: 'You moved a word off the page and onto a body' },
+            { stat: 'knowledge', amount: 1, reasonZh: '你想明白了比喻不能靠查', reasonEn: 'You worked out that metaphors are not lookup problems' }
+          ],
+          relations: [{ char: CharacterId.REI, familiarity: 16, affection: 6, reasonZh: '她第一次把手从书上拿开了', reasonEn: 'For the first time she took her hand off the book' }],
+          setFlags: ['rei_chest_metaphor'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你没有回答她的问题。你只是抬起手，按在自己胸口正中偏左的位置，然后停在那儿。',
+              en: 'You do not answer her question. You just raise your hand, put it flat on your chest a little left of centre, and leave it there.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${REI}neutral.webp`,
+              zh: '书店三楼很安静。她盯着你的手看了很久，久到你开始怀疑自己是不是做了件很蠢的事。',
+              en: 'The third floor of the bookshop is very quiet. She looks at your hand for a long time — long enough that you start to wonder whether this was extremely stupid.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${REI}thinking.webp`,
+              zh: '然后她把书放在膝盖上，抬起自己的右手，慢慢地、非常准确地，按在了同一个位置上。',
+              en: 'Then she sets the book on her knees, lifts her own right hand, and places it — slowly, and very precisely — in the same place.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '铃', speakerEn: 'Rei',
+              characterImage: `${REI}thinking.webp`,
+              jp: '……なるほど。ここ、ですか。',
+              zh: '……原来如此。是这里，吗。',
+              en: '...I see. Here, then.',
+              color: 'bg-sky-600'
+            },
+            {
+              type: 'narration',
+              zh: '你点了点头。',
+              en: 'You nod.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '铃', speakerEn: 'Rei',
+              characterImage: `${REI}neutral.webp`,
+              jp: '……今は、痛みません。',
+              words: [{ jp: '痛む', reading: 'いたむ', zh: '疼痛', en: 'to hurt / to ache' }],
+              zh: '……现在，不痛。',
+              en: '...It does not hurt right now.',
+              color: 'bg-sky-600'
+            },
+            {
+              type: 'narration',
+              zh: '「那就好。」你说。',
+              en: '"Good," you say.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${REI}smile.webp`,
+              zh: '她把手放下来，重新翻开那本书——翻到了下一页。四十分钟以来的第一次。',
+              en: 'She lowers her hand and opens the book again. To the next page. The first time in forty minutes.'
+            }
+          ]
         }
       ]
     },
@@ -386,7 +525,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${MAKI}punk_neutral.webp`,
+      characterImage: `${MAKI}neutral.webp`,
       zh: '打机的人个子不高，站在踏板上，节奏快得看不清手。',
       en: 'The person playing is not tall. She stands on the footplate and her hands move too fast to follow.'
     },
@@ -398,7 +537,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}punk_angry.webp`,
+      characterImage: `${MAKI}angry.webp`,
       jp: 'あーもう！なんでそこで切れんねん！',
       zh: '啊——真是的！为什么偏偏在那儿断了啊！',
       en: 'Argh! Why does it break right there, every time!',
@@ -514,6 +653,76 @@ const EV_ARCADE_MAKI: MapEventDef = {
               zh: '……三十一啊。第一次打的话，嘛，在杂鱼里算上等的了。',
               en: '...Thirty-one, huh. For a first attempt — well. That is upper-tier, for a weakling.',
               color: 'bg-pink-600'
+            }
+          ]
+        },
+        {
+          id: 'maki_arcade_name',
+          labelZh: '「MAKI。……这拼法，是你自己选的吧。」',
+          labelEn: '"MAKI. ...You chose those letters yourself, didn’t you."',
+          hintZh: '三个月来这块屏幕上只有一个名字',
+          hintEn: 'One name has been on that screen for three months.',
+          effects: [
+            { stat: 'knowledge', amount: 1, reasonZh: '你注意到了一块屏幕上真正在说的事', reasonEn: 'You noticed what that screen was actually saying' },
+            { stat: 'charm', amount: 1, reasonZh: '你没有把它说成一件可怜的事', reasonEn: 'You said it without making it sound sad' }
+          ],
+          relations: [{ char: CharacterId.MAKI, familiarity: 12, affection: 8, reasonZh: '她把「输入名字」这件事讲出来了', reasonEn: 'She told you what typing that name was for' }],
+          setFlags: ['maki_arcade_name'],
+          then: [
+            {
+              type: 'narration',
+              characterImage: `${MAKI}neutral.webp`,
+              zh: '她瞥了一眼屏幕，又瞥了一眼你。',
+              en: 'She glances at the screen. Then at you.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '真希', speakerEn: 'Maki',
+              characterImage: `${MAKI}neutral.webp`,
+              jp: '……四文字までしか入らんねん、この機械。',
+              words: [{ jp: '文字', reading: 'もじ', zh: '字符、文字', en: 'character (letter)' }],
+              zh: '……这机器只能输四个字符。',
+              en: '...This machine only takes four characters.',
+              color: 'bg-pink-600'
+            },
+            {
+              type: 'narration',
+              zh: '她伸手在按键上敲了四下，很熟练，像敲一个背了很多遍的密码。',
+              en: 'She taps four keys, fluently, the way you enter a password you have typed a thousand times.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '真希', speakerEn: 'Maki',
+              characterImage: `${MAKI}shy.webp`,
+              jp: 'ほんまはな、下の名前でええねん。でもフルで入れたら、誰のことか分かるやろ。',
+              zh: '其实呢，名字就够了。但要是全写上去，别人就知道是谁了吧。',
+              en: 'Honestly, the given name would do. But if I put the whole thing in, people would know who it was.',
+              color: 'bg-pink-600'
+            },
+            {
+              type: 'narration',
+              zh: '你没有问「知道了会怎么样」。',
+              en: 'You do not ask what would happen if they knew.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '真希', speakerEn: 'Maki',
+              characterImage: `${MAKI}pout.webp`,
+              jp: '……なんも言わんのな、せんぱい。',
+              zh: '……什么都不说啊，前辈。',
+              en: '...You are not saying anything, senpai.',
+              color: 'bg-pink-600'
+            },
+            {
+              type: 'narration',
+              zh: '你说，那块屏幕上有人连着三个月都在，挺好的。',
+              en: 'You say that somebody has been up on that screen for three months straight, and that seems like a good thing.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${MAKI}shy.webp`,
+              zh: '她「哦」了一声，转过身去投币。你看见她按下开始键之前，先把 ID 那一栏又输了一遍。',
+              en: 'She says "oh", turns away and feeds in a coin. Before she hits start, you see her type the ID in one more time.'
             }
           ]
         }
@@ -670,6 +879,71 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
               en: 'She puts the last sesame ball in her mouth, says something like "let us go" around it, and her pace returns to normal.'
             }
           ]
+        },
+        {
+          id: 'hikari_nankin_judge',
+          labelZh: '「等一下——评分标准得先定好。」',
+          labelEn: '"Hold on. We need to agree on the scoring criteria first."',
+          hintZh: '既然是对比，那就认真比',
+          hintEn: 'If it is a comparison, it should be a real one.',
+          effects: [
+            { stat: 'knowledge', amount: 1, reasonZh: '你给一场胡闹定了规则', reasonEn: 'You imposed rules on a piece of nonsense' },
+            { stat: 'charm', amount: 2, reasonZh: '你把她的胡闹当成一件正经事', reasonEn: 'You treated her nonsense as a serious undertaking' }
+          ],
+          relations: [{ char: CharacterId.HIKARI, familiarity: 18, affection: 7, reasonZh: '从来没有人陪她把玩笑玩到底', reasonEn: 'Nobody had ever played one of her jokes all the way through' }],
+          setFlags: ['hikari_nankin_rules'],
+          then: [
+            {
+              type: 'narration',
+              characterImage: `${HIKARI}surprised.webp`,
+              zh: '她刹住脚，转过身来，表情像是听见了什么了不得的提案。',
+              en: 'She stops dead, turns around, and looks like someone who has just heard a genuinely serious proposal.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '光', speakerEn: 'Hikari',
+              characterImage: `${HIKARI}happy.webp`,
+              jp: '……基準？基準ってなに？点数つけるだけちゃうん？',
+              words: [{ jp: '基準', reading: 'きじゅん', zh: '标准、基准', en: 'criterion / standard' }],
+              zh: '……标准？什么标准？不就是打个分吗？',
+              en: '...Criteria? What criteria? You just give it a number, no?',
+              color: 'bg-yellow-500'
+            },
+            {
+              type: 'narration',
+              zh: '你从书包里掏出手账，翻到空白页，写下三行：皮、馅、烫嘴程度。她凑过来看了两秒，然后一把抢过笔。',
+              en: 'You get the journal out of your bag, find a blank page, and write three lines: skin, filling, how badly it burns your mouth. She leans in for two seconds, then grabs the pen out of your hand.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '光', speakerEn: 'Hikari',
+              characterImage: `${HIKARI}smug.webp`,
+              jp: '足りん！「一口目の幸せ度」と「三口目に飽きるかどうか」も要る！',
+              zh: '不够！还得加「第一口的幸福度」和「第三口会不会腻」！',
+              en: 'Not enough! You need "happiness of the first bite" and "have you got bored by the third".',
+              color: 'bg-yellow-500'
+            },
+            {
+              type: 'narration',
+              zh: '两个小时后，那一页写满了。九样东西，五个维度，一个你完全看不懂的加权公式，以及她在最下面画的一只很丑的猪。',
+              en: 'Two hours later the page is full. Nine items, five dimensions, a weighting formula you cannot follow at all, and a very badly drawn pig at the bottom.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '光', speakerEn: 'Hikari',
+              characterImage: `${HIKARI}happy.webp`,
+              jp: 'これ、来月もやろ。データは多いほうがええやろ？',
+              words: [{ jp: 'データ', zh: '数据', en: 'data' }],
+              zh: '这个，下个月也做吧。数据越多越好对吧？',
+              en: 'Let us do this again next month. More data is better, right?',
+              color: 'bg-yellow-500'
+            },
+            {
+              type: 'narration',
+              zh: '「下个月」。她说得很自然，好像那已经是一件定下来的事了。',
+              en: '"Next month." She says it as though it were already settled.'
+            }
+          ]
         }
       ]
     },
@@ -796,6 +1070,72 @@ const EV_SLOPE_NAO: MapEventDef = {
               jp: '……はっや。もうちょっと粘るかと思ってた。',
               zh: '……真快。我还以为你要磨蹭一会儿。',
               en: '...That was fast. I thought you would hold out longer.',
+              color: 'bg-emerald-600'
+            }
+          ]
+        },
+        {
+          id: 'nao_slope_bill',
+          labelZh: '掏出那张一千八百四十日元的小票，压在她杯子底下',
+          labelEn: 'Take out the 1,840-yen receipt and slide it under her cup',
+          hintZh: '你说过这是第一笔账',
+          hintEn: 'You called it the first debt.',
+          requiresFlag: 'day1_nao_receipt',
+          effects: [
+            { stat: 'proficiency', amount: 2, reasonZh: '你真的把那笔账记到了今天', reasonEn: 'You actually carried that account this far' },
+            { stat: 'kindness', amount: 1, reasonZh: '你还的不只是钱', reasonEn: 'What you were paying back was not only money' }
+          ],
+          relations: [{ char: CharacterId.NAO, familiarity: 10, affection: 9, reasonZh: '她没想到你真的留着那张纸', reasonEn: 'She had not expected you to still have that piece of paper' }],
+          setFlags: ['nao_debt_paid'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你从钱包夹层里抽出那张已经压平了的小票，放在桌上，用她的杯子压住一角。',
+              en: 'You take the receipt — flattened now — out of your wallet, put it on the table, and pin one corner under her cup.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${NAO}curious.webp`,
+              zh: '她低头看了一眼，愣住了。那张纸上的日期是四月十一号。',
+              en: 'She looks down and stops. The date on the paper is the eleventh of April.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '奈绪', speakerEn: 'Nao',
+              characterImage: `${NAO}curious.webp`,
+              jp: '……あんた、これ、ずっと持ってたの。',
+              words: [{ jp: '持つ', reading: 'もつ', zh: '拿着、持有', en: 'to hold / to keep' }],
+              zh: '……你这个，一直留着？',
+              en: '...You have been carrying this the whole time?',
+              color: 'bg-emerald-600'
+            },
+            {
+              type: 'narration',
+              zh: '你说，米和味噌不是从天上掉下来的。她盯着那张纸看了很久，然后忽然笑了一下，把它折起来塞进了自己口袋。',
+              en: 'You say that rice and miso do not fall out of the sky. She looks at the paper for a long moment, then laughs once, folds it, and puts it in her own pocket.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '奈绪', speakerEn: 'Nao',
+              characterImage: `${NAO}happy.webp`,
+              jp: 'お金はいらない。……そのかわり、これ、あたしが持っとく。',
+              zh: '钱就不用了。……不过作为交换，这张我拿着。',
+              en: 'I do not want the money. ...In exchange, I am keeping this.',
+              color: 'bg-emerald-600'
+            },
+            {
+              type: 'narration',
+              zh: '「为什么。」你问。她已经站起来了，一边推那扇玻璃门一边说：',
+              en: '"Why," you ask. She is already on her feet, pushing at the glass door as she answers:'
+            },
+            {
+              type: 'speech',
+              speakerZh: '奈绪', speakerEn: 'Nao',
+              characterImage: `${NAO}smile.webp`,
+              jp: '……借りがあるほうが、また会う理由になるでしょ。',
+              words: [{ jp: '借り', reading: 'かり', zh: '欠下的人情 / 债', en: 'a debt owed' }],
+              zh: '……欠着的话，就还有再见面的理由了吧。',
+              en: '...If you still owe me, that is a reason to see each other again. Is it not.',
               color: 'bg-emerald-600'
             }
           ]
@@ -957,6 +1297,67 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
               en: 'She says "someday" very lightly. Light enough that it sounds like something she is confirming to herself rather than promising to you.'
             }
           ]
+        },
+        {
+          id: 'miyuki_coffee_order',
+          labelZh: '不问她，改问服务生：她刚才那杯是什么',
+          labelEn: 'Do not ask her. Ask the waiter what she is drinking',
+          hintZh: '她摆手拒绝了添水。那杯已经凉了很久了',
+          hintEn: 'She waved off the refill. That cup has been cold a long time.',
+          effects: [
+            { stat: 'proficiency', amount: 2, reasonZh: '你绕开了正面提问', reasonEn: 'You went around the front door' },
+            { stat: 'kindness', amount: 1, reasonZh: '你管的是那杯凉掉的咖啡，不是那本书', reasonEn: 'What you attended to was the cold coffee, not the book' }
+          ],
+          relations: [{ char: CharacterId.MIYUKI, familiarity: 10, affection: 7, reasonZh: '她被照顾了一次，而且没被追问', reasonEn: 'She was looked after, and not interrogated' }],
+          setFlags: ['miyuki_coffee_refill'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你趁她低头的时候朝服务生抬了抬下巴，指了指她的杯子。服务生看了一眼，报了个名字，你没听懂，但你点了两杯。',
+              en: 'While she is looking down you catch the waiter’s eye and point at her cup. He gives you a name you do not catch, and you order two.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${MIYUKI}thinking.webp`,
+              zh: '新的那杯放到她面前时，她抬起头，愣了一下。',
+              en: 'When the fresh cup is set in front of her, she looks up and pauses.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '深雪', speakerEn: 'Miyuki',
+              characterImage: `${MIYUKI}thinking.webp`,
+              jp: 'あら。……頼んでないわよ。',
+              zh: '哎呀。……我没有点哦。',
+              en: 'Oh. ...I did not order this.',
+              color: 'bg-purple-600'
+            },
+            {
+              type: 'narration',
+              zh: '你说，刚才那杯凉了。你没有说「你坐了多久我看得出来」，虽然那才是真话。',
+              en: 'You say the old one had gone cold. You do not say that you can tell how long she has been sitting there, although that is the true version.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${MIYUKI}neutral.webp`,
+              zh: '她低头看了看新的那杯，又看了看自己那本合着的书，然后把书往旁边挪开了一点，给杯子腾出位置。',
+              en: 'She looks at the new cup, then at her closed book, and then moves the book aside a little to make room for it.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '深雪', speakerEn: 'Miyuki',
+              characterImage: `${MIYUKI}happy.webp`,
+              jp: '……ずるいわ、そういうの。聞かないで、ぜんぶ分かってるみたいな顔して。',
+              words: [{ jp: 'ずるい', zh: '狡猾、不公平（口语里常带撒娇意味）', en: 'unfair / sly (often affectionate)' }],
+              zh: '……真狡猾啊，这样。什么都不问，一副全都看穿了的样子。',
+              en: '...That is unfair, you know. Asking nothing and looking as though you understand all of it.',
+              color: 'bg-purple-600'
+            },
+            {
+              type: 'narration',
+              zh: '她端起杯子喝了一口。这一口她喝得很慢，但是喝完了。',
+              en: 'She picks the cup up and drinks. Slowly — but she finishes it.'
+            }
+          ]
         }
       ]
     },
@@ -1116,6 +1517,67 @@ const EV_SHRINE_INARI: MapEventDef = {
               en: 'Her tone is completely level, as though she were remarking on the weather.'
             }
           ]
+        },
+        {
+          id: 'inari_shrine_tree',
+          labelZh: '不接她的话，走过去摸了摸那棵树',
+          labelEn: 'Do not answer. Walk over and put your hand on the tree',
+          hintZh: '她说她记得它还很细的时候',
+          hintEn: 'She said she remembers when it was thin.',
+          effects: [
+            { stat: 'charm', amount: 1, reasonZh: '你没有把她的话当成一个知识点', reasonEn: 'You did not treat what she said as a piece of trivia' },
+            { stat: 'knowledge', amount: 1, reasonZh: '你摸到了一段没有写进任何书里的时间', reasonEn: 'You touched a stretch of time that is in no book' }
+          ],
+          relations: [{ char: CharacterId.INARI, familiarity: 12, affection: 7, reasonZh: '有人替她确认了那棵树确实长大了', reasonEn: 'Somebody confirmed for her that the tree really did grow' }],
+          setFlags: ['inari_touched_tree'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你走过去，把手掌贴在树干上。树皮很粗，手心底下能摸到一道一道的裂纹，像很多年被撑开的痕迹。',
+              en: 'You walk over and lay your palm on the trunk. The bark is coarse; under your hand you can feel the split lines, like the marks of many years being forced open.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${INARI}surprised.webp`,
+              zh: '她没有说话。你回过头，她正看着你的手。',
+              en: 'She says nothing. When you look back, she is looking at your hand.'
+            },
+            {
+              type: 'narration',
+              zh: '「长得挺好的。」你说。',
+              en: '"It grew well," you say.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${INARI}neutral.webp`,
+              zh: '风停了大概三秒。',
+              en: 'The wind stops for about three seconds.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '稻荷', speakerEn: 'Inari',
+              characterImage: `${INARI}neutral.webp`,
+              jp: '……そうか。育ったか。',
+              words: [{ jp: '育つ', reading: 'そだつ', zh: '成长、长大', en: 'to grow up' }],
+              zh: '……是吗。长大了啊。',
+              en: '...Is that so. It grew.',
+              color: 'bg-amber-600'
+            },
+            {
+              type: 'narration',
+              zh: '她说得很轻。你忽然意识到，这棵树她看了几百年，可她大概从来没有走过去，用手去量过它。',
+              en: 'She says it very quietly. It occurs to you that she has watched this tree for centuries, and has probably never once walked over and measured it with her hand.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '稻荷', speakerEn: 'Inari',
+              characterImage: `${INARI}happy.webp`,
+              jp: 'ふふ。……汝、面白い触り方をする。神ではなく、木のほうに触れるとはな。',
+              zh: '呵呵。……你摸东西的方式挺有意思。不去碰神，倒去碰树。',
+              en: 'Hmhm. ...You touch things in an interesting way. Not the god — the tree.',
+              color: 'bg-amber-600'
+            }
+          ]
         }
       ]
     },
@@ -1174,6 +1636,109 @@ const EV_SHRINE_INARI: MapEventDef = {
               type: 'narration',
               zh: '你没有告诉过她外公画过地图。你确定。',
               en: 'You have never told her your grandfather drew maps. You are certain of that.'
+            }
+          ]
+        },
+        {
+          id: 'inari_shrine_guess',
+          labelZh: '不问时间，直接说：「那个人……是不是在画地图。」',
+          labelEn: 'Do not ask when. Say: "That person... was drawing a map, weren’t they."',
+          hintZh: '你手账里那一页，鸟居描了三遍',
+          hintEn: 'The page in your journal where the torii is traced three times.',
+          effects: [
+            { stat: 'knowledge', amount: 2, reasonZh: '你自己把两件事对上了', reasonEn: 'You put the two things together yourself' },
+            { stat: 'guts', amount: 1, reasonZh: '你先把猜测说出了口', reasonEn: 'You said the guess out loud first' }
+          ],
+          relations: [{ char: CharacterId.INARI, familiarity: 12, affection: 8, reasonZh: '她被一个人类抢了先', reasonEn: 'A human got there before she did' }],
+          setFlags: ['inari_guessed_grandfather'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你把手账从书包里抽出来，翻到那一页——同一个鸟居，描了三遍。你没有说下去。',
+              en: 'You take the journal out and open it to that page: the same torii, traced three times. You do not say anything further.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${INARI}surprised.webp`,
+              zh: '她第一次露出了那种表情——不是神的表情，是被抢了话的人的表情。',
+              en: 'For the first time she wears an expression that is not a god’s. It is the expression of someone who has just been beaten to the punch.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '稻荷', speakerEn: 'Inari',
+              characterImage: `${INARI}surprised.webp`,
+              jp: '……ほう。妾より先に言うか。',
+              zh: '……哦。竟然抢在我前面说了。',
+              en: '...Oh. You said it before I could.',
+              color: 'bg-amber-600'
+            },
+            {
+              type: 'speech',
+              speakerZh: '稻荷', speakerEn: 'Inari',
+              characterImage: `${INARI}neutral.webp`,
+              jp: '六十年ほど前じゃ。ここに座って、その鳥居を三度なぞっておった。……よう似ておる、目のあたりが。',
+              words: [{ jp: 'なぞる', zh: '描摹、沿着描', en: 'to trace over' }],
+              zh: '大概六十年前。他坐在这儿，把那座鸟居描了三遍。……眼睛那一带，很像。',
+              en: 'Some sixty years ago. He sat here and traced that torii three times over. ...Around the eyes, you look very alike.',
+              color: 'bg-amber-600'
+            },
+            {
+              type: 'narration',
+              zh: '你低头看那三条重叠的线。他描第三遍的时候在想什么，你永远不会知道了。',
+              en: 'You look down at the three overlapping outlines. What he was thinking on the third pass is something you will never know.'
+            }
+          ]
+        },
+        {
+          id: 'inari_shrine_dont',
+          labelZh: '「……算了。我不想知道。」',
+          labelEn: '"...Never mind. I do not want to know."',
+          hintZh: '有些数字听了就回不去了',
+          hintEn: 'Some numbers you cannot un-hear.',
+          effects: [
+            { stat: 'proficiency', amount: 1, reasonZh: '你学会了不去掀开每一块石头', reasonEn: 'You are learning not to turn over every stone' }
+          ],
+          relations: [{ char: CharacterId.INARI, familiarity: 10, affection: 6, reasonZh: '她偏要说，这本身就是一种在意', reasonEn: 'She told you anyway, which is its own kind of caring' }],
+          setFlags: ['inari_refused_to_ask'],
+          then: [
+            {
+              type: 'narration',
+              characterImage: `${INARI}smug.webp`,
+              zh: '她挑了挑眉，像是听见了一个很新鲜的回答。',
+              en: 'Her eyebrows go up, as though that were a genuinely novel answer.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '稻荷', speakerEn: 'Inari',
+              characterImage: `${INARI}smug.webp`,
+              jp: '知りとうないと申すか。……ふふ、ならば余計に言うてやろう。',
+              zh: '说是不想知道啊。……呵呵，那我就偏要说了。',
+              en: 'You say you do not want to know. ...Hmhm. Then I shall tell you precisely because of that.',
+              color: 'bg-amber-600'
+            },
+            {
+              type: 'narration',
+              zh: '你转身想走。她在你身后继续说，语速一点也没有加快。',
+              en: 'You turn to go. She keeps talking behind you, not hurrying at all.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '稻荷', speakerEn: 'Inari',
+              characterImage: `${INARI}neutral.webp`,
+              jp: '六十年ほど前じゃ。地図を描いておった人の子でな。……よう似ておるぞ、目のあたりが。',
+              zh: '大概六十年前。是个在画地图的人类。……很像啊，眼睛那一带。',
+              en: 'Some sixty years ago. A human child who was drawing a map. ...You look very alike, around the eyes.',
+              color: 'bg-amber-600'
+            },
+            {
+              type: 'narration',
+              zh: '你的脚停了下来。你没有告诉过她外公画过地图。你确定。',
+              en: 'Your feet stop. You have never told her your grandfather drew maps. You are certain of that.'
+            },
+            {
+              type: 'narration',
+              zh: '身后传来她很轻的一声笑：「所以说，不想知道的事，往往才是真的。」',
+              en: 'Behind you comes a very small laugh. "Which is generally how it goes. The things you would rather not know tend to be the true ones."'
             }
           ]
         }
@@ -1340,6 +1905,80 @@ const EV_COURTYARD_ASUKA: MapEventDef = {
               type: 'narration',
               zh: '她说完就进闸机了，没有回头。你想起来，她刚才说她没看晚上的预报。',
               en: 'She goes through the gates without looking back. It occurs to you that a moment ago she said she had not read the evening forecast.'
+            }
+          ]
+        },
+        {
+          id: 'asuka_rain_wait',
+          labelZh: '收起伞，在她旁边站下来一起等',
+          labelEn: 'Close the umbrella and stand there waiting with her',
+          hintZh: '她说了「等一会儿就停」。那就等',
+          hintEn: 'She said it would stop soon. So wait.',
+          effects: [
+            { stat: 'kindness', amount: 2, reasonZh: '你陪一个不肯接受帮助的人一起淋', reasonEn: 'You got rained on alongside someone who would not accept help' },
+            { stat: 'guts', amount: 1, reasonZh: '什么也不做，比做点什么更难', reasonEn: 'Doing nothing turned out to be the harder option' }
+          ],
+          relations: [{ char: CharacterId.ASUKA, familiarity: 14, affection: 9, reasonZh: '她第一次没能把人赶走', reasonEn: 'For once she failed to make someone leave' }],
+          setFlags: ['asuka_rain_waited'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你把伞收起来，靠在墙边，站到雨棚下面她旁边那半米的位置上。伞尖上的水滴在地上，滴出一小圈深色。',
+              en: 'You close the umbrella, lean it against the wall, and take the half metre of awning next to her. Water runs off the tip and darkens a small circle on the ground.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '明日香', speakerEn: 'Asuka',
+              characterImage: `${ASUKA}surprised.webp`,
+              jp: '……なんで閉じたのよ。持ってるでしょ、傘。',
+              words: [{ jp: '傘', reading: 'かさ', zh: '伞', en: 'umbrella' }],
+              zh: '……你干嘛把伞收了。你明明有伞吧。',
+              en: '...Why did you close it. You have an umbrella.',
+              color: 'bg-red-600'
+            },
+            {
+              type: 'narration',
+              zh: '你说，你说等一会儿就停。她张了张嘴，没说出话来。',
+              en: 'You say: you told me it would stop soon. Her mouth opens and nothing comes out.'
+            },
+            {
+              type: 'narration',
+              zh: '雨没有停。十分钟里你们谁都没有再说话。她的肩膀那一侧慢慢湿了一片，你这一侧也是。',
+              en: 'It does not stop. Neither of you speaks for ten minutes. A patch on her shoulder slowly darkens. So does one on yours.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '明日香', speakerEn: 'Asuka',
+              characterImage: `${ASUKA}shy.webp`,
+              jp: '……ばかじゃないの。二人とも濡れてるだけじゃない。',
+              zh: '……你是不是傻。这不就是两个人一起淋湿吗。',
+              en: '...Are you stupid? Now there are simply two of us getting wet.',
+              color: 'bg-red-600'
+            },
+            {
+              type: 'narration',
+              zh: '「嗯。」你说。',
+              en: '"Yeah," you say.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${ASUKA}shy.webp`,
+              zh: '她又沉默了一会儿，然后伸手把靠在墙边的伞拿了起来，撑开，举到你们两个人中间——高度还是不太对，但她没有让开。',
+              en: 'She is quiet a while longer. Then she reaches for the umbrella against the wall, opens it, and holds it between the two of you. The height is still wrong. She does not step away.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '明日香', speakerEn: 'Asuka',
+              characterImage: `${ASUKA}shy.webp`,
+              jp: '……言っとくけど。これは、あんたが風邪ひいたらクラスが困るからよ。',
+              zh: '……先说好。这是因为你要是感冒了，班上会很麻烦。',
+              en: '...For the record. This is because if you catch cold it becomes the class’s problem.',
+              color: 'bg-red-600'
+            },
+            {
+              type: 'narration',
+              zh: '雨在二十分钟后停了。她说过的话，只有这一句是对的。',
+              en: 'The rain stops twenty minutes later. Of everything she said, only that part turned out to be true.'
             }
           ]
         }

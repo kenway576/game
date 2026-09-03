@@ -362,6 +362,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
 
   {
     id: 'oji_zoo', district: 'sannomiya',
+    timeCost: 2,   // 一圈逛下来天就黑了
     nameJp: '王子動物園', reading: 'おうじどうぶつえん',
     nameZh: '王子动物园', nameEn: 'Oji Zoo',
     blurbZh: '全日本唯一一家同时养着大熊猫和考拉的动物园。里面还塞了一个小游乐园，那台摩天轮矮得能看清每个人的脸。',
@@ -375,6 +376,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
   },
   {
     id: 'ramen_rekishi', district: 'sannomiya',
+    timeCost: 2,   // 二郎系的量，吃完只想回家躺着
     nameJp: '歴史を刻め', reading: 'れきしをきざめ',
     nameZh: '拉面「刻下历史」', nameEn: 'Rekishi wo Kizame',
     blurbZh: '店名的意思是「刻下历史」。豚骨酱油，蒜可以自己加到失去理智。吃完一整天嘴里都是那个味道。',
@@ -401,6 +403,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
   },
   {
     id: 'kobe_beef_teppanyaki', district: 'sannomiya',
+    timeCost: 2,   // 正经坐下来的一顿，从前菜到甜点
     nameJp: '神戸牛 鉄板焼き', reading: 'こうべぎゅう てっぱんやき',
     nameZh: '神户牛 铁板烧', nameEn: 'Kobe Beef Teppanyaki',
     blurbZh: '师傅在你面前把那块肉从生煎到熟，全程不说话。价格是你一个月的伙食费。',
@@ -440,6 +443,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
   },
   {
     id: 'kobe_harbor', district: 'harbor',
+    timeCost: 2,   // 商场加海边，一逛就停不下来
     nameJp: 'ハーバーランド', reading: 'ハーバーランド',
     nameZh: '港湾乐园', nameEn: 'Harborland',
     blurbZh: '仓库改的商场一路排到水边。傍晚的时候整片海会先变金色再变紫色。',
@@ -466,6 +470,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
 
   {
     id: 'suma_beach', district: 'harbor',
+    timeCost: 2,   // 从三宫坐电车过去，来回就是一趟远门
     nameJp: '須磨海岸', reading: 'すまかいがん',
     nameZh: '须磨海岸', nameEn: 'Suma Beach',
     blurbZh: '从三宫坐电车二十分钟。市区里能有一片真正的沙滩，是神户被夹在山和海之间才捡到的便宜。',
@@ -478,6 +483,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
   },
   {
     id: 'suma_fishing_pier', district: 'harbor',
+    timeCost: 2,   // 钓鱼没有「待一会儿」这种说法
     nameJp: '須磨海づり公園', reading: 'すまうみづりこうえん',
     nameZh: '须磨海钓公园', nameEn: 'Suma Fishing Pier',
     blurbZh: '一条伸进海里的堤。沙底浅海，上来的东西和市区那些石壁完全不一样——鲽鱼只有这儿有。',
@@ -491,6 +497,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
 
   {
     id: 'nada_onsen', district: 'far',
+    timeCost: 2,   // 泡完汤浑身发软，哪儿也去不了了
     nameJp: '灘温泉', reading: 'なだおんせん',
     nameZh: '滩温泉', nameEn: 'Nada Onsen',
     blurbZh: '市区里的天然温泉，从地底下打上来的。四百四十日元，本地老头能在里面泡掉一整个下午。',
@@ -583,7 +590,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
 ];
 
 export const DISTRICT_LABELS: Record<string, { zh: string; en: string; jp: string }> = {
-  school:    { zh: '開誠学園',    en: 'Kaisei Academy',  jp: '学校' },
+  school:    { zh: '海星学園',    en: 'Kaisei Academy',  jp: '学校' },
   kitano:    { zh: '北野 · 山手', en: 'Kitano Hillside', jp: '北野' },
   sannomiya: { zh: '三宫',        en: 'Sannomiya',       jp: '三宮' },
   harbor:    { zh: '海边',        en: 'The Waterfront',  jp: '港' },

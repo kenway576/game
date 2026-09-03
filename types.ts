@@ -351,6 +351,9 @@ export interface MapLocation {
   blurbEn: string;
   // 什么时段能去。不写 = 全天。
   timeSlots?: TimeSlot[];
+  // 这一趟要花掉几格放学后时间。不写 = 市内 1 格、市外(far) 2 格。
+  // 吃一碗二郎系拉面和顺路拐进便利店，代价不该一样。
+  timeCost?: number;
   // 解锁条件：剧情 flag。不写 = 一开始就能去。
   requiresFlag?: string;
   // 没解锁时地图上给的提示。要说"还去不了"，但不能剧透。
@@ -375,6 +378,8 @@ export interface MapEventDef {
   titleZh: string;
   titleEn: string;
   timeSlots?: TimeSlot[];
+  // 覆盖地点的默认耗时。同一个地方，"陪她排两小时队"和"路过打个招呼"不一样。
+  timeCost?: number;
   weather?: GameCalendar['weather'][];
   // 这些 flag 全部为真才会出现
   requiresFlags?: string[];

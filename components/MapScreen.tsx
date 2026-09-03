@@ -6,7 +6,8 @@ import {
 import { SCENE_MAP, SCENE_FALLBACK, CHARACTERS } from '../constants';
 import { MAP_LOCATIONS, DISTRICT_LABELS, DISTRICT_ORDER } from '../story/mapLocations';
 import {
-  EventContext, isLocationUnlocked, isLocationOpenNow, locationHasEvent
+  EventContext, isLocationUnlocked, isLocationOpenNow, locationHasEvent,
+  pickEventFor, getTimeCost, slotsLeftToday, AFTERSCHOOL_SLOTS
 } from '../story/mapEvents';
 import { audioManager } from '../services/audioManager';
 
@@ -93,9 +94,25 @@ const MapScreen: React.FC<Props> = ({
   const go = () => {
     if (!isLocationUnlocked(selected, storyFlags)) return;
     if (!isLocationOpenNow(selected, calendar)) return;
+    if (!affordable(selected)) { audioManager.playSfx('error'); return; }
     audioManager.playSfx('confirm');
     onTravel(selected);
   };
+
+  // ⏳ 今天放学后还剩几格，以及每个地方要花几格
+  const slotsLeft = slotsLeftToday(calendar);
+  const costOf = (loc: MapLocation) => getTimeCost(loc, pickEventFor(loc.id, ctx));
+  const affordable = (loc: MapLocation) => costOf(loc) <= slotsLeft;
+  // 时间用小方块画出来：实心 = 还剩，空心 = 已经用掉
+  const slotPips = (used: number, total: number, cls = '') =>
+    Array.from({ length: total }, (_, i) => (
+      <span
+        key={i}
+        className={`inline-block w-2.5 h-2.5 border ${
+          i < total - used ? 'bg-yellow-400 border-yellow-300' : 'border-white/30 bg-transparent'
+        } ${cls}`}
+      />
+    ));
 
   const timeLabel = en
     ? `${calendar.month}/${calendar.day} · ${calendar.timeSlot}`
@@ -118,6 +135,15 @@ const MapScreen: React.FC<Props> = ({
           <span className="block transform skew-x-12 text-[11px] md:text-sm font-black text-white tracking-widest">
             {en ? 'WHERE TO' : '去哪儿'}
             <span className="ml-3 text-yellow-400/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
+          </span>
+        </div>
+        {/* 今天放学后还剩多少时间 */}
+        <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-black/50">
+          <span className="text-[10px] font-black uppercase tracking-widest text-white/45">
+            {en ? 'Time left' : '今天还剩'}
+          </span>
+          <span className="flex items-center gap-1">
+            {slotPips(AFTERSCHOOL_SLOTS.length - slotsLeft, AFTERSCHOOL_SLOTS.length)}
           </span>
         </div>
         <button
@@ -150,6 +176,8 @@ const MapScreen: React.FC<Props> = ({
                   const now = isLocationOpenNow(loc, calendar);
                   const has = open && now && locationHasEvent(loc.id, ctx);
                   const active = loc.id === selectedId;
+                  const cost = costOf(loc);
+                  const tooLate = open && now && cost > slotsLeft;
                   return (
                     <button
                       key={loc.id}
@@ -161,7 +189,7 @@ const MapScreen: React.FC<Props> = ({
                       <span className={`w-1 self-stretch shrink-0 ${active ? 'bg-yellow-400' : 'bg-transparent'}`} />
                       <span className="min-w-0 flex-1">
                         <span className={`block text-sm font-bold truncate ${
-                          open ? (now ? 'text-white' : 'text-white/45') : 'text-white/30'
+                          open ? (now && !tooLate ? 'text-white' : 'text-white/45') : 'text-white/30'
                         }`}>
                           {open ? (en ? loc.nameEn : loc.nameZh) : (en ? '???' : '？？？')}
                         </span>
@@ -175,6 +203,13 @@ const MapScreen: React.FC<Props> = ({
                       {has && (
                         <span className="shrink-0 w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_2px_rgba(244,63,94,0.6)]" />
                       )}
+                      {/* 要花两格的地方标出来，免得玩家点进去才发现今天去不了 */}
+                      {open && now && cost > 1 && (
+                        <span className={`shrink-0 flex items-center gap-0.5 ${tooLate ? 'opacity-40' : ''}`}>
+                          {slotPips(0, cost)}
+                        </span>
+                      )}
+                      {tooLate && <span className="shrink-0 text-[10px] text-rose-300/70">⌛</span>}
                       {open && !now && <span className="shrink-0 text-[10px] text-white/30">🌙</span>}
                       {!open && <span className="shrink-0 text-[10px] text-white/25">🔒</span>}
                     </button>
@@ -240,6 +275,14 @@ const MapScreen: React.FC<Props> = ({
                       {en ? '● something today' : '● 今天有点什么'}
                     </span>
                   )}
+                  {/* 这一趟要花掉多少时间 */}
+                  <span className={`text-[11px] px-2 py-1 border flex items-center gap-1.5 ${
+                    affordable(selected) ? 'border-white/20 text-white/60' : 'border-rose-500/50 text-rose-300'
+                  }`}>
+                    {en ? 'Takes' : '要花'}
+                    <span className="flex items-center gap-0.5">{slotPips(0, costOf(selected))}</span>
+                    {!affordable(selected) && (en ? ' · no time left today' : ' · 今天来不及了')}
+                  </span>
                 </div>
               )}
             </div>
@@ -249,14 +292,14 @@ const MapScreen: React.FC<Props> = ({
           <div className="shrink-0 px-4 md:px-6 py-3 border-t border-white/10 flex items-center justify-between gap-3">
             <span className="text-[11px] text-white/40">
               {en
-                ? 'Going out moves the time on one step. Head out at night and you come back the next morning.'
-                : '出一趟门，时间往前走一格。夜里那趟回来就是第二天早上了。'}
+                ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home.'
+                : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。'}
             </span>
             <button
               onClick={go}
-              disabled={!selUnlocked || !selOpen}
+              disabled={!selUnlocked || !selOpen || !affordable(selected)}
               className={`px-6 md:px-10 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
-                selUnlocked && selOpen
+                selUnlocked && selOpen && affordable(selected)
                   ? 'bg-yellow-400 text-black hover:bg-white'
                   : 'bg-white/10 text-white/30 cursor-not-allowed'
               }`}
@@ -266,7 +309,9 @@ const MapScreen: React.FC<Props> = ({
                   ? (en ? 'Locked' : '未解锁')
                   : !selOpen
                     ? (en ? 'Not now' : '现在不行')
-                    : (en ? 'Go ▶' : '出发 ▶')}
+                    : !affordable(selected)
+                      ? (en ? 'Too late' : '来不及了')
+                      : (en ? 'Go ▶' : '出发 ▶')}
               </span>
             </button>
           </div>

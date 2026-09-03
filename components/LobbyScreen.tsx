@@ -9,6 +9,8 @@ interface Props {
   userState: UserState;
   customAssets: CustomAssets;
   visibleLobbyChars: Set<CharacterId>;
+  // 大厅名单：只有已经在剧情里照过面的人。没见过的连位置都不占。
+  lobbyChars: CharacterId[];
   lobbySelectedChar: CharacterId | null;
   setLobbySelectedChar: (id: CharacterId | null) => void;
   affectionMap: AffectionMap;
@@ -26,7 +28,7 @@ interface Props {
 }
 
 const LobbyScreen: React.FC<Props> = ({
-  T, userState, customAssets, visibleLobbyChars, lobbySelectedChar,
+  T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
   onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, background
 }) => {
@@ -124,7 +126,26 @@ const LobbyScreen: React.FC<Props> = ({
     </div>
 
     <div ref={scrollRef} onWheel={handleWheel} className="lobby-scroll flex-1 flex flex-row items-stretch w-full h-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory z-20 pt-24 md:pt-20 pb-0">
-      {VISIBLE_CHARACTER_IDS.map((id, index) => {
+      {/* 谁都还没遇见时的空名单。理论上过完第 1 章不会出现，但跳过章节能走到这儿。 */}
+      {lobbyChars.length === 0 && (
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 px-8 text-center">
+          <span className="text-5xl opacity-30">🚪</span>
+          <p className="text-sm md:text-base text-white/60 max-w-sm leading-relaxed">
+            {userState.language === 'en'
+              ? 'You have not met anyone yet. Head out and see who is around.'
+              : '你还没认识任何人。出门走走，看看这一带都有谁。'}
+          </p>
+          <button
+            onClick={onOpenMap}
+            className="mt-2 bg-yellow-400 text-black px-8 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 hover:bg-white transition-all"
+          >
+            <span className="block transform skew-x-12">
+              {userState.language === 'en' ? 'Go out ▶' : '出门 ▶'}
+            </span>
+          </button>
+        </div>
+      )}
+      {lobbyChars.map((id, index) => {
         const char = CHARACTERS[id];
         const shouldLoad = visibleLobbyChars.has(id);
         // 大厅优先用专属立绘；没有就退回该角色的 neutral 差分

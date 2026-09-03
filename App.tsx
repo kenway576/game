@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode } from './types';
 import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, appendDay1Memories, getWeatherScene } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
@@ -29,7 +29,7 @@ import FishingScreen from './components/FishingScreen';
 import FishDexModal from './components/FishDexModal';
 import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
-import { pickEventFor, buildAmbientScript } from './story/mapEvents';
+import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
 import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
 import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
@@ -85,6 +85,16 @@ const App: React.FC = () => {
   const [lobbySelectedChar, setLobbySelectedChar] = useState<CharacterId | null>(null);
   const [chatMode, setChatMode] = useState<ChatMode>(ChatMode.FREE_TALK);
   const [visibleLobbyChars, setVisibleLobbyChars] = useState<Set<CharacterId>>(new Set());
+  // 🤝 已经在剧情里照过面的人。没见过的人不进大厅名单——
+  // 第一天完全没出现过的光，不该能直接点开跟她自由聊天。
+  const [metChars, setMetChars] = useState<CharacterId[]>([]);
+  const markMet = (ids: CharacterId[]) => {
+    if (!ids.length) return;
+    setMetChars(prev => {
+      const add = ids.filter(id => id && !prev.includes(id));
+      return add.length ? [...prev, ...add] : prev;
+    });
+  };
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
@@ -288,13 +298,20 @@ const App: React.FC = () => {
     }
   }, [selectedCharId]);
 
+  // 大厅名单：只列已经在剧情里照过面的人。
+  // 没见过的角色连卡片都不出现（不是灰掉），她是谁这件事留给剧情去揭。
+  const lobbyChars = useMemo(
+    () => VISIBLE_CHARACTER_IDS.filter(id => metChars.includes(id)),
+    [metChars]
+  );
+
   // 大厅角色渐次登场
   useEffect(() => {
     if (gameMode === GameMode.LOBBY) {
       setVisibleLobbyChars(new Set());
       const timers: ReturnType<typeof setTimeout>[] = [];
 
-      VISIBLE_CHARACTER_IDS.forEach((id, index) => {
+      lobbyChars.forEach((id, index) => {
         const timer = setTimeout(() => {
           setVisibleLobbyChars(prev => {
             const next = new Set(prev);
@@ -309,7 +326,7 @@ const App: React.FC = () => {
         timers.forEach(clearTimeout);
       };
     }
-  }, [gameMode]);
+  }, [gameMode, lobbyChars]);
 
   useEffect(() => {
     if (gameMode === GameMode.CHAT && !isStreaming && messages.length > 1 && messages[messages.length - 1].role === 'model') {
@@ -387,6 +404,7 @@ const App: React.FC = () => {
     setAffectionMap(createCharacterRecord(() => 0));
     setMemoryMap(createCharacterRecord(id => getSeedMemory(id)));
     setUnlockedCgs([]);
+    setMetChars([]);   // 新开一局：谁都还没见过
     setPrologueResult(null);
     setStatGainEvent(null);
     setStatGainQueue([]);
@@ -434,6 +452,10 @@ const App: React.FC = () => {
   // 也不弹升级庆祝——序章的结算统一放到结算屏上讲。
   const applyStoryRelations = (relations: StoryRelationEffect[]) => {
     if (!relations.length) return;
+    // 剧本里但凡给某人结算过关系，就说明玩家真的跟她照过面了。
+    // 大厅的名单直接认这个信号 —— 不用另维护一张"谁登场过"的表，
+    // 也就不会出现"剧情加了新角色但忘了登记，她永远不出现"的漏配。
+    markMet(relations.map(r => r.char));
     setFamiliarityMap(prev => {
       const next = { ...prev };
       relations.forEach(r => {
@@ -697,6 +719,7 @@ const App: React.FC = () => {
       // 事件 id 同时就是"演过了"的 flag
       ...(trip?.event ? { [trip.event.id]: true } : {})
     }));
+    if (trip?.event?.chars?.length) markMet(trip.event.chars);
     setActiveTrip(null);
     setActiveStore(null); setActiveFishing(null);
     // 出门那一趟的剧本是叠在大厅上播的，所以以前不用管 gameMode。
@@ -704,14 +727,20 @@ const App: React.FC = () => {
     // 否则 activeStore 清空之后 gameMode 还停在 STORE，屏幕上什么都不剩。
     setGameMode(GameMode.LOBBY);
     setCurrentScene(DEFAULT_SCENE);
+    // 这一趟花掉几格，由地点/事件标价决定：便利店 1 格，二郎系拉面和远门 2 格。
+    // 花完今天的额度就直接跳到第二天午后——早上是上学时间，不是可以出门的时段。
+    const cost = trip ? getTimeCost(trip.loc, trip.event) : 1;
     setGameCalendar(prev => {
-      if (prev.timeSlot === 'morning')   return { ...prev, timeSlot: 'afternoon' };
-      if (prev.timeSlot === 'afternoon') return { ...prev, timeSlot: 'night' };
+      const idx = AFTERSCHOOL_SLOTS.indexOf(prev.timeSlot);
+      const next = (idx < 0 ? 0 : idx) + cost;
+      if (next < AFTERSCHOOL_SLOTS.length) {
+        return { ...prev, timeSlot: AFTERSCHOOL_SLOTS[next] };
+      }
       const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
       return {
         ...prev,
         day: prev.day + 1,
-        timeSlot: 'morning',
+        timeSlot: 'afternoon',
         weather: weathers[Math.floor(Math.random() * weathers.length)]
       };
     });
@@ -730,6 +759,9 @@ const App: React.FC = () => {
     // 地图的三宫一带、校内社团室都挂在这个 flag 上，
     // 靠剧本末尾那个 effect 节点的话，一跳过就全锁死了。
     setStoryFlags(prev => ({ ...prev, ...flags, day1_done: true }));
+    // 第 1 章主线上一定会碰面的三个人，跳过章节的人也算认识——
+    // 否则跳过之后大厅可能一个人都没有，玩家直接卡死在空名单上。
+    markMet([CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.MIYUKI]);
     // 把今天真正发生过的事并进各人的长期记忆。
     // 没触发的 flag 不留痕迹 —— 角色不该记得玩家没玩过的剧情。
     setMemoryMap(prev => appendDay1Memories(prev, flags));
@@ -903,7 +935,7 @@ const App: React.FC = () => {
         chatHistories: trimmedHistories,
         customAssets, affectionMap, familiarityMap, memoryMap,
         // 🔥 五维人格、行事历与剧情选择：漏存这几项等于玩家的选择读档就作废
-        protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs, life,
+        protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs, life, metChars,
         // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
         // 这样三个存档就是三个不同的位置，而不是都指向同一份共享进度。
         // hard 模式（容量告急）下丢掉它：宁可退回共享进度，也不能让存档整个写不进去。
@@ -1002,6 +1034,9 @@ const App: React.FC = () => {
       setPrologueDone(data.prologueDone ?? true);
       // 老存档没有这一项：他们早就在自由游玩了，别把人拽回第一天
       setDay1Done(data.day1Done ?? true);
+      // 老存档没有 metChars：他们已经在玩了，一律视为全员已认识，
+      // 否则一读档半数角色凭空消失。
+      setMetChars(Array.isArray(data.metChars) ? data.metChars : [...VISIBLE_CHARACTER_IDS]);
       setPlayingDay1(false);
 
       // 存档停在序章：优先用槽位里自带的那份进度（这才是"这个存档"的位置），
@@ -1562,6 +1597,7 @@ const App: React.FC = () => {
           onOpenMap={() => setGameMode(GameMode.MAP)}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
+          lobbyChars={lobbyChars}
           background={background}
         />
       )}

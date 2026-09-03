@@ -57,6 +57,37 @@ export const DAY1_SCRIPT: StoryNode[] = [
     zh: '你把外公那本手账塞进书包侧袋——不知道为什么，带着它心里踏实一点。',
     en: 'You slide your grandfather’s journal into the side pocket of your bag. You cannot say why; it just makes the day feel more possible.'
   },
+  // ---- 铺垫：奈绪从昨晚开始就在刷屏 ----
+  {
+    type: 'narration',
+    zh: '手机在桌上震了一下。你拿起来看——十七条未读，全是同一个人发的，从昨晚十一点开始。',
+    en: 'Your phone buzzes on the desk. You pick it up: seventeen unread messages, all from the same person, starting at eleven last night.'
+  },
+  {
+    type: 'narration',
+    zh: '「到了没」「到了没」「怎么不回」「啊算了你肯定在飞机上」——最后这条是昨晚十一点零四分发的。你昨天下午两点就落地了。',
+    en: '"Are you there yet" "Are you there yet" "Why are you not answering" "Never mind, you must still be on the plane" — that last one was sent at 11:04 last night. You landed at two in the afternoon the day before.'
+  },
+  {
+    type: 'narration',
+    zh: '「明天我去接你」「等等你学校在哪」「算了我查到了」「……这个是大阪的学校吧」',
+    en: '"I will come and get you tomorrow" "Wait, where is your school" "Never mind, I found it" "...I think this one is in Osaka"'
+  },
+  {
+    type: 'narration',
+    zh: '最后一条是今天早上六点四十的：「放学在坡道下面等你。我买了米。」',
+    en: 'The last one came in at 6:40 this morning: "Will wait at the bottom of the slope after school. I bought rice."'
+  },
+  {
+    type: 'narration',
+    zh: '你没有告诉过她你住哪条坡道。你也没有告诉过她你家没有米。',
+    en: 'You never told her which slope you live on. You also never told her there was no rice in the flat.'
+  },
+  {
+    type: 'narration',
+    zh: '你在心里给她记了一笔，然后把手机塞进口袋。回复留到中午——她现在应该还在睡。',
+    en: 'You make a mental note of that and put the phone in your pocket. You will reply at lunch. She will still be asleep now.'
+  },
   {
     type: 'narration',
     zh: '书包上肩的时候，你忽然从外面看了自己一眼。',
@@ -120,6 +151,30 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'narration',
             zh: '你坐在窗边慢慢吃完。海面上有一艘船正往西开。等你吃完，它已经开出了视野。',
             en: 'You eat slowly by the window. A ship is heading west across the bay. By the time you finish, it has left the frame.'
+          }
+        ]
+      },
+      {
+        id: 'day1_mirror',
+        labelZh: '在镜子前把领带重打了三次',
+        labelEn: 'Retie your tie three times in front of the mirror',
+        hintZh: '第一天，总不能歪着进教室',
+        hintEn: 'First day. You are not walking into that classroom crooked.',
+        effects: [
+          { stat: 'charm', amount: 1, reasonZh: '第一天的领带，你打得很认真', reasonEn: 'You took the first day’s tie seriously' },
+          { stat: 'proficiency', amount: 1, reasonZh: '第三次终于打对了', reasonEn: 'The third attempt finally came out right' }
+        ],
+        setFlags: ['day1_tie'],
+        then: [
+          {
+            type: 'narration',
+            zh: '第一次太松，第二次太紧，第三次总算对了。你退后半步端详镜子里那个人——深蓝制服，银色校徽，看上去像个正经的高中生。',
+            en: 'Too loose the first time, too tight the second. The third comes out right. You step back and look at the person in the mirror: navy uniform, silver crest. He looks like a proper high schooler.'
+          },
+          {
+            type: 'narration',
+            zh: '「看上去像」。你在心里补了这三个字，然后拎起书包出门了。',
+            en: '"Looks like." You add the qualifier silently, pick up your bag, and go.'
           }
         ]
       }
@@ -407,6 +462,35 @@ export const DAY1_SCRIPT: StoryNode[] = [
             en: 'The slope is far shorter than it was yesterday with a suitcase. You reach the gate three breaths short of fine.'
           }
         ]
+      },
+      {
+        id: 'day1_toast',
+        labelZh: '翻出昨晚剩的吐司叼上，试试传说中的转学生跑法',
+        labelEn: 'Dig out last night’s leftover toast, bite down on it, and try the legendary transfer-student run',
+        hintZh: '既然剧本都摆在这儿了，不试一下说不过去',
+        hintEn: 'The script is right there. It would be rude not to.',
+        effects: [
+          { stat: 'guts', amount: 1, reasonZh: '在一条没人认识你的坡道上放弃了体面', reasonEn: 'You gave up on dignity, on a slope where nobody knows you' },
+          { stat: 'charm', amount: 1, reasonZh: '你还挺舍得对自己开玩笑', reasonEn: 'You are willing to be the joke, which counts for something' }
+        ],
+        setFlags: ['day1_toast_run'],
+        then: [
+          {
+            type: 'narration',
+            zh: '吐司是昨晚的，已经有点硬了。你叼着它冲上坡道，认认真真地在每个拐角减速——万一呢。',
+            en: 'The toast is a night old and going stiff. You bite down and charge the slope, slowing conscientiously at every corner. Just in case.'
+          },
+          {
+            type: 'narration',
+            zh: '第四个拐角之后你放弃了。没有人撞上来，没有纸撒一地，只有一个拎着垃圾袋的大叔看了你一眼。',
+            en: 'You give up after the fourth corner. Nobody walks into you, no paper goes everywhere. A middle-aged man with a rubbish bag gives you one look.'
+          },
+          {
+            type: 'narration',
+            zh: '你把吐司吃了。说实话，比预想的好吃一点。',
+            en: 'You eat the toast. Honestly, it is better than expected.'
+          }
+        ]
       }
     ]
   },
@@ -690,6 +774,49 @@ export const DAY1_SCRIPT: StoryNode[] = [
             color: 'bg-amber-400'
           }
         ]
+      },
+      {
+        id: 'day1_hikari_boat',
+        labelZh: '「这条船……有救生圈吗？」',
+        labelEn: '"This boat... does it come with life jackets?"',
+        hintZh: '她起了个比喻，你顺着往下接',
+        hintEn: 'She started the metaphor. You might as well run with it.',
+        effects: [
+          { stat: 'charm', amount: 1, reasonZh: '你接住了别人抛过来的那个比喻', reasonEn: 'You caught the metaphor somebody threw at you' },
+          { stat: 'guts', amount: 1, reasonZh: '第一次见面就敢开玩笑', reasonEn: 'You cracked a joke the first time you met someone' }
+        ],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 11, affection: 7, reasonZh: '她笑到被老师看了一眼', reasonEn: 'She laughed hard enough to get looked at' }],
+        then: [
+          {
+            type: 'narration',
+            zh: '她愣了半秒，然后笑得整个人往桌子上趴。靠窗那位老师抬起头，又低了下去——今天第二次。',
+            en: 'She freezes for half a second, then folds forward onto the desk laughing. The teacher by the window looks up and goes back down. Second time today.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_smug.webp`,
+            jp: 'ないない！沈むときは一緒に沈むやつや！',
+            words: [{ jp: '沈む', reading: 'しずむ', zh: '沉没、下沉', en: 'to sink' }],
+            zh: '没有没有！这是要沉一起沉的那种船！',
+            en: 'Nope! This is the kind where we go down together!',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '她说完自己又笑了一阵，然后忽然安静下来，把表格的边角捏得很平。',
+            en: 'She laughs at her own line a while longer, then goes abruptly quiet and smooths the corner of her form flat.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_shy.webp`,
+            jp: '……ええな、そういうん返してくれる人。半年で初めてやわ。',
+            zh: '……不错嘛，会这样接话的人。来了半年，你是第一个。',
+            en: '...That is nice, actually. Someone who throws it back. Six months here and you are the first.',
+            color: 'bg-amber-400'
+          }
+        ]
       }
     ]
   },
@@ -782,7 +909,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         id: 'day1_card_look',
         labelZh: '再看一会儿',
         labelEn: 'Look at it a little longer',
-        hintZh: '你其实是在看「開誠学園」那四个字',
+        hintZh: '你其实是在看「海星学園」那四个字',
         hintEn: 'What you are actually looking at is the school\u2019s name.',
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你把学校的名字一个字一个字念了一遍', reasonEn: 'You read the school\u2019s name character by character' }],
         relations: [],
@@ -790,7 +917,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '「開誠学園」。开，诚。你昨天在校门口那块牌子上见过一次，当时只认出「学園」两个字。',
+            zh: '「海星学園」。开，诚。你昨天在校门口那块牌子上见过一次，当时只认出「学園」两个字。',
             en: '"Kaisei Gakuen." Open, and sincere. You saw it once on the sign at the gate yesterday, and could only pick out the last two characters.'
           },
           {
@@ -971,6 +1098,63 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'narration',
             zh: '第四条在心里记上了：拐角、撞人、讲义满天飞、红色双马尾。全中。',
             en: 'The fourth entry goes down in your head anyway: corner, collision, handouts everywhere, red twin-tails. Full marks.'
+          }
+        ]
+      },
+      {
+        id: 'day1_meta_blame',
+        labelZh: '先道歉，再指出她也在跑',
+        labelEn: 'Apologize first — then point out that she was running too',
+        hintZh: '这个拐角是两个人一起撞出来的',
+        hintEn: 'It took two people to make that corner happen.',
+        effects: [
+          { stat: 'knowledge', amount: 1, reasonZh: '你看清了刚才那三秒里真正发生的事', reasonEn: 'You worked out what had actually happened in those three seconds' },
+          { stat: 'guts', amount: 1, reasonZh: '你没有把不属于自己的那一半也认下来', reasonEn: 'You declined to take on the half that was not yours' }
+        ],
+        relations: [{ char: CharacterId.ASUKA, familiarity: 10, affection: 3, reasonZh: '她被顶回来了，而且没有生气', reasonEn: 'She got pushed back on, and did not mind' }],
+        setFlags: ['day1_meta_pushed_back'],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: 'すみませんでした。……でも、そっちも走ってましたよね。',
+            words: [{ jp: '走る', reading: 'はしる', zh: '跑', en: 'to run' }],
+            zh: '非常抱歉。……不过，您刚才也在跑吧。',
+            en: 'I am sorry. ...You were running too, though. Weren’t you.',
+            color: 'bg-yellow-500'
+          },
+          {
+            type: 'narration',
+            zh: '空气停了大概两秒。她把手里那叠纸的边缘捏出了一道折痕。',
+            en: 'The air stops for about two seconds. A crease appears along the edge of the stack in her hand.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '明日香', speakerEn: 'Asuka',
+            characterImage: `${ASUKA}surprised.webp`,
+            jp: '…………走ってたわよ。悪い？',
+            zh: '…………我是在跑。有问题吗？',
+            en: '............I was running. Is that a problem?',
+            color: 'bg-red-600'
+          },
+          {
+            type: 'narration',
+            zh: '「有」和「没有」你都答不上来。你选择继续捡纸。',
+            en: 'You have no answer to that in either direction. You go back to picking up paper.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '明日香', speakerEn: 'Asuka',
+            characterImage: `${ASUKA}neutral.webp`,
+            jp: '……ふん。まあ、そこで謝り倒さないだけマシね。',
+            zh: '……哼。算了，起码没在那儿一个劲儿地赔不是，还行。',
+            en: '...Hmph. Well. At least you did not just stand there apologizing on a loop.',
+            color: 'bg-red-600'
+          },
+          {
+            type: 'narration',
+            zh: '她说这句的时候没有看你。但递纸的时候，那份是从最上面抽的——没有一个折角。',
+            en: 'She does not look at you when she says it. But the sheet she hands over comes off the top of the stack. Not a bent corner on it.'
           }
         ]
       }
@@ -1196,6 +1380,206 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
 
   // ==========================================================
+  // 【Scene 7.5】课间 · 第一次被围住
+  //
+  // 转学生的第一个课间。热情是真的，听不懂也是真的。
+  // 这一段刻意不给"顺利沟通"的选项——因为第一天本来就不该顺利。
+  // ==========================================================
+  {
+    type: 'narration',
+    zh: '第一节课下课铃响完的第四秒，你的桌子周围围了六个人。',
+    en: 'Four seconds after the bell ends first period, there are six people around your desk.'
+  },
+  {
+    type: 'narration',
+    zh: '他们在笑，很热情，语速全开。你听懂的部分大概是这样的：',
+    en: 'They are smiling, they are friendly, and they are talking at full speed. What reaches you is roughly this:'
+  },
+  {
+    type: 'narration',
+    zh: '「——から来たん？」「——え、ほんまに？」「——ってどんな感じ？」「——めっちゃ——やん！」',
+    en: '"—where are you from?" "—wait, seriously?" "—what is it like—?" "—that is so—!"'
+  },
+  {
+    type: 'narration',
+    zh: '中间那些句子像是被人从中央挖掉了一块。你能抓到的只有语气。',
+    en: 'The middles of the sentences have been scooped out. All you can catch is the tone.'
+  },
+  {
+    type: 'choice',
+    promptZh: '六张脸都在等你回答。你甚至不确定他们问的是不是同一个问题。',
+    promptEn: 'Six faces are waiting. You are not even sure they all asked the same question.',
+    options: [
+      {
+        id: 'day1_break_smile',
+        labelZh: '笑。用力地笑，然后点头',
+        labelEn: 'Smile. Smile hard, and nod',
+        hintZh: '万能的、也毫无用处的那一招',
+        hintEn: 'The universal solution, which solves nothing.',
+        effects: [
+          { stat: 'proficiency', amount: 1, reasonZh: '你把慌张藏得还算成功', reasonEn: 'You hid the panic reasonably well' }
+        ],
+        setFlags: ['day1_break_smiled'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你笑了。他们也笑了。气氛非常好。没有任何信息被传递。',
+            en: 'You smile. They smile. The mood is excellent. No information changes hands.'
+          },
+          {
+            type: 'narration',
+            zh: '有人拍了拍你的肩膀说了句什么，大家一起笑起来，你也跟着笑。你不知道自己在笑什么。',
+            en: 'Somebody claps your shoulder and says something, and everyone laughs, and you laugh too. You do not know what you are laughing at.'
+          },
+          {
+            type: 'narration',
+            zh: '这大概是你今天做的最累的一件事。',
+            en: 'This is probably the most tiring thing you do all day.'
+          }
+        ]
+      },
+      {
+        id: 'day1_break_slow',
+        labelZh: '「すみません、もう一度……ゆっくり、お願いします。」',
+        labelEn: '"Sorry — one more time. Slowly, please."',
+        hintZh: '承认听不懂，比假装听懂难',
+        hintEn: 'Admitting it is harder than faking it.',
+        effects: [
+          { stat: 'guts', amount: 2, reasonZh: '你当着六个人的面承认自己没听懂', reasonEn: 'You admitted, in front of six people, that you had not understood' },
+          { stat: 'knowledge', amount: 1, reasonZh: '慢速重复的那一遍，你真的听懂了', reasonEn: 'The slow repeat, you actually understood' }
+        ],
+        setFlags: ['day1_break_asked'],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: 'すみません、もう一度……ゆっくり、お願いします。',
+            words: [{ jp: 'ゆっくり', zh: '慢慢地', en: 'slowly' }],
+            zh: '不好意思，再说一遍……请慢一点。',
+            en: 'Sorry — one more time. Slowly, please.',
+            color: 'bg-yellow-500'
+          },
+          {
+            type: 'narration',
+            zh: '六个人愣了半秒，然后同时开始用一种极其缓慢、每个音都断开的语速重新说了一遍。',
+            en: 'The six of them blank for half a second, then all begin again at once, at an extremely slow speed with every syllable detached.'
+          },
+          {
+            type: 'narration',
+            zh: '「ど・こ・か・ら・き・た・の」——六个人同时。像一个失败的合唱团。',
+            en: '"WHERE. ARE. YOU. FROM." Six people, in unison. Like a choir going badly wrong.'
+          },
+          {
+            type: 'narration',
+            zh: '你听懂了。你回答了。整间教室因为这个荒谬的场面笑成一片，但那种笑是热的。',
+            en: 'You understand it. You answer it. The whole room dissolves over how ridiculous this is, and the laugh is a warm one.'
+          }
+        ]
+      },
+      {
+        id: 'day1_break_english',
+        labelZh: '试试英语。也许英语能通',
+        labelEn: 'Try English. Maybe English will get through',
+        hintZh: '你的英语其实也不怎么样',
+        hintEn: 'Your English is not actually that good either.',
+        effects: [
+          { stat: 'charm', amount: 1, reasonZh: '你贡献了今天教室里最好笑的三分钟', reasonEn: 'You supplied the funniest three minutes of the day' }
+        ],
+        setFlags: ['day1_break_english'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你切换到英语。前排一个男生眼睛亮了，猛地站起来，用一种非常有自信的语气开口了：',
+            en: 'You switch to English. A boy in the front row lights up, stands bolt upright, and speaks with tremendous confidence:'
+          },
+          {
+            type: 'speech',
+            speakerZh: '同班男生',
+            speakerEn: 'Classmate',
+            jp: 'Ohh! My name is Kenta! I am... uh... very... fine! Your hobby is?',
+            zh: '哦哦！我叫健太！我……呃……非常……好！你的爱好是？',
+            en: 'Ohh! My name is Kenta! I am... uh... very... fine! Your hobby is?',
+            color: 'bg-sky-500'
+          },
+          {
+            type: 'narration',
+            zh: '你张嘴想答，才发现自己的英语在离开课本之后也就那么回事。你憋出了一句语法可疑的回答。',
+            en: 'You open your mouth to answer and discover that your own English, outside a textbook, is not much better. What comes out is grammatically questionable.'
+          },
+          {
+            type: 'narration',
+            zh: '健太用力点头，说了句「Yes! Yes! Very nice!」。你们两个都不知道对方说了什么。',
+            en: 'Kenta nods vigorously and says "Yes! Yes! Very nice!" Neither of you has any idea what the other said.'
+          },
+          {
+            type: 'narration',
+            zh: '围观的人爆发出一阵欢呼，像在看一场国际交流的伟大成果。',
+            en: 'The onlookers erupt, as though witnessing a triumph of international exchange.'
+          },
+          {
+            type: 'narration',
+            zh: '你和健太隔着桌子对视了一眼。那一眼里有一种跨越语言的、纯粹的共鸣：我们俩都不行。',
+            en: 'You and Kenta look at each other across the desk. In that look there is a pure understanding that transcends language: neither of us can do this.'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'narration',
+    zh: '你的桌子边越围越多，第二节课的预备铃已经响过了。',
+    en: 'The crowd at your desk keeps growing. The warning bell for second period has already gone.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${ASUKA}angry.webp`,
+    zh: '然后有人从人群外面「啪」地把一叠讲义拍在了你桌上。',
+    en: 'Then, from outside the crowd, somebody slaps a stack of handouts down on your desk.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '明日香', speakerEn: 'Asuka',
+    characterImage: `${ASUKA}angry.webp`,
+    jp: 'はい解散。予鈴鳴ったでしょ。転校生を初日から質問攻めにしないの。',
+    words: [{ jp: '解散', reading: 'かいさん', zh: '解散', en: 'disperse / break it up' }],
+    zh: '好了散了。预备铃都响了吧。别第一天就把转学生问成这样。',
+    en: 'Right, break it up. The bell has gone. You do not interrogate a transfer student on day one.',
+    color: 'bg-red-600'
+  },
+  {
+    type: 'narration',
+    zh: '人群在四秒之内散干净了。班长这两个字在这间教室里显然是有分量的。',
+    en: 'The crowd is gone in four seconds. The words "class president" evidently carry weight in this room.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${ASUKA}neutral.webp`,
+    zh: '明日香站在原地，把那叠讲义往你面前推了推——最上面那一张，重要的地方全都用铅笔标了假名。',
+    en: 'Asuka stays where she is and nudges the stack toward you. On the top sheet, every important line has been annotated in pencil with kana readings.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '明日香', speakerEn: 'Asuka',
+    characterImage: `${ASUKA}neutral.webp`,
+    jp: '……別に。全部の漢字にふってあるわけじゃないから。読めないところだけよ。',
+    words: [{ jp: 'ふりがな', zh: '注音假名（标在汉字上的读音）', en: 'kana printed over kanji to give the reading' }],
+    zh: '……没什么。又不是每个汉字都标了。只标了你读不了的地方而已。',
+    en: '...It is nothing. I did not do all of them. Only the ones you would not be able to read.',
+    color: 'bg-red-600'
+  },
+  {
+    type: 'narration',
+    zh: '「你读不了的地方」——她怎么知道你读不了哪些。这个问题你没敢问。',
+    en: '"The ones you would not be able to read." How she knows which ones is a question you do not dare to ask.'
+  },
+  {
+    type: 'effect',
+    setFlags: ['day1_asuka_rescue'],
+    effects: [{ stat: 'knowledge', amount: 1, reasonZh: '一整叠标好假名的讲义', reasonEn: 'A whole stack of handouts with the readings written in' }],
+    relations: [{ char: CharacterId.ASUKA, familiarity: 10, affection: 4, reasonZh: '她替你把人赶走了，还标了假名', reasonEn: 'She cleared the crowd for you, and wrote in the readings' }]
+  },
+
+  // ==========================================================
   // 【Scene 8】午休 · 屋顶
   // ==========================================================
   {
@@ -1209,9 +1593,105 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
+    characterImage: '',
+    zh: '午休铃响。周围的人开始从桌肚里掏便当盒，教室里一下子全是塑料盖子被掀开的声音。',
+    en: 'The lunch bell. Around you people start pulling bento boxes out of their desks, and the room fills with the sound of plastic lids coming off.'
+  },
+  {
+    type: 'narration',
+    zh: '你也伸手往书包里摸。摸到了课本、笔袋、外公的手账、一把没用上的伞。',
+    en: 'You reach into your bag as well. You find textbooks, a pencil case, your grandfather’s journal, and an umbrella you did not need.'
+  },
+  {
+    type: 'narration',
+    zh: '没有午饭。',
+    en: 'No lunch.'
+  },
+  {
+    type: 'narration',
+    zh: '你想起昨晚那个空冰箱，和「明天放学后第一件事：去买菜」那张便签。你把「早饭」和「午饭」两件事一起忘了。',
+    en: 'You think of last night’s empty fridge, and the note that said groceries came first after school tomorrow. You forgot breakfast and lunch in the same motion.'
+  },
+  {
+    type: 'choice',
+    promptZh: '钱包里有一千二百日元。食堂在一楼最里面，你还不知道怎么点。',
+    promptEn: 'Twelve hundred yen in your wallet. The cafeteria is at the far end of the ground floor, and you have no idea how to order.',
+    options: [
+      {
+        id: 'day1_lunch_canteen',
+        labelZh: '硬着头皮去食堂',
+        labelEn: 'Grit your teeth and go to the cafeteria',
+        hintZh: '昨天在便利店已经练过一次了',
+        hintEn: 'You did practise this once, at the convenience store.',
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '你朝着一个完全没去过的地方走了', reasonEn: 'You set off toward somewhere you had never been' }],
+        setFlags: ['day1_lunch_canteen'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你走到一楼，看见食堂门口排着大约四十个人的队，以及一台全是汉字的售票机。你在原地站了十秒。',
+            en: 'You get downstairs and find a queue of roughly forty people outside the cafeteria, and a ticket machine covered end to end in kanji. You stand there for ten seconds.'
+          },
+          {
+            type: 'narration',
+            zh: '然后你转身上楼了。',
+            en: 'Then you turn around and go back up.'
+          }
+        ]
+      },
+      {
+        id: 'day1_lunch_endure',
+        labelZh: '算了。撑到放学也就四个小时',
+        labelEn: 'Never mind. It is only four hours to the final bell',
+        hintZh: '你已经开始给自己算账了',
+        hintEn: 'You have started doing arithmetic on yourself.',
+        effects: [{ stat: 'proficiency', amount: 1, reasonZh: '一千二百日元，你打算让它撑到周末', reasonEn: 'Twelve hundred yen, and you intend to make it last the week' }],
+        setFlags: ['day1_lunch_endure'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把书包拉链拉上，趴在桌上。四个小时。喝点水就过去了。',
+            en: 'You zip the bag shut and put your head down on the desk. Four hours. Some water and it will pass.'
+          },
+          {
+            type: 'narration',
+            zh: '肚子在这个时候非常不合时宜地叫了一声。前排有个人回头看了你一眼。',
+            en: 'At this exact moment your stomach makes a extremely poorly timed noise. Someone in front turns around.'
+          }
+        ]
+      },
+      {
+        id: 'day1_lunch_journal',
+        labelZh: '翻开手账，看外公有没有写过食堂',
+        labelEn: 'Open the journal — see if your grandfather ever wrote about the cafeteria',
+        hintZh: '他在这所学校待过三年',
+        hintEn: 'He was at this school for three years.',
+        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你查到了半个世纪前的午饭价格', reasonEn: 'You looked up the price of lunch half a century ago' }],
+        setFlags: ['day1_lunch_journal'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你翻到中间那几页。他写过：「食堂のうどん、五十円。安いが、量が少ない。腹が減る。」',
+            en: 'You find it a few pages in. He had written: "Cafeteria udon, fifty yen. Cheap, but not much of it. You stay hungry."'
+          },
+          {
+            type: 'narration',
+            zh: '五十日元。现在是二百八十。物价涨了五倍多，而你连队都排不进去。',
+            en: 'Fifty yen. It is two hundred and eighty now. Prices have gone up more than fivefold and you cannot even get into the queue.'
+          },
+          {
+            type: 'narration',
+            zh: '「腹が減る」这四个字倒是一点没变。你合上手账，趴回桌上。',
+            en: '"You stay hungry", however, has not changed at all. You close the journal and put your head back down.'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'narration',
     characterImage: `${HIKARI}casual_happy.webp`,
-    zh: '光在午休铃响后三十秒就出现在了你们班门口，一手拎着面包，一手把你往楼上拽。',
-    en: 'Hikari appears at your classroom door thirty seconds after the bell, bread in one hand, the other hauling you toward the stairs.'
+    zh: '光在午休铃响后三十秒就出现在了你们班门口，一手拎着一个便利店的袋子，一手把你往楼上拽。',
+    en: 'Hikari appears at your classroom door thirty seconds after the bell, a convenience store bag in one hand, the other hauling you toward the stairs.'
   },
   {
     type: 'speech',
@@ -1245,6 +1725,348 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'narration',
         zh: '确实看得见。港口、摩天轮、还有更远处那条把海和天分开的线。昨天你还在这座城市的地面上打转，今天它整个摊在你脚下。',
         en: 'You can. The harbour, the ferris wheel, and further out the line that separates the sea from the sky. Yesterday you were still going in circles at street level; today the whole thing is laid out under you.'
+      }
+    ]
+  },
+  // ---- 分饭 ----
+  {
+    type: 'narration',
+    characterImage: `${HIKARI}casual_happy.webp`,
+    zh: '她盘腿坐下，把袋子里的东西一样样摆到中间：两个饭团、一个咖喱面包、一盒炸鸡块、一瓶茶。',
+    en: 'She sits down cross-legged and lays the contents of the bag out between you: two onigiri, a curry bun, a box of karaage, a bottle of tea.'
+  },
+  {
+    type: 'narration',
+    zh: '然后她抬头看你，看了两秒，视线落到你空着的两只手上。',
+    en: 'Then she looks up at you, for two seconds, and her eyes drop to your two empty hands.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '光', speakerEn: 'Hikari',
+    characterImage: `${HIKARI}casual_surprised.webp`,
+    jp: '……あれ？弁当は？',
+    words: [{ jp: '弁当', reading: 'べんとう', zh: '便当、盒饭', en: 'a packed lunch' }],
+    zh: '……咦？便当呢？',
+    en: '...Huh? Where is your lunch?',
+    color: 'bg-amber-400'
+  },
+  {
+    type: 'narration',
+    zh: '你说忘了。其实不是忘了，是冰箱里根本没有可以带的东西。但这句话说出来太长了。',
+    en: 'You say you forgot. It is not that you forgot; it is that there was nothing in the fridge to bring. But that sentence is too long to say.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${HIKARI}casual_neutral.webp`,
+    zh: '她「啊」了一声，然后做了一件你完全没料到的事：她把摆在中间那些东西，非常认真地、一样一样地分成了两堆。',
+    en: 'She says "ah", and then does something you did not see coming at all: she divides everything laid out between you into two piles, item by item, with great seriousness.'
+  },
+  {
+    type: 'narration',
+    zh: '饭团一人一个。咖喱面包用手掰开——她掰得很不均匀，然后把大的那半推给了你。',
+    en: 'One onigiri each. She tears the curry bun in half with her hands — unevenly — and pushes the bigger half toward you.'
+  },
+  {
+    type: 'choice',
+    promptZh: '那半个面包停在你和她中间。',
+    promptEn: 'The larger half sits on the ground between you.',
+    options: [
+      {
+        id: 'day1_lunch_refuse',
+        labelZh: '推回去：「你自己吃就好。」',
+        labelEn: 'Push it back. "You should eat it."',
+        hintZh: '这是她的午饭，不是你的',
+        hintEn: 'That is her lunch, not yours.',
+        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你没有理所当然地接下别人的午饭', reasonEn: 'You did not simply take somebody else’s lunch' }],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 8, affection: 5, reasonZh: '她把面包推回来的力气比你大', reasonEn: 'She pushed it back harder than you pushed it away' }],
+        setFlags: ['day1_lunch_refused'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把那半个面包推了回去。她又推了回来。你再推，她按住了。',
+            en: 'You push the half bun back. She pushes it back. You push again; she puts her hand on it.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_smug.webp`,
+            jp: 'あんな、うちの国ではな、腹減っとるやつの前で一人で食うんは、いちばんアカンことやねん。',
+            words: [{ jp: '腹が減る', reading: 'はらがへる', zh: '肚子饿', en: 'to be hungry' }],
+            zh: '我跟你说，在我们那儿啊，当着饿肚子的人一个人吃，是最要不得的事。',
+            en: 'Listen. Where I am from, eating on your own in front of someone who is hungry is the single worst thing you can do.',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '你有点想问「你们那儿」是哪儿。但她已经把面包塞进你手里了。',
+            en: 'You want to ask where "where I am from" actually is. She has already put the bun in your hand.'
+          }
+        ]
+      },
+      {
+        id: 'day1_lunch_accept',
+        labelZh: '双手接过来，认真道谢',
+        labelEn: 'Take it with both hands and thank her properly',
+        hintZh: '「いただきます」这句你会说',
+        hintEn: 'This is one phrase you do know.',
+        effects: [{ stat: 'charm', amount: 2, reasonZh: '你把「谢谢」说得很像回事', reasonEn: 'You made "thank you" sound like it meant something' }],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 6, reasonZh: '她被正经道谢，反而有点不好意思', reasonEn: 'Thanked properly, she was the one who got embarrassed' }],
+        setFlags: ['day1_lunch_accepted'],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: 'ありがとうございます。……いただきます。',
+            words: [{ jp: 'いただきます', zh: '开动了（吃饭前的固定说法）', en: 'said before eating — "I gratefully receive"' }],
+            zh: '谢谢您。……我开动了。',
+            en: 'Thank you. ...Itadakimasu.',
+            color: 'bg-yellow-500'
+          },
+          {
+            type: 'narration',
+            characterImage: `${HIKARI}casual_shy.webp`,
+            zh: '她愣住了，然后飞快地摆手，脸上的表情像是被人当众表扬了。',
+            en: 'She freezes, then waves both hands very fast, wearing the expression of someone praised in public.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_shy.webp`,
+            jp: 'いや、そんなちゃんと言われると、なんか……こっちが恥ずかしいわ。パンやで？パン。',
+            zh: '不是，你说得这么正式，搞得我……我这边反而不好意思了。是面包欸？面包而已。',
+            en: 'No, if you say it that properly it makes — it makes me embarrassed. It is bread. It is just bread.',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '咖喱面包已经凉了，但里面还是软的。你吃得很慢，因为一旦吃完，就得说点什么了。',
+            en: 'The curry bun has gone cold, but the inside is still soft. You eat slowly, because once it is gone you will have to say something.'
+          }
+        ]
+      },
+      {
+        id: 'day1_lunch_repay',
+        labelZh: '接下，但说好明天还她一个',
+        labelEn: 'Take it — on the condition that you bring her one tomorrow',
+        hintZh: '你已经欠过一次账了',
+        hintEn: 'You have run up one debt in this city already.',
+        effects: [
+          { stat: 'proficiency', amount: 1, reasonZh: '你又给自己记了一笔账', reasonEn: 'You opened a second account on yourself' },
+          { stat: 'guts', amount: 1, reasonZh: '你给一次施舍安上了一个明天', reasonEn: 'You attached a tomorrow to a piece of charity' }
+        ],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 7, reasonZh: '「明天」这两个字她记住了', reasonEn: 'She noted the word "tomorrow"' }],
+        setFlags: ['day1_lunch_repay'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你接过面包，然后说：明天我带一个还你。你不确定自己的语法对不对，但这句她听懂了。',
+            en: 'You take the bun, then say: tomorrow I will bring you one. You are not sure the grammar held, but she understood it.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${HIKARI}casual_surprised.webp`,
+            zh: '她把手里的饭团停在半空。',
+            en: 'She stops with the onigiri halfway to her mouth.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_happy.webp`,
+            jp: '明日？……ええやん、それ。ほな明日もここな。約束や。',
+            words: [{ jp: '約束', reading: 'やくそく', zh: '约定', en: 'a promise' }],
+            zh: '明天？……不错嘛，这个。那明天也在这儿。说好了。',
+            en: 'Tomorrow? ...I like that. Then here again tomorrow. It is a promise.',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '你只是想还一个面包。她把它变成了一个约定。',
+            en: 'You only meant to return a bread roll. She has turned it into an appointment.'
+          }
+        ]
+      }
+    ]
+  },
+
+  // ---- 互相报上名字 ----
+  {
+    type: 'narration',
+    zh: '两个人在屋顶上安静地吃了一会儿。风从海那边过来，把包装纸吹得哗哗响。',
+    en: 'You eat in silence on the roof for a while. The wind comes in off the sea and rattles the wrappers.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '光', speakerEn: 'Hikari',
+    characterImage: `${HIKARI}casual_neutral.webp`,
+    jp: 'そういえばな。国際交流室では書類の話ばっかりやったやろ。ちゃんと自己紹介、してへんかったわ。',
+    words: [{ jp: '自己紹介', reading: 'じこしょうかい', zh: '自我介绍', en: 'introducing yourself' }],
+    zh: '说起来啊。在国际交流室净说表格的事了吧。都没好好自我介绍过。',
+    en: 'Come to think of it. In the exchange office it was all forms, was it not. We never actually introduced ourselves.',
+    color: 'bg-amber-400'
+  },
+  {
+    type: 'narration',
+    zh: '她把手在裙子上擦了擦，然后很正式地转过来面对你，跪坐好。',
+    en: 'She wipes her hands on her skirt, turns to face you properly, and sits up on her heels.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '光', speakerEn: 'Hikari',
+    characterImage: `${HIKARI}casual_happy.webp`,
+    jp: '二年B組、光。日本に来て半年。好きなもんは食べ歩き、嫌いなもんは書類。以上！',
+    words: [{ jp: '食べ歩き', reading: 'たべあるき', zh: '边走边吃、逛吃', en: 'eating your way around a place' }],
+    zh: '二年B班，光。来日本半年。喜欢的是逛吃，讨厌的是各种表格。完毕！',
+    en: 'Class 2-B, Hikari. Six months in Japan. Likes: eating my way around town. Dislikes: paperwork. That is it!',
+    color: 'bg-amber-400'
+  },
+  {
+    type: 'choice',
+    promptZh: '轮到你了。她盯着你，等得非常认真。',
+    promptEn: 'Your turn. She is watching you, waiting with complete seriousness.',
+    options: [
+      {
+        id: 'day1_intro_full',
+        labelZh: '照她的格式，认真报一遍',
+        labelEn: 'Match her format and give it properly',
+        hintZh: '名字、来了多久、喜欢什么、讨厌什么',
+        hintEn: 'Name, how long, likes, dislikes.',
+        effects: [
+          { stat: 'charm', amount: 1, reasonZh: '你把一次自我介绍说完整了', reasonEn: 'You got through a self-introduction intact' },
+          { stat: 'knowledge', amount: 1, reasonZh: '这套句型你昨晚练过二十遍', reasonEn: 'You had practised this pattern twenty times last night' }
+        ],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 5, reasonZh: '她认真听完了每一个字', reasonEn: 'She listened to every word of it' }],
+        setFlags: ['day1_hikari_intro_full'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你学着她的样子坐好，把昨晚在窗玻璃前练过二十遍的那段说了出来。这一次没有抖。',
+            en: 'You sit up the way she did and deliver the passage you rehearsed twenty times at the window last night. This time your voice does not shake.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${HIKARI}casual_happy.webp`,
+            zh: '说到「討厭的是表格」的时候，她「啪」地一拍地面，说了句「せやんな！！」，声音大到楼下操场都听得见。',
+            en: 'When you get to "dislikes: paperwork" she slaps the ground and says "RIGHT?!" loudly enough to be heard on the field below.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_happy.webp`,
+            jp: 'よし、覚えた。……あんたの名前、これでもう忘れへんわ。',
+            zh: '好，记住了。……你的名字，我这下不会忘了。',
+            en: 'Right. Got it. ...I am not going to forget your name now.',
+            color: 'bg-amber-400'
+          }
+        ]
+      },
+      {
+        id: 'day1_intro_why',
+        labelZh: '只说名字，然后问她：「你为什么来神户？」',
+        labelEn: 'Give your name — then ask her: "Why did you come to Kobe?"',
+        hintZh: '你更想知道她的答案',
+        hintEn: 'You would rather have her answer than give yours.',
+        effects: [
+          { stat: 'knowledge', amount: 2, reasonZh: '你把问题抛了回去，还问对了地方', reasonEn: 'You turned the question round, and aimed it well' }
+        ],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 8, affection: 8, reasonZh: '她答这个问题的时候，语速第一次慢了下来', reasonEn: 'Answering that, her pace dropped for the first time' }],
+        setFlags: ['day1_hikari_why'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你只报了名字，然后把问题推了回去。',
+            en: 'You give only your name, and push the question back across.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${HIKARI}casual_neutral.webp`,
+            zh: '她「唔」了一声，抱着膝盖看了一会儿海。',
+            en: 'She makes a small sound, hugs her knees, and looks at the sea for a while.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_neutral.webp`,
+            jp: '……テレビで見てん。神戸の夜景。ちっちゃい頃に。',
+            words: [{ jp: '夜景', reading: 'やけい', zh: '夜景', en: 'a night view' }],
+            zh: '……在电视上看到的。神户的夜景。很小的时候。',
+            en: '...I saw it on television. The night view of Kobe. When I was small.',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_shy.webp`,
+            jp: 'それだけ。理由それだけやねん。……しょうもないやろ。',
+            zh: '就这样。理由就只有这个。……很没意思吧。',
+            en: 'That is it. That is the whole reason. ...Pretty stupid, right.',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '你说不。你说你也是为了一张画得乱七八糟的旧地图来的。',
+            en: 'You say no. You say you came for a badly drawn old map.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${HIKARI}casual_happy.webp`,
+            zh: '她笑出了声，笑了很久。',
+            en: 'She laughs, and keeps laughing for a while.'
+          }
+        ]
+      },
+      {
+        id: 'day1_intro_joke',
+        labelZh: '「喜欢的是别人分给我的面包。」',
+        labelEn: '"Likes: bread that other people give me."',
+        hintZh: '现学现卖她的格式',
+        hintEn: 'Her format, used against her.',
+        effects: [
+          { stat: 'charm', amount: 2, reasonZh: '你用她自己的句式反将了一军', reasonEn: 'You turned her own format back on her' },
+          { stat: 'guts', amount: 1, reasonZh: '第一天就敢开这种玩笑', reasonEn: 'That is a bold joke for day one' }
+        ],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 6, reasonZh: '她被自己的句式噎了一下', reasonEn: 'Her own sentence pattern came back and got her' }],
+        setFlags: ['day1_hikari_joke'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你学着她的语气报完名字，然后停顿了一下——',
+            en: 'You give your name in her cadence, then pause—'
+          },
+          {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: '好きなものは、人がくれたパン。嫌いなものは、空っぽの冷蔵庫。以上。',
+            words: [{ jp: '冷蔵庫', reading: 'れいぞうこ', zh: '冰箱', en: 'refrigerator' }],
+            zh: '喜欢的是，别人分给我的面包。讨厌的是，空冰箱。完毕。',
+            en: 'Likes: bread other people give me. Dislikes: empty refrigerators. That is it.',
+            color: 'bg-yellow-500'
+          },
+          {
+            type: 'narration',
+            characterImage: `${HIKARI}casual_surprised.webp`,
+            zh: '她正在喝茶。这一口茶她没能咽下去。',
+            en: 'She is drinking her tea. That mouthful does not go down.'
+          },
+          {
+            type: 'narration',
+            zh: '咳嗽了大概二十秒之后，她指着你，一边喘一边笑。',
+            en: 'After about twenty seconds of coughing, she points at you, laughing and out of breath.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_happy.webp`,
+            jp: 'あんた、日本語まだアカンとか言うてたやん。今の完璧やったで。ずるいわ。',
+            zh: '你不是说日语还不行吗。刚才那句完美欸。太狡猾了。',
+            en: 'You said your Japanese was still bad. That was perfect. That is cheating.',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '你没告诉她，那两句你在心里排了整整三分钟。',
+            en: 'You do not tell her that you spent a full three minutes assembling those two sentences in your head.'
+          }
+        ]
       }
     ]
   },
@@ -1292,6 +2114,107 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ==========================================================
   // 【Scene 9】放学后 · 决定性分叉
   // ==========================================================
+  // ---- 下午的四节课 ----
+  {
+    type: 'scene',
+    scene: 'classroom_morning',
+    bgm: 'lobby'
+  },
+  {
+    type: 'narration',
+    zh: '下午四节课。现代文、数学、日本史、古典。',
+    en: 'Four periods in the afternoon. Modern Japanese, maths, Japanese history, classical Japanese.'
+  },
+  {
+    type: 'narration',
+    zh: '客观地说，你听懂了其中的数学。',
+    en: 'Objectively speaking, you understood the maths.'
+  },
+  {
+    type: 'narration',
+    zh: '因为数字长得都一样。',
+    en: 'Because the numbers look the same in every language.'
+  },
+  {
+    type: 'narration',
+    zh: '现代文那节课，老师念了一篇散文，全班都在点头。你也在点头。你点头的依据是老师的语调。',
+    en: 'In modern Japanese the teacher read out an essay and the whole class nodded along. You nodded too. You were nodding based on the teacher’s intonation.'
+  },
+  {
+    type: 'narration',
+    zh: '日本史更糟：黑板上全是人名，每个人名后面跟着一个年份，年份后面跟着一个你不认识的动词。',
+    en: 'History was worse. The board filled up with names, each name followed by a year, each year followed by a verb you did not know.'
+  },
+  {
+    type: 'narration',
+    zh: '最后一节是古典。古典课上讲的是古代日语。你的现代日语才刚够点一碗拉面。',
+    en: 'The last period was classical Japanese. Classical Japanese is a form of the language from a thousand years ago. Your modern Japanese is just about adequate for ordering ramen.'
+  },
+  {
+    type: 'narration',
+    zh: '你在手账最后一页写下了今天真正学到的东西：',
+    en: 'On the last page of the journal you write down what you actually learned today:'
+  },
+  {
+    type: 'narration',
+    zh: '「一、听不懂的时候，全班都会安静两秒，那两秒是留给你自己意识到的。」',
+    en: '"One. When you have not understood, the class goes quiet for two seconds. Those two seconds are for you to notice."'
+  },
+  {
+    type: 'narration',
+    zh: '「二、点头的角度和听懂的程度没有关系。」',
+    en: '"Two. The angle of the nod bears no relation to the amount understood."'
+  },
+  {
+    type: 'narration',
+    zh: '「三、数学是好东西。」',
+    en: '"Three. Maths is a good thing."'
+  },
+  {
+    type: 'narration',
+    characterImage: `${ASUKA}neutral.webp`,
+    zh: '你写第三条的时候，斜前方那个人回过头，看了一眼你的本子，什么都没说，然后把自己的笔记本往你桌角推了两厘米。',
+    en: 'As you write the third one, the person diagonally in front turns around, looks at your notebook, says nothing, and pushes her own notes two centimetres onto the corner of your desk.'
+  },
+  {
+    type: 'narration',
+    zh: '古典课那一页，重点全部用红笔框了出来。框线画得非常直。',
+    en: 'On the page for classical Japanese, every key point has been boxed in red pen. The lines are extremely straight.'
+  },
+  {
+    type: 'effect',
+    setFlags: ['day1_afternoon_lost'],
+    effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你搞清楚了自己到底哪里不懂', reasonEn: 'You worked out precisely what it was you did not understand' }],
+    relations: [{ char: CharacterId.ASUKA, familiarity: 6, affection: 3, reasonZh: '她的笔记推过来了两厘米', reasonEn: 'Her notes came two centimetres closer' }]
+  },
+
+  // ---- 铺垫（二）：她已经出发了，而且已经走错了 ----
+  {
+    type: 'narration',
+    zh: '第四节课中途，口袋里震了三下。你趁老师转身写板书的时候偷看了一眼。',
+    en: 'Three buzzes in your pocket during fourth period. You sneak a look while the teacher is turned to the board.'
+  },
+  {
+    type: 'narration',
+    zh: '「我到坡道下面了」——发送时间：下午三点五十。学校四点十分放学。',
+    en: '"I am at the bottom of the slope." Sent at 3:50 PM. School finishes at 4:10.'
+  },
+  {
+    type: 'narration',
+    zh: '「这条坡道好长」',
+    en: '"This slope is really long"'
+  },
+  {
+    type: 'narration',
+    zh: '「……等一下，这条好像不是你那条」',
+    en: '"...Hang on, I do not think this is your one"'
+  },
+  {
+    type: 'narration',
+    zh: '你把手机扣回口袋，忽然有点想笑。十年了，一点没变。',
+    en: 'You put the phone face down in your pocket and find you want to laugh. Ten years, and not one thing has changed.'
+  },
+
   {
     type: 'scene',
     scene: 'rooftop_sunset',

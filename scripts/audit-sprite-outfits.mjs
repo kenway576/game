@@ -20,7 +20,8 @@ const EMOTIONS = new Set([
   'neutral', 'happy', 'sad', 'angry', 'shy', 'smug', 'surprised', 'love',
   'laugh', 'pout', 'thinking', 'think', 'smile', 'cool', 'cute', 'tired',
   'sleepy', 'sleep', 'cheer', 'lecturing', 'reading', 'welcome', 'eating',
-  'camera', 'umbrella', 'elegant', 'snow', 'sparkle', 'game', 'tea'
+  'camera', 'umbrella', 'elegant', 'snow', 'sparkle', 'game', 'tea', 'bag',
+  'curious', 'sly', 'cold', 'jealous', 'serious', 'majestic', 'ok'
 ]);
 
 const parse = (url) => {
@@ -42,6 +43,12 @@ let problems = 0;
 for (const file of targets) {
   const src = fs.readFileSync(file, 'utf8');
   const lines = src.split(/\r?\n/);
+  // 剧本里立绘路径多半写成模板串（`${MAKI}punk_pout.webp`），
+  // 先把文件顶部那些前缀常量解出来，否则会漏掉绝大多数引用。
+  const prefixes = {};
+  for (const m of src.matchAll(/const ([A-Z_]+)\s*=\s*'([^']*characters\/[^']*)'/g)) {
+    prefixes[m[1]] = m[2];
+  }
   let scene = '(开场前)', sceneLine = 0;
   // scene -> char -> Map<outfit, {count, faces:Set, lines:[]}>
   const byScene = new Map();
@@ -49,11 +56,14 @@ for (const file of targets) {
   lines.forEach((line, idx) => {
     const s = line.match(/\bscene:\s*'([a-z_0-9]+)'/);
     if (s) { scene = s[1]; sceneLine = idx + 1; return; }
-    const c = line.match(/characterImage:\s*'([^']*)'/);
-    if (!c) return;
-    if (!c[1]) return;                       // 空串 = 立绘退场
-    const info = parse(c[1]);
-    if (!info) { console.log(`⚠️  ${file}:${idx + 1} 无法解析立绘路径: ${c[1]}`); return; }
+    // 两种写法都要认：直接写死的字符串，和用前缀常量拼的模板串
+    const quoted = line.match(/characterImage:\s*'([^']*)'/);
+    const templ = line.match(/characterImage:\s*`\$\{([A-Z_]+)\}([^`]*)`/);
+    if (!quoted && !templ) return;
+    const url = quoted ? quoted[1] : (prefixes[templ[1]] || '') + templ[2];
+    if (!url) return;                        // 空串 = 立绘退场
+    const info = parse(url);
+    if (!info) { console.log(`⚠️  ${file}:${idx + 1} 无法解析立绘路径: ${url}`); return; }
     const key = `${scene}@${sceneLine}`;
     if (!byScene.has(key)) byScene.set(key, new Map());
     const chars = byScene.get(key);

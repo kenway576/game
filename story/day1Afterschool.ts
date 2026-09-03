@@ -114,6 +114,61 @@ export const DAY1_GYM: StoryNode[] = [
             en: 'Your pass is wildly off. She crosses two steps and takes it one-handed, as casually as brushing something aside.'
           }
         ]
+      },
+      {
+        id: 'sora_shoot',
+        labelZh: '「……那一局。不过我不会打。」',
+        labelEn: '"...Fine. One game. I do not know how to play, though."',
+        hintZh: '她问了，你就答了',
+        hintEn: 'She asked. You answered.',
+        effects: [
+          { stat: 'guts', amount: 2, reasonZh: '在自己完全不行的项目上点了头', reasonEn: 'You said yes to the one thing you are certainly bad at' }
+        ],
+        relations: [{ char: CharacterId.SORA, familiarity: 18, affection: 5, reasonZh: '她教你投篮的时候比自己投还认真', reasonEn: 'She took teaching you the shot more seriously than her own' }],
+        setFlags: ['day1_sora_played'],
+        then: [
+          {
+            type: 'narration',
+            characterImage: `${SORA}happy.webp`,
+            zh: '她的表情亮了一下，像是听见了什么久违的好消息。',
+            en: 'Her face lights up, as if she has heard some good news she had stopped expecting.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '空', speakerEn: 'Sora',
+            characterImage: `${SORA}happy.webp`,
+            jp: 'それでええねん！できひんのは別に恥ずかしいことちゃうで。やらんのが恥ずかしいねん。',
+            words: [{ jp: '恥ずかしい', reading: 'はずかしい', zh: '丢脸、难为情', en: 'embarrassing / shameful' }],
+            zh: '这就对了！不会又不丢人。不做才丢人。',
+            en: 'That is the spirit! Being bad at it is not embarrassing. Not doing it is.',
+            color: 'bg-orange-500'
+          },
+          {
+            type: 'narration',
+            zh: '她走到你身后，两只手掰着你的手肘往里收，又把你的下巴抬起来对准篮筐。',
+            en: 'She comes round behind you, tucks your elbows in with both hands, and tips your chin up until you are looking at the rim.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '空', speakerEn: 'Sora',
+            characterImage: `${SORA}happy.webp`,
+            jp: '肘、内側。目はリングの手前のフチ。……ほい、投げてみ。',
+            words: [{ jp: '肘', reading: 'ひじ', zh: '手肘', en: 'elbow' }],
+            zh: '手肘，往里。眼睛看篮筐靠近你这一侧的边。……来，投。',
+            en: 'Elbows in. Eyes on the near edge of the rim. ...Go on, shoot.',
+            color: 'bg-orange-500'
+          },
+          {
+            type: 'narration',
+            zh: '球撞在篮板上弹了回来，砸在你肩膀上。你们俩都没躲。',
+            en: 'The ball hits the backboard, comes straight back, and lands on your shoulder. Neither of you moves out of the way.'
+          },
+          {
+            type: 'narration',
+            zh: '第九次的时候进了。她没有欢呼，只是很用力地拍了一下你的背，力气大得你往前踉跄了半步。',
+            en: 'The ninth one goes in. She does not cheer. She just claps you on the back hard enough to push you half a step forward.'
+          }
+        ]
       }
     ]
   },
@@ -152,7 +207,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${REI}casual_reading.webp`,
+    characterImage: `${REI}thinking.webp`,
     zh: '最里面那张桌子，靠窗，正对夕阳。一个人坐在那儿看书，一动不动，连翻页的手都像是按秒表在动。',
     en: 'The furthest table, by the window, facing the sun. Someone is sitting there reading, completely still, turning pages as if to a stopwatch.'
   },
@@ -165,7 +220,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
     {
       type: 'speech',
       speakerZh: '铃', speakerEn: 'Rei',
-      characterImage: `${REI}casual_neutral.webp`,
+      characterImage: `${REI}neutral.webp`,
       jp: '……昨日の。',
       zh: '……昨天那位。',
       en: '...From yesterday.',
@@ -181,7 +236,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
     {
       type: 'speech',
       speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
-      characterImage: `${REI}casual_neutral.webp`,
+      characterImage: `${REI}neutral.webp`,
       jp: '……座っても、いい。',
       zh: '……可以坐。',
       en: '...You may sit.',
@@ -212,14 +267,14 @@ export const DAY1_LIBRARY: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${REI}casual_neutral.webp`,
+            characterImage: `${REI}neutral.webp`,
             zh: '她终于抬起头。镜片后面那双眼睛看了你整整三秒，没有任何表情。',
             en: 'She finally looks up. Behind the lenses, her eyes rest on you for a full three seconds, with no expression whatsoever.'
           },
           {
             type: 'speech',
             speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
-            characterImage: `${REI}casual_neutral.webp`,
+            characterImage: `${REI}neutral.webp`,
             jp: '……否定はしません。',
             words: [{ jp: '否定', reading: 'ひてい', zh: '否定、否认', en: 'denial' }],
             zh: '……我不否认。',
@@ -234,7 +289,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
-            characterImage: `${REI}casual_smile.webp`,
+            characterImage: `${REI}smile.webp`,
             jp: '……というのは、冗談です。',
             zh: '……这句是玩笑。',
             en: '...That was a joke.',
@@ -263,13 +318,58 @@ export const DAY1_LIBRARY: StoryNode[] = [
             words: [{ jp: '建築', reading: 'けんちく', zh: '建筑', en: 'architecture' }]
           }
         ]
+      },
+      {
+        id: 'rei_sit',
+        labelZh: '在她对面坐下，什么也不问',
+        labelEn: 'Sit down across from her and ask nothing',
+        hintZh: '图书室里有一种不用说话的规矩',
+        hintEn: 'A library has rules about talking that nobody has to state.',
+        effects: [
+          { stat: 'kindness', amount: 2, reasonZh: '你没有打断一个正在专心的人', reasonEn: 'You did not interrupt someone who was concentrating' }
+        ],
+        relations: [{ char: CharacterId.REI, familiarity: 16, affection: 3, reasonZh: '她翻页的节奏一直没被打乱', reasonEn: 'Her page-turning never once lost its rhythm' }],
+        setFlags: ['day1_rei_sat'],
+        then: [
+          {
+            type: 'narration',
+            characterImage: `${REI}thinking.webp`,
+            zh: '你拉开对面的椅子坐下，把书包放在脚边，然后什么也没做。窗外的光从她那一侧斜进来，正好停在摊开的书页上。',
+            en: 'You pull out the chair opposite, set your bag by your feet, and then do nothing at all. The light comes in past her side of the table and lands exactly on the open page.'
+          },
+          {
+            type: 'narration',
+            zh: '她翻了三页。你听见楼下操场有人在喊号子，声音隔着两层楼变得很软。',
+            en: 'She turns three pages. Down on the field somebody is calling a count; through two floors it arrives soft.'
+          },
+          {
+            type: 'narration',
+            zh: '第四页翻过去之后，她把其中一本书转了个方向，推到你面前——没有说话，也没有抬头。',
+            en: 'After the fourth page she turns one of the books around and pushes it across to you. Without a word, without looking up.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
+            characterImage: `${REI}neutral.webp`,
+            jp: '……そこ、あなたが住んでいる坂です。五十年前の図面ですが。',
+            words: [{ jp: '図面', reading: 'ずめん', zh: '图纸、设计图', en: 'plan / drawing' }],
+            zh: '……那里，是你住的那条坡。虽然是五十年前的图。',
+            en: '...That is the slope you live on. The drawing is fifty years old.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '你没问她怎么知道你住哪儿。你觉得问了她也只会说「因为你的鞋上有北野那一段的红土」之类的话。',
+            en: 'You do not ask how she knows where you live. You suspect the answer would be something like "there is Kitano clay on your shoes".'
+          }
+        ]
       }
     ]
   },
   {
     type: 'speech',
     speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
-    characterImage: `${REI}casual_neutral.webp`,
+    characterImage: `${REI}neutral.webp`,
     jp: '……趣味です。誰にも頼まれていません。',
     zh: '……是兴趣。没有人要求我做。',
     en: '...It is a hobby. Nobody asked me to do it.',
@@ -279,6 +379,177 @@ export const DAY1_LIBRARY: StoryNode[] = [
     type: 'narration',
     zh: '这句话的语气，像是提前替自己挡掉了一个还没有人问出口的问题。',
     en: 'She says it in the tone of someone deflecting a question nobody has asked yet.'
+  },
+  // ---- 摊开的那张图 ----
+  {
+    type: 'narration',
+    characterImage: `${REI}neutral.webp`,
+    zh: '她把桌上那几本书往两边推开，中间空出来的地方摊了一张手绘的图。你凑近看了才发现，那是整个北野一带的立面测绘——每一栋洋馆的窗户数量、门楣样式、屋顶角度，全都标着数字。',
+    en: 'She pushes the books aside and lays a hand-drawn sheet in the space between them. Leaning in, you realise it is an elevation survey of the whole of Kitano: every window counted, every doorway catalogued, every roof pitch marked with a figure.'
+  },
+  {
+    type: 'narration',
+    zh: '角落里写着日期。最早那一张是三年前的。',
+    en: 'There are dates in the corner. The earliest sheet is three years old.'
+  },
+  {
+    type: 'choice',
+    promptZh: '她把图推到你能看清的角度，然后就不动了。',
+    promptEn: 'She turns the sheet so you can see it properly, and then stops moving.',
+    options: [
+      {
+        id: 'day1_rei_count',
+        labelZh: '「这些数字……你一栋一栋数过来的？」',
+        labelEn: '"These numbers... you counted them building by building?"',
+        hintZh: '三年，一整片街区',
+        hintEn: 'Three years. An entire district.',
+        effects: [
+          { stat: 'knowledge', amount: 2, reasonZh: '你搞清楚了这张图是怎么来的', reasonEn: 'You worked out what it took to make that sheet' }
+        ],
+        relations: [{ char: CharacterId.REI, familiarity: 14, affection: 4, reasonZh: '她第一次被问了"怎么做的"，而不是"为什么做"', reasonEn: 'For once she was asked how, not why' }],
+        setFlags: ['day1_rei_counted'],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
+            characterImage: `${REI}neutral.webp`,
+            jp: 'はい。全部で百三十一棟あります。うち、現存は八十四。',
+            words: [{ jp: '現存', reading: 'げんそん', zh: '现存、还留着的', en: 'still standing / extant' }],
+            zh: '是。一共一百三十一栋。其中还留着的有八十四栋。',
+            en: 'Yes. One hundred and thirty-one in total. Eighty-four of them still standing.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '她说这两个数字的时候没有任何停顿，就像在报自己的生日。',
+            en: 'She gives both numbers without pausing, the way you would give your own birthday.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
+            characterImage: `${REI}neutral.webp`,
+            jp: '去年は八十六でした。二棟、なくなりました。',
+            zh: '去年是八十六。少了两栋。',
+            en: 'Last year it was eighty-six. Two have gone.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '「なくなりました」这个词她说得很平。平到你花了两秒才反应过来，她是在说那两栋房子被拆了。',
+            en: 'She says "have gone" completely levelly. Level enough that it takes you two seconds to understand she means they were demolished.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${REI}smile.webp`,
+            zh: '「所以要画。」她补了一句，然后把铅笔尖在纸上点了两下，落在那两栋的位置上。',
+            en: '"That is why I draw them," she adds, and taps the pencil twice on the paper, on the two places where they used to be.'
+          }
+        ]
+      },
+      {
+        id: 'day1_rei_own_map',
+        labelZh: '把外公的手账掏出来，翻到那一页并排放上去',
+        labelEn: "Get out your grandfather's journal and lay it open beside hers",
+        hintZh: '同一片街区，隔了五十年',
+        hintEn: 'The same district, fifty years apart.',
+        effects: [
+          { stat: 'charm', amount: 2, reasonZh: '你把自己最珍贵的那本递了出去', reasonEn: 'You handed over the thing you value most' },
+          { stat: 'knowledge', amount: 1, reasonZh: '两张图对上了七条街', reasonEn: 'Seven streets lined up between the two sheets' }
+        ],
+        relations: [{ char: CharacterId.REI, familiarity: 18, affection: 6, reasonZh: '她把两张纸的边缘对齐了三次', reasonEn: 'She lined the edges of the two sheets up three times' }],
+        setFlags: ['day1_rei_two_maps'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把手账翻到北野那一页，放在她那张图旁边。两张纸的比例完全不一样，但街的走向对得上。',
+            en: 'You open the journal to the Kitano page and set it beside her sheet. The scales are completely different, but the streets run the same way.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${REI}neutral.webp`,
+            zh: '她沉默了很久。久到窗外的光又往里挪了半张桌子。',
+            en: 'She is silent for a long time. Long enough that the light moves half a desk further in.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
+            characterImage: `${REI}neutral.webp`,
+            jp: 'ここ、この道。わたしの図には無いんです。',
+            zh: '这里，这条路。我的图上没有。',
+            en: 'Here. This street. It is not on mine.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '她的手指停在手账上一条很细的线上。那条线在她那张图里对应的位置，是一片空白。',
+            en: 'Her finger rests on a very thin line in the journal. In the corresponding place on her own sheet there is nothing at all.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
+            characterImage: `${REI}neutral.webp`,
+            jp: '……五十年前には、あったということですね。',
+            zh: '……也就是说，五十年前是有的。',
+            en: '...Which means fifty years ago it was there.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '她抬起头看你，镜片后面那双眼睛第一次有了明确的情绪。你分辨不出那是什么，但绝对不是「面无表情」。',
+            en: 'She looks up at you, and behind the lenses there is a definite emotion for the first time. You cannot name it, but it is certainly not "no expression".'
+          },
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
+            characterImage: `${REI}smile.webp`,
+            jp: 'この本、いつか……もう一度、見せていただけませんか。',
+            words: [{ jp: 'いつか', zh: '哪天、总有一天', en: 'someday' }],
+            zh: '这本书，哪天……能再让我看一次吗。',
+            en: 'This book. Someday. ...Might I be allowed to look at it again.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '这是今天她说的最长的一句话，也是唯一一句用了敬语的请求。',
+            en: 'It is the longest sentence she has said today, and the only request she has phrased politely.'
+          }
+        ]
+      },
+      {
+        id: 'day1_rei_leave',
+        labelZh: '看了两分钟，然后说不打扰她了',
+        labelEn: 'Look for two minutes, then say you will leave her to it',
+        hintZh: '图书馆里有一种不用说出口的规矩',
+        hintEn: 'A library has rules nobody has to state.',
+        effects: [
+          { stat: 'kindness', amount: 2, reasonZh: '你知道什么时候该走', reasonEn: 'You knew when to leave' }
+        ],
+        relations: [{ char: CharacterId.REI, familiarity: 8, affection: 2, reasonZh: '她说了「また」，虽然听上去只是客套', reasonEn: 'She said "again", though it sounded like a formality' }],
+        setFlags: ['day1_rei_left_early'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把椅子推回去，尽量不发出声音，然后说了句「打扰了」。',
+            en: 'You push the chair back in as quietly as you can and say that you will not keep her.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '戴眼镜的女生', speakerEn: 'Girl with Glasses',
+            characterImage: `${REI}neutral.webp`,
+            jp: '……いえ。……また。',
+            zh: '……不会。……再见。',
+            en: '...Not at all. ...Again.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            characterImage: '',
+            zh: '你走到门口才想起来，日语里的「また」是「下次再见」的意思。她用的是这个词，不是「さようなら」。',
+            en: 'You are at the door before you remember that "mata" means "again", as in next time. That is the word she used, not "goodbye".'
+          }
+        ]
+      }
+    ]
   },
   {
     type: 'effect',
@@ -301,14 +572,14 @@ export const DAY1_ARCADE: StoryNode[] = [
   { type: 'branch', ifFlag: 'prologue_met_maki', then: [
     {
       type: 'narration',
-      characterImage: `${MAKI}punk_smug.webp`,
+      characterImage: `${MAKI}punk_neutral.webp`,
       zh: '章鱼烧摊子前面，那个粉头发的女生正回头看你。她显然是先看见你的。',
       en: 'In front of the takoyaki stand, the pink-haired girl is already looking your way. She clearly saw you first.'
     },
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}punk_smug.webp`,
+      characterImage: `${MAKI}punk_neutral.webp`,
       jp: 'お、来たな。……で？「おおきに」、言えるようになった？',
       zh: '哦，来了啊。……怎么样？会说「おおきに」了吗？',
       en: 'Oh, you turned up. ...Well? Can you say "ookini" yet?',
@@ -396,9 +667,64 @@ export const DAY1_ARCADE: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${MAKI}punk_smug.webp`,
+            characterImage: `${MAKI}punk_neutral.webp`,
             zh: '她挑了挑眉，像是没料到你这么干脆。',
             en: 'Her eyebrows go up. She did not expect you to fold that fast.'
+          }
+        ]
+      },
+      {
+        id: 'maki_own_order',
+        labelZh: '按住钱包，指着菜单上唯一认得的那几个字',
+        labelEn: 'Cover your wallet and point at the only characters on the menu you can read',
+        hintZh: '第一顿饭还是想自己点',
+        hintEn: 'You would like to order your own first meal, thanks.',
+        effects: [
+          { stat: 'guts', amount: 2, reasonZh: '在完全看不懂的菜单前伸出了手指', reasonEn: 'You put a finger on a menu you could not read' },
+          { stat: 'proficiency', amount: 1, reasonZh: '至少你的手没有抖', reasonEn: 'Your hand, at least, did not shake' }
+        ],
+        relations: [{ char: CharacterId.MAKI, familiarity: 16, affection: 3, reasonZh: '她笑归笑，还是让你自己点完了', reasonEn: 'She laughed — and still let you finish the order yourself' }],
+        setFlags: ['day1_maki_own_order'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把钱包往回一收，抬起手指，落在菜单上唯一一处你能拆开的字上：「たこ焼」。',
+            en: 'You pull the wallet back, raise a finger, and put it on the one place on the menu you can parse: TAKOYAKI.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${MAKI}punk_laugh.webp`,
+            zh: '她盯着你的手指看了两秒，然后笑得蹲了下去。',
+            en: 'She stares at your finger for two seconds and then laughs hard enough to crouch down.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '粉发的女生', speakerEn: 'Pink-haired Girl',
+            characterImage: `${MAKI}punk_laugh.webp`,
+            jp: 'それ店の名前や！メニューちゃう！……いや、ええけどな、ここたこ焼しか売ってへんし。',
+            words: [{ jp: '店', reading: 'みせ', zh: '店、店铺', en: 'shop' }],
+            zh: '那是店名啦！不是菜单！……不过，也行吧，反正这家只卖章鱼烧。',
+            en: 'That is the name of the shop! Not the menu! ...Although, fine, I guess. They only sell takoyaki here anyway.',
+            color: 'bg-pink-500'
+          },
+          {
+            type: 'narration',
+            zh: '老板从铁板后面抬起头，看了看你的手指，又看了看她，然后开始翻丸子。',
+            en: 'The man behind the griddle looks up, looks at your finger, looks at her, and starts turning the batter.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '粉发的女生', speakerEn: 'Pink-haired Girl',
+            characterImage: `${MAKI}punk_neutral.webp`,
+            jp: '……まあ、自分で指さしただけマシやわ。ウチが全部やったったら、自分いつまでも読まれへんやろ。',
+            zh: '……嘛，至少是你自己指的。要是全让我代劳，你就永远看不懂了。',
+            en: '...Eh. At least you pointed yourself. If I did all of it for you, you would never learn to read the thing.',
+            color: 'bg-pink-500'
+          },
+          {
+            type: 'narration',
+            zh: '她说这话的时候没看你，在数自己口袋里的硬币。',
+            en: 'She is not looking at you when she says it. She is counting the coins in her pocket.'
           }
         ]
       }
@@ -421,7 +747,7 @@ export const DAY1_ARCADE: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${MAKI}punk_smug.webp`,
+    characterImage: `${MAKI}punk_neutral.webp`,
     zh: '「センパイ、金は自分で払いや」——她说完退开半步，看你付钱。',
     en: '"You are paying for that yourself, senpai." She steps back half a pace and watches you hand over the money.'
   },
@@ -437,6 +763,9 @@ export const DAY1_ARCADE: StoryNode[] = [
 // 擦肩而过：没走那条路的人，也让你看见一眼
 // ==========================================================
 const CAMEO_SORA: StoryNode[] = [
+  // 深度线结束、往外走的路上。没有这一句换景的话，路过某处会贴在上一场的背景上放，
+  // 观感就是无缘无故跳了个地方。
+  { type: 'scene', scene: 'hallway', bgm: 'town' },
   {
     type: 'narration',
     characterImage: `${SORA}happy.webp`,
@@ -451,9 +780,12 @@ const CAMEO_SORA: StoryNode[] = [
 ];
 
 const CAMEO_REI: StoryNode[] = [
+  // 深度线结束、往外走的路上。没有这一句换景的话，路过某处会贴在上一场的背景上放，
+  // 观感就是无缘无故跳了个地方。
+  { type: 'scene', scene: 'hallway', bgm: 'town' },
   {
     type: 'narration',
-    characterImage: `${REI}casual_reading.webp`,
+    characterImage: `${REI}thinking.webp`,
     zh: '路过图书馆，门开着。靠窗最里面那张桌子上摊着五六本书，一个戴红框眼镜的女生坐在后面，一动不动。',
     en: 'You pass the library. The door is open. At the furthest table by the window, five or six books lie open, and a girl in red-framed glasses sits behind them, completely still.'
   },
@@ -471,6 +803,9 @@ const CAMEO_REI: StoryNode[] = [
 ];
 
 const CAMEO_MAKI: StoryNode[] = [
+  // 深度线结束、往外走的路上。没有这一句换景的话，路过某处会贴在上一场的背景上放，
+  // 观感就是无缘无故跳了个地方。
+  { type: 'scene', scene: 'school_gate', bgm: 'town' },
   {
     type: 'narration',
     characterImage: `${MAKI}punk_laugh.webp`,
@@ -577,12 +912,72 @@ export const DAY1_EVENING: StoryNode[] = [
             color: 'bg-amber-500'
           }
         ]
+      },
+      {
+        id: 'inari_feet',
+        labelZh: '什么也没问，先把外套脱下来递过去',
+        labelEn: 'Ask nothing. Take your blazer off and hold it out to her',
+        hintZh: '四月的傍晚，她赤着脚',
+        hintEn: 'It is an April evening and she is barefoot.',
+        effects: [
+          { stat: 'kindness', amount: 3, reasonZh: '你先看见的是冷，不是怪', reasonEn: 'What you noticed first was the cold, not the strangeness' }
+        ],
+        relations: [{ char: CharacterId.INARI, familiarity: 20, affection: 6, reasonZh: '一千八百年里，这件事发生过的次数不多', reasonEn: 'In eighteen centuries, this has not happened often' }],
+        setFlags: ['day1_inari_blazer'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把制服外套脱下来，叠了一下，隔着一步远递过去。她低头看了看那件外套，又抬头看了看你。',
+            en: 'You take off your blazer, fold it once, and hold it out from a step away. She looks at the blazer, then up at you.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${INARI}casual_neutral.webp`,
+            zh: '她没有接。但她也没有像刚才那样，把话说得像是从很远的地方传来的。',
+            en: 'She does not take it. But she also stops sounding like someone speaking from a long way off.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '白发的女子', speakerEn: 'White-haired Woman',
+            characterImage: `${INARI}casual_neutral.webp`,
+            jp: '……妾に、寒かろうと申すか。',
+            words: [{ jp: '寒い', reading: 'さむい', zh: '冷', en: 'cold' }],
+            zh: '……你是在说，我会冷吗。',
+            en: '...You are suggesting that I might be cold.',
+            color: 'bg-amber-500'
+          },
+          {
+            type: 'narration',
+            zh: '你说不上来该怎么回答，只好点了点头。',
+            en: 'You cannot think of an answer, so you nod.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '白发的女子', speakerEn: 'White-haired Woman',
+            characterImage: `${INARI}casual_happy.webp`,
+            jp: 'ふふ。……ここに座る者は多いが、そう言うたのは、汝で四人目じゃ。',
+            words: [{ jp: '座る', reading: 'すわる', zh: '坐', en: 'to sit' }],
+            zh: '呵呵。……在这儿坐着的人多得很，可这么说的，你是第四个。',
+            en: 'Hmhm. ...Many have sat here. You are the fourth to say that.',
+            color: 'bg-amber-500'
+          },
+          {
+            type: 'narration',
+            zh: '第四个。你想问前三个是什么时候的事。但你不太确定自己想不想知道答案。',
+            en: 'The fourth. You want to ask when the other three were. You find you are not certain you want the answer.'
+          },
+          {
+            type: 'narration',
+            zh: '她伸手把外套推了回来，指尖碰到你手背的那一下，比四月的晚风还要凉。',
+            en: 'She pushes the blazer back toward you. Where her fingertips touch the back of your hand, she is colder than the April wind.'
+          }
+        ]
       }
     ]
   },
   {
     type: 'narration',
-    characterImage: `${INARI}casual_smug.webp`,
+    characterImage: `${INARI}casual_happy.webp`,
     zh: '你低头想把手账拿出来。再抬头时，鸟居底下已经没有人了——木屐还在原地，整整齐齐地摆着。',
     en: 'You look down to get the journal out. When you look up, there is no one under the torii. The geta are still there, set down neatly, side by side.'
   },
@@ -596,29 +991,89 @@ export const DAY1_EVENING: StoryNode[] = [
   { type: 'scene', scene: 'street', bgm: 'night', titleZh: '海风庄 · 坡道口', titleEn: 'The Foot of the Slope', subtitleZh: '傍晚 6:40', subtitleEn: '6:40 PM' },
   {
     type: 'narration',
+    zh: '坡道口的路灯下面蹲着一个人，两袋东西放在脚边，正对着手机屏幕皱眉。',
+    en: 'Under the streetlight at the foot of the slope someone is crouching, two shopping bags on the ground beside her, frowning at a phone.'
+  },
+  {
+    type: 'narration',
     characterImage: `${NAO}casual_neutral.webp`,
-    zh: '坡道口有人在等。手里拎着两袋东西，看见你就把其中一袋举起来晃了晃。',
-    en: 'Someone is waiting at the foot of the slope, holding two shopping bags. She lifts one of them and waves it at you.'
+    zh: '你走近的时候她抬起头，脸上先是「啊」，然后是「终于」，最后是一种非常复杂的、看起来快哭了但其实是在生气的表情。',
+    en: 'She looks up as you get closer. Her face does "ah", then "finally", and then settles into something extremely complicated that looks like crying but is in fact annoyance.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
     characterImage: `${NAO}casual_angry.webp`,
-    jp: '遅い。何時だと思ってんの。',
-    zh: '好慢。你以为几点了。',
-    en: 'You are late. What time do you think it is.',
+    jp: 'おっそーい！！わたし、四時半からここおるんやけど！',
+    zh: '好——慢——！！我从四点半就在这儿了欸！',
+    en: 'You are SO late! I have been here since half four!',
     color: 'bg-rose-500'
   },
   {
     type: 'narration',
-    zh: '十年了，她生气的样子一点没变。变的是背景——现在她身后是神户的坡道，不是你们从小走的那条街。',
-    en: 'Ten years, and the way she gets annoyed has not changed at all. What has changed is the background: behind her is a Kobe hillside now, not the street you both grew up on.'
+    zh: '你说学校四点十分才放学。',
+    en: 'You point out that school does not finish until ten past four.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}casual_curious.webp`,
+    zh: '她张了张嘴，然后开始数手指。数到第三根的时候停住了。',
+    en: 'Her mouth opens. She starts counting on her fingers. She stops at the third one.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_shy.webp`,
+    jp: '……あ。ほんまや。……えっ、じゃあわたし、なんで四時半に来たん？',
+    zh: '……啊。真的欸。……诶，那我为什么四点半就来了？',
+    en: '...Oh. So it does. ...Wait, then why did I get here at half four?',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '这个问题她问的是自己。你没有回答，因为你也不知道。',
+    en: 'The question is addressed to herself. You do not answer it, because you do not know either.'
+  },
+  {
+    type: 'narration',
+    zh: '你注意到她脚边那两袋东西旁边，还放着一杯已经喝完的、纸杯外面全是水汽干掉痕迹的奶茶。',
+    en: 'Beside the two bags at her feet there is also an empty paper cup, its outside streaked with the dried marks of condensation.'
+  },
+  // ---- 走错坡道 ----
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_neutral.webp`,
+    jp: 'ていうかさ、この坂ちゃう坂で三十分待っとってん。あっちの、似たようなやつ。',
+    words: [{ jp: '坂', reading: 'さか', zh: '坡道', en: 'a slope / hill' }],
+    zh: '话说回来，我先在另一条坡道那儿等了三十分钟。那边那条，长得差不多的。',
+    en: 'Anyway, I spent thirty minutes waiting on the wrong slope. The other one. The one that looks the same.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '北野一带的坡道有十几条，每一条都长得差不多。这个理由是成立的。',
+    en: 'There are a dozen slopes in Kitano and they all look much the same. The excuse is, technically, valid.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_happy.webp`,
+    jp: 'でも途中で気づいてん！えらいやろ？',
+    zh: '不过我半路就发现了！很厉害吧？',
+    en: 'But I noticed halfway! Impressive, right?',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '她说这句的时候是真心在等你夸她。你说了句「厉害」。她非常满意地点了点头。',
+    en: 'She genuinely is waiting to be praised for this. You say "impressive". She nods, thoroughly satisfied.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
     characterImage: `${NAO}casual_neutral.webp`,
-    jp: '……で、どうだった。初日。',
+    jp: '……で、どうやった。初日。',
     zh: '……那，怎么样。第一天。',
     en: '...So. How was it. Day one.',
     color: 'bg-rose-500'
@@ -639,8 +1094,19 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她说完自己也愣了一下，像是没料到这句话会从自己嘴里出来。然后立刻把袋子塞给你。',
-    en: 'She seems startled by her own sentence, as though she had not expected it to come out of her. Then she shoves a bag into your hands.'
+    zh: '她说完自己也愣了一下，像是没料到这句话会从自己嘴里出来。',
+    en: 'She seems startled by her own sentence, as though she had not expected it to come out of her.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}casual_curious.webp`,
+    zh: '「……あれ、今わたし、なんか感じ悪かった？」她认真地问你。她是真的在问。',
+    en: '"...Wait. Did that come out mean just now?" She asks it seriously. She genuinely wants to know.'
+  },
+  {
+    type: 'narration',
+    zh: '你说没有。她「哦」了一声，接受了这个答案，然后立刻把袋子塞给你。',
+    en: 'You say it did not. She says "oh", accepts this ruling, and immediately shoves a bag into your hands.'
   },
   {
     type: 'speech',
@@ -748,13 +1214,271 @@ export const DAY1_EVENING: StoryNode[] = [
             en: 'Sannomiya to Kitano is not on anybody’s way.'
           }
         ]
+      },
+      {
+        id: 'nao_receipt',
+        labelZh: '把两袋都接过来，然后伸手要小票',
+        labelEn: 'Take both bags — then hold your hand out for the receipt',
+        hintZh: '米和味噌不是从天上掉下来的',
+        hintEn: 'Rice and miso do not fall out of the sky.',
+        effects: [
+          { stat: 'proficiency', amount: 1, reasonZh: '你已经开始算自己的账了', reasonEn: 'You have started keeping your own accounts' },
+          { stat: 'guts', amount: 1, reasonZh: '跟一个不肯收钱的人当面把钱掰扯清楚', reasonEn: 'You argued money with someone determined not to take it' }
+        ],
+        relations: [{ char: CharacterId.NAO, affection: 4, familiarity: 8, reasonZh: '她被当成大人对待了一次', reasonEn: 'For once she was treated as an adult, not a caretaker' }],
+        setFlags: ['day1_nao_receipt'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把两袋都拎了过来，腾出一只手摊在她面前。',
+            en: 'You take both bags, then free up one hand and hold it out, palm up.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: 'レシート。',
+            words: [{ jp: 'レシート', zh: '收银小票', en: 'receipt' }],
+            zh: '小票。',
+            en: 'Receipt.',
+            color: 'bg-yellow-500'
+          },
+          {
+            type: 'narration',
+            characterImage: `${NAO}casual_angry.webp`,
+            zh: '她把手往口袋里一插，往后退了半步。',
+            en: 'She shoves her hand into her pocket and takes half a step back.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${NAO}casual_angry.webp`,
+            jp: '……捨てた。',
+            zh: '……扔了。',
+            en: '...Threw it away.',
+            color: 'bg-rose-500'
+          },
+          {
+            type: 'narration',
+            zh: '你看着她。她看着旁边的电线杆。僵持了大概五秒，她从口袋里把那张揉成一团的小票掏了出来，塞进你手里。',
+            en: 'You look at her. She looks at a utility pole. About five seconds of stalemate, then she pulls the crumpled receipt out of her pocket and stuffs it into your hand.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${NAO}casual_shy.webp`,
+            jp: '……ほんと、こういうとこだけ大人になったよね、あんた。',
+            words: [{ jp: '大人', reading: 'おとな', zh: '大人、成年人', en: 'adult' }],
+            zh: '……真是的，就这种地方长大了啊，你。',
+            en: '...Honestly. You grew up in exactly the wrong places.',
+            color: 'bg-rose-500'
+          },
+          {
+            type: 'narration',
+            zh: '你把小票展平，看了一眼总额，然后收进钱包夹层。一千八百四十日元。',
+            en: 'You flatten the receipt, read the total, and file it in your wallet. One thousand eight hundred and forty yen.'
+          },
+          {
+            type: 'narration',
+            zh: '走在她后面上坡的时候，你想：这个数字得记住。这是你在这座城市欠下的第一笔账。',
+            en: 'Climbing the slope behind her, you think: remember that number. It is the first debt you have run up in this city.'
+          }
+        ]
       }
     ]
+  },
+  // ---- 一起上坡 ----
+  { type: 'scene', scene: 'kitano_slope', bgm: 'night' },
+  {
+    type: 'narration',
+    characterImage: `${NAO}casual_neutral.webp`,
+    zh: '两个人一起往上走。她走在你左边，隔半步，这个距离十年没变过。',
+    en: 'You start up the slope together. She walks on your left, half a step ahead. That distance has not changed in ten years.'
+  },
+  {
+    type: 'narration',
+    zh: '袋子里除了米、鸡蛋和味噌，还有：两把葱、一块豆腐、一盒鸡蛋（第二盒）、一袋洗衣粉，和一个你完全看不出用途的塑料铲子。',
+    en: 'Besides the rice, eggs and miso, the bags contain: two bunches of spring onion, a block of tofu, a box of eggs (the second box), a bag of laundry powder, and a plastic scoop whose purpose you cannot determine.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_happy.webp`,
+    jp: 'あ、それ？なんか安かったから。',
+    zh: '啊，那个？因为好像挺便宜的。',
+    en: 'Oh, that? It seemed cheap.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '你问她鸡蛋为什么有两盒。她低头看了看袋子，「啊」了一声，然后说了句「……昨天也买了吧」。',
+    en: 'You ask about the two boxes of eggs. She looks into the bag, says "ah", and then, "...I think I bought some yesterday as well."'
+  },
+  {
+    type: 'narration',
+    zh: '「那你昨天那盒呢？」',
+    en: '"So where is yesterday’s box?"'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}casual_curious.webp`,
+    zh: '她想了很久。坡道又往上走了大概二十米。',
+    en: 'She thinks about it for a long time. The slope goes up another twenty metres.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_shy.webp`,
+    jp: '……電車に置いてきたかも。',
+    words: [{ jp: '置いてくる', reading: 'おいてくる', zh: '落下、忘在某处', en: 'to leave something behind' }],
+    zh: '……可能落在电车上了。',
+    en: '...I might have left it on the train.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '你们俩沉默着又走了十几米。',
+    en: 'You both walk another ten metres in silence.'
+  },
+  // ---- 她其实什么都看见了 ----
+  {
+    type: 'narration',
+    characterImage: `${NAO}casual_neutral.webp`,
+    zh: '走到一半的时候，她忽然停下来，转过身，非常仔细地看了看你的脸。',
+    en: 'Halfway up she stops, turns around, and looks at your face very carefully.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_curious.webp`,
+    jp: '……あんた、今日ちゃんとご飯食べた？',
+    zh: '……你今天，好好吃饭了吗？',
+    en: '...Did you actually eat today?',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '你张嘴要说吃了。她已经在摇头了。',
+    en: 'You open your mouth to say yes. She is already shaking her head.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_angry.webp`,
+    jp: '嘘。あんた嘘つくとき、ちょっとだけ右見んねん。昔から。',
+    words: [{ jp: '嘘', reading: 'うそ', zh: '谎话', en: 'a lie' }],
+    zh: '骗人。你说谎的时候会稍微往右看一下。从小就是。',
+    en: 'Liar. When you lie you glance a little to the right. You always have.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '一个连自己昨天买没买鸡蛋都记不住的人，记得你十年前撒谎时眼睛往哪边偏。',
+    en: 'A person who cannot remember whether she bought eggs yesterday remembers which way your eyes went when you lied, ten years ago.'
+  },
+  {
+    type: 'branch',
+    ifFlag: 'day1_lunch_endure',
+    then: [
+      {
+        type: 'narration',
+        zh: '你只好承认午饭没吃。她「啊」了一声，然后开始翻袋子，翻了半天，掏出一个已经压扁了的红豆面包塞给你。',
+        en: 'You admit you skipped lunch. She says "ah", starts digging through the bags, and after some time produces a badly squashed red bean bun and pushes it at you.'
+      },
+      {
+        type: 'narration',
+        zh: '「这个是我早上买的。」她说。「本来是我的早饭。」',
+        en: '"I bought this in the morning," she says. "It was going to be my breakfast."'
+      },
+      {
+        type: 'narration',
+        zh: '现在是傍晚六点四十。',
+        en: 'It is 6:40 in the evening.'
+      }
+    ]
+  },
+  {
+    type: 'branch',
+    ifFlag: 'day1_lunch_endure',
+    not: true,
+    then: [
+      {
+        type: 'narration',
+        zh: '你说吃了，是同学分给你的。她「哦」了一声，点了点头，然后又点了一次，然后就没说话了。',
+        en: 'You say you did eat: a classmate shared hers. She says "oh", nods, nods again, and then stops talking.'
+      },
+      {
+        type: 'narration',
+        characterImage: `${NAO}casual_cold.webp`,
+        zh: '接下来的三十米她走得比刚才快了一点。你没有问为什么。',
+        en: 'She walks the next thirty metres slightly faster than before. You do not ask why.'
+      }
+    ]
+  },
+  // ---- 门口 ----
+  { type: 'scene', scene: 'umikaze_exterior', bgm: 'night' },
+  {
+    type: 'narration',
+    characterImage: `${NAO}casual_neutral.webp`,
+    zh: '海风庄门口。她把袋子放在台阶上，直起腰捶了两下。',
+    en: 'The entrance of Umikaze-so. She sets the bags down on the step and stretches, thumping her own back twice.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_happy.webp`,
+    jp: 'ほな、また明日な。……あ、明日は坂の下ちゃうくて、駅で待っとくわ。そのほうが確実やろ。',
+    zh: '那，明天见啦。……啊，明天不在坡道下面，我在车站等你。那样比较保险吧。',
+    en: 'Right, see you tomorrow. ...Oh — not the bottom of the slope tomorrow, I will wait at the station. That is safer, right?',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '三宫站有六个出口。你决定明天早点出门。',
+    en: 'Sannomiya station has six exits. You decide to leave early tomorrow.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}casual_neutral.webp`,
+    zh: '她走了两步，又回过头。',
+    en: 'She takes two steps, then turns back.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_shy.webp`,
+    jp: '……あのさ。今日、いっぱい名前おぼえたやろ。',
+    zh: '……那个啊。今天，记住了好多名字吧。',
+    en: '...Hey. You learned a lot of names today, right.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '你说是。',
+    en: 'You say yes.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}casual_happy.webp`,
+    jp: 'ええことやん。……うん。ええことや。',
+    zh: '这是好事啊。……嗯。是好事。',
+    en: 'That is a good thing. ...Yeah. It is a good thing.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '她说了两遍。第二遍像是说给自己听的。然后她挥了挥手，转身下坡，走的是——你注意到了——错误的那个方向。',
+    en: 'She says it twice. The second time sounds like it was for her own benefit. Then she waves, turns, and heads back down the slope in — you notice — the wrong direction.'
+  },
+  {
+    type: 'narration',
+    zh: '你没有叫住她。她自己会发现的。大概三条街之后。',
+    en: 'You do not call after her. She will work it out. In about three streets.'
   },
   {
     type: 'effect',
     setFlags: ['day1_met_nao'],
     effects: [{ stat: 'kindness', amount: 1, reasonZh: '有人替你想到了米和味噌', reasonEn: 'Someone thought about your rice and miso for you' }],
-    relations: [{ char: CharacterId.NAO, affection: 3, reasonZh: '她在坡道口等了很久', reasonEn: 'She waited a long time at the foot of that slope' }]
+    relations: [{ char: CharacterId.NAO, affection: 3, reasonZh: '她在坡道口等了很久，而且等错了地方', reasonEn: 'She waited a long time at the foot of a slope. The wrong slope, first' }]
   }
 ];

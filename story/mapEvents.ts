@@ -1,6 +1,6 @@
 import {
   MapEventDef, MapLocation, StoryFlags, StoryNode,
-  GameCalendar, AffectionMap, FamiliarityMap, CharacterId
+  GameCalendar, AffectionMap, FamiliarityMap, CharacterId, TimeSlot
 } from '../types';
 import { AFTERSCHOOL_EVENTS } from './afterschoolEvents';
 import { GROUP_EVENTS } from './groupEvents';
@@ -61,6 +61,34 @@ export const isLocationUnlocked = (loc: MapLocation, flags: StoryFlags): boolean
 
 export const isLocationOpenNow = (loc: MapLocation, calendar: GameCalendar): boolean =>
   !loc.timeSlots || loc.timeSlots.includes(calendar.timeSlot);
+
+// ---------------------------------------------------------
+// ⏳ 放学后的时间预算
+//
+// 一天放学后只有两格：午后和夜里。早上是上学，不作为外出时段。
+// 每个地方按"实际会耗掉多久"标价：顺路拐进便利店是 1 格，
+// 坐下吃一碗二郎系拉面、跑一趟有马温泉是 2 格——去完就只能回家了。
+// 剩余格数不够时地图上照样列出来，但灰掉并写明"今天来不及了"。
+// ---------------------------------------------------------
+export const AFTERSCHOOL_SLOTS: TimeSlot[] = ['afternoon', 'night'];
+
+// 今天还剩几格。早上视为一整天都还没用（第 1 章之后正常不会停在早上）。
+export const slotsLeftToday = (calendar: GameCalendar): number => {
+  const i = AFTERSCHOOL_SLOTS.indexOf(calendar.timeSlot);
+  return i < 0 ? AFTERSCHOOL_SLOTS.length : AFTERSCHOOL_SLOTS.length - i;
+};
+
+// 这一趟要花几格。事件可以覆盖地点的默认值；市外(far)默认就是 2 格。
+export const getTimeCost = (loc: MapLocation, ev?: MapEventDef | null): number =>
+  ev?.timeCost ?? loc.timeCost ?? (loc.district === 'far' ? 2 : 1);
+
+// 今天的时间还够不够去这一趟
+export const canAffordLocation = (
+  loc: MapLocation, calendar: GameCalendar, ctx?: EventContext
+): boolean => {
+  const ev = ctx ? pickEventFor(loc.id, ctx) : null;
+  return getTimeCost(loc, ev) <= slotsLeftToday(calendar);
+};
 
 // 白跑一趟也得有东西看。没有事件可演时，用这个地方自己的空转旁白
 // 拼一小段——一句景，一点点属性，然后回大厅。

@@ -213,7 +213,7 @@ const RoomScreen: React.FC<Props> = ({
             <p className="mt-4 text-sm text-white/70 leading-relaxed">
               {en
                 ? 'Kaisei Gakuen. Your photograph, taken in the booth outside the consulate. The name line sits under the lamination glare and your own thumb, and you keep not moving either of them.'
-                : '開誠学園。照片是上周在领事馆门口那台机器里拍的。名字那一行压在覆膜的反光和你自己的拇指底下，你一直没挪开。'}
+                : '海星学園。照片是上周在领事馆门口那台机器里拍的。名字那一行压在覆膜的反光和你自己的拇指底下，你一直没挪开。'}
             </p>
             <button
               onClick={() => { audioManager.playSfx('click'); setCardOpen(false); }}

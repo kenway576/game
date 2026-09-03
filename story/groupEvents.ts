@@ -87,7 +87,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}smug.webp`,
+      characterImage: `${MAKI}punk_neutral.webp`,
       jp: '……三回。',
       zh: '……三次。',
       en: '...Three.',
@@ -200,9 +200,85 @@ const EV_GROUP_RAMEN: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${MAKI}shy.webp`,
+              characterImage: `${MAKI}punk_pout.webp`,
               zh: '真希盯着那半碗面看了很久，然后一句话也没说地吃完了。',
               en: 'Maki stares at that half bowl for a long time and then finishes it without a word.'
+            }
+          ]
+        },
+        {
+          id: 'group_ramen_third',
+          labelZh: '一言不发，自己也点了一碗，坐到两个人中间',
+          labelEn: 'Say nothing. Order a bowl of your own and sit down between them',
+          hintZh: '劝不动，也不加油。那就一起吃',
+          hintEn: 'You cannot stop it and you will not fuel it. So eat.',
+          effects: [
+            { stat: 'guts', amount: 2, reasonZh: '你把自己放进了两个人的战场中间', reasonEn: 'You put yourself in the middle of somebody else’s battlefield' },
+            { stat: 'proficiency', amount: 1, reasonZh: '你终于学会了怎么用替え玉', reasonEn: 'You finally learned what kaedama is actually for' }
+          ],
+          relations: [
+            { char: CharacterId.SORA, familiarity: 12, affection: 4, reasonZh: '有人愿意坐进来，她比赢了还高兴', reasonEn: 'Someone sitting down with her beat winning' },
+            { char: CharacterId.MAKI, familiarity: 12, affection: 6, reasonZh: '她不再是那个被围观的人了', reasonEn: 'She stopped being the one being watched' }
+          ],
+          setFlags: ['group_ramen_joined'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你在两只碗中间拉开一张凳子坐下，朝老板伸出一根手指。老板点了点头，一句话没问。',
+              en: 'You pull out the stool between the two bowls, sit, and hold one finger up at the master. He nods and asks nothing.'
+            },
+            {
+              type: 'narration',
+              zh: '两个人同时停下筷子看你。',
+              en: 'Both of them stop mid-chopstick and look at you.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '真希', speakerEn: 'Maki',
+              characterImage: `${MAKI}punk_neutral.webp`,
+              jp: '……せんぱい、なにしてんの。',
+              zh: '……前辈，你在干嘛。',
+              en: '...Senpai. What are you doing.',
+              color: 'bg-pink-600'
+            },
+            {
+              type: 'narration',
+              zh: '你说，吃面。然后你就真的开始吃面了。',
+              en: 'You say: eating noodles. And then you eat noodles.'
+            },
+            {
+              type: 'narration',
+              zh: '大概过了两分钟，你听见左边的筷子先动了，然后是右边的。数数这件事没有人再提起过。',
+              en: 'About two minutes later you hear the chopsticks start up again on your left, and then on your right. Nobody mentions the counting again.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '空', speakerEn: 'Sora',
+              characterImage: `${SORA}neutral.webp`,
+              jp: '……なあ。替え玉、いる？',
+              words: [{ jp: 'いる', zh: '要、需要', en: 'to need / to want' }],
+              zh: '……喂。加面，要吗？',
+              en: '...Hey. Extra noodles. You want some?',
+              color: 'bg-orange-500'
+            },
+            {
+              type: 'narration',
+              zh: '这一次你知道该怎么答了：把碗里的汤留够，然后点头。',
+              en: 'This time you know how to answer: leave enough broth in the bowl, and nod.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '真希', speakerEn: 'Maki',
+              characterImage: `${MAKI}punk_laugh.webp`,
+              jp: 'おっ、学習しとるやん。えらいえらい。',
+              zh: '哦，学会了嘛。真棒真棒。',
+              en: 'Oh, look at that, he learned. Well done, well done.',
+              color: 'bg-pink-600'
+            },
+            {
+              type: 'narration',
+              zh: '三个人一起加了面。谁也没赢，谁也没输，碗摞了九个。',
+              en: 'All three of you order extra. Nobody wins and nobody loses. The bowls stack up to nine.'
             }
           ]
         }
@@ -216,7 +292,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}neutral.webp`,
+      characterImage: `${MAKI}punk_neutral.webp`,
       jp: '……先輩。あの人、なんなん。',
       zh: '……前辈。那个人是什么来头。',
       en: '...Senpai. What is her deal.',
@@ -439,6 +515,76 @@ const EV_GROUP_MERIKEN: MapEventDef = {
               en: 'Asuka looks at it for three seconds and then asks for a copy.'
             }
           ]
+        },
+        {
+          id: 'group_meriken_coffee',
+          labelZh: '「那我去买热的。二十七分钟，站着会冷。」',
+          labelEn: '"Then I am getting something hot. Twenty-seven minutes standing here will be cold."',
+          hintZh: '海边的风比坡道上大得多',
+          hintEn: 'The wind off the water is a lot worse than the wind on the slope.',
+          effects: [
+            { stat: 'kindness', amount: 2, reasonZh: '你先想到的是四个人的手会冷', reasonEn: 'What you thought of first was four sets of cold hands' },
+            { stat: 'proficiency', amount: 1, reasonZh: '你记住了三个人各自要什么', reasonEn: 'You kept three different orders straight' }
+          ],
+          relations: [
+            { char: CharacterId.HIKARI, familiarity: 12, affection: 5, reasonZh: '她抢着跟你一起去', reasonEn: 'She insisted on going with you' },
+            { char: CharacterId.REI, familiarity: 12, affection: 5, reasonZh: '你记得她不加糖', reasonEn: 'You remembered she takes it without sugar' },
+            { char: CharacterId.ASUKA, familiarity: 12, affection: 6, reasonZh: '她一直没承认自己冷', reasonEn: 'She never once admitted to being cold' }
+          ],
+          setFlags: ['group_meriken_coffee'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你说完就往公园口的自动售货机走。光立刻跟了上来，说一个人拿不了四罐。',
+              en: 'You head for the vending machine at the park entrance. Hikari falls in beside you at once, on the grounds that one person cannot carry four cans.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '光', speakerEn: 'Hikari',
+              characterImage: `${HIKARI}happy.webp`,
+              jp: 'あの二人な、絶対「寒くない」って言うで。ぜっったい言う。',
+              words: [{ jp: '寒い', reading: 'さむい', zh: '冷', en: 'cold' }],
+              zh: '那两个人啊，绝对会说「不冷」。绝——对会说。',
+              en: 'Those two are going to say they are not cold. Guaranteed. Both of them.',
+              color: 'bg-yellow-500'
+            },
+            {
+              type: 'narration',
+              zh: '你买了四罐。铃的那罐不加糖——你不确定为什么自己记得这件事。',
+              en: 'You buy four. Rei’s is the unsweetened one. You are not sure why you remembered that.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${ASUKA}surprised.webp`,
+              zh: '回到栏杆边，你把罐子一个个递过去。明日香接过去的时候说了「我不冷」，但两只手一直没有松开。',
+              en: 'Back at the railing you hand them round. Asuka says "I am not cold" as she takes hers, and does not let go of it once.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '铃', speakerEn: 'Rei',
+              characterImage: `${REI}neutral.webp`,
+              jp: '……無糖。なぜ分かったのですか。',
+              zh: '……无糖的。你怎么知道的。',
+              en: '...Unsweetened. How did you know.',
+              color: 'bg-sky-600'
+            },
+            {
+              type: 'narration',
+              zh: '你答不上来。铃看了你两秒，把罐子贴在自己脸颊上，然后转回去继续看那个应用。',
+              en: 'You have no answer. Rei looks at you for two seconds, presses the can to her cheek, and turns back to her app.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${REI}smile.webp`,
+              zh: '「……あと十四分です。」她说。声音听上去比刚才软了一点。',
+              en: '"...Fourteen minutes left," she says. Her voice is fractionally softer than it was.'
+            },
+            {
+              type: 'narration',
+              zh: '四个人站成一排，每人手里一罐热的。风还是很大，但没有人再提要走。',
+              en: 'The four of you stand in a row with a hot can each. The wind is still bad. Nobody mentions leaving again.'
+            }
+          ]
         }
       ]
     },
@@ -637,6 +783,82 @@ const EV_GROUP_MOSAIC: MapEventDef = {
               characterImage: `${MIYUKI}neutral.webp`,
               zh: '深雪看了你一眼。就一眼，但你确定她知道你为什么换了话题。',
               en: 'Miyuki glances at you. Just once, but you are certain she knows why you changed the subject.'
+            }
+          ]
+        },
+        {
+          id: 'group_mosaic_window',
+          labelZh: '「右边数第四个也是亮的。那个是我家。」',
+          labelEn: '"The fourth from the right is lit too. That one is mine."',
+          hintZh: '她指了自己的窗户。那你也指一个',
+          hintEn: 'She pointed at her own window. So point at one.',
+          effects: [
+            { stat: 'guts', amount: 2, reasonZh: '你把自己住在哪儿告诉了三个人', reasonEn: 'You told three people where you live' },
+            { stat: 'charm', amount: 1, reasonZh: '你把一句"那是我家"接成了一整片灯', reasonEn: 'You turned one lit window into a whole row of them' }
+          ],
+          relations: [
+            { char: CharacterId.NAO, familiarity: 12, affection: 8, reasonZh: '她指窗户的时候，等的就是这句', reasonEn: 'That was the sentence she was waiting for when she pointed' },
+            { char: CharacterId.MIYUKI, familiarity: 12, affection: 7, reasonZh: '她也把自己那扇指了出来', reasonEn: 'She pointed out her own as well' },
+            { char: CharacterId.INARI, familiarity: 8, affection: 5, reasonZh: '她没有窗户可指，但她笑了', reasonEn: 'She had no window to point at, and she smiled anyway' }
+          ],
+          setFlags: ['group_mosaic_windows'],
+          then: [
+            {
+              type: 'narration',
+              zh: '你伸手指过去，比她的位置往右挪了一格。',
+              en: 'You reach out and point, one window to the right of hers.'
+            },
+            {
+              type: 'narration',
+              characterImage: `${NAO}curious.webp`,
+              zh: '奈绪愣了一下，然后很快地把手收了回去，好像刚才那个动作忽然变得有点危险。',
+              en: 'Nao freezes, then pulls her hand back rather quickly, as though the gesture has suddenly become dangerous.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '奈绪', speakerEn: 'Nao',
+              characterImage: `${NAO}smile.webp`,
+              jp: '……知ってる。三つ目の隣が四つ目なんだから、そりゃ知ってるでしょ。',
+              zh: '……我知道啊。第三个旁边就是第四个，那当然知道。',
+              en: '...I know. The fourth is next to the third. Obviously I know.',
+              color: 'bg-emerald-600'
+            },
+            {
+              type: 'narration',
+              characterImage: `${MIYUKI}happy.webp`,
+              zh: '深雪笑了一声，也抬起手指了一下——就在你那扇的正上方。',
+              en: 'Miyuki laughs once and lifts her own hand to point. Directly above yours.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '深雪', speakerEn: 'Miyuki',
+              characterImage: `${MIYUKI}happy.webp`,
+              jp: 'じゃあ、わたしはその上ね。……こうして見ると、ずいぶん近いのね、わたしたち。',
+              words: [{ jp: '近い', reading: 'ちかい', zh: '近', en: 'close / near' }],
+              zh: '那我就是那扇的正上方了。……这样看的话，我们住得可真近呢。',
+              en: 'Then I am the one directly above. ...Seen from here, we do live remarkably close together.',
+              color: 'bg-purple-600'
+            },
+            {
+              type: 'narration',
+              characterImage: `${INARI}neutral.webp`,
+              zh: '稻荷一直没有指。她只是看着那一小片亮着的窗户，看了很久。',
+              en: 'Inari does not point at anything. She only looks at that small cluster of lit windows, for a long time.'
+            },
+            {
+              type: 'speech',
+              speakerZh: '稻荷', speakerEn: 'Inari',
+              characterImage: `${INARI}neutral.webp`,
+              jp: '……灯りというのは、誰かが帰ってくる家にしか点かぬものじゃ。',
+              words: [{ jp: '灯り', reading: 'あかり', zh: '灯光', en: 'a light' }],
+              zh: '……灯这种东西啊，只会亮在有人要回去的房子里。',
+              en: '...A light only ever burns in a house someone is coming home to.',
+              color: 'bg-amber-600'
+            },
+            {
+              type: 'narration',
+              zh: '包厢里没有人接话。四个人一起看着山坡上那几扇窗，直到轮子转过最高点。',
+              en: 'Nobody answers that. The four of you watch those few windows on the hillside together, until the wheel comes over the top.'
             }
           ]
         }
