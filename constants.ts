@@ -48,8 +48,6 @@ export const SCENE_MAP: Record<string, string> = {
   'art_room':          '/images/backgrounds/bg_art_club_room.webp',
   'school_terrace':    '/images/backgrounds/bg_kaisei_cafeteria.webp',
   'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.webp',
-  // 新补的校内场景（international_office / school_lockers 上面已登记）
-  'classroom_morning':  '/images/backgrounds/bg_classroom_morning.webp',
   'school_hallway_new': '/images/backgrounds/bg_school_hallway.webp',
   'rooftop_sunset':     '/images/backgrounds/bg_school_rooftop_sunset.webp',
   'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.webp',
@@ -70,8 +68,7 @@ export const SCENE_MAP: Record<string, string> = {
   'convenience_store_interior':  '/images/backgrounds/bg_convenience_store_interior.webp',
   'convenience_store_counter':   '/images/backgrounds/bg_convenience_store_counter.webp',
   'grandfather_journal':         '/images/backgrounds/bg_grandfather_journal.webp',
-  'international_office':        '/images/backgrounds/bg_international_office.webp',
-  'school_lockers':              '/images/backgrounds/bg_school_lockers_hallway.webp',
+  'school_lockers_hallway':      '/images/backgrounds/bg_school_lockers_hallway.webp',
   // 🍜 神户美食与咖啡圣地（三宫拉面次郎 & 北野坂西村咖啡店）
   'ramen_jiro_exterior':        '/images/backgrounds/bg_ramen_jiro_exterior.webp',
   'ramen_shop_interior':        '/images/backgrounds/bg_ramen_shop_interior.webp',
@@ -107,9 +104,66 @@ export const SCENE_MAP: Record<string, string> = {
   'sannomiya_pia_kobe_arcade':     '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
   'pia_kobe_arcade':               '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
   'pia_kobe':                      '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
-  // 🏪 休闲系统的两家店。借现成的背景，不为它们生成新图。
-  'hyakkin_store':                 '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
-  'tackle_shop':                   '/images/backgrounds/bg_kobe_meriken_park.webp'
+  // 🏪 百元店与生活采购
+  'hyakkin_store':                 '/images/backgrounds/bg_hundred_yen_shop_interior.webp',
+  'hundred_yen_shop_exterior':     '/images/backgrounds/bg_hundred_yen_shop_exterior.webp',
+  'hundred_yen_shop_interior':     '/images/backgrounds/bg_hundred_yen_shop_interior.webp',
+  'hundred_yen_shop':              '/images/backgrounds/bg_hundred_yen_shop_interior.webp',
+  'tackle_shop':                   '/images/backgrounds/bg_suma_fishing_pier.webp',
+  // 🏫 校园日常实景拓展
+  'school_gym_storage':            '/images/backgrounds/bg_school_gym_storage.webp',
+  'school_entrance_lockers':       '/images/backgrounds/bg_school_entrance_lockers.webp',
+  'school_lockers':                '/images/backgrounds/bg_school_entrance_lockers.webp',
+  'school_infirmary':              '/images/backgrounds/bg_school_infirmary.webp',
+  'kaisei_cafeteria_sunlight':     '/images/backgrounds/bg_kaisei_cafeteria_sunlight.webp',
+  'school_science_lab':            '/images/backgrounds/bg_school_science_lab.webp',
+  'school_bicycle_parking':        '/images/backgrounds/bg_school_bicycle_parking.webp',
+  'school_faculty_office':         '/images/backgrounds/bg_school_faculty_office.webp',
+  'kaisei_intl_salon':             '/images/backgrounds/bg_kaisei_intl_salon.webp',
+  'international_office':          '/images/backgrounds/bg_kaisei_intl_salon.webp',
+  'kaisei_classroom_morning':      '/images/backgrounds/bg_kaisei_classroom_morning.webp',
+  'classroom_morning':             '/images/backgrounds/bg_kaisei_classroom_morning.webp',
+  // 🏰 北野异人馆风见鸡馆
+  'kitano_kazamidori_square':      '/images/backgrounds/bg_kitano_kazamidori_square.webp',
+  'kazamidori_square':             '/images/backgrounds/bg_kitano_kazamidori_square.webp',
+  // 🎣 须磨海滨与防波堤垂钓
+  'suma_beach_coast':              '/images/backgrounds/bg_suma_beach_coast.webp',
+  'suma_beach':                    '/images/backgrounds/bg_suma_beach_coast.webp',
+  'suma_fishing_pier':             '/images/backgrounds/bg_suma_fishing_pier.webp',
+  'fishing_pier':                  '/images/backgrounds/bg_suma_fishing_pier.webp',
+  // ☕ 元町复古吃茶店
+  'retro_kissaten_exterior':       '/images/backgrounds/bg_retro_kissaten_exterior.webp',
+  'retro_kissaten_interior':       '/images/backgrounds/bg_retro_kissaten_interior.webp',
+  'retro_kissaten':                '/images/backgrounds/bg_retro_kissaten_interior.webp',
+  // 🚉 沿海平交道
+  'seaside_railroad_crossing':       '/images/backgrounds/bg_seaside_railroad_crossing.webp',
+  'seaside_railroad_crossing_train': '/images/backgrounds/bg_seaside_railroad_crossing_train.webp',
+  // 🦁 王子动物园与摩天轮
+  'oji_zoo_entrance':              '/images/backgrounds/bg_oji_zoo_entrance.webp',
+  'oji_zoo':                       '/images/backgrounds/bg_oji_zoo_entrance.webp',
+  'oji_zoo_ferris_wheel':          '/images/backgrounds/bg_oji_zoo_ferris_wheel.webp',
+  // ♨️ 滩温泉与有马温泉名所
+  'nada_onsen_exterior':           '/images/backgrounds/bg_nada_onsen_exterior.webp',
+  'nada_onsen_interior':           '/images/backgrounds/bg_nada_onsen_interior.webp',
+  'nada_onsen':                    '/images/backgrounds/bg_nada_onsen_interior.webp',
+  'arima_onsen_kin_no_yu':         '/images/backgrounds/bg_arima_onsen_kin_no_yu.webp',
+  'arima_onsen_street_slope':      '/images/backgrounds/bg_arima_onsen_street_slope.webp',
+  // 🌌 六甲山·掬星台千万美元夜景
+  'rokko_kikuseidai_night_view':   '/images/backgrounds/bg_rokko_kikuseidai_night_view.webp',
+  'rokko_kikuseidai_pavilion':     '/images/backgrounds/bg_rokko_kikuseidai_pavilion.webp',
+  'kikuseidai_night':              '/images/backgrounds/bg_rokko_kikuseidai_night_view.webp',
+  // 🍳 自炊料理系统（海风庄201厨房与便当料理台）
+  'umikaze_room_kitchen':          '/images/backgrounds/bg_umikaze_room_kitchen.webp',
+  'cooking_counter_bento':         '/images/backgrounds/bg_cooking_counter_bento.webp',
+  'kitchen_bento':                 '/images/backgrounds/bg_cooking_counter_bento.webp',
+  // 🍜 六甲道二郎系神店「ラーメン荘 歴史を刻め」
+  'ramen_rekishi_exterior':        '/images/backgrounds/bg_ramen_rekishi_exterior.webp',
+  'ramen_rekishi_bowl':            '/images/backgrounds/bg_ramen_rekishi_bowl.webp',
+  'rekishi_wo_kizame':             '/images/backgrounds/bg_ramen_rekishi_bowl.webp',
+  // 🥩 🍽️ 神户牛铁板烧与元町格里尔一平
+  'kobe_beef_teppanyaki':          '/images/backgrounds/bg_kobe_beef_teppanyaki.webp',
+  'grill_ippei_motomachi':         '/images/backgrounds/bg_grill_ippei_motomachi.webp',
+  'grill_ippei':                   '/images/backgrounds/bg_grill_ippei_motomachi.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
@@ -1087,11 +1141,11 @@ export const getFamiliarityStage = (charId: CharacterId, familiarity: number): s
 // ---------------------------------------------------------
 // 各**親密度**等级解锁的场景（对全角色通用；键须存在于 SCENE_MAP）
 export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
-  1: ['classroom', 'hallway', 'library', 'rooftop', 'gym', 'street', 'park'],
-  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior', 'sannomiya_junkudo_bookstore', 'portliner_sannomiya_gate', 'portliner_sannomiya_platform', 'sannomiya_pia_kobe_arcade'],
-  3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform', 'ikuta_shrine_gate', 'ikuta_shrine_forest', 'former_settlement_15_exterior', 'former_settlement_15_salon'],
-  4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi', 'kitano_tenman_shrine_lookout', 'portliner_sannomiya_sunset'],
-  5: ['castle', 'luminarie', 'arima_onsen', 'dotonbori', 'kiyomizu_stage']
+  1: ['classroom', 'hallway', 'library', 'rooftop', 'gym', 'street', 'park', 'school_entrance_lockers', 'kaisei_classroom_morning', 'school_bicycle_parking', 'kaisei_intl_salon'],
+  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior', 'sannomiya_junkudo_bookstore', 'portliner_sannomiya_gate', 'portliner_sannomiya_platform', 'sannomiya_pia_kobe_arcade', 'hundred_yen_shop_interior', 'retro_kissaten_interior', 'ramen_rekishi_bowl', 'umikaze_room_kitchen', 'cooking_counter_bento', 'school_gym_storage', 'kaisei_cafeteria_sunlight', 'school_infirmary'],
+  3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform', 'ikuta_shrine_gate', 'ikuta_shrine_forest', 'former_settlement_15_exterior', 'former_settlement_15_salon', 'suma_beach_coast', 'suma_fishing_pier', 'seaside_railroad_crossing', 'nada_onsen_interior', 'oji_zoo_entrance', 'oji_zoo_ferris_wheel', 'kitano_kazamidori_square'],
+  4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi', 'kitano_tenman_shrine_lookout', 'portliner_sannomiya_sunset', 'arima_onsen_kin_no_yu', 'arima_onsen_street_slope', 'grill_ippei_motomachi'],
+  5: ['castle', 'luminarie', 'arima_onsen', 'dotonbori', 'kiyomizu_stage', 'rokko_kikuseidai_night_view', 'kobe_beef_teppanyaki']
 };
 
 // 各角色各等级解锁的服装（键须存在于 WARDROBE 对应角色的列表）
