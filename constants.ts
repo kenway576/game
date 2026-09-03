@@ -1,6 +1,11 @@
 import { ASUKA_STORY_1 } from './story/levelStories/asuka1';
 import { HIKARI_STORY_1 } from './story/levelStories/hikari1';
 import { REI_STORY_1 } from './story/levelStories/rei1';
+import { SORA_STORY_1 } from './story/levelStories/sora1';
+import { MIYUKI_STORY_1 } from './story/levelStories/miyuki1';
+import { NAO_STORY_1 } from './story/levelStories/nao1';
+import { MAKI_STORY_1 } from './story/levelStories/maki1';
+import { INARI_STORY_1 } from './story/levelStories/inari1';
 import { ASUKA_STORY_2 } from './story/levelStories/asuka';
 import { ASUKA_STORY_3 } from './story/levelStories/asuka3';
 import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode, ViewSpot } from './types';
@@ -1265,6 +1270,58 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '一九〇四年',
       titleEn: 'Nineteen Oh Four',
       script: REI_STORY_1
+    }
+  ],
+  [CharacterId.SORA]: [
+    {
+      id: 'sora_1_trade',
+      axis: 'familiarity',
+      level: 3,
+      titleZh: '交換条件',
+      titleEn: 'The Trade',
+      script: SORA_STORY_1
+    }
+  ],
+  [CharacterId.MIYUKI]: [
+    {
+      id: 'miyuki_1_dinner',
+      axis: 'familiarity',
+      level: 3,
+      titleZh: '二〇二号室の夕飯',
+      titleEn: 'Dinner in 202',
+      script: MIYUKI_STORY_1
+    }
+  ],
+  // 奈绪的親密度开局就 215（"无话不谈"），没有认识她这个阶段可走，
+  // 所以她三段全部挂好感度：Lv.2 / Lv.3 / Lv.5。
+  [CharacterId.NAO]: [
+    {
+      id: 'nao_1_distance',
+      axis: 'affection',
+      level: 2,                 // 好感度 Lv.2「好意」(80)
+      titleZh: '幼馴染の距離',
+      titleEn: 'The Childhood-Friend Distance',
+      script: NAO_STORY_1
+    }
+  ],
+  [CharacterId.MAKI]: [
+    {
+      id: 'maki_1_senpai',
+      axis: 'familiarity',
+      level: 3,
+      titleZh: 'センパイ認定',
+      titleEn: 'Certified Senpai',
+      script: MAKI_STORY_1
+    }
+  ],
+  [CharacterId.INARI]: [
+    {
+      id: 'inari_1_thousand',
+      axis: 'familiarity',
+      level: 3,
+      titleZh: '千年の暇つぶし',
+      titleEn: 'A Thousand Years to Kill',
+      script: INARI_STORY_1
     }
   ],
   // 示例（等剧本写好后填 script）：
