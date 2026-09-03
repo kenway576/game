@@ -57,7 +57,11 @@ const PK_LUM   = 185;  // 口袋检测：连通块的成员门槛
 const PK_SAT   = 38;
 const PK_PURE  = 250;  // "纯白"的界线
 const PK_RATIO = 0.60; // 纯白占比高于此 → 判定为漏掉的背景
-const PK_MIN   = 120;  // 小于这个像素数的块不管（噪点）
+// 下限必须比"一张嘴"大。第一版定在 120px，结果把张嘴立绘的口腔
+// （牙齿是一块被围住的、几乎全白的区域）当成漏抠的背景抠穿了，
+// 游戏里看上去就是一张黑嘴。实测：光的嘴 459~524px，
+// 而真正要清的背景口袋（头和马尾之间）是 2600~6900px，中间隔得很开。
+const PK_MIN_PCT = 0.002;  // 占全图的比例，约 1500px（528x1400 的图）
 const PK_MAXPCT= 0.12; // 大于整图这个比例的块不动（宁可留着也不敢吃衣服）
 const FEATHER  = 5;    // 羽化带宽（辉光靠它，不靠洪水）
 const FEATHER_LUM = 196;
@@ -109,7 +113,7 @@ async function clean(file) {
       const p = st.pop(); cells.push(p);
       for (const q of nbrs(p)) if (!seen[q] && memberOf(q)) { seen[q] = 1; st.push(q); }
     }
-    if (cells.length < PK_MIN || cells.length > N * PK_MAXPCT) continue;
+    if (cells.length < N * PK_MIN_PCT || cells.length > N * PK_MAXPCT) continue;
     let pure = 0;
     for (const p of cells) if (L(p) > PK_PURE) pure++;
     if (pure / cells.length < PK_RATIO) continue;   // 有明暗层次 = 衣服，放过
