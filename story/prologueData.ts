@@ -171,8 +171,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         id: 'pickup_speak',
         labelZh: '弯腰捡起来，快步追上去用日语递给她',
         labelEn: 'Pick it up, catch up to her, and hand it over in Japanese',
-        hintZh: '「あの、落としましたよ。」——第一次在这个国家开口',
-        hintEn: '"Um — you dropped this." Your first words spoken in this country.',
+        jp: 'あの、これ、落としましたよ。',
+        words: [{ jp: '落とす', reading: 'おとす', zh: '掉、弄丢', en: 'to drop' }],
+        hintZh: '第一次在这个国家开口',
+        hintEn: 'The first words you speak in this country.',
         effects: [
           { stat: 'kindness', amount: 1, reasonZh: '把别人的东西当成自己的事', reasonEn: 'You treated a stranger’s problem as your own' },
           { stat: 'guts', amount: 1, reasonZh: '在异国他乡，第一次主动开口', reasonEn: 'In a foreign country, you spoke first' }
@@ -619,8 +621,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             options: [
               {
                 id: 'rei_ask',
-                labelZh: '「あの、これは何ですか？」指着门楣上的雕花问',
-                labelEn: '"Um — what is that?" Point at the carving above the door',
+                labelZh: '指着门楣上的雕花，问她这是什么',
+                labelEn: 'Point at the carving over the door and ask what it is',
+                jp: 'あの、これは何ですか。',
                 hintZh: '外公说过：遇到不懂的，就大大方方地问',
                 hintEn: 'Your grandfather wrote it down: when you do not understand, ask, openly.',
                 effects: [
@@ -843,8 +846,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             options: [
               {
                 id: 'hikari_answer',
-                labelZh: '「はい、今日、着いたばかりです。」老老实实回答',
-                labelEn: '"Yes. I only got here today." Answer straight',
+                labelZh: '老老实实回答：今天刚到',
+                labelEn: 'Answer straight: you only got here today',
+                jp: 'はい、今日、着いたばかりです。',
+                words: [{ jp: 'ばかり', reading: 'ばかり', zh: '刚刚（做完）', en: 'only just' }],
                 hintZh: '「刚到」这三个字，说出口才发觉是真的',
                 hintEn: 'Only once you say "just arrived" does it become true.',
                 effects: [
@@ -890,8 +895,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               },
               {
                 id: 'hikari_tease',
-                labelZh: '反问她：「どうして分かったんですか？」',
-                labelEn: '"How could you tell?" Turn the question back on her',
+                labelZh: '反问她：你是怎么看出来的',
+                labelEn: 'Ask her back: how could she tell?',
+                jp: 'どうして分かったんですか。',
                 hintZh: '你很想知道自己到底哪里写着「刚下飞机」',
                 hintEn: 'You genuinely want to know where it says "fresh off the plane" on you.',
                 effects: [
@@ -1051,8 +1057,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             options: [
               {
                 id: 'maki_ask',
-                labelZh: '「はい。今日、来ました。」——顺便问她这个怎么吃',
-                labelEn: '"Yes. I arrived today." — and ask her how you are supposed to eat that',
+                labelZh: '承认今天刚来，顺便问她这个东西怎么吃',
+                labelEn: 'Admit you only arrived today, then ask how you are meant to eat this',
+                jp: 'はい。今日、来ました。……これ、どうやって食べるんですか。',
                 hintZh: '铁板上那东西，你是真的不会吃',
                 hintEn: 'You genuinely do not know how to eat the thing on that griddle.',
                 effects: [
@@ -1102,8 +1109,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               },
               {
                 id: 'maki_kansai',
-                labelZh: '用刚听了一整条街的关西腔回一句：「ちゃうで。」',
-                labelEn: '"Chau de." Answer in the Kansai you have been hearing all street',
+                labelZh: '用刚听了一整条街的关西腔回一句',
+                labelEn: 'Answer in the Kansai-ben you have been hearing all down the street',
+                jp: 'ちゃうで。',
                 hintZh: '整条商店街都在教你这个尾音',
                 hintEn: 'The whole arcade has been teaching you that ending.',
                 requires: { stat: 'guts', min: 1 },
@@ -1513,8 +1521,10 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         options: [
           {
             id: 'checkout_kansai',
-            labelZh: '「袋、お願いします。……おおきに！」',
-            labelEn: '"A bag please... ookini!"',
+            labelZh: '要个袋子，然后学着说一句关西的谢谢',
+            labelEn: 'Ask for a bag, then try the Kansai way of saying thanks',
+            jp: '袋、お願いします。……おおきに！',
+            words: [{ jp: 'おおきに', reading: 'おおきに', zh: '谢谢（关西）', en: 'thanks, in Kansai' }],
             hintZh: '关西人道谢时说的那一句',
             hintEn: 'The way people say thank you around here.',
             // 只有被真纪教过「おおきに」的人才看得到这一句。
@@ -1555,8 +1565,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             id: 'checkout_jp',
-            labelZh: '「あ、はい。袋をお願いします。」',
-            labelEn: '"Ah — yes. A bag, please."',
+            labelZh: '规规矩矩地说要个袋子',
+            labelEn: 'Ask for a bag, by the book',
+            jp: 'あ、はい。袋をお願いします。',
             hintZh: '一个字一个字地说完，说得很慢',
             hintEn: 'Word by word, slowly, all the way to the end.',
             effects: [
@@ -1689,8 +1700,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     options: [
       {
         id: 'greet_speak',
-        labelZh: '主动开口：「あの、すみません——」',
-        labelEn: 'Speak first: "Um, excuse me—"',
+        labelZh: '主动开口叫住她',
+        labelEn: 'Speak first and stop her',
+        jp: 'あの、すみません——',
         hintZh: '同一栋楼的邻居。今天不打招呼，明天更难开口',
         hintEn: 'Same building. If not now, it only gets harder tomorrow.',
         effects: [
@@ -1790,8 +1802,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             options: [
               {
                 id: 'miyuki_carry',
-                labelZh: '「あの、袋、一つ持ちましょうか？」',
-                labelEn: '"Um — shall I carry one of those for you?"',
+                labelZh: '问她要不要帮忙拿一个袋子',
+                labelEn: 'Offer to carry one of the bags',
+                jp: 'あの、袋、一つ持ちましょうか。',
                 hintZh: '牛奶和鸡蛋，一路上坡',
                 hintEn: 'Milk and eggs. All of it uphill.',
                 effects: [
@@ -1839,6 +1852,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 id: 'miyuki_groceries',
                 labelZh: '问她这一带哪里买东西便宜',
                 labelEn: 'Ask her where the cheap places to shop are around here',
+                jp: 'この辺、どこで買うと安いですか。',
+                words: [{ jp: '安い', reading: 'やすい', zh: '便宜', en: 'cheap' }],
                 hintZh: '你的冰箱现在还是空的',
                 hintEn: 'Your fridge is still completely empty.',
                 effects: [
@@ -1937,8 +1952,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             options: [
               {
                 id: 'miyuki_name',
-                labelZh: '「あの……お名前、聞いてもいいですか？」',
-                labelEn: '"Um... may I ask your name?"',
+                labelZh: '鼓起勇气问她怎么称呼',
+                labelEn: 'Work up to asking what she is called',
+                jp: 'あの……お名前、聞いてもいいですか。',
                 hintZh: '明天早上在楼梯上再遇见，总不能一直叫「那个」',
                 hintEn: 'You will meet on the stairs tomorrow. You cannot keep calling her "um".',
                 effects: [

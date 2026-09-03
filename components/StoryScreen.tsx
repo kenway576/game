@@ -483,6 +483,16 @@ const StoryScreen: React.FC<Props> = ({
     applyFlags(opt.setFlags);
     if (opt.effects?.length) onEffects(opt.effects);
     applyRelations(opt.relations);
+    // 自己挑着说出口的那句话里的词，比读过去的记得牢，所以照样进单词本
+    if (opt.words?.length) {
+      const known = new Set(wordsRef.current.map(w => w.jp));
+      const fresh = opt.words.filter(w => !known.has(w.jp));
+      if (fresh.length) {
+        wordsRef.current = [...wordsRef.current, ...fresh];
+        onCollectWords(fresh);
+        setWordToast({ count: fresh.length, key: Date.now() });
+      }
+    }
     spliceAfter(opt.then);
     advance();
   };
@@ -807,9 +817,22 @@ const StoryScreen: React.FC<Props> = ({
                         : 'bg-black/60 border-white/10 opacity-45 cursor-not-allowed'}`}
                   >
                     <div className="transform skew-x-6">
-                      <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-white group-hover:text-black' : 'text-white/50'}`}>
-                        {en ? opt.labelEn : opt.labelZh}
-                      </div>
+                      {/* 主角真的把这句话说出口的时候，大字就是那句日语，
+                          译文退到下面一行。玩家选的是这句话，不是它的意思。 */}
+                      {opt.jp ? (
+                        <>
+                          <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-white group-hover:text-black' : 'text-white/50'}`}>
+                            {opt.jp}
+                          </div>
+                          <div className={`mt-0.5 text-[11px] md:text-sm font-bold ${ok ? 'text-yellow-300/80 group-hover:text-black/65' : 'text-white/30'}`}>
+                            {en ? opt.labelEn : opt.labelZh}
+                          </div>
+                        </>
+                      ) : (
+                        <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-white group-hover:text-black' : 'text-white/50'}`}>
+                          {en ? opt.labelEn : opt.labelZh}
+                        </div>
+                      )}
                       {(en ? opt.hintEn : opt.hintZh) && (
                         <div className={`mt-1 text-[11px] md:text-sm italic ${ok ? 'text-blue-200/60 group-hover:text-black/70' : 'text-white/30'}`}>
                           {en ? opt.hintEn : opt.hintZh}
