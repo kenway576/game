@@ -581,16 +581,20 @@ const StoryScreen: React.FC<Props> = ({
           onClick={() => { audioManager.playSfx('click'); setFastForward(v => !v); }}
           disabled={isBlockingNode}
           className={`${fastForward ? ctrlBtnOn : ctrlBtn} disabled:opacity-30`}
-          title={en ? 'Fast-forward to the next choice' : '快进到下一个选择'}
+          title={en ? 'Skip ahead to the next choice' : '略过到下一个选择（不是自动播放）'}
         >
-          <span className="block transform skew-x-12">{fastForward ? '⏩ ...' : (en ? '⏩ Fwd' : '⏩ 快进')}</span>
+          {/* 原来叫「快进」，和旁边的「自动」只差一个字，玩家点了它以为是自动翻页，
+              结果剧情唰地飞过去。名字改成它实际干的事：跳到下一个选择。 */}
+          <span className="block transform skew-x-12">{fastForward ? '⏭ ...' : (en ? '⏭ To choice' : '⏭ 跳到选项')}</span>
         </button>
         <button
           onClick={() => { audioManager.playSfx('click'); setAuto(v => !v); }}
           disabled={isBlockingNode}
           className={`${auto ? ctrlBtnOn : ctrlBtn} disabled:opacity-30`}
         >
-          <span className="block transform skew-x-12">{en ? '▶ Auto' : '▶ 自动'}</span>
+          <span className="block transform skew-x-12">
+            {auto ? (en ? '⏸ Auto ON' : '⏸ 自动中') : (en ? '▶ Auto' : '▶ 自动')}
+          </span>
         </button>
         <button onClick={() => { audioManager.playSfx('click'); setShowBacklog(true); }} className={ctrlBtn}>
           <span className="block transform skew-x-12">{en ? '📜 Log' : '📜 回想'}</span>

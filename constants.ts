@@ -1656,6 +1656,22 @@ const WEATHER_AWARE_SCENES: Record<string, string> = {
 };
 
 // 给定场景键 + 当前天气，返回该用哪张图。没有变体就返回 null，调用方用原图。
+// 星期几按日期算出来，不要写死。
+// 之前每次"睡一觉"只把 day 加一，dayOfWeek 原样留着，
+// 于是过了几天之后日历上永远停在同一个星期几。
+// 锚点：游戏开场的 4 月 10 日是星期一（序章抵达那天）。
+const WEEKDAY_JP = ['月', '火', '水', '木', '金', '土', '日'];
+const WEEKDAY_EN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const MONTH_DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+export const weekdayFor = (month: number, day: number): string => {
+  let n = 0;
+  for (let m = 4; m < month; m++) n += MONTH_DAYS[m] || 30;
+  for (let m = month; m < 4; m++) n -= MONTH_DAYS[m] || 30;
+  const idx = ((n + day - 10) % 7 + 7) % 7;   // 4/10 = 週一
+  return `${WEEKDAY_JP[idx]} (${WEEKDAY_EN[idx]})`;
+};
+
 export const getWeatherScene = (sceneKey: string, cal: GameCalendar): string | null => {
   const base = WEATHER_AWARE_SCENES[sceneKey];
   if (!base) return null;

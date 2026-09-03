@@ -210,11 +210,7 @@ const RoomScreen: React.FC<Props> = ({
           <div className="max-w-2xl w-full" onClick={e => e.stopPropagation()}>
             <img src="/images/ui/student_id.webp" alt=""
                  className="w-full border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.7)]" />
-            <p className="mt-4 text-sm text-white/70 leading-relaxed">
-              {en
-                ? 'Kaisei Gakuen. Your photograph, taken in the booth outside the consulate. The name line sits under the lamination glare and your own thumb, and you keep not moving either of them.'
-                : '海星学園。照片是上周在领事馆门口那台机器里拍的。名字那一行压在覆膜的反光和你自己的拇指底下，你一直没挪开。'}
-            </p>
+            {/* 卡面自己说得清楚，不用再在下面解释一遍名字为什么看不见 */}
             <button
               onClick={() => { audioManager.playSfx('click'); setCardOpen(false); }}
               className="mt-4 bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-5 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"

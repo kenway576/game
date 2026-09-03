@@ -86,7 +86,7 @@ const LobbyScreen: React.FC<Props> = ({
           className="group bg-zinc-950/90 hover:bg-zinc-900 border border-amber-500/50 hover:border-amber-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
         >
           <span className="text-amber-400 font-black text-xs">
-            📅 {calendar.month}月{calendar.day}日
+            📅 {calendar.month}月{calendar.day}日 {calendar.dayOfWeek?.replace(/\s*\(.*\)/, '')}
           </span>
           <span className="text-[11px] text-zinc-300 font-bold bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/30">
             {calendar.timeSlot === 'morning' ? '早晨' : calendar.timeSlot === 'afternoon' ? '放学后' : '夜晚'}

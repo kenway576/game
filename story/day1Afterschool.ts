@@ -63,6 +63,100 @@ export const DAY1_GYM: StoryNode[] = [
     promptEn: 'The ball rolls to the wall and stops.',
     options: [
       {
+        id: 'sora_mamba',
+        labelZh: '把外套脱了。「让你见识一下什么叫曼巴精神。」',
+        labelEn: 'Take the blazer off. "Let me show you what Mamba mentality looks like."',
+        hintZh: '你打了十年球。刚才那一下只是没接住而已',
+        hintEn: 'You have played for ten years. You just did not catch that one.',
+        effects: [
+          { stat: 'guts', amount: 3, reasonZh: '你在一个陌生国家的体育馆里报了自己的名号', reasonEn: 'You announced yourself in a gym in a country you had just arrived in' },
+          { stat: 'charm', amount: 2, reasonZh: '她第一次收起了笑', reasonEn: 'It was the first time she stopped grinning' }
+        ],
+        relations: [{ char: CharacterId.SORA, familiarity: 24, affection: 8, reasonZh: '她找到了一个打得过她的人', reasonEn: 'She found someone who can take her' }],
+        setFlags: ['day1_sora_mamba'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把制服外套脱下来搭在栏杆上。里面那件是从行李箱最上层翻出来的——昨晚拆行李时，它被你用来裹外公那本手账，防止路上磕坏。',
+            en: 'You take off the blazer and hang it on the rail. What is underneath came out of the top of the suitcase: last night you had used it to wrap your grandfather\u2019s journal so it would not get knocked about on the way.'
+          },
+          {
+            type: 'narration',
+            zh: '紫金配色。背后一个大大的 24。',
+            en: 'Purple and gold. A very large 24 on the back.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${SORA}shock.webp`,
+            zh: '空看着那个号码，看了整整三秒。她脸上那种"来玩玩嘛"的表情整个撤掉了。',
+            en: 'Sora looks at the number for a full three seconds. The come-on-then look goes off her face entirely.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '空', speakerEn: 'Sora',
+            characterImage: `${SORA}shock.webp`,
+            jp: '……二十四番。あんた、それ分かって着てんの？',
+            zh: '……24 号。你知道自己穿的是什么才穿的吧？',
+            en: '...Number twenty-four. You do know what you are wearing, right?',
+            color: 'bg-orange-500'
+          },
+          {
+            type: 'narration',
+            zh: '你把球捡起来，在指尖上颠了两下，然后从三分线外投了出去。',
+            en: 'You pick the ball up, bounce it twice on your fingertips, and shoot from outside the arc.'
+          },
+          {
+            type: 'narration',
+            zh: '空心。整个体育馆只有网绳擦过的那一声。',
+            en: 'Nothing but net. The only sound in the whole gym is the cord.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: 'この街の名前、なんて言うんでしたっけ。',
+            words: [{ jp: '街', reading: 'まち', zh: '城市、街区', en: 'town / city' }],
+            zh: '这座城市叫什么来着？',
+            en: 'Remind me what this city is called?',
+            color: 'bg-yellow-500'
+          },
+          {
+            type: 'narration',
+            characterImage: `${SORA}happy.webp`,
+            zh: '她愣了两秒才反应过来，然后笑得整个人蹲了下去，笑声在空体育馆里绕了一圈才散。',
+            en: 'It takes her two seconds. Then she folds up laughing, and the sound goes right round the empty gym before it fades.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '空', speakerEn: 'Sora',
+            characterImage: `${SORA}happy.webp`,
+            jp: 'あかん、それずるい！神戸でそれ着られたら誰も文句言われへんやん！',
+            words: [{ jp: 'ずるい', reading: 'ずるい', zh: '狡猾、耍赖', en: 'unfair / sly' }],
+            zh: '不行，这太赖皮了！在神户穿这个谁还敢说你啊！',
+            en: 'That is cheating! Wear that in Kobe and nobody can say a word to you!',
+            color: 'bg-orange-500'
+          },
+          {
+            type: 'narration',
+            zh: '她站起来，把球从你手里抢回去，认真了。',
+            en: 'She gets up, takes the ball back off you, and stops playing around.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '空', speakerEn: 'Sora',
+            characterImage: `${SORA}neutral.webp`,
+            jp: '……もう一本。今度は本気でいくで。',
+            zh: '……再来一个。这次我认真了。',
+            en: '...One more. I am not going easy this time.',
+            color: 'bg-orange-500'
+          },
+          {
+            type: 'narration',
+            zh: '接下来的四十分钟里，她一次都没有再让你。你输了，输得很服气。',
+            en: 'For the next forty minutes she does not let you have a single one. You lose, and you have no complaints about it.'
+          }
+        ]
+      },
+      {
         id: 'sora_trope',
         labelZh: '「转学生、放学后、空无一人的体育馆……这展开我在哪儿见过。」',
         labelEn: '"Transfer student, after school, an empty gym... I have seen this episode."',
@@ -176,22 +270,66 @@ export const DAY1_GYM: StoryNode[] = [
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
     characterImage: `${SORA}happy.webp`,
-    jp: 'よし、交換な。ウチが体育教えたるから、そっちは日本語教えて。',
+    jp: 'よし、交換な。ウチが体育教えたるから、そっちは——',
     words: [{ jp: '交換', reading: 'こうかん', zh: '交换', en: 'exchange / swap' }],
-    zh: '好，那就交换。我教你运动，你教我日语。',
-    en: 'Right. Trade. I teach you sport, you teach me Japanese.',
+    zh: '好，那就交换。我教你运动，你教我——',
+    en: 'Right. Trade. I teach you sport, and you teach me—',
     color: 'bg-orange-500'
   },
   {
     type: 'narration',
-    zh: '你想说自己的日语才是需要人教的那个。但她已经在算课表了。',
-    en: 'You want to point out that your Japanese is the one that needs teaching. She is already working out a timetable.'
+    zh: '她卡住了。你看着她，等她想出来一个日本人能跟留学生换的东西。',
+    en: 'She stalls. You wait, watching her try to find something a Japanese person could possibly want from an exchange student.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}shock.webp`,
+    jp: '……英語。英語な。ウチ、赤点二回とってんねん。',
+    words: [{ jp: '赤点', reading: 'あかてん', zh: '不及格分数', en: 'a failing grade' }],
+    zh: '……英语。就英语。我英语挂过两次。',
+    en: '...English. English. I have failed it twice.',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    zh: '她说完自己也愣了一下，像是没想到会把这个说出口。',
+    en: 'She surprises herself with that, as though she had not planned to say it out loud.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}shy.webp`,
+    jp: 'ええやろ別に。走んのは速いんやから。',
+    zh: '有什么关系嘛。反正我跑得快。',
+    en: 'So what. I am fast.',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    zh: '她把球抱在腰上，转身往器材室走了两步，又停下。',
+    en: 'She tucks the ball against her hip, takes two steps toward the equipment room, and stops.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}neutral.webp`,
+    jp: '……明日も来る？体育館、四時からずっと空いとるで。',
+    words: [{ jp: '空く', reading: 'あく', zh: '空着、有空', en: 'to be free / vacant' }],
+    zh: '……明天也来吗？体育馆从四点开始一直空着。',
+    en: '...Coming tomorrow? The gym is free from four onward.',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    zh: '她说的是「体育馆空着」，不是「我在」。你点了头。她这才转身进去，球在她手上转得比刚才快。',
+    en: 'What she says is that the gym is free, not that she will be in it. You nod. Only then does she turn and go, the ball spinning faster on her hand than it was before.'
   },
   {
     type: 'effect',
     setFlags: ['day1_met_sora', 'day1_deep_sora'],
     effects: [{ stat: 'guts', amount: 2, reasonZh: '在体育馆门口没有转身就走', reasonEn: 'You did not turn around at the gym door' }],
-    relations: [{ char: CharacterId.SORA, familiarity: 12, reasonZh: '接下了一个明显不对等的交换', reasonEn: 'You accepted a distinctly lopsided trade' }]
+    relations: [{ char: CharacterId.SORA, familiarity: 12, reasonZh: '她主动问了明天', reasonEn: 'She was the one who asked about tomorrow' }]
   }
 ];
 
