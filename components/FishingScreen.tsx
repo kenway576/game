@@ -6,6 +6,7 @@ import {
 } from '../data/lifeData';
 import { SCENE_MAP, SCENE_FALLBACK } from '../constants';
 import { audioManager } from '../services/audioManager';
+import ItemIcon from './ItemIcon';
 
 // ---------------------------------------------------------
 // 🎣 钓鱼
@@ -305,7 +306,7 @@ const FishingScreen: React.FC<Props> = ({
           <div className="text-center max-w-md">
             {phase === 'caught' && hooked ? (
               <>
-                <div className="text-7xl mb-3">{hooked.fish.emoji}</div>
+                <ItemIcon id={hooked.fish.id} emoji={hooked.fish.emoji} size={128} className="mb-3 mx-auto" />
                 <h2 className="text-2xl md:text-3xl font-black text-white">
                   {en ? hooked.fish.nameEn : hooked.fish.nameZh}
                 </h2>

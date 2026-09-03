@@ -5,6 +5,7 @@ import {
   findSeed, findFish
 } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
+import ItemIcon from './ItemIcon';
 
 // ---------------------------------------------------------
 // 🏪 店。百元店和渔具店共用这一个组件。
@@ -53,20 +54,21 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
       };
 
   // ---- 货架 ----
-  type Row = { id: string; emoji: string; nameZh: string; nameEn: string; nameJp: string;
+  type Row = { id: string; emoji: string; icon?: string; nameZh: string; nameEn: string; nameJp: string;
                reading: string; price: number; descZh: string; descEn: string; owned?: number; note?: string };
 
   const buyRows: Row[] = kind === 'hyakkin'
     ? [
         {
-          id: POT_ITEM, emoji: '🏺', nameZh: '素烧花盆', nameEn: 'Terracotta Pot',
+          id: POT_ITEM, emoji: '🏺', icon: POT_ITEM, nameZh: '素烧花盆', nameEn: 'Terracotta Pot',
           nameJp: '素焼き鉢', reading: 'すやきばち', price: POT_PRICE,
           descZh: `买一个多一个能种的位置。阳台和天台加起来最多摆 ${MAX_PLOTS} 个。`,
           descEn: `One more pot is one more place to plant. Balcony and rooftop take ${MAX_PLOTS} between them.`,
           owned: life.plots.length, note: `${life.plots.length}/${MAX_PLOTS}`
         },
         ...SEEDS.map(s => ({
-          id: s.id, emoji: s.emoji, nameZh: s.nameZh, nameEn: s.nameEn,
+          // 八种种子共用一张纸袋图——袋子长得都一样，没必要为此多切八张
+          id: s.id, emoji: s.emoji, icon: 'item_seed', nameZh: s.nameZh, nameEn: s.nameEn,
           nameJp: s.nameJp, reading: s.reading, price: s.price,
           descZh: s.descZh, descEn: s.descEn, owned: life.items[s.id] || 0,
           note: s.months && !s.months.includes(calendar.month)
@@ -76,14 +78,14 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
       ]
     : [
         {
-          id: BAIT_ITEM, emoji: '🐛', nameZh: `青虫饵（${BAIT_PER_PACK} 份）`, nameEn: `Bait (${BAIT_PER_PACK})`,
+          id: BAIT_ITEM, emoji: '🐛', icon: BAIT_ITEM, nameZh: `青虫饵（${BAIT_PER_PACK} 份）`, nameEn: `Bait (${BAIT_PER_PACK})`,
           nameJp: '青イソメ', reading: 'あおイソメ', price: BAIT_PRICE,
           descZh: '装在木屑里，还在动。没有饵也能下竿，但上来的多半是空罐子。',
           descEn: 'Packed in sawdust, still moving. You can fish without it, but mostly you will pull up cans.',
           owned: life.items[BAIT_ITEM] || 0
         },
         ...RODS.map(r => ({
-          id: r.id, emoji: r.emoji, nameZh: r.nameZh, nameEn: r.nameEn,
+          id: r.id, emoji: r.emoji, icon: r.id, nameZh: r.nameZh, nameEn: r.nameEn,
           nameJp: r.nameJp, reading: r.reading, price: r.price,
           descZh: r.descZh, descEn: r.descEn,
           owned: life.rodId === r.id ? 1 : 0,
@@ -94,7 +96,7 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
   // ---- 收购台 ----
   const sellRows: Row[] = kind === 'hyakkin'
     ? SEEDS.filter(s => (life.items[s.cropId] || 0) > 0).map(s => ({
-        id: s.cropId, emoji: s.cropEmoji, nameZh: s.cropNameZh, nameEn: s.cropNameEn,
+        id: s.cropId, emoji: s.cropEmoji, icon: s.cropId, nameZh: s.cropNameZh, nameEn: s.cropNameEn,
         nameJp: s.nameJp.replace(/の(種|苗)$/, ''), reading: s.reading.replace(/の(たね|なえ)$/, ''),
         price: s.sellPrice, descZh: '你自己种的。', descEn: 'Grown by you.',
         owned: life.items[s.cropId] || 0
@@ -111,7 +113,7 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
         .sort((a, b) => b.f!.yenPerCm * b.cm - a.f!.yenPerCm * a.cm)
         .map(x => ({
           id: x.key,
-          emoji: x.f!.emoji, nameZh: `${x.f!.nameZh} ${x.cm}cm`, nameEn: `${x.f!.nameEn} ${x.cm}cm`,
+          emoji: x.f!.emoji, icon: x.f!.id, nameZh: `${x.f!.nameZh} ${x.cm}cm`, nameEn: `${x.f!.nameEn} ${x.cm}cm`,
           nameJp: x.f!.nameJp, reading: x.f!.reading,
           price: Math.round(x.f!.yenPerCm * x.cm),
           descZh: `${x.cm} 公分。${x.f!.noteZh}`, descEn: `${x.cm} cm. ${x.f!.noteEn}`,
@@ -223,7 +225,7 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
                 pick?.id === r.id ? 'bg-yellow-400/15' : 'hover:bg-white/5'
               }`}
             >
-              <span className="text-2xl w-8 text-center shrink-0">{r.emoji}</span>
+              <ItemIcon id={r.icon} emoji={r.emoji} size={34} className="shrink-0" />
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-bold text-white truncate">{en ? r.nameEn : r.nameZh}</span>
                 <span className="block text-[10px] font-mono text-white/35 truncate">{r.nameJp}</span>
@@ -241,7 +243,7 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
         <div className="flex-1 min-h-0 p-5 md:p-8 flex flex-col">
           {pick ? (
             <>
-              <div className="text-6xl md:text-8xl mb-4">{pick.emoji}</div>
+              <ItemIcon id={pick.icon} emoji={pick.emoji} size={132} className="mb-4" />
               <h2 className="text-2xl md:text-3xl font-black text-white">{en ? pick.nameEn : pick.nameZh}</h2>
               <div className="mt-1 text-sm font-mono text-yellow-400/80">
                 {pick.nameJp}<span className="ml-2 text-[11px] text-white/35">{pick.reading}</span>

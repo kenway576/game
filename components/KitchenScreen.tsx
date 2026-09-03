@@ -3,6 +3,7 @@ import { Language, LifeState, StoryEffect, RecipeDef } from '../types';
 import { RECIPES, canCook, consumeFor, fishCounts } from '../data/cookData';
 import { SEEDS, findFish } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
+import ItemIcon from './ItemIcon';
 
 // ---------------------------------------------------------
 // 🍳 厨房
@@ -120,7 +121,8 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
                 className={`w-full text-left px-4 py-2.5 border-b border-white/5 flex items-center gap-3 transition-colors ${
                   sel?.id === r.id ? 'bg-amber-400/15' : 'hover:bg-white/5'
                 }`}>
-                <span className={`text-xl w-7 text-center ${can ? '' : 'grayscale brightness-50'}`}>{r.emoji}</span>
+                <ItemIcon id={r.id} emoji={r.emoji} size={30}
+                  className={`shrink-0 ${can ? '' : 'grayscale brightness-50'}`} />
                 <span className="min-w-0 flex-1">
                   <span className={`block text-sm font-bold truncate ${can ? 'text-white' : 'text-white/35'}`}>
                     {en ? r.nameEn : r.nameZh}
@@ -138,7 +140,7 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
         <div className="flex-1 min-h-0 overflow-y-auto p-5 md:p-8">
           {sel && (
             <>
-              <div className="text-6xl mb-3">{sel.emoji}</div>
+              <ItemIcon id={sel.id} emoji={sel.emoji} size={104} className="mb-3" />
               <h2 className="text-2xl md:text-3xl font-black text-white">{en ? sel.nameEn : sel.nameZh}</h2>
               <div className="mt-1 text-base font-mono text-amber-300/85">
                 {sel.nameJp}<span className="ml-2 text-[11px] text-white/35">{sel.reading}</span>

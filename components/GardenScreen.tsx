@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Language, LifeState, GameCalendar, PlantPlot } from '../types';
 import { SEEDS, findSeed, dayIndex, plantStage, STAGE_EMOJI, MAX_PLOTS } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
+import ItemIcon from './ItemIcon';
 
 // ---------------------------------------------------------
 // 🏺 花盆。阳台（家）和天台（学校）是同一套界面的两个场地。
@@ -173,9 +174,11 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
                       sel?.id === p.id ? 'border-yellow-400 bg-yellow-400/10' : 'border-white/15 bg-black/40 hover:bg-white/5'
                     }`}
                   >
-                    <span className="text-3xl leading-none">
-                      {st === 4 ? (sd?.cropEmoji || '🌸') : st > 0 ? STAGE_EMOJI[st] : '🏺'}
-                    </span>
+                    {st === 4 && sd
+                      ? <ItemIcon id={sd.cropId} emoji={sd.cropEmoji} size={40} />
+                      : st > 0
+                        ? <span className="text-3xl leading-none">{STAGE_EMOJI[st]}</span>
+                        : <ItemIcon id="item_pot" emoji="🏺" size={40} className="opacity-70" />}
                     <span className="text-[9px] text-white/45 px-1 truncate max-w-full">
                       {sd ? (en ? sd.nameEn.replace(/ Seeds?| Seedling/, '') : sd.nameZh.replace(/种子|苗/, '')) : (en ? 'empty' : '空着')}
                     </span>
@@ -225,7 +228,7 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
                           offSeason ? 'border-white/10 opacity-40 cursor-not-allowed' : 'border-white/15 hover:bg-white/5'
                         }`}
                       >
-                        <span className="text-xl">{s.emoji}</span>
+                        <ItemIcon id="item_seed" emoji={s.emoji} size={26} className="shrink-0" />
                         <span className="min-w-0 flex-1">
                           <span className="block text-sm font-bold text-white truncate">{en ? s.nameEn : s.nameZh}</span>
                           <span className="block text-[10px] text-white/40">
@@ -244,7 +247,9 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
             </>
           ) : (
             <>
-              <div className="text-6xl mb-3">{stage === 4 ? (seed?.cropEmoji || '🌸') : STAGE_EMOJI[stage]}</div>
+              {stage === 4 && seed
+                ? <ItemIcon id={seed.cropId} emoji={seed.cropEmoji} size={96} className="mb-3" />
+                : <div className="text-6xl mb-3">{STAGE_EMOJI[stage]}</div>}
               <h3 className="text-xl md:text-2xl font-black text-white">{en ? seed?.nameEn : seed?.nameZh}</h3>
               <div className="text-sm font-mono text-emerald-300/80 mt-1">
                 {seed?.nameJp}<span className="ml-2 text-[11px] text-white/35">{seed?.reading}</span>

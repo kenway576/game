@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Language, LifeState } from '../types';
 import { FISH } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
+import ItemIcon from './ItemIcon';
 
 // ---------------------------------------------------------
 // 📖 鱼图鉴
@@ -62,7 +63,8 @@ const FishDexModal: React.FC<Props> = ({ language, life, onClose }) => {
                   className={`w-full text-left px-4 py-2.5 border-b border-white/5 flex items-center gap-3 transition-colors ${
                     pick?.id === f.id ? 'bg-cyan-400/15' : 'hover:bg-white/5'
                   }`}>
-                  <span className={`text-xl w-7 text-center ${has ? '' : 'grayscale brightness-[0.35]'}`}>{f.emoji}</span>
+                  <ItemIcon id={f.id} emoji={f.emoji} size={30}
+                    className={`shrink-0 ${has ? '' : 'grayscale brightness-[0.25]'}`} />
                   <span className="min-w-0 flex-1">
                     <span className={`block text-sm font-bold truncate ${has ? 'text-white' : 'text-white/25'}`}>
                       {has ? (en ? f.nameEn : f.nameZh) : '???'}
@@ -84,7 +86,8 @@ const FishDexModal: React.FC<Props> = ({ language, life, onClose }) => {
               <p className="text-sm text-white/35">{en ? 'Pick one.' : '挑一条看看。'}</p>
             ) : !got(pick.id) ? (
               <div className="text-center pt-10">
-                <div className="text-6xl grayscale brightness-[0.3] mb-4">{pick.emoji}</div>
+                <ItemIcon id={pick.id} emoji={pick.emoji} size={96}
+                  className="grayscale brightness-[0.25] mb-4 mx-auto" />
                 <p className="text-white/35 text-sm">
                   {en ? 'Not caught yet.' : '还没钓到。'}
                 </p>
@@ -92,7 +95,7 @@ const FishDexModal: React.FC<Props> = ({ language, life, onClose }) => {
               </div>
             ) : (
               <>
-                <div className="text-6xl mb-3">{pick.emoji}</div>
+                <ItemIcon id={pick.id} emoji={pick.emoji} size={104} className="mb-3" />
                 <h3 className="text-2xl font-black text-white">{en ? pick.nameEn : pick.nameZh}</h3>
                 <div className="mt-1 text-base font-mono text-cyan-300/85">
                   {pick.nameJp}<span className="ml-2 text-[11px] text-white/35">{pick.reading}</span>
