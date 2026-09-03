@@ -17,6 +17,7 @@ interface Props {
   onOpenCgGallery: () => void;
   onOpenProtagonistProfile: () => void;
   onOpenCalendar: () => void;
+  onOpenInventory: () => void;
   onExitToLobby: () => void;
   onReturnTitle: () => void;
   onSaveRequest: () => void;
@@ -137,7 +138,7 @@ const AudioSettingsPanel: React.FC<{ T: Record<string, string> }> = ({ T }) => {
 
 const SystemMenu: React.FC<Props> = ({
   T, language, wordCount, showExitToLobby, hasAnySave, isSyncing,
-  onClose, onOpenWordbook, onOpenHistory, onOpenCgGallery, onOpenProtagonistProfile, onOpenCalendar,
+  onClose, onOpenWordbook, onOpenHistory, onOpenCgGallery, onOpenProtagonistProfile, onOpenCalendar, onOpenInventory,
   onExitToLobby, onReturnTitle,
   onSaveRequest, onLoadRequest, onExportJson, onSyncCloud,
   userState, setUserState,
@@ -149,12 +150,33 @@ const SystemMenu: React.FC<Props> = ({
       <h2 className="text-2xl md:text-3xl font-black text-white italic tracking-tighter mb-4 border-b-4 border-red-600 pb-2 uppercase">{T.system}</h2>
 
       <div className="flex flex-col gap-3 md:gap-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3 mb-2">
-          <button onClick={onOpenWordbook} className="bg-yellow-600/90 hover:bg-yellow-500 text-black font-black py-3 md:py-3.5 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">📖 {T.wordbook} ({wordCount})</button>
-          <button onClick={onOpenHistory} className="bg-indigo-600/90 hover:bg-indigo-500 text-white font-black py-3 md:py-3.5 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">📜 {T.logs}</button>
-          <button onClick={onOpenCgGallery} className="bg-rose-600/90 hover:bg-rose-500 text-white font-black py-3 md:py-3.5 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md">🌸 {language === 'en' ? 'CGs' : '画廊'}</button>
-          <button onClick={onOpenProtagonistProfile} className="bg-red-700/90 hover:bg-red-600 text-white font-black py-3 md:py-3.5 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md border border-red-500/40">👤 {language === 'en' ? 'PROFILE' : '人格参数'}</button>
-          <button onClick={onOpenCalendar} className="bg-amber-600/90 hover:bg-amber-500 text-white font-black py-3 md:py-3.5 rounded-sm text-[10px] md:text-xs uppercase transition-colors shadow-md border border-amber-400/40">📅 {language === 'en' ? 'CALENDAR' : '关西行事历'}</button>
+        {/* ---------------------------------------------------------
+            这一格原来是五个各自挑了颜色的按钮：黄、靛、玫红、正红、
+            琥珀。挤在一个小弹窗里，谁也不比谁重要，看上去只是很吵。
+            现在全部统一：黑底、斜切、鼠标移上去翻成黄底黑字。
+            颜色不再用来区分功能，图标和文字就够了。
+            --------------------------------------------------------- */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 md:gap-2 mb-2">
+          {([
+            { icon: '📖', label: `${T.wordbook} (${wordCount})`, on: onOpenWordbook },
+            { icon: '🎒', label: language === 'en' ? 'ITEMS' : '持ち物', on: onOpenInventory },
+            { icon: '📜', label: T.logs, on: onOpenHistory },
+            { icon: '🌸', label: language === 'en' ? 'CGS' : '画廊', on: onOpenCgGallery },
+            { icon: '👤', label: language === 'en' ? 'PROFILE' : '人格参数', on: onOpenProtagonistProfile },
+            { icon: '📅', label: language === 'en' ? 'CALENDAR' : '行事历', on: onOpenCalendar }
+          ] as { icon: string; label: string; on: () => void }[]).map(b => (
+            <button
+              key={b.label}
+              onClick={b.on}
+              className="group relative overflow-hidden bg-black/70 border border-white/15 hover:border-yellow-400 text-white/80 hover:text-black py-3 md:py-3.5 px-2 transform -skew-x-12 transition-all duration-200 hover:-translate-y-0.5"
+            >
+              <span className="absolute inset-0 w-0 bg-yellow-400 transition-all duration-200 group-hover:w-full" />
+              <span className="relative block transform skew-x-12 text-[10px] md:text-[11px] font-black uppercase tracking-wider leading-tight">
+                <span className="block text-base mb-0.5">{b.icon}</span>
+                {b.label}
+              </span>
+            </button>
+          ))}
         </div>
 
         {showExitToLobby && (

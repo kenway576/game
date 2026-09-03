@@ -17,6 +17,7 @@ import SaveLoadScreen from './components/SaveLoadScreen';
 import CgGalleryModal from './components/CgGalleryModal';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
+import InventoryScreen from './components/InventoryScreen';
 import { StatGainToast } from './components/StatGainToast';
 import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
 import PrologueResultScreen from './components/PrologueResultScreen';
@@ -112,6 +113,7 @@ const App: React.FC = () => {
   const [showCgGallery, setShowCgGallery] = useState(false);
   const [showProtagonistProfile, setShowProtagonistProfile] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showInventory, setShowInventory] = useState(false);
   const [saveLoadMode, setSaveLoadMode] = useState<'SAVE' | 'LOAD' | null>(null);
 
   // 👤 P5 式主角五维人格属性与关西行事历状态
@@ -335,7 +337,7 @@ const App: React.FC = () => {
   }, [messages, isStreaming]);
 
   // 🔊 主要弹窗开 / 关的提示音（关闭多为点背景遮罩，通用点击音覆盖不到）
-  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || !!saveLoadMode;
+  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || showInventory || !!saveLoadMode;
   const prevModalOpenRef = useRef(false);
   useEffect(() => {
     if (anyModalOpen === prevModalOpenRef.current) return;
@@ -1598,6 +1600,7 @@ const App: React.FC = () => {
           onOpenRoom={() => setGameMode(GameMode.ROOM)}
           onOpenMap={() => setGameMode(GameMode.MAP)}
           onOpenCalendar={() => setShowCalendar(true)}
+          onOpenInventory={() => setShowInventory(true)}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           lobbyChars={lobbyChars}
           background={background}
@@ -1651,6 +1654,7 @@ const App: React.FC = () => {
           onOpenCgGallery={() => { setShowSystemMenu(false); setShowCgGallery(true); }}
           onOpenProtagonistProfile={() => { setShowSystemMenu(false); setShowProtagonistProfile(true); }}
           onOpenCalendar={() => { setShowSystemMenu(false); setShowCalendar(true); }}
+          onOpenInventory={() => { setShowSystemMenu(false); setShowInventory(true); }}
           onExitToLobby={() => leaveChat(GameMode.LOBBY)}
           onReturnTitle={() => leaveChat(GameMode.SETUP)}
           onSaveRequest={() => { setShowSystemMenu(false); setSaveLoadMode('SAVE'); }}
@@ -1676,6 +1680,17 @@ const App: React.FC = () => {
           playerName={userState.playerName}
           language={userState.language}
           onClose={() => setShowProtagonistProfile(false)}
+        />
+      )}
+
+      {/* 物品栏。挂在最外层是故意的：房间、大厅、地图、剧情里都能开，
+          "我现在都有什么"这个问题不该有回答不了的时候。 */}
+      {showInventory && (
+        <InventoryScreen
+          language={userState.language}
+          life={life}
+          storyFlags={storyFlags}
+          onClose={() => setShowInventory(false)}
         />
       )}
 

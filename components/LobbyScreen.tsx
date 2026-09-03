@@ -23,6 +23,7 @@ interface Props {
   onOpenRoom: () => void;
   onOpenMap: () => void;
   onOpenCalendar: () => void;
+  onOpenInventory: () => void;
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
 }
@@ -30,7 +31,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, background
+  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -62,65 +63,62 @@ const LobbyScreen: React.FC<Props> = ({
         <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.goal}: {userState.learningGoal}</p>
       </div>
 
-      {/* 右侧 HUD 工具栏：日历、人格五维、画廊与系统菜单 */}
-      <div className="flex flex-wrap items-center gap-2 pointer-events-auto self-end md:self-auto">
-        {/* 回自己房间 */}
-        <button
-          onClick={onOpenRoom}
-          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-sky-500/50 hover:border-sky-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
-        >
-          <span className="text-sky-300 font-black text-xs">🏠 {userState.language === 'en' ? 'MY ROOM' : '回房间'}</span>
-        </button>
+      {/* ---------------------------------------------------------
+          右上角工具栏。
+          原来这里是六个圆角按钮，每个自己挑了一种边框颜色——天蓝、
+          明黄、琥珀、大红、玫红、白——凑在一起像一排没关系的贴纸，
+          眼睛不知道该先看哪个。现在统一成同一种形状：斜切的黑片，
+          只有黄色一个重音色，靠图标和位置区分，不靠颜色。
+          鼠标移上去往上抬一点、黄条从左边推出来，动的是同一套。
+          --------------------------------------------------------- */}
+      <div className="flex flex-wrap items-stretch gap-1.5 pointer-events-auto self-end md:self-auto">
+        {([
+          { key: 'room',   on: onOpenRoom,   icon: '🏠', zh: '回房间',  en: 'My room' },
+          { key: 'map',    on: onOpenMap,    icon: '🗺',  zh: '出门',    en: 'Go out', primary: true },
+          { key: 'bag',    on: onOpenInventory, icon: '🎒', zh: '持ち物', en: 'Items' },
+          { key: 'stats',  on: onOpenProtagonistProfile, icon: '👤', zh: '人格参数', en: 'Stats' },
+          { key: 'cg',     on: onOpenCgGallery, icon: '🌸', zh: '画廊',  en: 'CGs' },
+          { key: 'sys',    on: onOpenSystemMenu, icon: '⚙', zh: '系统',  en: 'System' }
+        ] as { key: string; on: () => void; icon: string; zh: string; en: string; primary?: boolean }[]).map(b => (
+          <button
+            key={b.key}
+            onClick={b.on}
+            className={`group relative overflow-hidden transform -skew-x-12 border transition-all duration-200 hover:-translate-y-0.5 px-3 md:px-3.5 py-2 md:py-2.5 ${
+              b.primary
+                ? 'bg-yellow-400 text-black border-yellow-300 shadow-[3px_3px_0_rgba(0,0,0,0.55)]'
+                : 'bg-black/80 text-white/80 border-white/15 hover:border-yellow-400/70 hover:text-white backdrop-blur-md'
+            }`}
+          >
+            {/* 黄条从左边推进来，作为 hover 的唯一反馈 */}
+            {!b.primary && (
+              <span className="absolute inset-y-0 left-0 w-0 bg-yellow-400/20 transition-all duration-200 group-hover:w-full" />
+            )}
+            <span className="relative block transform skew-x-12 text-[11px] md:text-xs font-black uppercase tracking-wider whitespace-nowrap">
+              <span className="mr-1">{b.icon}</span>
+              {userState.language === 'en' ? b.en : b.zh}
+            </span>
+          </button>
+        ))}
 
-        {/* 出门：地图 */}
-        <button
-          onClick={onOpenMap}
-          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-yellow-500/50 hover:border-yellow-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
-        >
-          <span className="text-yellow-300 font-black text-xs">🗺️ {userState.language === 'en' ? 'GO OUT' : '出门'}</span>
-        </button>
-
-        {/* 日历与时间天气 Badge */}
+        {/* 日历单独一块：它要显示日期和时段，不是一个纯按钮 */}
         <button
           onClick={onOpenCalendar}
-          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-amber-500/50 hover:border-amber-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
+          className="group relative overflow-hidden transform -skew-x-12 border border-white/15 hover:border-yellow-400/70 bg-black/80 backdrop-blur-md px-3 md:px-3.5 py-2 md:py-2.5 transition-all duration-200 hover:-translate-y-0.5"
         >
-          <span className="text-amber-400 font-black text-xs">
-            📅 {calendar.month}月{calendar.day}日 {calendar.dayOfWeek?.replace(/\s*\(.*\)/, '')}
+          <span className="absolute inset-y-0 left-0 w-0 bg-yellow-400/20 transition-all duration-200 group-hover:w-full" />
+          <span className="relative block transform skew-x-12 flex items-baseline gap-2 whitespace-nowrap">
+            <span className="text-[11px] md:text-xs font-black text-white tracking-wider">
+              {calendar.month}/{calendar.day}
+            </span>
+            <span className="text-[10px] font-mono text-yellow-400/80">
+              {calendar.dayOfWeek?.replace(/\s*\(.*\)/, '')}
+            </span>
+            <span className="text-[10px] font-bold text-white/50">
+              {calendar.timeSlot === 'morning' ? (userState.language === 'en' ? 'morning' : '早晨')
+                : calendar.timeSlot === 'afternoon' ? (userState.language === 'en' ? 'after school' : '放学后')
+                : (userState.language === 'en' ? 'night' : '夜晚')}
+            </span>
           </span>
-          <span className="text-[11px] text-zinc-300 font-bold bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/30">
-            {calendar.timeSlot === 'morning' ? '早晨' : calendar.timeSlot === 'afternoon' ? '放学后' : '夜晚'}
-          </span>
-          <span className="text-xs">☀️</span>
-        </button>
-
-        {/* 主角人格参数 (P5 五维) */}
-        <button
-          onClick={onOpenProtagonistProfile}
-          className="group bg-zinc-950/90 hover:bg-zinc-900 border border-red-500/60 hover:border-red-400 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg backdrop-blur-md shadow-lg transition-all flex items-center gap-2"
-        >
-          <div className="w-5 h-5 rounded-full overflow-hidden border border-red-400/80">
-            <img src="/images/ui/protagonist_card.jpg" alt="Protagonist" className="w-full h-full object-cover" />
-          </div>
-          <span className="text-xs font-black text-red-400 tracking-wider">
-            {userState.language === 'en' ? 'STATS' : '人格参数'}
-          </span>
-        </button>
-
-        {/* 回忆画廊 */}
-        <button
-          onClick={onOpenCgGallery}
-          className="bg-rose-700/80 hover:bg-rose-600 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-rose-400/40 backdrop-blur text-xs font-black uppercase tracking-wider shadow-lg transition-all"
-        >
-          🌸 {userState.language === 'en' ? 'CGs' : '画廊'}
-        </button>
-
-        {/* 系统菜单 */}
-        <button
-          onClick={onOpenSystemMenu}
-          className="bg-zinc-900/80 hover:bg-zinc-800 text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-white/20 backdrop-blur text-xs font-black uppercase tracking-wider shadow-lg transition-all"
-        >
-          ⚙️ {T.system}
         </button>
       </div>
     </div>
