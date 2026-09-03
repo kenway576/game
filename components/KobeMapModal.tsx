@@ -7,15 +7,24 @@ import { audioManager } from '../services/audioManager';
 // ---------------------------------------------------------
 // 🗺 软木板上那张地图
 //
-// 画成一张旧纸：奶油色的底、褐色的墨线、几道折痕。理由在 kobeMap.ts 里。
+// 底图是画出来的一张旧纸质神户地图（scripts/gen-kobe-map.mjs 生成），
+// 图钉是 DOM 元素按百分比叠在上面。
+//
+// 【为什么图钉不画进底图】
+// 这张图存在的意义是"去过的地方会被打上钩"——它得随着剧情长出东西来。
+// 底图是死的，标记必须是活的，所以只能分成两层。
 //
 // 三种状态，一眼要能分开：
 //   没解锁     不画。纸上那块地方是空的。
 //   解锁没去过 空心圈，名字浅浅一行。你知道有这么个地方了。
 //   去过       红圈 + 铅笔打的钩 + 名字加深。
 //
-// 打开时去过的钉子依次盖上去（从 0.6 倍弹到 1 倍），一个隔 60ms。
+// 打开时去过的钉子依次盖上去（从 0.55 倍弹到 1 倍），一个隔 60ms。
 // 这是这张图唯一的动效，也是它想说的那件事：这些是你自己走出来的。
+//
+// 【标签为什么用 DOM 不用 SVG text】
+// 名字要在一张米黄的纸上读得清，得有描边。SVG 的 paint-order 描边缩放时
+// 会跟着糊，而 DOM 上一层四向 text-shadow 在任何尺寸下都干净。
 // ---------------------------------------------------------
 
 interface Props {
@@ -24,7 +33,15 @@ interface Props {
   onClose: () => void;
 }
 
-const INK = '#5b4636';
+// 米黄纸上的墨色。整张图只用这一套颜色。
+const INK = '#4a3728';
+const RED = '#b3261e';
+const PAPER = '#efe4c8';
+
+// 名字压在纸上，四向描边保证任何底色上都读得清
+const LABEL_SHADOW =
+  `1px 1px 0 ${PAPER}, -1px 1px 0 ${PAPER}, 1px -1px 0 ${PAPER}, -1px -1px 0 ${PAPER},` +
+  `0 2px 0 ${PAPER}, 0 -2px 0 ${PAPER}, 2px 0 0 ${PAPER}, -2px 0 0 ${PAPER}`;
 
 const KobeMapModal: React.FC<Props> = ({ language, storyFlags, onClose }) => {
   const en = language === 'en';
@@ -45,155 +62,100 @@ const KobeMapModal: React.FC<Props> = ({ language, storyFlags, onClose }) => {
       .map(l => ({ loc: l, been: !!storyFlags[beenFlag(l.id)] }));
   }, [pick, storyFlags]);
 
-  // 海岸线和山脚：整张图的骨架，图钉都是照着这两条线摆的
-  const COAST = 'M0,470 C120,438 260,410 380,388 C470,372 540,358 660,342 C780,330 900,324 1000,320';
-  const FOOT  = 'M0,332 C140,304 300,276 450,250 C600,226 760,196 1000,164';
-
   return (
     <div
       className="fixed inset-0 z-[215] bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 md:p-6 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-5xl max-h-[94dvh] overflow-y-auto"
+        className="w-full max-w-6xl max-h-[94dvh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* 纸 */}
-        <div className="relative shadow-[0_24px_70px_rgba(0,0,0,0.75)]">
-          <svg viewBox="0 0 1000 560" className="w-full block" style={{ background: '#e9dfc6' }}>
-            <defs>
-              {/* 纸的斑驳。用两层很淡的径向渐变，比贴一张噪点图便宜 */}
-              <radialGradient id="paper" cx="35%" cy="30%" r="85%">
-                <stop offset="0%" stopColor="#f3ead4" />
-                <stop offset="100%" stopColor="#ddd0b1" />
-              </radialGradient>
-              {/* 影线要稀。第一版 22px 一格，铺满整片山之后看上去是一块布，
-                  不是地形——纸质地图上的山影本来就是零星几笔。 */}
-              <pattern id="waves" width="54" height="30" patternUnits="userSpaceOnUse">
-                <path d="M0,22 q13,-9 26,0 t26,0" fill="none" stroke="#7f9aa2" strokeWidth="1" opacity="0.35" />
-              </pattern>
-              <pattern id="ridge" width="58" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(-9)">
-                <path d="M4,38 l16,-24 l16,24" fill="none" stroke={INK} strokeWidth="1.3" opacity="0.3" />
-                <path d="M30,40 l10,-14 l10,14" fill="none" stroke={INK} strokeWidth="1.1" opacity="0.18" />
-              </pattern>
-            </defs>
+        <div className="relative shadow-[0_24px_70px_rgba(0,0,0,0.75)] select-none">
+          <img src="/images/ui/kobe_map.webp" alt="" className="w-full block" draggable={false} />
 
-            <rect width="1000" height="560" fill="url(#paper)" />
+          {/* 图钉 */}
+          {sites.map((s, i) => {
+            const been = siteVisited(s, storyFlags);
+            const on = pick?.id === s.id;
+            const side = s.side || 'right';
+            // 名字摆在钉子的哪一边。只有位移不同，其余样式一样，
+            // 所以用一个 style 算出来，不写四套 class。
+            const labelPos: React.CSSProperties =
+              side === 'left'  ? { right: '100%', top: '50%', transform: 'translate(-8px,-50%)' }
+            : side === 'right' ? { left: '100%',  top: '50%', transform: 'translate(8px,-50%)' }
+            : side === 'above' ? { left: '50%',   bottom: '100%', transform: 'translate(-50%,-6px)' }
+            :                    { left: '50%',   top: '100%',    transform: 'translate(-50%,6px)' };
 
-            {/* 海 */}
-            <path d={`${COAST} L1000,560 L0,560 Z`} fill="#c9d9dc" />
-            <path d={`${COAST} L1000,560 L0,560 Z`} fill="url(#waves)" />
-
-            {/* 山 */}
-            <path d={`${FOOT} L1000,0 L0,0 Z`} fill="#d8cdae" />
-            <path d={`${FOOT} L1000,0 L0,0 Z`} fill="url(#ridge)" />
-            <path d={FOOT} fill="none" stroke={INK} strokeWidth="1.6" opacity="0.55" />
-            <path d={COAST} fill="none" stroke={INK} strokeWidth="2.2" opacity="0.75" />
-
-            {/* 港岛和六甲岛：海上填出来的两块地 */}
-            <path d="M478,404 L586,398 L592,466 L486,472 Z" fill="#ded2b4" stroke={INK} strokeWidth="1.6" opacity="0.9" />
-            <path d="M640,392 L722,388 L728,442 L646,448 Z" fill="#ded2b4" stroke={INK} strokeWidth="1.4" opacity="0.65" />
-            {/* 美利坚公园那块伸进海里的地。原来画成四边形，看着像一架纸飞机，
-                改成沿着岸往外鼓一小块。 */}
-            <path d="M472,366 Q502,368 512,390 Q496,398 476,384 Z" fill="#ded2b4" stroke={INK} strokeWidth="1.3" opacity="0.85" />
-
-            {/* 港岛的轻轨：一条从三宫伸出去的细线 */}
-            <path d="M546,332 L530,404" fill="none" stroke={INK} strokeWidth="1.2" strokeDasharray="5 4" opacity="0.6" />
-
-            {/* 沿着这条窄带子横穿的铁路。加它是因为空着的纸看不出这是一座
-                东西向的长条城市——所有地名都串在这一条线上。 */}
-            <path
-              d="M40,436 C180,404 330,376 470,352 C590,332 720,308 990,272"
-              fill="none" stroke={INK} strokeWidth="1.5" strokeDasharray="12 6" opacity="0.35"
-            />
-
-            {/* 折痕。这张纸被折过太多次了 */}
-            <line x1="334" y1="0" x2="334" y2="560" stroke="#000" strokeWidth="1" opacity="0.07" />
-            <line x1="668" y1="0" x2="668" y2="560" stroke="#000" strokeWidth="1" opacity="0.07" />
-            <line x1="0" y1="280" x2="1000" y2="280" stroke="#000" strokeWidth="1" opacity="0.07" />
-
-            {/* 海湾的名字 */}
-            <text x="770" y="500" fill={INK} opacity="0.4" fontSize="26" fontWeight="700" letterSpacing="10">
-              大阪湾
-            </text>
-            <text x="120" y="86" fill={INK} opacity="0.35" fontSize="22" fontWeight="700" letterSpacing="8">
-              六甲山系
-            </text>
-            <text x="286" y="358" fill={INK} opacity="0.22" fontSize="30" fontWeight="800" letterSpacing="16"
-                  transform="rotate(-9 286 358)">
-              神　戸
-            </text>
-
-            {/* 图钉 */}
-            {sites.map((s, i) => {
-              const been = siteVisited(s, storyFlags);
-              const on = pick?.id === s.id;
-              const dx = s.side === 'left' ? -12 : s.side === 'right' ? 12 : 0;
-              const dy = s.side === 'above' ? -16 : s.side === 'below' ? 26 : 5;
-              const anchor = s.side === 'left' ? 'end' : s.side === 'right' ? 'start' : 'middle';
-              return (
-                <g
-                  key={s.id}
-                  onClick={() => { audioManager.playSfx('click'); setPick(s); }}
-                  className="cursor-pointer"
+            return (
+              <button
+                key={s.id}
+                onClick={() => { audioManager.playSfx('click'); setPick(s); }}
+                className="absolute group"
+                style={{
+                  left: `${s.x}%`,
+                  top: `${s.y}%`,
+                  transform: 'translate(-50%,-50%)',
+                  // 热区比圈大得多，手机上才戳得中
+                  width: 40, height: 40,
+                  animation: been
+                    ? `kobepin 380ms cubic-bezier(.34,1.56,.64,1) ${i * 60}ms backwards`
+                    : undefined
+                }}
+              >
+                {/* 圈 */}
+                <span
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-transform duration-150 group-hover:scale-125"
                   style={
                     been
-                      ? {
-                          animation: `kobepin 380ms cubic-bezier(.34,1.56,.64,1) ${i * 60}ms backwards`,
-                          transformOrigin: `${s.x}px ${s.y}px`
-                        }
-                      : undefined
+                      ? { width: 13, height: 13, background: RED, border: '2px solid #7a1a13' }
+                      : { width: 11, height: 11, border: `2px solid ${INK}`, opacity: 0.55 }
                   }
+                />
+                {/* 铅笔打的钩 */}
+                {been && (
+                  <svg className="absolute pointer-events-none" style={{ left: 19, top: 3, width: 16, height: 16 }} viewBox="0 0 18 18">
+                    <path d="M2,9 l4,5 l10,-13" fill="none" stroke="#3f6b3a" strokeWidth="2.6"
+                          strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
+                  </svg>
+                )}
+                {/* 选中时的呼吸环 */}
+                {on && (
+                  <span
+                    className="absolute left-1/2 top-1/2 rounded-full pointer-events-none"
+                    style={{ width: 30, height: 30, border: `2px solid ${RED}`, animation: 'kobering 1.6s ease-in-out infinite' }}
+                  />
+                )}
+                {/* 名字 */}
+                <span
+                  className="absolute whitespace-nowrap pointer-events-none"
+                  style={{
+                    ...labelPos,
+                    color: been ? '#33241a' : INK,
+                    opacity: been ? 1 : 0.62,
+                    fontWeight: been ? 800 : 600,
+                    fontSize: 'clamp(9px, 1.05vw, 15px)',
+                    textShadow: LABEL_SHADOW,
+                    letterSpacing: '0.02em'
+                  }}
                 >
-                  {/* 点击热区。圈本身太小，手机上戳不中 */}
-                  <circle cx={s.x} cy={s.y} r="22" fill="transparent" />
-                  {been ? (
-                    <>
-                      <circle cx={s.x} cy={s.y} r="7.5" fill="#b3261e" stroke="#7a1a13" strokeWidth="1.4" />
-                      {/* 铅笔打的钩 */}
-                      <path
-                        d={`M${s.x + 7},${s.y - 12} l-5.5,7.5 l-3.5,-3.2`}
-                        fill="none" stroke="#3f6b3a" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"
-                        opacity="0.9"
-                      />
-                    </>
-                  ) : (
-                    <circle cx={s.x} cy={s.y} r="6" fill="none" stroke={INK} strokeWidth="1.8" opacity="0.55" />
-                  )}
-                  {on && (
-                    <circle cx={s.x} cy={s.y} r="15" fill="none" stroke="#b3261e" strokeWidth="2">
-                      <animate attributeName="r" values="11;17;11" dur="1.6s" repeatCount="indefinite" />
-                      <animate attributeName="opacity" values="0.9;0.15;0.9" dur="1.6s" repeatCount="indefinite" />
-                    </circle>
-                  )}
-                  <text
-                    x={s.x + dx} y={s.y + dy}
-                    textAnchor={anchor}
-                    fill={been ? '#3a2c22' : INK}
-                    opacity={been ? 0.95 : 0.5}
-                    fontSize="15"
-                    fontWeight={been ? 800 : 600}
-                    style={{ paintOrder: 'stroke', stroke: '#efe6cf', strokeWidth: 3 } as React.CSSProperties}
-                  >
-                    {en ? s.nameEn : s.nameJp}
-                  </text>
-                </g>
-              );
-            })}
-          </svg>
+                  {en ? s.nameEn : s.nameJp}
+                </span>
+              </button>
+            );
+          })}
 
           {/* 纸上的角标 */}
-          <div className="absolute top-3 left-3 bg-[#3a2c22]/90 text-[#efe6cf] px-3 py-1.5 transform -skew-x-12">
-            <span className="block transform skew-x-12 text-[11px] font-black tracking-widest">
+          <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-[#3a2c22]/90 text-[#efe6cf] px-3 py-1.5 transform -skew-x-12">
+            <span className="block transform skew-x-12 text-[10px] md:text-[11px] font-black tracking-widest">
               {en ? "GRANDFATHER'S MAP" : '外公的神户地图'}
-              <span className="ml-2 font-mono text-[#e0c88a]">
-                {tally.been}/{tally.total}
-              </span>
+              <span className="ml-2 font-mono text-[#e0c88a]">{tally.been}/{tally.total}</span>
             </span>
           </div>
           <button
             onClick={() => { audioManager.playSfx('click'); onClose(); }}
-            className="absolute top-3 right-3 bg-[#3a2c22]/90 hover:bg-[#b3261e] text-[#efe6cf] px-3 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-colors"
+            className="absolute top-2 right-2 md:top-3 md:right-3 bg-[#3a2c22]/90 hover:bg-[#b3261e] text-[#efe6cf] px-3 py-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-colors"
           >
             <span className="block transform skew-x-12">{en ? 'Close' : '收起来'}</span>
           </button>
@@ -240,8 +202,12 @@ const KobeMapModal: React.FC<Props> = ({ language, storyFlags, onClose }) => {
 
       <style>{`
         @keyframes kobepin {
-          from { opacity: 0; transform: scale(0.55); }
-          to   { opacity: 1; transform: scale(1); }
+          from { opacity: 0; transform: translate(-50%,-50%) scale(0.55); }
+          to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+        }
+        @keyframes kobering {
+          0%,100% { transform: translate(-50%,-50%) scale(0.75); opacity: 0.9; }
+          50%     { transform: translate(-50%,-50%) scale(1.15); opacity: 0.15; }
         }
       `}</style>
     </div>
