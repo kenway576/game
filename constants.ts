@@ -1,6 +1,10 @@
 import { ASUKA_STORY_1 } from './story/levelStories/asuka1';
 import { HIKARI_STORY_1 } from './story/levelStories/hikari1';
+import { HIKARI_STORY_2 } from './story/levelStories/hikari2';
+import { HIKARI_STORY_3 } from './story/levelStories/hikari3';
 import { REI_STORY_1 } from './story/levelStories/rei1';
+import { REI_STORY_2 } from './story/levelStories/rei2';
+import { REI_STORY_3 } from './story/levelStories/rei3';
 import { SORA_STORY_1 } from './story/levelStories/sora1';
 import { MIYUKI_STORY_1 } from './story/levelStories/miyuki1';
 import { NAO_STORY_1 } from './story/levelStories/nao1';
@@ -1267,6 +1271,22 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '同じ船',
       titleEn: 'The Same Boat',
       script: HIKARI_STORY_1
+    },
+    {
+      id: 'hikari_2_one_week',
+      axis: 'affection',
+      level: 3,                 // 好感度 Lv.3「心动」(140)
+      titleZh: '一週間の差',
+      titleEn: 'One Week Ahead',
+      script: HIKARI_STORY_2
+    },
+    {
+      id: 'hikari_3_second_year',
+      axis: 'affection',
+      level: 5,                 // 好感度 Lv.5「挚爱」(220)
+      titleZh: '二年目の海',
+      titleEn: 'The Sea, Second Year',
+      script: HIKARI_STORY_3
     }
   ],
   [CharacterId.REI]: [
@@ -1277,6 +1297,22 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '一九〇四年',
       titleEn: 'Nineteen Oh Four',
       script: REI_STORY_1
+    },
+    {
+      id: 'rei_2_unobservable',
+      axis: 'affection',
+      level: 3,
+      titleZh: '観測できない値',
+      titleEn: 'The Value That Will Not Read',
+      script: REI_STORY_2
+    },
+    {
+      id: 'rei_3_margin',
+      axis: 'affection',
+      level: 5,
+      titleZh: '星図の余白',
+      titleEn: 'The Margin of the Star Chart',
+      script: REI_STORY_3
     }
   ],
   [CharacterId.SORA]: [

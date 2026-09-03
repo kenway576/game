@@ -20,6 +20,21 @@ import { StoryNode, CharacterId } from '../../types';
 // 【那个数字】
 // 讲义上她标了三百多个注音，而全班只有一个人需要注音。
 // 这句话由玩家自己在心里算出来，剧本一个字都不解释。
+//
+// 【致敬：和第②段同一条线】
+// 第②段借的是 EVA 的明日香 ×《无职转生》的爱丽丝，两个人的交叉点是
+// "把自己的价值当成有条件、可撤销的东西"。这一段是那条线的**起点**：
+// 她为什么要当委员长。
+//
+// EVA 那一半在这里的形状是：**有用是被允许留在这儿的租金。**
+// 明日香驾驶初号机不是因为喜欢，是因为不驾驶她就没有理由被留下。
+// 所以铃她做这些事的时候，用的词是"没办法"、"顺便"、"总得有人做"——
+// 她不能承认自己想做，因为一旦是"想做"，就等于承认这件事可以不做，
+// 而可以不做的事，做完了也不能换到留下来的资格。
+//
+// 爱丽丝那一半在这里的形状是：**行动先于语言，功劳一律否认。**
+// 她花两小时标三百个假名，然后说那是顺便。
+// 玩家看见的是那两个小时，她嘴里说的是那两个字。
 // ---------------------------------------------------------
 
 const A = '/images/characters/asuka/';
@@ -225,6 +240,55 @@ export const ASUKA_STORY_1: StoryNode[] = [
     type: 'narration',
     zh: '「顺便」两个字，写了三百多个假名。',
     en: 'Three hundred-odd readings, written while she was at it.'
+  },
+  {
+    type: 'narration',
+    zh: '窗外操场上有人在收球网。铁架子倒下去的声音传上来，房间里安静了一会儿。',
+    en: 'Out on the field someone is taking down a net. The frame comes down with a clatter, and the room is quiet for a moment.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '明日香', speakerEn: 'Asuka',
+    characterImage: `${A}neutral.webp`,
+    jp: '委員長って、別にやりたくてやってるわけじゃないから。',
+    words: [{ jp: '別に', reading: 'べつに', zh: '并不是、也没什么', en: 'not particularly' }],
+    zh: '当委员长，我也不是想当才当的。',
+    en: 'It is not as though I do the class president thing because I want to.',
+    color: 'bg-red-600'
+  },
+  {
+    type: 'narration',
+    zh: '你没有问她这个。她自己说的。',
+    en: 'You had not asked. She volunteered it.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '明日香', speakerEn: 'Asuka',
+    characterImage: `${A}neutral.webp`,
+    jp: '誰かがやらなきゃいけないでしょ。だったら、いちばん出来る人がやるのが効率的。',
+    zh: '总得有人做吧。那就让最能做的人做，这样最有效率。',
+    en: 'Somebody has to. So the most capable person doing it is the efficient arrangement.',
+    color: 'bg-red-600'
+  },
+  {
+    type: 'narration',
+    zh: '这套说法很完整，完整到你听出来它被用过很多次。',
+    en: 'It is a complete argument. Complete enough that you can hear it has been used a lot of times.'
+  },
+  {
+    type: 'narration',
+    zh: '你注意到她把"想不想"和"能不能"完全分开了，而且只用后一半来解释自己。',
+    en: 'You notice she has separated wanting from being able, and explains herself using only the second half.'
+  },
+  {
+    type: 'narration',
+    zh: '那么问题是：如果哪天她不是最能做的那个人了呢。',
+    en: 'Which raises a question. What happens on the day she is not the most capable person.'
+  },
+  {
+    type: 'narration',
+    zh: '这个问题你没有问出口。当时你只是觉得，这个想法有点冷。',
+    en: 'You do not ask it. At the time you only think that it is a cold way to arrange a life.'
   },
 
   // ---- 选择 2：你怎么接 ----

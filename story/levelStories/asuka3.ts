@@ -23,6 +23,21 @@ import { StoryNode, CharacterId } from '../../types';
 //
 // 挚友结局照"另一种圆满"写：她说的话同样只对你说得出口，
 // 而且她给的那个承诺（每周四）比情话更难做到。
+//
+// 【致敬：这一段是爱丽丝那条线的结账】
+// 《无职转生》的爱丽丝不是被拒绝才走的，是觉得自己还不配站在旁边，
+// 于是退开去变强，留下一句没头没尾的告别。第②段明日香做了一模一样的事：
+// "下次我会拿第一"——那是"我去变得配得上"。
+//
+// 这一段是她回来兑现的那一天。而故事必须诚实地告诉她：
+// **那条路走通了，东西没换到。**
+// 因为她要换的从来不是名次，是"我配站在这儿"这件事的凭据，
+// 而这个凭据不是靠赢来的——爱丽丝练了那么多年剑，
+// 最后需要的也只是有人说"你回来了"。
+//
+// 所以第一个选项（那一个月我也在）才是这一段的正解：
+// 它给的不是安慰，是**收据**——你不在第一名的那个月，
+// 你做的那些事我全都收到了。
 // ---------------------------------------------------------
 
 const A = '/images/characters/asuka/';
@@ -119,6 +134,41 @@ export const ASUKA_STORY_3: StoryNode[] = [
     type: 'narration',
     zh: '她做到了前一半。她大概从来没打算让你知道后一半有多重要。',
     en: 'She has delivered on the first half. She probably never intended you to know how much the second half weighed.'
+  },
+  {
+    type: 'narration',
+    zh: '她从书包里抽出一叠纸，摔在桌上。是这一个月的错题本，厚得不像一个月的量。',
+    en: 'She pulls a wad of paper out of her bag and drops it on the desk. It is a month of corrections, and far too thick to be a month of corrections.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '明日香', speakerEn: 'Asuka',
+    characterImage: `${A}sad.webp`,
+    jp: '毎日四時間。三十日。全部やった。',
+    words: [{ jp: '毎日', reading: 'まいにち', zh: '每天', en: 'every day' }],
+    zh: '每天四小时。三十天。全都做了。',
+    en: 'Four hours a day. Thirty days. I did all of it.',
+    color: 'bg-red-600'
+  },
+  {
+    type: 'speech',
+    speakerZh: '明日香', speakerEn: 'Asuka',
+    characterImage: `${A}sad.webp`,
+    jp: 'ちゃんと取り返した。取り返したのに、何も返ってこなかった。',
+    words: [{ jp: '取り返す', reading: 'とりかえす', zh: '夺回、挽回', en: 'to take back / to regain' }],
+    zh: '我确实把它夺回来了。夺回来了，可是什么都没有回来。',
+    en: 'I took it back. I did take it back. And nothing came back with it.',
+    color: 'bg-red-600'
+  },
+  {
+    type: 'narration',
+    zh: '她说的是"夺回来"。她一直把那个月当成被人抢走的东西，而不是发生过的三十天。',
+    en: 'She says she took it back. She has been treating that month as something stolen from her, rather than as thirty days that happened.'
+  },
+  {
+    type: 'narration',
+    zh: '她拿名次去换一样东西。她付了三十天，货没到。',
+    en: 'She was trading a ranking for something. She paid thirty days, and the goods never arrived.'
   },
 
   // ---- 关键选择：这一段权重最大的一下 ----
