@@ -902,8 +902,62 @@ export const DAY1_ARCADE: StoryNode[] = [
     en: '"You are paying for that yourself, senpai." She steps back half a pace and watches you hand over the money.'
   },
   {
+    type: 'speech',
+    speakerZh: '你', speakerEn: 'You',
+    jp: '……せんぱい？',
+    zh: '……前辈？',
+    en: '...Senpai?',
+    color: 'bg-yellow-500'
+  },
+  {
+    type: 'narration',
+    zh: '她咬着一颗章鱼烧，含混地「あ？」了一声，然后才反应过来你在问什么。',
+    en: 'She bites into a takoyaki, makes a muffled noise, and only then works out what you are asking.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '粉发的女生', speakerEn: 'Pink-haired Girl',
+    characterImage: `${MAKI}punk_laugh.webp`,
+    jp: 'ウチ一年。あんた二年やろ？　顔に書いてあるわ、「なんもわからん」って。',
+    words: [{ jp: '一年', reading: 'いちねん', zh: '一年级', en: 'first year' }],
+    zh: '我一年级。你二年级吧？脸上写着呢——「什么都搞不懂」。',
+    en: 'I am first year. You are second, right? It is written all over your face. "Understands nothing."',
+    color: 'bg-pink-500'
+  },
+  {
+    type: 'narration',
+    zh: '你确实是二年级。你确实什么都搞不懂。你决定不去追究她是怎么知道的。',
+    en: 'You are second year. You do understand nothing. You decide not to pursue how she knew.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '粉发的女生', speakerEn: 'Pink-haired Girl',
+    characterImage: `${MAKI}punk_neutral.webp`,
+    jp: '真希。ここの読み方、聞きたなったらまた来たらええわ。',
+    words: [{ jp: '読み方', reading: 'よみかた', zh: '读法、念法', en: 'how to read it' }],
+    zh: '真希。想问哪个字怎么念了，再来就是了。',
+    en: 'Maki. Come back when you want to know how something is read.',
+    color: 'bg-pink-500'
+  },
+  {
+    type: 'narration',
+    zh: '她没说在哪儿能找到她。你想问，但她已经把最后一颗章鱼烧丢进嘴里，朝商店街深处走了。',
+    en: 'She does not say where you would find her. You want to ask, but the last takoyaki is already in her mouth and she is walking off into the arcade.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${MAKI}punk_laugh.webp`,
+    zh: '走出七八步，她回过头喊了一句「センパイ、ソースついてる」，指了指自己的嘴角。你伸手一抹，什么都没有。',
+    en: 'Seven or eight steps on she turns and shouts that senpai has sauce on his face, pointing at the corner of her own mouth. You wipe. There is nothing there.'
+  },
+  {
+    type: 'narration',
+    zh: '等你抬起头，人已经不见了。你站在原地，手里还端着那盒她替你点的章鱼烧，热的。',
+    en: 'By the time you look up she is gone. You are left standing there holding the tray she ordered for you, still hot.'
+  },
+  {
     type: 'effect',
-    setFlags: ['day1_met_maki', 'day1_deep_maki'],
+    setFlags: ['day1_met_maki', 'day1_deep_maki', 'day1_maki_name'],
     effects: [{ stat: 'charm', amount: 1, reasonZh: '被一个不认识的后辈当场认领了', reasonEn: 'You were claimed on the spot by an underclassman you do not know' }],
     relations: [{ char: CharacterId.MAKI, familiarity: 12, affection: 2, reasonZh: '她开始叫你「センパイ」了', reasonEn: 'She started calling you senpai' }]
   }
