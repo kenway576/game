@@ -1,4 +1,6 @@
+import { ASUKA_STORY_1 } from './story/levelStories/asuka1';
 import { ASUKA_STORY_2 } from './story/levelStories/asuka';
+import { ASUKA_STORY_3 } from './story/levelStories/asuka3';
 import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode, ViewSpot } from './types';
 
 // ---------------------------------------------------------
@@ -50,6 +52,7 @@ export const SCENE_MAP: Record<string, string> = {
   'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.webp',
   'school_hallway_new': '/images/backgrounds/bg_school_hallway.webp',
   'rooftop_sunset':     '/images/backgrounds/bg_school_rooftop_sunset.webp',
+  'classroom_sunset':   '/images/backgrounds/bg_classroom_morning_sunset.webp',
   'dotonbori':         '/images/backgrounds/bg_osaka_dotonbori_neon.webp',
   'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.webp',
   'luminarie':         '/images/backgrounds/bg_kobe_luminarie_illumination.webp',
@@ -1208,12 +1211,28 @@ export interface LevelStoryDef {
 export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
   [CharacterId.ASUKA]: [
     {
+      id: 'asuka_1_iincho',
+      axis: 'familiarity',
+      level: 3,                 // 親密度 Lv.3「朋友」(90)
+      titleZh: '委員長の放課後',
+      titleEn: 'The Class President After Hours',
+      script: ASUKA_STORY_1
+    },
+    {
       id: 'asuka_2_rank',
       axis: 'affection',
       level: 3,                 // 好感度 Lv.3「心动」(140)
       titleZh: '一番じゃないと',
       titleEn: 'It Has To Be First',
       script: ASUKA_STORY_2
+    },
+    {
+      id: 'asuka_3_twilight',
+      axis: 'affection',
+      level: 5,                 // 好感度 Lv.5「挚爱」(220)
+      titleZh: '放課後の残り日',
+      titleEn: 'What Is Left of the Afternoon',
+      script: ASUKA_STORY_3
     }
   ],
   // 示例（等剧本写好后填 script）：
