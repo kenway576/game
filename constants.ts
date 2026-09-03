@@ -1,4 +1,6 @@
 import { ASUKA_STORY_1 } from './story/levelStories/asuka1';
+import { HIKARI_STORY_1 } from './story/levelStories/hikari1';
+import { REI_STORY_1 } from './story/levelStories/rei1';
 import { ASUKA_STORY_2 } from './story/levelStories/asuka';
 import { ASUKA_STORY_3 } from './story/levelStories/asuka3';
 import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode, ViewSpot } from './types';
@@ -126,6 +128,16 @@ export const SCENE_MAP: Record<string, string> = {
   'international_office':          '/images/backgrounds/bg_kaisei_intl_salon.webp',
   'kaisei_classroom_morning':      '/images/backgrounds/bg_kaisei_classroom_morning.webp',
   'classroom_morning':             '/images/backgrounds/bg_kaisei_classroom_morning.webp',
+  'kaisei_cafeteria_hall':         '/images/backgrounds/bg_kaisei_cafeteria_hall.webp',
+  'kaisei_cafeteria':              '/images/backgrounds/bg_kaisei_cafeteria_hall.webp',
+  'school_courtyard':              '/images/backgrounds/bg_school_courtyard_spring.webp',
+  'school_courtyard_spring':       '/images/backgrounds/bg_school_courtyard_spring.webp',
+  'courtyard':                     '/images/backgrounds/bg_school_courtyard_spring.webp',
+  'kaisei_courtyard':              '/images/backgrounds/bg_school_courtyard_spring.webp',
+  'kaisei_courtyard_spring':       '/images/backgrounds/bg_kaisei_courtyard_spring.webp',
+  'kaisei_courtyard_rain':         '/images/backgrounds/bg_kaisei_courtyard_rain.webp',
+  'kaisei_art_room':               '/images/backgrounds/bg_kaisei_art_room.webp',
+  'kaisei_gym_interior':           '/images/backgrounds/bg_kaisei_gym_interior.webp',
   // 🏰 北野异人馆风见鸡馆
   'kitano_kazamidori_square':      '/images/backgrounds/bg_kitano_kazamidori_square.webp',
   'kazamidori_square':             '/images/backgrounds/bg_kitano_kazamidori_square.webp',
@@ -1233,6 +1245,26 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '放課後の残り日',
       titleEn: 'What Is Left of the Afternoon',
       script: ASUKA_STORY_3
+    }
+  ],
+  [CharacterId.HIKARI]: [
+    {
+      id: 'hikari_1_same_boat',
+      axis: 'familiarity',
+      level: 3,
+      titleZh: '同じ船',
+      titleEn: 'The Same Boat',
+      script: HIKARI_STORY_1
+    }
+  ],
+  [CharacterId.REI]: [
+    {
+      id: 'rei_1_1904',
+      axis: 'familiarity',
+      level: 3,
+      titleZh: '一九〇四年',
+      titleEn: 'Nineteen Oh Four',
+      script: REI_STORY_1
     }
   ],
   // 示例（等剧本写好后填 script）：
