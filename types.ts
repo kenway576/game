@@ -72,6 +72,9 @@ export enum GameMode {
   LOBBY = 'LOBBY',
   ROOM = 'ROOM',
   MAP = 'MAP',
+  STORE = 'STORE',      // 百元店 / 渔具店
+  GARDEN = 'GARDEN',    // 阳台 / 天台的花盆
+  FISHING = 'FISHING',  // 海边钓鱼
   CHAT = 'CHAT'
 }
 
@@ -213,6 +216,92 @@ export interface GameCalendar {
   dayOfWeek: string;
   timeSlot: TimeSlot;
   weather: 'sunny' | 'cloudy' | 'rainy' | 'sunset' | 'night';
+}
+
+// ---------------------------------------------------------
+// 💴 钱包 · 背包 · 两个休闲系统
+//
+// 这一整块是"课余生活"：种东西、钓鱼、逛店。和主线是分开的循环——
+// 主线推进解锁店铺和钓点，休闲系统反过来产出送人的礼物和图鉴收集。
+//
+// 存档里合成一个 LifeState 存，而不是散成七八个字段，
+// 免得每加一样东西就要改一次存档读写。
+// ---------------------------------------------------------
+
+// 一株盆栽。花盆买回来才有格子，格子空着可以再种。
+export interface PlantPlot {
+  id: string;
+  site: 'balcony' | 'rooftop';   // 家里阳台 / 学校天台
+  seedId: string | null;
+  // 种下那天的"绝对日序"（月*31+日），跨月也能直接相减
+  plantedOn: number | null;
+  watered: number;               // 累计浇水次数
+  lastWaterOn: number | null;    // 同一天只能浇一次
+  wilted?: boolean;              // 太久没浇会蔫（不会死，但收成减半）
+}
+
+export type SeedKind = 'flower' | 'veg' | 'herb';
+
+export interface SeedDef {
+  id: string;
+  kind: SeedKind;
+  nameJp: string; reading: string; nameZh: string; nameEn: string;
+  price: number;
+  growDays: number;      // 从种下到能收，最少要过几天
+  needWater: number;     // 还得浇够几次
+  months?: number[];     // 适播月份。不写 = 全年
+  cropId: string;        // 收获物 id
+  cropNameZh: string; cropNameEn: string; cropEmoji: string;
+  sellPrice: number;     // 收获物单价
+  emoji: string;
+  descZh: string; descEn: string;
+  word?: StoryWord;
+}
+
+export interface FishDef {
+  id: string;
+  nameJp: string; reading: string; nameZh: string; nameEn: string;
+  rarity: 1 | 2 | 3 | 4 | 5;
+  minCm: number; maxCm: number;
+  spots: string[];              // 能钓到的地点 id（对应 MAP_LOCATIONS）
+  timeSlots?: TimeSlot[];
+  months?: number[];
+  weather?: GameCalendar['weather'][];
+  yenPerCm: number;             // 卖价按尺寸算，钓到大的才值钱
+  emoji: string;
+  noteZh: string; noteEn: string;   // 图鉴上的一段介绍
+  word?: StoryWord;
+  junk?: boolean;               // 空罐子、长靴这类，算钓到但不进图鉴
+}
+
+// 图鉴里记的是"你钓到过的"，不是"存在的"
+export interface FishRecord {
+  count: number;
+  bestCm: number;
+  firstMonth: number;
+  firstDay: number;
+}
+
+// 鱼竿。power 越高越容易上稀有鱼，也越经得住挣扎。
+export interface RodDef {
+  id: string;
+  nameJp: string; reading: string; nameZh: string; nameEn: string;
+  price: number;
+  power: number;      // 1..3
+  emoji: string;
+  descZh: string; descEn: string;
+}
+
+export interface LifeState {
+  yen: number;
+  // 手头的东西：种子 / 收获物 / 鱼饵 / 花盆 都记在这儿，key = itemId
+  items: Record<string, number>;
+  rodId: string | null;
+  plots: PlantPlot[];
+  fishDex: Record<string, FishRecord>;
+  // 一天只能钓一定次数，免得刷
+  fishedOn: number | null;
+  fishedToday: number;
 }
 
 // ---------------------------------------------------------

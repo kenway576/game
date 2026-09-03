@@ -23,8 +23,14 @@ import PrologueResultScreen from './components/PrologueResultScreen';
 import ConsentGate from './components/ConsentGate';
 import RoomScreen from './components/RoomScreen';
 import MapScreen from './components/MapScreen';
+import StoreScreen, { StoreKind } from './components/StoreScreen';
+import GardenScreen from './components/GardenScreen';
+import FishingScreen from './components/FishingScreen';
+import FishDexModal from './components/FishDexModal';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript } from './story/mapEvents';
+import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
+import type { LifeState, FishDef } from './types';
 import type { MapLocation, MapEventDef } from './types';
 import { DAY1_SCRIPT } from './story/day1Data';
 import { DAY1_VERSION, DAY1_PROGRESS_KEY } from './story/day1Meta';
@@ -173,6 +179,18 @@ const App: React.FC = () => {
   const [activeLevelStory, setActiveLevelStory] = useState<{ charId: CharacterId; def: LevelStoryDef } | null>(null);
   // 🗺️ 出门：正在走的那一趟。event 为 null 表示今天这地方没戏，播空转旁白。
   const [activeTrip, setActiveTrip] = useState<{ loc: MapLocation; event: MapEventDef | null; script: StoryNode[] } | null>(null);
+  // 🌱🎣 课余生活：钱包 / 背包 / 花盆 / 鱼图鉴，合成一份存
+  const [life, setLife] = useState<LifeState>(INITIAL_LIFE_STATE);
+  const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
+  const [activeGarden, setActiveGarden] = useState<'balcony' | 'rooftop' | null>(null);
+  const [activeFishing, setActiveFishing] = useState<MapLocation | null>(null);
+  const [showFishDex, setShowFishDex] = useState(false);
+  const [lifeToast, setLifeToast] = useState<string | null>(null);
+
+  const flashLife = (msg: string) => {
+    setLifeToast(msg);
+    window.setTimeout(() => setLifeToast(t => (t === msg ? null : t)), 2600);
+  };
   const [isSyncing, setIsSyncing] = useState(false);
   const [showAutoSave, setShowAutoSave] = useState(false);
 
@@ -379,6 +397,8 @@ const App: React.FC = () => {
     setDay1Done(false);
     setPlayingDay1(false);
     setActiveTrip(null);
+    setLife(INITIAL_LIFE_STATE);
+    setActiveStore(null); setActiveGarden(null); setActiveFishing(null);
     setPrologueSessionKey(k => k + 1);
     try {
       localStorage.removeItem(PROLOGUE_PROGRESS_KEY);
@@ -548,10 +568,26 @@ const App: React.FC = () => {
         weather: weathers[Math.floor(Math.random() * weathers.length)]
       };
     });
+    // 过夜：昨天没浇水的盆会蔫。蔫了只是收成减半，不会死——
+    // 这是休闲系统，不该因为玩家两天没上线就把东西毁掉。
+    setLife(l => {
+      const today = dayIndex(gameCalendar);
+      return {
+        ...l,
+        plots: l.plots.map(p =>
+          p.seedId && p.lastWaterOn !== today && plantStage(p, today) < 4
+            ? { ...p, wilted: true }
+            : p)
+      };
+    });
     setGameMode(GameMode.LOBBY);
   };
 
   // 🗺️ 出门。选好地方 → 看今天这儿有没有戏 → 有就演，没有就给一段空转旁白。
+  //
+  // 店和钓点是例外：它们本身就是一个界面，不该被"今天这儿没事发生"的空转旁白挡住。
+  // 但第一次去仍然让剧情事件先播（比如第一次走到三宫站那段），所以顺序是
+  // "有事件先演事件，没事件才直接开门"。
   const startTrip = (loc: MapLocation) => {
     const ev = pickEventFor(loc.id, {
       flags: storyFlags,
@@ -559,6 +595,16 @@ const App: React.FC = () => {
       affection: affectionMap,
       familiarity: familiarityMap
     });
+    if (!ev) {
+      if (loc.id === 'hyakkin_store') { setCurrentScene(loc.id); setActiveStore('hyakkin'); setGameMode(GameMode.STORE); return; }
+      if (loc.id === 'tackle_shop')   { setCurrentScene(loc.id); setActiveStore('tackle');  setGameMode(GameMode.STORE); return; }
+      if (FISHING_SPOTS.includes(loc.id)) { setCurrentScene(loc.id); setActiveFishing(loc); setGameMode(GameMode.FISHING); return; }
+      // 天台只有在真摆了盆的时候才当花园开。一个盆都没有还跳花园界面，
+      // 等于把天台原本那段空转旁白也吞掉了，白跑一趟还什么都没看见。
+      if (loc.id === 'rooftop_sunset' && life.plots.some(p => p.site === 'rooftop')) {
+        setCurrentScene(loc.id); setActiveGarden('rooftop'); setGameMode(GameMode.GARDEN); return;
+      }
+    }
     setActiveTrip({
       loc,
       event: ev,
@@ -566,6 +612,49 @@ const App: React.FC = () => {
     });
     setGameMode(GameMode.LOBBY);
   };
+
+  // ---- 休闲系统的几个回调 ----
+  const buyItem = (cost: number, apply: (l: LifeState) => LifeState) =>
+    setLife(l => (l.yen < cost ? l : { ...apply(l), yen: l.yen - cost }));
+  const sellItem = (gain: number, apply: (l: LifeState) => LifeState) =>
+    setLife(l => ({ ...apply(l), yen: l.yen + gain }));
+
+  const harvested = (zh: string, en: string, n: number) => {
+    audioManager.playSfx('confirm');
+    flashLife(userState.language === 'en' ? `Harvested ${en} ×${n}` : `收获了 ${zh} ×${n}`);
+    gainStat('kindness', 1, '你把一样东西从头养到了尾', 'You saw something through from seed to harvest');
+  };
+
+  const caughtFish = (fish: FishDef, cm: number) => {
+    const today = dayIndex(gameCalendar);
+    setLife(l => {
+      const items = { ...l.items };
+      if (!fish.junk) items['catch|' + fish.id + '|' + cm] = (items['catch|' + fish.id + '|' + cm] || 0) + 1;
+      const dex = { ...l.fishDex };
+      if (!fish.junk) {
+        const prev = dex[fish.id];
+        dex[fish.id] = prev
+          ? { ...prev, count: prev.count + 1, bestCm: Math.max(prev.bestCm, cm) }
+          : { count: 1, bestCm: cm, firstMonth: gameCalendar.month, firstDay: gameCalendar.day };
+      }
+      return {
+        ...l, items, fishDex: dex,
+        fishedOn: today,
+        fishedToday: (l.fishedOn === today ? l.fishedToday : 0) + 1
+      };
+    });
+    if (!fish.junk && fish.rarity >= 4) {
+      gainStat('guts', 1, '你把一条不该上来的鱼弄上来了', 'You landed something that had no business coming up');
+    }
+  };
+
+  const spendBait = () =>
+    setLife(l => {
+      const items = { ...l.items };
+      items[BAIT_ITEM] = Math.max(0, (items[BAIT_ITEM] || 0) - 1);
+      if (!items[BAIT_ITEM]) delete items[BAIT_ITEM];
+      return { ...l, items };
+    });
 
   // 出门回来：时段往前走一格。夜里出去的那一趟回来就直接是第二天早上——
   // 否则夜里可以无限刷，"今天去哪儿"就不是个选择了。
@@ -578,6 +667,11 @@ const App: React.FC = () => {
       ...(trip?.event ? { [trip.event.id]: true } : {})
     }));
     setActiveTrip(null);
+    setActiveStore(null); setActiveFishing(null);
+    // 出门那一趟的剧本是叠在大厅上播的，所以以前不用管 gameMode。
+    // 但店和钓点是自己占一个 gameMode 的，回来必须显式切回大厅——
+    // 否则 activeStore 清空之后 gameMode 还停在 STORE，屏幕上什么都不剩。
+    setGameMode(GameMode.LOBBY);
     setCurrentScene(DEFAULT_SCENE);
     setGameCalendar(prev => {
       if (prev.timeSlot === 'morning')   return { ...prev, timeSlot: 'afternoon' };
@@ -778,7 +872,7 @@ const App: React.FC = () => {
         chatHistories: trimmedHistories,
         customAssets, affectionMap, familiarityMap, memoryMap,
         // 🔥 五维人格、行事历与剧情选择：漏存这几项等于玩家的选择读档就作废
-        protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs,
+        protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs, life,
         // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
         // 这样三个存档就是三个不同的位置，而不是都指向同一份共享进度。
         // hard 模式（容量告急）下丢掉它：宁可退回共享进度，也不能让存档整个写不进去。
@@ -867,6 +961,11 @@ const App: React.FC = () => {
       setGameCalendar({ ...INITIAL_CALENDAR_STATE, ...(data.gameCalendar || {}) });
       setStoryFlags(data.storyFlags || {});
       setUnlockedCgs(Array.isArray(data.unlockedCgs) ? data.unlockedCgs : []);
+      // 老存档没有休闲系统：给一份初值，别让读档崩掉
+      setLife({ ...INITIAL_LIFE_STATE, ...(data.life || {}),
+                items: { ...(data.life?.items || {}) },
+                plots: Array.isArray(data.life?.plots) ? data.life.plots : [],
+                fishDex: { ...(data.life?.fishDex || {}) } });
       setPrologueResult(null);
       // 老存档一律视为已过序章：他们已经在玩了，不该被拽回序章
       setPrologueDone(data.prologueDone ?? true);
@@ -1664,6 +1763,60 @@ const App: React.FC = () => {
         </div>
       )}
 
+      {gameMode === GameMode.STORE && activeStore && (
+        <StoreScreen
+          kind={activeStore}
+          language={userState.language}
+          life={life}
+          calendar={gameCalendar}
+          onClose={() => { setActiveStore(null); finishTrip({}); }}
+          onBuy={buyItem}
+          onSell={sellItem}
+        />
+      )}
+
+      {gameMode === GameMode.GARDEN && activeGarden && (
+        <GardenScreen
+          site={activeGarden}
+          language={userState.language}
+          life={life}
+          calendar={gameCalendar}
+          onClose={() => {
+            const fromMap = activeGarden === 'rooftop';
+            setActiveGarden(null);
+            // 天台是"出了一趟门"，阳台就在自己家里，不该推进时间
+            if (fromMap) finishTrip({}); else setGameMode(GameMode.ROOM);
+          }}
+          onUpdate={fn => setLife(fn)}
+          onHarvest={harvested}
+        />
+      )}
+
+      {gameMode === GameMode.FISHING && activeFishing && (
+        <FishingScreen
+          spot={activeFishing.id}
+          spotNameZh={activeFishing.nameZh}
+          spotNameEn={activeFishing.nameEn}
+          language={userState.language}
+          life={life}
+          calendar={gameCalendar}
+          onClose={() => { setActiveFishing(null); finishTrip({}); }}
+          onCatch={caughtFish}
+          onSpendBait={spendBait}
+          onOpenDex={() => setShowFishDex(true)}
+        />
+      )}
+
+      {showFishDex && (
+        <FishDexModal language={userState.language} life={life} onClose={() => setShowFishDex(false)} />
+      )}
+
+      {lifeToast && (
+        <div className="fixed left-1/2 -translate-x-1/2 bottom-24 z-[150] bg-black/85 border border-emerald-500/60 px-5 py-2.5 transform -skew-x-12 pointer-events-none animate-in fade-in slide-in-from-bottom-3 duration-300">
+          <span className="block transform skew-x-12 text-emerald-300 font-bold text-sm">{lifeToast}</span>
+        </div>
+      )}
+
       {gameMode === GameMode.ROOM && (
         <RoomScreen
           language={userState.language}
@@ -1672,6 +1825,8 @@ const App: React.FC = () => {
           onClose={() => setGameMode(GameMode.LOBBY)}
           onOpenWordbook={() => setShowWordbook(true)}
           onSleep={advanceToNextDay}
+          plotCount={life.plots.filter(p => p.site === 'balcony').length}
+          onOpenBalcony={() => { setActiveGarden('balcony'); setGameMode(GameMode.GARDEN); }}
         />
       )}
 

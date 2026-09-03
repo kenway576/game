@@ -264,6 +264,30 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientEn: ['You buy a pork bun and finish it standing at the edge of the plaza. Too hot, and impossible to stop.']
   },
   {
+    id: 'hyakkin_store', district: 'sannomiya',
+    nameJp: '百円ショップ', reading: 'ひゃくえんショップ',
+    nameZh: '百元店', nameEn: 'Hundred-Yen Shop',
+    blurbZh: '商店街拐进去的那家。花盆、种子、剪刀、装什么都行的塑料箱——一层楼的杂物，标价大多是 110。',
+    blurbEn: 'Off the arcade, one floor of everything: pots, seeds, scissors, plastic boxes for things you do not own yet. Most of it is 110 yen.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    ambientZh: ['你在收纳用品那一排走了两个来回，最后买了一个你其实用不上的沥水篮。'],
+    ambientEn: ['You walk the storage aisle twice and leave with a draining basket you have no use for.']
+  },
+  {
+    id: 'tackle_shop', district: 'harbor',
+    nameJp: 'みなと釣具', reading: 'みなとつりぐ',
+    nameZh: '港口渔具店', nameEn: 'Minato Tackle',
+    blurbZh: '护岸边一间铁皮屋。门口塑料桶里插着一排竿，屋里有干海藻和机油的味道。',
+    blurbEn: 'A tin shed by the quay. A bucket of rods at the door; inside it smells of dried seaweed and machine oil.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过。',
+    lockedHintEn: 'You have not gone toward the water yet.',
+    ambientZh: ['老板正在修一个卷线器。你站着看了十分钟，他一句话也没说，但也没赶你走。'],
+    ambientEn: ['The owner is repairing a reel. You watch for ten minutes; he says nothing, and does not move you along either.']
+  },
+  {
     id: 'former_settlement_salon', district: 'sannomiya',
     nameJp: '旧居留地十五番館', reading: 'きゅうきょりゅうち じゅうごばんかん',
     nameZh: '旧居留地十五番馆', nameEn: 'Former Settlement No. 15',

@@ -23,10 +23,14 @@ interface Props {
   onClose: () => void;
   onOpenWordbook: () => void;
   onSleep: () => void;
+  // 🏺 阳台上的花盆。买了盆才有得点，没有盆就不显示这个按钮——
+  // 一个点进去说"你什么都没有"的入口只会让人白跑一趟。
+  plotCount: number;
+  onOpenBalcony: () => void;
 }
 
 const RoomScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep
+  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep, plotCount, onOpenBalcony
 }) => {
   const en = language === 'en';
   const [active, setActive] = useState<{ hotspot: RoomHotspot; text: string } | null>(null);
@@ -91,12 +95,22 @@ const RoomScreen: React.FC<Props> = ({
             <span className="ml-3 text-yellow-400/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
           </span>
         </div>
-        <button
-          onClick={onClose}
-          className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
-        >
-          <span className="block transform skew-x-12">{en ? 'Out ▶' : '出门 ▶'}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {plotCount > 0 && (
+            <button
+              onClick={() => { audioManager.playSfx('click'); onOpenBalcony(); }}
+              className="bg-black/70 hover:bg-emerald-400 hover:text-black text-emerald-300 border border-emerald-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
+            >
+              <span className="block transform skew-x-12">🏺 {en ? 'Balcony' : '阳台'} {plotCount}</span>
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
+          >
+            <span className="block transform skew-x-12">{en ? 'Out ▶' : '出门 ▶'}</span>
+          </button>
+        </div>
       </div>
 
       {/* 热区：不画框，只用光。家具不是矩形，光斑也不该是 */}

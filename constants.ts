@@ -106,7 +106,10 @@ export const SCENE_MAP: Record<string, string> = {
   'former_settlement_interior':    '/images/backgrounds/bg_former_settlement_15_salon.webp',
   'sannomiya_pia_kobe_arcade':     '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
   'pia_kobe_arcade':               '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
-  'pia_kobe':                      '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp'
+  'pia_kobe':                      '/images/backgrounds/bg_sannomiya_pia_kobe_arcade.webp',
+  // 🏪 休闲系统的两家店。借现成的背景，不为它们生成新图。
+  'hyakkin_store':                 '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
+  'tackle_shop':                   '/images/backgrounds/bg_kobe_meriken_park.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
