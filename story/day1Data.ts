@@ -255,6 +255,89 @@ export const DAY1_SCRIPT: StoryNode[] = [
     }]
   },
   {
+    type: 'choice',
+    promptZh: '她把垃圾袋换到另一只手上，像是还想说点什么，又像是在等你先开口。',
+    promptEn: 'She shifts the rubbish bag to her other hand, as though there is more she might say, or as though she is waiting for you to go first.',
+    options: [
+      {
+        id: 'day1_miyuki_ask_road',
+        labelZh: '「请问……去学校走哪条路比较快？」',
+        labelEn: '"Sorry — which way is quicker to the school?"',
+        hintZh: '你其实昨晚已经在地图上看过三遍了',
+        hintEn: 'You checked the map three times last night.',
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '你先开的口', reasonEn: 'You spoke first' }],
+        relations: [{ char: CharacterId.MIYUKI, familiarity: 10, affection: 3, reasonZh: '她很高兴被问路', reasonEn: 'She was pleased to be asked' }],
+        setFlags: ['day1_miyuki_road'],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '深雪', speakerEn: 'Miyuki',
+            characterImage: `${MIYUKI}happy.webp`,
+            jp: '坂をまっすぐ下りて、二つ目の角を左。……でも、遠回りのほうをおすすめします。',
+            words: [{ jp: '遠回り', reading: 'とおまわり', zh: '绕远路', en: 'the long way round' }],
+            zh: '顺着坡一直下去，第二个路口左转。……不过，我更推荐绕远的那条。',
+            en: 'Straight down the slope, then left at the second corner. ...Though I would recommend the long way.',
+            color: 'bg-sky-500'
+          },
+          {
+            type: 'narration',
+            zh: '你问为什么。她想了两秒，说：因为那条路上有樱花。',
+            en: 'You ask why. She thinks for two seconds and says: because that one has the cherry trees.'
+          }
+        ]
+      },
+      {
+        id: 'day1_miyuki_ask_trash',
+        labelZh: '伸手：「我帮您拿下去吧。」',
+        labelEn: 'Reach out: "Let me take that down for you."',
+        hintZh: '袋子看着挺沉',
+        hintEn: 'The bag looks heavy.',
+        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你没等人开口就伸了手', reasonEn: 'You put your hand out before being asked' }],
+        relations: [{ char: CharacterId.MIYUKI, familiarity: 8, affection: 6, reasonZh: '她愣了一下才把袋子给你', reasonEn: 'It took her a moment to hand it over' }],
+        setFlags: ['day1_miyuki_trash'],
+        then: [
+          {
+            type: 'narration',
+            characterImage: `${MIYUKI}neutral.webp`,
+            zh: '她愣了一下。那半秒钟里，她的表情不是感激，更像是在确认自己有没有听错。',
+            en: 'She blanks for half a second. In that half second her face is not gratitude; it is closer to checking whether she heard you correctly.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '深雪', speakerEn: 'Miyuki',
+            characterImage: `${MIYUKI}happy.webp`,
+            jp: '……ありがとう。じゃあ、お言葉に甘えて。',
+            words: [{ jp: '甘える', reading: 'あまえる', zh: '领受好意、不客气了', en: 'to accept an offer / to lean on someone' }],
+            zh: '……谢谢。那，我就不客气了。',
+            en: '...Thank you. Then I will take you up on it.',
+            color: 'bg-sky-500'
+          },
+          {
+            type: 'narration',
+            zh: '袋子比看上去轻。你怀疑她本来就打算自己拿，只是不好意思拒绝。',
+            en: 'The bag is lighter than it looked. You suspect she was always going to carry it, and simply could not bring herself to refuse.'
+          }
+        ]
+      },
+      {
+        id: 'day1_miyuki_quiet',
+        labelZh: '点个头就走。第一天，别添麻烦',
+        labelEn: 'Nod and go. First day; do not be a nuisance',
+        hintZh: '安全，但什么也没发生',
+        hintEn: 'Safe. Also nothing happens.',
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你把注意力留给了今天要用的日语', reasonEn: 'You saved your attention for the Japanese you would need today' }],
+        relations: [{ char: CharacterId.MIYUKI, familiarity: 3, reasonZh: '她目送你下了楼', reasonEn: 'She watched you go down the stairs' }],
+        then: [
+          {
+            type: 'narration',
+            zh: '你点头，侧身让过。走到楼梯口的时候，你听见她在身后轻轻说了句「いってらっしゃい」。',
+            en: 'You nod and step aside. At the top of the stairs you hear her say, quietly, behind you: have a good day.'
+          }
+        ]
+      }
+    ]
+  },
+  {
     type: 'narration',
     zh: '下楼的时候你在心里添了第二条：隔壁住着一位温柔的、年长的、独居的女性。',
     en: 'On the way down you add a second entry in your head: a gentle, older, unattached woman lives next door.'
@@ -370,12 +453,12 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你在心里拆这行字。**「済ませて」**是「済ませる」的て形，前面接「までに」——「在八点之前，把手续办完」。',
+    zh: '你在心里把这行字拆开。「済ませて」是「済ませる」的て形，前面接「までに」。合起来就是：八点之前，把手续办完。',
     en: 'You take the line apart in your head. "Sumasete" is the te-form of "sumaseru", and it follows "made ni": get it done by eight.'
   },
   {
     type: 'narration',
-    zh: '教科书上背过无数遍的语法点，此刻变成了脚下真实的指路牌。那种感觉很难形容——不是考试对了一题的雀跃，而是**这个国家忽然对你敞开了一条缝**。',
+    zh: '教科书上背过无数遍的语法点，忽然变成了脚下的指路牌。这跟考试做对一道题不是一回事。这个国家刚才对你松了一道缝。',
     en: 'A grammar point you have drilled a hundred times has turned into a sign telling you where to go. It is hard to name the feeling. It is not the small thrill of getting a question right. It is this country opening a crack for you.'
   },
   {
@@ -530,7 +613,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '两个人一起举手。老师笑着走过来解释：**「続柄」就是「与保证人的关系」**——写「祖父」就行。',
+    zh: '两个人一起举手。老师笑着走过来解释：「続柄」问的是你和保证人之间是什么关系，写「祖父」就行。',
     en: 'You both put your hands up. The teacher comes over, smiling, and explains: "tsuzukigara" is simply your relationship to your guarantor. Write "grandfather".'
   },
   {
@@ -544,9 +627,193 @@ export const DAY1_SCRIPT: StoryNode[] = [
     color: 'bg-amber-400'
   },
   {
+    type: 'choice',
+    promptZh: '她把表格叠好，忽然想起什么似的转过来。',
+    promptEn: 'She folds her form and turns round as though something has just occurred to her.',
+    options: [
+      {
+        id: 'day1_hikari_name',
+        labelZh: '「同一条船的话，总得知道船上的人叫什么吧。」',
+        labelEn: '"If we are in the same boat, I should probably know who else is in it."',
+        hintZh: '你先问了名字',
+        hintEn: 'You ask her name first.',
+        effects: [{ stat: 'charm', amount: 2, reasonZh: '你把一句客套接成了一次自我介绍', reasonEn: 'You turned a pleasantry into an introduction' }],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 5, reasonZh: '她报名字的时候声音特别大', reasonEn: 'She said her name much too loudly' }],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_happy.webp`,
+            jp: 'あ、そうやん！光！ひかりって書いて、光。覚えやすいやろ？',
+            words: [{ jp: '光', reading: 'ひかり', zh: '光', en: 'light' }],
+            zh: '啊，对哦！光！写作「光」，念ひかり。好记吧？',
+            en: 'Oh, right! Hikari! Written with the character for light. Easy, right?',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '国际交流室很安静。她这一嗓子之后，靠窗那位老师抬头看了一眼，又低下去了。',
+            en: 'The exchange room is quiet. After that, the teacher by the window looks up once and goes back to her papers.'
+          }
+        ]
+      },
+      {
+        id: 'day1_hikari_howlong',
+        labelZh: '「你也是留学生？来多久了？」',
+        labelEn: '"You are an exchange student too? How long have you been here?"',
+        hintZh: '她刚才说「私だけバカなのかと」',
+        hintEn: 'She just said she thought she was the only idiot here.',
+        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你问了一个能问出东西的问题', reasonEn: 'You asked a question that actually goes somewhere' }],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 6, reasonZh: '她答得比你问的多', reasonEn: 'She answered rather more than you asked' }],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_neutral.webp`,
+            jp: '半年。……半年おってもな、こういう紙は毎回わからんねん。',
+            zh: '半年。……住了半年也一样啊，这种纸每次都还是看不懂。',
+            en: 'Six months. ...Six months in, and I still cannot read a form like this.',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '她说这句的时候笑着，但语速比刚才慢了半拍。',
+            en: 'She is smiling when she says it, but half a beat slower than everything before.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '光', speakerEn: 'Hikari',
+            characterImage: `${HIKARI}casual_happy.webp`,
+            jp: 'せやから、二人おったら二倍わかるようになるやろ！たぶん！',
+            zh: '所以说嘛，两个人的话就能懂两倍了吧！大概！',
+            en: 'Which is why two of us should understand twice as much! Probably!',
+            color: 'bg-amber-400'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'speech',
+    speakerZh: '光', speakerEn: 'Hikari',
+    characterImage: `${HIKARI}casual_happy.webp`,
+    jp: 'ほな、これ出したら学生証もらいに行こ。写真、変な顔で写ってへんとええけどな。',
+    words: [{ jp: '学生証', reading: 'がくせいしょう', zh: '学生证', en: 'student ID card' }],
+    zh: '那，交完这个就去领学生证吧。希望照片上别是个怪表情。',
+    en: 'Right, hand these in and then we go get our student cards. Here is hoping the photo is not a disaster.',
+    color: 'bg-amber-400'
+  },
+  {
     type: 'effect',
     setFlags: ['day1_hikari_registered'],
     effects: [{ stat: 'kindness', amount: 1, reasonZh: '两个人一起举了手', reasonEn: 'You put your hands up together' }]
+  },
+
+  // ==========================================================
+  // 【Scene 5.5】事务室 · 领学生证
+  // ==========================================================
+  {
+    type: 'narration',
+    zh: '事务室在一楼最里面。窗口后面的老师从抽屉里翻出一张卡，对着名单看了两眼，推过来。',
+    en: 'The office is at the far end of the ground floor. The clerk behind the window digs a card out of a drawer, checks it against a list, and slides it across.'
+  },
+  {
+    type: 'narration',
+    zh: '塑料覆膜还是新的，摸上去有点黏手。左边是你的照片——上周在领事馆门口那台机器里拍的，表情僵得像被谁按着。',
+    en: 'The lamination is new and still slightly tacky. Your photograph is on the left: taken last week in the booth outside the consulate, wearing the expression of someone being held still.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '事务室的老师', speakerEn: 'Office Clerk',
+    jp: '名前のところ、確認して。間違ってたら今のうちやで。',
+    words: [{ jp: '確認', reading: 'かくにん', zh: '确认', en: 'to check / confirm' }],
+    zh: '名字那一栏，核对一下。有错的话趁现在。',
+    en: 'Check the name line. If it is wrong, now is the time.',
+    color: 'bg-slate-500'
+  },
+  {
+    type: 'narration',
+    zh: '你用拇指压着卡片的下缘去看那一行。覆膜上斜斜地划过一道反光，正好压在名字上。你换了个角度。',
+    en: 'You hold the card by its lower edge and tilt it to read the line. A band of reflection lies across the lamination, directly over the name. You change the angle.'
+  },
+  {
+    type: 'narration',
+    zh: '没错。是你的名字。用这个国家的文字写出来，看着有点陌生，但确实是你。',
+    en: 'It is right. It is your name, set in this country\u2019s script. It looks unfamiliar written that way, and it is still you.'
+  },
+  {
+    type: 'choice',
+    promptZh: '老师在等你把卡收好。',
+    promptEn: 'The clerk is waiting for you to put it away.',
+    options: [
+      {
+        id: 'day1_card_wallet',
+        labelZh: '放进钱包最里面那一层',
+        labelEn: 'Slide it into the innermost slot of your wallet',
+        hintZh: '和外公那张旧照片放在一起',
+        hintEn: 'Next to your grandfather\u2019s old photograph.',
+        effects: [{ stat: 'kindness', amount: 1, reasonZh: '你把它和另一张重要的东西放在了一起', reasonEn: 'You put it next to the other thing that mattered' }],
+        setFlags: ['day1_card_wallet'],
+        then: [
+          {
+            type: 'narration',
+            zh: '钱包里那一层原本只有外公的一张旧照片。现在多了一张你自己的。',
+            en: 'That slot held one old photograph of your grandfather. Now there are two faces in it.'
+          }
+        ]
+      },
+      {
+        id: 'day1_card_neck',
+        labelZh: '挂在脖子上——反正这一周肯定要天天用',
+        labelEn: 'Hang it round your neck; you will need it all week anyway',
+        hintZh: '像个刚入职的人',
+        hintEn: 'Like somebody on their first day at a job.',
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '你决定让所有人都看得见你是这里的人', reasonEn: 'You decided to let everyone see you belong here' }],
+        setFlags: ['day1_card_neck'],
+        then: [
+          {
+            type: 'narration',
+            zh: '卡套在胸前晃。走出事务室的时候，走廊上有个学长瞥了一眼，什么也没说。',
+            en: 'The holder swings against your chest. On the way out an older student glances at it and says nothing.'
+          }
+        ]
+      },
+      {
+        id: 'day1_card_look',
+        labelZh: '再看一会儿',
+        labelEn: 'Look at it a little longer',
+        hintZh: '你其实是在看「開誠学園」那四个字',
+        hintEn: 'What you are actually looking at is the school\u2019s name.',
+        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你把学校的名字一个字一个字念了一遍', reasonEn: 'You read the school\u2019s name character by character' }],
+        relations: [],
+        setFlags: ['day1_card_look'],
+        then: [
+          {
+            type: 'narration',
+            zh: '「開誠学園」。开，诚。你昨天在校门口那块牌子上见过一次，当时只认出「学園」两个字。',
+            en: '"Kaisei Gakuen." Open, and sincere. You saw it once on the sign at the gate yesterday, and could only pick out the last two characters.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '事务室的老师', speakerEn: 'Office Clerk',
+            jp: '……そんなにじっと見るもん、あんまりおらんけどな。',
+            zh: '……很少有人会这么盯着它看的。',
+            en: '...Not many people stare at it quite that hard.',
+            color: 'bg-slate-500'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'effect',
+    setFlags: ['day1_got_student_id'],
+    effects: [{ stat: 'proficiency', amount: 1, reasonZh: '你现在有一张能证明你属于这里的卡', reasonEn: 'You now hold a card that says you belong here' }]
+  },
+  {
+    type: 'narration',
+    zh: '回房间以后它会一直在书桌上。你随时可以再拿起来看。',
+    en: 'From now on it lives on your desk. You can pick it up again whenever you like.'
   },
 
   // ==========================================================
@@ -615,6 +882,15 @@ export const DAY1_SCRIPT: StoryNode[] = [
         setFlags: ['day1_meta_said'],
         then: [
           {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: '……すみません。でも今朝、この場面を予言したんです。',
+            words: [{ jp: '予言', reading: 'よげん', zh: '预言', en: 'prediction / prophecy' }],
+            zh: '……抱歉。不过我今天早上刚预言过这一幕。',
+            en: '...Sorry. I did predict this exact scene this morning, though.',
+            color: 'bg-yellow-500'
+          },
+          {
             type: 'narration',
             zh: '她捡纸的手停在半空。',
             en: 'Her hand stops halfway to the next sheet.'
@@ -678,8 +954,18 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你把最后一张纸递过去，什么也没说。她道了声谢，站起来走了。',
-            en: 'You hand over the last sheet without saying anything. She thanks you, stands, and goes.'
+            zh: '你把最后一张纸递过去，什么也没说。',
+            en: 'You hand over the last sheet without saying anything.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '明日香', speakerEn: 'Asuka',
+            characterImage: `${ASUKA}neutral.webp`,
+            jp: 'ありがとう。……次からは前見て歩きなさいよ。',
+            words: [{ jp: '前', reading: 'まえ', zh: '前面', en: 'ahead / in front' }],
+            zh: '谢谢。……下次记得看着前面走。',
+            en: 'Thank you. ...Watch where you are going next time.',
+            color: 'bg-red-600'
           },
           {
             type: 'narration',
@@ -849,6 +1135,65 @@ export const DAY1_SCRIPT: StoryNode[] = [
       }
     ]
   },
+  {
+    type: 'narration',
+    zh: '你把名字说完了。班主任点点头，指了指窗边倒数第二排那张空桌。',
+    en: 'You get your name out. The homeroom teacher nods and points at the empty desk by the window, second from the back.'
+  },
+  {
+    type: 'narration',
+    zh: '走过去的那七步里，你听见后排有人小声说了句「留学生や」，语气里没有恶意，只是好奇。',
+    en: 'In the seven steps it takes to get there, you hear someone at the back say "exchange student" under their breath. There is no malice in it, only curiosity.'
+  },
+  {
+    type: 'branch',
+    ifFlag: 'day1_intro_stuck',
+    then: [
+      {
+        type: 'narration',
+        characterImage: `${ASUKA}neutral.webp`,
+        zh: '你的座位就在明日香斜后方。坐下的时候你想说句谢谢，她已经把讲义竖起来挡住了半张脸。',
+        en: 'Your seat turns out to be diagonally behind Asuka. As you sit down you mean to thank her; she has already raised her handouts to cover half her face.'
+      },
+      {
+        type: 'speech',
+        speakerZh: '明日香', speakerEn: 'Asuka',
+        characterImage: `${ASUKA}neutral.webp`,
+        jp: '……言っとくけど、あれは静かにしてほしかっただけだから。',
+        zh: '……先说好，我刚才只是想让大家安静点而已。',
+        en: '...For the record, I only wanted everyone to be quiet.',
+        color: 'bg-red-600'
+      },
+      {
+        type: 'narration',
+        zh: '她没有回头。讲义在她手里翻得很快，快到不像在看。',
+        en: 'She does not turn round. The handouts go past in her hands rather too fast for anyone to be reading them.'
+      }
+    ]
+  },
+  {
+    type: 'branch',
+    ifFlag: 'day1_intro_stuck',
+    not: true,
+    then: [
+      {
+        type: 'narration',
+        zh: '你坐下，把书包挂上桌侧的钩子。窗玻璃上映着自己的脸，看起来比想象中镇定。',
+        en: 'You sit and hang your bag on the hook at the side of the desk. Your own face in the window looks steadier than you expected.'
+      },
+      {
+        type: 'narration',
+        characterImage: `${ASUKA}neutral.webp`,
+        zh: '斜前方的明日香把讲义分下来的时候，多看了你一眼。只有一眼，然后就转回去了。',
+        en: 'When Asuka passes the handouts back she glances at you. Once, and then she faces front again.'
+      }
+    ]
+  },
+  {
+    type: 'narration',
+    zh: '第一节课的铃响了。你在这间教室里有了一个位置。',
+    en: 'The bell goes for first period. You have a place in this room now.'
+  },
 
   // ==========================================================
   // 【Scene 8】午休 · 屋顶
@@ -878,10 +1223,30 @@ export const DAY1_SCRIPT: StoryNode[] = [
     en: 'The roof. Best spot in the school. You can see the sea from here.',
     color: 'bg-amber-400'
   },
+  // 「昨天你站过的那段栏杆」只有走过海边那条路的人才站过。
+  // 序章选了商店街或北野坡的人，昨天根本没到过海边。
   {
-    type: 'narration',
-    zh: '确实看得见。从这儿看下去，港口、摩天轮、昨天你站过的那段栏杆，全都缩成了一排小小的东西。',
-    en: 'You can. From up here the harbour, the ferris wheel, the stretch of railing you stood at yesterday — all of it shrinks into one small row of things.'
+    type: 'branch',
+    ifFlag: 'prologue_walk_harbor',
+    then: [
+      {
+        type: 'narration',
+        zh: '确实看得见。从这儿看下去，港口、摩天轮、昨天你站过的那段栏杆，全都缩成了一排小小的东西。',
+        en: 'You can. From up here the harbour, the ferris wheel, the stretch of railing you stood at yesterday: all of it shrinks into one small row of things.'
+      }
+    ]
+  },
+  {
+    type: 'branch',
+    ifFlag: 'prologue_walk_harbor',
+    not: true,
+    then: [
+      {
+        type: 'narration',
+        zh: '确实看得见。港口、摩天轮、还有更远处那条把海和天分开的线。昨天你还在这座城市的地面上打转，今天它整个摊在你脚下。',
+        en: 'You can. The harbour, the ferris wheel, and further out the line that separates the sea from the sky. Yesterday you were still going in circles at street level; today the whole thing is laid out under you.'
+      }
+    ]
   },
   {
     type: 'speech',

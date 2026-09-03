@@ -40,6 +40,8 @@ const RoomScreen: React.FC<Props> = ({
   const [burst, setBurst] = useState<{ id: string; key: number } | null>(null);
   // 窗外地标面板
   const [viewOpen, setViewOpen] = useState(false);
+  // 学生证：点开是一张卡的大图，不是一句旁白
+  const [cardOpen, setCardOpen] = useState(false);
   const [spot, setSpot] = useState<ViewSpot | null>(null);
 
   const bg = getRoomBackground(calendar);
@@ -55,6 +57,7 @@ const RoomScreen: React.FC<Props> = ({
     audioManager.playSfx(h.action === 'sleep' ? 'confirm' : 'click');
     setBurst({ id: h.id, key: Date.now() });
 
+    if (h.action === 'card') { setCardOpen(true); return; }
     if (h.action === 'view') {
       // 看窗外：打开地标面板。先给一句当下天气的观感，再让玩家一个个认地方。
       setViewOpen(true);
@@ -199,6 +202,28 @@ const RoomScreen: React.FC<Props> = ({
           </button>
         );
       })}
+
+      {/* 学生证 */}
+      {cardOpen && (
+        <div className="absolute inset-0 z-40 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+             onClick={() => setCardOpen(false)}>
+          <div className="max-w-2xl w-full" onClick={e => e.stopPropagation()}>
+            <img src="/images/ui/student_id.webp" alt=""
+                 className="w-full border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.7)]" />
+            <p className="mt-4 text-sm text-white/70 leading-relaxed">
+              {en
+                ? 'Kaisei Gakuen. Your photograph, taken in the booth outside the consulate. The name line sits under the lamination glare and your own thumb, and you keep not moving either of them.'
+                : '開誠学園。照片是上周在领事馆门口那台机器里拍的。名字那一行压在覆膜的反光和你自己的拇指底下，你一直没挪开。'}
+            </p>
+            <button
+              onClick={() => { audioManager.playSfx('click'); setCardOpen(false); }}
+              className="mt-4 bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-5 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+            >
+              <span className="block transform skew-x-12">{en ? 'Put it away' : '收起来'}</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 窗外：地标一览 + 单个地标的详解 */}
       {viewOpen && (

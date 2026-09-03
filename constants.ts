@@ -1796,6 +1796,15 @@ export const ROOM_HOTSPOTS: RoomHotspot[] = [
     linesEn: ['Still not fully unpacked. You tell yourself you will finish tomorrow. You have been telling yourself that for days.']
   },
   {
+    // 学生证。领到之后才出现在桌上——在那之前你还不是这所学校的人。
+    id: 'student_id', x: 20, y: 62, w: 13, h: 12, icon: '🎫',
+    labelZh: '学生证', labelEn: 'Student ID',
+    action: 'card',
+    requiresFlag: 'day1_got_student_id',
+    linesZh: ['你把它从卡套里抽出来看了一会儿。照片上的自己表情很僵，像被谁按着拍的。'],
+    linesEn: ['You slide it out of the sleeve and look at it for a moment. The face in the photo is very stiff, as though someone were holding you still for it.']
+  },
+  {
     id: 'journal', x: 0, y: 78, w: 20, h: 20, icon: '🕯',
     labelZh: '外公的手账', labelEn: "Grandfather's journal",
     action: 'journal',

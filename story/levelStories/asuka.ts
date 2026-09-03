@@ -417,7 +417,7 @@ export const ASUKA_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你终于明白了。她不是在放弃你——她是在把自己从你身边拿开，因为她认定现在的自己**配不上**站在这里。',
+    zh: '你终于明白了。她不是在放弃你。她是在把自己从你身边拿开，因为她认定现在的自己没有资格站在这里。',
     en: 'And there it is. She is not giving up on you. She is removing herself from your side, because she has decided that the version of her standing here is not good enough to be there.'
   },
   {
