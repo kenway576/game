@@ -32,7 +32,8 @@ const FishDexModal: React.FC<Props> = ({ language, life, onClose }) => {
   const spotName: Record<string, { zh: string; en: string }> = {
     meriken_park: { zh: '美利坚公园', en: 'Meriken Park' },
     kobe_harbor: { zh: '港湾乐园', en: 'Harborland' },
-    portliner_platform: { zh: 'Port Liner 沿线', en: 'along the Port Liner' }
+    portliner_platform: { zh: 'Port Liner 沿线', en: 'along the Port Liner' },
+    suma_fishing_pier: { zh: '须磨海钓公园', en: 'Suma Fishing Pier' }
   };
 
   return (

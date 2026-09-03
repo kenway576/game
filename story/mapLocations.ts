@@ -118,6 +118,43 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientEn: ['An unfinished harbour sits on an easel. The paint has not fully dried.']
   },
 
+  {
+    id: 'school_infirmary', district: 'school',
+    nameJp: '保健室', reading: 'ほけんしつ',
+    nameZh: '保健室', nameEn: 'Infirmary',
+    blurbZh: '白色的帘子拉了一半。这间屋子在日本的学校里有一种特殊地位——不是给病人的，是给暂时待不下去教室的人的。',
+    blurbEn: 'The white curtain is half drawn. This room holds a particular place in a Japanese school: it is not really for the ill, it is for people who cannot be in a classroom right now.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你还没在这栋楼里走全过。',
+    lockedHintEn: 'You have not walked the whole building yet.',
+    ambientZh: ['校医不在，桌上压着一张「すぐ戻ります」。你在门口站了一会儿就走了。'],
+    ambientEn: ['The nurse is out; a note on the desk says back shortly. You stand in the doorway a moment and leave.']
+  },
+  {
+    id: 'school_science_lab', district: 'school',
+    nameJp: '理科室', reading: 'りかしつ',
+    nameZh: '理科室', nameEn: 'Science Lab',
+    blurbZh: '长条实验台，黑色台面被烧过很多次。药品柜上着锁，钥匙就挂在旁边的钉子上。',
+    blurbEn: 'Long black-topped benches, scorched in a great many places. The chemical cabinet is locked and the key hangs on a nail beside it.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你还没在这栋楼里走全过。',
+    lockedHintEn: 'You have not walked the whole building yet.',
+    timeSlots: ['afternoon'],
+    regulars: [CharacterId.REI],
+    ambientZh: ['人体骨骼模型被人套了一件校服外套。没有人承认是自己干的。'],
+    ambientEn: ['Someone has put a school blazer on the skeleton model. Nobody is admitting to it.']
+  },
+  {
+    id: 'school_bicycle_parking', district: 'school',
+    nameJp: '駐輪場', reading: 'ちゅうりんじょう',
+    nameZh: '自行车棚', nameEn: 'Bicycle Shed',
+    blurbZh: '铁皮顶棚下面塞了两百多辆车。放学那阵子这儿最堵，也最容易撞见人。',
+    blurbEn: 'Two hundred-odd bicycles under a tin roof. At home time it is the most congested place in the school, and therefore the easiest place to run into somebody.',
+    timeSlots: ['morning', 'afternoon'],
+    ambientZh: ['你的车被两辆车夹住了。你花了三分钟才把它抽出来。'],
+    ambientEn: ['Your bike is wedged between two others. It takes three minutes to work it free.']
+  },
+
   // ======================= 北野（家附近） =======================
   {
     id: 'umikaze_exterior', district: 'kitano',
@@ -170,6 +207,28 @@ export const MAP_LOCATIONS: MapLocation[] = [
     regulars: [CharacterId.MIYUKI],
     ambientZh: ['你点了今日咖啡，坐在最里面。窗外的坡道上有人正吃力地往上走。'],
     ambientEn: ['You order the coffee of the day and take the deepest seat. Outside, someone is labouring up the slope.']
+  },
+
+  {
+    id: 'kitano_kazamidori_square', district: 'kitano',
+    nameJp: '風見鶏の館前広場', reading: 'かざみどりのやかたまえひろば',
+    nameZh: '风见鸡馆前广场', nameEn: 'Weathercock House Square',
+    blurbZh: '北野真正的中心。红砖的风见鸡馆立在坡顶，屋顶那只铁公鸡是这一带所有明信片的主角。',
+    blurbEn: 'The actual centre of Kitano. The red-brick Weathercock House stands at the top of the slope, and the iron cockerel on its roof is on every postcard sold in this district.',
+    ambientZh: ['广场上有人在拉小提琴，琴盒开着。你投了一百日元，他冲你点了下头，没停。'],
+    ambientEn: ['Someone is playing violin with the case open. You drop in a hundred yen; he nods at you without stopping.']
+  },
+  {
+    id: 'retro_kissaten', district: 'kitano',
+    nameJp: '純喫茶', reading: 'じゅんきっさ',
+    nameZh: '纯喫茶', nameEn: 'Old-Style Coffee House',
+    blurbZh: '天鹅绒座椅、玻璃糖罐、虹吸壶。「纯喫茶」的意思是不卖酒——这个词本身就是一个时代的化石。',
+    blurbEn: 'Velvet seats, a glass sugar jar, a siphon brewer. Junkissa means it serves no alcohol; the word itself is a fossil of another era.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    ambientZh: ['老板娘按了半分钟的虹吸壶，整间屋子都是那个声音。咖啡端上来是苦的，你没加糖。'],
+    ambientEn: ['The owner works the siphon for half a minute and the whole room fills with the sound of it. The coffee arrives bitter. You do not add sugar.']
   },
 
   // ======================= 三宫 =======================
@@ -301,6 +360,59 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientEn: ['You order only tea. The cup meeting the saucer sounds very loud in this room.']
   },
 
+  {
+    id: 'oji_zoo', district: 'sannomiya',
+    nameJp: '王子動物園', reading: 'おうじどうぶつえん',
+    nameZh: '王子动物园', nameEn: 'Oji Zoo',
+    blurbZh: '全日本唯一一家同时养着大熊猫和考拉的动物园。里面还塞了一个小游乐园，那台摩天轮矮得能看清每个人的脸。',
+    blurbEn: 'The only zoo in Japan with both a giant panda and koalas. A small funfair is wedged inside it, with a ferris wheel low enough that you can make out everyone riding it.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon'],
+    ambientZh: ['你在火烈鸟那儿站了很久。它们一直单脚站着一动不动，最后是你先撑不住了。'],
+    ambientEn: ['You stand at the flamingos a long time. They hold one leg up without moving, and you are the one who gives in first.']
+  },
+  {
+    id: 'ramen_rekishi', district: 'sannomiya',
+    nameJp: '歴史を刻め', reading: 'れきしをきざめ',
+    nameZh: '拉面「刻下历史」', nameEn: 'Rekishi wo Kizame',
+    blurbZh: '店名的意思是「刻下历史」。豚骨酱油，蒜可以自己加到失去理智。吃完一整天嘴里都是那个味道。',
+    blurbEn: 'The name means "carve your name into history". Pork bone and soy, with as much garlic as you have the nerve to ask for. You taste it for the rest of the day.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
+    regulars: [CharacterId.SORA],
+    ambientZh: ['你照着墙上的规矩喊了「ニンニク少なめ」。旁边的大叔喊的是「マシマシ」，你偷偷佩服了一下。'],
+    ambientEn: ['You call for a little garlic, as the sign instructs. The man beside you calls for extra extra, and you quietly admire him.']
+  },
+  {
+    id: 'grill_ippei', district: 'sannomiya',
+    nameJp: '洋食の店 一平', reading: 'ようしょくのみせ いっぺい',
+    nameZh: '洋食店 一平', nameEn: 'Grill Ippei',
+    blurbZh: '开港城市才长得出来的东西：把西餐拆开、重装成日本人自己的菜。蛋包饭、炸虾、汉堡排，全在一个铁盘子里。',
+    blurbEn: 'A thing only a port city grows: Western food taken apart and rebuilt as Japanese. Omurice, fried prawn and hamburg steak, all on one iron plate.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    ambientZh: ['铁盘端上来还在响。你等它安静下来才动第一刀。'],
+    ambientEn: ['The iron plate is still hissing when it lands. You wait for it to go quiet before making the first cut.']
+  },
+  {
+    id: 'kobe_beef_teppanyaki', district: 'sannomiya',
+    nameJp: '神戸牛 鉄板焼き', reading: 'こうべぎゅう てっぱんやき',
+    nameZh: '神户牛 铁板烧', nameEn: 'Kobe Beef Teppanyaki',
+    blurbZh: '师傅在你面前把那块肉从生煎到熟，全程不说话。价格是你一个月的伙食费。',
+    blurbEn: 'The chef cooks the piece through in front of you without saying a word. The price is a month of your food budget.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '这种地方不是刚落地的人会走进去的。等你在这座城市待久一点。',
+    lockedHintEn: 'Not a place someone who just landed walks into. Give the city more time.',
+    timeSlots: ['night'],
+    ambientZh: ['你只点了最便宜的午市。师傅切完之后，把最边上那一块单独摆了摆，说这块是给你的。'],
+    ambientEn: ['You order only the cheapest lunch set. After cutting, the chef sets the end piece aside on its own and says that one is for you.']
+  },
+
   // ======================= 港 =======================
   {
     id: 'portliner_platform', district: 'harbor',
@@ -350,6 +462,44 @@ export const MAP_LOCATIONS: MapLocation[] = [
     timeSlots: ['night'],
     ambientZh: ['你一个人坐了一圈。到最高点的时候，能看见山腰上那一片你住的地方也亮着。'],
     ambientEn: ['You ride it alone. At the top you can see the hillside where you live, also lit.']
+  },
+
+  {
+    id: 'suma_beach', district: 'harbor',
+    nameJp: '須磨海岸', reading: 'すまかいがん',
+    nameZh: '须磨海岸', nameEn: 'Suma Beach',
+    blurbZh: '从三宫坐电车二十分钟。市区里能有一片真正的沙滩，是神户被夹在山和海之间才捡到的便宜。',
+    blurbEn: 'Twenty minutes by train from Sannomiya. A real sand beach inside the city is a bargain that comes only of Kobe being pinned between the mountains and the sea.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过。',
+    lockedHintEn: 'You have not gone toward the water yet.',
+    ambientZh: ['冬天的沙滩上只有你和两只乌鸦。海浪的声音比夏天大得多。'],
+    ambientEn: ['In winter the beach holds you and two crows. The waves are far louder than they are in summer.']
+  },
+  {
+    id: 'suma_fishing_pier', district: 'harbor',
+    nameJp: '須磨海づり公園', reading: 'すまうみづりこうえん',
+    nameZh: '须磨海钓公园', nameEn: 'Suma Fishing Pier',
+    blurbZh: '一条伸进海里的堤。沙底浅海，上来的东西和市区那些石壁完全不一样——鲽鱼只有这儿有。',
+    blurbEn: 'A pier running straight out into the sea. Shallow water over sand, so what comes up is nothing like the harbour walls in town. Flounder only happen here.',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过。',
+    lockedHintEn: 'You have not gone toward the water yet.',
+    ambientZh: ['堤上每隔五米站一个人，谁也不跟谁说话。这大概就是这条堤存在的意义。'],
+    ambientEn: ['One person every five metres along the pier, none of them talking to each other. That is probably the point of the pier.']
+  },
+
+  {
+    id: 'nada_onsen', district: 'far',
+    nameJp: '灘温泉', reading: 'なだおんせん',
+    nameZh: '滩温泉', nameEn: 'Nada Onsen',
+    blurbZh: '市区里的天然温泉，从地底下打上来的。四百四十日元，本地老头能在里面泡掉一整个下午。',
+    blurbEn: 'A natural hot spring inside the city, pumped up from underground. Four hundred and forty yen, and the local old men spend a whole afternoon in it.',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    ambientZh: ['你在冷水池和热水池之间来回了四趟。出来的时候感觉自己被重装了一遍。'],
+    ambientEn: ['You go between the cold bath and the hot one four times. You come out feeling reinstalled.']
   },
 
   // ======================= 远出 =======================

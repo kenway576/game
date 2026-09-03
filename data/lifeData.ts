@@ -171,9 +171,12 @@ export const findRod = (id: string | null) => RODS.find(r => r.id === id) || nul
 // 🐟 鱼
 //
 // spots 对应 MAP_LOCATIONS 的 id。神户能钓鱼的地方就这几处：
-//   meriken_park   美利坚公园的护岸
-//   kobe_harbor    港湾乐园的栈桥
+//   meriken_park       美利坚公园的护岸
+//   kobe_harbor        港湾乐园的栈桥
 //   portliner_platform 人工岛那一侧（远，鱼也不一样）
+//   suma_fishing_pier  须磨的钓鱼堤（真实存在的海钓公园，投げ釣り的圣地）
+// 须磨那条堤是沙底浅海，和市区那三个石壁深水钓点鱼种不一样——
+// 沙底才有鲽鱼和沙鮻，深水才有带鱼和鲈鱼。钓点之间有区别，换地方才有意义。
 // 稀有度 1 最常见，5 是"钓上来会想给人看照片"的那种。
 // ==========================================================
 export const FISH: FishDef[] = [
@@ -181,7 +184,7 @@ export const FISH: FishDef[] = [
   {
     id: 'fish_haze', nameJp: 'ハゼ', reading: 'はぜ', nameZh: '虾虎鱼', nameEn: 'Goby',
     rarity: 1, minCm: 8, maxCm: 20,
-    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform'],
+    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform', 'suma_fishing_pier'],
     yenPerCm: 6, emoji: '🐟',
     noteZh: '护岸边最容易上钩的一种。小孩子第一次钓到的鱼十有八九是它。',
     noteEn: 'The easiest thing to hook off a quay wall. Nine times out of ten it is the first fish a child ever catches.',
@@ -199,7 +202,7 @@ export const FISH: FishDef[] = [
   {
     id: 'fish_aji', nameJp: 'アジ', reading: 'あじ', nameZh: '竹荚鱼', nameEn: 'Horse Mackerel',
     rarity: 1, minCm: 12, maxCm: 30,
-    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform'],
+    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform', 'suma_fishing_pier'],
     yenPerCm: 9, emoji: '🐟',
     noteZh: '关西人夏天的日常。名字据说就来自「味」——因为好吃到可以拿味道当名字。',
     noteEn: 'A Kansai summer staple. The name is said to come from the word for flavour: it tastes good enough to be named after tasting good.',
@@ -228,7 +231,7 @@ export const FISH: FishDef[] = [
   {
     id: 'fish_kisu', nameJp: 'キス', reading: 'きす', nameZh: '沙鮻', nameEn: 'Japanese Whiting',
     rarity: 2, minCm: 15, maxCm: 28,
-    spots: ['meriken_park', 'portliner_platform'], months: [5, 6, 7, 8, 9],
+    spots: ['meriken_park', 'portliner_platform', 'suma_fishing_pier'], months: [5, 6, 7, 8, 9],
     yenPerCm: 16, emoji: '🐟',
     noteZh: '身体像玻璃一样半透明。天妇罗店里最贵的那一味常常就是它。',
     noteEn: 'Half transparent, like glass. It is often the most expensive item on a tempura counter.',
@@ -286,7 +289,7 @@ export const FISH: FishDef[] = [
   {
     id: 'fish_tachiuo', nameJp: 'タチウオ', reading: 'たちうお', nameZh: '带鱼', nameEn: 'Beltfish',
     rarity: 4, minCm: 60, maxCm: 130,
-    spots: ['kobe_harbor', 'portliner_platform'], timeSlots: ['night'], months: [7, 8, 9, 10, 11],
+    spots: ['kobe_harbor', 'portliner_platform', 'suma_fishing_pier'], timeSlots: ['night'], months: [7, 8, 9, 10, 11],
     yenPerCm: 34, emoji: '🗡️',
     noteZh: '像一把竖着立在水里的银刀。大阪湾秋天的名物，夜里整排护岸都是来钓它的人。',
     noteEn: 'A silver blade standing upright in the water. An Osaka Bay autumn speciality; on a good night the whole quay is lined with people after it.',
@@ -311,6 +314,26 @@ export const FISH: FishDef[] = [
     word: { jp: '年末', reading: 'ねんまつ', zh: '年末', en: 'end of the year' }
   },
 
+  // ---- 须磨的沙底鱼。市区那三个是石壁深水，钓不到这两种 ----
+  {
+    id: 'fish_bora', nameJp: 'ボラ', reading: 'ぼら', nameZh: '鲻鱼', nameEn: 'Grey Mullet',
+    rarity: 1, minCm: 20, maxCm: 50,
+    spots: ['suma_fishing_pier', 'kobe_harbor'],
+    yenPerCm: 5, emoji: '🐟',
+    noteZh: '会跳出水面，啪一声砸回去。也是出世鱼，长到最大叫「トド」——「とどのつまり」这句话就是这么来的：再往上没有了。',
+    noteEn: 'It jumps clear of the water and lands flat. Another promotion fish; fully grown it is called todo, which is where the phrase for "in the end, ultimately" comes from — there is no rank above it.',
+    word: { jp: 'つまり', reading: 'つまり', zh: '也就是说、总之', en: 'in other words / in the end' }
+  },
+  {
+    id: 'fish_karei', nameJp: 'カレイ', reading: 'かれい', nameZh: '鲽鱼', nameEn: 'Righteye Flounder',
+    rarity: 3, minCm: 20, maxCm: 45,
+    spots: ['suma_fishing_pier'], months: [10, 11, 12, 1, 2, 3],
+    yenPerCm: 28, emoji: '🐟',
+    noteZh: '整条趴在沙底，两只眼睛都长在右边。判断左右是有口诀的：「左ヒラメに右カレイ」。',
+    noteEn: 'It lies flat on the sand with both eyes on its right side. There is a mnemonic for telling it from a flatfish: hirame on the left, karei on the right.',
+    word: { jp: '右', reading: 'みぎ', zh: '右', en: 'right (side)' }
+  },
+
   // ---- rarity 5 ----
   {
     id: 'fish_madai', nameJp: 'マダイ', reading: 'まだい', nameZh: '真鲷', nameEn: 'Red Seabream',
@@ -326,21 +349,21 @@ export const FISH: FishDef[] = [
   {
     id: 'junk_boot', nameJp: '長靴', reading: 'ながぐつ', nameZh: '一只雨靴', nameEn: 'A Rubber Boot',
     rarity: 1, minCm: 28, maxCm: 30,
-    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform'],
+    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform', 'suma_fishing_pier'],
     yenPerCm: 0, emoji: '🥾', junk: true,
     noteZh: '右脚。', noteEn: 'Right foot.'
   },
   {
     id: 'junk_can', nameJp: '空き缶', reading: 'あきかん', nameZh: '空罐子', nameEn: 'An Empty Can',
     rarity: 1, minCm: 10, maxCm: 12,
-    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform'],
+    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform', 'suma_fishing_pier'],
     yenPerCm: 0, emoji: '🥫', junk: true,
     noteZh: '你把它带回去扔了。', noteEn: 'You take it home and bin it.'
   },
   {
     id: 'junk_weed', nameJp: '海藻', reading: 'かいそう', nameZh: '一团海藻', nameEn: 'A Clump of Seaweed',
     rarity: 1, minCm: 20, maxCm: 40,
-    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform'],
+    spots: ['meriken_park', 'kobe_harbor', 'portliner_platform', 'suma_fishing_pier'],
     yenPerCm: 0, emoji: '🌿', junk: true,
     noteZh: '沉甸甸的，拉上来那一刻你是真以为中大鱼了。',
     noteEn: 'Heavy enough that for one moment you genuinely believed it.'
@@ -348,7 +371,7 @@ export const FISH: FishDef[] = [
 ];
 
 export const findFish = (id: string) => FISH.find(f => f.id === id);
-export const FISHING_SPOTS = ['meriken_park', 'kobe_harbor', 'portliner_platform'];
+export const FISHING_SPOTS = ['meriken_park', 'kobe_harbor', 'portliner_platform', 'suma_fishing_pier'];
 export const MAX_FISH_PER_DAY = 8;
 
 // 今天、这个地点、这个时段能上什么。按稀有度加权抽。

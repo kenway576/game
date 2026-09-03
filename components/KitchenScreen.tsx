@@ -87,7 +87,8 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
 
   return (
     <div className="fixed inset-0 z-[125] bg-black select-none flex flex-col">
-      <img src="/images/backgrounds/kitchen.webp" alt=""
+      {/* 201 室自己的厨房，不是那张通用的厨房图 */}
+      <img src="/images/backgrounds/bg_umikaze_room_kitchen.webp" alt=""
            className="absolute inset-0 w-full h-full object-cover opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/40" />
 

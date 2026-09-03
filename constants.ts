@@ -128,6 +128,7 @@ export const SCENE_MAP: Record<string, string> = {
   'kazamidori_square':             '/images/backgrounds/bg_kitano_kazamidori_square.webp',
   // 🎣 须磨海滨与防波堤垂钓
   'suma_beach_coast':              '/images/backgrounds/bg_suma_beach_coast.webp',
+  'suma_beach_alt':                '/images/backgrounds/bg_suma_beach_coast_alt.webp',
   'suma_beach':                    '/images/backgrounds/bg_suma_beach_coast.webp',
   'suma_fishing_pier':             '/images/backgrounds/bg_suma_fishing_pier.webp',
   'fishing_pier':                  '/images/backgrounds/bg_suma_fishing_pier.webp',
@@ -160,6 +161,7 @@ export const SCENE_MAP: Record<string, string> = {
   'ramen_rekishi_exterior':        '/images/backgrounds/bg_ramen_rekishi_exterior.webp',
   'ramen_rekishi_bowl':            '/images/backgrounds/bg_ramen_rekishi_bowl.webp',
   'rekishi_wo_kizame':             '/images/backgrounds/bg_ramen_rekishi_bowl.webp',
+  'ramen_rekishi':                 '/images/backgrounds/bg_ramen_rekishi_exterior.webp',
   // 🥩 🍽️ 神户牛铁板烧与元町格里尔一平
   'kobe_beef_teppanyaki':          '/images/backgrounds/bg_kobe_beef_teppanyaki.webp',
   'grill_ippei_motomachi':         '/images/backgrounds/bg_grill_ippei_motomachi.webp',
