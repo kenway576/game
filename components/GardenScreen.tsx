@@ -23,7 +23,7 @@ interface Props {
   calendar: GameCalendar;
   onClose: () => void;
   onUpdate: (apply: (life: LifeState) => LifeState) => void;
-  onHarvest: (cropNameZh: string, cropNameEn: string, n: number) => void;
+  onHarvest: (cropNameZh: string, cropNameEn: string, n: number, care: 'perfect' | 'ok' | 'poor') => void;
 }
 
 const SITE = {
@@ -63,7 +63,7 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
       ...l,
       items: { ...l.items, [seedId]: (l.items[seedId] || 0) - 1 },
       plots: l.plots.map(p => p.id === sel.id
-        ? { ...p, seedId, plantedOn: today, watered: 0, lastWaterOn: null, wilted: false }
+        ? { ...p, seedId, plantedOn: today, watered: 0, lastWaterOn: null, wilted: false, missedWater: 0 }
         : p)
     }));
   };
@@ -74,20 +74,32 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
     patch(sel.id, p => ({ ...p, watered: p.watered + 1, lastWaterOn: today, wilted: false }));
   };
 
+  // 收成看的是"照顾得好不好"，具体就是有几天该浇没浇。
+  // 一天没漏 = 上物，多给一份，而且额外长属性；
+  // 漏过就只是普通收成。这条是整个种植系统真正的钩子——
+  // 不然浇水只是个每天点一下的仪式，没有好坏之分。
+  const careOf = (p: PlantPlot): 'perfect' | 'ok' | 'poor' => {
+    const missed = p.missedWater || 0;
+    if (missed === 0) return 'perfect';
+    if (missed <= 2) return 'ok';
+    return 'poor';
+  };
+
   const harvest = () => {
     if (!sel || !sel.seedId) return;
     const seed = findSeed(sel.seedId);
     if (!seed) return;
     audioManager.playSfx('confirm');
-    const n = sel.wilted ? 1 : 2;
+    const care = careOf(sel);
+    const n = care === 'perfect' ? 3 : care === 'ok' ? 2 : 1;
     onUpdate(l => ({
       ...l,
       items: { ...l.items, [seed.cropId]: (l.items[seed.cropId] || 0) + n },
       plots: l.plots.map(p => p.id === sel.id
-        ? { ...p, seedId: null, plantedOn: null, watered: 0, lastWaterOn: null, wilted: false }
+        ? { ...p, seedId: null, plantedOn: null, watered: 0, lastWaterOn: null, wilted: false, missedWater: 0 }
         : p)
     }));
-    onHarvest(seed.cropNameZh, seed.cropNameEn, n);
+    onHarvest(seed.cropNameZh, seed.cropNameEn, n, care);
   };
 
   const move = () => {
@@ -263,11 +275,22 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
                     ? (en ? 'Watered today. Nothing more to do until tomorrow.' : '今天浇过了。明天再来。')
                     : (en ? 'It wants water.' : '该浇水了。')}
               </p>
-              {sel.wilted && (
-                <p className="mt-2 text-xs text-amber-400/80">
-                  {en ? 'It wilted while you were away — the harvest will be smaller.' : '你不在的时候蔫过一次，收成会少一半。'}
-                </p>
-              )}
+              {(() => {
+                const missed = sel.missedWater || 0;
+                const care = careOf(sel);
+                return (
+                  <p className={`mt-2 text-xs ${care === 'perfect' ? 'text-emerald-400/90' : care === 'ok' ? 'text-white/45' : 'text-amber-400/85'}`}>
+                    {care === 'perfect'
+                      ? (en ? 'Not one day missed. This will come out well — three of them, and you will have learned something.'
+                            : '一天都没落下。会长得很好——收三份，而且你自己也长了点东西。')
+                      : care === 'ok'
+                        ? (en ? `${missed} day(s) without water. Two of them, then.`
+                              : `漏浇了 ${missed} 天。那就是两份。`)
+                        : (en ? `${missed} days without water. One, and you got off lightly.`
+                              : `漏浇了 ${missed} 天。收一份，还算便宜你了。`)}
+                  </p>
+                );
+              })()}
 
               <div className="mt-6 flex flex-wrap gap-3">
                 {stage === 4 ? (

@@ -238,6 +238,9 @@ export interface PlantPlot {
   watered: number;               // 累计浇水次数
   lastWaterOn: number | null;    // 同一天只能浇一次
   wilted?: boolean;              // 太久没浇会蔫（不会死，但收成减半）
+  // 有几天该浇没浇。这是"照顾得好不好"的唯一计量，
+  // 收成多少、能不能拿到属性加成，全看它。
+  missedWater?: number;
 }
 
 export type SeedKind = 'flower' | 'veg' | 'herb';
@@ -292,6 +295,24 @@ export interface RodDef {
   descZh: string; descEn: string;
 }
 
+// 料理。材料来自自己种的菜和自己钓的鱼——所以这个系统是前两个的出口，
+// 而不是又一个独立循环。
+export interface RecipeDef {
+  id: string;
+  nameJp: string; reading: string; nameZh: string; nameEn: string;
+  // 需要的具体材料（种出来的菜、买来的东西）
+  needs?: { itemId: string; n: number }[];
+  // 需要几条鱼（不挑种类）。挑种类的写在 needFish 里。
+  anyFish?: number;
+  needFish?: { fishId: string; n: number }[];
+  // 吃掉之后长的属性。这游戏没有战斗，属性就是推进对话选项的唯一货币，
+  // 所以"做饭"必须真的给得动数值，否则它只是个装饰。
+  effects: StoryEffect[];
+  emoji: string;
+  descZh: string; descEn: string;
+  word?: StoryWord;
+}
+
 export interface LifeState {
   yen: number;
   // 手头的东西：种子 / 收获物 / 鱼饵 / 花盆 都记在这儿，key = itemId
@@ -302,6 +323,8 @@ export interface LifeState {
   // 一天只能钓一定次数，免得刷
   fishedOn: number | null;
   fishedToday: number;
+  // 做过一次的菜。第一次做会多给一点知识——学会了就是学会了。
+  cookedDex?: Record<string, number>;
 }
 
 // ---------------------------------------------------------

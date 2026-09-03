@@ -27,10 +27,12 @@ import StoreScreen, { StoreKind } from './components/StoreScreen';
 import GardenScreen from './components/GardenScreen';
 import FishingScreen from './components/FishingScreen';
 import FishDexModal from './components/FishDexModal';
+import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript } from './story/mapEvents';
 import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
-import type { LifeState, FishDef } from './types';
+import { consumeFor } from './data/cookData';
+import type { LifeState, FishDef, RecipeDef } from './types';
 import type { MapLocation, MapEventDef } from './types';
 import { DAY1_SCRIPT } from './story/day1Data';
 import { DAY1_VERSION, DAY1_PROGRESS_KEY } from './story/day1Meta';
@@ -183,6 +185,7 @@ const App: React.FC = () => {
   const [life, setLife] = useState<LifeState>(INITIAL_LIFE_STATE);
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
   const [activeGarden, setActiveGarden] = useState<'balcony' | 'rooftop' | null>(null);
+  const [inKitchen, setInKitchen] = useState(false);
   const [activeFishing, setActiveFishing] = useState<MapLocation | null>(null);
   const [showFishDex, setShowFishDex] = useState(false);
   const [lifeToast, setLifeToast] = useState<string | null>(null);
@@ -398,7 +401,7 @@ const App: React.FC = () => {
     setPlayingDay1(false);
     setActiveTrip(null);
     setLife(INITIAL_LIFE_STATE);
-    setActiveStore(null); setActiveGarden(null); setActiveFishing(null);
+    setActiveStore(null); setActiveGarden(null); setActiveFishing(null); setInKitchen(false);
     setPrologueSessionKey(k => k + 1);
     try {
       localStorage.removeItem(PROLOGUE_PROGRESS_KEY);
@@ -576,7 +579,7 @@ const App: React.FC = () => {
         ...l,
         plots: l.plots.map(p =>
           p.seedId && p.lastWaterOn !== today && plantStage(p, today) < 4
-            ? { ...p, wilted: true }
+            ? { ...p, wilted: true, missedWater: (p.missedWater || 0) + 1 }
             : p)
       };
     });
@@ -619,10 +622,38 @@ const App: React.FC = () => {
   const sellItem = (gain: number, apply: (l: LifeState) => LifeState) =>
     setLife(l => ({ ...apply(l), yen: l.yen + gain }));
 
-  const harvested = (zh: string, en: string, n: number) => {
+  // 照顾得好不好，直接换成属性。这游戏没有战斗，属性就是推进对话选项的唯一货币，
+  // 所以"每天记得浇水"必须真的换得到东西，否则它只是个日常仪式。
+  const harvested = (zh: string, enName: string, n: number, care: 'perfect' | 'ok' | 'poor') => {
     audioManager.playSfx('confirm');
-    flashLife(userState.language === 'en' ? `Harvested ${en} ×${n}` : `收获了 ${zh} ×${n}`);
-    gainStat('kindness', 1, '你把一样东西从头养到了尾', 'You saw something through from seed to harvest');
+    flashLife(userState.language === 'en' ? `Harvested ${enName} ×${n}` : `收获了 ${zh} ×${n}`);
+    if (care === 'perfect') {
+      applyStoryEffects([
+        { stat: 'kindness', amount: 2, reasonZh: '一天都没落下', reasonEn: 'Not one day missed' },
+        { stat: 'proficiency', amount: 1, reasonZh: '你开始能看出它哪天不对劲', reasonEn: 'You have started to notice when it is having a bad day' }
+      ]);
+    } else {
+      applyStoryEffects([
+        { stat: 'kindness', amount: 1, reasonZh: '你把一样东西从头养到了尾', reasonEn: 'You saw something through from seed to harvest' }
+      ]);
+    }
+  };
+
+  // 做菜：吃掉结算属性，第一次做的多给一点知识
+  const cooked = (r: RecipeDef, firstTime: boolean) => {
+    setLife(l => {
+      const next = consumeFor(r, l);
+      return { ...next, cookedDex: { ...(l.cookedDex || {}), [r.id]: ((l.cookedDex || {})[r.id] || 0) + 1 } };
+    });
+    applyStoryEffects([
+      ...r.effects,
+      ...(firstTime
+        ? [{ stat: 'knowledge' as const, amount: 1,
+             reasonZh: `你学会做${r.nameZh}了`, reasonEn: `You learned to make ${r.nameEn.toLowerCase()}` }]
+        : [])
+    ]);
+    if (r.word) collectStoryWords([r.word]);
+    flashLife(userState.language === 'en' ? `Made ${r.nameEn}` : `做了${r.nameZh}`);
   };
 
   const caughtFish = (fish: FishDef, cm: number) => {
@@ -1807,6 +1838,15 @@ const App: React.FC = () => {
         />
       )}
 
+      {inKitchen && (
+        <KitchenScreen
+          language={userState.language}
+          life={life}
+          onClose={() => { setInKitchen(false); setGameMode(GameMode.ROOM); }}
+          onCook={cooked}
+        />
+      )}
+
       {showFishDex && (
         <FishDexModal language={userState.language} life={life} onClose={() => setShowFishDex(false)} />
       )}
@@ -1827,6 +1867,7 @@ const App: React.FC = () => {
           onSleep={advanceToNextDay}
           plotCount={life.plots.filter(p => p.site === 'balcony').length}
           onOpenBalcony={() => { setActiveGarden('balcony'); setGameMode(GameMode.GARDEN); }}
+          onOpenKitchen={() => setInKitchen(true)}
         />
       )}
 

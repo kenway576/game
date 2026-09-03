@@ -27,10 +27,11 @@ interface Props {
   // 一个点进去说"你什么都没有"的入口只会让人白跑一趟。
   plotCount: number;
   onOpenBalcony: () => void;
+  onOpenKitchen: () => void;
 }
 
 const RoomScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep, plotCount, onOpenBalcony
+  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep, plotCount, onOpenBalcony, onOpenKitchen
 }) => {
   const en = language === 'en';
   const [active, setActive] = useState<{ hotspot: RoomHotspot; text: string } | null>(null);
@@ -96,6 +97,12 @@ const RoomScreen: React.FC<Props> = ({
           </span>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => { audioManager.playSfx('click'); onOpenKitchen(); }}
+            className="bg-black/70 hover:bg-amber-400 hover:text-black text-amber-300 border border-amber-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
+          >
+            <span className="block transform skew-x-12">🍳 {en ? 'Kitchen' : '厨房'}</span>
+          </button>
           {plotCount > 0 && (
             <button
               onClick={() => { audioManager.playSfx('click'); onOpenBalcony(); }}
