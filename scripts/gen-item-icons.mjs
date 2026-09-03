@@ -14,9 +14,9 @@
 // 别把这两步合成一步自动跑——切错了会静默地把错的图标铺进游戏里。
 //
 // 用法：
-//   GEMINI_API_KEY=xxx node scripts/gen-item-icons.mjs --sheets        # 出三张拼版
-//   GEMINI_API_KEY=xxx node scripts/gen-item-icons.mjs --sheets fish   # 只重出某一张
-//   node scripts/gen-item-icons.mjs --slice                            # 切开并抠底，不花钱
+//   node scripts/gen-item-icons.mjs --sheets        # 出三张拼版（key 从 .env.local 读）
+//   node scripts/gen-item-icons.mjs --sheets fish   # 只重出某一张
+//   node scripts/gen-item-icons.mjs --slice         # 切开并抠底，不调 API，不花钱
 // ============================================================================
 import fs from 'fs';
 import path from 'path';
@@ -28,9 +28,18 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const RAW_DIR = path.join(ROOT, '.generated', 'icons');
 const OUT_DIR = path.join(ROOT, 'public', 'images', 'items');
 
+// key 的来源：先看环境变量，再退回 .env.local。
+// 和 gen-title-art / gen-shop-items / gen-room-weather 保持一致——
+// 有一个脚本不读 .env.local 的话，就会出现"别的脚本都能跑，就这个说没 key"。
 function readKey() {
-  for (const k of ['GEMINI_API_KEY', 'VITE_GEMINI_API_KEY', 'VITE_GOOGLE_API_KEY', 'GOOGLE_API_KEY']) {
+  for (const k of ['GEMINI_API_KEY', 'GOOGLE_API_KEY', 'VITE_GEMINI_API_KEY', 'VITE_GOOGLE_API_KEY']) {
     if (process.env[k]) return process.env[k];
+  }
+  const envPath = path.join(ROOT, '.env.local');
+  if (!fs.existsSync(envPath)) return '';
+  for (const line of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+    const m = line.match(/^\s*(?:export\s+)?(GEMINI_API_KEY|GOOGLE_API_KEY|VITE_GEMINI_API_KEY|VITE_GOOGLE_API_KEY)\s*=\s*(.+)\s*$/);
+    if (m) return m[2].trim().replace(/^["']|["']$/g, '');
   }
   return '';
 }
@@ -278,7 +287,7 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 
 if (args.includes('--sheets')) {
   const key = readKey();
-  if (!key) { console.error('缺 API key：GEMINI_API_KEY=... node scripts/gen-item-icons.mjs --sheets'); process.exit(1); }
+  if (!key) { console.error('缺 API key：把 GEMINI_API_KEY=... 写进项目根目录的 .env.local'); process.exit(1); }
   const only = args.filter(a => !a.startsWith('--'));
   const names = only.length ? only : Object.keys(SHEETS);
   for (const n of names) {
