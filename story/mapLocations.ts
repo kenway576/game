@@ -15,6 +15,15 @@ import { MapLocation, CharacterId } from '../types';
 //   ev_slope_nao       → 西村珈琲     奈绪把你带进去的那家店
 //
 // 也就是说：地图变大靠的是"你真的去过了"，不是靠日期到了。
+//
+// 【营业时间】每个地方都写死了 timeSlots，按现实里的作息来：
+//   学校放学锁门 → 午后能进，夜里不能
+//   咖啡店、神社、沙滩、钓场 → 天黑前收
+//   商店街、高架下、港湾、泡汤 → 晚上才是正场
+//   车站、便利店、自己住的地方 → 全天
+// 放学后只有两格（午后、夜里），午后用掉一格之后再打开地图，
+// 一半的地方是灰的——这就是"今天先去哪儿"要花心思的原因。
+// 远门（有马、京都）午后不动身就赶不上，所以只挂在午后那一格。
 // ---------------------------------------------------------
 
 export const MAP_LOCATIONS: MapLocation[] = [
@@ -64,6 +73,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '学生食堂', nameEn: 'Cafeteria',
     blurbZh: '中午挤得像战场，放学后空得能听见冰箱的声音。乌冬 280 日元。',
     blurbEn: 'A battlefield at noon, empty enough after school that you can hear the refrigerator. Udon, 280 yen.',
+    timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.HIKARI, CharacterId.ASUKA],
     ambientZh: ['自动售货机吞了你的硬币，又吐了出来。你换了一枚，它才勉强同意。'],
     ambientEn: ['The vending machine swallows your coin and spits it back. You try another one and it grudgingly consents.']
@@ -85,6 +95,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '中庭', nameEn: 'Courtyard',
     blurbZh: '四面教学楼围出来的一小块天。下雨的时候这里的声音特别好听。',
     blurbEn: 'A small square of sky fenced in by four buildings. When it rains, this is the best-sounding place in the school.',
+    timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.ASUKA],
     ambientZh: ['长椅是湿的。你没坐，就站着听了一会儿雨打在铁皮雨棚上的声音。'],
     ambientEn: ['The bench is wet. You do not sit; you stand and listen to the rain on the tin awning for a while.']
@@ -127,6 +138,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你还没在这栋楼里走全过。',
     lockedHintEn: 'You have not walked the whole building yet.',
+    timeSlots: ['morning', 'afternoon'],
     ambientZh: ['校医不在，桌上压着一张「すぐ戻ります」。你在门口站了一会儿就走了。'],
     ambientEn: ['The nurse is out; a note on the desk says back shortly. You stand in the doorway a moment and leave.']
   },
@@ -162,6 +174,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '海风庄', nameEn: 'Umikaze Apartments',
     blurbZh: '你住的地方。二层木造，外墙刷成奶油色，铁楼梯一踩就响。',
     blurbEn: 'Where you live. Two storeys of timber, cream-painted, with an iron staircase that announces everyone who uses it.',
+    timeSlots: ['morning', 'afternoon', 'night'],
     regulars: [CharacterId.MIYUKI, CharacterId.NAO],
     ambientZh: ['信箱里塞着一张披萨传单和一张水电缴费单。楼上有人在浇花，水滴到了铁栏杆上。'],
     ambientEn: ['A pizza flyer and a utility bill in the letterbox. Someone upstairs is watering plants; the drips land on the iron rail.']
@@ -172,6 +185,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '北野坂', nameEn: 'Kitano Slope',
     blurbZh: '从山手一路下到三宫的那条坡。走下去五分钟，走上来十五分钟。',
     blurbEn: 'The slope that runs from the hillside down into Sannomiya. Five minutes down. Fifteen minutes back up.',
+    timeSlots: ['morning', 'afternoon', 'night'],
     regulars: [CharacterId.NAO, CharacterId.MIYUKI],
     ambientZh: ['坡道两边的洋馆一栋接一栋。你走到一半停下来喘了口气，装作是在看风景。'],
     ambientEn: ['Western houses line the slope one after another. Halfway up you stop for breath and pretend to be admiring the view.']
@@ -182,6 +196,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '便利店 北野店', nameEn: 'Convenience Store (Kitano)',
     blurbZh: '坡底那家。二十四小时亮着，是这条坡上唯一不会睡的东西。',
     blurbEn: 'The one at the foot of the slope. Lit twenty-four hours, and the only thing on this hill that never sleeps.',
+    timeSlots: ['morning', 'afternoon', 'night'],
     ambientZh: ['关东煮的锅还开着。你在货架前站了三分钟，最后什么也没买就出来了。'],
     ambientEn: ['The oden pot is still on. You stand at the shelves for three minutes and leave without buying anything.']
   },
@@ -191,6 +206,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '北野天满神社', nameEn: 'Kitano Tenman Shrine',
     blurbZh: '坡顶的石阶爬上去，能一眼看到整个港。学问之神，考前这里人特别多。',
     blurbEn: 'Up the stone steps at the top of the slope, the whole harbour opens at once. God of learning; very crowded before exams.',
+    timeSlots: ['afternoon', 'night'],
     regulars: [CharacterId.INARI],
     ambientZh: ['绘马挂了一整排。你随手翻了两张，全是「合格祈願」。'],
     ambientEn: ['A whole rack of ema plaques. You flip two at random. Both are prayers to pass an exam.']
@@ -204,6 +220,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'ev_slope_nao',
     lockedHintZh: '你从门口走过好几次了，但没进去过——那种店总得有人先带你进去一次。',
     lockedHintEn: 'You have walked past the door several times. Never in. Places like that need someone to take you the first time.',
+    timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.MIYUKI],
     ambientZh: ['你点了今日咖啡，坐在最里面。窗外的坡道上有人正吃力地往上走。'],
     ambientEn: ['You order the coffee of the day and take the deepest seat. Outside, someone is labouring up the slope.']
@@ -215,6 +232,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '风见鸡馆前广场', nameEn: 'Weathercock House Square',
     blurbZh: '北野真正的中心。红砖的风见鸡馆立在坡顶，屋顶那只铁公鸡是这一带所有明信片的主角。',
     blurbEn: 'The actual centre of Kitano. The red-brick Weathercock House stands at the top of the slope, and the iron cockerel on its roof is on every postcard sold in this district.',
+    timeSlots: ['morning', 'afternoon'],
     ambientZh: ['广场上有人在拉小提琴，琴盒开着。你投了一百日元，他冲你点了下头，没停。'],
     ambientEn: ['Someone is playing violin with the case open. You drop in a hundred yen; he nods at you without stopping.']
   },
@@ -227,6 +245,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon'],
     ambientZh: ['老板娘按了半分钟的虹吸壶，整间屋子都是那个声音。咖啡端上来是苦的，你没加糖。'],
     ambientEn: ['The owner works the siphon for half a minute and the whole room fills with the sound of it. The coffee arrives bitter. You do not add sugar.']
   },
@@ -241,6 +260,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon', 'night'],
     ambientZh: ['闸机口的人流像涨潮。你靠着柱子站了一会儿，看电子屏上的班次一行行往上滚。'],
     ambientEn: ['The crowd at the gates comes in like a tide. You lean on a pillar and watch the departure board scroll upward.']
   },
@@ -253,6 +273,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
     ambientZh: ['扭蛋机排了一整面墙。你花了三百日元，抽到一只很丑的猫。你留下了它。'],
     ambientEn: ['A whole wall of capsule machines. Three hundred yen buys you a very ugly cat. You keep it.']
   },
@@ -265,6 +286,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
     regulars: [CharacterId.MAKI],
     ambientZh: ['音游机的声音从深处传出来。有人正在打一首你不认识的曲子，全连。'],
     ambientEn: ['A rhythm game is going somewhere deep in the arcade. Someone is full-comboing a song you do not know.']
@@ -292,6 +314,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
     regulars: [CharacterId.REI],
     ambientZh: ['你在语言学习区站了很久，最后买了一本用不上的关西方言词典。'],
     ambientEn: ['You linger a long time in the language section and buy a Kansai dialect dictionary you do not need.']
@@ -305,6 +328,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.INARI],
     ambientZh: ['你在赛钱箱前站着，摸遍口袋只找到一枚十日元。你还是投了。'],
     ambientEn: ['You stand at the offering box, dig through your pockets and come up with a single ten-yen coin. You put it in anyway.']
@@ -318,6 +342,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon'],
     regulars: [CharacterId.HIKARI],
     ambientZh: ['你买了一个猪肉包，站在广场边上吃完了。烫，但停不下来。'],
     ambientEn: ['You buy a pork bun and finish it standing at the edge of the plaza. Too hot, and impossible to stop.']
@@ -331,6 +356,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
     ambientZh: ['你在收纳用品那一排走了两个来回，最后买了一个你其实用不上的沥水篮。'],
     ambientEn: ['You walk the storage aisle twice and leave with a draining basket you have no use for.']
   },
@@ -343,6 +369,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_harbor',
     lockedHintZh: '你还没往海那边走过。',
     lockedHintEn: 'You have not gone toward the water yet.',
+    timeSlots: ['morning', 'afternoon'],
     ambientZh: ['老板正在修一个卷线器。你站着看了十分钟，他一句话也没说，但也没赶你走。'],
     ambientEn: ['The owner is repairing a reel. You watch for ten minutes; he says nothing, and does not move you along either.']
   },
@@ -355,6 +382,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_harbor',
     lockedHintZh: '你还没往海那边走过——旧居留地在再往南一点的地方。',
     lockedHintEn: 'You have not gone toward the water yet. The old settlement is a little further south.',
+    timeSlots: ['afternoon', 'night'],
     regulars: [CharacterId.MIYUKI],
     ambientZh: ['你只点了红茶。杯子和碟子碰在一起的声音在这间屋子里显得很响。'],
     ambientEn: ['You order only tea. The cup meeting the saucer sounds very loud in this room.']
@@ -398,6 +426,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
     ambientZh: ['铁盘端上来还在响。你等它安静下来才动第一刀。'],
     ambientEn: ['The iron plate is still hissing when it lands. You wait for it to go quiet before making the first cut.']
   },
@@ -426,6 +455,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_harbor',
     lockedHintZh: '你在三宫站看见过它的指示牌，但还没走到那一头。',
     lockedHintEn: 'You have seen the signs for it at Sannomiya, but you have not walked to that end yet.',
+    timeSlots: ['morning', 'afternoon', 'night'],
     ambientZh: ['你坐在最前面。轨道在海上转了一个大弯，整座城市在窗子里横着扫过去。'],
     ambientEn: ['You take the very front. The track swings out over the water in a long curve and the whole city sweeps across the window.']
   },
@@ -438,11 +468,13 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_harbor',
     lockedHintZh: '你还没往海那边走过。',
     lockedHintEn: 'You have not gone toward the water yet.',
+    timeSlots: ['afternoon', 'night'],
     ambientZh: ['地震纪念公园那一段护岸至今保持着 1995 年那天塌下去的样子。你站了很久。'],
     ambientEn: ['A section of the quay is kept exactly as it collapsed in 1995. You stand there for a long time.']
   },
   {
     id: 'kobe_harbor', district: 'harbor',
+    timeSlots: ['afternoon', 'night'],
     timeCost: 2,   // 商场加海边，一逛就停不下来
     nameJp: 'ハーバーランド', reading: 'ハーバーランド',
     nameZh: '港湾乐园', nameEn: 'Harborland',
@@ -470,6 +502,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
 
   {
     id: 'suma_beach', district: 'harbor',
+    timeSlots: ['morning', 'afternoon'],
     timeCost: 2,   // 从三宫坐电车过去，来回就是一趟远门
     nameJp: '須磨海岸', reading: 'すまかいがん',
     nameZh: '须磨海岸', nameEn: 'Suma Beach',
@@ -483,6 +516,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
   },
   {
     id: 'suma_fishing_pier', district: 'harbor',
+    timeSlots: ['morning', 'afternoon'],
     timeCost: 2,   // 钓鱼没有「待一会儿」这种说法
     nameJp: '須磨海づり公園', reading: 'すまうみづりこうえん',
     nameZh: '须磨海钓公园', nameEn: 'Suma Fishing Pier',
@@ -497,6 +531,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
 
   {
     id: 'nada_onsen', district: 'far',
+    timeSlots: ['afternoon', 'night'],
     timeCost: 2,   // 泡完汤浑身发软，哪儿也去不了了
     nameJp: '灘温泉', reading: 'なだおんせん',
     nameZh: '滩温泉', nameEn: 'Nada Onsen',
@@ -532,6 +567,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['afternoon'],
     ambientZh: ['你泡了脚汤。旁边的老人问你从哪儿来，然后花了十分钟说明自己也不是本地人。'],
     ambientEn: ['You use the public foot bath. An old man asks where you are from, then spends ten minutes explaining that he is not local either.']
   },
@@ -544,6 +580,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['afternoon', 'night'],
     regulars: [CharacterId.SORA],
     ambientZh: ['没有比赛的日子，球场安静得不像话。你隔着铁网看了很久那片土。'],
     ambientEn: ['On a day with no game the stadium is unreasonably quiet. You look at the dirt through the mesh for a long time.']
@@ -571,6 +608,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.INARI],
     ambientZh: ['走到半山腰人就少了。鸟居之间漏下来的光一段一段的，像有人在给你打拍子。'],
     ambientEn: ['Halfway up, the crowd thins. Light falls between the torii in regular slices, as if something is keeping time for you.']
@@ -584,6 +622,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['morning', 'afternoon'],
     ambientZh: ['你排队接了音羽瀑布的水。三道里选一道，你选了中间那道，事后才知道是姻缘。'],
     ambientEn: ['You queue for the Otowa waterfall. Three streams, and you take the middle one. Only afterwards do you learn that is the one for love.']
   }

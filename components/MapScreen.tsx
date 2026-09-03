@@ -103,6 +103,10 @@ const MapScreen: React.FC<Props> = ({
   const slotsLeft = slotsLeftToday(calendar);
   const costOf = (loc: MapLocation) => getTimeCost(loc, pickEventFor(loc.id, ctx));
   const affordable = (loc: MapLocation) => costOf(loc) <= slotsLeft;
+  // 这个时段真正还能去的地方：解锁了、没打烊、今天的时间也还够
+  const openNowCount = unlocked.filter(
+    l => isLocationOpenNow(l, calendar) && affordable(l)
+  ).length;
   // 时间用小方块画出来：实心 = 还剩，空心 = 已经用掉
   const slotPips = (used: number, total: number, cls = '') =>
     Array.from({ length: total }, (_, i) => (
@@ -137,13 +141,19 @@ const MapScreen: React.FC<Props> = ({
             <span className="ml-3 text-yellow-400/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
           </span>
         </div>
-        {/* 今天放学后还剩多少时间 */}
-        <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-black/50">
+        {/* 今天放学后还剩多少时间，以及这个点还有几处能去。
+            光给两个小方块的话，玩家不会去数列表里灰掉了多少——
+            直接写个数，"午后 32 处 / 夜里 14 处"这件事才有存在感。 */}
+        <div className="flex items-center gap-2.5 px-3 py-1.5 border border-white/15 bg-black/50">
           <span className="text-[10px] font-black uppercase tracking-widest text-white/45">
             {en ? 'Time left' : '今天还剩'}
           </span>
           <span className="flex items-center gap-1">
             {slotPips(AFTERSCHOOL_SLOTS.length - slotsLeft, AFTERSCHOOL_SLOTS.length)}
+          </span>
+          <span className="w-px h-3.5 bg-white/15" />
+          <span className="text-[10px] font-mono text-white/45">
+            {en ? `${openNowCount} open` : `${openNowCount} 处开着`}
           </span>
         </div>
         <button
@@ -210,7 +220,14 @@ const MapScreen: React.FC<Props> = ({
                         </span>
                       )}
                       {tooLate && <span className="shrink-0 text-[10px] text-rose-300/70">⌛</span>}
-                      {open && !now && <span className="shrink-0 text-[10px] text-white/30">🌙</span>}
+                      {/* 关门的理由要对：白天去不了的是夜场，晚上去不了的才是打烊。
+                          一律画月亮的话，午后看见铁板烧挂着月亮，像是在说"晚上再来"，
+                          可它本来就只开晚上——玩家会以为自己看错了。 */}
+                      {open && !now && (
+                        <span className="shrink-0 text-[10px] text-white/30">
+                          {loc.timeSlots && !loc.timeSlots.includes('afternoon') ? '🌙' : '🌇'}
+                        </span>
+                      )}
                       {!open && <span className="shrink-0 text-[10px] text-white/25">🔒</span>}
                     </button>
                   );
