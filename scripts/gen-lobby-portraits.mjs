@@ -57,6 +57,11 @@ const STYLE = [
   'and an extremely detailed, beautiful face - crisp eyelash line work, sharp catchlights, clear irises, delicate brows.',
   'Full length: the whole body from the top of the head to the shoes is inside the frame, with a little green margin at every edge.',
   'Slight low camera angle so the character reads as confident and poster-like. Vertical 9:16 composition.',
+  'PROPORTIONS: a realistically proportioned teenager, head about one seventh of total height, long legs, slim build.',
+  'This is NOT chibi, NOT super-deformed, NOT a big-head cute style - it must stand alongside the rest of the set.',
+  'RENDERING: bold confident dark outlines of even weight and hard-edged cel shadows with clear terminator lines.',
+  'Do not drift into a soft pastel, thin-lined or airbrushed look.',
+  'Nothing is beneath the feet: no floor, no ground, no ellipse, no contact shadow, no shadow of any kind.',
   'ABSOLUTELY NO TEXT, no letters, no logos, no watermark, no signature, no UI, no frame.'
 ].join(' ');
 
@@ -106,8 +111,9 @@ const CAST = {
   ].join(' '),
 
   sora: [
-    'A seventeen-year-old JAPANESE GIRL who plays basketball - unmistakably feminine: soft rounded jawline,',
-    'big bright eyes with long lashes, delicate brows - with short tousled brown hair in a boyish cut',
+    'A tall athletic seventeen-year-old JAPANESE SCHOOLGIRL who plays basketball, long-limbed and slim.',
+    'Unmistakably feminine but not childish: a soft jawline, bright eyes with long lashes, delicate brows',
+    '- with short tousled brown hair in a boyish cut',
     'and a LIGHT SUN-TANNED complexion, lightly bronzed from outdoor sport, definitely NOT dark-skinned and NOT black.',
     'She wears an orange basketball jersey and shorts, wristband, and high-top trainers.',
     'Pose: a basketball spinning on one raised index finger, her other hand on her hip, weight on one leg,',
@@ -124,7 +130,9 @@ const CAST = {
   ].join(' '),
 
   maki: [
-    'A small energetic pink-haired girl with a side ponytail, a black cat-ear headband and large pink headphones round her neck.',
+    'A fifteen-year-old pink-haired girl - the youngest of the cast, so slightly shorter than the others,',
+    'but drawn with the same realistic teenage proportions, NOT chibi - with a side ponytail,',
+    'a black cat-ear headband and large pink headphones round her neck.',
     'She wears an open denim vest over a purple tee, white shorts, black thigh-high socks and pink trainers.',
     'Pose: standing with one hip pushed out, both hands shoved in her vest pockets, shoulders raised,',
     'chin down and eyes up at the viewer in a sideways smug look, one corner of her mouth curled.',
