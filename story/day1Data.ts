@@ -2484,8 +2484,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '——然后是三十个小时的飞机、电车、坡道和三十四个名字，一起压了上来。',
-    en: '—And then thirty hours of aeroplanes and trains and slopes and thirty-four names all come down on you at once.'
+    zh: '——然后是这两天：两个半小时的飞机、关空到三宫那一趟坐过站的电车、爬了三遍的坡道，和三十四个名字，一起压了上来。',
+    en: '—And then the last two days land on you at once: two and a half hours in the air, the train from Kansai to Sannomiya that you rode one stop too far, the slope you have now climbed three times, and thirty-four names.'
   },
   {
     type: 'narration',
