@@ -38,6 +38,7 @@ import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
+import { pickStreetScene } from './story/streetScenes';
 import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
 import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
@@ -664,11 +665,22 @@ const App: React.FC = () => {
         met = encounterAt(loc.id, loc.regulars, gameCalendar, metChars, familiarityMap as Record<string, number>);
       }
     }
+    // 一趟出门能碰上什么，按这个优先级：
+    //   专属剧情 > 碰到认识的人 > 街头小景 > 一句空转旁白
+    // 街头小景排在"碰到人"后面，因为碰到人是这套系统真正的目的；
+    // 排在空转前面，因为"看见别人在过自己的日子"比"今天没什么事"值钱得多。
+    const street = (!ev && !met) ? pickStreetScene(loc.id, { flags: storyFlags, calendar: gameCalendar }) : null;
     setActiveTrip({
       loc,
       event: ev,
       script: ev
         ? ev.script
+        : street
+        ? [
+            { type: 'scene', scene: loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+            ...street.script,
+            { type: 'effect', setFlags: [street.id] }
+          ]
         : buildAmbientScript(loc, zh, gameCalendar, {
             met,
             atZh: met ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.atZh || '') : '',

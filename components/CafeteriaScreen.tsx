@@ -65,6 +65,13 @@ const CafeteriaScreen: React.FC<Props> = ({
         className="absolute inset-0 w-full h-full object-cover opacity-35"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/70 to-[#0a0a0f]/40" />
+      {/* 山田阿姨。菜单描述里写过"你手还没指完，柜台后面的阿姨就摇了摇头"——
+          她一直在这个界面里被提到，只是没有脸。现在有了。 */}
+      <img
+        src="/images/characters/npc_yamada.webp"
+        alt=""
+        className="pointer-events-none absolute right-0 bottom-0 h-[78%] object-contain opacity-90 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] hidden lg:block"
+      />
 
       {/* 顶栏 */}
       <div className="relative flex items-center justify-between gap-3 px-4 md:px-6 py-3 border-b border-white/10 shrink-0">

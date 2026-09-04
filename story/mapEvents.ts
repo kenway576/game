@@ -59,8 +59,29 @@ export const locationHasEvent = (locationId: string, ctx: EventContext): boolean
 export const isLocationUnlocked = (loc: MapLocation, flags: StoryFlags): boolean =>
   !loc.requiresFlag || !!flags[loc.requiresFlag];
 
-export const isLocationOpenNow = (loc: MapLocation, calendar: GameCalendar): boolean =>
-  !loc.timeSlots || loc.timeSlots.includes(calendar.timeSlot);
+// 周末的两条规矩：
+//   一、学校关门。周六周日整栋楼都进不去——这是"周末"最起码的样子。
+//   二、"午休"那一格变成白天。平日的午休只走得到校内，
+//      周末没有课，那一格就该是能出门的一整个上午。
+// 于是周末不是"少了一格午休"，而是**多了一格能出门的白天**，
+// 三格全部能往市区走。这才是放假。
+export const isLocationOpenNow = (loc: MapLocation, calendar: GameCalendar): boolean => {
+  const weekend = isWeekendCal(calendar);
+  if (weekend && loc.district === 'school') return false;
+  if (!loc.timeSlots) return true;
+  if (weekend && calendar.timeSlot === 'lunch') {
+    // 周末白天：按"午后开不开"来判断
+    return loc.timeSlots.includes('afternoon') || loc.timeSlots.includes('lunch');
+  }
+  return loc.timeSlots.includes(calendar.timeSlot);
+};
+
+// 和 scheduleData 里那份是同一套判断。放在这里是为了不让 mapEvents 反向依赖 data/。
+const WEEK_HEAD = ['日', '月', '火', '水', '木', '金', '土'];
+const isWeekendCal = (cal: GameCalendar): boolean => {
+  const i = WEEK_HEAD.indexOf((cal.dayOfWeek || '').charAt(0));
+  return i === 0 || i === 6;
+};
 
 // ---------------------------------------------------------
 // ⏳ 放学后的时间预算

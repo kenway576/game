@@ -37,6 +37,11 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
   const [tab, setTab] = useState<'buy' | 'sell'>('buy');
   const [pickId, setPickId] = useState<string | null>(null);
 
+  // 站柜台的人。这两句招呼语在文案里早就有了，现在配上人。
+  const clerkSprite = kind === 'hyakkin'
+    ? '/images/characters/npc_city_takahashi.webp'
+    : '/images/characters/npc_city_gensan.webp';
+
   const shop = kind === 'hyakkin'
     ? {
         nameZh: '百元店 ダイソー 三宫店', nameEn: 'Hundred-Yen Shop',
@@ -161,6 +166,14 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
 
   return (
     <div className="fixed inset-0 z-[125] bg-[#0b0b10] flex flex-col select-none">
+      {/* 站柜台的那个人。百元店是高桥，渔具店是源老爹——
+          "老板背对着你在修卷线器"那句话写的就是他，只是一直没有脸。
+          放在右下角、屏幕窄的时候不显示：他是气氛，不该挡住货架。 */}
+      <img
+        src={clerkSprite}
+        alt=""
+        className="pointer-events-none absolute right-0 bottom-0 h-[70%] object-contain opacity-25 hidden xl:block"
+      />
       {/* 顶栏 */}
       <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10 shrink-0">
         <div>
