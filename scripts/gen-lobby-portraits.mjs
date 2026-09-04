@@ -114,11 +114,19 @@ const CAST = {
     'A tall athletic seventeen-year-old JAPANESE SCHOOLGIRL who plays basketball, long-limbed and slim.',
     'Unmistakably feminine but not childish: a soft jawline, bright eyes with long lashes, delicate brows',
     '- with short tousled brown hair in a boyish cut',
-    'and a LIGHT SUN-TANNED complexion, lightly bronzed from outdoor sport, definitely NOT dark-skinned and NOT black.',
+    // 上一版写的是 LIGHT SUN-TANNED，模型给出来的还是偏深的小麦色，
+    // 和其余七个人不在一个色阶上。这里改成明确的"浅"，
+    // 并且直接给出参照：和同一批里其他女生同一个肤色。
+    'and a FAIR, LIGHT skin tone - the same fair complexion as the other girls in this set,'
+    + ' with at most a very faint healthy warmth; NOT tanned, NOT bronzed, NOT olive, NOT dark-skinned.',
     'She wears an orange basketball jersey and shorts, wristband, and high-top trainers.',
     'Pose: a basketball spinning on one raised index finger, her other hand on her hip, weight on one leg,',
     'leaning slightly toward the viewer with a huge open confident grin, eyebrows up in a challenge.',
-    'She reads as a cheerful sporty schoolgirl, never as a boy.'
+    'She reads as a cheerful sporty schoolgirl, never as a boy.',
+    // 身份锁：上一版模型把她的瞳色改成了蓝色、还在球衣上印了 ACE。
+    // 瞳色和号码是她和立绘之间唯一的对得上的凭据，必须写死。
+    'HER EYES MUST BE WARM AMBER-BROWN, never blue, never green.',
+    'Her jersey is plain: the only marking is the number 67. No words, no lettering, no team name anywhere on it.'
   ].join(' '),
 
   nao: [
