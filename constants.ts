@@ -330,6 +330,7 @@ export const EASTER_EGG_SPRITES = {
   mio:      '/images/characters/easter_mio.webp',      // 秋山澪（大草帽蓝裙害羞脸）
   // 《Fate/stay night》神户圣地巡礼
   rin:      '/images/characters/easter_rin.webp',      // 远坂凛（风见鸡馆前的红衣双马尾魔术师）
+  shirou:   '/images/characters/easter_shirou.webp',   // 卫宫士郎（操场撑杆跳高少年）
   // 《间谍过家家》
   anya:     '/images/characters/easter_anya.webp',     // 阿尼亚（魔性“呵”表情抱花生）
   // 《为美好的世界献上祝福！》
