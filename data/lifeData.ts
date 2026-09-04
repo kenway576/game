@@ -12,7 +12,10 @@ import { SeedDef, FishDef, RodDef, LifeState, GameCalendar, TimeSlot } from '../
 // ---------------------------------------------------------
 
 // 把月/日压成一个能直接相减的序号。跨月种菜不用做日期运算。
-export const dayIndex = (cal: GameCalendar) => cal.month * 31 + cal.day;
+// 「绝对日序」：种下 / 上次浇水 / 今天钓了几条，全靠它相减。
+// 月份会翻页之后 12/31 → 1/1 会让这个数倒退，所以要把学年内的年份算进去。
+// year 缺省是 1，于是老存档算出来的值跟以前完全一样。
+export const dayIndex = (cal: GameCalendar) => ((cal.year ?? 1) - 1) * 372 + cal.month * 31 + cal.day;
 
 export const INITIAL_LIFE_STATE: LifeState = {
   // 外公留下的那笔零钱。够买一个花盆加两包种子，或者一根最便宜的竿。

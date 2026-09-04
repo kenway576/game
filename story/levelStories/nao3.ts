@@ -268,9 +268,12 @@ export const NAO_STORY_3: StoryNode[] = [
 
   // ---- 双结局 ----
   {
+    // 分岔不看好感度：这一段本来就是好感度 Lv.5 才触发的，
+    // 再按好感度分，「挚友」那条永远走不到。
+    // 改看親密度——她开局 215，到 240 意味着十年那道缝真的补上了。
     type: 'check',
-    metric: 'affection',
-    min: 200,
+    metric: 'familiarity',
+    min: 240,
 
     // ============ 相爱 ============
     then: [

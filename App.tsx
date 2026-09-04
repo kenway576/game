@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode } from './types';
-import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, appendDay1Memories, getWeatherScene, weekdayFor } from './constants';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
@@ -15,6 +15,7 @@ import WordbookModal from './components/WordbookModal';
 import HistoryLogModal from './components/HistoryLogModal';
 import SaveLoadScreen from './components/SaveLoadScreen';
 import CgGalleryModal from './components/CgGalleryModal';
+import EndingsModal from './components/EndingsModal';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
@@ -86,6 +87,10 @@ const App: React.FC = () => {
 
   // 💞 关系升级事件：触发庆祝画面 + 升级剧情（区分是哪条轴涨了）
   const [levelUpEvent, setLevelUpEvent] = useState<{ axis: RelationshipAxis; level: number; key: number } | null>(null);
+  // 还没播的升级。以前同一回合两条轴一起升级时，親密度那一级被直接丢掉了
+  // （注释说"下回合自然会补上"，但下回合已经跨过阈值了，永远补不上），
+  // 于是每个人的第①段（親密度 Lv.3）都可能一辈子看不到。现在排队，逐个播。
+  const [pendingLevelUps, setPendingLevelUps] = useState<{ charId: CharacterId; axis: RelationshipAxis; level: number }[]>([]);
 
   // 🧠 长期记忆：每个角色一段滚动摘要（已认识的角色带着共同记忆开局）；
   // replySinceMemoryRef 记录距上次摘要的回复数
@@ -121,6 +126,7 @@ const App: React.FC = () => {
   const [showHistoryLog, setShowHistoryLog] = useState(false);
   const [showWordbook, setShowWordbook] = useState(false);
   const [showCgGallery, setShowCgGallery] = useState(false);
+  const [showEndings, setShowEndings] = useState(false);
   const [showProtagonistProfile, setShowProtagonistProfile] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
@@ -354,7 +360,7 @@ const App: React.FC = () => {
   }, [messages, isStreaming]);
 
   // 🔊 主要弹窗开 / 关的提示音（关闭多为点背景遮罩，通用点击音覆盖不到）
-  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || showInventory || showPhone || !!saveLoadMode;
+  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || showEndings || showInventory || showPhone || !!saveLoadMode;
   const prevModalOpenRef = useRef(false);
   useEffect(() => {
     if (anyModalOpen === prevModalOpenRef.current) return;
@@ -468,30 +474,68 @@ const App: React.FC = () => {
   }, [gameMode]);
 
   // 剧本给的关系变动：直接加绝对点数（不走 AI 那套 delta × 倍率），
-  // 也不弹升级庆祝——序章的结算统一放到结算屏上讲。
+  // 剧情播放当中不打断，跨过的等级排进队列，等回到大厅再一段一段补播。
+  //
+  // 两处以前的问题都在这儿：
+  // ① 不认恋爱天花板。聊天走的是"好感度等级不能超过親密度等级"，
+  //    剧本却能直接把一个刚认识的人顶到「挚爱」，两套规则对不上。
+  // ② 跨过等级不记账。而专属剧情（也就是两条结局分支）只挂在升级事件上，
+  //    于是靠地图事件、放学后事件攒起来的好感度永远打不开结局那一段。
   const applyStoryRelations = (relations: StoryRelationEffect[]) => {
     if (!relations.length) return;
     // 剧本里但凡给某人结算过关系，就说明玩家真的跟她照过面了。
     // 大厅的名单直接认这个信号 —— 不用另维护一张"谁登场过"的表，
     // 也就不会出现"剧情加了新角色但忘了登记，她永远不出现"的漏配。
     markMet(relations.map(r => r.char));
-    setFamiliarityMap(prev => {
-      const next = { ...prev };
-      relations.forEach(r => {
-        if (!r.familiarity) return;
-        next[r.char] = Math.max(0, Math.min(FAMILIARITY_MAX, (next[r.char] || 0) + r.familiarity));
-      });
-      return next;
+
+    const queued: { charId: CharacterId; axis: RelationshipAxis; level: number }[] = [];
+    const nextFamById: Partial<Record<CharacterId, number>> = {};
+    const nextAffById: Partial<Record<CharacterId, number>> = {};
+
+    relations.forEach(r => {
+      const curFam = familiarityMap[r.char] ?? getInitialFamiliarity(r.char);
+      const curAff = affectionMap[r.char] || 0;
+      const nextFam = Math.max(0, Math.min(FAMILIARITY_MAX, curFam + (r.familiarity || 0)));
+      // 天花板只挡上涨，不倒扣已有的好感度（跟聊天那条路一致）
+      const wantedAff = Math.max(0, Math.min(AFFECTION_MAX, curAff + (r.affection || 0)));
+      const ceiling = getRomanceCeiling(nextFam);
+      const nextAff = wantedAff > curAff ? Math.min(wantedAff, Math.max(curAff, ceiling)) : wantedAff;
+
+      if (nextFam !== curFam) nextFamById[r.char] = nextFam;
+      if (nextAff !== curAff) nextAffById[r.char] = nextAff;
+
+      // 好感度排在前面：它更稀有，也是结局那一段挂的轴。
+      if (getAffectionLevelIndex(nextAff) > getAffectionLevelIndex(curAff)) {
+        queued.push({ charId: r.char, axis: 'affection', level: getAffectionLevelIndex(nextAff) + 1 });
+      }
+      if (getFamiliarityLevelIndex(nextFam) > getFamiliarityLevelIndex(curFam)) {
+        queued.push({ charId: r.char, axis: 'familiarity', level: getFamiliarityLevelIndex(nextFam) + 1 });
+      }
     });
-    setAffectionMap(prev => {
-      const next = { ...prev };
-      relations.forEach(r => {
-        if (!r.affection) return;
-        next[r.char] = Math.max(0, Math.min(AFFECTION_MAX, (next[r.char] || 0) + r.affection));
-      });
-      return next;
-    });
+
+    if (Object.keys(nextFamById).length) setFamiliarityMap(prev => ({ ...prev, ...nextFamById }));
+    if (Object.keys(nextAffById).length) setAffectionMap(prev => ({ ...prev, ...nextAffById }));
+    if (queued.length) setPendingLevelUps(q => [...q, ...queued]);
   };
+
+  // 待播队列的出口一：回到大厅、手上没有别的东西在播 → 补播一段手写剧情。
+  // 只补有剧本的那些；没剧本的那一级要靠 AI 即兴，而即兴得在聊天里演，
+  // 所以留在队列里，等玩家下次找她说话（出口二）。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
+    if (!pendingLevelUps.length) return;
+    const eligible = (e: { charId: CharacterId; axis: RelationshipAxis; level: number }) => {
+      const d = findLevelStory(e.charId, e.axis, e.level);
+      return !!d?.script?.length && isLevelStoryReady(d, storyFlags);
+    };
+    const idx = pendingLevelUps.findIndex(eligible);
+    if (idx < 0) return;
+    const entry = pendingLevelUps[idx];
+    const def = findLevelStory(entry.charId, entry.axis, entry.level)!;
+    setPendingLevelUps(q => q.filter((_, i) => i !== idx));
+    setActiveLevelStory({ charId: entry.charId, def });
+  }, [gameMode, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, pendingLevelUps, storyFlags]);
 
   // 剧本台词里的生词进单词本。
   // 去重键走同步的 ref：StrictMode 会把 effect 跑两遍，
@@ -606,9 +650,7 @@ const App: React.FC = () => {
     setGameCalendar(prev => {
       const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
       return {
-        ...prev,
-        day: prev.day + 1,
-        dayOfWeek: weekdayFor(prev.month, prev.day + 1),
+        ...advanceCalendarDay(prev),
         timeSlot: 'morning',
         weather: weathers[Math.floor(Math.random() * weathers.length)]
       };
@@ -885,9 +927,7 @@ const App: React.FC = () => {
       }
       const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
       return {
-        ...prev,
-        day: prev.day + 1,
-        dayOfWeek: weekdayFor(prev.month, prev.day + 1),
+        ...advanceCalendarDay(prev),
         timeSlot: 'lunch',
         weather: weathers[Math.floor(Math.random() * weathers.length)]
       };
@@ -906,10 +946,22 @@ const App: React.FC = () => {
     // day1_done 强制置上：跳过第 1 章的人也算过完了这一天。
     // 地图的三宫一带、校内社团室都挂在这个 flag 上，
     // 靠剧本末尾那个 effect 节点的话，一跳过就全锁死了。
-    setStoryFlags(prev => ({ ...prev, ...flags, day1_done: true }));
-    // 第 1 章主线上一定会碰面的三个人，跳过章节的人也算认识——
-    // 否则跳过之后大厅可能一个人都没有，玩家直接卡死在空名单上。
-    markMet([CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.MIYUKI]);
+    // 跳过第 1 章的人，`flags` 里是空的：主线上必定照面的那几个人一个都没有登记。
+    // 而每个人的放学后首次事件都挂着 requiresFlags: ['day1_met_x']，
+    // 午休、偶遇、大厅名单又都只认已经认识的人 ——
+    // 结果是跳过一次章节，八个人里五个永久见不到，全攻略直接没了。
+    // 所以这里把"第 1 章走完一定会有的那批 flag"补齐，跳没跳过都一样。
+    const day1Guaranteed: StoryFlags = {
+      day1_met_asuka: true, day1_met_hikari: true, day1_met_sora: true,
+      day1_met_rei: true, day1_met_maki: true, day1_met_inari: true, day1_met_nao: true
+    };
+    setStoryFlags(prev => ({ ...prev, ...day1Guaranteed, ...flags, day1_done: true }));
+    // 大厅名单同理：跳过的人也得能找到人说话。
+    markMet([
+      CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.MIYUKI,
+      CharacterId.SORA, CharacterId.REI, CharacterId.MAKI,
+      CharacterId.INARI, CharacterId.NAO
+    ]);
     // 把今天真正发生过的事并进各人的长期记忆。
     // 没触发的 flag 不留痕迹 —— 角色不该记得玩家没玩过的剧情。
     setMemoryMap(prev => appendDay1Memories(prev, flags));
@@ -973,8 +1025,12 @@ const App: React.FC = () => {
     const famLeveledTo = getFamiliarityLevelIndex(nextFam) > getFamiliarityLevelIndex(curFam)
       ? getFamiliarityLevelIndex(nextFam) + 1 : 0;
 
+    // 好感度先播（更稀有、更有戏），親密度那一级进队列，这一段播完再补。
     if (affLeveledTo) setLevelUpEvent({ axis: 'affection', level: affLeveledTo, key: Date.now() });
     else if (famLeveledTo) setLevelUpEvent({ axis: 'familiarity', level: famLeveledTo, key: Date.now() });
+    if (affLeveledTo && famLeveledTo) {
+      setPendingLevelUps(q => [...q, { charId, axis: 'familiarity', level: famLeveledTo }]);
+    }
 
     // 🔊 关系音效：升级 > 关系下降 > 单纯上涨。好感=暖音色，親密=冷音色。
     if (affLeveledTo) { audioManager.playSfx('levelup_affection'); audioManager.duckBgm(); }
@@ -989,14 +1045,23 @@ const App: React.FC = () => {
   const handleLevelUpContinue = () => {
     if (!levelUpEvent || !selectedCharId) return;
     const { axis, level: lv } = levelUpEvent;
+    const charId = selectedCharId;
     setLevelUpEvent(null);
+    // 这一级已经开始播了，把它从待播队列里划掉，免得等下重播一遍。
+    setPendingLevelUps(q => q.filter(e => !(e.charId === charId && e.axis === axis && e.level === lv)));
     audioManager.restoreBgm(); // 庆祝结束，BGM 音量恢复
 
     // 这一级有手写的专属剧情就播它，没有才让 AI 即兴。
     // 剧本是一个一个写的，所以这两条路要长期共存。
-    const story = findLevelStory(selectedCharId, axis, lv);
+    const story = findLevelStory(charId, axis, lv);
     if (story?.script?.length) {
-      setActiveLevelStory({ charId: selectedCharId, def: story });
+      // 前置没齐（第③段要等第②段播完）→ 放回队列，而不是退回 AI 即兴。
+      // 退回即兴的话这一级就用掉了，手写的那一段永远轮不上。
+      if (!isLevelStoryReady(story, storyFlags)) {
+        setPendingLevelUps(q => [...q, { charId, axis, level: lv }]);
+        return;
+      }
+      setActiveLevelStory({ charId, def: story });
       return;
     }
 
@@ -1086,6 +1151,8 @@ const App: React.FC = () => {
         customAssets, affectionMap, familiarityMap, memoryMap,
         // 🔥 五维人格、行事历与剧情选择：漏存这几项等于玩家的选择读档就作废
         protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs, life, metChars,
+        // 欠着没播的升级剧情。不存的话，读档就把某人的专属剧情永久吞掉了。
+        pendingLevelUps,
         // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
         // 这样三个存档就是三个不同的位置，而不是都指向同一份共享进度。
         // hard 模式（容量告急）下丢掉它：宁可退回共享进度，也不能让存档整个写不进去。
@@ -1173,6 +1240,7 @@ const App: React.FC = () => {
       setProtagonistStats({ ...INITIAL_PROTAGONIST_STATS, ...(data.protagonistStats || {}) });
       setGameCalendar({ ...INITIAL_CALENDAR_STATE, ...(data.gameCalendar || {}) });
       setStoryFlags(data.storyFlags || {});
+      setPendingLevelUps(data.pendingLevelUps || []);
       setUnlockedCgs(Array.isArray(data.unlockedCgs) ? data.unlockedCgs : []);
       // 老存档没有休闲系统：给一份初值，别让读档崩掉
       setLife({ ...INITIAL_LIFE_STATE, ...(data.life || {}),
@@ -1347,6 +1415,18 @@ const App: React.FC = () => {
     setCurrentScene(DEFAULT_SCENE);
     setDiceRoll(null);
     replySinceMemoryRef.current = 0;
+
+    // 这个人身上还欠着没播的升级（多半是同回合双轴升级、或者剧情事件攒出来的）
+    // → 一进聊天就把庆祝画面补上，该走 AI 即兴的那一级也就有地方演了。
+    const owed = pendingLevelUps.find(e => {
+      if (e.charId !== charId) return false;
+      const d = findLevelStory(e.charId, e.axis, e.level);
+      return !d?.script?.length || isLevelStoryReady(d, storyFlags);
+    });
+    if (owed) {
+      setPendingLevelUps(q => q.filter(e => e !== owed));
+      setLevelUpEvent({ axis: owed.axis, level: owed.level, key: Date.now() });
+    }
 
     const affectionValue = affectionMap[charId] || 0;
     const familiarityValue = familiarityMap[charId] ?? getInitialFamiliarity(charId);
@@ -1803,6 +1883,7 @@ const App: React.FC = () => {
           onOpenWordbook={() => { setShowSystemMenu(false); setShowWordbook(true); }}
           onOpenHistory={() => { setShowSystemMenu(false); setShowHistoryLog(true); }}
           onOpenCgGallery={() => { setShowSystemMenu(false); setShowCgGallery(true); }}
+          onOpenEndings={() => { setShowSystemMenu(false); setShowEndings(true); }}
           onOpenProtagonistProfile={() => { setShowSystemMenu(false); setShowProtagonistProfile(true); }}
           onOpenCalendar={() => { setShowSystemMenu(false); setShowCalendar(true); }}
           onOpenInventory={() => { setShowSystemMenu(false); setShowInventory(true); }}
@@ -1885,6 +1966,16 @@ const App: React.FC = () => {
           activeTab={activeHistoryTab}
           setActiveTab={setActiveHistoryTab}
           onClose={() => setShowHistoryLog(false)}
+        />
+      )}
+
+      {showEndings && (
+        <EndingsModal
+          language={userState.language}
+          storyFlags={storyFlags}
+          affectionMap={affectionMap}
+          familiarityMap={familiarityMap}
+          onClose={() => setShowEndings(false)}
         />
       )}
 

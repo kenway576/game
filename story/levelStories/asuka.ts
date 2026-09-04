@@ -477,7 +477,7 @@ export const ASUKA_STORY_2: StoryNode[] = [
   },
   {
     type: 'effect',
-    setFlags: ['asuka_story_rank_second'],
+    setFlags: ['asuka_story_rank_second', 'asuka_story_2_done'],
     effects: [
       { stat: 'knowledge', amount: 1, reasonZh: '你开始明白她那些红字是什么意思了', reasonEn: 'You are starting to understand what all that red ink meant' }
     ],

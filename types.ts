@@ -215,6 +215,9 @@ export interface StatGainEvent {
 export type TimeSlot = 'morning' | 'lunch' | 'afternoon' | 'night';
 
 export interface GameCalendar {
+  // 学年内的第几个自然年：1 = 开学那年（4~12 月），2 = 次年（1~3 月）。
+  // 可选，老存档里没有 —— 读出来当 1，数值行为跟加这个字段之前一模一样。
+  year?: number;
   month: number;
   day: number;
   dayOfWeek: string;

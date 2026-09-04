@@ -15,6 +15,7 @@ interface Props {
   onOpenWordbook: () => void;
   onOpenHistory: () => void;
   onOpenCgGallery: () => void;
+  onOpenEndings: () => void;
   onOpenProtagonistProfile: () => void;
   onOpenCalendar: () => void;
   onOpenInventory: () => void;
@@ -138,7 +139,7 @@ const AudioSettingsPanel: React.FC<{ T: Record<string, string> }> = ({ T }) => {
 
 const SystemMenu: React.FC<Props> = ({
   T, language, wordCount, showExitToLobby, hasAnySave, isSyncing,
-  onClose, onOpenWordbook, onOpenHistory, onOpenCgGallery, onOpenProtagonistProfile, onOpenCalendar, onOpenInventory,
+  onClose, onOpenWordbook, onOpenHistory, onOpenCgGallery, onOpenEndings, onOpenProtagonistProfile, onOpenCalendar, onOpenInventory,
   onExitToLobby, onReturnTitle,
   onSaveRequest, onLoadRequest, onExportJson, onSyncCloud,
   userState, setUserState,
@@ -163,7 +164,8 @@ const SystemMenu: React.FC<Props> = ({
             { icon: '📜', label: T.logs, on: onOpenHistory },
             { icon: '🌸', label: language === 'en' ? 'CGS' : '画廊', on: onOpenCgGallery },
             { icon: '👤', label: language === 'en' ? 'PROFILE' : '人格参数', on: onOpenProtagonistProfile },
-            { icon: '📅', label: language === 'en' ? 'CALENDAR' : '行事历', on: onOpenCalendar }
+            { icon: '📅', label: language === 'en' ? 'CALENDAR' : '行事历', on: onOpenCalendar },
+            { icon: '🏁', label: language === 'en' ? 'ENDINGS' : '结局记录', on: onOpenEndings }
           ] as { icon: string; label: string; on: () => void }[]).map(b => (
             <button
               key={b.label}

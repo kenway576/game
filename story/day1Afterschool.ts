@@ -1023,10 +1023,19 @@ const CAMEO_MAKI: StoryNode[] = [
   }
 ];
 
-// 没走的那两条路，随机演一条
-export const DAY1_CAMEO_AFTER_GYM: StoryNode = { type: 'random', pick: [CAMEO_REI, CAMEO_MAKI] };
-export const DAY1_CAMEO_AFTER_LIB: StoryNode = { type: 'random', pick: [CAMEO_SORA, CAMEO_MAKI] };
-export const DAY1_CAMEO_AFTER_ARC: StoryNode = { type: 'random', pick: [CAMEO_SORA, CAMEO_REI] };
+// 没走的那两条路，回去的路上两条都路过一眼。
+//
+// 以前这里是 `random` —— 两条里只演一条。看着是"每周目不一样"，
+// 实际后果是：空 / 铃 / 真希三个人，一个存档里只可能认识两个。
+// 而第三个人**永远见不到了**：她的放学后事件挂着 requiresFlags: ['day1_met_x']，
+// 午休和偶遇也都只认已经认识的人，大厅名单同理。
+// 也就是说，全攻略在一份存档里做不到，跟玩多久没关系。
+//
+// 深度线还是只能选一条（那是选择的重量所在），
+// 但"路过时瞥了一眼"这种程度的照面，没有理由三缺一。
+export const DAY1_CAMEO_AFTER_GYM: StoryNode[] = [...CAMEO_REI, ...CAMEO_MAKI];
+export const DAY1_CAMEO_AFTER_LIB: StoryNode[] = [...CAMEO_SORA, ...CAMEO_MAKI];
+export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [...CAMEO_SORA, ...CAMEO_REI];
 
 // ==========================================================
 // 傍晚：稻荷 → 奈绪（两个都必遇，让 8 个人在一周目里全部露面）

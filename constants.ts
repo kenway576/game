@@ -1325,6 +1325,11 @@ export interface LevelStoryDef {
   titleEn: string;
   // 剧本正文。留空表示"还没写"，此时回退给 AI 即兴演出，游戏不会卡住。
   script?: StoryNode[];
+  // 前置：这些 flag 全齐了才能播。不齐就先在队列里等着，
+  // 等齐了下次回大厅自动补上——不会因为等级已经跨过去就永久丢掉。
+  // 用途：第③段（结局那一段）必须排在第②段之后，
+  //       而两段挂的是不同的轴，光靠等级排不出先后。
+  requiresFlags?: string[];
 }
 
 // 每个角色的专属剧情表。写好一个填一个——没填的角色照旧走 AI 即兴，
@@ -1349,8 +1354,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
     },
     {
       id: 'asuka_3_twilight',
-      axis: 'affection',
-      level: 5,                 // 好感度 Lv.5「挚爱」(220)
+      axis: 'familiarity',
+      level: 5,                 // 親密度 Lv.5「无话不谈」(210)
+      requiresFlags: ['asuka_story_2_done'],
+                 // 好感度 Lv.5「挚爱」(220)
       titleZh: '放課後の残り日',
       titleEn: 'What Is Left of the Afternoon',
       script: ASUKA_STORY_3
@@ -1375,8 +1382,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
     },
     {
       id: 'hikari_3_second_year',
-      axis: 'affection',
-      level: 5,                 // 好感度 Lv.5「挚爱」(220)
+      axis: 'familiarity',
+      level: 5,                 // 親密度 Lv.5「无话不谈」(210)
+      requiresFlags: ['hikari_story_2_done'],
+                 // 好感度 Lv.5「挚爱」(220)
       titleZh: '二年目の海',
       titleEn: 'The Sea, Second Year',
       script: HIKARI_STORY_3
@@ -1401,8 +1410,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
     },
     {
       id: 'rei_3_margin',
-      axis: 'affection',
-      level: 5,
+      axis: 'familiarity',
+      level: 5,                 // 親密度 Lv.5「无话不谈」(210)
+      requiresFlags: ['rei_story_2_done'],
+
       titleZh: '星図の余白',
       titleEn: 'The Margin of the Star Chart',
       script: REI_STORY_3
@@ -1427,8 +1438,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
     },
     {
       id: 'sora_3_past_hoop',
-      axis: 'affection',
-      level: 5,
+      axis: 'familiarity',
+      level: 5,                 // 親密度 Lv.5「无话不谈」(210)
+      requiresFlags: ['sora_story_2_done'],
+
       titleZh: 'ゴールの向こう',
       titleEn: 'Past the Hoop',
       script: SORA_STORY_3
@@ -1453,8 +1466,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
     },
     {
       id: 'miyuki_3_name',
-      axis: 'affection',
-      level: 5,
+      axis: 'familiarity',
+      level: 5,                 // 親密度 Lv.5「无话不谈」(210)
+      requiresFlags: ['miyuki_story_2_done'],
+
       titleZh: '名前で呼んで',
       titleEn: 'Call Me by My Name',
       script: MIYUKI_STORY_3
@@ -1483,6 +1498,11 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       id: 'nao_3_ten_years',
       axis: 'affection',
       level: 5,                 // 好感度 Lv.5「挚爱」(220)
+      // 别人的第③段挂親密度 Lv.5，奈绪不行：她开局親密度就是 215，
+      // 那一级永远不会被跨过去，挂在上面等于永远不触发。
+      // 所以她照旧挂好感度，分岔改看親密度 240——
+      // 她这条线本来量的就是距离，这样两个结局都走得到。
+      requiresFlags: ['nao_story_2_done'],
       titleZh: '十年分の距離',
       titleEn: 'Ten Years of Distance',
       script: NAO_STORY_3
@@ -1507,8 +1527,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
     },
     {
       id: 'maki_3_honne',
-      axis: 'affection',
-      level: 5,
+      axis: 'familiarity',
+      level: 5,                 // 親密度 Lv.5「无话不谈」(210)
+      requiresFlags: ['maki_story_2_done'],
+
       titleZh: '一回だけ本音',
       titleEn: 'One Honest Thing, Once',
       script: MAKI_STORY_3
@@ -1533,8 +1555,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
     },
     {
       id: 'inari_3_human_time',
-      axis: 'affection',
-      level: 5,
+      axis: 'familiarity',
+      level: 5,                 // 親密度 Lv.5「无话不谈」(210)
+      requiresFlags: ['inari_story_2_done'],
+
       titleZh: '人の時間',
       titleEn: 'Human Time',
       script: INARI_STORY_3
@@ -1547,6 +1571,10 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
   //   { id: 'asuka_3', axis: 'affection',   level: 5, titleZh: '放学后的余晖',    titleEn: 'After-School Twilight' }
   // ]
 };
+
+// 前置 flag 齐了吗。没写 requiresFlags 的一律就绪。
+export const isLevelStoryReady = (def: LevelStoryDef, flags: StoryFlags): boolean =>
+  (def.requiresFlags || []).every(f => !!flags[f]);
 
 // 这一次升级有没有对应的手写剧情？没有就返回 null，交给 AI 即兴。
 export const findLevelStory = (
@@ -1995,6 +2023,55 @@ export const weekdayFor = (month: number, day: number): string => {
   const idx = ((n + day - 10) % 7 + 7) % 7;   // 4/10 = 週一
   return `${WEEKDAY_JP[idx]} (${WEEKDAY_EN[idx]})`;
 };
+
+// ---------------------------------------------------------
+// 📅 学年 · 翻页
+//
+// 以前推进一天就是 `day + 1`，从来不进位：玩到五月会显示「4月38日」，
+// 而 month 永远停在 4。所有挂在月份上的东西——当季的鱼、当季的种子、
+// 关西年历——于是一年到头都停在四月。学年这个设定实际上并不存在。
+//
+// GameCalendar 上补一个可选的 year（学年内第几个自然年，1 起算）。
+// 老存档里没有这个字段，读出来是 undefined，一律当 1 —— 这样
+// dayIndex 的数值跟以前完全一致，种在阳台上的东西不会一读档就重置。
+// ---------------------------------------------------------
+export const daysInMonth = (month: number): number => MONTH_DAYS[month] || 30;
+
+export const advanceCalendarDay = (cal: GameCalendar): GameCalendar => {
+  let { month, day } = cal;
+  let year = cal.year ?? 1;
+  day += 1;
+  if (day > daysInMonth(month)) {
+    day = 1;
+    month += 1;
+    if (month > 12) { month = 1; year += 1; }
+  }
+  return { ...cal, year, month, day, dayOfWeek: weekdayFor(month, day) };
+};
+
+// 学年：4/11 开学（第 1 章），到次年 3 月修了。
+// 「今天是学年的第几天」——0 = 开学当天。跨年靠 year 字段，不靠月份大小。
+export const SCHOOL_YEAR_START = { month: 4, day: 11 };
+export const SCHOOL_YEAR_END = { month: 3, day: 24 };   // 修了式
+
+const daysFromApril1 = (month: number, day: number): number => {
+  let n = 0;
+  for (let m = 4; m < month; m++) n += daysInMonth(m);
+  for (let m = month; m < 4; m++) n -= daysInMonth(m);
+  return n + day - 1;
+};
+
+export const schoolDayNumber = (cal: GameCalendar): number => {
+  const y = (cal.year ?? 1) - 1;
+  return daysFromApril1(cal.month, cal.day) + y * 365 - daysFromApril1(SCHOOL_YEAR_START.month, SCHOOL_YEAR_START.day);
+};
+
+// 学年一共多少天可玩（4/11 → 次年 3/24）
+export const SCHOOL_YEAR_LENGTH =
+  365 - daysFromApril1(SCHOOL_YEAR_START.month, SCHOOL_YEAR_START.day) + daysFromApril1(SCHOOL_YEAR_END.month, SCHOOL_YEAR_END.day);
+
+export const isSchoolYearOver = (cal: GameCalendar): boolean =>
+  schoolDayNumber(cal) >= SCHOOL_YEAR_LENGTH;
 
 export const getWeatherScene = (sceneKey: string, cal: GameCalendar): string | null => {
   const base = WEATHER_AWARE_SCENES[sceneKey];
