@@ -36,7 +36,7 @@ export const NAO_STORY_2: StoryNode[] = [
   {
     type: 'scene',
     scene: 'school_terrace',
-    bgm: 'school',
+    bgm: 'chat',
     titleZh: '知らない顔',
     titleEn: 'A Face She Does Not Know',
     subtitleZh: '午休 · 学生食堂',

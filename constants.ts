@@ -14,6 +14,12 @@ import { MIYUKI_STORY_3 } from './story/levelStories/miyuki3';
 import { NAO_STORY_1 } from './story/levelStories/nao1';
 import { MAKI_STORY_1 } from './story/levelStories/maki1';
 import { INARI_STORY_1 } from './story/levelStories/inari1';
+import { NAO_STORY_2 } from './story/levelStories/nao2';
+import { NAO_STORY_3 } from './story/levelStories/nao3';
+import { MAKI_STORY_2 } from './story/levelStories/maki2';
+import { MAKI_STORY_3 } from './story/levelStories/maki3';
+import { INARI_STORY_2 } from './story/levelStories/inari2';
+import { INARI_STORY_3 } from './story/levelStories/inari3';
 import { ASUKA_STORY_2 } from './story/levelStories/asuka';
 import { ASUKA_STORY_3 } from './story/levelStories/asuka3';
 import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode, ViewSpot } from './types';
@@ -1464,6 +1470,22 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '幼馴染の距離',
       titleEn: 'The Childhood-Friend Distance',
       script: NAO_STORY_1
+    },
+    {
+      id: 'nao_2_unknown_face',
+      axis: 'affection',
+      level: 3,                 // 好感度 Lv.3「心动」(140)
+      titleZh: '知らない顔',
+      titleEn: 'A Face You Do Not Know',
+      script: NAO_STORY_2
+    },
+    {
+      id: 'nao_3_ten_years',
+      axis: 'affection',
+      level: 5,                 // 好感度 Lv.5「挚爱」(220)
+      titleZh: '十年分の距離',
+      titleEn: 'Ten Years of Distance',
+      script: NAO_STORY_3
     }
   ],
   [CharacterId.MAKI]: [
@@ -1474,6 +1496,22 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: 'センパイ認定',
       titleEn: 'Certified Senpai',
       script: MAKI_STORY_1
+    },
+    {
+      id: 'maki_2_waiting',
+      axis: 'affection',
+      level: 3,
+      titleZh: '待ち伏せの理由',
+      titleEn: 'Why She Waits',
+      script: MAKI_STORY_2
+    },
+    {
+      id: 'maki_3_honne',
+      axis: 'affection',
+      level: 5,
+      titleZh: '一回だけ本音',
+      titleEn: 'One Honest Thing, Once',
+      script: MAKI_STORY_3
     }
   ],
   [CharacterId.INARI]: [
@@ -1484,6 +1522,22 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '千年の暇つぶし',
       titleEn: 'A Thousand Years to Kill',
       script: INARI_STORY_1
+    },
+    {
+      id: 'inari_2_mask',
+      axis: 'affection',
+      level: 3,
+      titleZh: '面の下',
+      titleEn: 'Under the Mask',
+      script: INARI_STORY_2
+    },
+    {
+      id: 'inari_3_human_time',
+      axis: 'affection',
+      level: 5,
+      titleZh: '人の時間',
+      titleEn: 'Human Time',
+      script: INARI_STORY_3
     }
   ],
   // 示例（等剧本写好后填 script）：
