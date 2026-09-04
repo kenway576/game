@@ -24,6 +24,9 @@ interface Props {
   onOpenCalendar: () => void;
   onOpenInventory: () => void;
   onOpenPhone: () => void;
+  // 「今天怎么过」。休息日会自己弹，但上学日也得有个入口——
+  // 不想上学这件事，恰恰只在有课的日子才成立。
+  onOpenDayPlan: () => void;
   phoneUnread: number;
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
@@ -32,7 +35,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, phoneUnread, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, phoneUnread, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -79,7 +82,8 @@ const LobbyScreen: React.FC<Props> = ({
         {([
           { key: 'room',  on: onOpenRoom,  icon: '🏠', zh: '回房间', en: 'My room' },
           { key: 'map',   on: onOpenMap,   icon: '🗺',  zh: '出门',   en: 'Go out', primary: true },
-          { key: 'phone', on: onOpenPhone, icon: '📱', zh: '手机',   en: 'Phone', badge: phoneUnread }
+          { key: 'phone', on: onOpenPhone, icon: '📱', zh: '手机',   en: 'Phone', badge: phoneUnread },
+          { key: 'day',   on: onOpenDayPlan, icon: '📅', zh: '今天',   en: 'Today' }
         ] as { key: string; on: () => void; icon: string; zh: string; en: string; primary?: boolean; badge?: number }[]).map(b => (
           <button
             key={b.key}

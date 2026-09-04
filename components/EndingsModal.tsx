@@ -1,6 +1,7 @@
 import React from 'react';
 import { CharacterId, Language, StoryFlags, AffectionMap, FamiliarityMap } from '../types';
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, getRomanceCeiling } from '../constants';
+import CharacterAvatar from './CharacterAvatar';
 import {
   ENDINGS, endingsFor, isEndingUnlocked, unlockedCount, clearedRouteCount,
   endingGateFor, TOTAL_ENDINGS, TOTAL_ROUTES
@@ -83,9 +84,7 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
             return (
               <div key={id} className="border border-white/10 bg-black/40 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full overflow-hidden bg-white/10 shrink-0">
-                    {c?.avatarUrl && <img src={c.avatarUrl} alt="" className="w-full h-full object-cover" />}
-                  </div>
+                  <CharacterAvatar charId={id as CharacterId} size="w-10 h-10" />
                   <div className="min-w-0">
                     <div className="text-white font-bold text-sm truncate">{en ? c?.nameEn : c?.name}</div>
                     <div className="text-[10px] text-white/40 font-mono">

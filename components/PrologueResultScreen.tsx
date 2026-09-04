@@ -145,9 +145,9 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
                     <div className="w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-full overflow-hidden border-2 border-sky-400/40 bg-black/50">
                       {char && (
                         <img
-                          src={char.avatarUrl}
+                          src={`/images/avatars/${charId}.webp`}
                           alt={char.name}
-                          className="w-full h-full object-cover object-top"
+                          className="w-full h-full object-cover"
                           onError={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0'; }}
                         />
                       )}

@@ -133,60 +133,92 @@ export const CookingQTEModal: React.FC<Props> = ({
   const en = language === 'en';
 
   // -------------------------------------------------------------
-  // 1. 根据菜品随机编排 2-3 个 QTE 烹饪阶段
+  // 1. 难度 + 随机编排
+  //
+  // 以前每道菜的流程是写死的：切 → 火候（或沸腾）→ 也许收尾，
+  // 顺序永远一样，游标速度、黄金区宽度这些也全是常量。
+  // 结果是打过三次之后每道菜都变成肌肉记忆，没有第四次的必要。
+  //
+  // 现在两件事都随机：
+  //   ① 难度 —— 由这道菜给的属性总量和材料数推出来（好东西不好做），
+  //      再加一点当次抖动，同一道菜两次也不一样。
+  //   ② 编排 —— 从四种关卡里抽 2~4 关，顺序打乱，而且同一关
+  //      可能出现两次（切两轮、两次收尾）。
+  // 参数（速度、窗口宽度、刀数）全部由难度算出来，并且逐关递增：
+  // 越往后越紧，最后一关最难——这才有"撑到最后"的感觉。
   // -------------------------------------------------------------
-  const [stages] = useState<StageConfig[]>(() => {
-    const list: StageConfig[] = [];
-    const id = recipe.id;
+  const [diff] = useState(() => {
+    const weight = (recipe.effects || []).reduce((n, e) => n + Math.abs(e.amount || 0), 0);
+    const parts = (recipe.needs?.length || 0) + (recipe.anyFish || 0) + (recipe.needFish?.length || 0);
+    // 0（最容易）~ 1（最难）。抖动 ±0.12，所以同一道菜每次手感都不同。
+    const base = Math.min(1, (weight / 14) * 0.6 + (parts / 4) * 0.4);
+    return Math.max(0, Math.min(1, base + (Math.random() - 0.5) * 0.24));
+  });
 
-    // 阶段1：切配（大部分菜需要切萝卜、番茄、切葱或处理鱼）
-    if (id !== 'dish_himawari_seeds') {
-      list.push({
+  // 逐关递增：第 n 关的实际难度 = 基础难度 + 关卡序号带来的加压
+  const stageDiff = (idx: number, total: number) =>
+    Math.min(1, diff + (total > 1 ? (idx / (total - 1)) * 0.28 : 0));
+
+  const [stages] = useState<StageConfig[]>(() => {
+    const id = recipe.id;
+    const POOL: Record<StageType, StageConfig> = {
+      chop: {
         type: 'chop',
         titleZh: '刀工切配 · 节奏下刀',
         titleEn: 'Prep & Knife Work',
         descZh: '在准星游走至食材焦点时精准落刀！',
         descEn: 'Strike when the blade indicator aligns with the target slice!',
         bgImg: '/images/ui/cooking_cutting_board.webp'
-      });
-    }
-
-    // 阶段2：火候控温或沸腾揭盖
-    if (id === 'dish_misoshiru' || id === 'dish_taimeshi') {
-      // 汤品/焖饭：砂锅沸腾掌控
-      list.push({
+      },
+      heat: {
+        type: 'heat',
+        titleZh: '热锅煎炒 · 黄金火候',
+        titleEn: 'Heat & Sizzle Control',
+        descZh: '长按加热踏板，把锅温压在黄金区间里——而且这口灶的火不稳。',
+        descEn: 'Hold the heat inside the golden band. This hob does not hold steady.',
+        bgImg: '/images/ui/cooking_frying_pan.webp'
+      },
+      boil: {
         type: 'boil',
         titleZh: '文火慢煨 · 沸腾揭盖',
         titleEn: 'Simmer & Lid Timing',
         descZh: '观察气孔与白雾，在蒸汽达到峰顶的瞬间关火掀盖！',
-        descEn: 'Watch the steam rise and lift the lid right at peak aroma!',
+        descEn: 'Watch the steam and lift the lid at the peak!',
         bgImg: '/images/ui/cooking_pot_steam.webp'
-      });
-    } else {
-      // 煎炸、炒菜、烤鱼、章鱼烧：热锅控温
-      list.push({
-        type: 'heat',
-        titleZh: '热锅煎炒 · 黄金火候',
-        titleEn: 'Heat & Sizzle Control',
-        descZh: '长按加热踏板，将锅内温度维持在黄金受热区间！',
-        descEn: 'Hold heat to keep sizzling inside the optimal cooking zone!',
-        bgImg: '/images/ui/cooking_frying_pan.webp'
-      });
-    }
-
-    // 阶段3：关键调味点睛 / 颠锅出盘（高难度菜品额外考验）
-    if (['dish_pasta', 'dish_takoyaki', 'dish_taimeshi', 'dish_bento'].includes(id)) {
-      list.push({
+      },
+      finish: {
         type: 'finish',
         titleZh: '收汁颠锅 · 调味点睛',
         titleEn: 'Seasoning & Perfect Toss',
-        descZh: '收缩环与圆环重合的刹那按下，完成最后的一击！',
-        descEn: 'Press at the exact moment the shrinking ring matches the core!',
+        descZh: '收缩环与圆环重合的刹那按下，完成最后一击！',
+        descEn: 'Press the instant the shrinking ring matches the core!',
         bgImg: '/images/ui/cooking_frying_pan.webp'
-      });
-    }
+      }
+    };
 
-    return list;
+    // 这道菜"必须有"的那一关：汤和焖饭一定要掀盖，其余一定要下锅。
+    const signature: StageType = (id === 'dish_misoshiru' || id === 'dish_taimeshi') ? 'boil' : 'heat';
+    // 备选池：不切东西的菜（葵花籽）不抽切配
+    const optional: StageType[] = id === 'dish_himawari_seeds'
+      ? ['finish', signature]
+      : ['chop', 'finish', 'chop', signature];
+
+    // 抽几关：难度越高越长（2~4）
+    const count = 2 + (Math.random() < 0.35 + diff * 0.45 ? 1 : 0) + (Math.random() < diff * 0.5 ? 1 : 0);
+
+    const picked: StageType[] = [signature];
+    const bag = [...optional];
+    while (picked.length < count && bag.length) {
+      picked.push(bag.splice(Math.floor(Math.random() * bag.length), 1)[0]);
+    }
+    // 顺序打乱，但"收尾"这一关如果抽到了，永远放最后——它就是收尾。
+    const tail = picked.filter(t => t === 'finish');
+    const body = picked.filter(t => t !== 'finish');
+    for (let i = body.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [body[i], body[j]] = [body[j], body[i]];
+    }
+    return [...body, ...tail].map(t => POOL[t]);
   });
 
   // -------------------------------------------------------------
@@ -207,12 +239,17 @@ export const CookingQTEModal: React.FC<Props> = ({
   // -------------------------------------------------------------
   const [chopPos, setChopPos] = useState(0); // 0..100
   const [chopDir, setChopDir] = useState(1);
+  // 刀数按难度给 3~5 刀，位置也不再是"三段各自小范围抖动"，
+  // 而是整条线上随机撒点再排序——所以会出现两刀挨得很近的情况。
   const [chopTargets] = useState(() => {
-    // 随机 3 个目标区间 (20..80 之间)
-    const p1 = 20 + Math.random() * 15;
-    const p2 = 45 + Math.random() * 15;
-    const p3 = 70 + Math.random() * 15;
-    return [Math.round(p1), Math.round(p2), Math.round(p3)];
+    const n = 3 + (diff > 0.4 ? 1 : 0) + (diff > 0.72 ? 1 : 0);
+    const pts: number[] = [];
+    let guard = 0;
+    while (pts.length < n && guard++ < 200) {
+      const v = Math.round(12 + Math.random() * 76);
+      if (pts.every(p => Math.abs(p - v) > 8)) pts.push(v);
+    }
+    return pts.sort((a2, b2) => a2 - b2);
   });
   const [chopIndex, setChopIndex] = useState(0);
   const [chopHits, setChopHits] = useState<number[]>([]);
@@ -223,20 +260,42 @@ export const CookingQTEModal: React.FC<Props> = ({
   const [heatVal, setHeatVal] = useState(30); // 0..100
   const [heatProgress, setHeatProgress] = useState(0); // 0..100%
   const isHoldingHeat = useRef(false);
-  const [goldenZone] = useState(() => {
-    // 随机生成 25% 宽度的黄金火候区间
-    const start = 45 + Math.random() * 20;
-    return { min: Math.round(start), max: Math.round(start + 26) };
+  // 黄金火候区间：难度越高越窄（26% → 12%），起点也随机。
+  const [goldenZone0] = useState(() => {
+    const w = Math.round(26 - diff * 14);
+    const start = 28 + Math.random() * (66 - w);
+    return { min: Math.round(start), max: Math.round(start) + w };
   });
+  // 🔥 这口灶的火不稳：黄金区间会缓慢漂移。
+  // 难度越高漂得越快，低难度下几乎察觉不到。
+  //
+  // 漂移量存在 ref 里，state 只是为了让进度条跟着画。
+  // 一开始两份都放 state，结果 goldenZone 进了那个 RAF effect 的依赖数组——
+  // 区间每帧都在动，于是 effect 每帧重建一次，dt 被重置成 0，
+  // 整个小游戏的推进速度直接垮掉。循环只读 ref，就不会重建。
+  const driftRef = useRef(0);
+  const [zoneDrift, setZoneDrift] = useState(0);
+  const driftDir = useRef(Math.random() < 0.5 ? -1 : 1);
+  const zoneAt = (d: number) => ({
+    min: Math.max(0, Math.round(goldenZone0.min + d)),
+    max: Math.min(100, Math.round(goldenZone0.max + d))
+  });
+  const goldenZone = zoneAt(zoneDrift);
 
   // -------------------------------------------------------------
   // QTE 3: 沸腾揭盖 (Boil)
   // -------------------------------------------------------------
   const [boilPos, setBoilPos] = useState(0); // 0..100
+  // 掀盖窗口：难度越高越窄，位置也更靠后（越接近扑锅）。
   const [boilZone] = useState(() => {
-    const min = 68 + Math.random() * 12;
-    return { min: Math.round(min), max: Math.round(min + 16) };
+    const w = Math.round(17 - diff * 8);
+    const min = 58 + Math.random() * 20 + diff * 6;
+    return { min: Math.round(min), max: Math.round(min) + w };
   });
+  // 🫧 假沸：中途气泡会窜一下，看着像到了峰值，其实还早。
+  // 抽到的时候才有，所以不能靠背时间点。
+  const [fakeBoilAt] = useState(() => (Math.random() < 0.3 + diff * 0.4 ? 30 + Math.random() * 20 : -1));
+  const [fakeBoilShown, setFakeBoilShown] = useState(false);
 
   // -------------------------------------------------------------
   // QTE 4: 收尾收缩环 (Finish)
@@ -248,6 +307,18 @@ export const CookingQTEModal: React.FC<Props> = ({
   // -------------------------------------------------------------
   // 阶段主循环 (RAF)
   // -------------------------------------------------------------
+  // 这一关实际用的那几个数。全部从难度推出来，所以同一道菜
+  // 每次进来手感都不一样，而且越到后面越紧。
+  const curDiff = stageDiff(currentStageIdx, stages.length);
+  const chopSpeed = 62 + curDiff * 78;              // 游标来回的速度
+  const heatRise = 55 + curDiff * 45;               // 长按升温
+  const heatFall = 32 + curDiff * 40;               // 松手降温
+  const heatFill = 34 - curDiff * 16;               // 停在黄金区里的进度增速（越难越慢）
+  const boilSpeed = 24 + curDiff * 26;              // 沸腾推进
+  const ringSpeed = 0.85 + curDiff * 1.1;           // 收缩环
+  const chopWindow = 6.5 - curDiff * 3.4;           // 完美判定半宽
+  const ringWindow = 0.22 - curDiff * 0.12;
+
   useEffect(() => {
     if (isDone) return;
     let animId: number;
@@ -258,9 +329,9 @@ export const CookingQTEModal: React.FC<Props> = ({
       lastTime = now;
 
       if (activeStage?.type === 'chop') {
-        // 游标来回摆动
+        // 游标来回摆动。速度由难度和第几关一起决定，越往后越快。
         setChopPos(p => {
-          const speed = 85 + Math.random() * 5;
+          const speed = chopSpeed;
           let next = p + chopDir * speed * dt;
           if (next >= 100) {
             next = 100;
@@ -273,20 +344,32 @@ export const CookingQTEModal: React.FC<Props> = ({
         });
       } else if (activeStage?.type === 'heat') {
         // 火候控制：长按升温，松开降温
+        // 火候区间漂移：难度越高漂得越快，碰到边就折返。
+        // 真值走 ref，state 只是拿去画条。
+        {
+          const speed = 2 + curDiff * 12;
+          let next = driftRef.current + driftDir.current * speed * dt;
+          const lo = -goldenZone0.min, hi = 100 - goldenZone0.max;
+          if (next > hi) { next = hi; driftDir.current = -1; }
+          if (next < lo) { next = lo; driftDir.current = 1; }
+          driftRef.current = next;
+          setZoneDrift(next);
+        }
         setHeatVal(h => {
-          const delta = isHoldingHeat.current ? 70 * dt : -45 * dt;
+          const delta = isHoldingHeat.current ? heatRise * dt : -heatFall * dt;
           return Math.max(0, Math.min(100, h + delta));
         });
 
         // 检验是否在黄金温区
         setHeatVal(curH => {
-          if (curH >= goldenZone.min && curH <= goldenZone.max) {
+          const z = zoneAt(driftRef.current);
+          if (curH >= z.min && curH <= z.max) {
             synth.sizzle();
             setHeatProgress(p => {
-              const next = p + 28 * dt;
+              const next = p + heatFill * dt;
               if (next >= 100) {
-                // 完成火候阶段
-                finishStage(90);
+                // 完成火候阶段。难度高的灶更难压住，压住了给的分也更高。
+                finishStage(Math.round(78 + curDiff * 22));
                 return 100;
               }
               return next;
@@ -297,7 +380,13 @@ export const CookingQTEModal: React.FC<Props> = ({
       } else if (activeStage?.type === 'boil') {
         // 沸腾进度稳步向前
         setBoilPos(p => {
-          const next = p + 32 * dt;
+          const next = p + boilSpeed * dt;
+          // 假沸：窜一下又落回去，看着像峰值。只提示，不改判定。
+          if (fakeBoilAt > 0 && !fakeBoilShown && p < fakeBoilAt && next >= fakeBoilAt) {
+            setFakeBoilShown(true);
+            synth.sizzle();
+            showFeedback(en ? 'a surge...' : '气泡窜了一下……', '#94a3b8');
+          }
           if (next >= 100) {
             // 溢锅超时没掀盖
             showFeedback(en ? 'BOILED OVER!' : '扑锅溢出了！', '#ef4444');
@@ -310,7 +399,7 @@ export const CookingQTEModal: React.FC<Props> = ({
       } else if (activeStage?.type === 'finish') {
         // 收缩环缩小
         setRingScale(s => {
-          const next = s - 1.2 * dt;
+          const next = s - ringSpeed * dt;
           if (next <= 0.8) {
             // 超时未按
             showFeedback(en ? 'TOO LATE!' : '错失良机！', '#ef4444');
@@ -327,7 +416,7 @@ export const CookingQTEModal: React.FC<Props> = ({
 
     animId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animId);
-  }, [activeStage, chopDir, isDone, goldenZone]);
+  }, [activeStage, chopDir, isDone, goldenZone0.min, goldenZone0.max, curDiff, fakeBoilShown]);
 
   // 完成当前小节，推进到下一节或结算
   const finishStage = (score: number) => {
@@ -343,14 +432,22 @@ export const CookingQTEModal: React.FC<Props> = ({
       setHeatVal(30);
       setBoilPos(0);
       setRingScale(2.8);
+      setZoneDrift(0);
+      driftRef.current = 0;
+      setFakeBoilShown(false);
+      driftDir.current = Math.random() < 0.5 ? -1 : 1;
     } else {
       // 全部阶段完成，计算综合评级
       const totalAvg = nextScores.reduce((a, b) => a + b, 0) / nextScores.length;
       let res: CookingResult = 'success';
-      if (totalAvg >= 75) {
+      // 难度高的菜及格线放低一点：不然好料理永远做不成，
+      // 玩家学到的只会是"别碰那道菜"。
+      const perfectAt = 78 - diff * 10;
+      const passAt = 48 - diff * 10;
+      if (totalAvg >= perfectAt) {
         res = 'perfect';
         audioManager.playSfx('quiz_correct');
-      } else if (totalAvg >= 45) {
+      } else if (totalAvg >= passAt) {
         res = 'success';
         audioManager.playSfx('confirm');
       } else {
@@ -376,11 +473,11 @@ export const CookingQTEModal: React.FC<Props> = ({
       const diff = Math.abs(chopPos - target);
 
       let pts = 0;
-      if (diff <= 4.5) {
+      if (diff <= chopWindow) {
         pts = 100;
         showFeedback(en ? 'PERFECT CUT!' : '极准神刀！', '#fbbf24');
         synth.ding();
-      } else if (diff <= 10) {
+      } else if (diff <= chopWindow * 2.2) {
         pts = 75;
         showFeedback(en ? 'GREAT!' : '干脆利落！', '#34d399');
       } else {
@@ -420,11 +517,11 @@ export const CookingQTEModal: React.FC<Props> = ({
     } else if (stage.type === 'finish') {
       // 调味颠锅收尾
       const diff = Math.abs(ringScale - 1.0);
-      if (diff <= 0.15) {
+      if (diff <= ringWindow) {
         showFeedback(en ? 'PERFECT TOSS!' : '绝妙颠锅！完美入盘！', '#fbbf24');
         synth.ding();
         finishStage(100);
-      } else if (diff <= 0.35) {
+      } else if (diff <= ringWindow * 2.3) {
         showFeedback(en ? 'NICE FINISH!' : '稳稳落盘！', '#34d399');
         audioManager.playSfx('confirm');
         finishStage(75);
@@ -434,7 +531,7 @@ export const CookingQTEModal: React.FC<Props> = ({
         finishStage(30);
       }
     }
-  }, [chopIndex, chopPos, chopTargets, chopHits, boilPos, boilZone, ringScale, currentStageIdx, stages, isDone, en]);
+  }, [chopIndex, chopPos, chopTargets, chopHits, boilPos, boilZone, ringScale, currentStageIdx, stages, isDone, en, chopWindow, ringWindow]);
 
   // 键盘快捷键监听（空格键 / 回车键）
   useEffect(() => {

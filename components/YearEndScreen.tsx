@@ -4,6 +4,7 @@ import {
   ProtagonistStats, CollectedWord
 } from '../types';
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, SCHOOL_YEAR_LENGTH } from '../constants';
+import CharacterAvatar from './CharacterAvatar';
 import { ENDINGS, endingsFor, isEndingUnlocked, unlockedCount, clearedRouteCount, TOTAL_ENDINGS } from '../data/endingsData';
 
 interface Props {
@@ -87,9 +88,7 @@ const YearEndScreen: React.FC<Props> = ({
             <div className="space-y-1.5">
               {people.map(p => (
                 <div key={p.id} className="flex items-center gap-3 bg-black/50 border border-white/10 rounded px-3 py-2">
-                  <div className="w-8 h-8 rounded-full overflow-hidden bg-white/10 shrink-0">
-                    {p.c?.avatarUrl && <img src={p.c.avatarUrl} alt="" className="w-full h-full object-cover" />}
-                  </div>
+                  <CharacterAvatar charId={p.id} size="w-8 h-8" />
                   <div className="text-white text-sm font-bold w-24 shrink-0 truncate">
                     {en ? p.c?.nameEn : p.c?.name}
                   </div>

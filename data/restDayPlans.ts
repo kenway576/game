@@ -3,7 +3,8 @@ import { DayKind, dayKindOf } from './calendarLife';
 import {
   seasonOf, HOME_DAY, STUDY_DAY, PART_TIME, CHORES_DAY,
   CLUB_BASKETBALL, CLUB_ASTRONOMY, CLUB_COUNCIL, CLUB_MUSIC,
-  OUTING_BY_SEASON, OUTING_CAST
+  OUTING_BY_SEASON, OUTING_CAST,
+  SKIP_SLEEP, SKIP_WANDER, TRIP_OSAKA, TRIP_KYOTO
 } from '../story/restDayScenes';
 import { getInitialFamiliarity } from '../constants';
 
@@ -53,6 +54,10 @@ const knows = (ctx: RestPlanCtx, id: CharacterId, min: number) =>
   ctx.met.includes(id) && famOf(ctx, id) >= min;
 
 const ALL: DayKind[] = ['weekend', 'holiday', 'vacation'];
+// 有课的那些日子。翘课这件事只在这里成立——
+// 周末不上学不叫翘课，叫周末。
+const SCHOOL: DayKind[] = ['school'];
+const ANY: DayKind[] = ['school', 'weekend', 'holiday', 'vacation'];
 
 // 社团：一个人一个部。休息日的社团是自愿的，
 // 所以门槛不低——親密度 90（朋友）才谈得上"休息日专门去看她练球"。
@@ -82,9 +87,30 @@ export const REST_PLANS: RestPlan[] = [
     doneFlag: () => ''
   },
 
-  // ---- 在家。四季各一段。 ----
+  // ---- 翘课。只有上学日才有。 ----
   {
-    id: 'stay_home', icon: '🏠', kinds: ALL, wholeDay: true,
+    id: 'skip_sleep', icon: '🛏️', kinds: SCHOOL, wholeDay: true,
+    titleZh: '今天不去了，睡一天', titleEn: 'Not today. Sleep through it.',
+    descZh: '闹钟响两次，你两次都按掉了。学识会掉——课是真的没上。',
+    descEn: 'Two alarms, both dismissed. Knowledge will drop; the lessons really did happen without you.',
+    script: () => SKIP_SLEEP,
+    available: ctx => !!ctx.flags['day1_done'],
+    doneFlag: () => 'skip_school_slept'
+  },
+  {
+    id: 'skip_wander', icon: '🚃', kinds: SCHOOL, wholeDay: true,
+    titleZh: '翘课，坐反方向的电车', titleEn: 'Skip. Take the train the other way.',
+    descZh: '穿着制服在工作日的白天到处走。学识会掉，别的东西会涨。',
+    descEn: 'A school uniform out in the city on a weekday. Knowledge drops. Other things do not.',
+    script: () => SKIP_WANDER,
+    available: ctx => !!ctx.flags['day1_done'],
+    doneFlag: () => 'skip_school_wandered'
+  },
+
+  // ---- 在家。四季各一段。上学日也能选——请假在家这件事，
+  //      本来就跟今天是不是周末没关系。 ----
+  {
+    id: 'stay_home', icon: '🏠', kinds: ANY, wholeDay: true,
     titleZh: '一整天不出门', titleEn: 'Stay in all day',
     descZh: '不见任何人，不做任何事。这个游戏其他任何时候都不给你这个。',
     descEn: 'Nobody, nothing. The game does not offer this at any other time.',
@@ -102,6 +128,29 @@ export const REST_PLANS: RestPlan[] = [
     script: ctx => OUTING_BY_SEASON[seasonOf(ctx.calendar)],
     available: ctx => OUTING_CAST[seasonOf(ctx.calendar)].every(c => knows(ctx, c, 90)),
     doneFlag: ctx => `restday_outing_${seasonOf(ctx.calendar)}`
+  },
+
+  // ---- 远门。人多，门槛也高：一个只见过两次面的人，
+  //      不能带去坐一个小时的电车。 ----
+  {
+    id: 'trip_osaka', icon: '🚄', kinds: ALL, wholeDay: true,
+    titleZh: '四个人去一趟大阪', titleEn: 'Four of you, a day in Osaka',
+    descZh: '新世界的串炸，通天阁底下的一场僵持，道顿堀六点集合。',
+    descEn: 'Kushikatsu in Shinsekai, a stand-off under Tsutenkaku, and six at Dotonbori.',
+    script: () => TRIP_OSAKA,
+    available: ctx => [CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.SORA, CharacterId.MAKI]
+      .every(c => knows(ctx, c, 110)),
+    doneFlag: () => 'restday_trip_osaka'
+  },
+  {
+    id: 'trip_kyoto', icon: '⛩️', kinds: ALL, wholeDay: true,
+    titleZh: '五个人去一趟京都', titleEn: 'Five of you, a day in Kyoto',
+    descZh: '伏见稻荷的一万座鸟居、岚山的竹林、傍晚鸭川等间隔的那一排。',
+    descEn: 'Ten thousand gates at Fushimi, the bamboo at Arashiyama, and the evenly spaced row on the Kamo at dusk.',
+    script: () => TRIP_KYOTO,
+    available: ctx => [CharacterId.MIYUKI, CharacterId.REI, CharacterId.NAO, CharacterId.INARI]
+      .every(c => knows(ctx, c, 110)),
+    doneFlag: () => 'restday_trip_kyoto'
   },
 
   // ---- 用功 / 打工 / 大扫除。数值向，但都有一段。 ----
@@ -145,7 +194,6 @@ export const REST_PLANS: RestPlan[] = [
 // 今天能选的那些。演过的不再出现。
 export const plansFor = (ctx: RestPlanCtx): RestPlan[] => {
   const kind = dayKindOf(ctx.calendar);
-  if (kind === 'school') return [];
   return REST_PLANS.filter(p => {
     if (!p.kinds.includes(kind)) return false;
     if (!p.available(ctx)) return false;

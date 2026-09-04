@@ -433,7 +433,7 @@ export const CLUB_ASTRONOMY: StoryNode[] = [
         then: [
           { type: 'narration', zh: '土星。小得像一粒米，但环是清清楚楚的两条线。', en: 'Saturn. The size of a grain of rice, and the rings unmistakably two clean lines.' },
           { type: 'narration', zh: '你「哇」了一声。你自己都没准备好会发出那个声音。', en: 'You make a noise. You were not expecting to make a noise.' },
-          { type: 'narration', characterImage: `${REI}happy.webp`, zh: '她在你身后，很小声地说了一句：「……そうなる」。像是确认了一个早就预测好的结果。', en: 'Behind you she says, very quietly, that this is what happens. Like confirming a predicted result.' }
+          { type: 'narration', characterImage: `${REI}smile.webp`, zh: '她在你身后，很小声地说了一句：「……そうなる」。像是确认了一个早就预测好的结果。', en: 'Behind you she says, very quietly, that this is what happens. Like confirming a predicted result.' }
         ]
       },
       {
@@ -570,7 +570,7 @@ export const OUTING_HANAMI: StoryNode[] = [
         ],
         then: [
           { type: 'narration', zh: '左边那盒的蛋卷切口不整齐，而且每一片厚度都不一样。你指了左边。', en: 'The tamagoyaki on the left is unevenly cut and no two slices are the same thickness. You point left.' },
-          { type: 'narration', characterImage: `${NAO}surprised.webp`, zh: '她愣住了。然后她说：「なんでわかったん」。', en: 'She freezes, and asks how you knew.' },
+          { type: 'narration', characterImage: `${NAO}curious.webp`, zh: '她愣住了。然后她说：「なんでわかったん」。', en: 'She freezes, and asks how you knew.' },
           { type: 'narration', zh: '因为你吃过十年她做的东西。你没说这句，但她自己想到了——她的耳朵红了。', en: 'Because you ate ten years of her cooking. You do not say it. She gets there herself, and her ears go red.' }
         ]
       },
@@ -663,7 +663,7 @@ export const OUTING_BEACH: StoryNode[] = [
 export const OUTING_AUTUMN: StoryNode[] = [
   { type: 'scene', scene: 'arima_onsen_street_slope', bgm: 'town', titleZh: '有馬、紅葉', titleEn: 'Arima, in Autumn', subtitleZh: '秋 · 有马温泉', subtitleEn: 'Autumn · Arima Onsen' },
   { type: 'narration', zh: '深雪说她有两张温泉的招待券，快过期了。她说得很随意，随意到你知道那是准备好的话。', en: 'Miyuki says she has two spa vouchers about to expire. She says it lightly enough that you can tell the sentence was prepared.' },
-  { type: 'narration', characterImage: `${MIYUKI}casual_neutral.webp`, zh: '结果是三个人：她、你，和铃——铃是自己要来的，理由是「有馬の湯は鉄分濃度が高い。見たい」。', en: 'It ends up being three: her, you, and Rei, who invited herself on the grounds that the iron content at Arima is high and she wants to see it.' },
+  { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '结果是三个人：她、你，和铃——铃是自己要来的，理由是「有馬の湯は鉄分濃度が高い。見たい」。', en: 'It ends up being three: her, you, and Rei, who invited herself on the grounds that the iron content at Arima is high and she wants to see it.' },
   { type: 'narration', zh: '从三宫坐巴士上山四十分钟。山路一半的时候，窗外整片山都是红的。', en: 'Forty minutes up by bus. Halfway there the entire hillside outside the window is red.' },
   {
     type: 'choice',
@@ -699,7 +699,7 @@ export const OUTING_AUTUMN: StoryNode[] = [
   },
   { type: 'scene', scene: 'arima_onsen_kin_no_yu' },
   { type: 'narration', zh: '金汤是铁锈色的，热得吓人。泡完出来，山里的空气冷得让人清醒。', en: 'The gold bath is the colour of rust and alarmingly hot. Outside afterwards the mountain air is cold enough to sober you up.' },
-  { type: 'narration', characterImage: `${MIYUKI}casual_happy.webp`, zh: '三个人在坡道上买了炭酸煎饼，一边走一边吃。深雪买了两包，说带回去给你当早饭。', en: 'Three people buy carbonated crackers on the slope and eat them walking. Miyuki buys two extra packets and says they are your breakfast.' },
+  { type: 'narration', characterImage: `${MIYUKI}cardigan_happy.webp`, zh: '三个人在坡道上买了炭酸煎饼，一边走一边吃。深雪买了两包，说带回去给你当早饭。', en: 'Three people buy carbonated crackers on the slope and eat them walking. Miyuki buys two extra packets and says they are your breakfast.' },
   {
     type: 'effect', setFlags: ['restday_outing_autumn'],
     effects: [{ stat: 'kindness', amount: 2, reasonZh: '你在山上待了一整天', reasonEn: 'You spent a whole day up the mountain' }],
@@ -777,3 +777,329 @@ export const OUTING_CAST: Record<Season, CharacterId[]> = {
   autumn: [CharacterId.MIYUKI, CharacterId.REI],
   winter: [CharacterId.ASUKA, CharacterId.INARI]
 };
+
+// ==========================================================
+// 🛏️ 不想上学的那一天
+//
+// 「一整天不出门」原本只有休息日能选。但不想去学校这件事
+// 和今天是不是周末没有关系——它恰恰只在有课的日子才成立。
+//
+// 所以这两段挂在上学日：请假睡一天、翘课出去逛。
+// 两条都掉学识（课是真的没上），但掉的不是同一样东西，
+// 换回来的也不是同一样东西。
+// ==========================================================
+
+export const SKIP_SLEEP: StoryNode[] = [
+  { type: 'scene', scene: 'apartment_room', bgm: 'lobby', titleZh: '今天不去了', titleEn: 'Not Today', subtitleZh: '海风庄 202 · 早上七点', subtitleEn: 'Umikaze-so 202 · Seven a.m.' },
+  { type: 'narration', zh: '闹钟响了。你按掉了。', en: 'The alarm goes. You turn it off.' },
+  { type: 'narration', zh: '第二个闹钟响了。你也按掉了。', en: 'The second alarm goes. You turn that off too.' },
+  { type: 'narration', zh: '七点二十，你睁着眼躺在那儿，很清楚自己已经赶不上第一节课了，而且并不打算赶。', en: 'At twenty past seven you are lying there awake, entirely aware that you have missed first period and entirely uninterested in catching it.' },
+  {
+    type: 'choice',
+    promptZh: '手机在枕头边上。你可以发一条消息，也可以什么都不发。',
+    promptEn: 'The phone is by the pillow. You can send something, or not.',
+    options: [
+      {
+        id: 'skip_sleep_tell',
+        labelZh: '给学校发一条请假',
+        labelEn: 'Message the school',
+        jp: '本日、欠席します。',
+        hintZh: '体面一点',
+        hintEn: 'Do it properly.',
+        effects: [
+          { stat: 'kindness', amount: 2, reasonZh: '你没有让别人替你圆谎', reasonEn: 'You did not make anybody cover for you' },
+          { stat: 'knowledge', amount: -3, reasonZh: '一整天的课', reasonEn: 'A whole day of lessons' }
+        ],
+        setFlags: ['skip_school_excused'],
+        then: [
+          { type: 'narration', zh: '「体調不良のため本日欠席します」。你写了三遍才写对敬语。', en: 'Absent today due to feeling unwell. It takes you three attempts to get the keigo right.' },
+          { type: 'narration', zh: '发出去两分钟就收到了回复：「お大事に」。你盯着这三个字看了一会儿。', en: 'The reply comes in two minutes: take care of yourself. You look at it for a while.' },
+          { type: 'narration', zh: '你没有生病。但收到这句之后，你确实觉得好受了一点。', en: 'You are not ill. Having received it, you do feel somewhat better.' }
+        ]
+      },
+      {
+        id: 'skip_sleep_silent',
+        labelZh: '什么都不发，继续睡',
+        labelEn: 'Send nothing. Go back to sleep.',
+        hintZh: '明天再解释',
+        hintEn: 'Explain tomorrow.',
+        effects: [
+          { stat: 'guts', amount: 2, reasonZh: '你决定这一天不属于任何人', reasonEn: 'You decided this day belonged to nobody' },
+          { stat: 'knowledge', amount: -4, reasonZh: '一整天的课，而且是无故的', reasonEn: 'A whole day, and unexplained at that' }
+        ],
+        setFlags: ['skip_school_silent'],
+        then: [
+          { type: 'narration', zh: '你把手机扣过来，翻了个身。', en: 'You turn the phone face down and roll over.' },
+          { type: 'narration', zh: '中午十一点你醒了一次，看见三条未读，又睡了过去。', en: 'You surface at eleven, see three unread, and go under again.' }
+        ]
+      }
+    ]
+  },
+  { type: 'narration', zh: '你一直睡到下午三点。醒来的时候屋子里的光已经变成另一个颜色了。', en: 'You sleep until three. The light in the room has changed colour by the time you wake.' },
+  { type: 'narration', zh: '你在床上坐了很久，什么都没想。这一整天里，没有一个人知道你在哪儿。', en: 'You sit on the edge of the bed for a long time thinking about nothing. All day, nobody has known where you were.' },
+  { type: 'narration', zh: '这件事有点吓人，也有点舒服。', en: 'It is slightly frightening and slightly comfortable.' },
+  {
+    type: 'effect', setFlags: ['skip_school_slept'],
+    effects: [
+      { stat: 'guts', amount: 1, reasonZh: '你欠了自己一天，还给了自己', reasonEn: 'You owed yourself a day and paid it' },
+      { stat: 'proficiency', amount: -1, reasonZh: '一整天没说过一句日语', reasonEn: 'A whole day without speaking a word of Japanese' }
+    ]
+  }
+];
+
+export const SKIP_WANDER: StoryNode[] = [
+  { type: 'scene', scene: 'sannomiya_station', bgm: 'town', titleZh: '反方向的电车', titleEn: 'The Train the Other Way', subtitleZh: '上学日 · 早上八点十分', subtitleEn: 'A school day · Ten past eight' },
+  { type: 'narration', zh: '你穿着制服，背着书包，站在月台上。', en: 'You are on the platform in uniform with your bag.' },
+  { type: 'narration', zh: '往学校的那班车进站了。你看着它停下、开门、上人、关门、开走。', en: 'The train towards school pulls in. You watch it stop, open, fill, close, and go.' },
+  { type: 'narration', zh: '你还站在原地。', en: 'You are still standing there.' },
+  {
+    type: 'choice',
+    promptZh: '两分钟后，反方向那班车进站。',
+    promptEn: 'Two minutes later the train the other way pulls in.',
+    options: [
+      {
+        id: 'skip_wander_harbor',
+        labelZh: '上车，坐到海边',
+        labelEn: 'Get on. Ride to the sea.',
+        hintZh: '这个点海边一个人都没有',
+        hintEn: 'There will be nobody there at this hour.',
+        effects: [
+          { stat: 'guts', amount: 3, reasonZh: '你上了那班反方向的车', reasonEn: 'You got on the train going the other way' },
+          { stat: 'knowledge', amount: -3, reasonZh: '这一天的课你一节都没上', reasonEn: 'You attended none of the day' },
+          { stat: 'charm', amount: 2, reasonZh: '你第一次一个人做了一件没人知道的事', reasonEn: 'You did something nobody knew about, alone, for the first time' }
+        ],
+        setFlags: ['skip_school_sea'],
+        then: [
+          { type: 'scene', scene: 'suma_beach' },
+          { type: 'narration', zh: '上午九点半的须磨海岸，只有两个遛狗的老人和一只在追浪的柴犬。', en: 'Suma at half nine in the morning: two people walking dogs, and one shiba chasing waves.' },
+          { type: 'narration', zh: '你穿着制服坐在防波堤上。有人从后面走过，看了你一眼，什么都没说。', en: 'You sit on the breakwater in your uniform. Somebody passes behind you, looks, and says nothing.' },
+          { type: 'narration', zh: '你在那儿坐了四个小时。中间买了一个饭团，吃得很慢。', en: 'You stay four hours. At some point you buy an onigiri and eat it very slowly.' },
+          { type: 'narration', zh: '这四个小时里你什么都没想明白。但你不再觉得那件事非想明白不可了。', en: 'You work nothing out in those four hours. You do stop feeling that it has to be worked out.' }
+        ]
+      },
+      {
+        id: 'skip_wander_city',
+        labelZh: '不上车。就在市里走一天',
+        labelEn: 'Do not board. Walk the city all day.',
+        hintZh: '工作日的白天穿着制服走路，是会被看的',
+        hintEn: 'A uniform on a weekday morning gets looked at.',
+        effects: [
+          { stat: 'guts', amount: 2, reasonZh: '你顶着所有人的目光走了一天', reasonEn: 'You walked all day under everybody looking' },
+          { stat: 'knowledge', amount: -2, reasonZh: '课是没上，但你把这座城看了一遍', reasonEn: 'You missed the lessons and read the city instead' },
+          { stat: 'proficiency', amount: 2, reasonZh: '你听了一整天路上的关西腔', reasonEn: 'A full day of overheard Kansai' }
+        ],
+        setFlags: ['skip_school_walked'],
+        then: [
+          { type: 'scene', scene: 'sannomiya_arcade' },
+          { type: 'narration', zh: '工作日上午的商店街是另一个地方：没有学生，全是推着购物车的人和送货的三轮。', en: 'The shotengai on a weekday morning is a different place: no students, just shopping trolleys and delivery trikes.' },
+          { type: 'narration', zh: '有个卖鱼的大叔冲你喊了一句什么。你没听懂，但语气是好的，你就笑了一下。', en: 'A fishmonger shouts something at you. You do not understand it, but the tone is friendly, so you smile.' },
+          { type: 'narration', zh: '他又喊了一句，这次你听懂了：「学校は？」', en: 'He shouts again, and this time you get it: what about school?' },
+          { type: 'narration', zh: '你说今天休み。他笑得很大声，然后塞给你一条烤鱼。', en: 'You say you have the day off. He laughs very loudly and hands you a grilled fish.' }
+        ]
+      }
+    ]
+  },
+  { type: 'narration', zh: '傍晚你按平常的时间回到海风庄。制服上有海的味道，或者鱼的味道。', en: 'You get back to Umikaze-so at the usual time. Your uniform smells of the sea, or of fish.' },
+  { type: 'narration', zh: '明天你得解释。但那是明天的事。', en: 'You will have to explain tomorrow. Tomorrow can have it.' },
+  { type: 'effect', setFlags: ['skip_school_wandered'] }
+];
+
+// ==========================================================
+// 🚄 远门：四个人的大阪、五个人的京都
+//
+// 四季那四次郊游都是两个人。两个人的一天写的是"她"；
+// 人一多，写的东西就变了——三个人以上，重点不再是任何一个人，
+// 而是**这些人凑在一起的时候，各自会怎么改写自己**。
+//
+// 所以这两段里主角说话很少。他主要负责付钱、数人头，
+// 以及在某个时刻发现有人不见了。
+//
+// 门槛也高：得所有人都处到朋友以上。你不能带一个
+// 只见过两次面的人去坐一小时的电车。
+// ==========================================================
+
+export const TRIP_OSAKA: StoryNode[] = [
+  { type: 'scene', scene: 'osaka_shinsekai', bgm: 'town', titleZh: '大阪、四个人', titleEn: 'Osaka, Four of Us', subtitleZh: '休息日 · 新世界', subtitleEn: 'Day off · Shinsekai' },
+  { type: 'narration', zh: '从三宫坐阪神到梅田三十分钟，再换地铁到动物园前。四个人，一张回数券，谁都不承认是自己提议的。', en: 'Thirty minutes on the Hanshin to Umeda, then the subway to Dobutsuen-mae. Four people, one book of tickets, and nobody admitting whose idea it was.' },
+  { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空一出站就开始找串炸店，说她查了三家，全部都要去。', en: 'Sora starts looking for kushikatsu the moment they are through the gate, announcing that she has researched three places and intends to visit all of them.' },
+  { type: 'narration', characterImage: `${MAKI}cardigan_neutral.webp`, zh: '真希说三家太少。', en: 'Maki says three is not very many.' },
+  { type: 'narration', characterImage: `${ASUKA}casual_angry.webp`, zh: '明日香把她们两个人的行程表当场划掉了，换成她自己在电车上做的那份。', en: 'Asuka strikes both of their itineraries out on the spot and substitutes the one she made on the train.' },
+  { type: 'narration', characterImage: `${HIKARI}casual_happy.webp`, zh: '光在旁边笑，说她第一次来大阪的时候也是这样，被人推着走，什么都没记住，但那天很开心。', en: 'Hikari laughs and says her first time in Osaka went like this too: pushed along, remembering nothing, and a very good day.' },
+  {
+    type: 'choice',
+    promptZh: '通天阁底下，四个人站成一个僵持的形状。',
+    promptEn: 'Under Tsutenkaku the four of you settle into a stand-off.',
+    options: [
+      {
+        id: 'osaka_side_asuka',
+        labelZh: '站明日香那边：按表走',
+        labelEn: 'Back Asuka. Follow the schedule.',
+        hintZh: '她做那张表花了四十分钟',
+        hintEn: 'She spent forty minutes on that schedule.',
+        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '一天走完了七个地方', reasonEn: 'Seven places in one day' }],
+        relations: [
+          { char: CharacterId.ASUKA, familiarity: 5, affection: 9, reasonZh: '有人站在了她那张表这一边', reasonEn: 'Somebody took the schedule seriously' },
+          { char: CharacterId.SORA, familiarity: 3, affection: -1, reasonZh: '串炸只吃到了两家', reasonEn: 'Only two of the three kushikatsu places' },
+          { char: CharacterId.MAKI, familiarity: 2, affection: -1, reasonZh: '她全程都在唱反调', reasonEn: 'She objected to all of it, continuously' }
+        ],
+        then: [
+          { type: 'narration', zh: '那张表精确到分钟，而且真的走完了。七个地方，一个没落。', en: 'The schedule is accurate to the minute, and it holds. Seven places, none skipped.' },
+          { type: 'narration', characterImage: `${ASUKA}casual_happy.webp`, zh: '最后一站结束的时候明日香看了一眼手表，比预定早了四分钟。她什么都没说，但那一路走得很轻快。', en: 'At the last stop Asuka checks her watch: four minutes ahead. She says nothing, and walks noticeably lighter the rest of the way.' },
+          { type: 'narration', characterImage: `${MAKI}cardigan_neutral.webp`, zh: '真希在最后一站买了两串炸，一串给了空，一串塞给明日香。「表には無いけどな」。', en: 'At the last stop Maki buys two skewers, gives one to Sora and pushes the other at Asuka. Not on the schedule, she says.' }
+        ]
+      },
+      {
+        id: 'osaka_scatter',
+        labelZh: '「散了吧。六点在这儿集合。」',
+        labelEn: '"Split up. Back here at six."',
+        jp: '一回バラけよ。六時にここな。',
+        hintZh: '四个人的一天不一定要四个人一直在一起',
+        hintEn: 'A day for four does not have to be four people in a line.',
+        effects: [{ stat: 'charm', amount: 3, reasonZh: '你把一场僵持解开了', reasonEn: 'You dissolved a stand-off' }],
+        relations: [
+          { char: CharacterId.SORA, familiarity: 5, affection: 5, reasonZh: '三家串炸全部吃到了', reasonEn: 'All three kushikatsu places, achieved' },
+          { char: CharacterId.MAKI, familiarity: 5, affection: 5, reasonZh: '她跟去了，虽然嘴上说是顺路', reasonEn: 'She went along, claiming it was on her way' },
+          { char: CharacterId.HIKARI, familiarity: 4, affection: 4, reasonZh: '她挑了明日香那一边', reasonEn: 'She picked Asuka to walk with' },
+          { char: CharacterId.ASUKA, familiarity: 4, affection: 4, reasonZh: '她的表没有被否决，只是没有被强加', reasonEn: 'Her schedule was not vetoed, merely not imposed' }
+        ],
+        setFlags: ['trip_osaka_split'],
+        then: [
+          { type: 'narration', zh: '空和真希去吃串炸。光跟着明日香去按表走。你一个人。', en: 'Sora and Maki go for kushikatsu. Hikari goes with Asuka and the schedule. You are on your own.' },
+          { type: 'narration', zh: '你在新世界的巷子里走了两个小时，什么都没干，看了两局将棋。', en: 'You spend two hours in the alleys of Shinsekai doing nothing and watching two games of shogi.' },
+          { type: 'scene', scene: 'osaka_dotonbori_canal' },
+          { type: 'narration', zh: '六点，道顿堀的河边。四个人从四个方向到齐，没有一个人迟到。', en: 'Six o’clock, the canal at Dotonbori. Four people arrive from four directions and nobody is late.' },
+          { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空拎着一整袋章鱼烧。真希手里是同一个袋子的另一半。', en: 'Sora is carrying a whole bag of takoyaki. Maki has the other half of the same bag.' },
+          { type: 'narration', characterImage: `${ASUKA}casual_neutral.webp`, zh: '明日香的表提前完成了。她把剩下的一小时用来陪光在一家二手书店里翻了六十分钟。', en: 'Asuka finished the schedule early and spent the spare hour standing in a secondhand bookshop with Hikari.' },
+          { type: 'narration', zh: '她们四个人各过各的一天，然后回到同一个地方。这件事比全程走在一起要难得多。', en: 'The four of them each had their own day and came back to the same place. That is much harder than staying in a line.' }
+        ]
+      },
+      {
+        id: 'osaka_food_first',
+        labelZh: '站空和真希那边：先吃',
+        labelEn: 'Back Sora and Maki. Food first.',
+        hintZh: '这是大阪。这个理由站得住',
+        hintEn: 'This is Osaka. That argument holds.',
+        effects: [{ stat: 'guts', amount: 2, reasonZh: '你把一张表否决了', reasonEn: 'You overruled a schedule' }],
+        relations: [
+          { char: CharacterId.SORA, familiarity: 6, affection: 7, reasonZh: '三家全部吃到，而且是你带的头', reasonEn: 'All three, and you led' },
+          { char: CharacterId.MAKI, familiarity: 6, affection: 6, reasonZh: '她跟你击了一次掌，然后马上说那是意外', reasonEn: 'She high-fived you and immediately called it an accident' },
+          { char: CharacterId.ASUKA, familiarity: 2, affection: -2, reasonZh: '她的表被当场否决了', reasonEn: 'Her schedule was vetoed in public' }
+        ],
+        then: [
+          { type: 'narration', zh: '三家串炸，两家章鱼烧，一碗关东煮。空吃到第四十串的时候第一次说"够了"。', en: 'Three kushikatsu shops, two takoyaki stands, one oden. At the fortieth skewer Sora says "enough" for the first time.' },
+          { type: 'narration', characterImage: `${ASUKA}casual_angry.webp`, zh: '明日香一整个下午都在生气。到了道顿堀她才承认——她的表上第一站也是串炸，只是排在下午两点。', en: 'Asuka is annoyed all afternoon. At Dotonbori she admits that kushikatsu was first on her schedule too. At two o’clock.' },
+          { type: 'narration', characterImage: `${ASUKA}casual_shy.webp`, zh: '「……順番の問題なの」，她说。没有人接这句话。', en: 'It was a question of order, she says. Nobody takes her up on it.' }
+        ]
+      }
+    ]
+  },
+  { type: 'scene', scene: 'osaka_dotonbori_canal' },
+  { type: 'narration', zh: '晚上八点，回程的电车。四个人坐一排，三个人睡着了。', en: 'Eight o’clock, the train back. Four in a row, three of them asleep.' },
+  { type: 'narration', characterImage: `${HIKARI}casual_neutral.webp`, zh: '光没睡。她看着窗外，忽然说：「うち、こういう日のために来たんかもしれん」。', en: 'Hikari is awake, looking out of the window. She says perhaps this is the sort of day she came here for.' },
+  { type: 'narration', zh: '车过淀川的时候，桥上的灯一根一根从窗户上扫过去。', en: 'Crossing the Yodogawa, the lights on the bridge sweep across the window one at a time.' },
+  {
+    type: 'effect', setFlags: ['restday_trip_osaka'],
+    effects: [
+      { stat: 'guts', amount: 2, reasonZh: '你带四个人去了另一座城市，一个都没丢', reasonEn: 'You took four people to another city and lost none of them' },
+      { stat: 'proficiency', amount: 2, reasonZh: '大阪腔和神户腔不是一回事，你现在知道了', reasonEn: 'Osaka and Kobe do not sound the same, and now you know it' }
+    ],
+    relations: [
+      { char: CharacterId.HIKARI, familiarity: 4, affection: 5, reasonZh: '她说了那句"或许我就是为了这种日子来的"', reasonEn: 'She said perhaps this was what she came for' },
+      { char: CharacterId.SORA, familiarity: 3, affection: 2, reasonZh: '她在电车上睡着了，靠在你这一边', reasonEn: 'She fell asleep on the train, leaning your way' },
+      { char: CharacterId.MAKI, familiarity: 3, affection: 2, reasonZh: '她假装没看见空靠过来这件事', reasonEn: 'She pretended not to notice that' },
+      { char: CharacterId.ASUKA, familiarity: 3, affection: 2, reasonZh: '她把回程的时刻表也做好了', reasonEn: 'She had made a schedule for the way back as well' }
+    ]
+  }
+];
+
+export const TRIP_KYOTO: StoryNode[] = [
+  { type: 'scene', scene: 'kyoto_fushimi_torii', bgm: 'town', titleZh: '京都、五个人', titleEn: 'Kyoto, Five of Us', subtitleZh: '休息日 · 伏见稻荷', subtitleEn: 'Day off · Fushimi Inari' },
+  { type: 'narration', zh: '从三宫到京都一个小时。五个人挤在一节车厢的同一头，被本地人当成修学旅行看。', en: 'An hour from Sannomiya. Five of you bunched at one end of a carriage, mistaken by locals for a school trip.' },
+  { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '稻荷是自己来的。她在伏见稻荷的第一座鸟居底下等你们，一句"哦呀"都没有说。', en: 'Inari came separately. She is waiting under the first torii at Fushimi and does not say her usual "oh my".' },
+  { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '她今天很安静。她一直在看那些鸟居上刻的名字。', en: 'She is quiet today. She keeps reading the names carved on the gates.' },
+  { type: 'narration', characterImage: `${REI}casual_neutral.webp`, zh: '铃在数鸟居。她说资料上写一万座，她要验证一下。', en: 'Rei is counting torii. The literature says ten thousand and she intends to verify it.' },
+  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪在给所有人分饭团。她做了十二个，说这样每人两个还有富余。', en: 'Nao is handing out onigiri. She made twelve, on the theory that two each leaves a margin.' },
+  { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '深雪拿着五个人的车票、五瓶水、和一盒创可贴。她一整天都没有让任何人看见她累。', en: 'Miyuki is holding five tickets, five bottles of water and a box of plasters. All day, she lets nobody see her tired.' },
+  {
+    type: 'choice',
+    promptZh: '上山的路很长。走到一半的时候，你发现队伍已经散成了三截。',
+    promptEn: 'It is a long way up. Halfway, you notice the group has come apart into three.',
+    options: [
+      {
+        id: 'kyoto_back',
+        labelZh: '走到最后面去',
+        labelEn: 'Drop to the back',
+        hintZh: '最后面是深雪',
+        hintEn: 'Miyuki is at the back.',
+        effects: [{ stat: 'kindness', amount: 3, reasonZh: '你去了队伍最后面', reasonEn: 'You went to the back of the line' }],
+        relations: [
+          { char: CharacterId.MIYUKI, familiarity: 5, affection: 12, reasonZh: '有人发现她一直在最后面', reasonEn: 'Somebody noticed she had been at the back the whole time' }
+        ],
+        setFlags: ['trip_kyoto_back'],
+        then: [
+          { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '她在最后面走。她说这样能看见所有人，谁掉队她马上知道。', en: 'She is walking at the back. That way she can see everybody, she says, and knows at once if anyone falls behind.' },
+          { type: 'narration', zh: '你问那谁看着她。她愣了一下，然后笑了，说这个问题她没想过。', en: 'You ask who is watching her. She blinks, then laughs, and says she has never considered the question.' },
+          { type: 'narration', characterImage: `${MIYUKI}cardigan_shy.webp`, zh: '接下来的四百级台阶你们走在一起。她第一次没有走在最后面。', en: 'You do the next four hundred steps together. For once she is not last.' }
+        ]
+      },
+      {
+        id: 'kyoto_inari',
+        labelZh: '去找稻荷',
+        labelEn: 'Go and find Inari',
+        hintZh: '她已经落下很久了，而且不是因为累',
+        hintEn: 'She has been behind for a while, and not because she is tired.',
+        requires: { stat: 'knowledge', min: 10 },
+        effects: [{ stat: 'knowledge', amount: 3, reasonZh: '你看懂了她为什么安静', reasonEn: 'You understood why she was quiet' }],
+        relations: [
+          { char: CharacterId.INARI, familiarity: 4, affection: 14, reasonZh: '有人在一万座鸟居里找到了她', reasonEn: 'Somebody found her among ten thousand gates' }
+        ],
+        setFlags: ['trip_kyoto_inari'],
+        then: [
+          { type: 'narration', zh: '你在半山腰一条岔道上找到她。她站在一座很旧的鸟居前面，那座的字已经快看不清了。', en: 'You find her on a side path halfway up, in front of a very old gate whose lettering has nearly gone.' },
+          { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}casual_sad.webp`, jp: 'この鳥居を建てた者、名前を知っておる。', zh: '立这座鸟居的人，我知道他的名字。', en: 'The one who raised this gate. I know his name.', color: 'bg-amber-500' },
+          { type: 'narration', zh: '字看不清了，但她知道。她把那个名字念了一遍，念得很轻。', en: 'The lettering has gone and she knows it anyway. She says the name once, very quietly.' },
+          { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '然后她转过身，恢复了平常那个语气：「さ、行こう。皆待っておる」。', en: 'Then she turns round in her usual voice and says they should go; the others are waiting.' }
+        ]
+      },
+      {
+        id: 'kyoto_front',
+        labelZh: '追到最前面',
+        labelEn: 'Catch up with the front',
+        hintZh: '最前面是铃，在数东西',
+        hintEn: 'Rei is at the front, counting.',
+        effects: [{ stat: 'proficiency', amount: 3, reasonZh: '你陪一个人数了八百座鸟居', reasonEn: 'You counted eight hundred torii with somebody' }],
+        relations: [
+          { char: CharacterId.REI, familiarity: 6, affection: 8, reasonZh: '有人愿意陪她把一件没意义的事做完', reasonEn: 'Somebody was willing to finish a pointless task with her' },
+          { char: CharacterId.NAO, familiarity: 3, affection: 3, reasonZh: '她也跟上来了，纯粹因为热闹', reasonEn: 'Nao came too, purely for the company' }
+        ],
+        then: [
+          { type: 'narration', characterImage: `${REI}casual_neutral.webp`, zh: '她数到八百一十七。她说她知道数不完，也知道"一万"是个约数。', en: 'She is at eight hundred and seventeen. She knows she will not finish, and knows that ten thousand is an approximation.' },
+          { type: 'narration', zh: '你问那为什么还数。她说：因为有人问起来的时候，我想有一个自己数出来的数字。', en: 'You ask why she is counting then. Because if somebody asks, she says, she would like to have a number she arrived at herself.' },
+          { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪听完之后开始帮她数，两个人数得对不上，从八百一十七吵到八百四十。', en: 'Nao starts counting too. Their numbers disagree, and they argue about it from eight hundred and seventeen to eight hundred and forty.' }
+        ]
+      }
+    ]
+  },
+  { type: 'scene', scene: 'kyoto_bamboo' },
+  { type: 'narration', zh: '下午去了岚山。竹林里的光是绿色的，五个人走进去之后，说话声就都变小了。', en: 'Arashiyama in the afternoon. The light in the bamboo is green, and after they walk in everybody’s voice drops.' },
+  { type: 'narration', zh: '没有人说为什么要小声。竹子那么高，人自然就会。', en: 'Nobody says why. The bamboo is that tall, and people simply do.' },
+  { type: 'scene', scene: 'kyoto_kamogawa' },
+  { type: 'narration', zh: '傍晚在鸭川的河滩上坐下。五个人自然而然地排成了等距的一排——京都人管这个叫「鴨川等間隔の法則」。', en: 'They sit on the bank of the Kamo in the evening and naturally form an evenly spaced row. Kyoto people have a name for this.' },
+  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪最后两个饭团在这儿分掉了。一个给了深雪，一个掰成四份。', en: 'Nao’s last two onigiri go here: one to Miyuki, the other broken into four.' },
+  { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '稻荷说她上一次坐在这条河边是很久以前。她说"很久"的时候，没有人再追问是多久。', en: 'Inari says the last time she sat by this river was a long time ago. When she says "a long time", nobody asks how long.' },
+  { type: 'narration', zh: '天黑之前你们赶上了回神户的电车。五个人，一个都没丢。', en: 'You make the train back to Kobe before dark. Five people, none lost.' },
+  {
+    type: 'effect', setFlags: ['restday_trip_kyoto'],
+    effects: [
+      { stat: 'knowledge', amount: 3, reasonZh: '一万座鸟居，八百一十七座是数过的', reasonEn: 'Ten thousand gates, eight hundred and seventeen of them counted' },
+      { stat: 'kindness', amount: 3, reasonZh: '你数了一整天人头', reasonEn: 'You counted heads all day' },
+      { stat: 'guts', amount: 1, reasonZh: '五个人的一整天，是你带的', reasonEn: 'A whole day for five, and you led it' }
+    ],
+    relations: [
+      { char: CharacterId.MIYUKI, familiarity: 4, affection: 4, reasonZh: '鸭川那一排，她坐在中间', reasonEn: 'On the riverbank she sat in the middle for once' },
+      { char: CharacterId.REI, familiarity: 4, affection: 3, reasonZh: '八百一十七', reasonEn: 'Eight hundred and seventeen' },
+      { char: CharacterId.NAO, familiarity: 4, affection: 3, reasonZh: '十二个饭团，一个都没剩', reasonEn: 'Twelve onigiri, none left over' },
+      { char: CharacterId.INARI, familiarity: 4, affection: 4, reasonZh: '她在鸭川边上说了"很久以前"', reasonEn: 'By the Kamo she said "a long time ago"' }
+    ]
+  }
+];

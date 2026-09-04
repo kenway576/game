@@ -205,7 +205,7 @@ export const CalendarModal: React.FC<Props> = ({
                             className="w-6 h-6 rounded-full overflow-hidden border border-amber-400/60 shadow"
                           >
                             <img
-                              src={char.avatarUrl}
+                              src={`/images/avatars/${charId}.webp`}
                               alt={char.name}
                               className="w-full h-full object-cover"
                             />

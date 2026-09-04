@@ -30,7 +30,7 @@ import { PhoneAppId, readFlag as msgReadFlag, totalUnread } from './data/phoneDa
 import { CafeteriaItem, tastedFlag } from './data/cafeteriaData';
 import {
   SocialState, INITIAL_SOCIAL_STATE, turnsLeft, bumpTurn, windDownHint,
-  farewellFor, busyNote, riftFor, openRift, riftNote, avoidNote, riftsJustEnded,
+  leftNote, busyNote, riftFor, openRift, riftNote, avoidNote, riftsJustEnded,
   makeupFlag, RiftReason
 } from './data/socialLimits';
 import KobeMapModal from './components/KobeMapModal';
@@ -586,6 +586,8 @@ const App: React.FC = () => {
     met: metChars, familiarity: familiarityMap
   };
 
+  // 关面板 = 今天不再自己弹。手动从大厅那个「今天」按钮再打开是可以的——
+  // flag 挡的是自动弹窗，不是玩家自己的手。
   const closeRestPlan = () => {
     setShowRestPlan(false);
     setStoryFlags(prev => ({ ...prev, [plannedFlag(gameCalendar)]: true }));
@@ -1724,7 +1726,7 @@ const App: React.FC = () => {
 
     // 剩两轮开始收尾，最后一轮她自己把话说完。玩家看不到这段指令，
     // 只会觉得这段对话自然走到了头。
-    const wind = isInternalTrigger ? null : windDownHint(left - 1);
+    const wind = isInternalTrigger ? null : windDownHint(selectedCharId, left - 1, gameCalendar);
     if (wind) outgoingText += `
 ${wind}`;
 
@@ -1799,10 +1801,11 @@ ${wind}`;
           pages: [{ type: 'narration', text: riftNote({ since: 0, until: 0, reason }, gameCalendar, userState.language) }]
         }]);
       } else if (!isInternalTrigger && left - 1 <= 0) {
-        // 额度用尽：她刚才那句已经是道别了（收尾提示让她自己说的）。
-        // 这里只补一句旁白把门关上，输入框跟着收起来。
+        // 额度用尽：**她刚才那句就是道别**——收尾提示让模型照着刚才聊的内容
+        // 自己编的，所以每次都不一样。这里不再补一句写死的台词，
+        // 只补一行舞台指示把门关上，输入框跟着收起来。
         setChatClosedToday(true);
-        const bye = farewellFor(selectedCharId, gameCalendar, userState.language);
+        const bye = leftNote(selectedCharId, gameCalendar, userState.language, chatInPerson);
         setMessages(prev => [...prev, {
           id: 'bye-' + Date.now(), role: 'model', senderName: 'System',
           text: bye, pages: [{ type: 'narration', text: bye }]
@@ -2018,6 +2021,7 @@ ${wind}`;
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenInventory={() => setShowInventory(true)}
           onOpenPhone={() => setShowPhone(true)}
+          onOpenDayPlan={() => setShowRestPlan(true)}
           phoneUnread={totalUnread({ flags: storyFlags, affection: affectionMap, familiarity: familiarityMap, met: metChars })}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           lobbyChars={lobbyChars}

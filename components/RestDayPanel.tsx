@@ -18,8 +18,18 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, onPick, onSk
   const label = dayLabel(calendar, language);
 
   const kindTag = en
-    ? { weekend: 'WEEKEND', holiday: 'PUBLIC HOLIDAY', vacation: 'SCHOOL HOLIDAY', school: '' }[kind]
-    : { weekend: '周末', holiday: '祝日', vacation: '长假', school: '' }[kind];
+    ? { weekend: 'WEEKEND', holiday: 'PUBLIC HOLIDAY', vacation: 'SCHOOL HOLIDAY', school: 'SCHOOL DAY' }[kind]
+    : { weekend: '周末', holiday: '祝日', vacation: '长假', school: '上学日' }[kind];
+
+  // 上学日问的不是"今天怎么过"，是"今天还去不去"。
+  const heading = kind === 'school'
+    ? (en ? 'Are you going in today?' : '今天还去学校吗？')
+    : (en ? 'What are you doing today?' : '今天要怎么过？');
+  const mood = kind === 'school'
+    ? (en
+        ? 'There are lessons today. Nothing is stopping you from not going, except what it costs.'
+        : '今天有课。没有人拦着你不去，只有代价。')
+    : dayMood(calendar, language);
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
@@ -35,10 +45,10 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, onPick, onSk
             </span>
           </div>
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight italic">
-            {en ? 'What are you doing today?' : '今天要怎么过？'}
+            {heading}
           </h2>
           {label && <p className="text-yellow-400/80 text-sm font-bold mt-1">{label}</p>}
-          <p className="text-white/45 text-xs mt-2 leading-relaxed">{dayMood(calendar, language)}</p>
+          <p className="text-white/45 text-xs mt-2 leading-relaxed">{mood}</p>
         </div>
 
         {/* 选项 */}
@@ -74,7 +84,9 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, onPick, onSk
             onClick={onSkip}
             className="w-full text-white/35 hover:text-white/70 text-xs tracking-widest uppercase py-3 transition-colors"
           >
-            {en ? 'Decide later' : '待会儿再说'}
+            {kind === 'school'
+              ? (en ? 'Go in as usual' : '照常去上学')
+              : (en ? 'Decide later' : '待会儿再说')}
           </button>
         </div>
       </div>

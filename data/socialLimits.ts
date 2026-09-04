@@ -103,127 +103,126 @@ export const turnsLeft = (
 // ---------------------------------------------------------
 export const WIND_DOWN_AT = 2;
 
-export const windDownHint = (remaining: number): string | null => {
-  if (remaining > WIND_DOWN_AT) return null;
-  if (remaining <= 1) {
-    return '【システム：この返答で今日の会話を締めくくってください。あなた自身の都合（眠い・宿題・朝練・家の用事など、あなたらしい理由）で、自然に切り上げること。「またね」で終わるのではなく、次に会う口実を一つ残してください。名残惜しさは出してよいが、演説にはしないこと。質問で終わらないこと。】';
-  }
-  return '【システム：そろそろ会話の終わりが近づいています。まだ切り上げてはいけませんが、時間を気にする素振り（時計を見る、明日の予定に触れる、あくびをする等）をさりげなく一つ混ぜてください。】';
-};
-
-// ---------------------------------------------------------
-// 今天到此为止 —— 她自己给的理由
+// 她今天大概会拿什么当借口。**这不是要打印出来的台词**，
+// 是喂给模型的例子：让它知道这个人会用什么样的理由离席，
+// 然后由它自己按刚才聊的内容现编一个。
 //
-// 每个人两三句，按当天日期稳定挑一句。夜里和白天分开写：
-// 白天是"我还有事"，夜里是"我要睡了"。
-// ---------------------------------------------------------
-interface Farewell { jp: string; zh: string; en: string }
+// 第一版是直接把这些句子印出来当告别语，结果每次都一样，
+// 而且和刚才聊的东西没有半点关系——聊了一小时她的伤，
+// 最后弹一句"我明天的预习还没做"。真人不这么说话。
+const EXCUSE_HINTS: Record<CharacterId, string> = {
+  [CharacterId.ASUKA]: '時間割・予習・生徒会の書類・「十一時には寝ると決めている」といった、自分で決めた規律',
+  [CharacterId.HIKARI]: 'バイトのシフト・明日の一限・寮の門限といった、留学生の現実的な予定',
+  [CharacterId.REI]: '観測の準備・実験のセットアップ・「睡眠は変数ではなく前提条件」といった、理屈の形をした理由',
+  [CharacterId.SORA]: '練習・朝練・走りに行く・監督にどやされる、といった体育会系の予定',
+  [CharacterId.MIYUKI]: '鍋・買い物・洗濯・「明日も早いの」といった、生活の細かい用事',
+  [CharacterId.NAO]: '洗濯物・出かける用事・単純に眠い、といった飾らない理由',
+  [CharacterId.MAKI]: 'まだ回るとこがある・ゲーセン・「子どもは寝ぇや」と逆に相手を子ども扱いする形',
+  [CharacterId.INARI]: '社に戻る・日が高い/夜が更けた・「人は寝るものじゃ」と人間の側の都合を持ち出す形'
+};
 
-const FAREWELLS: Record<CharacterId, { day: Farewell[]; night: Farewell[] }> = {
-  [CharacterId.ASUKA]: {
-    day: [
-      { jp: '今日はここまで。わたし、明日の予習がまだなの。', zh: '今天到这里。我明天的预习还没做。', en: 'That is enough for today. I have not done tomorrow\'s reading yet.' },
-      { jp: '……もうこんな時間。時間割、崩れるじゃない。', zh: '……都这个点了。我的时间表要乱了。', en: '...Look at the time. This is going to wreck my schedule.' }
-    ],
-    night: [
-      { jp: '十一時には寝るって決めてるの。あなたも寝なさい。', zh: '我规定自己十一点必须睡。你也去睡。', en: 'I have a rule about being asleep by eleven. You should sleep too.' }
-    ]
-  },
-  [CharacterId.HIKARI]: {
-    day: [
-      { jp: 'あ、やば。バイトの時間。……続きは今度な。', zh: '啊糟了，打工时间到了。……剩下的下次说。', en: 'Ah — my shift. ...We\'ll pick this up next time.' },
-      { jp: 'ごめん、ちょっと用事あるわ。また明日な。', zh: '抱歉，我还有点事。明天见啦。', en: 'Sorry, I\'ve got something on. See you tomorrow.' }
-    ],
-    night: [
-      { jp: 'うち明日一限からやねん。……先に寝るわ、おやすみ。', zh: '我明天第一节就有课。……我先睡了，晚安。', en: 'I\'ve got a first period tomorrow. ...Going to sleep. Night.' }
-    ]
-  },
-  [CharacterId.REI]: {
-    day: [
-      { jp: '記録はここまで。これ以上は明日の観測に影響する。', zh: '记录到此为止。再下去会影响明天的观测。', en: 'The record ends here. More would affect tomorrow\'s observation.' },
-      { jp: '……次の実験の準備がある。三十分後に始める。', zh: '……我还要准备下一个实验。三十分钟后开始。', en: '...I have a setup to prepare. It starts in thirty minutes.' }
-    ],
-    night: [
-      { jp: '睡眠は変数ではなく前提条件。落ちる。', zh: '睡眠不是变量，是前提条件。我下了。', en: 'Sleep is not a variable. It is a precondition. Logging off.' }
-    ]
-  },
-  [CharacterId.SORA]: {
-    day: [
-      { jp: 'あかん、練習行かな。監督にどやされる。', zh: '不行了，得去练习。不然要被教练骂。', en: 'Right, practice. Coach will have my head.' },
-      { jp: 'ちょっと走ってくるわ。しゃべってると体なまる。', zh: '我去跑一圈。光说话身体要生锈。', en: 'Going for a run. Too much talking and I seize up.' }
-    ],
-    night: [
-      { jp: '明日朝練やねん。六時。……もう寝るわ。', zh: '明天有晨练。六点。……我睡了。', en: 'Morning practice tomorrow. Six o\'clock. ...Sleeping.' }
-    ]
-  },
-  [CharacterId.MIYUKI]: {
-    day: [
-      { jp: 'あら、お鍋。……ごめんなさい、また後でね。', zh: '哎呀，锅还在火上。……抱歉，回头再说。', en: 'Oh — the pot. ...Sorry, later, all right.' },
-      { jp: 'そろそろ買い物に行かないと、閉まっちゃう。', zh: '再不去买菜就关门了。', en: 'If I do not go now the shops will shut.' }
-    ],
-    night: [
-      { jp: '明日も早いの。ちゃんと歯磨いて寝るのよ。', zh: '我明天也早。你记得刷牙再睡。', en: 'Early start for me too. Brush your teeth before bed.' }
-    ]
-  },
-  [CharacterId.NAO]: {
-    day: [
-      { jp: 'あ、洗濯物。取り込まな。……またあとで！', zh: '啊，衣服还晾着。得收了。……回头聊！', en: 'Ah — the washing. Got to bring it in. ...Later!' },
-      { jp: 'ちょっと出かけてくる。夜また連絡するわ。', zh: '我出去一下。晚上再联系你。', en: 'Popping out. I\'ll message you tonight.' }
-    ],
-    night: [
-      { jp: 'ねむ……。もう無理。おやすみ。', zh: '困……不行了。晚安。', en: 'Sleepy... that\'s me done. Night.' }
-    ]
-  },
-  [CharacterId.MAKI]: {
-    day: [
-      { jp: 'ウチ、まだ回るとこあんねん。ほな。', zh: '我还有地方要去。就这样。', en: 'Still got places to be. Later.' },
-      { jp: 'センパイ、しゃべりすぎ。ざぁこ。……ほな、また。', zh: '前辈，话太多了。杂鱼。……那，回头见。', en: 'Senpai, you talk too much. Weakling. ...Right, later.' }
-    ],
-    night: [
-      { jp: '……もう寝る時間ちゃう？　子どもは寝ぇや。', zh: '……不是该睡了吗？小孩子快去睡。', en: '...Isn\'t it your bedtime? Off you go, child.' }
-    ]
-  },
-  [CharacterId.INARI]: {
-    day: [
-      { jp: '今日はこのくらいにしておこう。日が高い。', zh: '今天就到这儿吧。日头还高着。', en: 'Let us leave it there for today. The sun is still high.' },
-      { jp: 'そろそろ社に戻らねばな。留守が長いと叱られる。', zh: '我该回神社了。空太久是要挨说的。', en: 'I ought to return to the shrine. They complain if I am away too long.' }
-    ],
-    night: [
-      { jp: '今宵はここまでじゃ。……お主は寝よ。人は寝るものじゃ。', zh: '今宵到此为止。……你去睡。人是要睡觉的。', en: 'That is enough for this evening. ...Go and sleep. People are supposed to.' }
-    ]
+export const windDownHint = (char: CharacterId, remaining: number, cal: GameCalendar): string | null => {
+  if (remaining > WIND_DOWN_AT) return null;
+  const night = cal.timeSlot === 'night';
+  const excuses = EXCUSE_HINTS[char] || '自分の予定';
+
+  if (remaining <= 1) {
+    return [
+      '【システム：この返答で今日の会話を締めくくること。以下を必ず守る：',
+      '① 別れの理由は**今この会話で実際に話していた内容から**引き出すこと。今の話題と無関係な用事を突然持ち出さない。',
+      `② どうしても外の用事を使うなら、あなたらしいもの（${excuses}）を、今日の状況に合わせて言い換えて使う。`,
+      night
+        ? '③ 今は夜。眠気・明日の朝の予定・相手にも寝るよう促す、といった夜特有の切り上げ方にする。'
+        : '③ 今はまだ日中。眠気ではなく「行くところがある」系の切り上げ方にする。',
+      '④ 今日話したことのどれかに触れて、次に会う口実を一つ残す（続きを聞く・見せる約束・同じ場所など）。',
+      '⑤ 決まり文句（「またね」だけ、「じゃあ」だけ）で終わらせない。毎回違う言い方にすること。',
+      '⑥ 質問で終わらないこと。演説にもしないこと。長くて三文。】'
+    ].join('\n');
   }
+  return [
+    '【システム：会話の終わりが近い。まだ切り上げてはいけない。',
+    'ただし一つだけ、時間を気にする素振りを自然に混ぜること（時計を見る・外の明るさに触れる・あくび・「そろそろ」と言いかけてやめる等）。',
+    'どの素振りを使うかは、今話している内容の空気に合わせて選ぶこと。】'
+  ].join('\n');
 };
 
-export const farewellFor = (char: CharacterId, cal: GameCalendar, language: Language): string => {
-  const set = FAREWELLS[char];
-  if (!set) return language === 'en' ? 'She says she has to go.' : '她说她该走了。';
-  const list = cal.timeSlot === 'night' ? set.night : set.day;
-  const f = pick(list, cal, char.length * 13);
-  return language === 'en' ? f.en : f.zh;
-};
+// ---------------------------------------------------------
+// 她走了之后的那一行
+//
+// 注意这里**不再印她的台词**。台词是模型刚才那句回复——
+// 那句是照着刚才聊的内容现编的，所以每次都不一样。
+// 这里只补一句舞台指示，说明"对话结束了"这件事，
+// 而且按时段和当天分开挑，免得三百天看同一句。
+// ---------------------------------------------------------
+const LEFT_DAY_ZH = [
+  '她说完就走了。走出去两步又回头说了句什么，你没听清。',
+  '她把东西收进包里，动作很快——像是真的赶时间。',
+  '她挥了下手，转身走了。',
+  '她站起来，把椅子推回原位，然后才走。',
+  '她走到门口停了一下，好像想说什么，最后什么都没说。'
+];
+const LEFT_DAY_EN = [
+  'She goes. Two steps out she turns and says something you do not catch.',
+  'She packs her things away fast, like somebody genuinely late for something.',
+  'She waves once and goes.',
+  'She stands, pushes the chair back in, and only then leaves.',
+  'She pauses at the door as though about to say something, and does not.'
+];
+const LEFT_NIGHT_ZH = [
+  '对话框安静下来。过了一会儿，「オンライン」的标记灭了。',
+  '她发完最后一句就下线了。',
+  '打字提示亮了一下，又灭了。然后就没有然后了。',
+  '最后一条消息之后，屏幕暗下去。'
+];
+const LEFT_NIGHT_EN = [
+  'The thread goes quiet. A moment later the online dot goes out.',
+  'She sends the last line and drops offline.',
+  'The typing indicator comes on, and goes off. That is all.',
+  'After the last message the screen dims.'
+];
 
-export const farewellJpFor = (char: CharacterId, cal: GameCalendar): string => {
-  const set = FAREWELLS[char];
-  if (!set) return '';
-  const list = cal.timeSlot === 'night' ? set.night : set.day;
-  return pick(list, cal, char.length * 13).jp;
+export const leftNote = (char: CharacterId, cal: GameCalendar, language: Language, inPerson: boolean): string => {
+  const night = cal.timeSlot === 'night' || !inPerson;
+  const zh = night ? LEFT_NIGHT_ZH : LEFT_DAY_ZH;
+  const en = night ? LEFT_NIGHT_EN : LEFT_DAY_EN;
+  return language === 'en'
+    ? pick(en, cal, char.length * 29 + (night ? 3 : 0))
+    : pick(zh, cal, char.length * 29 + (night ? 3 : 0));
 };
 
 // 额度用完之后再点进来，给的那一句。不是"今日次数已用完"，
-// 是她此刻在干别的事。
-const BUSY_ZH = [
+// 是她此刻在干别的事。白天和夜里分开写。
+const BUSY_DAY_ZH = [
   '发过去了，没有回。她大概真的去忙了。',
   '对话框停在她最后那句话上。今天大概就到这儿了。',
-  '你打了半句，又删掉了。她说了她有事。'
+  '你打了半句，又删掉了。她说了她有事。',
+  '你想了想，把手机放下了。晚一点她自己会说的。'
 ];
-const BUSY_EN = [
+const BUSY_DAY_EN = [
   'Sent. Nothing comes back. She really did have somewhere to be.',
   'The thread sits on her last line. That is probably it for today.',
-  'You type half a sentence and delete it. She said she was busy.'
+  'You type half a sentence and delete it. She said she was busy.',
+  'You think about it and put the phone down. She will say something later.'
+];
+const BUSY_NIGHT_ZH = [
+  '这个点她应该已经睡了。',
+  '没有回。这个时间还醒着的只有你一个。',
+  '「既読」都没有。她是真的睡着了。',
+  '你看了一眼时间，把手机扣在桌上。'
+];
+const BUSY_NIGHT_EN = [
+  'She will be asleep by now.',
+  'Nothing back. You are the only one still up at this hour.',
+  'Not even a read receipt. She really is asleep.',
+  'You check the time and put the phone face down.'
 ];
 
-export const busyNote = (cal: GameCalendar, language: Language): string =>
-  language === 'en' ? pick(BUSY_EN, cal, 91) : pick(BUSY_ZH, cal, 91);
+export const busyNote = (cal: GameCalendar, language: Language): string => {
+  const night = cal.timeSlot === 'night';
+  const zh = night ? BUSY_NIGHT_ZH : BUSY_DAY_ZH;
+  const en = night ? BUSY_NIGHT_EN : BUSY_DAY_EN;
+  return language === 'en' ? pick(en, cal, 91) : pick(zh, cal, 91);
+};
 
 // ---------------------------------------------------------
 // 🧊 冷淡期
@@ -237,16 +236,41 @@ export const busyNote = (cal: GameCalendar, language: Language): string =>
 // ---------------------------------------------------------
 export type RiftReason = 'fight' | 'said_too_much' | 'misunderstanding';
 
-// 谁能憋多久。越要面子的人越久。
-const RIFT_DAYS: Record<CharacterId, number> = {
-  [CharacterId.ASUKA]: 4,
-  [CharacterId.REI]: 3,
-  [CharacterId.MAKI]: 3,
-  [CharacterId.INARI]: 3,
-  [CharacterId.MIYUKI]: 2,
-  [CharacterId.HIKARI]: 2,
-  [CharacterId.SORA]: 2,
-  [CharacterId.NAO]: 2
+// 谁能憋多久。给的是一个区间，不是一个数——
+// 「明日香生气正好四天」这种东西一旦被玩家摸清就不再是生气了，
+// 是冷却时间。真人不知道自己什么时候会消气，玩家也不该知道。
+//
+// 区间按性格给：越要面子、越不肯先开口的人，上限越高，
+// 而且下限也高（她连"两天就算了"这个选项都没有）。
+const RIFT_RANGE: Record<CharacterId, [number, number]> = {
+  [CharacterId.ASUKA]: [3, 7],   // 认了错也要先把台阶铺好
+  [CharacterId.REI]: [2, 6],     // 她不是在生气，是在重新算一遍
+  [CharacterId.MAKI]: [2, 6],    // 嘴硬，而且越在乎越硬
+  [CharacterId.INARI]: [3, 8],   // 她的"几天"本来就不是人的单位
+  [CharacterId.MIYUKI]: [1, 3],  // 她会先原谅你，再为自己生过气道歉
+  [CharacterId.HIKARI]: [1, 4],
+  [CharacterId.SORA]: [1, 3],    // 打一场球就过去了
+  [CharacterId.NAO]: [1, 4]      // 十年的交情，气得快也消得快
+};
+
+// 吵得越凶拖得越久。fight 最重，说过头次之，误会最轻——
+// 误会本来就只需要一个机会把话说开。
+const REASON_WEIGHT: Record<RiftReason, number> = {
+  fight: 1,
+  said_too_much: 0.7,
+  misunderstanding: 0.45
+};
+
+// 这一次要僵多少天。**不落在日历的稳定随机上**：
+// 冷淡期只掷一次，掷完写进存档，所以用真随机没有"读档重摇"的问题，
+// 而且这样连同一个人的两次冷战都不会一样长。
+const rollRiftDays = (char: CharacterId, reason: RiftReason): number => {
+  const [lo, hi] = RIFT_RANGE[char] || [1, 3];
+  const w = REASON_WEIGHT[reason] ?? 1;
+  const span = (hi - lo) * w;
+  // 偏向短的那一头：大部分架吵完第二天就没事了，长的是少数
+  const r = Math.min(Math.random(), Math.random());
+  return Math.max(1, Math.round(lo + span * r));
 };
 
 export const riftFor = (social: SocialState, char: CharacterId, cal: GameCalendar): RiftState | null => {
@@ -259,7 +283,7 @@ export const openRift = (
   social: SocialState, char: CharacterId, cal: GameCalendar, reason: RiftReason
 ): SocialState => {
   const d = dayIndex(cal);
-  const days = RIFT_DAYS[char] ?? 2;
+  const days = rollRiftDays(char, reason);
   return { ...social, rifts: { ...social.rifts, [char]: { since: d, until: d + days, reason } } };
 };
 
