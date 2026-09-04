@@ -1,217 +1,164 @@
-// ============================================================================
-// 立绘白边清理 (de-fringe)
+// 去白边。
 //
-// 症状：立绘已经有 alpha 了，但贴到深色背景上，头发丝、手指、裙摆边缘还是
-// 镶着一圈白毛。原因不是"抠得不够"，而是这些半透明像素的 RGB 是
-// **在白底上合成过的**——它们记录的是 (前景×α + 白×(1-α))，白色被烤进颜色里了。
-// 单纯再抠一次 alpha 没用，得把白色从颜色里除回去。
+// 【为什么不能只看"边上是不是白的"】
+// 直接统计"轮廓像素里有多少接近纯白"，白大褂、白贝雷帽、白衬衫全部中枪。
+// 这类误判上一轮已经吃过一次亏了。
 //
-// 做三件事：
-//   1) 去白底预乘 (un-premultiply against white)
-//        c' = (c - 255·(1-α)) / α
-//      这一步把边缘半透明像素的真实颜色还原出来，白毛立刻消失，
-//      而柔和的抗锯齿边缘完整保留（不是靠腐蚀硬砍掉的）。
-//   2) α 太低的像素直接归零。这些点几乎看不见，但除法会把压缩噪点放大成彩边。
-//   3) 紧贴透明区、又几乎纯白的**不透明**像素清掉一圈——抠像残留的硬白线。
-//      只清一圈，白衬衫/白鞋这类"本来就是白的"部位最多掉 1px，肉眼无感。
+// 白边真正的特征是**它和它里面那一层不一样**：
+// 抠图残留的白比它内侧的颜色亮一大截，而且几乎没有饱和度。
+// 白大褂不会——白大褂的内侧也是白的。
+//
+// 所以判据是「这个边缘像素比它内侧的参考色亮多少」，不是「它有多白」。
+//
+// 【怎么修】
+//   ① 半透明那一圈（alpha 20~230）是重灾区：它是原图和白底混出来的。
+//      按 alpha 反混合回去（unpremultiply against white），
+//      混合比例越低的像素，被白污染得越狠，拉回来的力度也越大。
+//   ② 完全不透明但明显偏白的那一两圈：直接换成内侧参考色。
+//   ③ 最后把 alpha 边缘收一像素，吃掉那些怎么修都不干净的孤立点。
 //
 // 用法：
-//   node scripts/defringe-sprites.mjs <文件或目录> [...更多] [--dry] [--backup <dir>]
-// 例：
-//   node scripts/defringe-sprites.mjs public/images/characters
-//   node scripts/defringe-sprites.mjs public/images/characters/clerk_misaki_welcome.webp --dry
-// ============================================================================
+//   node scripts/defringe-sprites.mjs                    # 处理 characters/ 下所有 easter_*
+//   node scripts/defringe-sprites.mjs --glob=easter_     # 前缀过滤
+//   node scripts/defringe-sprites.mjs --report           # 只报告，不写文件
+//   node scripts/defringe-sprites.mjs --band=3 --lift=26 # 调参
+
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 
-const ARGS = process.argv.slice(2);
-const DRY = ARGS.includes('--dry');
-const backupIdx = ARGS.indexOf('--backup');
-const BACKUP_DIR = backupIdx >= 0 ? ARGS[backupIdx + 1] : null;
-const VALUE_FLAGS = ['--backup', '--depth', '--min-ch', '--contrast'];
-const valueIdx = new Set(
-  VALUE_FLAGS.map(f => ARGS.indexOf(f)).filter(i => i >= 0).map(i => i + 1)
+const args = Object.fromEntries(
+  process.argv.slice(2).map(a => {
+    const [k, v] = a.replace(/^--/, '').split('=');
+    return [k, v === undefined ? true : v];
+  })
 );
-const TARGETS = ARGS.filter((a, i) => !a.startsWith('--') && !valueIdx.has(i));
 
-// α 低于这个值的像素直接丢弃：除法会把它们的压缩噪点放大成彩色脏边
-const ALPHA_FLOOR = 24;
-// "几乎纯白"的判定阈值（三通道都要超过）
-const WHITE_CUT = 236;
-// 白描边修复（可用命令行覆盖）：
-//   --depth N     往里修几圈（默认 3；白描边常有 2px 厚，再加一圈抗锯齿）
-//   --min-ch N    描边像素的最低通道值，低于此不当描边（默认 150）
-//   --contrast N  与内侧一格的亮度差门槛，差得不够多就不动（默认 34）
-// 真正的判据是 contrast：白衬衫/白鞋往里一格同样是白的，差值不够，不会被误伤。
-const num = (flag, dflt) => {
-  const i = ARGS.indexOf(flag);
-  return i >= 0 && ARGS[i + 1] ? Number(ARGS[i + 1]) : dflt;
-};
-const OUTLINE_DEPTH = num('--depth', 3);
-const OUTLINE_MIN_CH = num('--min-ch', 150);
-const OUTLINE_CONTRAST = num('--contrast', 34);
+const DIR = args.dir || 'public/images/characters';
+// 注意是 ?? 不是 ||：--glob= （空前缀，表示整个目录）会被 || 判成假值，
+// 于是又退回 easter_，一个文件都不处理。
+const PREFIX = args.glob === true ? '' : (args.glob ?? 'easter_');
+const BAND = Number(args.band || 3);      // 往里几圈算"边缘带"
+const LIFT = Number(args.lift || 24);     // 比内侧亮多少算白边
+const SAT_MAX = Number(args.sat || 40);   // 白边几乎没有饱和度
+const REPORT = !!args.report;
 
-if (!TARGETS.length) {
-  console.error('用法: node scripts/defringe-sprites.mjs <文件或目录> [--dry] [--backup <dir>]');
-  process.exit(1);
-}
+const lum = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
+const sat = (r, g, b) => Math.max(r, g, b) - Math.min(r, g, b);
 
-const collect = (target) => {
-  const st = fs.statSync(target);
-  if (st.isFile()) return /\.(webp|png)$/i.test(target) ? [target] : [];
-  return fs.readdirSync(target).flatMap(name => collect(path.join(target, name)));
-};
+const run = async () => {
+  const files = fs.readdirSync(DIR).filter(f => f.startsWith(PREFIX) && f.endsWith('.webp'));
+  let touched = 0;
 
-const files = TARGETS.flatMap(collect);
-if (!files.length) {
-  console.error('没有找到 .webp / .png 文件');
-  process.exit(1);
-}
+  for (const f of files) {
+    const p = path.join(DIR, f);
+    // Windows 上 sharp 会一直握着源文件，先整个读进内存
+    const buf = fs.readFileSync(p);
+    const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const W = info.width, H = info.height, N = W * H;
+    const at = (x, y) => (y * W + x) * 4;
 
-let totalFixed = 0;
-
-for (const file of files) {
-  // 先把文件读成 Buffer 再交给 sharp：直接传路径的话 sharp 会占住句柄，
-  // 之后原地覆写同一个文件在 Windows 上会 UNKNOWN: open failed。
-  const srcBuf = fs.readFileSync(file);
-  const { data, info } = await sharp(srcBuf).ensureAlpha().raw()
-    .toBuffer({ resolveWithObject: true });
-  const { width: W, height: H } = info;
-
-  // 统计：处理前有多少"发白的半透明像素"
-  let before = 0;
-  for (let i = 0; i < data.length; i += 4) {
-    const a = data[i + 3];
-    if (a > 10 && a < 245 && (data[i] + data[i + 1] + data[i + 2]) / 3 > 225) before++;
-  }
-
-  // ---- 1) + 2) 去白底预乘 / 丢弃过低的 α ----
-  let unpremul = 0, dropped = 0;
-  for (let i = 0; i < data.length; i += 4) {
-    const a = data[i + 3];
-    if (a === 0 || a === 255) continue;
-    if (a < ALPHA_FLOOR) { data[i + 3] = 0; dropped++; continue; }
-    const alpha = a / 255;
-    for (let c = 0; c < 3; c++) {
-      const v = (data[i + c] - 255 * (1 - alpha)) / alpha;
-      data[i + c] = v < 0 ? 0 : v > 255 ? 255 : Math.round(v);
+    // ---- 到透明区的距离（只算到 BAND+2 就够）----
+    const MAXD = BAND + 2;
+    const dist = new Uint8Array(N).fill(255);
+    let queue = [];
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const a = data[at(x, y) + 3];
+      if (a < 16) { dist[y * W + x] = 0; queue.push(y * W + x); }
     }
-    unpremul++;
-  }
-
-  // ---- 3) 削掉贴着透明区的那一圈硬白线 ----
-  // 先记下原始 alpha，避免边削边扩散（一次只削一圈）
-  const alpha0 = new Uint8Array(W * H);
-  for (let p = 0; p < W * H; p++) alpha0[p] = data[p * 4 + 3];
-
-  let ringCut = 0;
-  for (let y = 0; y < H; y++) {
-    for (let x = 0; x < W; x++) {
-      const p = y * W + x, i = p * 4;
-      if (alpha0[p] < 250) continue;
-      const r = data[i], g = data[i + 1], b = data[i + 2];
-      if (r < WHITE_CUT || g < WHITE_CUT || b < WHITE_CUT) continue;
-      let touchesVoid = false;
-      for (let dy = -1; dy <= 1 && !touchesVoid; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
+    for (let d = 1; d <= MAXD && queue.length; d++) {
+      const next = [];
+      for (const idx of queue) {
+        const x = idx % W, y = (idx / W) | 0;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
           const nx = x + dx, ny = y + dy;
-          if (nx < 0 || ny < 0 || nx >= W || ny >= H) { touchesVoid = true; break; }
-          if (alpha0[ny * W + nx] < 20) { touchesVoid = true; break; }
+          if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+          const ni = ny * W + nx;
+          if (dist[ni] !== 255) continue;
+          dist[ni] = d;
+          next.push(ni);
         }
       }
-      if (touchesVoid) { data[i + 3] = 0; ringCut++; }
+      queue = next;
     }
-  }
 
-  // ---- 4) 抹掉烤进画面里的白色描边 ----
-  // 这一圈是**不透明**的，所以前三步都碰不到它：生成立绘时常见的"贴纸白描边"。
-  // 做法不是把它削掉（那会让人物缩水、边缘变硬），而是把它的颜色换成
-  // 沿着轮廓往里一格的真实颜色——白线消失，剪影尺寸和柔边都保持原样。
-  // 白衬衫、白鞋这些"本来就白"的地方不会被误伤：它们往里一格同样是白的，
-  // 亮度差不够大，规则不触发。
-  const alphaNow = new Uint8Array(W * H);
-  for (let p = 0; p < W * H; p++) alphaNow[p] = data[p * 4 + 3];
-
-  // 到最近透明像素的切比雪夫距离（画布外按透明算）
-  const INF = 32000;
-  const D = new Int32Array(W * H);
-  for (let p = 0; p < W * H; p++) D[p] = alphaNow[p] < 20 ? 0 : INF;
-  const at = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? 0 : D[y * W + x];
-  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-    const p = y * W + x; if (D[p] === 0) continue;
-    let m = D[p];
-    for (const [dx, dy] of [[-1, -1], [0, -1], [1, -1], [-1, 0]]) {
-      const nd = at(x + dx, y + dy) + 1; if (nd < m) m = nd;
-    }
-    D[p] = m;
-  }
-  for (let y = H - 1; y >= 0; y--) for (let x = W - 1; x >= 0; x--) {
-    const p = y * W + x; if (D[p] === 0) continue;
-    let m = D[p];
-    for (const [dx, dy] of [[1, 1], [0, 1], [-1, 1], [1, 0]]) {
-      const nd = at(x + dx, y + dy) + 1; if (nd < m) m = nd;
-    }
-    D[p] = m;
-  }
-
-  const lum = (i) => (data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114);
-  let outlineFixed = 0;
-  // ⚠️ 必须**由内向外**修：白描边往往有 2px 厚。
-  // 如果先修最外圈 d=1，它拿来当参考的 d=2 自己还是白的，亮度差不够，判定就不触发。
-  // 反过来先修 d=2（参考已经干净的 d=3），再修 d=1（参考已修好的 d=2），才推得动。
-  for (let d = OUTLINE_DEPTH; d >= 1; d--) {
-    const snapshot = Uint8Array.from(data);
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-      const p = y * W + x;
-      if (D[p] !== d) continue;
-      const i = p * 4;
-      // 半透明的边缘像素同样要修：它们的 α 是对的，脏的是颜色。
-      // 只换 RGB、不动 α，柔边的形状完全保留。
-      if (data[i + 3] < 60) continue;
-      if (Math.min(data[i], data[i + 1], data[i + 2]) < OUTLINE_MIN_CH) continue;
-      // 往里一格：邻居里 D 最大的那个
-      let best = -1, bestD = d;
-      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+    // ---- 每个边缘像素的"内侧参考色"：沿离开边界的方向取 BAND+2 那一圈 ----
+    const refOf = (x, y) => {
+      let best = null, bestD = -1;
+      const R = BAND + 2;
+      for (let dy = -R; dy <= R; dy++) for (let dx = -R; dx <= R; dx++) {
         const nx = x + dx, ny = y + dy;
         if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
-        const q = ny * W + nx;
-        if (D[q] > bestD) { bestD = D[q]; best = q; }
+        const ni = ny * W + nx;
+        if (data[at(nx, ny) + 3] < 250) continue;
+        const d = dist[ni];
+        if (d === 255 || d <= BAND) continue;      // 参考色必须来自带子之外
+        if (d > bestD) { bestD = d; best = at(nx, ny); }
       }
-      if (best < 0) continue;
-      const j = best * 4;
-      if (snapshot[j + 3] < 200) continue;
-      if (lum(i) - (snapshot[j] * 0.299 + snapshot[j + 1] * 0.587 + snapshot[j + 2] * 0.114) < OUTLINE_CONTRAST) continue;
-      data[i] = snapshot[j]; data[i + 1] = snapshot[j + 1]; data[i + 2] = snapshot[j + 2];
-      outlineFixed++;
+      return best;
+    };
+
+    let fixedSoft = 0, fixedHard = 0, edgeTotal = 0;
+    const out = Buffer.from(data);
+
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = at(x, y);
+      const a = data[i + 3];
+      if (a < 8) continue;
+      const d = dist[y * W + x];
+      if (d === 255 || d > BAND) continue;
+      edgeTotal++;
+
+      const ri = refOf(x, y);
+      if (ri === null) continue;
+      const rr = data[ri], rg = data[ri + 1], rb = data[ri + 2];
+      const r = data[i], g = data[i + 1], b = data[i + 2];
+
+      const brighter = lum(r, g, b) - lum(rr, rg, rb);
+      const flat = sat(r, g, b) <= SAT_MAX;
+
+      if (a < 230) {
+        // ① 半透明的一圈：原图 = (混合色 - (1-α)·白) / α
+        // 只在它确实比内侧亮的时候才拉；否则那是正常的抗锯齿。
+        if (brighter > LIFT * 0.5 && flat) {
+          const al = a / 255;
+          for (let c = 0; c < 3; c++) {
+            const mixed = data[i + c];
+            const un = (mixed - 255 * (1 - al)) / Math.max(0.08, al);
+            // 拉回来之后仍然要贴近内侧色，避免过冲成黑边
+            out[i + c] = Math.max(0, Math.min(255, Math.round(un * 0.65 + data[ri + c] * 0.35)));
+          }
+          fixedSoft++;
+        }
+      } else if (brighter > LIFT && flat) {
+        // ② 不透明但明显偏白：直接换成内侧色
+        out[i] = rr; out[i + 1] = rg; out[i + 2] = rb;
+        fixedHard++;
+      }
+    }
+
+    // ---- ③ 最外面那一圈 alpha 收一点，吃掉修不干净的孤立点 ----
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = at(x, y);
+      if (dist[y * W + x] === 1 && out[i + 3] > 0) {
+        out[i + 3] = Math.round(out[i + 3] * 0.55);
+      }
+    }
+
+    const pct = edgeTotal ? ((fixedSoft + fixedHard) / edgeTotal * 100) : 0;
+    console.log(
+      `${f.padEnd(26)} 边缘 ${String(edgeTotal).padStart(6)}  ` +
+      `半透明修 ${String(fixedSoft).padStart(5)}  实色修 ${String(fixedHard).padStart(5)}  → ${pct.toFixed(1)}%`
+    );
+
+    if (!REPORT && (fixedSoft + fixedHard) > 0) {
+      await sharp(out, { raw: { width: W, height: H, channels: 4 } })
+        .webp({ quality: 95, alphaQuality: 100 })
+        .toFile(p);
+      touched++;
     }
   }
+  console.log(REPORT ? '\n（只报告，没有写文件）' : `\n改写了 ${touched} 张。`);
+};
 
-  let after = 0;
-  for (let i = 0; i < data.length; i += 4) {
-    const a = data[i + 3];
-    if (a > 10 && a < 245 && (data[i] + data[i + 1] + data[i + 2]) / 3 > 225) after++;
-  }
-
-  const name = path.basename(file);
-  const line = `${name.padEnd(30)} 发白边缘 ${String(before).padStart(5)} → ${String(after).padStart(5)}` +
-    `  (去预乘 ${unpremul}, 丢弃 ${dropped}, 削白线 ${ringCut}, 修描边 ${outlineFixed})`;
-
-  if (DRY) { console.log('[dry] ' + line); continue; }
-
-  if (BACKUP_DIR) {
-    fs.mkdirSync(BACKUP_DIR, { recursive: true });
-    fs.copyFileSync(file, path.join(BACKUP_DIR, name));
-  }
-
-  const out = sharp(data, { raw: { width: W, height: H, channels: 4 } });
-  const buf = /\.png$/i.test(file)
-    ? await out.png({ compressionLevel: 9 }).toBuffer()
-    : await out.webp({ quality: 92, alphaQuality: 100 }).toBuffer();
-  fs.writeFileSync(file, buf);
-
-  console.log(line);
-  totalFixed++;
-}
-
-if (!DRY) console.log(`\n✅ 处理完成：${totalFixed} 张`);
+run().catch(e => { console.error(e); process.exit(1); });
