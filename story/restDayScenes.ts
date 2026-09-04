@@ -1103,3 +1103,268 @@ export const TRIP_KYOTO: StoryNode[] = [
     ]
   }
 ];
+
+// ==========================================================
+// 🎤 三个人的卡拉OK
+//
+// 一年四次的郊游是两个人，大阪京都是四五个人。中间缺的是
+// 那种**随便约一下就成的三个人**——不用挑季节，不用坐一小时电车，
+// 放学后走两百米就到。
+//
+// 三个人是一个很特别的数字：两个人是对话，四个人会分成两组，
+// 只有三个人的时候，永远有一个人在看另外两个。
+// 而看的那个每隔十分钟就会换。
+// ==========================================================
+
+export const GROUP_KARAOKE: StoryNode[] = [
+  { type: 'scene', scene: 'jazz_livehouse', bgm: 'town', titleZh: '三个人，两小时，一个包厢', titleEn: 'Three People, Two Hours, One Booth', subtitleZh: '放学后 · 三宫的卡拉OK', subtitleEn: 'After school · Karaoke in Sannomiya' },
+  { type: 'narration', zh: '学生优惠，两小时七百日元，饮料吧无限。这个价格是真希查出来的，她查了四家。', en: 'Student rate, seven hundred yen for two hours, drinks bar included. Maki found it. She compared four places.' },
+  { type: 'narration', characterImage: `${MAKI}punk_neutral.webp`, zh: '进包厢之前她先声明了一条规矩：不许点谁都会唱的那种。', en: 'Before going in she lays down one rule: nothing everybody already knows.' },
+  { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空第一首就点了一首谁都会唱的。', en: 'Sora’s first pick is a song everybody knows.' },
+  { type: 'narration', characterImage: `${HIKARI}casual_happy.webp`, zh: '光笑得从沙发上滑下去了。', en: 'Hikari laughs herself off the sofa.' },
+  {
+    type: 'choice',
+    promptZh: '第一小时结束的时候，麦克风到了你手里。两个人都在看你。',
+    promptEn: 'At the end of the first hour the microphone reaches you. Both of them are watching.',
+    options: [
+      {
+        id: 'karaoke_japanese',
+        labelZh: '点一首日文歌',
+        labelEn: 'Pick a Japanese song',
+        hintZh: '你会唱，但你没在人前唱过',
+        hintEn: 'You can sing it. You have never sung it in front of anybody.',
+        effects: [
+          { stat: 'guts', amount: 3, reasonZh: '你用一门还不熟的语言唱了一首歌', reasonEn: 'You sang in a language you are not yet fluent in' },
+          { stat: 'proficiency', amount: 2, reasonZh: '唱一遍比读十遍管用', reasonEn: 'Singing it once beat reading it ten times' }
+        ],
+        setFlags: ['group_karaoke_sang_jp'],
+        then: [
+          { type: 'narration', zh: '前奏起来的时候你后悔了。副歌那一句的语速你从来没跟上过。', en: 'You regret it during the intro. You have never once kept up with that line in the chorus.' },
+          { type: 'narration', zh: '你没跟上。你唱错了三个地方，最后一句直接跑没了。', en: 'You do not keep up. Three mistakes, and the last line simply gets away from you.' },
+          { type: 'narration', characterImage: `${SORA}happy.webp`, zh: '空鼓掌鼓得整个包厢都在响。她说"うまいやん"，说得非常真诚，而且非常不准确。', en: 'Sora applauds hard enough to fill the booth. She says you were good, with total sincerity and total inaccuracy.' },
+          { type: 'narration', characterImage: `${MAKI}shy_alt.webp`, zh: '真希什么都没说。但她把那首歌加进了后面的列表里，加了两次。', en: 'Maki says nothing. She does add that song to the queue again. Twice.' }
+        ]
+      },
+      {
+        id: 'karaoke_home',
+        labelZh: '点一首你自己国家的歌',
+        labelEn: 'Pick a song from your own country',
+        hintZh: '她们一个字都听不懂',
+        hintEn: 'They will not understand a word.',
+        effects: [
+          { stat: 'charm', amount: 3, reasonZh: '你让两个人听了一首她们听不懂的歌', reasonEn: 'You made two people sit through a song they could not follow' }
+        ],
+        setFlags: ['group_karaoke_sang_home'],
+        then: [
+          { type: 'narration', zh: '机器里居然有。你自己都没想到。', en: 'The machine has it. Even you did not expect that.' },
+          { type: 'narration', zh: '你唱的时候没有人说话。两个人都在看屏幕上那些她们不认识的字。', en: 'Nobody talks while you sing. They both watch letters they cannot read go past on the screen.' },
+          { type: 'narration', characterImage: `${HIKARI}casual_neutral.webp`, zh: '唱完之后光第一个开口。她说：这首歌是不是有点难过。', en: 'Hikari speaks first. She asks whether that song is a bit sad.' },
+          { type: 'narration', zh: '她一个字都没听懂。她说对了。', en: 'She did not understand a word. She is right.' }
+        ]
+      },
+      {
+        id: 'karaoke_pass',
+        labelZh: '把麦克风推给光',
+        labelEn: 'Push the mic to Hikari',
+        hintZh: '她一晚上都没唱过',
+        hintEn: 'She has not sung all evening.',
+        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你注意到有人一晚上没唱过', reasonEn: 'You noticed who had not sung all evening' }],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 5, affection: 8, reasonZh: '有人把麦克风递给了她', reasonEn: 'Somebody handed her the microphone' }],
+        then: [
+          { type: 'narration', characterImage: `${HIKARI}casual_shy.webp`, zh: '她说不用不用，摆了三次手。第四次她接过去了。', en: 'She waves it off three times. On the fourth she takes it.' },
+          { type: 'narration', zh: '她唱得非常好。好到空和真希都停下来了。', en: 'She is extremely good. Good enough that Sora and Maki both stop.' },
+          { type: 'narration', characterImage: `${HIKARI}casual_shy.webp`, zh: '唱完她自己也愣了一下，然后小声说："うち、家でしか歌わへんから"。', en: 'She surprises herself too, and says quietly that she only ever sings at home.' },
+          { type: 'narration', zh: '接下来一小时她唱了七首。', en: 'She sings seven more in the next hour.' }
+        ]
+      }
+    ]
+  },
+  { type: 'narration', zh: '两小时到了。前台问要不要续，三个人同时说了"延長で"。', en: 'Two hours are up. The desk asks about extending. All three say yes at once.' },
+  { type: 'narration', zh: '又续了一个小时。这一个小时里没有人再管"不许点谁都会唱的"这条规矩。', en: 'One more hour, in which nobody bothers with the rule about songs everybody knows.' },
+  {
+    type: 'effect', setFlags: ['restday_group_karaoke'],
+    effects: [
+      { stat: 'charm', amount: 2, reasonZh: '三个人，三小时，一个包厢', reasonEn: 'Three people, three hours, one booth' },
+      { stat: 'proficiency', amount: 2, reasonZh: '你跟着屏幕读完了大概四十首歌的歌词', reasonEn: 'You read about forty songs’ worth of lyrics off a screen' }
+    ],
+    relations: [
+      { char: CharacterId.SORA, familiarity: 6, affection: 4, reasonZh: '她给你鼓的那阵掌', reasonEn: 'That round of applause' },
+      { char: CharacterId.MAKI, familiarity: 6, affection: 4, reasonZh: '她把你那首加了两次', reasonEn: 'She queued your song twice' },
+      { char: CharacterId.HIKARI, familiarity: 6, affection: 5, reasonZh: '她在包厢里唱了七首', reasonEn: 'She sang seven songs in a karaoke booth' }
+    ]
+  }
+];
+
+// ==========================================================
+// 🎪 文化祭前夜
+//
+// 四个人，一个通宵，一间没有暖气的教室。
+// 这一段的重点不是文化祭，是**四个人在凌晨三点会说什么**。
+// 白天说不出口的东西，到了凌晨三点会自己掉出来。
+// ==========================================================
+
+export const GROUP_FESTIVAL_EVE: StoryNode[] = [
+  { type: 'scene', scene: 'classroom_sunset', bgm: 'night', titleZh: '文化祭前夜', titleEn: 'The Night Before', subtitleZh: '十一月 · 教室 · 晚上八点', subtitleEn: 'November · A classroom · Eight p.m.' },
+  { type: 'narration', zh: '明天开幕。今晚要把三十六个纸箱糊成一条商店街。', en: 'It opens tomorrow. Tonight, thirty-six cardboard boxes have to become a shopping street.' },
+  { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '明日香贴了一张进度表在黑板上。表上把今晚切成了十五分钟一格。', en: 'Asuka has taped a schedule to the blackboard. It divides the night into fifteen-minute blocks.' },
+  { type: 'narration', characterImage: `${REI}neutral.webp`, zh: '铃在算承重。她说按现在的糊法，第三层会塌。她算了两遍。', en: 'Rei is calculating load. She says the third tier will collapse as currently glued. She has checked twice.' },
+  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪带了四个人的夜宵，装在一个比她还宽的袋子里。', en: 'Nao has brought supper for four in a bag wider than she is.' },
+  { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '深雪是被叫来当"成年人监护"的。她说她只坐着，然后马上开始糊纸箱。', en: 'Miyuki is here as the responsible adult. She says she will only sit, and immediately starts gluing boxes.' },
+  { type: 'narration', zh: '十点，进度表落后一格。十二点，落后三格。两点，明日香把表撕了。', en: 'At ten they are one block behind. At midnight, three. At two, Asuka takes the schedule down.' },
+  {
+    type: 'choice',
+    promptZh: '凌晨三点。第三层果然塌了。四个人坐在一地纸箱中间。',
+    promptEn: 'Three in the morning. The third tier has, as predicted, collapsed. Four people sitting in cardboard.',
+    options: [
+      {
+        id: 'eve_rebuild',
+        labelZh: '「按铃说的重做。」',
+        labelEn: '"Rebuild it the way Rei said."',
+        jp: '鈴の言うとおり作り直そ。',
+        hintZh: '她两个小时前就算出来了',
+        hintEn: 'She worked it out two hours ago.',
+        effects: [
+          { stat: 'knowledge', amount: 3, reasonZh: '你终于信了那两遍演算', reasonEn: 'You finally believed the arithmetic' },
+          { stat: 'guts', amount: 2, reasonZh: '凌晨三点重来一遍', reasonEn: 'Starting over at three in the morning' }
+        ],
+        relations: [
+          { char: CharacterId.REI, familiarity: 6, affection: 10, reasonZh: '两个小时之后终于有人采纳了她的计算', reasonEn: 'Two hours late, somebody used her numbers' },
+          { char: CharacterId.ASUKA, familiarity: 4, affection: 4, reasonZh: '她没有坚持自己那张表', reasonEn: 'She did not defend her own schedule' }
+        ],
+        setFlags: ['group_eve_rebuilt'],
+        then: [
+          { type: 'narration', characterImage: `${REI}shy.webp`, zh: '铃愣了一下，然后从口袋里拿出一张纸。上面已经画好了改法。', en: 'Rei blinks, and takes a piece of paper out of her pocket. The revised method is already drawn on it.' },
+          { type: 'narration', zh: '她两个小时前就画好了。她没有拿出来，因为没有人问。', en: 'She drew it two hours ago. She did not produce it, because nobody asked.' },
+          { type: 'narration', characterImage: `${ASUKA}sad.webp`, zh: '明日香看了那张纸很久，然后说了句"ごめん"。', en: 'Asuka looks at the paper for a long time and says sorry.' },
+          { type: 'narration', zh: '四点四十，第三层立住了。五点，天开始亮。', en: 'At twenty to five the third tier stands. At five it starts getting light.' }
+        ]
+      },
+      {
+        id: 'eve_sleep',
+        labelZh: '「先睡二十分钟。」',
+        labelEn: '"Twenty minutes. Everybody."',
+        jp: '二十分だけ寝よ。全員。',
+        hintZh: '四个人已经十九个小时没合眼了',
+        hintEn: 'Nobody here has slept in nineteen hours.',
+        effects: [{ stat: 'kindness', amount: 3, reasonZh: '你在凌晨三点叫停了四个人', reasonEn: 'You called a halt for four people at three in the morning' }],
+        relations: [
+          { char: CharacterId.MIYUKI, familiarity: 5, affection: 9, reasonZh: '有人替她说了那句"该休息了"', reasonEn: 'Somebody else said the thing she always has to say' },
+          { char: CharacterId.NAO, familiarity: 4, affection: 5, reasonZh: '她三分钟就睡着了', reasonEn: 'She was asleep in three minutes' }
+        ],
+        setFlags: ['group_eve_slept'],
+        then: [
+          { type: 'narration', zh: '四个人趴在拼起来的课桌上。奈绪三分钟就睡着了，而且开始说梦话。', en: 'Four heads on pushed-together desks. Nao is asleep in three minutes and starts talking in her sleep.' },
+          { type: 'narration', characterImage: `${MIYUKI}cardigan_shy.webp`, zh: '深雪是最后一个睡着的。她睡着之前把自己的外套盖到了明日香身上。', en: 'Miyuki is the last to go. Before she does she puts her own coat over Asuka.' },
+          { type: 'narration', zh: '二十分钟变成了五十分钟。没有人定闹钟。', en: 'Twenty minutes becomes fifty. Nobody had set an alarm.' },
+          { type: 'narration', zh: '醒来的时候是五点二十。第三层还是塌的。四个人一起笑了很久。', en: 'It is twenty past five when you wake. The third tier is still down. All four of you laugh for a long time.' }
+        ]
+      }
+    ]
+  },
+  { type: 'scene', scene: 'kaisei_classroom_morning' },
+  { type: 'narration', zh: '早上七点，开幕前一小时。那条商店街立在教室中间，有点歪，但立着。', en: 'Seven in the morning, an hour before opening. The shopping street stands in the middle of the classroom, slightly crooked, and standing.' },
+  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪把最后一个纸箱贴上去的时候，四个人一起鼓了掌。楼下的班级探头进来看了一眼，什么都没问。', en: 'When Nao tapes the last box on, all four of you applaud. The class from downstairs looks in and asks nothing.' },
+  {
+    type: 'effect', setFlags: ['restday_group_festival_eve'],
+    effects: [
+      { stat: 'guts', amount: 3, reasonZh: '一个通宵，三十六个纸箱', reasonEn: 'One all-nighter, thirty-six boxes' },
+      { stat: 'kindness', amount: 2, reasonZh: '凌晨三点没有人吵架', reasonEn: 'Nobody argued at three in the morning' }
+    ],
+    relations: [
+      { char: CharacterId.ASUKA, familiarity: 5, affection: 4, reasonZh: '她把自己的进度表撕了，而且没有生气', reasonEn: 'She took her own schedule down, and was not angry about it' },
+      { char: CharacterId.REI, familiarity: 5, affection: 4, reasonZh: '她口袋里那张纸', reasonEn: 'That piece of paper in her pocket' },
+      { char: CharacterId.NAO, familiarity: 5, affection: 4, reasonZh: '四个人的夜宵', reasonEn: 'Supper for four' },
+      { char: CharacterId.MIYUKI, familiarity: 5, affection: 4, reasonZh: '她说她只坐着', reasonEn: 'She said she would only sit' }
+    ]
+  }
+];
+
+// ==========================================================
+// 🎆 六个人的花火大会
+//
+// 这一段是全游戏人最多的一场。六个人，一条河堤，四十五分钟的烟花。
+//
+// 人多到这个程度，剧本就不能再管每个人。所以写法变了：
+// 主角这一晚只做一件事——**数人头**。
+// 而这一段真正的内容，是他每数一次，队伍就少一个人。
+// ==========================================================
+
+export const GROUP_HANABI: StoryNode[] = [
+  { type: 'scene', scene: 'kobe_harbor', bgm: 'town', titleZh: 'みなと神戸海上花火大会', titleEn: 'The Harbour Fireworks', subtitleZh: '八月 · 傍晚六点', subtitleEn: 'August · Six in the evening' },
+  { type: 'narration', zh: '一万发。港口那一带今晚会有二十万人。', en: 'Ten thousand shells. There will be two hundred thousand people around the harbour tonight.' },
+  { type: 'narration', zh: '六个人约在三宫的鸽子雕像前面。到齐花了四十分钟，因为有两个人走错了出口。', en: 'Six of you agree to meet at the pigeon statue in Sannomiya. It takes forty minutes, because two people used the wrong exit.' },
+  { type: 'narration', characterImage: `${NAO}yukata_happy.webp`, zh: '奈绪穿了浴衣。她说她自己系的腰带，说完就开始担心会不会散。', en: 'Nao is in a yukata. She says she tied the obi herself, and immediately starts worrying it will come undone.' },
+  { type: 'narration', characterImage: `${ASUKA}yukata_smug.webp`, zh: '明日香也穿了浴衣，而且系得非常标准。她没有说是谁帮她系的。', en: 'Asuka is in a yukata too, immaculately tied. She does not say who tied it.' },
+  { type: 'narration', characterImage: `${SORA}kimono_laugh.webp`, zh: '空穿浴衣配了运动鞋。她说木屐跑不动。没有人问她今晚为什么需要跑。', en: 'Sora has paired hers with trainers, on the grounds that you cannot run in geta. Nobody asks why she expects to run tonight.' },
+  { type: 'narration', characterImage: `${MAKI}kimono_smug.webp`, zh: '真希的浴衣是租的，而且明显大了一号。她说这是故意的。', en: 'Maki’s is rented and visibly a size too big. She says that is deliberate.' },
+  { type: 'narration', characterImage: `${HIKARI}yukata_happy.webp`, zh: '光带了六个人的水，装在一个保温包里。她说去年她中暑了。', en: 'Hikari has brought water for six in a cool bag. She says she got heatstroke last year.' },
+  { type: 'narration', characterImage: `${MIYUKI}kimono_shy.webp`, zh: '深雪一直在数人头。你注意到了，因为你也在数。', en: 'Miyuki keeps counting heads. You notice, because you are doing it too.' },
+  { type: 'narration', zh: '六个。你数了三遍，都是六个。', en: 'Six. You count three times. Six each time.' },
+  { type: 'narration', zh: '走到河堤的时候是五个。', en: 'By the time you reach the embankment there are five.' },
+  {
+    type: 'choice',
+    promptZh: '少的那个是空。花火还有十分钟开始。',
+    promptEn: 'The missing one is Sora. Ten minutes to the first shell.',
+    options: [
+      {
+        id: 'hanabi_find',
+        labelZh: '去找',
+        labelEn: 'Go and find her',
+        hintZh: '二十万人。你要在二十万人里找一个人',
+        hintEn: 'Two hundred thousand people. You are going to find one of them.',
+        effects: [
+          { stat: 'guts', amount: 3, reasonZh: '你在二十万人里逆着人流走了八百米', reasonEn: 'You walked eight hundred metres against two hundred thousand people' }
+        ],
+        relations: [{ char: CharacterId.SORA, familiarity: 6, affection: 12, reasonZh: '有人回去找她了', reasonEn: 'Somebody went back for her' }],
+        setFlags: ['group_hanabi_found_sora'],
+        then: [
+          { type: 'narration', zh: '你逆着人流往回走。这件事比你想的难得多——八百米走了十二分钟。', en: 'You go back against the crowd. It is much harder than you expected: eight hundred metres in twelve minutes.' },
+          { type: 'narration', zh: '第一发升空的时候你还在路上。整条街的人同时抬头，你在那一瞬间是唯一一个低着头找人的。', en: 'The first shell goes up while you are still walking. The whole street looks up at once, and for that moment you are the only person looking down.' },
+          { type: 'narration', characterImage: `${SORA}kimono_shy.webp`, zh: '你在一个卖苹果糖的摊子后面找到了她。她蹲在那儿，正在帮一个走丢的小孩擦眼泪。', en: 'You find her behind a candy-apple stall, crouched down, wiping a lost child’s face.' },
+          { type: 'narration', zh: '她抬头看见你，第一句话是：「この子の親、探すの手伝って」。', en: 'She looks up and the first thing she says is: help me find this child’s parents.' },
+          { type: 'narration', zh: '你们花了二十分钟找到了那个孩子的妈妈。花火放到一半了。', en: 'It takes twenty minutes to find the mother. The fireworks are half over.' },
+          { type: 'narration', characterImage: `${SORA}kimono_love.webp`, zh: '回河堤的路上她一句话都没说。走到一半她忽然说：「ありがと。ほんまに」。', en: 'She says nothing on the way back. Halfway there she says thank you, and that she means it.' }
+        ]
+      },
+      {
+        id: 'hanabi_hold',
+        labelZh: '守住位置，让别人去找',
+        labelEn: 'Hold the spot. Let somebody else go.',
+        hintZh: '六个人的位置比一个人难占',
+        hintEn: 'A spot for six is harder to hold than a person is to find.',
+        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你替五个人守住了那块地方', reasonEn: 'You held the ground for five people' }],
+        relations: [
+          { char: CharacterId.MIYUKI, familiarity: 5, affection: 6, reasonZh: '她去找人的时候，知道位置还在', reasonEn: 'She went knowing the spot would still be there' },
+          { char: CharacterId.SORA, familiarity: 3, affection: 2, reasonZh: '她回来的时候位置还在', reasonEn: 'The spot was still there when she got back' }
+        ],
+        then: [
+          { type: 'narration', characterImage: `${MIYUKI}kimono_shy.webp`, zh: '深雪去了。她走之前把水递给你，说"ここ、お願いね"。', en: 'Miyuki goes. Before she does she hands you the water and asks you to hold it.' },
+          { type: 'narration', zh: '接下来二十分钟你一个人守着一块能坐六个人的河堤。旁边来了三拨人问能不能挤一挤。', en: 'For twenty minutes you hold a stretch of embankment big enough for six. Three separate groups ask whether they can squeeze in.' },
+          { type: 'narration', zh: '你三次都说了"すみません、連れが来ます"。第三次你说得很流利，自己都吓了一跳。', en: 'Three times you say you are keeping it for people. The third time it comes out fluently, and startles you.' },
+          { type: 'narration', characterImage: `${SORA}kimono_laugh.webp`, zh: '她们回来的时候花火放到一半了。空手里牵着一个小孩，那个小孩的妈妈跟在后面一路道谢。', en: 'They come back halfway through. Sora is holding a child’s hand, and the child’s mother follows, thanking everybody.' }
+        ]
+      }
+    ]
+  },
+  { type: 'narration', zh: '最后十分钟是连发。整片天亮得像白天，河堤上二十万人一起不说话。', en: 'The last ten minutes are continuous. The sky goes as bright as day and two hundred thousand people go quiet together.' },
+  { type: 'narration', zh: '你又数了一遍人头。六个。', en: 'You count heads again. Six.' },
+  { type: 'narration', characterImage: `${MIYUKI}kimono_shy.webp`, zh: '深雪也在数。你们俩对上眼的时候，她笑了一下，比了个"六"。', en: 'Miyuki is counting too. When your eyes meet she smiles and holds up six fingers.' },
+  { type: 'narration', zh: '散场花了一个半小时。六个人挤在同一节电车里，没有一个人有位子坐。', en: 'It takes ninety minutes to get out. Six people in one carriage, none of them sitting.' },
+  { type: 'narration', characterImage: `${NAO}yukata_happy.webp`, zh: '奈绪的腰带最后还是散了。是明日香在电车上给她重新系的。', en: 'Nao’s obi does come undone in the end. Asuka reties it on the train.' },
+  {
+    type: 'effect', setFlags: ['restday_group_hanabi'],
+    effects: [
+      { stat: 'guts', amount: 2, reasonZh: '二十万人，六个人，一个都没丢', reasonEn: 'Two hundred thousand people, six of yours, none lost' },
+      { stat: 'kindness', amount: 3, reasonZh: '你数了一整晚人头', reasonEn: 'You counted heads all night' },
+      { stat: 'charm', amount: 2, reasonZh: '你用日语守住了一块河堤', reasonEn: 'You held a piece of riverbank in Japanese' }
+    ],
+    relations: [
+      { char: CharacterId.NAO, familiarity: 4, affection: 4, reasonZh: '那条自己系的腰带', reasonEn: 'That self-tied obi' },
+      { char: CharacterId.ASUKA, familiarity: 4, affection: 4, reasonZh: '她在电车上蹲下来给人系腰带', reasonEn: 'She knelt down on a train to retie somebody’s obi' },
+      { char: CharacterId.MAKI, familiarity: 3, affection: 3, reasonZh: '大一号的浴衣，她说是故意的', reasonEn: 'The oversized yukata she insists was deliberate' },
+      { char: CharacterId.HIKARI, familiarity: 4, affection: 4, reasonZh: '六个人的水', reasonEn: 'Water for six' },
+      { char: CharacterId.MIYUKI, familiarity: 4, affection: 5, reasonZh: '她比的那个"六"', reasonEn: 'Those six fingers' },
+      { char: CharacterId.SORA, familiarity: 3, affection: 3, reasonZh: '苹果糖摊子后面那件事', reasonEn: 'What happened behind the candy-apple stall' }
+    ]
+  }
+];

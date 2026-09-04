@@ -4,7 +4,8 @@ import {
   seasonOf, HOME_DAY, STUDY_DAY, PART_TIME, CHORES_DAY,
   CLUB_BASKETBALL, CLUB_ASTRONOMY, CLUB_COUNCIL, CLUB_MUSIC,
   OUTING_BY_SEASON, OUTING_CAST,
-  SKIP_SLEEP, SKIP_WANDER, TRIP_OSAKA, TRIP_KYOTO
+  SKIP_SLEEP, SKIP_WANDER, TRIP_OSAKA, TRIP_KYOTO,
+  GROUP_KARAOKE, GROUP_FESTIVAL_EVE, GROUP_HANABI
 } from '../story/restDayScenes';
 import { getInitialFamiliarity } from '../constants';
 
@@ -151,6 +152,40 @@ export const REST_PLANS: RestPlan[] = [
     available: ctx => [CharacterId.MIYUKI, CharacterId.REI, CharacterId.NAO, CharacterId.INARI]
       .every(c => knows(ctx, c, 110)),
     doneFlag: () => 'restday_trip_kyoto'
+  },
+
+  // ---- 人多的那几场。两个人的郊游写的是"她"，
+  //      三个人以上写的是"这些人凑在一起会怎么改写自己"。 ----
+  {
+    id: 'group_karaoke', icon: '🎤', kinds: ANY, wholeDay: false,
+    titleZh: '三个人去卡拉OK', titleEn: 'Karaoke, three of you',
+    descZh: '学生优惠两小时七百日元。规矩只有一条：不许点谁都会唱的。',
+    descEn: 'Student rate, two hours, seven hundred yen. One rule: nothing everybody already knows.',
+    script: () => GROUP_KARAOKE,
+    available: ctx => [CharacterId.SORA, CharacterId.MAKI, CharacterId.HIKARI].every(c => knows(ctx, c, 90)),
+    doneFlag: () => 'restday_group_karaoke'
+  },
+  {
+    id: 'group_festival_eve', icon: '🎪', kinds: ANY, wholeDay: true,
+    titleZh: '文化祭前夜，四个人通宵', titleEn: 'The night before the festival, four of you',
+    descZh: '三十六个纸箱要糊成一条商店街。铃说第三层会塌。她算了两遍。',
+    descEn: 'Thirty-six boxes have to become a shopping street. Rei says the third tier will collapse. She checked twice.',
+    script: () => GROUP_FESTIVAL_EVE,
+    available: ctx => ctx.calendar.month === 10 || ctx.calendar.month === 11
+      ? [CharacterId.ASUKA, CharacterId.REI, CharacterId.NAO, CharacterId.MIYUKI].every(c => knows(ctx, c, 110))
+      : false,
+    doneFlag: () => 'restday_group_festival_eve'
+  },
+  {
+    id: 'group_hanabi', icon: '🎆', kinds: ANY, wholeDay: true,
+    titleZh: '六个人去看花火大会', titleEn: 'The harbour fireworks, six of you',
+    descZh: '一万发，二十万人。你今晚唯一的工作是数人头。',
+    descEn: 'Ten thousand shells, two hundred thousand people. Your only job tonight is counting heads.',
+    script: () => GROUP_HANABI,
+    available: ctx => (ctx.calendar.month === 7 || ctx.calendar.month === 8)
+      && [CharacterId.NAO, CharacterId.ASUKA, CharacterId.SORA, CharacterId.MAKI, CharacterId.HIKARI, CharacterId.MIYUKI]
+        .every(c => knows(ctx, c, 110)),
+    doneFlag: () => 'restday_group_hanabi'
   },
 
   // ---- 用功 / 打工 / 大扫除。数值向，但都有一段。 ----

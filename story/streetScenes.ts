@@ -2,6 +2,7 @@ import { StoryNode, StoryFlags, GameCalendar, TimeSlot } from '../types';
 // 立绘路径从 constants 那三张表取，不在这儿再抄一遍——
 // 抄两遍的代价是换图时漏掉一处，而漏掉的那处不报错，只显示碎图标。
 import { SCHOOL_NPC_SPRITES, CITY_NPC_SPRITES, EASTER_EGG_SPRITES } from '../constants';
+import { EASTER_SCENES } from './easterScenes';
 
 // ---------------------------------------------------------
 // 🚶 街头小景
@@ -712,7 +713,9 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 黄昏操场的撑杆跳。一次又一次跃不过的高度。
-    id: 'st_egg_high_jump', locationIds: ['school_terrace', 'gym'], weight: 3,
+    // 这一条留着当「只是路过瞥了一眼」的版本，权重压到 1；
+    // 有选择、有下文的那一场在 easterScenes.ts 的 st_egg_shirou_vault。
+    id: 'st_egg_high_jump', locationIds: ['school_terrace', 'gym'], weight: 1,
     timeSlots: ['afternoon'],
     script: [
       {
@@ -1008,8 +1011,12 @@ const eligible = (s: StreetScene, locationId: string, ctx: StreetCtx): boolean =
 
 // 按权重抽。彩蛋的权重压到 3，日常小景是 10——
 // 撞见彩蛋应该是"哎？"，不是"又来了"。
+// 有下文的那一批彩蛋（带选择、带主角吐槽）单独放一个文件，
+// 但走的是同一个池子——玩家不该感觉到「这是另一套系统」。
+export const ALL_STREET_SCENES: StreetScene[] = [...STREET_SCENES, ...EASTER_SCENES];
+
 export const pickStreetScene = (locationId: string, ctx: StreetCtx): StreetScene | null => {
-  const pool = STREET_SCENES.filter(s => eligible(s, locationId, ctx));
+  const pool = ALL_STREET_SCENES.filter(s => eligible(s, locationId, ctx));
   if (!pool.length) return null;
   const total = pool.reduce((n, s) => n + (s.weight ?? 10), 0);
   let r = Math.random() * total;
