@@ -1,3 +1,4 @@
+import { isSchoolDay } from './calendarLife';
 import { CharacterId, GameCalendar, StoryFlags } from '../types';
 
 // ---------------------------------------------------------
@@ -33,6 +34,10 @@ export const isWeekend = (cal: GameCalendar) => {
   const d = weekdayIndex(cal);
   return d === 0 || d === 6;
 };
+
+// 午休排班只在上学日成立。周末、节假日、寒暑假都没有午休这一格——
+// 以前只挡了周末，于是黄金周和暑假里她还照常"在图书室"。
+export const noLunchRota = (cal: GameCalendar) => !isSchoolDay(cal);
 
 // 一个人一周的午休去处。key 是星期几（0=日 … 6=土），value 是地点 id。
 // 没写的那天她不在校内任何一个能碰到的地方。
@@ -145,7 +150,7 @@ export interface LunchPresence {
 export const lunchPresenceAt = (
   locationId: string, cal: GameCalendar, flags: StoryFlags, met: CharacterId[]
 ): LunchPresence | null => {
-  if (isWeekend(cal)) return null;
+  if (noLunchRota(cal)) return null;
   const d = weekdayIndex(cal);
   for (const s of LUNCH_SCHEDULE) {
     if (s.week[d] !== locationId) continue;
@@ -160,7 +165,7 @@ export const lunchPresenceAt = (
 export const lunchAwayNote = (
   locationId: string, cal: GameCalendar, language: 'zh' | 'en'
 ): string | null => {
-  if (isWeekend(cal)) return null;
+  if (noLunchRota(cal)) return null;
   const d = weekdayIndex(cal);
   const s = LUNCH_SCHEDULE.find(x => x.week[d] === locationId);
   if (!s) return null;
@@ -175,7 +180,7 @@ export const lunchAwayNote = (
 export const lunchSpotsToday = (
   cal: GameCalendar, flags: StoryFlags, met: CharacterId[]
 ): string[] => {
-  if (isWeekend(cal)) return [];
+  if (noLunchRota(cal)) return [];
   const d = weekdayIndex(cal);
   return LUNCH_SCHEDULE
     .filter(s => s.week[d] && met.includes(s.char) && dayHash(cal, s.char.length * 17) >= 0.14)

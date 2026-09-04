@@ -5,6 +5,7 @@ import {
 import { AFTERSCHOOL_EVENTS } from './afterschoolEvents';
 import { GROUP_EVENTS } from './groupEvents';
 import { getInitialFamiliarity } from '../constants';
+import { isSchoolDay, slotsForDay } from '../data/calendarLife';
 
 export const MAP_EVENTS: MapEventDef[] = [...AFTERSCHOOL_EVENTS, ...GROUP_EVENTS];
 
@@ -66,7 +67,9 @@ export const isLocationUnlocked = (loc: MapLocation, flags: StoryFlags): boolean
 // 于是周末不是"少了一格午休"，而是**多了一格能出门的白天**，
 // 三格全部能往市区走。这才是放假。
 export const isLocationOpenNow = (loc: MapLocation, calendar: GameCalendar): boolean => {
-  const weekend = isWeekendCal(calendar);
+  // 「休息日」= 周末 + 日本的节假日 + 寒暑假。以前只认周末，
+  // 于是黄金周和暑假里学校照常开门、午休照常只能待在校内。
+  const weekend = !isSchoolDay(calendar);
   if (weekend && loc.district === 'school') return false;
   if (!loc.timeSlots) return true;
   if (weekend && calendar.timeSlot === 'lunch') {
@@ -74,13 +77,6 @@ export const isLocationOpenNow = (loc: MapLocation, calendar: GameCalendar): boo
     return loc.timeSlots.includes('afternoon') || loc.timeSlots.includes('lunch');
   }
   return loc.timeSlots.includes(calendar.timeSlot);
-};
-
-// 和 scheduleData 里那份是同一套判断。放在这里是为了不让 mapEvents 反向依赖 data/。
-const WEEK_HEAD = ['日', '月', '火', '水', '木', '金', '土'];
-const isWeekendCal = (cal: GameCalendar): boolean => {
-  const i = WEEK_HEAD.indexOf((cal.dayOfWeek || '').charAt(0));
-  return i === 0 || i === 6;
 };
 
 // ---------------------------------------------------------
@@ -97,8 +93,10 @@ export const AFTERSCHOOL_SLOTS: TimeSlot[] = ['lunch', 'afternoon', 'night'];
 
 // 今天还剩几格。早上视为一整天都还没用（第 1 章之后正常不会停在早上）。
 export const slotsLeftToday = (calendar: GameCalendar): number => {
+  // 寒暑假一天四格：假期真正的样子是"时间变多了"，不是"少了一节课"。
+  const total = slotsForDay(calendar);
   const i = AFTERSCHOOL_SLOTS.indexOf(calendar.timeSlot);
-  return i < 0 ? AFTERSCHOOL_SLOTS.length : AFTERSCHOOL_SLOTS.length - i;
+  return i < 0 ? total : total - i;
 };
 
 // 这一趟要花几格。事件可以覆盖地点的默认值；市外(far)默认就是 2 格。

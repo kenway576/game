@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode } from './types';
-import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay } from './constants';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
@@ -16,6 +16,11 @@ import HistoryLogModal from './components/HistoryLogModal';
 import SaveLoadScreen from './components/SaveLoadScreen';
 import CgGalleryModal from './components/CgGalleryModal';
 import EndingsModal from './components/EndingsModal';
+import RestDayPanel from './components/RestDayPanel';
+import YearEndScreen from './components/YearEndScreen';
+import { YEAR_END } from './story/yearEnd';
+import { plansFor, plannedFlag, RestPlan } from './data/restDayPlans';
+import { dayKindOf } from './data/calendarLife';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
@@ -137,6 +142,10 @@ const App: React.FC = () => {
   const [social, setSocial] = useState<SocialState>(INITIAL_SOCIAL_STATE);
   // 今天她已经道过别了 → 输入框收起来，给一句"她真的去忙了"
   const [chatClosedToday, setChatClosedToday] = useState(false);
+  // 休息日的今日计划。挑完的那一段直接当一次"出门"来演。
+  const [showRestPlan, setShowRestPlan] = useState(false);
+  // 学年走到 3/24 → 修了式，演完出结算屏
+  const [showYearEnd, setShowYearEnd] = useState(false);
   const [showProtagonistProfile, setShowProtagonistProfile] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
@@ -526,6 +535,88 @@ const App: React.FC = () => {
     if (Object.keys(nextFamById).length) setFamiliarityMap(prev => ({ ...prev, ...nextFamById }));
     if (Object.keys(nextAffById).length) setAffectionMap(prev => ({ ...prev, ...nextAffById }));
     if (queued.length) setPendingLevelUps(q => [...q, ...queued]);
+  };
+
+  // 🎓 学年走完了（4/11 → 次年 3/24，347 天）→ 演修了式。
+  // 排在休息日面板前面：最后一天不问你想干什么。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
+    if (!day1Done || storyFlags['year_end_done']) return;
+    if (!isSchoolYearOver(gameCalendar)) return;
+    setShowRestPlan(false);
+    setActiveLevelStory(null);
+    setActiveTrip({
+      loc: {
+        id: 'year_end', district: 'school',
+        nameJp: '修了式', reading: 'しゅうりょうしき',
+        nameZh: '修了式', nameEn: 'Closing ceremony',
+        blurbZh: '学年的最后一天', blurbEn: 'The last day of the year',
+        timeCost: 3
+      },
+      event: null,
+      script: YEAR_END
+    });
+  }, [gameMode, gameCalendar, storyFlags, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done]);
+
+  // 修了式演完 → 结算屏。靠 flag 触发，跳过剧本也走得到。
+  useEffect(() => {
+    if (storyFlags['year_end_done'] && !storyFlags['year_end_seen']) {
+      setShowYearEnd(true);
+    }
+  }, [storyFlags]);
+
+  // 🗓️ 休息日早上弹一次"今天怎么过"。一天只问一次：
+  // 选完、或者点了"待会儿再说"，都记一个 flag，今天不再打扰。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
+    if (!day1Done) return;
+    // 学年已经走完 → 不再问"今天怎么过"。最后一天之后没有下一个休息日要安排，
+    // 而且结算屏正压在上面，两块面板叠在一起看着像出了 bug。
+    if (showYearEnd || isSchoolYearOver(gameCalendar)) return;
+    if (dayKindOf(gameCalendar) === 'school') return;
+    if (storyFlags[plannedFlag(gameCalendar)]) return;
+    if (gameCalendar.timeSlot !== 'lunch' && gameCalendar.timeSlot !== 'morning') return;
+    setShowRestPlan(true);
+  }, [gameMode, gameCalendar, storyFlags, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, day1Done, showYearEnd]);
+
+  const restPlanCtx = {
+    calendar: gameCalendar, flags: storyFlags,
+    met: metChars, familiarity: familiarityMap
+  };
+
+  const closeRestPlan = () => {
+    setShowRestPlan(false);
+    setStoryFlags(prev => ({ ...prev, [plannedFlag(gameCalendar)]: true }));
+  };
+
+  // 选了一种过法：有剧本的就当成一次"出门"演，没有剧本的（出门逛逛）
+  // 只是把面板收起来，剩下的交给地图。
+  const pickRestPlan = (plan: RestPlan) => {
+    closeRestPlan();
+    const script = plan.script(restPlanCtx);
+    const done = plan.doneFlag(restPlanCtx);
+    if (!script.length) {
+      setGameMode(GameMode.MAP);
+      return;
+    }
+    audioManager.playSfx('confirm');
+    setActiveTrip({
+      // 这一段不属于地图上任何一个地点，所以造一个只用来结算时间的假地点。
+      // timeCost 就是这个安排的代价：一整天的（在家、郊游、图书馆、打工）
+      // 一次花光三格，半天的（社团、大扫除）只花一格。
+      loc: {
+        id: `restplan_${plan.id}`, district: 'sannomiya',
+        nameJp: '', reading: '', nameZh: plan.titleZh, nameEn: plan.titleEn,
+        blurbZh: plan.descZh, blurbEn: plan.descEn,
+        timeCost: plan.wholeDay ? 3 : 1
+      },
+      event: null,
+      // 结尾补一个 effect 把"演过了"记下来，这样同一段不会一年演两次。
+      script: done ? [...script, { type: 'effect', setFlags: [done] }] : script
+    });
+    setGameMode(GameMode.LOBBY);
   };
 
   // 待播队列的出口一：回到大厅、手上没有别的东西在播 → 补播一段手写剧情。
@@ -2069,6 +2160,33 @@ ${wind}`;
           activeTab={activeHistoryTab}
           setActiveTab={setActiveHistoryTab}
           onClose={() => setShowHistoryLog(false)}
+        />
+      )}
+
+      {showYearEnd && (
+        <YearEndScreen
+          language={userState.language}
+          playerName={userState.playerName}
+          stats={protagonistStats}
+          storyFlags={storyFlags}
+          affectionMap={affectionMap}
+          familiarityMap={familiarityMap}
+          words={userState.collectedWords}
+          unlockedCgs={unlockedCgs}
+          onClose={() => {
+            setShowYearEnd(false);
+            setStoryFlags(prev => ({ ...prev, year_end_seen: true }));
+          }}
+        />
+      )}
+
+      {showRestPlan && (
+        <RestDayPanel
+          language={userState.language}
+          calendar={gameCalendar}
+          plans={plansFor(restPlanCtx)}
+          onPick={pickRestPlan}
+          onSkip={closeRestPlan}
         />
       )}
 
