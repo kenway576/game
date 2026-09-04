@@ -6,7 +6,11 @@ import { REI_STORY_1 } from './story/levelStories/rei1';
 import { REI_STORY_2 } from './story/levelStories/rei2';
 import { REI_STORY_3 } from './story/levelStories/rei3';
 import { SORA_STORY_1 } from './story/levelStories/sora1';
+import { SORA_STORY_2 } from './story/levelStories/sora2';
+import { SORA_STORY_3 } from './story/levelStories/sora3';
 import { MIYUKI_STORY_1 } from './story/levelStories/miyuki1';
+import { MIYUKI_STORY_2 } from './story/levelStories/miyuki2';
+import { MIYUKI_STORY_3 } from './story/levelStories/miyuki3';
 import { NAO_STORY_1 } from './story/levelStories/nao1';
 import { MAKI_STORY_1 } from './story/levelStories/maki1';
 import { INARI_STORY_1 } from './story/levelStories/inari1';
@@ -82,6 +86,16 @@ export const SCENE_MAP: Record<string, string> = {
   'kiyomizu_stage':    '/images/backgrounds/bg_kyoto_kiyomizu_autumn.webp',
   'luminarie':         '/images/backgrounds/bg_kobe_luminarie_illumination.webp',
   'coastal_platform':  '/images/backgrounds/bg_coastal_train_platform.webp',
+  // 🌸 关西远足圣地：大阪与京都经典名胜景点
+  'osaka_shinsekai':        '/images/backgrounds/bg_osaka_shinsekai_tsutenkaku.webp',
+  'osaka_tsutenkaku':       '/images/backgrounds/bg_osaka_shinsekai_tsutenkaku.webp',
+  'osaka_dotonbori_canal':  '/images/backgrounds/bg_osaka_dotonbori_canal.webp',
+  'kyoto_fushimi_inari':    '/images/backgrounds/bg_kyoto_fushimi_inari_torii.webp',
+  'kyoto_fushimi_torii':    '/images/backgrounds/bg_kyoto_fushimi_inari_torii.webp',
+  'kyoto_arashiyama':       '/images/backgrounds/bg_kyoto_arashiyama_bamboo.webp',
+  'kyoto_bamboo':           '/images/backgrounds/bg_kyoto_arashiyama_bamboo.webp',
+  'kyoto_kamogawa':         '/images/backgrounds/bg_kyoto_kamogawa_river.webp',
+  'kyoto_kamogawa_delta':   '/images/backgrounds/bg_kyoto_kamogawa_river.webp',
   // 🚃 序章（第0章）专用场景。图尚未交付时由 SCENE_FALLBACK 顶上，不会开天窗。
   'train_interior':      '/images/backgrounds/bg_jr_train_interior.webp',
   'sannomiya_station':   '/images/backgrounds/bg_sannomiya_station_gate.webp',
@@ -1396,6 +1410,22 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '交換条件',
       titleEn: 'The Trade',
       script: SORA_STORY_1
+    },
+    {
+      id: 'sora_2_shoulder',
+      axis: 'affection',
+      level: 3,
+      titleZh: '肩の話',
+      titleEn: 'About the Shoulder',
+      script: SORA_STORY_2
+    },
+    {
+      id: 'sora_3_past_hoop',
+      axis: 'affection',
+      level: 5,
+      titleZh: 'ゴールの向こう',
+      titleEn: 'Past the Hoop',
+      script: SORA_STORY_3
     }
   ],
   [CharacterId.MIYUKI]: [
@@ -1406,6 +1436,22 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '二〇二号室の夕飯',
       titleEn: 'Dinner in 202',
       script: MIYUKI_STORY_1
+    },
+    {
+      id: 'miyuki_2_the_role',
+      axis: 'affection',
+      level: 3,
+      titleZh: 'お姉さんの役',
+      titleEn: 'The Part of the Older Sister',
+      script: MIYUKI_STORY_2
+    },
+    {
+      id: 'miyuki_3_name',
+      axis: 'affection',
+      level: 5,
+      titleZh: '名前で呼んで',
+      titleEn: 'Call Me by My Name',
+      script: MIYUKI_STORY_3
     }
   ],
   // 奈绪的親密度开局就 215（"无话不谈"），没有认识她这个阶段可走，
