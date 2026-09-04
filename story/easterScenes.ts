@@ -200,6 +200,17 @@ export const EASTER_SCENES: StreetScene[] = [
       },
 
       {
+        // 这张 CG 早就在 STORY_CGS 里注册了，但一直没有任何地方解锁它。
+        // 它画的就是这一场：夕阳、操场、一次又一次的助跑。挂在这儿最合适。
+        type: 'cg',
+        cgId: 'cg_shirou_high_jump_sunset',
+        imageUrl: '/images/cg/cg_shirou_high_jump_sunset.webp',
+        titleZh: '黄昏操场的撑杆跳',
+        titleEn: 'The Pole Vault at Dusk',
+        captionZh: '夕阳把横杆的影子拉得比横杆本身长很多。他又走回了起跑点——第几次，你已经数不清了。',
+        captionEn: 'The sunset draws the bar’s shadow far longer than the bar. He walks back to the mark again. You have lost count of which attempt this is.'
+      },
+      {
         type: 'narration',
         zh: '你临走前问了最后一个问题：练撑杆跳干嘛，学校又没有田径队的撑杆项目。',
         en: 'Before you go you ask one last thing: why train for the pole vault at all, when the school does not even run the event.'

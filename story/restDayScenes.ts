@@ -1368,3 +1368,112 @@ export const GROUP_HANABI: StoryNode[] = [
     ]
   }
 ];
+
+// ==========================================================
+// 🌉 淡路岛 · 三个人过桥
+//
+// 明石海峡大桥和淡路花手敷这两张新背景，之前只挂在地图上，
+// 各配了一句空转旁白。一整座岛，一句话，太浪费了。
+//
+// 【为什么是这三个人】
+//   铃 —— 世界最长的悬索桥。她会有数据，而且她会想亲眼验证一遍。
+//   光 —— 另一个"从外面来的人"。她第一次过这座桥的时候是一个人。
+//   稻荷 —— 淡路是《古事记》里被生出来的第一座岛。
+//           一位日本的神，从来没有去过日本第一座岛。
+//           这件事她自己知道，而且她一直在躲。
+//
+// 主角这一段几乎不说话。他只是那个买了四张巴士票的人。
+// ==========================================================
+
+export const TRIP_AWAJI: StoryNode[] = [
+  {
+    type: 'scene', scene: 'akashi_bridge', bgm: 'town',
+    titleZh: '桥的那一边', titleEn: 'The Other Side of the Bridge',
+    subtitleZh: '休息日 · 明石海峡大桥', subtitleEn: 'Day off · The Akashi-Kaikyō Bridge'
+  },
+  { type: 'narration', zh: '高速巴士从舞子出发，上桥只要四分钟。四分钟里没有人说话。', en: 'The coach leaves from Maiko and takes four minutes to cross. Nobody speaks for four minutes.' },
+  { type: 'narration', characterImage: `${REI}casual_neutral.webp`, zh: '铃靠窗坐着。她一上桥就开始数桥塔上的灯，数到一半放弃了，改成算主跨的长度。', en: 'Rei is by the window. She starts counting the lights on the tower, gives up halfway, and switches to calculating the main span.' },
+  { type: 'narration', zh: '她说主跨一千九百九十一米。她说这个数字有个来历：一九九五年那场地震把两座桥塔推开了将近一米，所以设计图上的数字和建成后的数字不一样。', en: 'She says the main span is one thousand nine hundred and ninety-one metres. She says the number has a history: the 1995 earthquake pushed the two towers almost a metre further apart, so the drawing and the finished bridge do not agree.' },
+  { type: 'narration', zh: '她说完之后车厢里安静了一会儿。这座桥底下的那条断层，把神户也推开过。', en: 'The coach is quiet for a moment afterwards. The fault under this bridge moved Kobe too.' },
+  { type: 'narration', characterImage: `${HIKARI}casual_neutral.webp`, zh: '光一直在看窗外。她说她第一次过这座桥是一个人，坐的是夜里的末班车，什么都没看见。', en: 'Hikari watches out of the window. She says the first time she crossed this bridge she was alone, on the last coach of the night, and saw nothing at all.' },
+  { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '稻荷坐在最后一排，从上桥开始就没有出过声。', en: 'Inari is in the back row and has not made a sound since the bridge began.' },
+
+  {
+    type: 'choice',
+    promptZh: '桥快到头了。你回头看了一眼最后一排。',
+    promptEn: 'The bridge is nearly over. You glance back at the last row.',
+    options: [
+      {
+        id: 'awaji_ask_inari',
+        labelZh: '过去坐到她旁边',
+        labelEn: 'Go and sit next to her',
+        hintZh: '一个从来不安静的人安静了四分钟',
+        hintEn: 'Somebody who is never quiet has been quiet for four minutes.',
+        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你注意到了那四分钟', reasonEn: 'You noticed those four minutes' }],
+        relations: [{ char: CharacterId.INARI, familiarity: 5, affection: 12, reasonZh: '她终于说了她为什么没来过', reasonEn: 'She finally said why she had never been' }],
+        setFlags: ['trip_awaji_inari_talked'],
+        then: [
+          { type: 'narration', characterImage: `${INARI}casual_shy.webp`, zh: '她没有看你。她看着窗外那片正在靠近的岛。', en: 'She does not look at you. She looks at the island coming towards them.' },
+          { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}casual_neutral.webp`, jp: '……ここな。一番最初に出来た島じゃ。', zh: '……这儿啊。是最先被造出来的那座岛。', en: '...This place. It was the first island to be made.', color: 'bg-amber-500' },
+          { type: 'narration', zh: '你说那你以前一定来过很多次。', en: 'You say she must have been here a great many times, then.' },
+          { type: 'narration', characterImage: `${INARI}casual_sad.webp`, zh: '她摇头。她说一次都没有。', en: 'She shakes her head. Not once.' },
+          { type: 'narration', zh: '你问为什么。她想了很久——久到桥已经过完了。', en: 'You ask why. She thinks about it for so long that the bridge ends.' },
+          { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}casual_sad.webp`, jp: 'あそこには、わらわより古いものがおる。', zh: '那边有比我更老的东西。', en: 'There are older things over there than I am.', color: 'bg-amber-500' },
+          { type: 'narration', zh: '一位活了一千年的神，因为怕见到比自己老的东西，一千年没有过这条四公里的海峡。', en: 'A god of a thousand years has not crossed four kilometres of water in a thousand years, because of what is older on the far side.' },
+          { type: 'narration', zh: '你说那今天就当是第一次。她"嗯"了一声，声音很小。', en: 'You say then today can be the first time. She makes a small sound of agreement.' }
+        ]
+      },
+      {
+        id: 'awaji_ask_rei',
+        labelZh: '问铃：那一米后来怎么办',
+        labelEn: 'Ask Rei what they did about the metre',
+        hintZh: '桥塔被推开了将近一米，桥还是建成了',
+        hintEn: 'The towers moved almost a metre, and the bridge was still finished.',
+        effects: [{ stat: 'knowledge', amount: 3, reasonZh: '你问到了一个工程上的答案', reasonEn: 'You got an engineering answer' }],
+        relations: [{ char: CharacterId.REI, familiarity: 6, affection: 8, reasonZh: '有人接着问了下去', reasonEn: 'Somebody asked the follow-up' }],
+        then: [
+          { type: 'narration', characterImage: `${REI}casual_smile.webp`, zh: '她转过头来，眼睛亮了一下——这是她少数几个会亮的时刻之一。', en: 'She turns round, and her eyes come up. This is one of the few things that does that.' },
+          { type: 'narration', zh: '她说：改图。他们没有把桥拉回去，他们把设计改成了新的距离。', en: 'She says: they redrew it. They did not pull the bridge back. They redesigned it to the new distance.' },
+          { type: 'narration', characterImage: `${REI}casual_neutral.webp`, zh: '「動いてしまったものを、動いた先で正しいことにした。」', en: '"What had moved was made correct where it had moved to."' },
+          { type: 'narration', zh: '她说这句话的时候看着窗外，不像在说桥。', en: 'She is looking out of the window as she says it, and does not appear to be talking about the bridge.' }
+        ]
+      },
+      {
+        id: 'awaji_hikari',
+        labelZh: '跟光说：这次你看见了',
+        labelEn: 'Tell Hikari that this time she is seeing it',
+        jp: '今回は、見えてるやん。',
+        hintZh: '她第一次过桥的时候是夜里',
+        hintEn: 'The first time she crossed, it was night.',
+        effects: [{ stat: 'charm', amount: 2, reasonZh: '你把一句抱怨接成了一句别的', reasonEn: 'You turned a complaint into something else' }],
+        relations: [{ char: CharacterId.HIKARI, familiarity: 5, affection: 10, reasonZh: '这一次她不是一个人，而且是白天', reasonEn: 'This time she was not alone, and it was daylight' }],
+        then: [
+          { type: 'narration', characterImage: `${HIKARI}casual_shy.webp`, zh: '她愣了一下，然后笑了，说"せやな"。', en: 'She blinks, then laughs, and agrees.' },
+          { type: 'narration', zh: '她把手机举起来拍窗外，拍了大概二十张，一张都没拍好——车太快了。', en: 'She holds her phone up and takes about twenty photographs out of the window, none of which work. The coach is too fast.' },
+          { type: 'narration', characterImage: `${HIKARI}casual_happy.webp`, zh: '她一张都没删。', en: 'She does not delete any of them.' }
+        ]
+      }
+    ]
+  },
+
+  { type: 'scene', scene: 'awaji_hanasajiki' },
+  { type: 'narration', zh: '花手敷在岛北边的山上。整面朝海的坡全是花，一直铺到看不见的地方。', en: 'Hanasajiki is on a hill in the north of the island: an entire sea-facing slope of flowers, running out past where you can see.' },
+  { type: 'narration', zh: '风很大。四个人的头发全部朝同一个方向。', en: 'The wind is strong. All four heads of hair point the same way.' },
+  { type: 'narration', characterImage: `${REI}casual_neutral.webp`, zh: '铃蹲下来看了一朵花很久，然后说了个学名。她说完自己补了一句：「……名前は、知らんでもええけど」。', en: 'Rei crouches over one flower for a long time and gives its binomial name. Then she adds that one does not have to know the name.' },
+  { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '稻荷一直站在坡顶，没有往下走。她在看海，看的是神户那个方向。', en: 'Inari stays at the top of the slope and does not go down. She is looking at the sea, in the direction of Kobe.' },
+  { type: 'narration', zh: '你走过去站在她旁边。她说了一句你没听清的话，风太大了。', en: 'You go and stand beside her. She says something you do not catch. The wind is too loud.' },
+  { type: 'narration', characterImage: `${INARI}casual_happy.webp`, zh: '你让她再说一遍。她说：「べつに。来てよかった、と言うただけじゃ」。', en: 'You ask her to say it again. She says it was nothing; only that she is glad she came.' },
+  { type: 'narration', zh: '回程的巴士上，她在桥的那一段睡着了。这是你第一次看见她睡觉。', en: 'On the coach back she falls asleep during the bridge. It is the first time you have seen her sleep.' },
+  {
+    type: 'effect', setFlags: ['restday_trip_awaji'],
+    effects: [
+      { stat: 'knowledge', amount: 3, reasonZh: '一千九百九十一米，以及那一米的来历', reasonEn: 'One thousand nine hundred and ninety-one metres, and where the extra one came from' },
+      { stat: 'kindness', amount: 2, reasonZh: '你陪一个躲了一千年的人过了一次桥', reasonEn: 'You took somebody across a bridge she had avoided for a thousand years' }
+    ],
+    relations: [
+      { char: CharacterId.INARI, familiarity: 5, affection: 6, reasonZh: '她在桥上睡着了', reasonEn: 'She fell asleep on the bridge' },
+      { char: CharacterId.REI, familiarity: 4, affection: 4, reasonZh: '「动了的东西，在动到的地方被算成对的」', reasonEn: 'What had moved was made correct where it had moved to' },
+      { char: CharacterId.HIKARI, familiarity: 4, affection: 4, reasonZh: '二十张拍糊的照片，一张都没删', reasonEn: 'Twenty blurred photographs, none deleted' }
+    ]
+  }
+];

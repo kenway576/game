@@ -5,7 +5,7 @@ import {
   CLUB_BASKETBALL, CLUB_ASTRONOMY, CLUB_COUNCIL, CLUB_MUSIC,
   OUTING_BY_SEASON, OUTING_CAST,
   SKIP_SLEEP, SKIP_WANDER, TRIP_OSAKA, TRIP_KYOTO,
-  GROUP_KARAOKE, GROUP_FESTIVAL_EVE, GROUP_HANABI
+  GROUP_KARAOKE, GROUP_FESTIVAL_EVE, GROUP_HANABI, TRIP_AWAJI
 } from '../story/restDayScenes';
 import { getInitialFamiliarity } from '../constants';
 
@@ -152,6 +152,17 @@ export const REST_PLANS: RestPlan[] = [
     available: ctx => [CharacterId.MIYUKI, CharacterId.REI, CharacterId.NAO, CharacterId.INARI]
       .every(c => knows(ctx, c, 110)),
     doneFlag: () => 'restday_trip_kyoto'
+  },
+
+  {
+    id: 'trip_awaji', icon: '🌉', kinds: ALL, wholeDay: true,
+    titleZh: '三个人过桥去淡路岛', titleEn: 'Three of you, over the bridge to Awaji',
+    descZh: '世界最长的悬索桥，四分钟。桥那头是《古事记》里最先被造出来的那座岛。',
+    descEn: 'The longest suspension span in the world, in four minutes. On the far side is the first island ever made.',
+    script: () => TRIP_AWAJI,
+    available: ctx => !!ctx.flags['map_far']
+      && [CharacterId.REI, CharacterId.HIKARI, CharacterId.INARI].every(c => knows(ctx, c, 110)),
+    doneFlag: () => 'restday_trip_awaji'
   },
 
   // ---- 人多的那几场。两个人的郊游写的是"她"，
