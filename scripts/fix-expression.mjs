@@ -28,6 +28,9 @@ const CHAR = arg('char');
 const FROM = arg('from');
 const TO = arg('to');
 const DESC = arg('desc', '');
+// 默认只让改脸。个别情况要改的不是脸（比如一件本该不透明的罩衫
+// 被画成了半透明），用 --allow 换掉那一句，其余的「什么都别动」照旧生效。
+const ALLOW = arg('allow', '');
 const N = Number(arg('n', 2));
 const ADOPT = has('adopt');
 const KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
@@ -52,7 +55,7 @@ const KEEP = [
   'the same clothing, the same accessories and headpiece, the same body pose and hand positions,',
   'the same art style, line weight, cel shading and colour palette, the same framing, crop and camera angle,',
   'the same canvas size, and the same plain white background.',
-  'Change ONLY the facial expression.',
+  ALLOW ? `Change ONLY this: ${ALLOW}` : 'Change ONLY the facial expression.',
   'Do NOT make the face cartoonish, chibi, super-deformed or comedic. Do NOT enlarge the eyes.',
   'Do NOT add drawn tears, sweat drops, blush marks, emotion symbols, speed lines or any manga effect symbols.',
   'Keep the face at the same size and in the same position, drawn at the same level of detail as the source.',
@@ -94,7 +97,7 @@ const run = async () => {
         contents: [{
           parts: [
             { inline_data: { mime_type: 'image/png', data: flat.toString('base64') } },
-            { text: `${KEEP}\n\nNew facial expression: ${DESC || TO}.` }
+            { text: ALLOW ? `${KEEP}\n\n${DESC}` : `${KEEP}\n\nNew facial expression: ${DESC || TO}.` }
           ]
         }]
       }));
