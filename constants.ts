@@ -49,7 +49,7 @@ export const SCENE_MAP: Record<string, string> = {
   'shrine':    '/images/backgrounds/shrine.webp',
   'cafe':      '/images/backgrounds/cafe.webp',
   'lab':       '/images/backgrounds/lab.webp',
-  'castle':    '/images/backgrounds/castle.webp',
+  'castle':    '/images/backgrounds/bg_himeji_castle_spring.webp',
   'night':     '/images/backgrounds/starry_sky.webp',
   'festival':  '/images/backgrounds/bg_ikuta_shrine_summer_festival.webp',
   // 🌸 关西核心实景与约会地点 (Google 官方 Gemini 2.5 Flash Image 新海诚超清画风)
@@ -248,7 +248,15 @@ export const SCENE_MAP: Record<string, string> = {
   'ikuta_summer_festival':         '/images/backgrounds/bg_ikuta_shrine_summer_festival.webp',
   'kitano_slope_foot_dusk':        '/images/backgrounds/bg_kitano_slope_foot_dusk.webp',
   'slope_foot':                    '/images/backgrounds/bg_kitano_slope_foot_dusk.webp',
-  'kamogawa_delta':                '/images/backgrounds/bg_kyoto_kamogawa_delta.webp'
+  'kamogawa_delta':                '/images/backgrounds/bg_kyoto_kamogawa_delta.webp',
+  // 🏯 🌉 🌸 兵库与关西拓展名胜：姬路城（白鹭城）、明石海峡大桥、淡路岛花手敷
+  'himeji_castle':                 '/images/backgrounds/bg_himeji_castle_spring.webp',
+  'himeji_castle_spring':          '/images/backgrounds/bg_himeji_castle_spring.webp',
+  'akashi_bridge':                 '/images/backgrounds/bg_akashi_kaikyo_bridge.webp',
+  'akashi_kaikyo_bridge':          '/images/backgrounds/bg_akashi_kaikyo_bridge.webp',
+  'awaji_island':                  '/images/backgrounds/bg_awaji_hanasajiki_hill.webp',
+  'awaji_hanasajiki':              '/images/backgrounds/bg_awaji_hanasajiki_hill.webp',
+  'awaji_flower_hill':             '/images/backgrounds/bg_awaji_hanasajiki_hill.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，

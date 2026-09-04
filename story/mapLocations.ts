@@ -788,6 +788,72 @@ export const MAP_LOCATIONS: MapLocation[] = [
     timeSlots: ['morning', 'afternoon'],
     ambientZh: ['你排队接了音羽瀑布的水。三道里选一道，你选了中间那道，事后才知道是姻缘。'],
     ambientEn: ['You queue for the Otowa waterfall. Three streams, and you take the middle one. Only afterwards do you learn that is the one for love.']
+  },
+  {
+    id: 'himeji_castle', district: 'far',
+    timeCost: 2,
+    nameJp: '姫路城', reading: 'ひめじじょう',
+    nameZh: '姬路城', nameEn: 'Himeji Castle',
+    blurbZh: '兵库县西部的国宝世界遗产「白鹭城」。纯白的天守阁在春日樱花掩映下如同展翅欲飞的白鹭，从神户坐新快速四十分钟直达。',
+    blurbEn: 'Hyogo’s treasure and World Heritage "White Heron Castle". The pure white keep rises through cherry blossoms like a heron in flight.',
+    mapScene: 'himeji_castle_spring',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['morning', 'afternoon'],
+    regulars: [CharacterId.ASUKA, CharacterId.REI],
+    ambientZh: [
+      '护城河的水面倒映着白色的城堞与飘落的樱花。微风拂过，水面漾起一圈圈粉色的涟漪。',
+      '你在天守阁石阶前站着向上仰望，白灰泥墙壁在蔚蓝晴空下白得近乎透明。'
+    ],
+    ambientEn: [
+      'The moat reflects white battlements and drifting cherry petals. A breeze ripples the water in concentric pink circles.',
+      'You look up before the stone stairs of the keep; the white plaster walls gleam nearly translucent against the azure sky.'
+    ]
+  },
+  {
+    id: 'akashi_bridge', district: 'far',
+    timeCost: 2,
+    nameJp: '明石海峡大橋', reading: 'あかしかいきょうおおはし',
+    nameZh: '明石海峡大桥', nameEn: 'Akashi Kaikyo Bridge',
+    blurbZh: '舞子海滨公园眺望的巨大吊桥。连结神户与淡路岛的海上奇迹，钢缆在碧蓝海天之间划出巨大的弧线，海风中带着松针与潮水的味道。',
+    blurbEn: 'The colossal suspension bridge viewed from Maiko park, linking Kobe to Awaji Island across glittering blue waters.',
+    mapScene: 'akashi_bridge',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['morning', 'afternoon'],
+    regulars: [CharacterId.SORA, CharacterId.NAO],
+    ambientZh: [
+      '白色的货轮从大桥下方缓缓穿过。巨大的桥墩在海浪冲刷中巍然不动，海潮声回荡在松林间。',
+      '海风迎面吹来，吹乱了你的头发。你在岸边坐下，看着对岸淡路岛青翠的山峦轮廓。'
+    ],
+    ambientEn: [
+      'A white freighter glides smoothly beneath the bridge spans, waves crashing gently against the colossal pier.',
+      'The sea wind sweeps in, tossing your hair. You sit at the seawall and watch the green ridgeline of Awaji Island across the water.'
+    ]
+  },
+  {
+    id: 'awaji_hanasajiki', district: 'far',
+    timeCost: 2,
+    nameJp: 'あわじ花さじき', reading: 'あわじはなさじき',
+    nameZh: '淡路花手敷', nameEn: 'Awaji Hanasajiki',
+    blurbZh: '淡路岛北部向着大阪湾缓缓倾斜的高原花丘。漫山遍野的金黄与粉彩花毯一直延伸到湛蓝的海边，海风中全是花香。',
+    blurbEn: 'Awaji Island’s rolling hillside garden sloping down to Osaka Bay, blanketed in golden and pastel blossoms under expansive skies.',
+    mapScene: 'awaji_hanasajiki',
+    requiresFlag: 'map_far',
+    lockedHintZh: '要出这一带，你得先习惯这里的电车。',
+    lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
+    timeSlots: ['morning', 'afternoon'],
+    regulars: [CharacterId.HIKARI, CharacterId.MIYUKI],
+    ambientZh: [
+      '木制步道在漫山遍野的金黄花海中蜿蜒延伸。海风吹过花浪，远方的海面上白色的帆船像小点一样移动。',
+      '你在木栈道的长椅上坐下。阳光暖洋洋的，四周除了蜜蜂的振翅声与微风，安静得像梦境一样。'
+    ],
+    ambientEn: [
+      'A wooden boardwalk winds through ocean-facing flower fields. The sea wind ripples the blossoms as distant sailboats drift like white specks.',
+      'You rest on a bench along the boardwalk. The sunshine is warm, and save for honeybees and the breeze, it is as serene as a dream.'
+    ]
   }
 ];
 

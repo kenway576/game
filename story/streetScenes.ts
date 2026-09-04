@@ -443,6 +443,57 @@ export const STREET_SCENES: StreetScene[] = [
       seen('你撞进了神户最鲜活滚烫的市井夜色', 'You stepped right into Kobe’s most vibrant, sizzling night scene')
     ]
   },
+  {
+    id: 'st_himeji_painter', locationIds: ['himeji_castle'], weight: 10,
+    timeSlots: ['morning', 'afternoon'],
+    script: [
+      {
+        type: 'narration',
+        zh: '护城河边的樱花树下支着一个画架。一位戴贝雷帽的老爷爷正用极细的水彩笔描摹着白鹭城飞檐上的瓦当。',
+        en: 'Beside the moat beneath cherry trees stands an easel. An elderly painter with a beret traces the roof tile crests of the White Heron with a fine brush.'
+      },
+      {
+        type: 'narration',
+        zh: '几瓣樱花落在他的调色盘上，他没有拂开，只是蘸了点水，顺着花瓣的粉色在画纸上晕开了一抹春光。',
+        en: 'A few sakura petals land on his palette. He leaves them be, dips his brush in water, and washes their pale pink right into the paper.'
+      },
+      seen('你在天守阁下见证了一幅水彩画的完成', 'You watched a watercolour come to life beneath the keep')
+    ]
+  },
+  {
+    id: 'st_akashi_fisherman', locationIds: ['akashi_bridge'], weight: 10,
+    timeSlots: ['morning', 'afternoon'],
+    script: [
+      {
+        type: 'narration',
+        zh: '舞子海滨公园的防波石上坐着一个戴草帽的老渔民，正在给海钓竿绑八字环。巨大的钢缆在他头顶百米高空划破长空。',
+        en: 'On the seawall at Maiko Park sits an old fisherman in a straw hat rigging a swivel. A hundred metres above him, giant steel cables span the sky.'
+      },
+      {
+        type: 'narration',
+        zh: '「明石海峡的水流急得很，底下的鲷鱼肉质紧实得像打过架一样。」他指了指对岸的淡路岛，笑呵呵地对你说。',
+        en: '"Currents in Akashi Strait run fierce; the sea bream down there have meat as tight as fighters," he chuckles, pointing toward Awaji.'
+      },
+      seen('你从老渔夫那里听来了一条关于潮汐的秘诀', 'You caught a veteran fisherman’s secret about the straits')
+    ]
+  },
+  {
+    id: 'st_awaji_flower_breeze', locationIds: ['awaji_hanasajiki'], weight: 10,
+    timeSlots: ['morning', 'afternoon'],
+    script: [
+      {
+        type: 'narration',
+        zh: '淡路花手敷的高原木栈道上，风吹过金黄的油菜花田，一层层花浪像海潮般向着山下真正的大海涌去。',
+        en: 'Along the high wooden boardwalk of Awaji Hanasajiki, wind sweeps across fields of yellow blossoms, rolling down toward the sea like waves.'
+      },
+      {
+        type: 'narration',
+        zh: '小卖部窗口飘来烤淡路岛甜洋葱和枇杷冰淇淋的甜香。你坐在看海的长椅上，感觉整个人都被融化在了蓝天与花田里。',
+        en: 'The aroma of grilled sweet Awaji onions and loquat soft-serve drifts from the kiosk. Sitting on the ocean bench, you feel dissolved in sky and blossom.'
+      },
+      seen('你在海景花丘上吹了一整个下午的海风', 'You caught an entire afternoon of sea breeze on the flower hills')
+    ]
+  },
 
   // ================= 彩蛋 =================
   // 一个名字都不出现。主角谁都不认识，他只是看见了。
