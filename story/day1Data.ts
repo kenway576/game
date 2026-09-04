@@ -849,7 +849,15 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // 【Scene 5.5】事务室 · 领学生证
   // ==========================================================
   {
-    type: 'narration',
+    // 这一场以前没换景，一路沿用上一场的背景和立绘——
+    // 人已经走到一楼最里面的事务室了，画面还停在遇见光的地方。
+    type: 'scene', scene: 'school_faculty_office', bgm: 'chat',
+    titleZh: '事务室', titleEn: 'The Office',
+    subtitleZh: '一楼最里面 · 十一点四十', subtitleEn: 'Far end of the ground floor · Twenty to twelve'
+  },
+  {
+    // 空字符串 = 让上一场的立绘退场。不清的话明日香会一直站在事务室里。
+    type: 'narration', characterImage: '',
     zh: '事务室在一楼最里面。窗口后面的老师从抽屉里翻出一张卡，对着名单看了两眼，推过来。',
     en: 'The office is at the far end of the ground floor. The clerk behind the window digs a card out of a drawer, checks it against a list, and slides it across.'
   },
@@ -945,6 +953,17 @@ export const DAY1_SCRIPT: StoryNode[] = [
         ]
       }
     ]
+  },
+  {
+    // 卡片特写。这张图同时也是人格参数面板的主图——
+    // 一个交换生身上最像"身份"的东西就是这张卡。
+    type: 'cg',
+    cgId: 'cg_student_id',
+    imageUrl: '/images/ui/student_id.webp',
+    titleZh: '学生证',
+    titleEn: 'The Student ID',
+    captionZh: '兵库县立港见高等学校，二年 B 组。照片上那个人剃着寸头，是上个月在国内拍的，那时候他还不知道自己会在这儿。',
+    captionEn: 'Minatomi Senior High School, second year, class B. The boy in the photograph has a buzz cut and was photographed at home last month, when he did not yet know he would end up here.'
   },
   {
     type: 'effect',

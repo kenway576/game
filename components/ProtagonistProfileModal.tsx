@@ -51,19 +51,32 @@ export const ProtagonistProfileModal: React.FC<Props> = ({
         <div className="p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
           {/* 左侧：主角官方卡面与基本档案 */}
           <div className="md:col-span-5 flex flex-col items-center gap-4 bg-zinc-950/80 border border-white/10 p-4 rounded-xl shadow-inner">
-            <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-red-500/40 shadow-[0_0_25px_rgba(239,68,68,0.2)] group">
-              {/* 同样是后缀写错：卡面是 .webp。退路那张 asuka/neutral.png
-              也不存在（立绘全是 .webp），所以这个面板从来没显示出过图。
-              退路换成主角自己的立绘——这里本来就该是他。 */}
+            {/* 这一格现在放的就是学生证本身。
+                以前是一张"帅气主角在图书馆写字"的插画，和主角的设定
+                （寸头、朴素、体格壮硕的中国交换生）完全不是一个人。
+
+                卡上的姓名栏是**故意空着**的：名字是玩家在序章里自己输的，
+                烤进图片就写死了。所以底图留白，名字在这里叠上去。 */}
+            <div className="relative w-full rounded-lg overflow-hidden border-2 border-red-500/40 shadow-[0_0_25px_rgba(239,68,68,0.2)] group"
+                 style={{ aspectRatio: '85.6 / 54' }}>
               <img
-                src="/images/ui/protagonist_card.webp"
-                alt="Protagonist"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                onError={(e) => {
-                  e.currentTarget.src = '/images/characters/protagonist/school_neutral.webp';
-                }}
+                src="/images/ui/student_id.webp"
+                alt="Student ID"
+                className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              {/* 姓名栏：位置按卡面比例算，缩放时跟着走 */}
+              <span
+                className="absolute text-[#22303f] whitespace-nowrap pointer-events-none"
+                style={{
+                  left: '51.5%', top: '18.2%',
+                  fontSize: 'clamp(9px, 2.6cqw, 18px)',
+                  fontFamily: '"Yu Gothic", Meiryo, "MS Gothic", sans-serif',
+                  letterSpacing: '0.06em'
+                }}
+              >
+                {playerName}
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
               <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
                 <div>
                   <span className="text-[10px] text-red-400 font-bold uppercase tracking-wider block">
