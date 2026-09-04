@@ -307,6 +307,20 @@ export const EASTER_EGG_SPRITES = {
   mio:      '/images/characters/easter_mio.webp',      // 秋山澪（大草帽蓝裙害羞脸）
   // 《Fate/stay night》神户圣地巡礼
   rin:      '/images/characters/easter_rin.webp',      // 远坂凛（风见鸡馆前的红衣双马尾魔术师）
+  // 《间谍过家家》
+  anya:     '/images/characters/easter_anya.webp',     // 阿尼亚（魔性“呵”表情抱花生）
+  // 《为美好的世界献上祝福！》
+  aqua:     '/images/characters/easter_aqua.webp',     // 阿克娅（废柴女神抱头大哭）
+  // 《JOJO的奇妙冒险》
+  kira:     '/images/characters/easter_kira.webp',     // 吉良吉影（想过平静生活的上班族）
+  jotaro:   '/images/characters/easter_jotaro.webp',   // 空条承太郎（须磨海岸白衣海洋学者）
+  // 《辉夜大小姐想让我告白》
+  chika:    '/images/characters/easter_chika.webp',    // 藤原千花（二郎拉面大胃王侦探）
+  hayasaka: '/images/characters/easter_hayasaka.webp', // 早坂爱（Hey Hey~ 辣妹嘲讽脸）
+  // 《在下坂本，有何贵干？》
+  sakamoto: '/images/characters/easter_sakamoto.webp', // 坂本（推眼镜优雅装逼值日生）
+  // 《中华小当家》
+  mao:      '/images/characters/easter_mao.webp',      // 刘昴星（特级厨师发光黄金料理）
 } as const;
 
 export const CHARACTERS: Record<CharacterId, Character> = {
