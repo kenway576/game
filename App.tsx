@@ -19,6 +19,8 @@ import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
 import CafeteriaScreen from './components/CafeteriaScreen';
+import PhoneScreen from './components/PhoneScreen';
+import { PhoneAppId, readFlag as msgReadFlag, totalUnread } from './data/phoneData';
 import { CafeteriaItem, tastedFlag } from './data/cafeteriaData';
 import KobeMapModal from './components/KobeMapModal';
 import { StatGainToast } from './components/StatGainToast';
@@ -202,6 +204,7 @@ const App: React.FC = () => {
   const [life, setLife] = useState<LifeState>(INITIAL_LIFE_STATE);
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
   const [inCafeteria, setInCafeteria] = useState(false);
+  const [showPhone, setShowPhone] = useState(false);
   const [activeGarden, setActiveGarden] = useState<'balcony' | 'rooftop' | null>(null);
   const [inKitchen, setInKitchen] = useState(false);
   const [activeFishing, setActiveFishing] = useState<MapLocation | null>(null);
@@ -343,7 +346,7 @@ const App: React.FC = () => {
   }, [messages, isStreaming]);
 
   // 🔊 主要弹窗开 / 关的提示音（关闭多为点背景遮罩，通用点击音覆盖不到）
-  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || showInventory || !!saveLoadMode;
+  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || showInventory || showPhone || !!saveLoadMode;
   const prevModalOpenRef = useRef(false);
   useEffect(() => {
     if (anyModalOpen === prevModalOpenRef.current) return;
@@ -658,6 +661,28 @@ const App: React.FC = () => {
     applyStoryEffects(item.effects);
     if (firstTime) setStoryFlags(prev => ({ ...prev, [tastedFlag(item.id)]: true }));
     if (item.word) collectStoryWords([item.word]);
+  };
+
+  // 打开某个人的对话就把她那几条记成已读
+  const markMessagesRead = (ids: string[]) => {
+    if (!ids.length) return;
+    setStoryFlags(prev => {
+      const next = { ...prev };
+      for (const id of ids) next[msgReadFlag(id)] = true;
+      return next;
+    });
+  };
+
+  // 手机上的 App 只是入口，点开的还是原来那几个面板——
+  // 它们没有被重写，只是从大厅右上角那一排搬进了手机里。
+  const openPhoneApp = (app: PhoneAppId) => {
+    if (app === 'map')      { setShowPhone(false); setShowKobeMap(true); return; }
+    if (app === 'album')    { setShowPhone(false); setShowCgGallery(true); return; }
+    if (app === 'notes')    { setShowPhone(false); setShowWordbook(true); return; }
+    if (app === 'calendar') { setShowPhone(false); setShowCalendar(true); return; }
+    if (app === 'items')    { setShowPhone(false); setShowInventory(true); return; }
+    if (app === 'profile')  { setShowPhone(false); setShowProtagonistProfile(true); return; }
+    if (app === 'settings') { setShowPhone(false); setShowSystemMenu(true); return; }
   };
 
   // ---- 休闲系统的几个回调 ----
@@ -1620,6 +1645,8 @@ const App: React.FC = () => {
           onOpenMap={() => setGameMode(GameMode.MAP)}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenInventory={() => setShowInventory(true)}
+          onOpenPhone={() => setShowPhone(true)}
+          phoneUnread={totalUnread({ flags: storyFlags, affection: affectionMap, familiarity: familiarityMap, met: metChars })}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           lobbyChars={lobbyChars}
           background={background}
@@ -1710,6 +1737,22 @@ const App: React.FC = () => {
           life={life}
           storyFlags={storyFlags}
           onClose={() => setShowInventory(false)}
+        />
+      )}
+
+      {showPhone && (
+        <PhoneScreen
+          language={userState.language}
+          calendar={gameCalendar}
+          storyFlags={storyFlags}
+          affection={affectionMap}
+          familiarity={familiarityMap}
+          metChars={metChars}
+          wordCount={userState.collectedWords.length}
+          onClose={() => setShowPhone(false)}
+          onOpenApp={openPhoneApp}
+          onEnterChat={(id, mode) => { setShowPhone(false); enterChat(id, mode); }}
+          onReadMessages={markMessagesRead}
         />
       )}
 

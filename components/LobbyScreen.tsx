@@ -24,6 +24,8 @@ interface Props {
   onOpenMap: () => void;
   onOpenCalendar: () => void;
   onOpenInventory: () => void;
+  onOpenPhone: () => void;
+  phoneUnread: number;
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
 }
@@ -31,7 +33,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, background
+  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, phoneUnread, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -72,14 +74,14 @@ const LobbyScreen: React.FC<Props> = ({
           鼠标移上去往上抬一点、黄条从左边推出来，动的是同一套。
           --------------------------------------------------------- */}
       <div className="flex flex-wrap items-stretch gap-1.5 pointer-events-auto self-end md:self-auto">
+        {/* 相册、人格参数、物品、单词本、日历、设置全都搬进手机了——
+            它们本来就是手机里的东西。大厅只剩三个真正属于"身体"的动作：
+            回自己房间、出门、掏手机。 */}
         {([
-          { key: 'room',   on: onOpenRoom,   icon: '🏠', zh: '回房间',  en: 'My room' },
-          { key: 'map',    on: onOpenMap,    icon: '🗺',  zh: '出门',    en: 'Go out', primary: true },
-          { key: 'bag',    on: onOpenInventory, icon: '🎒', zh: '持ち物', en: 'Items' },
-          { key: 'stats',  on: onOpenProtagonistProfile, icon: '👤', zh: '人格参数', en: 'Stats' },
-          { key: 'cg',     on: onOpenCgGallery, icon: '🌸', zh: '画廊',  en: 'CGs' },
-          { key: 'sys',    on: onOpenSystemMenu, icon: '⚙', zh: '系统',  en: 'System' }
-        ] as { key: string; on: () => void; icon: string; zh: string; en: string; primary?: boolean }[]).map(b => (
+          { key: 'room',  on: onOpenRoom,  icon: '🏠', zh: '回房间', en: 'My room' },
+          { key: 'map',   on: onOpenMap,   icon: '🗺',  zh: '出门',   en: 'Go out', primary: true },
+          { key: 'phone', on: onOpenPhone, icon: '📱', zh: '手机',   en: 'Phone', badge: phoneUnread }
+        ] as { key: string; on: () => void; icon: string; zh: string; en: string; primary?: boolean; badge?: number }[]).map(b => (
           <button
             key={b.key}
             onClick={b.on}
@@ -97,6 +99,12 @@ const LobbyScreen: React.FC<Props> = ({
               <span className="mr-1">{b.icon}</span>
               {userState.language === 'en' ? b.en : b.zh}
             </span>
+            {/* 未读数。这是大厅上唯一一个会自己变的数字，所以它值得一个红点。 */}
+            {!!b.badge && (
+              <span className="absolute -top-1.5 -right-1.5 z-10 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center transform skew-x-12 shadow">
+                {b.badge}
+              </span>
+            )}
           </button>
         ))}
 
@@ -190,8 +198,23 @@ const LobbyScreen: React.FC<Props> = ({
             cappedLabel={T.romanceCappedHint}
           />
           <div className="flex flex-col w-full gap-3 md:gap-4 mt-2 md:mt-4">
-            <button onClick={() => onEnterChat(lobbySelectedChar, ChatMode.FREE_TALK)} className="group relative w-full overflow-hidden bg-indigo-700 hover:bg-indigo-600 text-white font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl"><span className="relative z-10 flex items-center justify-center gap-3">💬 {T.casualTalk}</span></button>
-            <button onClick={() => onEnterChat(lobbySelectedChar, ChatMode.STUDY)} className="group relative w-full overflow-hidden bg-red-700 hover:bg-red-600 text-white font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl"><span className="relative z-10 flex items-center justify-center gap-3">📚 {T.reviewMode}</span></button>
+            {/* 聊天入口搬到手机里去了。
+                以前站在这儿就能跟任何人开始一段完整对话——放学了也一样，
+                那是这个游戏最说不通的一处设定。现在这里只看关系，
+                要说话就掏手机（发消息），要好好说话就去当面碰到她。 */}
+            <button
+              onClick={onOpenPhone}
+              className="group relative w-full overflow-hidden bg-emerald-700 hover:bg-emerald-600 text-white font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                📱 {userState.language === 'en' ? 'Message her' : '发消息给她'}
+              </span>
+            </button>
+            <p className="text-[10px] md:text-[11px] text-white/35 text-center leading-relaxed px-2">
+              {userState.language === 'en'
+                ? 'Texting is not the same as being there. Find her in person for the real thing.'
+                : '发消息和见面不是一回事。想好好说话，得在对的地方碰到她。'}
+            </p>
           </div>
         </div>
       </div>
