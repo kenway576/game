@@ -292,6 +292,23 @@ export const CITY_NPC_SPRITES = {
   yuki:      '/images/characters/npc_city_yuki.webp',      // 北野坡道摄影女大学生（由纪）
 } as const;
 
+// 🎬 经典动漫客串彩蛋 NPC 立绘（纯净无白边透明通道）
+export const EASTER_EGG_SPRITES = {
+  // 《电锯人》
+  denji:    '/images/characters/easter_denji.webp',    // 电次（吃果酱厚吐司少年）
+  reze:     '/images/characters/easter_reze.webp',     // 蕾赛（咖啡少女与手雷插销项圈）
+  // 《孤独摇滚！》
+  bocchi:   '/images/characters/easter_bocchi.webp',   // 后藤一里（粉色运动服背吉他包）
+  kita:     '/images/characters/easter_kita.webp',     // 喜多郁代（元气红发喜多光线）
+  ryo:      '/images/characters/easter_ryo.webp',      // 山田凉（酷酷军绿风衣贝斯手）
+  nijika:   '/images/characters/easter_nijika.webp',   // 伊地知虹夏（侧马尾三角呆毛持鼓棒）
+  // 《轻音少女！》
+  yui:      '/images/characters/easter_yui.webp',      // 平泽唯（海边度假吊带裙吃西瓜）
+  mio:      '/images/characters/easter_mio.webp',      // 秋山澪（大草帽蓝裙害羞脸）
+  // 《Fate/stay night》神户圣地巡礼
+  rin:      '/images/characters/easter_rin.webp',      // 远坂凛（风见鸡馆前的红衣双马尾魔术师）
+} as const;
+
 export const CHARACTERS: Record<CharacterId, Character> = {
   [CharacterId.ASUKA]: {
     id: CharacterId.ASUKA,
