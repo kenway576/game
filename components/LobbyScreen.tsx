@@ -27,6 +27,9 @@ interface Props {
   // 「今天怎么过」。休息日会自己弹，但上学日也得有个入口——
   // 不想上学这件事，恰恰只在有课的日子才成立。
   onOpenDayPlan: () => void;
+  // 第一章还没打完 → 左上角变成回主线的入口
+  mainStoryPending?: boolean;
+  onResumeMainStory?: () => void;
   phoneUnread: number;
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
@@ -35,7 +38,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, phoneUnread, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, phoneUnread, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -57,14 +60,42 @@ const LobbyScreen: React.FC<Props> = ({
     }
   };
 
+  const slotLabel = userState.language === 'en'
+    ? ({ morning: 'MORNING', lunch: 'LUNCH BREAK', afternoon: 'AFTER SCHOOL', night: 'NIGHT' } as Record<string, string>)[calendar.timeSlot] || ''
+    : ({ morning: '早晨', lunch: '午休', afternoon: '放学后', night: '夜里' } as Record<string, string>)[calendar.timeSlot] || '';
+
   return (
   <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col">
     {background}
     <div className="absolute top-0 left-0 w-full p-3 md:p-6 flex flex-col md:flex-row justify-between items-start z-40 pointer-events-none gap-3">
-      {/* 标题与目标 */}
+      {/* 左上角。
+          这里本来写的是"选择你的搭档 / 当前目标：xxx"——像一个任务系统的
+          抬头，而不像一个人站在自己房间里。现在换成日期和当下这一刻，
+          玩家一眼看到的是"今天几号、什么时段"，那才是他要拿来做决定的东西。
+
+          第一章没打完的时候，这一块变成回主线的入口：以前存档一读回来
+          就掉在大厅里，主线断在半路，界面上没有任何地方能回去。 */}
       <div className="bg-black/85 backdrop-blur text-white px-5 md:px-8 py-2.5 md:py-3.5 border-l-4 border-yellow-500 skew-x-12 transform origin-top-left pointer-events-auto shadow-2xl">
-        <h2 className="-skew-x-12 text-base md:text-2xl font-black italic uppercase tracking-tighter">{T.choosePartner}</h2>
-        <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">{T.goal}: {userState.learningGoal}</p>
+        {mainStoryPending ? (
+          <button onClick={onResumeMainStory} className="-skew-x-12 text-left group">
+            <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-yellow-400 group-hover:text-yellow-300">
+              {userState.language === 'en' ? 'CONTINUE CHAPTER 1 ▶' : '继续第 1 章 ▶'}
+            </h2>
+            <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest">
+              {userState.language === 'en' ? 'The first day is not over yet' : '第一天还没有过完'}
+            </p>
+          </button>
+        ) : (
+          <>
+            <h2 className="-skew-x-12 text-base md:text-2xl font-black italic uppercase tracking-tighter">
+              {calendar.month} / {calendar.day}
+              <span className="text-yellow-500 text-sm md:text-lg ml-2">{calendar.dayOfWeek}</span>
+            </h2>
+            <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">
+              {slotLabel}
+            </p>
+          </>
+        )}
       </div>
 
       {/* ---------------------------------------------------------

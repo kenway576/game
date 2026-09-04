@@ -43,8 +43,8 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
             </p>
             <p className="text-[11px] text-white/35 mt-1 leading-relaxed max-w-xl">
               {en
-                ? 'The third chapter fires the moment familiarity reaches 210, and it splits right there on whatever affection stands at that instant: past 200 gives the romance ending, short of it the friendship one. One save takes one branch, so collecting both means keeping a save beforehand.'
-                : '第③段在親密度到 210 的那一刻触发，并且当场按你那一刻的好感度分岔：已经推过 200 就走「相爱」，还不够就走「挚友」。一份存档只能走一条，想集齐两条得提前留个档。'}
+                ? 'Every route ends two different ways, and a single save can only take one of them.'
+                : '每条线都有两种走法，而一份存档只走得到其中一种。'}
             </p>
           </div>
           <button
@@ -137,9 +137,11 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
                             {open ? (en ? e.titleEn : e.titleZh) : '— — — —'}
                           </span>
                         </div>
-                        {!open && (
-                          <div className="text-[10px] mt-1 text-white/30">{en ? e.hintEn : e.hintZh}</div>
-                        )}
+                        {/* 没解锁的不给提示。
+                            本来这里写着"第③段触发时好感度 200 以上"——
+                            等于把两条分岔的开关直接印在收集册上，
+                            玩家还没走到就已经知道该怎么走了，神秘感没了。
+                            现在只留一个空位：你知道那儿有东西，不知道是什么。 */}
                       </div>
                     );
                   })}

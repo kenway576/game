@@ -49,6 +49,23 @@ export const CalendarModal: React.FC<Props> = ({
 
   const eventsInSelectedMonth = KANSAI_CALENDAR_EVENTS.filter(e => e.month === selectedMonth);
 
+  // ---------------------------------------------------------
+  // 剧透闸门
+  //
+  // 以前这本行事历把一整年的事件、描述、以及"你会和谁相遇"全列出来，
+  // 序章一过完就能读完整年剧情——那不叫行事历，那叫攻略。
+  //
+  // 真实的行事历会告诉你「八月有花火大会」，那是公开信息；
+  // 它不会告诉你「你会在那儿遇见明日香和光」。
+  //
+  // 所以规则是：日期、名称、地点一直可见；**描述和关联角色只在
+  // 那一天过去之后才解锁**。已经发生过的事，你当然记得。
+  // 学年从四月排到次年三月，所以月份要按学年序列比，不能直接比大小。
+  // ---------------------------------------------------------
+  const schoolOrder = (m: number) => (m >= 4 ? m - 4 : m + 8);
+  const nowOrd = schoolOrder(calendar.month) * 100 + calendar.day;
+  const isRevealed = (m: number, d: number) => schoolOrder(m) * 100 + d <= nowOrd;
+
   return (
     <div
       className="fixed inset-0 z-[300] bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
@@ -186,10 +203,16 @@ export const CalendarModal: React.FC<Props> = ({
                   </div>
 
                   <p className="text-xs text-zinc-300 leading-relaxed bg-black/40 p-2.5 rounded-lg border border-white/5">
-                    {language === 'en' ? ev.descriptionEn : ev.descriptionZh}
+                    {isRevealed(ev.month, ev.day)
+                      ? (language === 'en' ? ev.descriptionEn : ev.descriptionZh)
+                      : (language === 'en'
+                          ? 'Not yet. Whatever happens that day has not happened.'
+                          : '还没到。那天会发生什么，还没有发生。')}
                   </p>
 
-                  {/* 关联的女主角头像 */}
+                  {/* 关联角色只在这一天过去之后才列出来——
+                      提前列出来等于把"你会遇见谁"提前告诉玩家。 */}
+                  {isRevealed(ev.month, ev.day) && (
                   <div className="flex items-center justify-between pt-1">
                     <span className="text-[11px] text-zinc-500 font-medium">
                       {language === 'en' ? 'Key Characters Involved:' : '关联核心女主角：'}
@@ -214,6 +237,7 @@ export const CalendarModal: React.FC<Props> = ({
                       })}
                     </div>
                   </div>
+                  )}
                 </div>
               ))}
             </div>

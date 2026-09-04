@@ -926,8 +926,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '「海星学園」。开，诚。你昨天在校门口那块牌子上见过一次，当时只认出「学園」两个字。',
-            en: '"Kaisei Gakuen." Open, and sincere. You saw it once on the sign at the gate yesterday, and could only pick out the last two characters.'
+            zh: '「海星学園」。海，和星。昨天在校门口那块牌子上你见过一次，当时只认出了「学園」两个字。',
+            en: '"Kaisei Gakuen." The sea, and a star. You saw it on the sign at the gate yesterday and could only pick out the last two characters of it.'
+          },
+          {
+            type: 'narration',
+            zh: '一所开在港口城市的学校，把海和星放进了自己的名字里。你想了一下，觉得这个名字取得挺好的。',
+            en: 'A school in a port city with the sea and a star in its name. You think about that for a moment and decide it is a good name.'
           },
           {
             type: 'speech',

@@ -1240,6 +1240,16 @@ const App: React.FC = () => {
 
   const hasValidPrologueProgress = (): boolean => !!readPrologueProgress();
 
+  // 第一章的中途进度。和序章同一套机制，只是键不同。
+  const readDay1Progress = (): StoryProgress | null => {
+    try {
+      const raw = localStorage.getItem(DAY1_PROGRESS_KEY);
+      if (!raw) return null;
+      const p = JSON.parse(raw);
+      return isUsablePrologueProgress(p) ? p : null;
+    } catch { return null; }
+  };
+
   // 读档进序章时交给 StoryScreen 的那一份（静默恢复，不再弹"要不要接着看"）
   const [pendingPrologueProgress, setPendingPrologueProgress] = useState<StoryProgress | null>(null);
   // StoryScreen 的 key：读档 / 重开时 +1 强制重挂载。
@@ -1284,7 +1294,13 @@ const App: React.FC = () => {
         // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
         // 这样三个存档就是三个不同的位置，而不是都指向同一份共享进度。
         // hard 模式（容量告急）下丢掉它：宁可退回共享进度，也不能让存档整个写不进去。
-        prologueProgress: (!hard && gameMode === GameMode.PROLOGUE) ? readPrologueProgress() : null
+        prologueProgress: (!hard && gameMode === GameMode.PROLOGUE) ? readPrologueProgress() : null,
+        // 第一章进行中：和序章一样，把"读到第几句"随槽位存下来。
+        // 以前这里什么都没存，而读档又写死 setPlayingDay1(false)，
+        // 于是在第一章里存的档，读出来人直接掉进大厅，
+        // 第一章没打完、也没有任何入口能回去 —— 主线就断在那儿了。
+        playingDay1,
+        day1Progress: (!hard && playingDay1) ? readDay1Progress() : null
       }
     };
   };
@@ -1384,7 +1400,14 @@ const App: React.FC = () => {
       // 老存档没有 metChars：他们已经在玩了，一律视为全员已认识，
       // 否则一读档半数角色凭空消失。
       setMetChars(Array.isArray(data.metChars) ? data.metChars : [...VISIBLE_CHARACTER_IDS]);
-      setPlayingDay1(false);
+      // 存档停在第一章 → 回到第一章，并且把进度对齐到这个槽位。
+      // 不能一律 false：那样在第一章里存的档永远读不回第一章。
+      const day1Slot = isUsablePrologueProgress(data.day1Progress) ? data.day1Progress : null;
+      const resumeDay1 = !!data.playingDay1 && !(data.day1Done ?? false);
+      if (resumeDay1 && day1Slot) {
+        try { localStorage.setItem(DAY1_PROGRESS_KEY, JSON.stringify(day1Slot)); } catch { /* 存不下就用共享那份 */ }
+      }
+      setPlayingDay1(resumeDay1);
 
       // 存档停在序章：优先用槽位里自带的那份进度（这才是"这个存档"的位置），
       // 老存档没带就退回共享进度。两个都不可用才退回大厅，
@@ -1974,6 +1997,9 @@ ${wind}`;
           script={PROLOGUE_SCRIPT}
           scriptVersion={PROLOGUE_SCRIPT_VERSION}
           progressKey={PROLOGUE_PROGRESS_KEY}
+          // 序章不给跳过：名字是在序章里输入的。跳过之后主角没有名字，
+          // 后面每一处叫到名字的地方都会是空的。
+          allowSkip={false}
           chapterNameZh="序章"
           chapterNameEn="the prologue"
           initialProgress={pendingPrologueProgress}
@@ -2022,6 +2048,8 @@ ${wind}`;
           onOpenInventory={() => setShowInventory(true)}
           onOpenPhone={() => setShowPhone(true)}
           onOpenDayPlan={() => setShowRestPlan(true)}
+          mainStoryPending={prologueDone && !day1Done && !playingDay1}
+          onResumeMainStory={() => setPlayingDay1(true)}
           phoneUnread={totalUnread({ flags: storyFlags, affection: affectionMap, familiarity: familiarityMap, met: metChars })}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           lobbyChars={lobbyChars}

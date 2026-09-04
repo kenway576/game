@@ -30,6 +30,9 @@ interface Props {
   // 之前写死成"序章"，第一章复用同一个组件时文案就错了。
   chapterNameZh?: string;
   chapterNameEn?: string;
+  // 能不能跳过。序章不行：名字是在序章里输入的，
+  // 跳过之后主角没有名字，后面所有叫到名字的地方全是空的。
+  allowSkip?: boolean;
   // 这段剧本讲的是谁：check 节点判好感度 / 親密度时用。
   // 序章这类没有特定对象的章节不传，check 判关系时一律当 0。
   storyAffection?: number;
@@ -89,7 +92,7 @@ const StoryScreen: React.FC<Props> = ({
   script, scriptVersion, progressKey, language, stats, background,
   initialProgress, onOpenSystemMenu, playerName, onSetPlayerName,
   storyAffection = 0, storyFamiliarity = 0,
-  chapterNameZh, chapterNameEn,
+  chapterNameZh, chapterNameEn, allowSkip,
   onEffects, onRelations, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
 }) => {
   const en = language === 'en';
@@ -620,9 +623,11 @@ const StoryScreen: React.FC<Props> = ({
         >
           <span className="block transform skew-x-12">{en ? '☰ Menu' : '☰ 菜单'}</span>
         </button>
-        <button onClick={() => { audioManager.playSfx('click'); setConfirmSkip(true); }} className={ctrlBtn}>
-          <span className="block transform skew-x-12">{en ? 'Skip ▶▶' : '跳过 ▶▶'}</span>
-        </button>
+        {allowSkip !== false && (
+          <button onClick={() => { audioManager.playSfx('click'); setConfirmSkip(true); }} className={ctrlBtn}>
+            <span className="block transform skew-x-12">{en ? 'Skip ▶▶' : '跳过 ▶▶'}</span>
+          </button>
+        )}
       </div>
 
       {/* 生词入库提示 */}
