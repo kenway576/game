@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { CharacterId, ChatMode, UserState, CustomAssets, AffectionMap, FamiliarityMap, GameCalendar, ProtagonistStats } from '../types';
+import { CharacterId, UserState, CustomAssets, AffectionMap, FamiliarityMap, GameCalendar, ProtagonistStats } from '../types';
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity, LOBBY_PORTRAITS } from '../constants';
 import CharacterSprite from './CharacterSprite';
 import RelationshipMeter from './AffectionMeter';
@@ -17,7 +17,6 @@ interface Props {
   familiarityMap: FamiliarityMap;
   calendar: GameCalendar;
   stats: ProtagonistStats;
-  onEnterChat: (charId: CharacterId, mode: ChatMode) => void;
   onOpenSystemMenu: () => void;
   onOpenCgGallery: () => void;
   onOpenRoom: () => void;
@@ -33,7 +32,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onEnterChat, onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, phoneUnread, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, phoneUnread, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;

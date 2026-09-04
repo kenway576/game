@@ -37,6 +37,7 @@ import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
 import { beenFlag } from './story/kobeMap';
+import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
 import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
@@ -205,6 +206,10 @@ const App: React.FC = () => {
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
   const [inCafeteria, setInCafeteria] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
+  // 这一趟碰到的人。剧本播完之后进面对面对话。
+  const [pendingEncounter, setPendingEncounter] = useState<CharacterId | null>(null);
+  // 这次对话是当面还是在手机上。当面给足，手机减半。
+  const [chatInPerson, setChatInPerson] = useState(true);
   const [activeGarden, setActiveGarden] = useState<'balcony' | 'rooftop' | null>(null);
   const [inKitchen, setInKitchen] = useState(false);
   const [activeFishing, setActiveFishing] = useState<MapLocation | null>(null);
@@ -646,11 +651,35 @@ const App: React.FC = () => {
         setCurrentScene(loc.id); setActiveGarden('rooftop'); setGameMode(GameMode.GARDEN); return;
       }
     }
+    // 没有专门的剧情事件时，看看今天这儿有没有人。
+    // 午休按每个人的作息表，放学后按这地方的常客 + 熟悉程度。
+    // 碰到了就把"跟她说话"接在空转旁白后面——这是面对面的对话，
+    // 和在手机上发消息不是一回事。
+    const zh = userState.language === 'en' ? 'en' : 'zh';
+    let met: CharacterId | null = null;
+    if (!ev) {
+      if (gameCalendar.timeSlot === 'lunch') {
+        met = lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.char ?? null;
+      } else {
+        met = encounterAt(loc.id, loc.regulars, gameCalendar, metChars, familiarityMap as Record<string, number>);
+      }
+    }
     setActiveTrip({
       loc,
       event: ev,
-      script: ev ? ev.script : buildAmbientScript(loc, userState.language === 'en' ? 'en' : 'zh', gameCalendar)
+      script: ev
+        ? ev.script
+        : buildAmbientScript(loc, zh, gameCalendar, {
+            met,
+            atZh: met ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.atZh || '') : '',
+            atEn: met ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.atEn || '') : '',
+            awayNote: lunchAwayNote(loc.id, gameCalendar, zh),
+            nameZh: met ? CHARACTERS[met].name : '',
+            nameEn: met ? CHARACTERS[met].nameEn : ''
+          })
     });
+    // 碰到了人：这一趟结束之后直接进面对面的对话
+    setPendingEncounter(met);
     setGameMode(GameMode.LOBBY);
   };
 
@@ -768,6 +797,13 @@ const App: React.FC = () => {
     }));
     if (trip?.event?.chars?.length) markMet(trip.event.chars);
     setActiveTrip(null);
+    // 碰到了人就直接进面对面的对话，不用回大厅再点一次
+    if (pendingEncounter) {
+      const who = pendingEncounter;
+      setPendingEncounter(null);
+      setChatInPerson(true);
+      setTimeout(() => enterChat(who, ChatMode.FREE_TALK), 0);
+    }
     setActiveStore(null); setActiveFishing(null); setInCafeteria(false);
     // 出门那一趟的剧本是叠在大厅上播的，所以以前不用管 gameMode。
     // 但店和钓点是自己占一个 gameMode 的，回来必须显式切回大厅——
@@ -1430,10 +1466,14 @@ const App: React.FC = () => {
       const flooredFamDelta = (roll !== undefined && aiFamDelta >= 0)
         ? Math.max(aiFamDelta, getDiceFamiliarityFloor(roll))
         : aiFamDelta;
+      // 隔着手机说话和当面说话不一样。文字里没有表情、没有停顿、
+      // 也没有"她今天穿了什么"，所以给一半——这是这套设计的价钱：
+      // 想推进关系，还是得在对的时间去对的地方找到她本人。
+      const reach = chatInPerson ? 1 : 0.5;
       applyRelationship(
         selectedCharId,
-        flooredDelta + (opts?.bonusAffection || 0),
-        flooredFamDelta + (opts?.bonusFamiliarity || 0)
+        Math.round((flooredDelta + (opts?.bonusAffection || 0)) * reach),
+        Math.round((flooredFamDelta + (opts?.bonusFamiliarity || 0)) * reach)
       );
 
       setChatHistories(prev => ({ ...prev, [selectedCharId]: [...prev[selectedCharId], modelMsg] }));
@@ -1640,7 +1680,6 @@ const App: React.FC = () => {
           familiarityMap={familiarityMap}
           calendar={gameCalendar}
           stats={protagonistStats}
-          onEnterChat={enterChat}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onOpenCgGallery={() => setShowCgGallery(true)}
           onOpenRoom={() => setGameMode(GameMode.ROOM)}
@@ -1753,7 +1792,7 @@ const App: React.FC = () => {
           wordCount={userState.collectedWords.length}
           onClose={() => setShowPhone(false)}
           onOpenApp={openPhoneApp}
-          onEnterChat={(id, mode) => { setShowPhone(false); enterChat(id, mode); }}
+          onEnterChat={(id, mode) => { setShowPhone(false); setChatInPerson(false); enterChat(id, mode); }}
           onReadMessages={markMessagesRead}
         />
       )}
@@ -1880,6 +1919,7 @@ const App: React.FC = () => {
           familiarity={familiarityMap}
           onClose={() => setGameMode(GameMode.LOBBY)}
           onTravel={startTrip}
+          metChars={metChars}
         />
       )}
 

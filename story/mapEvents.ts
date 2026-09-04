@@ -106,7 +106,17 @@ export const mapSceneFor = (loc: MapLocation): string => loc.mapScene || loc.id;
 
 // 白跑一趟也得有东西看。没有事件可演时，用这个地方自己的空转旁白
 // 拼一小段——一句景，一点点属性，然后回大厅。
-export const buildAmbientScript = (loc: MapLocation, language: 'zh' | 'en', calendar: GameCalendar): StoryNode[] => {
+// 白跑一趟的时候碰上了谁。碰上了就把这几句接在旁白后面。
+export interface AmbientMeeting {
+  met: string | null;      // CharacterId
+  atZh: string; atEn: string;      // 她在那儿干什么
+  awayNote: string | null;         // 排了她但她今天不在时的那句说明
+  nameZh: string; nameEn: string;
+}
+
+export const buildAmbientScript = (
+  loc: MapLocation, language: 'zh' | 'en', calendar: GameCalendar, meet?: AmbientMeeting
+): StoryNode[] => {
   const zh = loc.ambientZh && loc.ambientZh.length
     ? loc.ambientZh
     : ['你在这儿待了一会儿。今天没有什么特别的事发生。'];
@@ -114,16 +124,34 @@ export const buildAmbientScript = (loc: MapLocation, language: 'zh' | 'en', cale
     ? loc.ambientEn
     : ['You spend a while here. Nothing in particular happens today.'];
   const i = Math.floor(Math.random() * zh.length);
-  return [
+  const out: StoryNode[] = [
     { type: 'scene', scene: sceneFor(loc, calendar), bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
-    { type: 'narration', zh: zh[i] || zh[0], en: en[i] || en[0] },
-    {
-      type: 'effect',
-      effects: [{
-        stat: 'knowledge', amount: 1,
-        reasonZh: '你又多认识了这座城市的一点',
-        reasonEn: 'You know this city slightly better than you did'
-      }]
-    }
+    { type: 'narration', zh: zh[i] || zh[0], en: en[i] || en[0] }
   ];
+
+  // 排了她、但今天她不在。扑空必须给理由——
+  // 没理由的话玩家会以为是 bug，而不是"她今天真的不在"。
+  if (!meet?.met && meet?.awayNote) {
+    out.push({ type: 'narration', zh: meet.awayNote, en: meet.awayNote });
+  }
+
+  // 碰上了。这里只负责"看见她"，说话是这段播完之后的事。
+  if (meet?.met) {
+    if (meet.atZh) out.push({ type: 'narration', zh: meet.atZh, en: meet.atEn });
+    out.push({
+      type: 'narration',
+      zh: `你走了过去。${meet.nameZh}抬起头。`,
+      en: `You go over. ${meet.nameEn} looks up.`
+    });
+  }
+
+  out.push({
+    type: 'effect',
+    effects: [{
+      stat: 'knowledge', amount: 1,
+      reasonZh: '你又多认识了这座城市的一点',
+      reasonEn: 'You know this city slightly better than you did'
+    }]
+  });
+  return out;
 };

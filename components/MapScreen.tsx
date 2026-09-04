@@ -10,6 +10,7 @@ import {
   pickEventFor, getTimeCost, slotsLeftToday, AFTERSCHOOL_SLOTS, mapSceneFor
 } from '../story/mapEvents';
 import { audioManager } from '../services/audioManager';
+import { lunchSpotsToday, isWeekend } from '../data/scheduleData';
 
 // ---------------------------------------------------------
 // 🗺️ 出门 —— 去哪儿
@@ -43,6 +44,7 @@ interface Props {
   familiarity: FamiliarityMap;
   onClose: () => void;
   onTravel: (loc: MapLocation) => void;
+  metChars: CharacterId[];
 }
 
 // CHARACTERS 里只有罗马字名，中文界面上写 "Asuka 常在" 很出戏。
@@ -57,7 +59,7 @@ const NAME_ZH: Record<string, string> = {
 const bgOf = (id: string) => SCENE_MAP[id] || SCENE_FALLBACK[id] || SCENE_MAP['street'];
 
 const MapScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, affection, familiarity, onClose, onTravel
+  language, calendar, storyFlags, affection, familiarity, onClose, onTravel, metChars
 }) => {
   const en = language === 'en';
   const ctx: EventContext = useMemo(
@@ -133,6 +135,14 @@ const MapScreen: React.FC<Props> = ({
       : s === 'morning' ? '早晨'
       : s === 'lunch' ? '午休'
       : s === 'afternoon' ? '午后' : '夜里';
+
+  // 午休：今天哪几个地方有人。**只说有人，不说是谁**——
+  // 说了是谁，午休就变成一份任务列表；不说，玩家才会去记那张作息表，
+  // 而"记住她周三在体育馆"本来就是这套系统想要的东西。
+  const lunchSpots = useMemo(
+    () => (calendar.timeSlot === 'lunch' ? lunchSpotsToday(calendar, storyFlags, metChars) : []),
+    [calendar, storyFlags, metChars]
+  );
 
   const selUnlocked = isLocationUnlocked(selected, storyFlags);
   const selOpen = isLocationOpenNow(selected, calendar);
@@ -219,6 +229,10 @@ const MapScreen: React.FC<Props> = ({
                       )}
                       {has && (
                         <span className="shrink-0 w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_2px_rgba(244,63,94,0.6)]" />
+                      )}
+                      {/* 午休有人的地方打个人影。不写名字。 */}
+                      {!has && lunchSpots.includes(loc.id) && (
+                        <span className="shrink-0 text-[11px] text-sky-300/80" title={en ? 'someone is here' : '有人在'}>👤</span>
                       )}
                       {/* 要花两格的地方标出来，免得玩家点进去才发现今天去不了 */}
                       {open && now && cost > 1 && (
@@ -315,9 +329,17 @@ const MapScreen: React.FC<Props> = ({
           {/* 出发 */}
           <div className="shrink-0 px-4 md:px-6 py-3 border-t border-white/10 flex items-center justify-between gap-3">
             <span className="text-[11px] text-white/40">
-              {en
-                ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home.'
-                : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。'}
+              {calendar.timeSlot === 'lunch'
+                ? (en
+                    ? (isWeekend(calendar)
+                        ? 'No school today, so there is nobody on campus to run into.'
+                        : 'Lunch break. You can only get as far as the campus, and who is where depends on the day of the week. 👤 means somebody is there.')
+                    : (isWeekend(calendar)
+                        ? '今天不上学，校内碰不到人。'
+                        : '午休。只走得到校内，谁在哪儿要看星期几。👤 表示那儿有人。'))
+                : (en
+                    ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home.'
+                    : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。')}
             </span>
             <button
               onClick={go}
