@@ -24,18 +24,28 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '电车驶出长长的跨海隧道时，四月清亮透彻的阳光瞬间铺满了整个车厢。',
-    en: 'As the train breaks out of the long undersea tunnel, clear April sunlight floods the entire carriage at once.'
+    zh: '出隧道的时候，车厢一下子亮了。你眯了一下眼睛。',
+    en: 'Coming out of the tunnel the carriage goes bright all at once. You squint.'
   },
   {
     type: 'narration',
-    zh: '左边是层峦叠翠、点缀着野樱花斑的六甲山脉；右边是波光粼粼的蔚蓝海湾，白色货轮拖着长长的航迹缓缓驶向远方。',
-    en: 'To the left, the Rokko mountains rise green and speckled with wild cherry blossom. To the right, a glittering blue bay where a white freighter trails a long wake toward the horizon.'
+    zh: '左边是山。右边是海。',
+    en: 'Mountains on the left. Sea on the right.'
   },
   {
     type: 'narration',
-    zh: '十七年的人生里，你第一次离开熟悉的故乡，独自拖着行李箱踏上这片完全陌生的土地。',
-    en: 'Seventeen years of life, and this is the first time you have left home — alone, with one suitcase, stepping onto ground you have never touched.'
+    zh: '……好近。海离铁轨大概只有五十米，近到你怀疑涨潮的时候会不会漫上来。',
+    en: '...That is close. The water is maybe fifty metres from the rails. Close enough that you wonder what happens at high tide.'
+  },
+  {
+    type: 'narration',
+    zh: '为了今天你背了三千多个日语单词。而你现在脑子里唯一冒出来的一句是「好近」。',
+    en: 'You learned over three thousand Japanese words for today. The only thing your head has produced so far is "that is close".'
+  },
+  {
+    type: 'narration',
+    zh: '行李箱立在腿边，轮子随着车厢晃动一下一下地磕着你的脚踝。你没有挪开。',
+    en: 'Your suitcase stands against your leg, its wheels knocking your ankle each time the carriage rocks. You leave it there.'
   },
   {
     type: 'choice',
@@ -53,13 +63,18 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你什么也没想，就那样看了很久。阳光在海面上碎成无数亮片，一路跟着电车往前跑。',
-            en: 'You think about nothing at all, and watch for a long time. Sunlight shatters across the water into countless bright flecks that race the train forward.'
+            zh: '玻璃是凉的。你把额头贴上去，一直看到眼睛发酸。',
+            en: 'The glass is cold. You put your forehead against it and keep looking until your eyes sting.'
           },
           {
             type: 'narration',
-            zh: '多年以后回想起来，你依然能清楚地记得这一刻窗玻璃贴在额头上的凉意。',
-            en: 'Years later you will still remember, exactly, how cool the window glass felt against your forehead in this moment.'
+            zh: '海一直在。中间被防波堤挡过两次，被一排仓库挡过一次，然后又出来了。',
+            en: 'The sea stays. A breakwater takes it away twice, a row of warehouses once, and then it comes back.'
+          },
+          {
+            type: 'narration',
+            zh: '你把手机举起来，想拍一张。取景框里全是自己的倒影和玻璃上的手印。你把手机收了回去。',
+            en: 'You lift your phone to take a picture. The frame is mostly your own reflection and a handprint on the glass. You put the phone away.'
           }
         ]
       },
