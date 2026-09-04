@@ -43,7 +43,7 @@ export const SCENE_MAP: Record<string, string> = {
   'room_sora':   '/images/backgrounds/room_sora.webp',
   'room_maki':   '/images/backgrounds/room_maki.webp',
   'kitchen':   '/images/backgrounds/kitchen.webp',
-  'street':    '/images/backgrounds/street.webp',
+  'street':    '/images/backgrounds/bg_kitano_slope_foot_dusk.webp',
   'park':      '/images/backgrounds/park.webp',
   'beach':     '/images/backgrounds/beach.webp',
   'shrine':    '/images/backgrounds/shrine.webp',
@@ -51,7 +51,7 @@ export const SCENE_MAP: Record<string, string> = {
   'lab':       '/images/backgrounds/lab.webp',
   'castle':    '/images/backgrounds/castle.webp',
   'night':     '/images/backgrounds/starry_sky.webp',
-  'festival':  '/images/backgrounds/festival_night.webp',
+  'festival':  '/images/backgrounds/bg_ikuta_shrine_summer_festival.webp',
   // 🌸 关西核心实景与约会地点 (Google 官方 Gemini 2.5 Flash Image 新海诚超清画风)
   'kobe_harbor':       '/images/backgrounds/bg_kobe_harbor_dusk.webp',
   'kitano_slope':      '/images/backgrounds/bg_kitano_sakura_slope.webp',
@@ -101,7 +101,8 @@ export const SCENE_MAP: Record<string, string> = {
   'kyoto_arashiyama':       '/images/backgrounds/bg_kyoto_arashiyama_bamboo.webp',
   'kyoto_bamboo':           '/images/backgrounds/bg_kyoto_arashiyama_bamboo.webp',
   'kyoto_kamogawa':         '/images/backgrounds/bg_kyoto_kamogawa_river.webp',
-  'kyoto_kamogawa_delta':   '/images/backgrounds/bg_kyoto_kamogawa_river.webp',
+  'kyoto_kamogawa_delta':   '/images/backgrounds/bg_kyoto_kamogawa_delta.webp',
+  'kamogawa_stepping_stones': '/images/backgrounds/bg_kyoto_kamogawa_delta.webp',
   // 🏆 经典致敬名场面 CG（Fate 操场夕阳跳高之神）
   'shirou_high_jump':        '/images/backgrounds/cg_shirou_high_jump_sunset.webp',
   'shirou_high_jump_sunset': '/images/backgrounds/cg_shirou_high_jump_sunset.webp',
@@ -233,7 +234,21 @@ export const SCENE_MAP: Record<string, string> = {
   // 🥩 🍽️ 神户牛铁板烧与元町格里尔一平
   'kobe_beef_teppanyaki':          '/images/backgrounds/bg_kobe_beef_teppanyaki.webp',
   'grill_ippei_motomachi':         '/images/backgrounds/bg_grill_ippei_motomachi.webp',
-  'grill_ippei':                   '/images/backgrounds/bg_grill_ippei_motomachi.webp'
+  'grill_ippei':                   '/images/backgrounds/bg_grill_ippei_motomachi.webp',
+  // 🛍️ 🏛️ 🏮 🎤 神户生活实景：元町商店街、旧居留地大丸、生田路夜市、海风庄坡道口、三宫卡拉OK与生田夏祭
+  'motomachi_arcade':              '/images/backgrounds/bg_kobe_motomachi_arcade.webp',
+  'kobe_motomachi_arcade':         '/images/backgrounds/bg_kobe_motomachi_arcade.webp',
+  'daimaru_settlement':            '/images/backgrounds/bg_kobe_daimaru_settlement.webp',
+  'former_settlement_daimaru':     '/images/backgrounds/bg_kobe_daimaru_settlement.webp',
+  'ikuta_road_night':              '/images/backgrounds/bg_kobe_ikuta_road_night.webp',
+  'ikuta_road':                    '/images/backgrounds/bg_kobe_ikuta_road_night.webp',
+  'sannomiya_karaoke_room':        '/images/backgrounds/bg_sannomiya_karaoke_room.webp',
+  'karaoke_room':                  '/images/backgrounds/bg_sannomiya_karaoke_room.webp',
+  'ikuta_shrine_summer_festival':  '/images/backgrounds/bg_ikuta_shrine_summer_festival.webp',
+  'ikuta_summer_festival':         '/images/backgrounds/bg_ikuta_shrine_summer_festival.webp',
+  'kitano_slope_foot_dusk':        '/images/backgrounds/bg_kitano_slope_foot_dusk.webp',
+  'slope_foot':                    '/images/backgrounds/bg_kitano_slope_foot_dusk.webp',
+  'kamogawa_delta':                '/images/backgrounds/bg_kyoto_kamogawa_delta.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
@@ -247,7 +262,7 @@ export const SCENE_FALLBACK: Record<string, string> = {
   'sannomiya_arcade':  '/images/backgrounds/bg_nankinmachi_chinatown.webp',
   'convenience_store': '/images/backgrounds/neighborhood.webp',
   // 早就写在 SCENE_MAP 里、但文件从来没交付过的三张
-  'street':            '/images/backgrounds/neighborhood.webp',
+  'street':            '/images/backgrounds/bg_kitano_slope_foot_dusk.webp',
   'shrine':            '/images/backgrounds/bg_ikuta_shrine_main.webp',
   'night':             '/images/backgrounds/bg_rokko_night_view.webp'
 };

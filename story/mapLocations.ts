@@ -486,6 +486,69 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientZh: ['你只点了最便宜的午市。师傅切完之后，把最边上那一块单独摆了摆，说这块是给你的。'],
     ambientEn: ['You order only the cheapest lunch set. After cutting, the chef sets the end piece aside on its own and says that one is for you.']
   },
+  {
+    id: 'motomachi_arcade', district: 'sannomiya',
+    nameJp: '元町商店街', reading: 'もとまちしょうてんがい',
+    nameZh: '元町商店街', nameEn: 'Motomachi Arcade',
+    blurbZh: '神户开港时便存在的老牌拱廊街。绿色的拱顶挂着彩绘玻璃，老茶铺烘茶的香气与百年面包房的刚出炉热气飘了整条街。',
+    blurbEn: 'An arcade that dates to the opening of Kobe port. Stained glass hangs from the green vaulted roof, filled with the aroma of roasted tea and hundred-year bakeries.',
+    mapScene: 'motomachi_arcade',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon', 'night'],
+    regulars: [CharacterId.MIYUKI, CharacterId.HIKARI],
+    ambientZh: [
+      '茶铺门前的大茶壶冒着白气，烘焙绿茶的焦香飘了半条街。你在门口站了一会儿，深吸了一口气。',
+      '老字号面包店刚出炉的法棍立在藤筐里。你买了一个刚烤好的红豆面包，拿到外面的长椅上趁热吃完。'
+    ],
+    ambientEn: [
+      'Steam rises from the giant kettle outside the tea merchant, roasting-tea aroma drifting halfway down the arcade. You stand a moment and breathe in.',
+      'Freshly baked baguettes stand upright in wicker baskets. You buy a warm red-bean bun and eat it on a street bench while it is hot.'
+    ]
+  },
+  {
+    id: 'daimaru_settlement', district: 'sannomiya',
+    nameJp: '大丸・旧居留地', reading: 'だいまる・きゅうきょりゅうち',
+    nameZh: '大丸·旧居留地', nameEn: 'Daimaru & Old Settlement',
+    blurbZh: '古典欧式石柱回廊、煤气路灯与露天咖啡座。神户最典雅的洋风街区，晚风穿过榉树林荫，时间在这里走得格外慢。',
+    blurbEn: 'Classical European stone colonnades, gas lanterns, and open-air cafes. Kobe’s most elegant foreign quarter; time moves gently beneath the zelkovas.',
+    mapScene: 'daimaru_settlement',
+    requiresFlag: 'map_harbor',
+    lockedHintZh: '你还没往海那边走过——旧居留地在再往南一点的地方。',
+    lockedHintEn: 'You have not gone toward the water yet. The old settlement is a little further south.',
+    timeSlots: ['afternoon', 'night'],
+    regulars: [CharacterId.MIYUKI, CharacterId.ASUKA],
+    ambientZh: [
+      '大丸百货外廊的煤气灯在薄暮中亮了起来。露天咖啡座上有人正一边翻阅画册一边喝浓缩咖啡。',
+      '旧居留地的街道笔直而宽阔，两旁的榉树被晚风吹得沙沙作响。你在街角站了一会儿，整个人都静了下来。'
+    ],
+    ambientEn: [
+      'The gas lamps along Daimaru’s colonnade flicker to life in the twilight. Someone sits at a terrace table sipping espresso over an art catalogue.',
+      'The streets of the old settlement run wide and straight, zelkova leaves rustling in the evening breeze. You stand a while at the corner and feel completely calm.'
+    ]
+  },
+  {
+    id: 'ikuta_road', district: 'sannomiya',
+    nameJp: '生田ロード・東門街', reading: 'いくたロード・ひがしもんがい',
+    nameZh: '生田路·东门街', nameEn: 'Ikuta Road & Higashimon',
+    blurbZh: '连接三宫站与生田神社的热闹街巷。满街的红提灯、炭火串烧香气与拉面店的热气，神户最鲜活的市井夜色。',
+    blurbEn: 'The lively lanes linking Sannomiya Station to Ikuta Shrine. Packed with red lanterns, yakitori grills, and ramen steam—Kobe’s most vibrant nightlife.',
+    mapScene: 'ikuta_road_night',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
+    regulars: [CharacterId.SORA, CharacterId.MAKI],
+    ambientZh: [
+      '居酒屋门前的红提灯随风微晃，炭烤鸡肉串的香气扑鼻而来。下班的工薪族和学生在巷口擦肩而过。',
+      '巷子深处拉面店的木拉门被拉开，传出一声响亮的「いらっしゃい！」。街灯倒映在刚下过小雨的湿润石板上。'
+    ],
+    ambientEn: [
+      'Red paper lanterns sway gently in the breeze, the savoury scent of charcoal-grilled yakitori filling the lane. Office workers and students brush past at the corner.',
+      'A wooden sliding door opens down the alley with a hearty shout of welcome. Streetlights reflect cleanly off the damp paving stones.'
+    ]
+  },
 
   // ======================= 港 =======================
   {

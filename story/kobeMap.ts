@@ -57,7 +57,7 @@ export const KOBE_SITES: KobeSite[] = [
   {
     id: 'motomachi', x: 39.5, y: 52.0, side: 'left',
     nameZh: '元町 · 南京町', nameEn: 'Motomachi', nameJp: '元町・南京町',
-    covers: ['nankinmachi', 'former_settlement_salon']
+    covers: ['nankinmachi', 'former_settlement_salon', 'motomachi_arcade', 'daimaru_settlement']
   },
   {
     id: 'portisland', x: 48.0, y: 72.0, side: 'below',
@@ -69,7 +69,8 @@ export const KOBE_SITES: KobeSite[] = [
     nameZh: '三宫', nameEn: 'Sannomiya', nameJp: '三宮',
     covers: [
       'sannomiya_station', 'sannomiya_arcade', 'pia_kobe_arcade', 'ramen_shop_interior',
-      'junkudo_bookstore', 'hyakkin_store', 'ramen_rekishi', 'grill_ippei', 'kobe_beef_teppanyaki'
+      'junkudo_bookstore', 'hyakkin_store', 'ramen_rekishi', 'grill_ippei', 'kobe_beef_teppanyaki',
+      'ikuta_road'
     ]
   },
   {

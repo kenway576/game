@@ -34,7 +34,7 @@ const I = '/images/characters/inari/';
 export const INARI_STORY_2: StoryNode[] = [
   {
     type: 'scene',
-    scene: 'festival',
+    scene: 'ikuta_shrine_summer_festival',
     bgm: 'town',
     titleZh: '面の下',
     titleEn: 'Under the Mask',

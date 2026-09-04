@@ -393,6 +393,56 @@ export const STREET_SCENES: StreetScene[] = [
       seen('你开始用看不懂这座城市的人的眼睛看它', 'You started looking at this city the way somebody who does not know it looks at it')
     ]
   },
+  {
+    id: 'st_motomachi_tea', locationIds: ['motomachi_arcade'], weight: 10,
+    script: [
+      {
+        type: 'narration',
+        zh: '元町拱廊街的老茶铺门前摆着一台巨大的焙茶机，铁筒缓缓转动，烘焙绿茶的醇厚焦香弥漫了整整半条街。',
+        en: 'Outside the vintage tea merchant in Motomachi stands a large roasting drum, revolving slowly, filling half the arcade with the warm aroma of hojicha.'
+      },
+      {
+        type: 'narration',
+        zh: '一位穿和服的老太太正捧着试饮的小瓷杯与店主用温和的关西腔闲聊，店里的茶筒已经泛着擦拭了数十年的温润木光。',
+        en: 'An elderly lady in kimono sips from a tasting cup, chatting with the owner in quiet Kansai dialect amidst polished wooden canisters.'
+      },
+      seen('你在老茶香里闻到了神户慢下来的时间', 'You smelled time slowing down in the fragrance of roasted tea')
+    ]
+  },
+  {
+    id: 'st_settlement_gaslamp', locationIds: ['daimaru_settlement'], weight: 10,
+    timeSlots: ['night'],
+    script: [
+      {
+        type: 'narration',
+        zh: '大丸百货石柱回廊外的煤气路灯在一声微弱的轻响中一盏接一盏亮起，发出温暖柔和的暖黄光芒。',
+        en: 'The gas lamps along the stone colonnade of Daimaru flicker to life one by one with a faint click, casting a warm amber glow.'
+      },
+      {
+        type: 'narration',
+        zh: '露天咖啡座的白伞在晚风中轻轻晃动。服务生动作轻柔地收起菜单，街角的旧式建筑在夜色下透着百年未变的从容。',
+        en: 'White terrace umbrellas sway in the night breeze. The waiter clears menus with practiced quiet under buildings that have stood poised for a century.'
+      },
+      seen('你驻足看了一盏真正的煤气灯亮起', 'You paused to watch a real gas streetlamp light up')
+    ]
+  },
+  {
+    id: 'st_ikuta_lanterns', locationIds: ['ikuta_road'], weight: 10,
+    timeSlots: ['afternoon', 'night'],
+    script: [
+      {
+        type: 'narration',
+        zh: '东门街与生田路的巷口，居酒屋的师傅正把一串红提灯挂上屋檐。炭火已经烧得通红，秘制酱汁浇在烤鸡串上激起一阵浓郁的白烟。',
+        en: 'At the alley entrance of Higashimon and Ikuta Road, a tavern master hangs a string of red lanterns. Charcoal glows white-hot as tare sauce sizzles over yakitori skewers.'
+      },
+      {
+        type: 'narration',
+        zh: '刚刚下班的年轻白领们正说笑着钻进布帘。热腾腾的市井气息让你忽然觉得特别饿。',
+        en: 'Young office workers, newly off the shift, slip behind the noren curtains with easy laughter. The warm street atmosphere suddenly makes you very hungry.'
+      },
+      seen('你撞进了神户最鲜活滚烫的市井夜色', 'You stepped right into Kobe’s most vibrant, sizzling night scene')
+    ]
+  },
 
   // ================= 彩蛋 =================
   // 一个名字都不出现。主角谁都不认识，他只是看见了。

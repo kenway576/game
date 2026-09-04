@@ -1204,7 +1204,7 @@ export const DAY1_EVENING: StoryNode[] = [
   },
 
   // ---- 坡道口 · 奈绪 ----
-  { type: 'scene', scene: 'street', bgm: 'night', titleZh: '海风庄 · 坡道口', titleEn: 'The Foot of the Slope', subtitleZh: '傍晚 6:40', subtitleEn: '6:40 PM' },
+  { type: 'scene', scene: 'kitano_slope_foot_dusk', bgm: 'night', titleZh: '海风庄 · 坡道口', titleEn: 'The Foot of the Slope', subtitleZh: '傍晚 6:40', subtitleEn: '6:40 PM' },
   {
     type: 'narration',
     zh: '坡道口的路灯下面蹲着一个人，两袋东西放在脚边，正对着手机屏幕皱眉。',

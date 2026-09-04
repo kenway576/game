@@ -1083,7 +1083,7 @@ export const TRIP_KYOTO: StoryNode[] = [
   { type: 'scene', scene: 'kyoto_bamboo' },
   { type: 'narration', zh: '下午去了岚山。竹林里的光是绿色的，五个人走进去之后，说话声就都变小了。', en: 'Arashiyama in the afternoon. The light in the bamboo is green, and after they walk in everybody’s voice drops.' },
   { type: 'narration', zh: '没有人说为什么要小声。竹子那么高，人自然就会。', en: 'Nobody says why. The bamboo is that tall, and people simply do.' },
-  { type: 'scene', scene: 'kyoto_kamogawa' },
+  { type: 'scene', scene: 'kyoto_kamogawa_delta' },
   { type: 'narration', zh: '傍晚在鸭川的河滩上坐下。五个人自然而然地排成了等距的一排——京都人管这个叫「鴨川等間隔の法則」。', en: 'They sit on the bank of the Kamo in the evening and naturally form an evenly spaced row. Kyoto people have a name for this.' },
   { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪最后两个饭团在这儿分掉了。一个给了深雪，一个掰成四份。', en: 'Nao’s last two onigiri go here: one to Miyuki, the other broken into four.' },
   { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '稻荷说她上一次坐在这条河边是很久以前。她说"很久"的时候，没有人再追问是多久。', en: 'Inari says the last time she sat by this river was a long time ago. When she says "a long time", nobody asks how long.' },
@@ -1117,7 +1117,7 @@ export const TRIP_KYOTO: StoryNode[] = [
 // ==========================================================
 
 export const GROUP_KARAOKE: StoryNode[] = [
-  { type: 'scene', scene: 'jazz_livehouse', bgm: 'town', titleZh: '三个人，两小时，一个包厢', titleEn: 'Three People, Two Hours, One Booth', subtitleZh: '放学后 · 三宫的卡拉OK', subtitleEn: 'After school · Karaoke in Sannomiya' },
+  { type: 'scene', scene: 'sannomiya_karaoke_room', bgm: 'town', titleZh: '三个人，两小时，一个包厢', titleEn: 'Three People, Two Hours, One Booth', subtitleZh: '放学后 · 三宫的卡拉OK', subtitleEn: 'After school · Karaoke in Sannomiya' },
   { type: 'narration', zh: '学生优惠，两小时七百日元，饮料吧无限。这个价格是真希查出来的，她查了四家。', en: 'Student rate, seven hundred yen for two hours, drinks bar included. Maki found it. She compared four places.' },
   { type: 'narration', characterImage: `${MAKI}punk_neutral.webp`, zh: '进包厢之前她先声明了一条规矩：不许点谁都会唱的那种。', en: 'Before going in she lays down one rule: nothing everybody already knows.' },
   { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空第一首就点了一首谁都会唱的。', en: 'Sora’s first pick is a song everybody knows.' },
