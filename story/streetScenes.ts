@@ -1,4 +1,7 @@
 import { StoryNode, StoryFlags, GameCalendar, TimeSlot } from '../types';
+// 立绘路径从 constants 那三张表取，不在这儿再抄一遍——
+// 抄两遍的代价是换图时漏掉一处，而漏掉的那处不报错，只显示碎图标。
+import { SCHOOL_NPC_SPRITES, CITY_NPC_SPRITES, EASTER_EGG_SPRITES } from '../constants';
 
 // ---------------------------------------------------------
 // 🚶 街头小景
@@ -43,8 +46,6 @@ export interface StreetScene {
   script: StoryNode[];
 }
 
-const C = '/images/characters/';
-
 // 小景的通用收尾：看见别人也是认识这座城市的一部分
 const seen = (zh: string, en: string): StoryNode => ({
   type: 'effect',
@@ -57,7 +58,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_yamada_delivery', locationIds: ['school_terrace'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_yamada.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.yamada,
         zh: '食堂后门开着。山田阿姨正拿着那把长勺，隔着门跟送货的人理论今天的葱。',
         en: 'The kitchen door is open. Mrs Yamada, ladle in hand, is disputing today’s spring onions with the delivery man through it.'
       },
@@ -78,7 +79,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_sakamoto_stopwatch', locationIds: ['gym', 'courtyard_rain'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_sakamoto.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.sakamoto,
         zh: '坂本老师站在跑道边，一只手举着秒表，另一只手插在运动服口袋里，一动不动。',
         en: 'Mr Sakamoto stands at the edge of the track, stopwatch up in one hand, the other in his tracksuit pocket, motionless.'
       },
@@ -94,7 +95,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_saeki_nap', locationIds: ['school_infirmary'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_saeki.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.saeki,
         zh: '保健室的帘子拉着一半。佐伯老师坐在桌前写记录，头也不抬地说了一句「奥、空いてるよ」。',
         en: 'The curtain is half drawn. Dr Saeki, writing up notes without looking up, says the bed at the back is free.'
       },
@@ -110,7 +111,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_shiori_overdue', locationIds: ['school_library'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_shiori.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.shiori,
         zh: '借还台后面那个女生把一张卡片推过来，上面是你的名字，还有一个红色的日期。',
         en: 'The girl behind the desk slides a card across. Your name is on it, and a date in red.'
       },
@@ -126,7 +127,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_ellen_kansai', locationIds: ['international_office', 'classroom_morning'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_ellen.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.ellen,
         zh: '英语外教在走廊上被两个一年级拦住，让她说一句关西腔。',
         en: 'Two first-years have cornered the English teacher in the corridor and are asking her to say something in Kansai-ben.'
       },
@@ -147,7 +148,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_aoi_gossip', locationIds: ['classroom_morning', 'school_terrace'], weight: 10, repeatable: true,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_aoi.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.aoi,
         zh: '葵从后面拍你的肩，还没等你转过去就已经开始讲了——三班有人在天台被抓、自动售货机换了新品、下周可能有小测。',
         en: 'Aoi taps your shoulder from behind and has started talking before you have turned round: somebody got caught on the roof, the vending machine has a new line, there may be a test next week.'
       },
@@ -163,7 +164,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_kanzaki_boom', locationIds: ['school_science_lab'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_kanzaki.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.kanzaki,
         zh: '理科室里有一股烧焦的味道。神崎老师举着一支试管对着光看，非常满意的样子。',
         en: 'The science room smells of burning. Mr Kanzaki holds a test tube up to the light, looking extremely satisfied.'
       },
@@ -180,7 +181,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_kenta_bike', locationIds: ['school_bicycle_parking'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_kenta.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.kenta,
         zh: '健太蹲在自己的车前面，链条掉了。他抬头看见你，第一句话是「工具、持ってへん？」',
         en: 'Kenta is crouched over his bike with the chain off. He looks up and the first thing he says is whether you have tools.'
       },
@@ -196,7 +197,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_hiroki_frontrow', locationIds: ['classroom_morning', 'school_library'], weight: 8,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_hiroki.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.hiroki,
         zh: '广树在第一排，面前摊着一本你在书店见过的题集，最厚的那本。',
         en: 'Hiroki is in the front row with a problem book open in front of him. You have seen it in the shop. It is the thick one.'
       },
@@ -212,7 +213,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_fujiwara_form', locationIds: ['international_office'], weight: 8,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_fujiwara.webp`,
+        type: 'narration', characterImage: SCHOOL_NPC_SPRITES.fujiwara,
         zh: '藤原老师从一摞纸里抽出一张，递给你：「これ、去年の分。書き方が同じやから」。',
         en: 'Ms Fujiwara pulls a sheet from a stack and hands it over: last year’s, because it is filled in the same way.'
       },
@@ -230,7 +231,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_chen_steamer', locationIds: ['nankinmachi'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_chen.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.chen,
         zh: '陈师傅掀开蒸笼，一团白汽冲出来，整条街的人同时朝这边看了一眼。',
         en: 'Chef Chen lifts the steamer and a cloud goes up, and everyone on the street looks over at the same moment.'
       },
@@ -246,7 +247,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_matsumoto_bowl', locationIds: ['ramen_shop_interior', 'ramen_rekishi'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_matsumoto.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.matsumoto,
         zh: '老板把一碗端到你面前，碗沿高出面汤只有一指。他退开半步，抱着手看你。',
         en: 'The boss sets a bowl down in front of you with barely a finger of rim above the broth, steps back, folds his arms and watches.'
       },
@@ -262,7 +263,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_munakata_siphon', locationIds: ['retro_kissaten'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_munakata.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.munakata,
         zh: '老板在吧台后面弄那个虹吸壶。整个过程十二分钟，他一句话都没说，你也不敢说。',
         en: 'The master works the siphon behind the counter. The whole thing takes twelve minutes, in which he says nothing and you do not dare to either.'
       },
@@ -278,7 +279,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_mina_tray', locationIds: ['nishimura_coffee_salon', 'former_settlement_salon'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_mina.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.mina,
         zh: '服务生端着六杯东西从你旁边过去，手腕一动都没动，杯子里的液面也一动没动。',
         en: 'The waitress passes you carrying six of something. Her wrist does not move and neither do the surfaces in the cups.'
       },
@@ -294,7 +295,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_gensan_still', locationIds: ['suma_fishing_pier', 'meriken_park'], weight: 10, repeatable: true,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_gensan.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.gensan,
         zh: '堤防最外面那个位置永远是同一个老头。他上次也在这儿，姿势和现在一模一样。',
         en: 'The far end of the pier is the same old man it always is. He was here last time, in exactly this posture.'
       },
@@ -310,7 +311,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_shizue_basin', locationIds: ['nada_onsen', 'arima_onsen'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_shizue.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.shizue,
         zh: '前台那个老太太把一个脸盆推过来，盆底写着一个「ゆ」。',
         en: 'The old lady at the desk pushes a basin across. There is one character on the bottom of it.'
       },
@@ -326,7 +327,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_takahashi_scan', locationIds: ['hyakkin_store', 'convenience_store'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_takahashi.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.takahashi,
         zh: '店员正在给一整排货扫码，速度快得像在打节拍。滴、滴、滴、滴。',
         en: 'The shop assistant is scanning a whole row of stock at a speed that has turned into a rhythm. Beep, beep, beep, beep.'
       },
@@ -342,7 +343,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_watanabe_watch', locationIds: ['sannomiya_station', 'portliner_platform'], weight: 10, repeatable: true,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_watanabe.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.watanabe,
         zh: '一个西装男在检票口前面看表，看完抬头看发车牌，又低头看表。',
         en: 'A man in a suit checks his watch at the gate, looks up at the departure board, and checks his watch again.'
       },
@@ -358,7 +359,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_riko_shelf', locationIds: ['junkudo_bookstore'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_riko.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.riko,
         zh: '文库本那一排前面站着一个戴贝雷帽的女人。她抽出一本，翻两页，放回去，再抽下一本。',
         en: 'A woman in a beret is standing at the paperbacks. She takes one out, reads two pages, puts it back, takes the next.'
       },
@@ -374,7 +375,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_yuki_photo', locationIds: ['meriken_park', 'kitano_slope', 'kitano_kazamidori_square'], weight: 10,
     script: [
       {
-        type: 'narration', characterImage: `${C}npc_city_yuki.webp`,
+        type: 'narration', characterImage: CITY_NPC_SPRITES.yuki,
         zh: '一个拿着相机和纸质地图的女人蹲在地上，正对着一块很普通的路面拍照。',
         en: 'A woman with a camera and a paper map is crouched on the pavement, photographing a completely ordinary bit of it.'
       },
@@ -404,22 +405,22 @@ export const STREET_SCENES: StreetScene[] = [
         en: 'There is a banner outside a live house under the tracks. Four girls are moving gear out of it. Three of them are moving gear. The fourth is hiding.'
       },
       {
-        type: 'narration', characterImage: `${C}easter_bocchi.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.bocchi,
         zh: '躲着的那个背着一个比她还大的吉他盒，正试图让自己整个人消失在一个垃圾桶后面。她做得意外地好。',
         en: 'The hiding one has a guitar case bigger than she is, and is attempting to disappear entirely behind a wheelie bin. She is unexpectedly good at it.'
       },
       {
-        type: 'narration', characterImage: `${C}easter_nijika.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.nijika,
         zh: '金发那个把她从垃圾桶后面拽出来，一边拽一边笑，声音很亮。',
         en: 'The blonde one hauls her out from behind the bin, laughing, in a very bright voice.'
       },
       {
-        type: 'narration', characterImage: `${C}easter_ryo.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.ryo,
         zh: '穿军绿外套那个抱着贝斯站在旁边，全程没说话，也没帮忙。',
         en: 'The one in the olive parka stands there holding a bass, saying nothing and helping with nothing.'
       },
       {
-        type: 'narration', characterImage: `${C}easter_kita.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.kita,
         zh: '红头发那个塞给你一张传单，笑得非常好看：「よかったら、今度」。',
         en: 'The red-haired one presses a flyer into your hand with a very good smile and says, if you are free, some time.'
       },
@@ -438,12 +439,12 @@ export const STREET_SCENES: StreetScene[] = [
     timeSlots: ['lunch', 'afternoon'],
     script: [
       {
-        type: 'narration', characterImage: `${C}easter_yui.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.yui,
         zh: '一个戴草帽的女生举着西瓜冰棒往这边跑，跑得太快，冰棒开始往下滑。',
         en: 'A girl in a straw hat comes running this way holding a watermelon ice lolly, running fast enough that the lolly begins to slide.'
       },
       {
-        type: 'narration', characterImage: `${C}easter_mio.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.mio,
         zh: '后面那个黑长直的女生喊了一句「走らないで」，然后也开始跑。',
         en: 'The tall dark-haired one behind her shouts at her not to run, and then also starts running.'
       },
@@ -464,7 +465,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_egg_bread', locationIds: ['meriken_park', 'kobe_harbor'], weight: 3,
     script: [
       {
-        type: 'narration', characterImage: `${C}easter_denji.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.denji,
         zh: '长椅上坐着一个金色乱发的男生，正在吃一片抹了果酱的面包，吃得非常郑重。',
         en: 'On the bench there is a boy with messy blond hair eating a slice of bread with jam on it, and eating it with enormous ceremony.'
       },
@@ -485,7 +486,7 @@ export const STREET_SCENES: StreetScene[] = [
     id: 'st_egg_cafe', locationIds: ['retro_kissaten', 'nishimura_coffee_salon'], weight: 3,
     script: [
       {
-        type: 'narration', characterImage: `${C}easter_reze.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.reze,
         zh: '吧台最里面坐着一个短发女生，两只手捧着杯子，正在看窗外。',
         en: 'At the far end of the counter a short-haired girl is holding a cup in both hands, looking out of the window.'
       },
@@ -507,7 +508,7 @@ export const STREET_SCENES: StreetScene[] = [
     timeSlots: ['night'],
     script: [
       {
-        type: 'narration', characterImage: `${C}easter_rin.webp`,
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.rin,
         zh: '神社的石阶上站着一个黑色双马尾的女生，红毛衣，抱着手，正皱着眉看向本殿后面那片林子。',
         en: 'On the shrine steps stands a girl with black twin tails in a red sweater, arms folded, frowning at the trees behind the main hall.'
       },
