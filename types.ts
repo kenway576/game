@@ -209,7 +209,10 @@ export interface StatGainEvent {
 }
 
 // 6. 关西四季动态日历与时间系统 (Calendar & Schedule)
-export type TimeSlot = 'morning' | 'afternoon' | 'night';
+// 一天：早晨（上课，玩家不能行动）→ 午休 → 午后 → 夜里。
+// 午休是后加的：以前只有"放学后"这一段，于是"为什么放学了还能挨个找人"
+// 这个问题没有答案。午休把"在校内碰到人"这件事给了一个属于它的时段。
+export type TimeSlot = 'morning' | 'lunch' | 'afternoon' | 'night';
 
 export interface GameCalendar {
   month: number;

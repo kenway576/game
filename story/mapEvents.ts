@@ -70,7 +70,9 @@ export const isLocationOpenNow = (loc: MapLocation, calendar: GameCalendar): boo
 // 坐下吃一碗二郎系拉面、跑一趟有马温泉是 2 格——去完就只能回家了。
 // 剩余格数不够时地图上照样列出来，但灰掉并写明"今天来不及了"。
 // ---------------------------------------------------------
-export const AFTERSCHOOL_SLOTS: TimeSlot[] = ['afternoon', 'night'];
+// 一天里玩家真正能动的三格。午休那一格只有校内开门，
+// 靠每个地点自己的 timeSlots 卡住，不需要另写一套规则。
+export const AFTERSCHOOL_SLOTS: TimeSlot[] = ['lunch', 'afternoon', 'night'];
 
 // 今天还剩几格。早上视为一整天都还没用（第 1 章之后正常不会停在早上）。
 export const slotsLeftToday = (calendar: GameCalendar): number => {

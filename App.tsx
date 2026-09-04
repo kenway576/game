@@ -788,7 +788,7 @@ const App: React.FC = () => {
         ...prev,
         day: prev.day + 1,
         dayOfWeek: weekdayFor(prev.month, prev.day + 1),
-        timeSlot: 'afternoon',
+        timeSlot: 'lunch',
         weather: weathers[Math.floor(Math.random() * weathers.length)]
       };
     });
@@ -816,7 +816,9 @@ const App: React.FC = () => {
     setDay1Done(true);
     setPlayingDay1(false);
     // 第一章结束 = 4/11 过完。自由游玩从第二天下午开始。
-    setGameCalendar({ month: 4, day: 12, dayOfWeek: '水 (Wed)', timeSlot: 'afternoon', weather: 'sunny' });
+    // 自由游玩从第二天的午休开始，而不是午后——
+    // 午休是碰到人的那一格，跳过它等于跳过了一天里最要紧的选择。
+    setGameCalendar({ month: 4, day: 12, dayOfWeek: '水 (Wed)', timeSlot: 'lunch', weather: 'sunny' });
     setCurrentScene(DEFAULT_SCENE);
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;

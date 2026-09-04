@@ -101,6 +101,7 @@ const PhoneScreen: React.FC<Props> = ({
   };
 
   const time = calendar.timeSlot === 'morning' ? '07:42'
+    : calendar.timeSlot === 'lunch' ? '12:26'
     : calendar.timeSlot === 'afternoon' ? '16:05' : '21:18';
   const weekIdx = ['日', '月', '火', '水', '木', '金', '土']
     .indexOf((calendar.dayOfWeek || '').charAt(0));

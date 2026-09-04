@@ -123,6 +123,7 @@ const LobbyScreen: React.FC<Props> = ({
             </span>
             <span className="text-[10px] font-bold text-white/50">
               {calendar.timeSlot === 'morning' ? (userState.language === 'en' ? 'morning' : '早晨')
+                : calendar.timeSlot === 'lunch' ? (userState.language === 'en' ? 'lunch' : '午休')
                 : calendar.timeSlot === 'afternoon' ? (userState.language === 'en' ? 'after school' : '放学后')
                 : (userState.language === 'en' ? 'night' : '夜晚')}
             </span>

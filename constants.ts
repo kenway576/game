@@ -278,6 +278,20 @@ export const SCHOOL_NPC_SPRITES = {
   saeki:    '/images/characters/npc_saeki.webp',     // 佐伯校医（保健室校医）
 } as const;
 
+// 🏙️ 神户市井与商业街群像 NPC 立绘（纯净无白边透明通道）
+export const CITY_NPC_SPRITES = {
+  takahashi: '/images/characters/npc_city_takahashi.webp', // 百元店收银小哥（高桥）
+  riko:      '/images/characters/npc_city_riko.webp',      // 三宫潮牌店员（莉子）
+  gensan:    '/images/characters/npc_city_gensan.webp',    // 须磨渔具店老伯（源叔）
+  matsumoto: '/images/characters/npc_city_matsumoto.webp', // 六甲道历史之刻拉面店长（松本）
+  mina:      '/images/characters/npc_city_mina.webp',      // 元町格里尔一平侍应生（美奈）
+  munakata:  '/images/characters/npc_city_munakata.webp',  // 纯喫茶咖啡师掌柜（宗方 Master）
+  chen:      '/images/characters/npc_city_chen.webp',      // 南京町中华街包子大厨（陈师傅）
+  shizue:    '/images/characters/npc_city_shizue.webp',    // 有马/滩温泉浴场老板娘（静江女将）
+  watanabe:  '/images/characters/npc_city_watanabe.webp',  // 三宫通勤上班族（渡边）
+  yuki:      '/images/characters/npc_city_yuki.webp',      // 北野坡道摄影女大学生（由纪）
+} as const;
+
 export const CHARACTERS: Record<CharacterId, Character> = {
   [CharacterId.ASUKA]: {
     id: CharacterId.ASUKA,

@@ -34,7 +34,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '1年A班 教室', nameEn: 'Class 1-A',
     blurbZh: '你的座位在窗边倒数第二排——转学生的标准配置，你已经放弃吐槽了。',
     blurbEn: 'Your desk is second from the back, by the window. Standard-issue transfer student seating. You have stopped commenting on it.',
-    timeSlots: ['morning', 'afternoon'],
+    timeSlots: ['morning', 'lunch', 'afternoon'],
     regulars: [CharacterId.ASUKA, CharacterId.HIKARI],
     ambientZh: [
       '教室里只剩下值日生在擦黑板。粉笔灰在斜进来的光里慢慢往下沉。',
@@ -51,7 +51,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '图书室', nameEn: 'School Library',
     blurbZh: '三面书架，一扇朝西的窗。下午三点以后整间屋子会变成蜂蜜色。',
     blurbEn: 'Shelves on three walls and one west-facing window. After three in the afternoon the whole room turns honey-coloured.',
-    timeSlots: ['afternoon'],
+    timeSlots: ['lunch', 'afternoon'],
     regulars: [CharacterId.REI],
     ambientZh: ['靠窗那个位置空着，但椅子被拉出来了一点点——像是刚有人起身。'],
     ambientEn: ['The seat by the window is empty, but the chair is pulled out a little. As if someone has just stood up.']
@@ -62,7 +62,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '天台', nameEn: 'Rooftop',
     blurbZh: '门上写着「立入禁止」，锁却从来没锁上过。全校都知道，全校都装作不知道。',
     blurbEn: 'The door says NO ENTRY. The lock has never once been locked. The whole school knows, and the whole school pretends not to.',
-    timeSlots: ['afternoon', 'night'],
+    timeSlots: ['lunch', 'afternoon', 'night'],
     regulars: [CharacterId.SORA],
     ambientZh: ['风比楼下大得多。你在护栏边站了一会儿，看见港口那头有一艘船正在慢慢转向。'],
     ambientEn: ['The wind is much stronger up here. You stand at the rail a while and watch a ship out in the harbour slowly come about.']
@@ -74,7 +74,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     blurbZh: '中午挤得像战场，放学后空得能听见冰箱的声音。乌冬 280 日元。',
     blurbEn: 'A battlefield at noon, empty enough after school that you can hear the refrigerator. Udon, 280 yen.',
     mapScene: 'kaisei_cafeteria_hall',
-    timeSlots: ['morning', 'afternoon'],
+    timeSlots: ['morning', 'lunch', 'afternoon'],
     regulars: [CharacterId.HIKARI, CharacterId.ASUKA],
     ambientZh: ['自动售货机吞了你的硬币，又吐了出来。你换了一枚，它才勉强同意。'],
     ambientEn: ['The vending machine swallows your coin and spits it back. You try another one and it grudgingly consents.']
@@ -86,7 +86,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     blurbZh: '篮球砸在地板上的声音在这里会绕一圈才回来。',
     blurbEn: 'A basketball hitting this floor takes a full lap around the room before it comes back to you.',
     extraScenes: ['kaisei_gym_interior'],
-    timeSlots: ['afternoon'],
+    timeSlots: ['lunch', 'afternoon'],
     regulars: [CharacterId.SORA],
     ambientZh: ['球架下摆着一只没人收的球。你投了一次，没进。'],
     ambientEn: ['A ball nobody put away sits under the hoop. You take one shot. You miss.']
@@ -99,7 +99,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     blurbEn: 'A small square of sky fenced in by four buildings. When it rains, this is the best-sounding place in the school.',
     mapScene: 'courtyard_tree',
     extraScenes: ['courtyard_tree'],
-    timeSlots: ['morning', 'afternoon'],
+    timeSlots: ['morning', 'lunch', 'afternoon'],
     regulars: [CharacterId.ASUKA],
     ambientZh: ['长椅是湿的。你没坐，就站着听了一会儿雨打在铁皮雨棚上的声音。'],
     ambientEn: ['The bench is wet. You do not sit; you stand and listen to the rain on the tin awning for a while.']
@@ -113,7 +113,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你还没在这栋楼里走全过。',
     lockedHintEn: 'You have not walked the whole building yet.',
-    timeSlots: ['afternoon'],
+    timeSlots: ['lunch', 'afternoon'],
     regulars: [CharacterId.REI],
     ambientZh: ['钢琴盖是开的。你按了一个键，声音在空屋子里拖得很长。'],
     ambientEn: ['The piano lid is open. You press one key and the note drags out long in the empty room.']
@@ -128,7 +128,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你还没在这栋楼里走全过。',
     lockedHintEn: 'You have not walked the whole building yet.',
-    timeSlots: ['afternoon'],
+    timeSlots: ['lunch', 'afternoon'],
     regulars: [CharacterId.HIKARI],
     ambientZh: ['画架上有一张没画完的港口。颜料还没干透。'],
     ambientEn: ['An unfinished harbour sits on an easel. The paint has not fully dried.']
@@ -143,7 +143,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你还没在这栋楼里走全过。',
     lockedHintEn: 'You have not walked the whole building yet.',
-    timeSlots: ['morning', 'afternoon'],
+    timeSlots: ['morning', 'lunch', 'afternoon'],
     ambientZh: ['校医不在，桌上压着一张「すぐ戻ります」。你在门口站了一会儿就走了。'],
     ambientEn: ['The nurse is out; a note on the desk says back shortly. You stand in the doorway a moment and leave.']
   },
@@ -156,7 +156,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你还没在这栋楼里走全过。',
     lockedHintEn: 'You have not walked the whole building yet.',
-    timeSlots: ['afternoon'],
+    timeSlots: ['lunch', 'afternoon'],
     regulars: [CharacterId.REI],
     ambientZh: ['人体骨骼模型被人套了一件校服外套。没有人承认是自己干的。'],
     ambientEn: ['Someone has put a school blazer on the skeleton model. Nobody is admitting to it.']
@@ -167,7 +167,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     nameZh: '自行车棚', nameEn: 'Bicycle Shed',
     blurbZh: '铁皮顶棚下面塞了两百多辆车。放学那阵子这儿最堵，也最容易撞见人。',
     blurbEn: 'Two hundred-odd bicycles under a tin roof. At home time it is the most congested place in the school, and therefore the easiest place to run into somebody.',
-    timeSlots: ['morning', 'afternoon'],
+    timeSlots: ['morning', 'lunch', 'afternoon'],
     ambientZh: ['你的车被两辆车夹住了。你花了三分钟才把它抽出来。'],
     ambientEn: ['Your bike is wedged between two others. It takes three minutes to work it free.']
   },
@@ -182,7 +182,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     blurbZh: '一张大桌子、三面书架、一个地球仪。墙上贴满了历年的活动照片，照片里的人一年一换。',
     blurbEn: 'One big table, shelves on three sides, a globe. The wall is covered in photographs from previous years, and the faces in them change annually.',
     extraScenes: ['international_office_window'],
-    timeSlots: ['morning', 'afternoon'],
+    timeSlots: ['morning', 'lunch', 'afternoon'],
     regulars: [CharacterId.HIKARI],
     ambientZh: [
       '桌上摊着别人没填完的表格。你看了一眼，发现自己现在能读懂大半了。',
@@ -367,7 +367,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
-    timeSlots: ['morning', 'afternoon'],
+    timeSlots: ['morning', 'lunch', 'afternoon'],
     regulars: [CharacterId.INARI],
     ambientZh: ['你在赛钱箱前站着，摸遍口袋只找到一枚十日元。你还是投了。'],
     ambientEn: ['You stand at the offering box, dig through your pockets and come up with a single ten-yen coin. You put it in anyway.']

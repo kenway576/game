@@ -123,11 +123,16 @@ const MapScreen: React.FC<Props> = ({
   const timeLabel = en
     ? `${calendar.month}/${calendar.day} · ${calendar.timeSlot}`
     : `${calendar.month} 月 ${calendar.day} 日 · ${
-        calendar.timeSlot === 'morning' ? '早晨' : calendar.timeSlot === 'afternoon' ? '午后' : '夜里'
+        calendar.timeSlot === 'morning' ? '早晨'
+          : calendar.timeSlot === 'lunch' ? '午休'
+          : calendar.timeSlot === 'afternoon' ? '午后' : '夜里'
       }`;
 
   const slotLabel = (s: string) =>
-    en ? s : s === 'morning' ? '早晨' : s === 'afternoon' ? '午后' : '夜里';
+    en ? s
+      : s === 'morning' ? '早晨'
+      : s === 'lunch' ? '午休'
+      : s === 'afternoon' ? '午后' : '夜里';
 
   const selUnlocked = isLocationUnlocked(selected, storyFlags);
   const selOpen = isLocationOpenNow(selected, calendar);
