@@ -47,17 +47,28 @@ const isSkin = (r, g, b) => {
   return l > 60 && l < 245;
 };
 
-const skinMean = async (file) => {
+// 取**受光面**的肤色，不是全部皮肤的平均。
+//
+// 平均值会被"这张图里有多少阴影"带着走：同一个人，蹲着的那张阴影多、
+// 平均就暗，看起来像换了个肤色，其实没有。所以先按亮度排序，
+// 只取最亮的那 40% 求中位数——那一段就是"打光打到的皮肤"，
+// 在不同姿势不同构图之间稳定得多。
+const skinTone = async (file) => {
   const { data } = await sharp(fs.readFileSync(file)).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-  let R = 0, G = 0, B = 0, n = 0;
+  const px = [];
   for (let i = 0; i < data.length; i += 4) {
     if (data[i + 3] < 200) continue;
     const r = data[i], g = data[i + 1], b = data[i + 2];
     if (!isSkin(r, g, b)) continue;
-    R += r; G += g; B += b; n++;
+    px.push([0.299 * r + 0.587 * g + 0.114 * b, r, g, b]);
   }
-  return n ? { r: R / n, g: G / n, b: B / n, n } : null;
+  if (px.length < 400) return null;
+  px.sort((a, b) => a[0] - b[0]);
+  const lit = px.slice(Math.floor(px.length * 0.6));      // 最亮的 40%
+  const mid = lit[Math.floor(lit.length / 2)];
+  return { r: mid[1], g: mid[2], b: mid[3], n: px.length };
 };
+const skinMean = skinTone;
 
 const run = async () => {
   const ref = await skinMean(path.join(DIR, REF + '.webp'));
