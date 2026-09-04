@@ -102,6 +102,9 @@ export const SCENE_MAP: Record<string, string> = {
   'kyoto_bamboo':           '/images/backgrounds/bg_kyoto_arashiyama_bamboo.webp',
   'kyoto_kamogawa':         '/images/backgrounds/bg_kyoto_kamogawa_river.webp',
   'kyoto_kamogawa_delta':   '/images/backgrounds/bg_kyoto_kamogawa_river.webp',
+  // 🏆 经典致敬名场面 CG（Fate 操场夕阳跳高之神）
+  'shirou_high_jump':        '/images/backgrounds/cg_shirou_high_jump_sunset.webp',
+  'shirou_high_jump_sunset': '/images/backgrounds/cg_shirou_high_jump_sunset.webp',
   // 🚃 序章（第0章）专用场景。图尚未交付时由 SCENE_FALLBACK 顶上，不会开天窗。
   'train_interior':      '/images/backgrounds/bg_jr_train_interior.webp',
   'sannomiya_station':   '/images/backgrounds/bg_sannomiya_station_gate.webp',
