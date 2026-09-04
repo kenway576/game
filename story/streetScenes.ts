@@ -529,6 +529,186 @@ export const STREET_SCENES: StreetScene[] = [
       },
       seen('你在这座城市里撞见了一件不归你管的事', 'You walked into something in this city that was not yours to walk into')
     ]
+  },
+  {
+    // 花生。一个把心思写在脸上的小孩，而且好像还听得见别人的心思。
+    id: 'st_egg_peanuts', locationIds: ['convenience_store', 'hyakkin_store'], weight: 3,
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.anya,
+        zh: '零食架前面站着一个很小的小孩，粉色头发，抱着一大袋花生，抱得像抱着一件贵重物品。',
+        en: 'In front of the snack shelf there is a very small child with pink hair, holding a large bag of peanuts the way one holds something valuable.'
+      },
+      {
+        type: 'narration',
+        zh: '她抬头看了你一眼。你什么都没说，但她的表情忽然变了——变成一种"我知道你在想什么"的、非常得意的笑。',
+        en: 'She looks up at you. You have said nothing, but her expression changes into a very smug one, of the sort worn by somebody who knows what you are thinking.'
+      },
+      {
+        type: 'narration',
+        zh: '你当时正在想今天到底该不该买那盒打折的布丁。你莫名其妙地觉得被看穿了，于是买了。',
+        en: 'You had been weighing up whether to buy the discounted pudding. You feel inexplicably read, and buy it.'
+      },
+      seen('你被一个小孩看穿了', 'You were seen through by a small child')
+    ]
+  },
+  {
+    // 神社里哭得最大声的那一个，偏偏不是来许愿的。
+    id: 'st_egg_goddess', locationIds: ['ikuta_shrine', 'kitano_lookout'], weight: 3,
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.aqua,
+        zh: '本殿前面有个蓝头发的女生正抱着头哭，哭得非常大声，一点都不打算收敛。',
+        en: 'In front of the main hall a blue-haired girl is holding her head and crying, extremely loudly, with no intention of moderating it.'
+      },
+      {
+        type: 'narration',
+        zh: '她一边哭一边喊，大意是这个月一个人都没有来拜她。',
+        en: 'Through it she is shouting something to the effect that not one person has come to worship her this month.'
+      },
+      {
+        type: 'narration',
+        zh: '你往功德箱里投了五円，合掌拜了一下。她立刻不哭了，非常自然地摆出一副宽厚的表情。',
+        en: 'You put five yen in the box and put your hands together. She stops crying instantly and arranges her face into an expression of great magnanimity.'
+      },
+      {
+        type: 'narration',
+        zh: '五円。ご縁。你后来才反应过来自己为什么偏偏投了这一枚。',
+        en: 'Five yen. The coin you throw for a connection. It occurs to you afterwards that this is why that is the coin.'
+      },
+      seen('你花五円买了一个神的好心情', 'Five yen bought a deity’s good mood')
+    ]
+  },
+  {
+    // 拉面店那两个。一个能吃，一个在等她吃完。
+    id: 'st_egg_detective', locationIds: ['ramen_shop_interior', 'ramen_rekishi', 'school_terrace'], weight: 3,
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.chika,
+        zh: '隔壁座位那个粉发女生面前摆着一碗堆得很高的东西，她正在非常认真地吃，速度快得不像在吃。',
+        en: 'The pink-haired girl at the next seat has a bowl in front of her stacked improbably high, and is eating it with great seriousness, at a speed that does not look like eating.'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.hayasaka,
+        zh: '她旁边那个金发的双手抱在胸前，低头看手机，一口都没动。',
+        en: 'The blonde beside her has her arms folded and is looking at her phone. She has not touched anything.'
+      },
+      {
+        type: 'narration',
+        zh: '粉发那个吃完之后抬起头，非常严肃地对着空气说了一句"我推理出来了"。金发那个头都没抬。',
+        en: 'The pink-haired one finishes, looks up and announces to the air, with total gravity, that she has worked it out. The blonde does not look up.'
+      },
+      seen('你见识了一种非常高效的进食方式', 'You witnessed an extremely efficient method of eating')
+    ]
+  },
+  {
+    // 拿着写字板的人，在一个只有游客的地方做记录。
+    id: 'st_egg_marine', locationIds: ['suma_aquarium', 'meriken_park', 'suma_beach'], weight: 3,
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.jotaro,
+        zh: '一个穿白色长外套、戴着帽子的高个子男人站在水槽前面，拿着写字板在记东西。',
+        en: 'A very tall man in a long white coat and a cap stands at the tank with a clipboard, writing things down.'
+      },
+      {
+        type: 'narration',
+        zh: '周围全是拿着手机拍鱼的游客。只有他在看鱼本身，而且看得非常久。',
+        en: 'Everyone around him is photographing the fish with their phones. He is the only one looking at the fish, and he looks for a very long time.'
+      },
+      {
+        type: 'narration',
+        zh: '你也试着看了一分钟。一分钟之后你发现那条鱼一直在同一条路线上游，一圈都没有偏过。',
+        en: 'You try it for a minute. After a minute you notice that the fish has been swimming the same line the whole time, and has not once deviated.'
+      },
+      {
+        type: 'narration',
+        zh: '他"やれやれ"了一声，翻过一页，继续写。',
+        en: 'He makes a short weary noise, turns the page, and goes on writing.'
+      },
+      seen('你学会了看一样东西超过一分钟', 'You learned to look at one thing for longer than a minute')
+    ]
+  },
+  {
+    // 只想过平静生活的人。你完全不知道自己躲开了什么。
+    id: 'st_egg_quiet_life', locationIds: ['kitano_slope', 'sannomiya_station'], weight: 3,
+    timeSlots: ['afternoon', 'night'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.kira,
+        zh: '一个穿紫色西装的男人从你旁边走过去，一只手拎着纸袋，另一只手抬起来看表。',
+        en: 'A man in a purple suit passes you, a paper bag in one hand, the other lifted to check his watch.'
+      },
+      {
+        type: 'narration',
+        zh: '他走得不快也不慢，路线笔直，从头到尾没有看任何人一眼。',
+        en: 'He walks neither fast nor slow, in a straight line, and does not glance at a single person the entire way.'
+      },
+      {
+        type: 'narration',
+        zh: '你莫名其妙地往旁边让了半步，虽然他离你还有三米远。',
+        en: 'For no reason you can identify you take half a step aside, although he is still three metres away.'
+      },
+      {
+        type: 'narration',
+        zh: '他从你身边过去了。你回头看了一眼，他已经拐进了另一条巷子。你没有再想这件事。',
+        en: 'He goes past. You look back and he has already turned into another lane. You do not think about it again.'
+      },
+      seen('你的身体替你做了一个决定', 'Your body made a decision on your behalf')
+    ]
+  },
+  {
+    // 南京町的陈师傅隔壁摊。这一段专门排在陈师傅那条旁边。
+    id: 'st_egg_golden_rice', locationIds: ['nankinmachi'], weight: 3,
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.mao,
+        zh: '南京町最里面那个摊子前面围了一圈人。一个系着头巾的少年正把一盘炒饭举过头顶。',
+        en: 'There is a ring of people round the stall at the far end of Nankinmachi. A boy in a bandana is holding a plate of fried rice above his head.'
+      },
+      {
+        type: 'narration',
+        zh: '那盘炒饭在发光。不是被灯照的——你看了三遍，它自己在发光。',
+        en: 'The fried rice is glowing. Not lit from somewhere: you check three times, and it is glowing on its own.'
+      },
+      {
+        type: 'narration',
+        zh: '围观的人齐声"おおおお"了一下，非常整齐，像是排练过。',
+        en: 'The crowd goes up in one voice, very much together, as though rehearsed.'
+      },
+      {
+        type: 'narration',
+        zh: '你后来问陈师傅那是什么。陈师傅想了很久，说：「アレはな……ああいうもんや」。',
+        en: 'You ask Chef Chen about it afterwards. He thinks for a long time and says that it is, well, one of those.'
+      },
+      seen('你亲眼见过一次会发光的炒饭', 'You have personally seen fried rice glow')
+    ]
+  },
+  {
+    // 值日生。你什么都没看清，但地扫完了。
+    id: 'st_egg_class_duty', locationIds: ['classroom_morning', 'school_bicycle_parking'], weight: 3,
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.sakamoto,
+        zh: '放学后的教室里只剩一个男生在值日。黑色立领制服，眼镜，动作慢得像有背景音乐。',
+        en: 'There is one boy left doing the after-school cleaning. Black high-collared uniform, glasses, moving slowly enough to imply background music.'
+      },
+      {
+        type: 'narration',
+        zh: '他把扫帚转了半圈，接住，同一个动作里顺手推了一下眼镜。窗外正好有风把樱花吹进来。',
+        en: 'He spins the broom half a turn, catches it, and in the same motion adjusts his glasses. Outside, the wind happens to blow cherry petals in.'
+      },
+      {
+        type: 'narration',
+        zh: '花瓣全部落进了他手里那个簸箕。你确认了一下，一片都没有落在地上。',
+        en: 'Every petal lands in the dustpan he is holding. You check. Not one of them reaches the floor.'
+      },
+      {
+        type: 'narration',
+        zh: '你决定不去想这件事是怎么做到的。',
+        en: 'You decide not to think about how that was done.'
+      },
+      seen('你目击了一次不该发生的扫地', 'You witnessed a sweeping that should not have been possible')
+    ]
   }
 ];
 

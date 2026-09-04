@@ -39,6 +39,8 @@ import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slots
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
+import { npcsAt } from './data/npcData';
+import { npcTalkNodes, npcOnDutyAt } from './data/npcTalk';
 import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
 import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
@@ -670,6 +672,12 @@ const App: React.FC = () => {
     // 街头小景排在"碰到人"后面，因为碰到人是这套系统真正的目的；
     // 排在空转前面，因为"看见别人在过自己的日子"比"今天没什么事"值钱得多。
     const street = (!ev && !met) ? pickStreetScene(loc.id, { flags: storyFlags, calendar: gameCalendar }) : null;
+    // 这地方常驻的 NPC。有话可说的话，把"跟他说话"接在这一趟的末尾——
+    // 无论前面演的是街头小景还是一句空转旁白。
+    // 女主角在场的时候不接：那一趟的重点是她，不该被别人岔开。
+    const talkCtx = { flags: storyFlags, calendar: gameCalendar, met: metChars, en: zh === 'en' };
+    const onDuty = (!ev && !met) ? npcOnDutyAt(npcsAt(loc.id), talkCtx) : null;
+    const npcTalk = onDuty ? npcTalkNodes(onDuty, talkCtx) : [];
     setActiveTrip({
       loc,
       event: ev,
@@ -679,16 +687,17 @@ const App: React.FC = () => {
         ? [
             { type: 'scene', scene: loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
             ...street.script,
-            { type: 'effect', setFlags: [street.id] }
+            { type: 'effect', setFlags: [street.id] },
+            ...npcTalk
           ]
-        : buildAmbientScript(loc, zh, gameCalendar, {
+        : [...buildAmbientScript(loc, zh, gameCalendar, {
             met,
             atZh: met ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.atZh || '') : '',
             atEn: met ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.atEn || '') : '',
             awayNote: lunchAwayNote(loc.id, gameCalendar, zh),
             nameZh: met ? CHARACTERS[met].name : '',
             nameEn: met ? CHARACTERS[met].nameEn : ''
-          })
+          }), ...npcTalk]
     });
     // 碰到了人：这一趟结束之后直接进面对面的对话
     setPendingEncounter(met);
@@ -697,6 +706,14 @@ const App: React.FC = () => {
 
   // 食堂点一份。第一次吃某样东西会记一个 flag——
   // 主角那句感想只在第一次说，而且剧情里也能拿这个 flag 来提。
+  // NPC 那些写死的对话给的东西，和剧情节点走同一条路
+  const npcFlags = (flags: string[]) =>
+    setStoryFlags(prev => {
+      const next = { ...prev };
+      for (const f of flags) next[f] = true;
+      return next;
+    });
+
   const eatAtCafeteria = (item: CafeteriaItem, firstTime: boolean) => {
     setLife(l => ({ ...l, yen: Math.max(0, l.yen - item.price) }));
     applyStoryEffects(item.effects);
@@ -1978,8 +1995,11 @@ const App: React.FC = () => {
           storyFlags={storyFlags}
           yen={life.yen}
           slotsLeft={slotsLeftToday(gameCalendar)}
+          metChars={metChars}
           onClose={() => { setInCafeteria(false); finishTrip({}); }}
           onEat={eatAtCafeteria}
+          onEffects={applyStoryEffects}
+          onFlags={npcFlags}
         />
       )}
 
@@ -1992,6 +2012,10 @@ const App: React.FC = () => {
           onClose={() => { setActiveStore(null); finishTrip({}); }}
           onBuy={buyItem}
           onSell={sellItem}
+          storyFlags={storyFlags}
+          metChars={metChars}
+          onEffects={applyStoryEffects}
+          onFlags={npcFlags}
         />
       )}
 

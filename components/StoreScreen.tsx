@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Language, LifeState, GameCalendar } from '../types';
+import { Language, LifeState, GameCalendar, StoryFlags, StoryEffect, CharacterId } from '../types';
 import {
   SEEDS, RODS, POT_ITEM, POT_PRICE, MAX_PLOTS, BAIT_ITEM, BAIT_PRICE, BAIT_PER_PACK,
   findSeed, findFish
 } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
+import NpcTalkPanel from './NpcTalkPanel';
 
 // ---------------------------------------------------------
 // 🏪 店。百元店和渔具店共用这一个组件。
@@ -28,11 +29,15 @@ interface Props {
   onClose: () => void;
   onBuy: (cost: number, apply: (life: LifeState) => LifeState) => void;
   onSell: (gain: number, apply: (life: LifeState) => LifeState) => void;
+  storyFlags: StoryFlags;
+  metChars: CharacterId[];
+  onEffects: (fx: StoryEffect[]) => void;
+  onFlags: (flags: string[]) => void;
 }
 
 const yen = (n: number) => '¥' + n.toLocaleString('ja-JP');
 
-const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose, onBuy, onSell }) => {
+const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose, onBuy, onSell, storyFlags, metChars, onEffects, onFlags }) => {
   const en = language === 'en';
   const [tab, setTab] = useState<'buy' | 'sell'>('buy');
   const [pickId, setPickId] = useState<string | null>(null);
@@ -295,6 +300,14 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
           )}
         </div>
       </div>
+
+      {/* 站柜台的那个人。百元店的高桥知道今天哪一排贴了新标签，
+          渔具店的源老爹知道今天潮动不动——这两条都是能换到东西的情报。 */}
+      <NpcTalkPanel
+        npcId={kind === 'hyakkin' ? 'takahashi' : 'gensan'}
+        calendar={calendar} storyFlags={storyFlags}
+        metChars={metChars} en={en} onEffects={onEffects} onFlags={onFlags}
+      />
     </div>
   );
 };

@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
-import { Language, GameCalendar, StoryFlags, StoryEffect } from '../types';
+import { Language, GameCalendar, StoryFlags, StoryEffect, CharacterId } from '../types';
 import { CAFETERIA_MENU, CafeteriaItem, isSoldOut, tastedFlag } from '../data/cafeteriaData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
+import NpcTalkPanel from './NpcTalkPanel';
 
 // ---------------------------------------------------------
 // 🍜 学生食堂
@@ -23,14 +24,17 @@ interface Props {
   storyFlags: StoryFlags;
   yen: number;
   slotsLeft: number;
+  metChars: CharacterId[];
   onClose: () => void;
   onEat: (item: CafeteriaItem, firstTime: boolean) => void;
+  onEffects: (fx: StoryEffect[]) => void;
+  onFlags: (flags: string[]) => void;
 }
 
 const yenStr = (n: number) => '¥' + n.toLocaleString('ja-JP');
 
 const CafeteriaScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, yen, slotsLeft, onClose, onEat
+  language, calendar, storyFlags, yen, slotsLeft, metChars, onClose, onEat, onEffects, onFlags
 }) => {
   const en = language === 'en';
   const [pickId, setPickId] = useState<string>(CAFETERIA_MENU[0].id);
@@ -243,6 +247,12 @@ const CafeteriaScreen: React.FC<Props> = ({
           )}
         </div>
       </div>
+
+      {/* 山田阿姨就站在右边。她知道明天出什么——这是全校最实用的一条情报。 */}
+      <NpcTalkPanel
+        npcId="yamada" calendar={calendar} storyFlags={storyFlags}
+        metChars={metChars} en={en} onEffects={onEffects} onFlags={onFlags}
+      />
 
       <div className="relative shrink-0 px-4 md:px-6 py-2.5 border-t border-white/10">
         <span className="text-[11px] text-white/40">
