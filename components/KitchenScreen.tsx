@@ -4,23 +4,21 @@ import { RECIPES, canCook, consumeFor, fishCounts } from '../data/cookData';
 import { SEEDS, findFish } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
+import { CookingQTEModal, CookingResult } from './CookingQTEModal';
 
 // ---------------------------------------------------------
 // 🍳 厨房
 //
-// 菜谱**全部列出来**，做不了的灰着并标出缺什么。
-// 藏起来做不了的会让玩家不知道该去种什么、钓什么——
-// 而"为了那道鲷めし去攒一条明石鲷"正是想要的动机。
-//
-// 做完直接吃掉结算属性，不进背包。理由是这游戏没有物品栏管理，
-// 多一层"做好了放着"只会多一次点击，不会多出任何决策。
+// 菜谱全部列出来，做不了的灰着并标出缺什么。
+// 点击做菜将启动随机化 QTE 烹饪小游戏（刀工/火候/沸腾掀盖/点睛），
+// 完美或良好完成才能做出色香味俱全的加属性饭菜！
 // ---------------------------------------------------------
 
 interface Props {
   language: Language;
   life: LifeState;
   onClose: () => void;
-  onCook: (recipe: RecipeDef, firstTime: boolean) => void;
+  onCook: (recipe: RecipeDef, firstTime: boolean, result: CookingResult) => void;
 }
 
 const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => {
@@ -76,10 +74,19 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
     ? k
     : ({ knowledge: '知识', guts: '勇气', kindness: '体贴', charm: '魅力', proficiency: '灵巧' } as const)[k];
 
+  const [cookingTarget, setCookingTarget] = useState<RecipeDef | null>(null);
+
   const cook = () => {
     if (!sel || !canCook(sel, life)) return;
     audioManager.playSfx('confirm');
-    onCook(sel, !dex[sel.id]);
+    setCookingTarget(sel);
+  };
+
+  const handleQTEFinish = (result: CookingResult) => {
+    if (cookingTarget) {
+      onCook(cookingTarget, !dex[cookingTarget.id], result);
+    }
+    setCookingTarget(null);
   };
 
   const ok = sel && canCook(sel, life);
@@ -188,10 +195,10 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
               <div className="mt-7">
                 <button onClick={cook} disabled={!ok}
                   className={`px-9 py-3 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
-                    ok ? 'bg-amber-400 text-black hover:bg-white' : 'bg-white/10 text-white/30 cursor-not-allowed'
+                    ok ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-black hover:brightness-110 shadow-[0_0_20px_rgba(245,158,11,0.4)]' : 'bg-white/10 text-white/30 cursor-not-allowed'
                   }`}>
                   <span className="block transform skew-x-12">
-                    {ok ? (en ? 'Cook & eat' : '做来吃') : (en ? 'Missing ingredients' : '材料不够')}
+                    {ok ? (en ? 'Cook (QTE) ▶' : '开始料理 (QTE) ▶') : (en ? 'Missing ingredients' : '材料不够')}
                   </span>
                 </button>
               </div>
@@ -199,6 +206,16 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
           )}
         </div>
       </div>
+
+      {cookingTarget && (
+        <CookingQTEModal
+          recipe={cookingTarget}
+          language={language}
+          firstTime={!dex[cookingTarget.id]}
+          onFinish={handleQTEFinish}
+          onCancel={() => setCookingTarget(null)}
+        />
+      )}
     </div>
   );
 };

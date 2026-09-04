@@ -766,21 +766,56 @@ const App: React.FC = () => {
     }
   };
 
-  // 做菜：吃掉结算属性，第一次做的多给一点知识
-  const cooked = (r: RecipeDef, firstTime: boolean) => {
+  // 做菜：QTE 触发成功结算美味属性（完美烹饪额外获得灵巧+1，初次获得知识+1）；失败烧焦扣除食材且不给料理属性
+  const cooked = (r: RecipeDef, firstTime: boolean, result: 'perfect' | 'success' | 'failed' = 'success') => {
+    if (result === 'failed') {
+      setLife(l => consumeFor(r, l));
+      applyStoryEffects([
+        {
+          stat: 'guts',
+          amount: 1,
+          reasonZh: `虽然把${r.nameZh}烧焦了，但在焦烟中磨炼了直面失败的勇气`,
+          reasonEn: `Burnt the ${r.nameEn.toLowerCase()}, but hardened your resolve`
+        }
+      ]);
+      flashLife(userState.language === 'en' ? `Cooking failed! Burnt ${r.nameEn}...` : `料理失控！把${r.nameZh}烧焦了……`);
+      return;
+    }
+
     setLife(l => {
       const next = consumeFor(r, l);
       return { ...next, cookedDex: { ...(l.cookedDex || {}), [r.id]: ((l.cookedDex || {})[r.id] || 0) + 1 } };
     });
+
+    const extraEffects = [];
+    if (result === 'perfect') {
+      extraEffects.push({
+        stat: 'proficiency' as const,
+        amount: 1,
+        reasonZh: `绝妙火候与刀工点睛（极品大成功奖励）`,
+        reasonEn: `Flawless culinary timing & skill (Superb bonus)`
+      });
+    }
+    if (firstTime) {
+      extraEffects.push({
+        stat: 'knowledge' as const,
+        amount: 1,
+        reasonZh: `你学会做${r.nameZh}了`,
+        reasonEn: `You learned to make ${r.nameEn.toLowerCase()}`
+      });
+    }
+
     applyStoryEffects([
       ...r.effects,
-      ...(firstTime
-        ? [{ stat: 'knowledge' as const, amount: 1,
-             reasonZh: `你学会做${r.nameZh}了`, reasonEn: `You learned to make ${r.nameEn.toLowerCase()}` }]
-        : [])
+      ...extraEffects
     ]);
+
     if (r.word) collectStoryWords([r.word]);
-    flashLife(userState.language === 'en' ? `Made ${r.nameEn}` : `做了${r.nameZh}`);
+    if (result === 'perfect') {
+      flashLife(userState.language === 'en' ? `★ Masterpiece! Cooked superb ${r.nameEn}` : `★ 大成功！做出了绝品${r.nameZh}！`);
+    } else {
+      flashLife(userState.language === 'en' ? `☆ Cooked delicious ${r.nameEn}` : `☆ 烹饪成功！做出了${r.nameZh}`);
+    }
   };
 
   const caughtFish = (fish: FishDef, cm: number) => {
