@@ -264,6 +264,20 @@ export const LOBBY_PORTRAITS: Partial<Record<CharacterId, string>> = {
   [CharacterId.MAKI]:   '/images/ui/lobby/maki.webp'
 };
 
+// 🏫 海星学园校园群像 NPC 立绘（纯净无白边透明通道）
+export const SCHOOL_NPC_SPRITES = {
+  kenta:    '/images/characters/npc_kenta.webp',     // 健太（阳光运动男同学）
+  hiroki:   '/images/characters/npc_hiroki.webp',    // 宏树（黑框眼镜学霸）
+  aoi:      '/images/characters/npc_aoi.webp',       // 葵（元气短发女同学）
+  shiori:   '/images/characters/npc_shiori.webp',    // 诗织（文静内向文学少女）
+  fujiwara: '/images/characters/npc_fujiwara.webp',  // 藤原老师（知性国语班主任）
+  sakamoto: '/images/characters/npc_sakamoto.webp',  // 坂本老师（体育训导主任）
+  kanzaki:  '/images/characters/npc_kanzaki.webp',   // 神崎老师（理科化学老师）
+  ellen:    '/images/characters/npc_ellen.webp',     // 艾伦老师（英语外教）
+  yamada:   '/images/characters/npc_yamada.webp',    // 山田阿姨（食堂大厨阿姨）
+  saeki:    '/images/characters/npc_saeki.webp',     // 佐伯校医（保健室校医）
+} as const;
+
 export const CHARACTERS: Record<CharacterId, Character> = {
   [CharacterId.ASUKA]: {
     id: CharacterId.ASUKA,
