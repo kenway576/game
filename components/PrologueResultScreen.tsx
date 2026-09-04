@@ -69,7 +69,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
                 : '你跳过了余下的部分。只有真正看到的那些被记了下来。')
               : (en
                 ? 'April 10. Tomorrow morning, the door of Class 2-B opens.'
-                : '4 月 10 日。明天清晨，海星学园高二 B 班的教室门就将向你敞开。')}
+                : '4 月 10 日。明天清晨，港见高校高二 B 班的教室门就将向你敞开。')}
           </p>
         </div>
 

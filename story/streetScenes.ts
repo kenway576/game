@@ -1,7 +1,7 @@
 import { StoryNode, StoryFlags, GameCalendar, TimeSlot } from '../types';
 // 立绘路径从 constants 那三张表取，不在这儿再抄一遍——
 // 抄两遍的代价是换图时漏掉一处，而漏掉的那处不报错，只显示碎图标。
-import { SCHOOL_NPC_SPRITES, CITY_NPC_SPRITES, EASTER_EGG_SPRITES } from '../constants';
+import { SCHOOL_NPC_SPRITES, CITY_NPC_SPRITES, EASTER_EGG_SPRITES, schoolDayNumber } from '../constants';
 import { EASTER_SCENES } from './easterScenes';
 
 // ---------------------------------------------------------
@@ -44,6 +44,10 @@ export interface StreetScene {
   forbidsFlags?: string[];
   // 相对权重。彩蛋压得很低——难得撞见才叫彩蛋。
   weight?: number;
+  // 学年的第几天之后才可能撞见（0 = 开学第一天）。
+  // 彩蛋全部从第一天就能遇到的话，一周之内就会被撞光，
+  // 后面三百天再没有"哎？"可言。所以各自错开。
+  minDay?: number;
   script: StoryNode[];
 }
 
@@ -1107,6 +1111,7 @@ const eligible = (s: StreetScene, locationId: string, ctx: StreetCtx): boolean =
   if (s.weather && !s.weather.includes(ctx.calendar.weather)) return false;
   if (s.requiresFlags && !s.requiresFlags.every(f => ctx.flags[f])) return false;
   if (s.forbidsFlags && s.forbidsFlags.some(f => ctx.flags[f])) return false;
+  if (s.minDay !== undefined && schoolDayNumber(ctx.calendar) < s.minDay) return false;
   return true;
 };
 

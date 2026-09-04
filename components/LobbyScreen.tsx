@@ -1,3 +1,4 @@
+import { isSchoolDay } from '../data/calendarLife';
 import React, { useRef } from 'react';
 import { CharacterId, UserState, CustomAssets, AffectionMap, FamiliarityMap, GameCalendar, ProtagonistStats } from '../types';
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity, LOBBY_PORTRAITS } from '../constants';
@@ -60,9 +61,18 @@ const LobbyScreen: React.FC<Props> = ({
     }
   };
 
+  // 时段的叫法要看今天上不上学。休息日没有"午休"也没有"放学后"——
+  // 那两个词是相对于课表说的，放假那天说出来就不成立。
+  const schoolDay = isSchoolDay(calendar);
   const slotLabel = userState.language === 'en'
-    ? ({ morning: 'MORNING', lunch: 'LUNCH BREAK', afternoon: 'AFTER SCHOOL', night: 'NIGHT' } as Record<string, string>)[calendar.timeSlot] || ''
-    : ({ morning: '早晨', lunch: '午休', afternoon: '放学后', night: '夜里' } as Record<string, string>)[calendar.timeSlot] || '';
+    ? (schoolDay
+        ? ({ morning: 'MORNING', lunch: 'LUNCH BREAK', afternoon: 'AFTER SCHOOL', night: 'NIGHT' } as Record<string, string>)
+        : ({ morning: 'MORNING', lunch: 'DAYTIME', afternoon: 'AFTERNOON', night: 'NIGHT' } as Record<string, string>)
+      )[calendar.timeSlot] || ''
+    : (schoolDay
+        ? ({ morning: '早晨', lunch: '午休', afternoon: '放学后', night: '夜里' } as Record<string, string>)
+        : ({ morning: '早晨', lunch: '白天', afternoon: '下午', night: '夜里' } as Record<string, string>)
+      )[calendar.timeSlot] || '';
 
   return (
   <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col">
@@ -157,8 +167,8 @@ const LobbyScreen: React.FC<Props> = ({
             </span>
             <span className="text-[10px] font-bold text-white/50">
               {calendar.timeSlot === 'morning' ? (userState.language === 'en' ? 'morning' : '早晨')
-                : calendar.timeSlot === 'lunch' ? (userState.language === 'en' ? 'lunch' : '午休')
-                : calendar.timeSlot === 'afternoon' ? (userState.language === 'en' ? 'after school' : '放学后')
+                : calendar.timeSlot === 'lunch' ? (userState.language === 'en' ? (schoolDay ? 'lunch' : 'daytime') : (schoolDay ? '午休' : '白天'))
+                : calendar.timeSlot === 'afternoon' ? (userState.language === 'en' ? (schoolDay ? 'after school' : 'afternoon') : (schoolDay ? '放学后' : '下午'))
                 : (userState.language === 'en' ? 'night' : '夜晚')}
             </span>
           </span>

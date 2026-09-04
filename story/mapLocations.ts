@@ -858,7 +858,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
 ];
 
 export const DISTRICT_LABELS: Record<string, { zh: string; en: string; jp: string }> = {
-  school:    { zh: '海星学園',    en: 'Kaisei Academy',  jp: '学校' },
+  school:    { zh: '港見高校',    en: 'Minatomi High',   jp: '学校' },
   kitano:    { zh: '北野 · 山手', en: 'Kitano Hillside', jp: '北野' },
   sannomiya: { zh: '三宫',        en: 'Sannomiya',       jp: '三宮' },
   harbor:    { zh: '海边',        en: 'The Waterfront',  jp: '港' },

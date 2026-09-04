@@ -1096,7 +1096,10 @@ const App: React.FC = () => {
     // 第一章结束 = 4/11 过完。自由游玩从第二天下午开始。
     // 自由游玩从第二天的午休开始，而不是午后——
     // 午休是碰到人的那一格，跳过它等于跳过了一天里最要紧的选择。
-    setGameCalendar({ month: 4, day: 12, dayOfWeek: '水 (Wed)', timeSlot: 'lunch', weather: 'sunny' });
+    // 第一章的最后一段就是他躺下、睡着、第二天闹钟响。
+    // 所以出来是 4/12 的**早晨**，不是中午——
+    // 以前写的是 lunch，玩家刚看完"睡着了"就被丢在正午，对不上。
+    setGameCalendar({ year: 1, month: 4, day: 12, dayOfWeek: '水 (Wed)', timeSlot: 'morning', weather: 'sunny' });
     setCurrentScene(DEFAULT_SCENE);
     setGameMode(GameMode.LOBBY);
     pendingPrologueSaveRef.current = true;

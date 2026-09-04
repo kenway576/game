@@ -522,8 +522,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
     type: 'scene',
     scene: 'school_gate',
     bgm: 'town',
-    titleZh: '海星学园 · 正门',
-    titleEn: 'Kaisei Academy · Main Gate'
+    titleZh: '港见高校 · 正门',
+    titleEn: 'Minatomi High · Main Gate'
   },
   {
     type: 'narration',
@@ -918,7 +918,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         id: 'day1_card_look',
         labelZh: '再看一会儿',
         labelEn: 'Look at it a little longer',
-        hintZh: '你其实是在看「海星学園」那四个字',
+        hintZh: '你其实是在看「港見高校」那四个字',
         hintEn: 'What you are actually looking at is the school\u2019s name.',
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你把学校的名字一个字一个字念了一遍', reasonEn: 'You read the school\u2019s name character by character' }],
         relations: [],
@@ -926,13 +926,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '「海星学園」。海，和星。昨天在校门口那块牌子上你见过一次，当时只认出了「学園」两个字。',
-            en: '"Kaisei Gakuen." The sea, and a star. You saw it on the sign at the gate yesterday and could only pick out the last two characters of it.'
+            zh: '「港見高校」。港，和见。昨天在校门口那块牌子上你见过一次，当时只认出了「高校」两个字。',
+            en: '"Minatomi Koukou." The harbour, and to see. You saw it on the sign at the gate yesterday and could only pick out the last two characters of it.'
           },
           {
             type: 'narration',
-            zh: '一所开在港口城市的学校，把海和星放进了自己的名字里。你想了一下，觉得这个名字取得挺好的。',
-            en: 'A school in a port city with the sea and a star in its name. You think about that for a moment and decide it is a good name.'
+            zh: '看得见港口的学校。你从教学楼的窗户往外看过一次——确实看得见。你想了一下，觉得这个名字取得实在。',
+            en: 'A school from which the harbour can be seen. You looked out of a classroom window once and found that it can. You decide it is an honest sort of name.'
           },
           {
             type: 'speech',
@@ -2404,9 +2404,100 @@ export const DAY1_SCRIPT: StoryNode[] = [
     zh: '但你没有再加。因为你知道明天还有一页。',
     en: 'You do not add to it. Because you know there is another page tomorrow.'
   },
+  // ---- 睡前 ----
+  //
+  // 这一段是第一章真正的结尾。前面全是"发生了什么"，这里只写
+  // 一件事：一个人第一次在别人的国家里躺下，然后睡着。
+  //
+  // 写法上刻意不总结、不抒情、不下结论——全是手上的动作和听见的声音。
+  // 兴奋不用"我很兴奋"来写，用"翻了第七次身"来写。
+  {
+    type: 'scene', scene: 'room', bgm: 'night',
+    titleZh: '第一夜', titleEn: 'The First Night',
+    subtitleZh: '海风庄 202 · 十一点二十',
+    subtitleEn: 'Umikaze-so 202 · Twenty past eleven'
+  },
+  {
+    type: 'narration',
+    zh: '行李箱里还剩最后一层。你把它倒在榻榻米上：三件衬衫、一双备用的鞋、母亲塞的两袋泡面、还有一个你不记得自己装过的插线板。',
+    en: 'One layer left in the suitcase. You tip it out onto the tatami: three shirts, a spare pair of shoes, two bags of instant noodles your mother put in, and an extension lead you do not remember packing.'
+  },
+  {
+    type: 'narration',
+    zh: '衣柜里没有衣架。你把衬衫叠好，摞在最上层，打算明天去百元店买。',
+    en: 'There are no hangers in the wardrobe. You fold the shirts and stack them on the top shelf, and decide to buy some at the hundred-yen shop tomorrow.'
+  },
+  {
+    type: 'narration',
+    zh: '床是房东留下的旧褥子。你按下午在店里看别人做的样子铺：褥子在下，床单绷紧四个角，被子搭上去，枕头拍两下。',
+    en: 'The bedding is the landlord’s old futon. You lay it out the way you saw somebody do it in a shop this afternoon: mattress down, sheet pulled tight at all four corners, quilt over it, two pats to the pillow.'
+  },
+  {
+    type: 'narration',
+    zh: '第一次铺成这个样子花了十二分钟。你站着看了一会儿，觉得还行。',
+    en: 'Getting it to look like that takes twelve minutes. You stand and look at it for a bit and decide it will do.'
+  },
+  {
+    type: 'narration',
+    zh: '关灯。躺下。',
+    en: 'Light off. Lie down.'
+  },
+  {
+    type: 'narration',
+    zh: '天花板的木纹和你家的不一样。这个念头一起来就再也压不下去了——',
+    en: 'The grain in the ceiling is not the grain you grew up with. Once that has occurred to you it will not go away—'
+  },
+  {
+    type: 'narration',
+    zh: '明天早上那家面包店几点开门。商店街最里面那条巷子通到哪儿。今天没敢进去的那家旧书店，架子最上面那一排是什么。二楼楼梯口贴的那张海报上写的到底是什么字。食堂那个「日替わり」明天换成什么。',
+    en: 'What time does that bakery open. Where does the alley at the far end of the shotengai come out. That secondhand bookshop you did not dare go into today — what is on its top shelf. What did that poster by the second-floor stairs actually say. What will tomorrow’s canteen special be.'
+  },
+  {
+    type: 'narration',
+    zh: '你翻了个身。',
+    en: 'You turn over.'
+  },
+  {
+    type: 'narration',
+    zh: '还有——那座山就在窗户外面。你来了两天，一次都还没有走上去过。',
+    en: 'And the mountain is right outside the window. You have been here two days and have not once walked up it.'
+  },
+  {
+    type: 'narration',
+    zh: '你又翻了一个身。这是第七次。你数了。',
+    en: 'You turn over again. That is the seventh time. You were counting.'
+  },
+  {
+    type: 'narration',
+    zh: '楼下有人回来了，铁楼梯响了六下。隔壁的电视很小声，隔着墙只听得见语调，听不出内容。远处有电车过去，然后是很久的安静。',
+    en: 'Somebody comes home downstairs; the iron staircase rings six times. Next door the television is very low — through the wall you get the shape of the speech but not the words. A train goes by somewhere, and then it is quiet for a long time.'
+  },
+  {
+    type: 'narration',
+    zh: '再远一点是海的声音。也可能不是。你分不出那是海还是六甲山下来的风。',
+    en: 'Further off there is the sea. Or there is not; you cannot yet tell the sea from the wind coming down off Rokko.'
+  },
+  {
+    type: 'narration',
+    zh: '你决定明天问问奈绪。她在这儿住了一年，应该分得出来。',
+    en: 'You decide to ask Nao tomorrow. She has lived here a year. She will be able to tell.'
+  },
+  {
+    type: 'narration',
+    zh: '——然后是三十个小时的飞机、电车、坡道和三十四个名字，一起压了上来。',
+    en: '—And then thirty hours of aeroplanes and trains and slopes and thirty-four names all come down on you at once.'
+  },
+  {
+    type: 'narration',
+    zh: '你没有睡着的记忆。只有第二天早上闹钟响的时候，被子还整整齐齐地盖在身上，一晚上没有踢开过。',
+    en: 'You have no memory of falling asleep. Only that when the alarm goes in the morning the quilt is still square across you, unkicked all night.'
+  },
   {
     type: 'effect',
-    setFlags: ['day1_done'],
-    effects: [{ stat: 'knowledge', amount: 1, reasonZh: '第一天在这座城市里活下来了', reasonEn: 'You got through the first day in this city' }]
+    setFlags: ['day1_done', 'day1_first_night'],
+    effects: [
+      { stat: 'knowledge', amount: 1, reasonZh: '第一天在这座城市里活下来了', reasonEn: 'You got through the first day in this city' },
+      { stat: 'proficiency', amount: 1, reasonZh: '你自己把床铺好了，用了十二分钟', reasonEn: 'You made the bed yourself. It took twelve minutes.' }
+    ]
   }
 ];

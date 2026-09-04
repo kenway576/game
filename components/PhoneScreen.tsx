@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { Language, GameCalendar, StoryFlags, CharacterId, ChatMode, AffectionMap, FamiliarityMap } from '../types';
 import {
   PHONE_CONTACTS, PHONE_APPS, PhoneAppId, PhoneContact,
-  messagesFor, unreadFor, totalUnread, readFlag, PhoneContext
+  messagesFor, unreadFor, totalUnread, readFlag, CONTACT_MIN_FAMILIARITY, PhoneContext
 } from '../data/phoneData';
 import { audioManager } from '../services/audioManager';
 
@@ -60,9 +60,19 @@ const PhoneScreen: React.FC<Props> = ({
     [storyFlags, affection, familiarity, metChars]
   );
 
+  // 通讯录的门槛不是"见过"，是"交换过联系方式"。
+  //
+  // 以前只要 metChars 里有她就有号码，于是在校门口擦肩而过一次的人
+  // 也躺在你的通讯录里 —— 谁都知道现实里不是这样。
+  // 现在要処到「面熟」以上（親密度 40）才拿得到号码；
+  // 奈绪例外，她的号码你十年前就有了。
   const contacts = useMemo(
-    () => PHONE_CONTACTS.filter(c => metChars.includes(c.id)),
-    [metChars]
+    () => PHONE_CONTACTS.filter(c => {
+      if (!metChars.includes(c.id)) return false;
+      if (c.id === CharacterId.NAO) return true;
+      return (familiarity[c.id] ?? 0) >= CONTACT_MIN_FAMILIARITY;
+    }),
+    [metChars, familiarity]
   );
   const unread = useMemo(() => totalUnread(ctx), [ctx]);
 
@@ -76,11 +86,20 @@ const PhoneScreen: React.FC<Props> = ({
     [threadMsgs]
   );
 
-  // 打开对话 → 一条一条冒出来，冒完记已读
+  // 打开对话时，**已经读过的那些直接就在那儿**，只有新的一条一条冒出来。
+  //
+  // 以前不管读没读过，每次点进去都从第一条开始重播一遍，连音效一起。
+  // 一个聊了二十条的对话每次要重演二十次，而且看不出哪几条是新的。
+  // readAtOpen 记的是"点进来的那一刻已经读到第几个气泡"，
+  // 必须在 onReadMessages 把 flag 翻掉之前算好。
+  const [readAtOpen, setReadAtOpen] = useState(0);
+
   useEffect(() => {
     if (view !== 'thread' || !bubbles.length) return;
-    setShown(0);
-    let i = 0;
+    const from = Math.min(readAtOpen, bubbles.length);
+    setShown(from);
+    if (from >= bubbles.length) return;    // 全都读过 → 不放动画
+    let i = from;
     const t = setInterval(() => {
       i++;
       setShown(i);
@@ -92,11 +111,17 @@ const PhoneScreen: React.FC<Props> = ({
 
   const openThread = (c: PhoneContact) => {
     audioManager.playSfx('click');
+    const msgs = messagesFor(c.id, ctx);
+    // 先数已读的气泡数，再去翻 flag —— 顺序反了就永远是"全部已读"
+    let read = 0;
+    for (const m of msgs) {
+      if (storyFlags[readFlag(m.id)]) read += m.lines.length;
+      else break;                        // 遇到第一条未读就停：后面都算新的
+    }
+    setReadAtOpen(read);
     setThread(c);
     setView('thread');
-    const unreadIds = messagesFor(c.id, ctx)
-      .filter(m => !storyFlags[readFlag(m.id)])
-      .map(m => m.id);
+    const unreadIds = msgs.filter(m => !storyFlags[readFlag(m.id)]).map(m => m.id);
     if (unreadIds.length) onReadMessages(unreadIds);
   };
 
@@ -301,13 +326,23 @@ const PhoneScreen: React.FC<Props> = ({
                 </p>
               )}
               {bubbles.slice(0, shown).map((b, i) => (
-                <div key={i} className="flex items-end gap-2" style={{ animation: 'bubbleIn 240ms ease-out' }}>
-                  {i === 0 && <img src={thread.avatar} alt="" className="w-6 h-6 rounded-full object-cover shrink-0 mb-1" />}
-                  {i > 0 && <span className="w-6 shrink-0" />}
-                  <span className="max-w-[78%] bg-[#1e2129] rounded-2xl rounded-bl-md px-3.5 py-2.5">
-                    <span className="block text-[13px] text-white leading-relaxed">{b.jp}</span>
-                    <span className="block text-[11px] text-white/45 mt-1 leading-relaxed">{en ? b.en : b.zh}</span>
-                  </span>
+                <div key={i}>
+                  <div className="flex items-end gap-2" style={i >= readAtOpen ? { animation: 'bubbleIn 240ms ease-out' } : undefined}>
+                    {i === 0 && <img src={thread.avatar} alt="" className="w-6 h-6 rounded-full object-cover shrink-0 mb-1" />}
+                    {i > 0 && <span className="w-6 shrink-0" />}
+                    <span className="max-w-[78%] bg-[#1e2129] rounded-2xl rounded-bl-md px-3.5 py-2.5">
+                      <span className="block text-[13px] text-white leading-relaxed">{b.jp}</span>
+                      <span className="block text-[11px] text-white/45 mt-1 leading-relaxed">{en ? b.en : b.zh}</span>
+                    </span>
+                  </div>
+                  {/* 「既読」画在读过的那一段的最后一条底下 —— 和真的聊天软件一样，
+                      一眼就能看出从哪儿开始是这次的新消息。 */}
+                  {readAtOpen > 0 && i === readAtOpen - 1 && (
+                    <div className="pl-8 mt-1 mb-1 flex items-center gap-2">
+                      <span className="text-[9px] text-white/25 tracking-wider">{en ? 'read' : '既読'}</span>
+                      {bubbles.length > readAtOpen && <span className="flex-1 h-px bg-white/8" />}
+                    </div>
+                  )}
                 </div>
               ))}
               {/* 还在打字 */}

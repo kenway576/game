@@ -83,7 +83,7 @@ export const ProtagonistProfileModal: React.FC<Props> = ({
             <div className="w-full bg-zinc-900/90 border border-white/10 rounded-lg p-3 text-xs flex flex-col gap-1.5 text-zinc-300">
               <div className="flex justify-between border-b border-white/10 pb-1">
                 <span className="text-zinc-500">{language === 'en' ? 'Affiliation' : '就读学园'}</span>
-                <span className="text-zinc-200 font-medium">私立神户海星学园 · 高二B班</span>
+                <span className="text-zinc-200 font-medium">兵库县立港见高等学校 · 高二B班</span>
               </div>
               <div className="flex justify-between border-b border-white/10 pb-1">
                 <span className="text-zinc-500">{language === 'en' ? 'Residence' : '现居住所'}</span>

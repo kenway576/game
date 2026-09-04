@@ -310,7 +310,7 @@ export const LOBBY_PORTRAITS: Partial<Record<CharacterId, string>> = {
   [CharacterId.MAKI]:   '/images/ui/lobby/maki.webp'
 };
 
-// 🏫 海星学园校园群像 NPC 立绘（纯净无白边透明通道）
+// 🏫 港见高校校园群像 NPC 立绘（纯净无白边透明通道）
 export const SCHOOL_NPC_SPRITES = {
   kenta:    '/images/characters/npc_kenta.webp',     // 健太（阳光运动男同学）
   hiroki:   '/images/characters/npc_hiroki.webp',    // 宏树（黑框眼镜学霸）
@@ -2419,12 +2419,12 @@ export const KANSAI_CALENDAR_EVENTS: CalendarEvent[] = [
     id: 'kobe_entrance',
     month: 4,
     day: 10,
-    titleZh: '神户海星学园 · 新学期开学',
-    titleEn: 'Kaisei Academy Spring Entrance',
+    titleZh: '港见高校 · 新学期开学',
+    titleEn: 'Minatomi High Spring Term',
     city: '神户 (Kobe)',
     location: '北野坡道校门前',
     descriptionZh: '坡道落樱缤纷，你作为海外交换留学生正式转入高二B班，与明日香、光相遇。',
-    descriptionEn: 'Cherry blossoms flutter as you transfer to Kaisei Academy and meet Asuka and Hikari.',
+    descriptionEn: 'Cherry blossoms flutter as you transfer into Minatomi High and meet Asuka and Hikari.',
     relatedCharIds: [CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.NAO]
   },
   {

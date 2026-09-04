@@ -43,6 +43,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // ---------------------------------------------------------
   {
     id: 'st_egg_shirou_vault',
+    minDay: 3,
     locationIds: ['gym', 'school_terrace', 'school_bicycle_parking'],
     weight: 4,
     timeSlots: ['afternoon', 'night'],
@@ -245,6 +246,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_microwave',
+    minDay: 12,
     locationIds: ['convenience_store', 'hyakkin_store', 'sannomiya_station'],
     weight: 4,
     timeSlots: ['afternoon', 'night'],
@@ -381,6 +383,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_invisible_senpai',
+    minDay: 25,
     locationIds: ['school_library', 'junkudo_bookstore', 'retro_kissaten'],
     weight: 4,
     script: [
@@ -485,6 +488,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_recruit',
+    minDay: 8,
     locationIds: ['school_terrace', 'school_bicycle_parking', 'international_office'],
     weight: 4,
     timeSlots: ['lunch', 'afternoon'],
@@ -585,6 +589,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_aquarium',
+    minDay: 40,
     locationIds: ['suma_aquarium', 'suma_beach', 'suma_fishing_pier'],
     weight: 4,
     script: [
@@ -686,6 +691,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_crepe',
+    minDay: 18,
     locationIds: ['sannomiya_arcade', 'nankinmachi', 'mosaic_night', 'kobe_harbor'],
     weight: 4,
     script: [
@@ -785,6 +791,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_bakery',
+    minDay: 30,
     locationIds: ['sannomiya_arcade', 'nankinmachi', 'convenience_store'],
     weight: 4,
     script: [
@@ -888,6 +895,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_forgettable',
+    minDay: 55,
     locationIds: ['kitano_slope', 'kitano_lookout', 'sannomiya_station', 'meriken_park'],
     weight: 4,
     repeatable: true,
@@ -986,6 +994,7 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_big_bento',
+    minDay: 20,
     locationIds: ['school_terrace', 'rooftop_sunset', 'school_library'],
     weight: 4,
     timeSlots: ['lunch'],
@@ -1090,7 +1099,10 @@ export const EASTER_SCENES: StreetScene[] = [
   // =========================================================
   {
     id: 'st_egg_three_music',
-    locationIds: ['music_room', 'art_room', 'school_terrace'],
+    minDay: 70,
+    // 只放音乐室。之前还挂了美术室和天台 —— 三个人围着一台钢琴，
+    // 在美术室里是不成立的。
+    locationIds: ['music_room'],
     weight: 3,
     timeSlots: ['afternoon', 'night'],
     script: [

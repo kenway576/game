@@ -33,6 +33,10 @@ export interface PhoneContact {
   accent: string;      // 和剧本里她的对话框同色
 }
 
+// 拿到号码的门槛。见过一面不算——現实里也不算。
+// 「面熟」(親密度 40) 起才会互相交换联系方式。
+export const CONTACT_MIN_FAMILIARITY = 40;
+
 export const PHONE_CONTACTS: PhoneContact[] = [
   {
     id: CharacterId.ASUKA, avatar: '/images/phone/asuka.webp',

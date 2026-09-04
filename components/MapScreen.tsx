@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   GameCalendar, Language, StoryFlags, MapLocation,
   AffectionMap, FamiliarityMap, CharacterId
@@ -76,17 +76,21 @@ const MapScreen: React.FC<Props> = ({
   const [selectedId, setSelectedId] = useState<string>(() => unlocked[0]?.id || MAP_LOCATIONS[0].id);
   const selected = MAP_LOCATIONS.find(l => l.id === selectedId) || MAP_LOCATIONS[0];
 
-  // 进地图就把当前解锁的一批记下来，下次再来这些就不是"新"的了
-  useEffect(() => {
-    const ids = unlocked.map(l => l.id);
-    const merged = Array.from(new Set([...seen, ...ids]));
-    if (merged.length !== seen.length) {
-      try { localStorage.setItem(SEEN_KEY, JSON.stringify(merged)); } catch { /* 隐私模式 */ }
-    }
-    // seen 故意不进依赖：这里要的是"进屏时的那一份快照"，
-    // 更新完 localStorage 之后本轮渲染仍然用旧的 seen 来打角标。
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unlocked]);
+  // NEW 的含义是「你还没去过这儿」。
+  //
+  // 原来是"进地图就把当前解锁的全部记成看过"，于是第一次打开地图之后
+  // 所有 NEW 一起消失 —— 玩家去了一个地方回来，剩下十几个没去过的
+  // 地点全都不再有标记，这个角标等于白做。
+  //
+  // 现在只有真的走过去（go()）才算，所以角标一直指着"还没探索的地方"。
+  const markVisited = (id: string) => {
+    setSeen(prev => {
+      if (prev.includes(id)) return prev;
+      const next = [...prev, id];
+      try { localStorage.setItem(SEEN_KEY, JSON.stringify(next)); } catch { /* 隐私模式 */ }
+      return next;
+    });
+  };
 
   const isNew = (id: string) => !seen.includes(id);
 
@@ -100,6 +104,7 @@ const MapScreen: React.FC<Props> = ({
     if (!isLocationOpenNow(selected, calendar)) return;
     if (!affordable(selected)) { audioManager.playSfx('error'); return; }
     audioManager.playSfx('confirm');
+    markVisited(selected.id);
     onTravel(selected);
   };
 

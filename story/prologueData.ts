@@ -2282,8 +2282,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你把明天开学要穿的深蓝色制服熨得平平整整，仔细地把银色校徽别在领口——私立神户海星学园，高二 B 班。',
-    en: 'You press tomorrow’s navy uniform flat, and pin the silver crest carefully to the collar. Kobe Kaisei Academy. Second year, Class B.'
+    zh: '你把明天开学要穿的深蓝色制服熨得平平整整，仔细地把银色校徽别在领口——兵库县立港见高等学校，高二 B 班。',
+    en: 'You press tomorrow’s navy uniform flat, and pin the silver crest carefully to the collar. Minatomi Senior High School, Kobe. Second year, Class B.'
   },
   // ==========================================================
   // 【回覧板】深雪敲门 —— 玩家的名字在这里第一次被人问起
@@ -2484,7 +2484,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你躺在床上，听着墙上钟表平缓有力的滴答声。明天清晨，海星学园高二 B 班的教室门就将向你敞开。',
+    zh: '你躺在床上，听着墙上钟表平缓有力的滴答声。明天清晨，港见高校高二 B 班的教室门就将向你敞开。',
     en: 'You lie in bed listening to the steady, deliberate tick of the wall clock. Tomorrow morning, the door of Class 2-B will open for you.'
   },
   {
