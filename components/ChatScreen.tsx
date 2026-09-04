@@ -44,6 +44,10 @@ interface Props {
   levelUpEvent: LevelUpEvent | null;
   onLevelUpContinue: () => void;
   onSend: () => void;
+  // 今天她已经道过别了：输入框换成一句说明，不是变灰的按钮
+  dayClosed?: boolean;
+  dayClosedNote?: string;
+  onLeaveChat?: () => void;
   onDialogueFinished: () => void;
   onQuizAnswer: (index: number) => void;
   onCloseQuiz: () => void;
@@ -58,7 +62,7 @@ const ChatScreen: React.FC<Props> = ({
   T, userState, character, displayName, messages, isLoading, isStreaming, isDialogueFinished,
   currentQuiz, quizFeedback, inputText, setInputText, showAutoSave,
   affection, familiarity, affectionToast, diceRoll, levelUpEvent, onLevelUpContinue,
-  onSend, onDialogueFinished, onQuizAnswer, onCloseQuiz, onContinueAfterFeedback,
+  onSend, dayClosed, dayClosedNote, onLeaveChat, onDialogueFinished, onQuizAnswer, onCloseQuiz, onContinueAfterFeedback,
   onOpenSystemMenu, translate, onCollectWord, background
 }) => {
   // 🎲 骰子配色：高点数金色（命运眷顾），中间白色，低点数冷灰
@@ -313,10 +317,27 @@ const ChatScreen: React.FC<Props> = ({
                   <span className="text-xs text-white italic truncate w-full" title={safePreviewText}>{safePreviewText}</span>
                 </div>
               )}
-              <div className="relative flex w-full gap-2 md:gap-4 px-2">
-                <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && onSend()} placeholder={T.chatPlaceholder} disabled={isLoading} className="w-full bg-slate-900/95 border-2 border-white/20 rounded-full px-6 py-4 md:px-10 md:py-6 text-white text-base md:text-xl focus:outline-none focus:border-yellow-500 transition-all shadow-2xl pointer-events-auto" />
-                <button onClick={onSend} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 md:px-14 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full text-sm md:text-lg pointer-events-auto">SEND</button>
-              </div>
+              {dayClosed ? (
+                /* 她今天说完了。这里不放一个变灰的输入框——
+                   变灰的输入框是在告诉玩家"系统不让你说"，
+                   而实际发生的事是"她走了"。 */
+                <div className="relative flex w-full flex-col items-center gap-3 px-2 pointer-events-auto">
+                  <div className="w-full max-w-2xl bg-slate-900/90 border border-white/15 rounded-2xl px-6 py-4 text-center">
+                    <p className="text-white/70 text-sm md:text-base leading-relaxed">{dayClosedNote}</p>
+                  </div>
+                  <button
+                    onClick={onLeaveChat}
+                    className="bg-white/10 hover:bg-white/20 border border-white/20 px-8 py-3 text-white font-black uppercase tracking-widest text-xs md:text-sm rounded-full transition-all"
+                  >
+                    {userState.language === 'en' ? 'Leave' : '离开'}
+                  </button>
+                </div>
+              ) : (
+                <div className="relative flex w-full gap-2 md:gap-4 px-2">
+                  <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && onSend()} placeholder={T.chatPlaceholder} disabled={isLoading} className="w-full bg-slate-900/95 border-2 border-white/20 rounded-full px-6 py-4 md:px-10 md:py-6 text-white text-base md:text-xl focus:outline-none focus:border-yellow-500 transition-all shadow-2xl pointer-events-auto" />
+                  <button onClick={onSend} disabled={isLoading || !inputText.trim()} className="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 md:px-14 text-gray-900 font-black uppercase tracking-widest transition-all shadow-xl rounded-full text-sm md:text-lg pointer-events-auto">SEND</button>
+                </div>
+              )}
             </div>
           )}
         </div>

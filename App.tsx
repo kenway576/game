@@ -23,6 +23,11 @@ import CafeteriaScreen from './components/CafeteriaScreen';
 import PhoneScreen from './components/PhoneScreen';
 import { PhoneAppId, readFlag as msgReadFlag, totalUnread } from './data/phoneData';
 import { CafeteriaItem, tastedFlag } from './data/cafeteriaData';
+import {
+  SocialState, INITIAL_SOCIAL_STATE, turnsLeft, bumpTurn, windDownHint,
+  farewellFor, busyNote, riftFor, openRift, riftNote, avoidNote, riftsJustEnded,
+  makeupFlag, RiftReason
+} from './data/socialLimits';
 import KobeMapModal from './components/KobeMapModal';
 import { StatGainToast } from './components/StatGainToast';
 import StoryScreen, { StoryRestorePayload } from './components/StoryScreen';
@@ -127,6 +132,11 @@ const App: React.FC = () => {
   const [showWordbook, setShowWordbook] = useState(false);
   const [showCgGallery, setShowCgGallery] = useState(false);
   const [showEndings, setShowEndings] = useState(false);
+  // 谈话额度 + 冷淡期。见 data/socialLimits.ts：
+  // 聊天不加计数器，改成"她自己说今天到此为止"。
+  const [social, setSocial] = useState<SocialState>(INITIAL_SOCIAL_STATE);
+  // 今天她已经道过别了 → 输入框收起来，给一句"她真的去忙了"
+  const [chatClosedToday, setChatClosedToday] = useState(false);
   const [showProtagonistProfile, setShowProtagonistProfile] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
@@ -647,6 +657,17 @@ const App: React.FC = () => {
   // 睡一觉 = 推进到第二天早晨。天气随机，房间背景会跟着换。
   const advanceToNextDay = () => {
     audioManager.playSfx('confirm');
+    // 🧊 今天到期的冷淡期：明天早上她自己会先发消息过来。
+    // 用的是明天的日历——riftsJustEnded 判的是"until 正好等于今天"。
+    const tomorrow = advanceCalendarDay(gameCalendar);
+    const madeUp = riftsJustEnded(social, tomorrow);
+    if (madeUp.length) {
+      setStoryFlags(prev => {
+        const next = { ...prev };
+        madeUp.forEach(c => { next[makeupFlag(c)] = true; });
+        return next;
+      });
+    }
     setGameCalendar(prev => {
       const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
       return {
@@ -701,30 +722,42 @@ const App: React.FC = () => {
     // 碰到了就把"跟她说话"接在空转旁白后面——这是面对面的对话，
     // 和在手机上发消息不是一回事。
     const zh = userState.language === 'en' ? 'en' : 'zh';
+    // 🧊 还在生气的人，今天不会出现在你面前的名单里。
+    // 但她也不是凭空消失——下面 avoided 会把"擦肩而过"演出来。
+    const speaking = metChars.filter(c => !riftFor(social, c, gameCalendar));
     let met: CharacterId | null = null;
     if (!ev) {
       if (gameCalendar.timeSlot === 'lunch') {
-        met = lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.char ?? null;
+        met = lunchPresenceAt(loc.id, gameCalendar, storyFlags, speaking)?.char ?? null;
       } else {
-        met = encounterAt(loc.id, loc.regulars, gameCalendar, metChars, familiarityMap as Record<string, number>);
+        met = encounterAt(loc.id, loc.regulars, gameCalendar, speaking, familiarityMap as Record<string, number>);
       }
     }
+    // 本来今天该在这儿、但正在冷淡期的那个人。有的话，这一趟演一次错身。
+    const avoided = (!ev && !met && gameCalendar.timeSlot === 'lunch')
+      ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.char ?? null)
+      : null;
     // 一趟出门能碰上什么，按这个优先级：
     //   专属剧情 > 碰到认识的人 > 街头小景 > 一句空转旁白
     // 街头小景排在"碰到人"后面，因为碰到人是这套系统真正的目的；
     // 排在空转前面，因为"看见别人在过自己的日子"比"今天没什么事"值钱得多。
-    const street = (!ev && !met) ? pickStreetScene(loc.id, { flags: storyFlags, calendar: gameCalendar }) : null;
+    const street = (!ev && !met && !avoided) ? pickStreetScene(loc.id, { flags: storyFlags, calendar: gameCalendar }) : null;
     // 这地方常驻的 NPC。有话可说的话，把"跟他说话"接在这一趟的末尾——
     // 无论前面演的是街头小景还是一句空转旁白。
     // 女主角在场的时候不接：那一趟的重点是她，不该被别人岔开。
     const talkCtx = { flags: storyFlags, calendar: gameCalendar, met: metChars, en: zh === 'en' };
-    const onDuty = (!ev && !met) ? npcOnDutyAt(npcsAt(loc.id), talkCtx) : null;
+    const onDuty = (!ev && !met && !avoided) ? npcOnDutyAt(npcsAt(loc.id), talkCtx) : null;
     const npcTalk = onDuty ? npcTalkNodes(onDuty, talkCtx) : [];
     setActiveTrip({
       loc,
       event: ev,
       script: ev
         ? ev.script
+        : avoided
+        ? [
+            { type: 'scene', scene: loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+            { type: 'narration', zh: avoidNote(gameCalendar, 'zh'), en: avoidNote(gameCalendar, 'en') }
+          ]
         : street
         ? [
             { type: 'scene', scene: loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
@@ -1153,6 +1186,8 @@ const App: React.FC = () => {
         protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs, life, metChars,
         // 欠着没播的升级剧情。不存的话，读档就把某人的专属剧情永久吞掉了。
         pendingLevelUps,
+        // 今天跟谁聊了几轮、谁还在生气。不存的话，读档就能把额度刷回来。
+        social,
         // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
         // 这样三个存档就是三个不同的位置，而不是都指向同一份共享进度。
         // hard 模式（容量告急）下丢掉它：宁可退回共享进度，也不能让存档整个写不进去。
@@ -1241,6 +1276,7 @@ const App: React.FC = () => {
       setGameCalendar({ ...INITIAL_CALENDAR_STATE, ...(data.gameCalendar || {}) });
       setStoryFlags(data.storyFlags || {});
       setPendingLevelUps(data.pendingLevelUps || []);
+      setSocial(data.social || INITIAL_SOCIAL_STATE);
       setUnlockedCgs(Array.isArray(data.unlockedCgs) ? data.unlockedCgs : []);
       // 老存档没有休闲系统：给一份初值，别让读档崩掉
       setLife({ ...INITIAL_LIFE_STATE, ...(data.life || {}),
@@ -1400,7 +1436,14 @@ const App: React.FC = () => {
         : '当前选择了自定义 API：请先回到登记页面填写接口地址 (Base URL) 和模型名称 (Model ID)。');
       return;
     }
+    // 🧊 还在生气 → 根本进不去。给的是一条"已读不回"，不是一个禁用按钮。
+    const rift = riftFor(social, charId, gameCalendar);
+    if (rift) {
+      alert(riftNote(rift, gameCalendar, userState.language));
+      return;
+    }
     audioManager.playSfx('enter_chat'); // 🔊 进入聊天
+    setChatClosedToday(false);
     setSelectedCharId(charId);
     setLobbySelectedChar(null);
     setChatMode(mode);
@@ -1531,6 +1574,23 @@ const App: React.FC = () => {
 
     const isInternalTrigger = !!customPrompt;
 
+    // 💬 今天还剩几轮。系统自己发的指令（答题反馈、升级演出）不算额度——
+    // 那些是游戏在说话，不是玩家又找了她一次。
+    const chatFam = familiarityMap[selectedCharId] ?? getInitialFamiliarity(selectedCharId);
+    const left = turnsLeft(social, selectedCharId, gameCalendar, chatFam, chatInPerson);
+    if (!isInternalTrigger && left <= 0) {
+      // 她已经道过别了。再发过去就是石沉大海。
+      setMessages(prev => [...prev, {
+        id: 'busy-' + Date.now(), role: 'model', senderName: 'System',
+        text: busyNote(gameCalendar, userState.language),
+        pages: [{ type: 'narration', text: busyNote(gameCalendar, userState.language) }]
+      }]);
+      setInputText('');
+      setChatClosedToday(true);
+      return;
+    }
+    if (!isInternalTrigger) setSocial(sc => bumpTurn(sc, selectedCharId, gameCalendar));
+
     // 本轮完整消息列表（用于记忆摘要，避免 state 闭包滞后）
     let turnMessages: Message[] = messages;
 
@@ -1570,6 +1630,12 @@ const App: React.FC = () => {
     if (requestedOutfit) {
       outgoingText += `\n【システム：プレイヤーの要望通り、服装を「${requestedOutfit.outfit || 'デフォルト(制服/私服)'}」に着替える描写を自然に入れ、JSONに "outfit":"${requestedOutfit.outfit}" と "outfitChange":true を必ず設定すること。】`;
     }
+
+    // 剩两轮开始收尾，最后一轮她自己把话说完。玩家看不到这段指令，
+    // 只会觉得这段对话自然走到了头。
+    const wind = isInternalTrigger ? null : windDownHint(left - 1);
+    if (wind) outgoingText += `
+${wind}`;
 
     const stream = makeStreamHandler(selectedCharId, false);
     try {
@@ -1621,6 +1687,36 @@ const App: React.FC = () => {
       );
 
       setChatHistories(prev => ({ ...prev, [selectedCharId]: [...prev[selectedCharId], modelMsg] }));
+
+      // 🧊 吵起来了：两条轴同一回合都被判了负分，才算真的吵。
+      // 单独一条掉一点只是说错了话，不至于让人几天不理你。
+      if (!isInternalTrigger && aiDelta <= -1 && aiFamDelta <= -1) {
+        const reason: RiftReason = aiDelta <= -2 ? 'fight' : (aiFamDelta <= -2 ? 'misunderstanding' : 'said_too_much');
+        setSocial(sc => openRift(sc, selectedCharId, gameCalendar, reason));
+        // 上一次的和好消息要撤掉（连同已读标记），否则下次和好她不会再开口。
+        setStoryFlags(prev => {
+          const next = { ...prev };
+          delete next[makeupFlag(selectedCharId)];
+          delete next[`msgread_msg_makeup_${selectedCharId}`];
+          return next;
+        });
+        setChatClosedToday(true);
+        audioManager.playSfx('relation_down');
+        setMessages(prev => [...prev, {
+          id: 'rift-' + Date.now(), role: 'model', senderName: 'System',
+          text: riftNote({ since: 0, until: 0, reason }, gameCalendar, userState.language),
+          pages: [{ type: 'narration', text: riftNote({ since: 0, until: 0, reason }, gameCalendar, userState.language) }]
+        }]);
+      } else if (!isInternalTrigger && left - 1 <= 0) {
+        // 额度用尽：她刚才那句已经是道别了（收尾提示让她自己说的）。
+        // 这里只补一句旁白把门关上，输入框跟着收起来。
+        setChatClosedToday(true);
+        const bye = farewellFor(selectedCharId, gameCalendar, userState.language);
+        setMessages(prev => [...prev, {
+          id: 'bye-' + Date.now(), role: 'model', senderName: 'System',
+          text: bye, pages: [{ type: 'narration', text: bye }]
+        }]);
+      }
 
       // 🧠 每积累一定回复数，后台自动固化一次长期记忆（不阻塞对话）
       replySinceMemoryRef.current += 1;
@@ -1860,6 +1956,13 @@ const App: React.FC = () => {
           levelUpEvent={levelUpEvent}
           onLevelUpContinue={handleLevelUpContinue}
           onSend={() => handleSendMessage()}
+          dayClosed={chatClosedToday}
+          dayClosedNote={
+            selectedCharId && riftFor(social, selectedCharId, gameCalendar)
+              ? riftNote(riftFor(social, selectedCharId, gameCalendar)!, gameCalendar, userState.language)
+              : busyNote(gameCalendar, userState.language)
+          }
+          onLeaveChat={() => leaveChat(GameMode.LOBBY)}
           onDialogueFinished={onDialogueFinished}
           onQuizAnswer={handleQuizAnswer}
           onCloseQuiz={() => setCurrentQuiz(null)}

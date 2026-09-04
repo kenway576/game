@@ -1,5 +1,6 @@
 import { CharacterId, StoryFlags, StoryWord, AffectionMap, FamiliarityMap } from '../types';
 import { getInitialFamiliarity } from '../constants';
+import { MAKEUP_LINES, makeupFlag } from './socialLimits';
 
 // ---------------------------------------------------------
 // 📱 手机
@@ -146,6 +147,16 @@ export interface PhoneMessage {
 // 第一版给每条打了 priority 然后按它排序，结果明日香那条"讲义帮你标好注音了"
 // （第一天认识她就有）排到了"周四四点图书室"（第①段演完才有）后面——
 // 手机上的对话必须是往下走的，倒着读就不成立。排序去掉了，靠写的顺序。
+// 🧊 和好的第一句。冷淡期结束的那天早上，她自己先发过来。
+// 没有道歉，也不提那件事——装作什么都没发生，是最常见的和解方式。
+// requiresFlags 挂 makeup_xxx，由 App 在冷淡期结束时置上。
+const MAKEUP_MESSAGES: PhoneMessage[] = (Object.keys(MAKEUP_LINES) as CharacterId[]).map(c => ({
+  id: `msg_makeup_${c}`,
+  char: c,
+  requiresFlags: [makeupFlag(c)],
+  lines: [MAKEUP_LINES[c]]
+}));
+
 export const PHONE_MESSAGES: PhoneMessage[] = [
   // ---- 奈绪：青梅竹马的那条线从最早就在手机上 ----
   {
@@ -347,8 +358,11 @@ export const isDelivered = (m: PhoneMessage, ctx: PhoneContext): boolean => {
 };
 
 // 不排序：数组里的先后就是收到的先后。
-export const messagesFor = (char: CharacterId, ctx: PhoneContext): PhoneMessage[] =>
-  PHONE_MESSAGES.filter(m => m.char === char && isDelivered(m, ctx));
+// 和解那条单独接在最后——它总是"刚刚才发来的"，不管前面攒了多少条。
+export const messagesFor = (char: CharacterId, ctx: PhoneContext): PhoneMessage[] => [
+  ...PHONE_MESSAGES.filter(m => m.char === char && isDelivered(m, ctx)),
+  ...MAKEUP_MESSAGES.filter(m => m.char === char && isDelivered(m, ctx))
+];
 
 export const unreadFor = (char: CharacterId, ctx: PhoneContext): number =>
   messagesFor(char, ctx).filter(m => !ctx.flags[readFlag(m.id)]).length;
