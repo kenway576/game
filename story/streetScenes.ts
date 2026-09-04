@@ -709,6 +709,282 @@ export const STREET_SCENES: StreetScene[] = [
       },
       seen('你目击了一次不该发生的扫地', 'You witnessed a sweeping that should not have been possible')
     ]
+  },
+  {
+    // 黄昏操场的撑杆跳。一次又一次跃不过的高度。
+    id: 'st_egg_high_jump', locationIds: ['school_terrace', 'gym'], weight: 3,
+    timeSlots: ['afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.shirou,
+        zh: '操场角落的跳高垫旁，一个穿着沾着泥巴体操服的红发男生正握着一根竹竿。',
+        en: 'By the high-jump mats in the corner of the grounds, a red-haired boy in mud-streaked gym clothes holds a bamboo pole.'
+      },
+      {
+        type: 'narration',
+        zh: '横杆架在一个以他的身高明显不可能跃过去的高度。他往手心里吐了口气，起跑、起跳、重重摔在垫子上。',
+        en: 'The bar is set at a height plainly impossible for his stature. He breathes onto his palms, runs up, takes off, and hits the mat heavily.'
+      },
+      {
+        type: 'narration',
+        zh: '横杆掉了。他爬起来，把横杆重新架好，走回起跑点。夕阳把他的影子拉得很长。',
+        en: 'The bar comes down. He gets up, resets it, and walks back to the mark. The sunset draws his shadow out very long.'
+      },
+      {
+        type: 'narration',
+        zh: '你不知道他已经跳了多少次，但你有种感觉，即使到了天黑，他也不会停下。',
+        en: 'You have no idea how many times he has jumped, but you have a feeling that even when night falls, he will not stop.'
+      },
+      seen('你目击了一场注定失败却不愿停下的尝试', 'You witnessed an attempt destined to fail that refused to halt')
+    ]
+  },
+  {
+    // 自动售货机前的那罐黄罐咖啡。
+    id: 'st_egg_max_coffee', locationIds: ['school_bicycle_parking', 'sannomiya_station'], weight: 3,
+    timeSlots: ['afternoon', 'night'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.hachiman,
+        zh: '自动贩卖机前站着一个头发微翘、顶着一双无精打采死鱼眼的男生，手里握着一罐黄色的MAX咖啡。',
+        en: 'In front of the vending machine stands a boy with slightly messy hair and thoroughly dead-fish eyes, clutching a yellow can of MAX Coffee.'
+      },
+      {
+        type: 'narration',
+        zh: '他慢吞吞地拉开拉环喝了一小口，眼神空洞地看着路过的成双成对的学生，嘴角挂着一丝冷笑。',
+        en: 'He pulls the tab at a crawl, takes a sip, and gazes blankly at pairs of passing students with a faint sneer.'
+      },
+      {
+        type: 'narration',
+        zh: '「人生は甘くないから、せめてコーヒーくらいは甘くていい……」他似乎自言自语了一句。',
+        en: '"Life isn\'t sweet, so at least the coffee should be..." he seems to mutter under his breath.'
+      },
+      seen('你领悟了甜咖啡背后的深沉哲学', 'You grasped the solemn philosophy behind overly sweet coffee')
+    ]
+  },
+  {
+    // 图书馆角落的安静读者。
+    id: 'st_egg_ice_queen', locationIds: ['school_library', 'junkudo_bookstore'], weight: 3,
+    timeSlots: ['lunch', 'afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.yukino,
+        zh: '靠窗的阳光下坐着一位黑长直发的女生，姿态端正得像从画里走出来的一样，正在静静翻阅一本文库本。',
+        en: 'Under the window sunlight sits a girl with long straight black hair, seated with painterly posture, quietly leafing through a paperback.'
+      },
+      {
+        type: 'narration',
+        zh: '书页中间露出一枚圆滚滚的黑猫书签。偶尔有路过的学生想跟她搭话，都被她周身若隐若现的冷气逼退了。',
+        en: 'Between the pages peeks a round black cat bookmark. Passing students who consider speaking to her are held off by the faint frost in her aura.'
+      },
+      seen('你见识了真正让人不敢靠近的阅读姿态', 'You observed a reading posture so immaculate it kept the world at bay')
+    ]
+  },
+  {
+    // 白大褂、拉面与叹息。
+    id: 'st_egg_cool_teacher', locationIds: ['ramen_shop_interior', 'ramen_rekishi'], weight: 3,
+    timeSlots: ['night'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.shizuka,
+        zh: '拉面店柜台最内侧，一位披着白色大褂、身材高挑的黑发女性正豪迈地端着大碗豚骨拉面大口喝汤。',
+        en: 'At the far end of the ramen counter, a tall dark-haired woman in a white coat hefts a heavy tonkotsu bowl with both hands and drinks deeply.'
+      },
+      {
+        type: 'narration',
+        zh: '吃完后她放下碗，满足地擦了擦嘴，随即看着手机上的日历深深叹了口气，低声喃喃着关于相亲和年龄的沉重字眼。',
+        en: 'She sets the bowl down with satisfaction, wipes her lips, checks a calendar on her phone, and lets out a long sigh about matchmaking.'
+      },
+      seen('你目睹了一位帅气大人难以言说的烦恼', 'You witnessed the unspoken sorrow of an otherwise formidable adult')
+    ]
+  },
+  {
+    // 关东煮、超大便当与很长的小票。
+    id: 'st_egg_makeine_lunch', locationIds: ['school_terrace', 'convenience_store'], weight: 3,
+    timeSlots: ['lunch'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.anna,
+        zh: '长椅上坐着一个水蓝色短发的女生，膝盖上放着一个大得离谱的双层便当盒，手里还抓着一串烤丸子。',
+        en: 'On the bench sits a girl with aqua-blue hair, an absurdly massive two-tiered bento on her lap and a skewer of grilled dango in hand.'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.nukumizu,
+        zh: '旁边一个表情平淡的男生手里拉着一条快要垂到地面的便利店长收据，正极其绝望地盯着自己的零钱包。',
+        en: 'Beside her, an unobtrusive boy holds a receipt trailing nearly to the floor, staring in quiet despair at his coin purse.'
+      },
+      {
+        type: 'narration',
+        zh: '女生嚼着丸子含糊不清地安慰他：「下次我一定少吃点……真的！」男生完全没有看她。',
+        en: 'Munching her dango, the girl mumbles assurances that she will eat less next time. The boy does not look at her.'
+      },
+      seen('你目击了一场关于钱包厚度的单方面掠夺', 'You witnessed a one-sided attrition of somebody\'s pocket money')
+    ]
+  },
+  {
+    // 小麦色皮肤与飞奔的田径少女。
+    id: 'st_egg_track_lemon', locationIds: ['suma_beach', 'meriken_park'], weight: 3,
+    timeSlots: ['afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.lemon,
+        zh: '迎面刮来一阵带着柑橘香气的风。一个皮肤晒成健康小麦色、穿着短裤运动服的少女像小鹿一样飞奔而过。',
+        en: 'A breeze carrying a faint citrus scent sweeps past as an athletic girl with sun-tanned skin dashes by like a gazelle.'
+      },
+      {
+        type: 'narration',
+        zh: '她单手拧开运动饮料猛灌了一大口，路过你时甚至元气满满地朝你露齿一笑，速度完全没有减慢。',
+        en: 'She twists open a sports drink one-handed for a generous gulp, flashed a radiant grin as she passed, and never slowed down.'
+      },
+      seen('你被一阵迎面吹来的夏日元气撞了一下', 'You were brushed by a gust of pure summer energy')
+    ]
+  },
+  {
+    // 届かない恋的旋律。
+    id: 'st_egg_white_album', locationIds: ['pia_kobe_arcade', 'sannomiya_arcade'], weight: 3,
+    timeSlots: ['afternoon', 'night'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.setsuna,
+        zh: '高架桥通道里回荡着一阵清澈又微带忧伤的歌声。系着红围巾的少女握着麦克风，正唱着一段熟悉的旋律。',
+        en: 'A clear, slightly plaintive singing voice echoes through the arcade under the viaduct, a red-scarfed girl holding a mic.'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.haruki,
+        zh: '旁边一个戴眼镜、背着吉他琴包的男生正认真地调整着谱架，神情紧张又专注。',
+        en: 'Beside her, a boy in glasses with a guitar gig bag adjusts a music stand with tense concentration.'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.kazusa,
+        zh: '几米外的柱子阴影下，一个身穿黑色大衣、长发及腰的高挑女生抱着琴谱文件夹静静站着，默默听着那段旋律。',
+        en: 'In the shadow of a pillar a few paces back, a tall girl in a long black coat holds a sheet-music folder, listening in silence.'
+      },
+      {
+        type: 'narration',
+        zh: '虽然是三个人的乐声，不知为何空气中却弥漫着一丝让人心头微紧的寒意。',
+        en: 'Though three people share the music, the air carries a chill that tugs inexplicably at the heart.'
+      },
+      seen('你听到了一段无法传达的冬日序曲', 'You heard a winter prelude that seemed unable to reach its destination')
+    ]
+  },
+  {
+    // 团长与资讯统合体。
+    id: 'st_egg_sos_brigade', locationIds: ['sannomiya_station', 'kitano_slope'], weight: 3,
+    timeSlots: ['afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.haruhi,
+        zh: '车站前的小广场上，一个戴着红黄头带、手臂上别着"团长"红色袖标的女生正叉着腰指着天空。',
+        en: 'In the small station plaza, a girl with an orange-yellow headband and a crimson "Brigade Chief" armband points boldly at the sky.'
+      },
+      {
+        type: 'narration',
+        zh: '她大声宣布着今天一定要在神户找到外星人、未来人和超能力者的紧急探索计划。',
+        en: 'She announces with total authority an urgent expedition across Kobe to locate aliens, time travellers, and espers.'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.yuki_nagato,
+        zh: '她身后那位戴着无框眼镜、身材娇小的紫短发女生，正端着一本厚厚的精装书面无表情地翻过一页，仿佛自成一个维度。',
+        en: 'Behind her, a petite girl with lilac hair and rimless glasses turns a page in a thick hardcover book without expression, as if in a dimension of her own.'
+      },
+      seen('你差点被卷入一场拯救世界级别的非日常', 'You narrowly escaped being drafted into an unscheduled anomaly')
+    ]
+  },
+  {
+    // 坡道上飞落的白色贝雷帽。
+    id: 'st_egg_beret_slope', locationIds: ['kitano_slope', 'kitano_lookout'], weight: 3,
+    timeSlots: ['lunch', 'afternoon'],
+    script: [
+      {
+        type: 'narration',
+        zh: '北野坂一阵微风吹过，路旁樱花花瓣飘落，一顶白色的贝雷帽骨碌碌滚到了你的脚边。',
+        en: 'A gust of wind sweeps down the Kitano slope, scattering cherry petals, and rolls a white beret right up to your feet.'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.megumi,
+        zh: '你弯腰捡起来。坡道上方一个穿着粉色开衫毛衣的少女正轻轻按着头发回过头来。',
+        en: 'You pick it up. Up the hill, a girl in a pink cardigan holding down her dark bob turns around.'
+      },
+      {
+        type: 'narration',
+        zh: '她从你手里接过帽子，没有夸张的感谢，只是淡淡地微笑道了声谢，然后转身继续走上坡道。',
+        en: 'She takes the hat with a quiet, polite thank-you, untheatrical and entirely calm, before continuing up the slope.'
+      },
+      {
+        type: 'narration',
+        zh: '明明是再平凡不过的举动，那一瞬间的光景却好像比任何动画都要鲜明。',
+        en: 'A completely ordinary moment, yet for an instant it looked clearer and more vivid than any animation.'
+      },
+      seen('你在坂道上经历了一次宿命般的回眸', 'You experienced a fateful glance back along a sloping road')
+    ]
+  },
+  {
+    // 疯狂科学家与狂气助手。
+    id: 'st_egg_mad_scientist', locationIds: ['pia_kobe_arcade', 'meriken_park'], weight: 3,
+    timeSlots: ['night'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.okabe,
+        zh: '高架下的一根立柱旁，一个披着敞开白大褂的男人把根本没亮屏的翻盖手机贴在耳边，手里紧握着一罐Dr Pepper。',
+        en: 'By a viaduct pillar, a man in an unbuttoned white lab coat holds a dark flip phone to his ear, clutching a can of Dr Pepper in the other hand.'
+      },
+      {
+        type: 'narration',
+        zh: '「……是我。机关的特工似乎已经跟踪我到了关西。哼，一切都是命运石之门的选择。El Psy Kongroo。」',
+        en: '"...It\'s me. The Organisation\'s hounds appear to have tracked me to Kansai. Heh. This is the choice of Steins Gate. El Psy Kongroo."'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.kurisu,
+        zh: '旁边双手抱胸、一头酒红色长发的女生翻了个白眼，叹了口气：「バカ岡部……别在公众场合犯中二了，快点去赶电车。」',
+        en: 'Beside him, a red-haired girl in tights folds her arms, rolls her eyes, and mutters: "Idiot Okabe... stop embarrassing us and catch the train."'
+      },
+      seen('你偷听了一通跨越世界线的秘密通话', 'You eavesdropped on a top-secret phone call across world lines')
+    ]
+  },
+  {
+    // 兔耳发夹与墨镜。
+    id: 'st_egg_bunny_actress', locationIds: ['meriken_park', 'suma_beach'], weight: 3,
+    timeSlots: ['afternoon', 'night'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.mai,
+        zh: '海边长椅上坐着一位身材高挑、气质出众的女生，长发上别着一枚精致的兔耳发夹。她正摘下一副大号墨镜。',
+        en: 'On a coastal bench sits a remarkably elegant girl with a delicate bunny-ear barrette in her dark hair, sliding off oversized sunglasses.'
+      },
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.sakuta,
+        zh: '旁边一个双手插兜、校服领带略微松垮的男生走过来，顺手把一罐刚买的温热奶茶递到她手心。',
+        en: 'A boy with his hands in his trouser pockets and loose necktie strolls over, dropping a warm can of milk tea into her palm.'
+      },
+      {
+        type: 'narration',
+        zh: '「明明大家都看不见我，你买两罐给谁喝啊？」女生挑眉看着他。男生只是打了个哈欠：「因为我想看你喝。」',
+        en: '"Nobody else can see me anyway, who did you buy two for?" she arches an eyebrow. The boy merely yawns: "Because I wanted to see you drink it."'
+      },
+      seen('你隐隐察觉到了某种不被常理所束缚的默契', 'You sensed an unspoken understanding unconstrained by ordinary logic')
+    ]
+  },
+  {
+    // 坡道下面抱着团子玩偶的女孩。
+    id: 'st_egg_dango_family', locationIds: ['convenience_store', 'sannomiya_arcade'], weight: 3,
+    timeSlots: ['afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.nagisa,
+        zh: '面包店门外的长椅上，坐着一个双手紧紧抱着粉色团子玩偶的女孩。头顶的两根呆毛随风微微晃动。',
+        en: 'On the bench outside a bakery sits a girl hugging a plush pink dango with both hands. Her twin ahoge sway gently in the breeze.'
+      },
+      {
+        type: 'narration',
+        zh: '她正微微摇晃着身子，小声哼唱着一首非常轻柔温暖的儿歌：「だんご、だんご、だんご……だんご大家族……」',
+        en: 'She sways gently side to side, humming an extraordinarily sweet melody: "Dango, dango, dango... dango daikazoku..."'
+      },
+      {
+        type: 'narration',
+        zh: '听到那旋律的瞬间，不知为何，心里忽然莫名涌上一股想要流泪的温柔。',
+        en: 'The moment the tune catches your ear, an inexplicable wave of tender warmth wells up in your chest.'
+      },
+      seen('你被一首古老温柔的儿歌抚平了疲惫', 'You were soothed by an ancient, gentle nursery rhyme')
+    ]
   }
 ];
 

@@ -317,34 +317,61 @@ export const CITY_NPC_SPRITES = {
 
 // 🎬 经典动漫客串彩蛋 NPC 立绘（纯净无白边透明通道）
 export const EASTER_EGG_SPRITES = {
-  // 《电锯人》
-  denji:    '/images/characters/easter_denji.webp',    // 电次（吃果酱厚吐司少年）
-  reze:     '/images/characters/easter_reze.webp',     // 蕾赛（咖啡少女与手雷插销项圈）
-  // 《孤独摇滚！》
-  bocchi:   '/images/characters/easter_bocchi.webp',   // 后藤一里（粉色运动服背吉他包）
-  kita:     '/images/characters/easter_kita.webp',     // 喜多郁代（元气红发喜多光线）
-  ryo:      '/images/characters/easter_ryo.webp',      // 山田凉（酷酷军绿风衣贝斯手）
-  nijika:   '/images/characters/easter_nijika.webp',   // 伊地知虹夏（侧马尾三角呆毛持鼓棒）
-  // 《轻音少女！》
-  yui:      '/images/characters/easter_yui.webp',      // 平泽唯（海边度假吊带裙吃西瓜）
-  mio:      '/images/characters/easter_mio.webp',      // 秋山澪（大草帽蓝裙害羞脸）
+  // 《我的青春恋爱物语果然有问题。》
+  hachiman:    '/images/characters/easter_hachiman.webp',    // 比企谷八幡（手持MAX咖啡死鱼眼）
+  yukino:      '/images/characters/easter_yukino.webp',      // 雪之下雪乃（静默看书冰之女王）
+  shizuka:     '/images/characters/easter_shizuka.webp',     // 平冢静（白大褂端拉面酷帅女教师）
+  // 《败犬女主也太多了！》
+  anna:        '/images/characters/easter_anna.webp',        // 八奈见杏菜（大号便当与烤丸子吃货败犬）
+  lemon:       '/images/characters/easter_lemon.webp',       // 烧盐柠檬（小麦肤色运动饮料田径少女）
+  nukumizu:    '/images/characters/easter_nukumizu.webp',    // 温水和彦（长便利店小票与零食袋观察者）
+  // 《白色相簿2》
+  setsuna:     '/images/characters/easter_setsuna.webp',     // 小木曾雪菜（米白大衣红围巾手持麦克风）
+  kazusa:      '/images/characters/easter_kazusa.webp',      // 冬马和纱（黑色大衣乐谱夹高挑钢琴家）
+  haruki:      '/images/characters/easter_haruki.webp',      // 北原春希（背吉他包认真班长）
+  // 《凉宫春日的忧郁》（西宫北高原型）
+  haruhi:      '/images/characters/easter_haruhi.webp',      // 凉宫春日（团长袖标北高制服叉腰）
+  yuki_nagato: '/images/characters/easter_yuki_nagato.webp', // 长门有希（无框眼镜捧书外星资讯体）
+  // 《路人女主的养成方法》
+  megumi:      '/images/characters/easter_megumi.webp',      // 加藤惠（白贝雷帽粉色开衫坡道回眸）
+  megumi_alt:  '/images/characters/easter_megumi_alt.webp',  // 加藤惠（立姿备用）
+  // 《命运石之门》
+  okabe:       '/images/characters/easter_okabe.webp',       // 冈部伦太郎（白大褂打手机手持Dr.Pepper狂气科学家）
+  kurisu:      '/images/characters/easter_kurisu.webp',      // 牧濑红莉栖（酒红长发黑丝傲娇助手）
+  // 《青春猪头少年不会梦到兔女郎学姐》
+  mai:         '/images/characters/easter_mai.webp',         // 樱岛麻衣（兔耳发夹持墨镜高挑学姐）
+  mai_alt:     '/images/characters/easter_mai_alt.webp',     // 樱岛麻衣（优雅学姐立姿备用）
+  sakuta:      '/images/characters/easter_sakuta.webp',      // 梓川咲太（双手插兜散漫师傅）
+  // 《CLANNAD》
+  nagisa:      '/images/characters/easter_nagisa.webp',      // 古河渚（抱团子玩偶双呆毛温柔少女）
   // 《Fate/stay night》神户圣地巡礼
-  rin:      '/images/characters/easter_rin.webp',      // 远坂凛（风见鸡馆前的红衣双马尾魔术师）
-  shirou:   '/images/characters/easter_shirou.webp',   // 卫宫士郎（操场撑杆跳高少年）
+  rin:         '/images/characters/easter_rin.webp',         // 远坂凛（风见鸡馆前的红衣双马尾魔术师）
+  shirou:      '/images/characters/easter_shirou.webp',      // 卫宫士郎（操场撑杆跳高少年）
+  // 《电锯人》
+  denji:       '/images/characters/easter_denji.webp',       // 电次（吃果酱厚吐司少年）
+  reze:        '/images/characters/easter_reze.webp',        // 蕾赛（咖啡少女与手雷插销项圈）
+  // 《孤独摇滚！》
+  bocchi:      '/images/characters/easter_bocchi.webp',      // 后藤一里（粉色运动服背吉他包）
+  kita:        '/images/characters/easter_kita.webp',        // 喜多郁代（元气红发喜多光线）
+  ryo:         '/images/characters/easter_ryo.webp',         // 山田凉（酷酷军绿风衣贝斯手）
+  nijika:      '/images/characters/easter_nijika.webp',      // 伊地知虹夏（侧马尾三角呆毛持鼓棒）
+  // 《轻音少女！》
+  yui:         '/images/characters/easter_yui.webp',         // 平泽唯（海边度假吊带裙吃西瓜）
+  mio:         '/images/characters/easter_mio.webp',         // 秋山澪（大草帽蓝裙害羞脸）
   // 《间谍过家家》
-  anya:     '/images/characters/easter_anya.webp',     // 阿尼亚（魔性“呵”表情抱花生）
+  anya:        '/images/characters/easter_anya.webp',        // 阿尼亚（魔性“呵”表情抱花生）
   // 《为美好的世界献上祝福！》
-  aqua:     '/images/characters/easter_aqua.webp',     // 阿克娅（废柴女神抱头大哭）
+  aqua:        '/images/characters/easter_aqua.webp',        // 阿克娅（废柴女神抱头大哭）
   // 《JOJO的奇妙冒险》
-  kira:     '/images/characters/easter_kira.webp',     // 吉良吉影（想过平静生活的上班族）
-  jotaro:   '/images/characters/easter_jotaro.webp',   // 空条承太郎（须磨海岸白衣海洋学者）
+  kira:        '/images/characters/easter_kira.webp',        // 吉良吉影（想过平静生活的上班族）
+  jotaro:      '/images/characters/easter_jotaro.webp',      // 空条承太郎（须磨海岸白衣海洋学者）
   // 《辉夜大小姐想让我告白》
-  chika:    '/images/characters/easter_chika.webp',    // 藤原千花（二郎拉面大胃王侦探）
-  hayasaka: '/images/characters/easter_hayasaka.webp', // 早坂爱（Hey Hey~ 辣妹嘲讽脸）
+  chika:       '/images/characters/easter_chika.webp',       // 藤原千花（二郎拉面大胃王侦探）
+  hayasaka:    '/images/characters/easter_hayasaka.webp',    // 早坂爱（Hey Hey~ 辣妹嘲讽脸）
   // 《在下坂本，有何贵干？》
-  sakamoto: '/images/characters/easter_sakamoto.webp', // 坂本（推眼镜优雅装逼值日生）
+  sakamoto:    '/images/characters/easter_sakamoto.webp',    // 坂本（推眼镜优雅装逼值日生）
   // 《中华小当家》
-  mao:      '/images/characters/easter_mao.webp',      // 刘昴星（特级厨师发光黄金料理）
+  mao:         '/images/characters/easter_mao.webp',         // 刘昴星（特级厨师发光黄金料理）
 } as const;
 
 export const CHARACTERS: Record<CharacterId, Character> = {
@@ -2836,5 +2863,16 @@ export const STORY_CGS: StoryCgDef[] = [
     quote: '「珈琲の香りと、静かな朝の光。」',
     chapterZh: '关西食纪 · 北野洋馆',
     chapterEn: 'Kansai Gourmet · Kitano Western House'
+  },
+  {
+    id: 'cg_shirou_high_jump_sunset',
+    titleZh: '黄昏操场的撑杆跳高',
+    titleEn: 'Sunset High Jump on the School Grounds',
+    descZh: '夕阳斜照的高中操场上，一次又一次向着不可能越过的高度发起挑战的少年身影。——「世界はきっと、ここから始まっていた。」',
+    descEn: 'On the sun-drenched school ground at dusk, a boy leaps repeatedly toward a height he cannot clear. "Perhaps that was where it all began."',
+    cgUrl: '/images/cg/cg_shirou_high_jump_sunset.webp',
+    quote: '「誰かのために走る背中を、ずっと見つめていた。」',
+    chapterZh: '圣地巡礼 · 穗群原学园操场',
+    chapterEn: 'Sacred Pilgrimage · Homurahara Grounds'
   }
 ];
