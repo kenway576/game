@@ -137,16 +137,16 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '（听着广播里字正腔圆的报站，你嘴角不由自主地上扬，从胸前口袋里掏出那张崭新的 ICOCA 卡。）',
-    en: '(Listening to the crisp, perfectly enunciated announcement, you catch yourself smiling, and pull the brand-new ICOCA card from your chest pocket.)'
+    zh: '报站的女声一个字一个字咬得很清楚，清楚到你全听懂了。你把手伸进胸前口袋，摸出那张昨天才买的 ICOCA。',
+    en: 'The announcement is enunciated so clearly that you follow every word of it. You reach into your breast pocket and find the ICOCA you bought yesterday.'
   },
   {
     type: 'speech',
     speakerZh: '你',
     speakerEn: 'You',
     jp: '三ノ宮……',
-    zh: '三ノ宮（Sannomiya）……听力模拟题里听过无数次的名字，今天终于真正踩在自己脚下了。',
-    en: 'Sannomiya... A name I have heard a hundred times in listening practice. Today I finally stand on it myself.',
+    zh: '三ノ宮……这个名字在听力题里出现过几十次。今天它变成了一个地方。',
+    en: 'Sannomiya... That name came up dozens of times in listening practice. Today it turns out to be a place.',
     color: 'bg-yellow-500'
   },
 

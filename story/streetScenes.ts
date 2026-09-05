@@ -1019,8 +1019,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '明明是再平凡不过的举动，那一瞬间的光景却好像比任何动画都要鲜明。',
-        en: 'A completely ordinary moment, yet for an instant it looked clearer and more vivid than any animation.'
+        zh: '她走了以后你还站在原地。刚才那件事一共花了四秒，而你打算记很久。',
+        en: 'You are still standing there after she has gone. The whole thing took four seconds and you intend to keep it for a while.'
       },
       seen('你在坂道上经历了一次宿命般的回眸', 'You experienced a fateful glance back along a sloping road')
     ]
