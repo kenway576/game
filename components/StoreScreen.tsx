@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { STAMINA_MAX } from '../data/staminaData';
+import { NEW_SHOPS, findShop, shopGood, ShopKind } from '../data/shopData';
 import { RECIPE_BOOKS } from '../data/cookData';
 import { Language, LifeState, GameCalendar, StoryFlags, StoryEffect, CharacterId } from '../types';
 import {
@@ -20,7 +22,7 @@ import NpcTalkPanel from './NpcTalkPanel';
 // 不然玩家会把所有东西都堆到一家店，另一家就没人去了。
 // ---------------------------------------------------------
 
-export type StoreKind = 'hyakkin' | 'tackle';
+export type StoreKind = ShopKind;
 
 interface Props {
   kind: StoreKind;
@@ -44,11 +46,24 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
   const [pickId, setPickId] = useState<string | null>(null);
 
   // 站柜台的人。这两句招呼语在文案里早就有了，现在配上人。
-  const clerkSprite = kind === 'hyakkin'
-    ? '/images/characters/npc_city_takahashi.webp'
-    : '/images/characters/npc_city_gensan.webp';
+  // 三宫中心街那四家（药妆、Book Off、駿河屋、优衣库）是数据驱动的，
+  // 百元店和渔具店留着原来的写法——它们和种植/钓鱼系统绑着，不值得为统一而重构。
+  const newShop = findShop(kind);
 
-  const shop = kind === 'hyakkin'
+  const clerkSprite = newShop
+    ? newShop.clerk
+    : kind === 'hyakkin'
+      ? '/images/characters/npc_city_takahashi.webp'
+      : '/images/characters/npc_city_gensan.webp';
+
+  const shop = newShop
+    ? {
+        nameZh: newShop.nameZh, nameEn: newShop.nameEn,
+        nameJp: newShop.nameJp, readingJp: newShop.reading,
+        lineZh: newShop.lineZh, lineEn: newShop.lineEn,
+        accent: newShop.accent, ring: newShop.ring
+      }
+    : kind === 'hyakkin'
     ? {
         nameZh: '百元店 ダイソー 三宫店', nameEn: 'Hundred-Yen Shop',
         nameJp: '百円ショップ', readingJp: 'ひゃくえんショップ',
@@ -68,7 +83,15 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
   type Row = { id: string; emoji: string; icon?: string; nameZh: string; nameEn: string; nameJp: string;
                reading: string; price: number; descZh: string; descEn: string; owned?: number; note?: string };
 
-  const buyRows: Row[] = kind === 'hyakkin'
+  const buyRows: Row[] = newShop
+    ? newShop.goods.map(g => ({
+        id: g.id, emoji: g.emoji, icon: g.id, nameZh: g.nameZh, nameEn: g.nameEn,
+        nameJp: g.nameJp, reading: g.reading, price: g.price,
+        descZh: g.descZh, descEn: g.descEn,
+        owned: life.items[g.id] || 0,
+        note: g.unique && (life.items[g.id] || 0) > 0 ? (en ? 'owned' : '已有') : undefined
+      }))
+    : kind === 'hyakkin'
     ? [
         {
           id: POT_ITEM, emoji: '🏺', icon: POT_ITEM, nameZh: '素烧花盆', nameEn: 'Terracotta Pot',
@@ -147,7 +170,9 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
     && !(pick.id === POT_ITEM && life.plots.length >= MAX_PLOTS)
     && !(kind === 'tackle' && pick.id.startsWith('rod_') && life.rodId === pick.id)
     // 📖 书买过就不再卖第二本。它不是消耗品，第二本没有任何用处。
-    && !(pick.id.startsWith('book_') && (life.items[pick.id] || 0) > 0);
+    && !(pick.id.startsWith('book_') && (life.items[pick.id] || 0) > 0)
+    // 🧥 发热内衣、家居服这类东西第二件没有意义，买过就不再卖
+    && !(shopGood(pick.id)?.unique && (life.items[pick.id] || 0) > 0);
 
   const doBuy = () => {
     if (!pick || !canBuy) return;
@@ -166,8 +191,14 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
       } else {
         next.items[pick.id] = (next.items[pick.id] || 0) + 1;
       }
+      // 🛍️ 新店的货是**买了当场就发生点什么**的：营养饮料回体力，
+      // 二手漫画给知识。不这么做的话这四家店就只是四个橱窗。
+      const g = shopGood(pick.id);
+      if (g?.stamina) next.stamina = Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) + g.stamina);
       return next;
     });
+    const g = shopGood(pick.id);
+    if (g?.effects?.length) onEffects(g.effects);
   };
 
   const doSell = () => {

@@ -1,5 +1,6 @@
 import { StoryWord, StoryFlags, LifeState } from '../types';
 import { findBook } from './cookData';
+import { shopGood } from './shopData';
 import { SEEDS, FISH, RODS, POT_ITEM, BAIT_ITEM, fishValue } from './lifeData';
 
 // ---------------------------------------------------------
@@ -107,6 +108,17 @@ export const resolveItem = (key: string): ResolvedItem | null => {
       descZh: '素烧的，底下有个洞。百元店标价 550 日元——老板娘对此毫无解释的意思。',
       descEn: 'Unglazed, with a hole in the bottom. Marked 550 yen in the hundred-yen shop, a fact the owner declines to explain.',
       word: { jp: '鉢', reading: 'はち', zh: '盆', en: 'pot' }
+    };
+  }
+
+  // 🛍️ 三宫中心街那四家店的货。不接进来的话，买了之后背包里
+  // 只会少一笔钱、多不出任何东西——玩家会以为自己买丢了。
+  const g = shopGood(key);
+  if (g) {
+    return {
+      key, kind: 'gear', iconId: key, emoji: g.emoji,
+      nameZh: g.nameZh, nameEn: g.nameEn, nameJp: g.nameJp, reading: g.reading,
+      descZh: g.descZh, descEn: g.descEn
     };
   }
 

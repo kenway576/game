@@ -243,6 +243,8 @@ const App: React.FC = () => {
   // 🌱🎣 课余生活：钱包 / 背包 / 花盆 / 鱼图鉴，合成一份存
   const [life, setLife] = useState<LifeState>(INITIAL_LIFE_STATE);
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
+  // 店里的小景演完之后再打开的那家店。null = 演完就回大厅。
+  const [pendingStore, setPendingStore] = useState<StoreKind | null>(null);
   const [inCafeteria, setInCafeteria] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   // 这一趟碰到的人。剧本播完之后进面对面对话。
@@ -966,6 +968,34 @@ const App: React.FC = () => {
     });
     if (!ev) {
       if (loc.id === 'hyakkin_store') { setCurrentScene(loc.id); setActiveStore('hyakkin'); setGameMode(GameMode.STORE); return; }
+      // 🛍️ 三宫中心街那四家。地点 id → 店铺 id 的对照表就这四行，
+      // 不值得为它另起一个字段。
+      const SHOP_AT: Record<string, StoreKind> = {
+        drugstore_sannomiya: 'drugstore',
+        bookoff_sannomiya:   'bookoff',
+        surugaya_sannomiya:  'surugaya',
+        uniqlo_sannomiya:    'uniqlo'
+      };
+      if (SHOP_AT[loc.id]) {
+        // 店里也有戏（跟駿河屋店员对上暗号、Book Off 最后一卷那种）。
+        // 直接跳货架的话，那些戏挂在店里等于永远播不到——
+        // 所以先问一句今天这家店有没有事，有就先演，演完再开门做生意。
+        const inShop = pickStreetScene(loc.id, { flags: storyFlags, calendar: gameCalendar });
+        setCurrentScene(loc.id);
+        if (inShop) {
+          setPendingStore(SHOP_AT[loc.id]);
+          setActiveTrip({
+            loc, event: null,
+            script: [
+              { type: 'scene', scene: loc.mapScene || loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+              ...inShop.script,
+              { type: 'effect', setFlags: [inShop.id] }
+            ]
+          });
+          return;
+        }
+        setActiveStore(SHOP_AT[loc.id]); setGameMode(GameMode.STORE); return;
+      }
       if (loc.id === 'tackle_shop')   { setCurrentScene(loc.id); setActiveStore('tackle');  setGameMode(GameMode.STORE); return; }
       if (loc.id === 'school_terrace') { setCurrentScene(loc.id); setInCafeteria(true); setGameMode(GameMode.CAFETERIA); return; }
       if (FISHING_SPOTS.includes(loc.id)) { setCurrentScene(loc.id); setActiveFishing(loc); setGameMode(GameMode.FISHING); return; }
@@ -1214,12 +1244,21 @@ const App: React.FC = () => {
       setChatInPerson(true);
       setTimeout(() => enterChat(who, ChatMode.FREE_TALK), 0);
     }
-    setActiveStore(null); setActiveFishing(null); setInCafeteria(false);
+    setActiveFishing(null); setInCafeteria(false);
+    // 🛍️ 刚才那一趟是"进店先演一段戏"。戏演完了，货架该开了——
+    // 时间和体力照常在下面结算，因为这一趟本来就是一次出门。
+    if (pendingStore) {
+      const k = pendingStore;
+      setPendingStore(null);
+      setActiveStore(k);
+      setGameMode(GameMode.STORE);
+    } else {
+      setActiveStore(null);
+    }
     // 出门那一趟的剧本是叠在大厅上播的，所以以前不用管 gameMode。
     // 但店和钓点是自己占一个 gameMode 的，回来必须显式切回大厅——
     // 否则 activeStore 清空之后 gameMode 还停在 STORE，屏幕上什么都不剩。
-    setGameMode(GameMode.LOBBY);
-    setCurrentScene(DEFAULT_SCENE);
+    if (!pendingStore) { setGameMode(GameMode.LOBBY); setCurrentScene(DEFAULT_SCENE); }
     // 这一趟花掉几格，由地点/事件标价决定：便利店 1 格，二郎系拉面和远门 2 格。
     // 花完今天的额度就直接跳到第二天午后——早上是上学时间，不是可以出门的时段。
     const cost = trip ? getTimeCost(trip.loc, trip.event) : 1;

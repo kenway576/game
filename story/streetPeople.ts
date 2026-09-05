@@ -476,7 +476,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // 💼 三宫通勤OL 智惠
   // ---------------------------------------------------------
   {
-    id: 'sp_chie_1', locationIds: ['sannomiya_crossing', 'sannomiya_station'],
+    id: 'sp_chie_1', locationIds: ['sannomiya_station', 'sannomiya_station'],
     weight: 6, minDay: 10, timeSlots: ['morning', 'night'],
     script: [
       {
@@ -501,7 +501,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // 🏃 田径社学妹 枫
   // ---------------------------------------------------------
   {
-    id: 'sp_kaede_1', locationIds: ['kitano_tenman_shrine', 'harbor_mosaic', 'school_courtyard'],
+    id: 'sp_kaede_1', locationIds: ['kitano_kazamidori_square', 'mosaic_night', 'courtyard_rain'],
     weight: 6, minDay: 8, timeSlots: ['morning', 'afternoon'],
     script: [
       {
@@ -524,7 +524,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // ☕ 北野咖啡师 柚木
   // ---------------------------------------------------------
   {
-    id: 'sp_yuzuki_1', locationIds: ['retro_kissaten', 'kitano_slope_foot'],
+    id: 'sp_yuzuki_1', locationIds: ['retro_kissaten', 'kitano_slope'],
     weight: 6, minDay: 12, timeSlots: ['afternoon'],
     script: [
       {
@@ -564,7 +564,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // 📷 街头摄影生 佳奈
   // ---------------------------------------------------------
   {
-    id: 'sp_kana_1', locationIds: ['sannomiya_crossing', 'nankinmachi', 'harbor_mosaic'],
+    id: 'sp_kana_1', locationIds: ['sannomiya_station', 'nankinmachi', 'mosaic_night'],
     weight: 6, minDay: 20, timeSlots: ['afternoon'],
     script: [
       {

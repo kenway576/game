@@ -112,6 +112,10 @@ export const SCENE_MAP: Record<string, string> = {
   'sannomiya_station':           '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
   'sannomiya_ticket_gates':      '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
   'jr_sannomiya_gates':          '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
+  // 另一个 JR 车站的检票口。三宫那张换成真实的之后，
+  // 这一张（更小、更旧、只有一排闸机）挪来当元町站用——
+  // 元町离三宫一站，是真的比三宫小一号的车站。
+  'motomachi_station':           '/images/backgrounds/bg_sannomiya_jr_concourse.webp',
   // 🌉 三宫天桥上望向大十字路口与神户阪急大楼（实景标志性视角）
   'sannomiya_crossing':          '/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',
   'sannomiya_skybridge_crossing':'/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',

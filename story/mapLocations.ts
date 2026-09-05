@@ -451,6 +451,24 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ]
   },
   {
+    // 💊 药妆店。背景和店员立绘都在，但一直没有地点，所以进不去。
+    // 它是这条街上唯一一家"你身体出状况时会想起来"的店。
+    id: 'drugstore_sannomiya', district: 'sannomiya',
+    nameJp: 'サンドラッグ 三宮センター街店', reading: 'サンドラッグ さんのみやセンターがいてん',
+    nameZh: '药妆店 三宫中心街店', nameEn: 'Sun Drug Sannomiya Center Gai',
+    blurbZh: '门口那台机器循环播同一段广告。里面什么都有，从退烧药到零食。',
+    blurbEn: 'The machine by the door loops one advert. Inside there is everything, from fever medicine to snacks.',
+    mapScene: 'drugstore_exterior',
+    extraScenes: ['drugstore_interior'],
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon', 'night'],
+    timeCost: 1,
+    ambientZh: ['你在感冒药那一排站了很久，最后拿了一盒润喉糖。'],
+    ambientEn: ['You stand a long time at the cold-medicine shelf and come away with throat sweets.']
+  },
+  {
     id: 'bookoff_sannomiya', district: 'sannomiya',
     nameJp: 'BOOKOFF 三宮センター街店', reading: 'ブックオフ さんのみやセンターがいてん',
     nameZh: 'Book Off 三宫中心街店', nameEn: 'Book Off Sannomiya Center Gai',
