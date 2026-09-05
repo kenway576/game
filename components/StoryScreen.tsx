@@ -302,7 +302,8 @@ const StoryScreen: React.FC<Props> = ({
       advance();
     } else if (node.type === 'branch') {
       const has = !!flagsRef.current[node.ifFlag];
-      if (node.not ? !has : has) spliceAfter(node.then);
+      const taken = node.not ? !has : has;
+      spliceAfter(taken ? node.then : (node.otherwise || []));
       advance();
     } else if (node.type === 'check') {
       const value = node.metric === 'affection'

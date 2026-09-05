@@ -934,12 +934,12 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                     speakerZh: '金发的女生',
                     speakerEn: 'Blonde Girl',
                     characterImage: '/images/characters/hikari/casual_smug.webp',
-                    jp: '一つ、看板を全部読もうとしてる。二つ、歩くの遅い。三つ——さっき、海に向かって深呼吸してたでしょ。私も一週間前、まったく同じことしたもん。',
+                    jp: '一つ、看板を全部読もうとしてる。二つ、歩くの遅い。三つ——さっき、海に向かって深呼吸してたでしょ。私も半年前、まったく同じことしたもん。',
                     words: [
                       { jp: '深呼吸', reading: 'しんこきゅう', zh: '深呼吸', en: 'a deep breath' }
                     ],
-                    zh: '第一，你想把每块招牌都读一遍。第二，走得慢。第三——你刚才对着海深呼吸了吧。我一周前，做的一模一样。',
-                    en: 'One: you are trying to read every single sign. Two: you walk slowly. Three — you just took a deep breath facing the sea. I did the exact same thing a week ago.',
+                    zh: '第一，你想把每块招牌都读一遍。第二，走得慢。第三——你刚才对着海深呼吸了吧。我半年前，做的一模一样。',
+                    en: 'One: you are trying to read every single sign. Two: you walk slowly. Three — you just took a deep breath facing the sea. I did the exact same thing six months ago.',
                     color: 'bg-amber-400'
                   },
                   {
@@ -952,9 +952,9 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                     speakerZh: '金发的女生',
                     speakerEn: 'Blonde Girl',
                     characterImage: '/images/characters/hikari/casual_happy.webp',
-                    jp: 'ね？分かるって。……一週間先輩だからね、私。',
-                    zh: '看吧？我就知道。……毕竟我可是早来了一周的前辈呢。',
-                    en: 'See? I knew it. ...I have a whole week of seniority on you, after all.',
+                    jp: 'ね？分かるって。……半年先輩やからね、うち。',
+                    zh: '看吧？我就知道。……毕竟我可是早来了半年的前辈呢。',
+                    en: 'See? I knew it. ...I have half a year of seniority on you, after all.',
                     color: 'bg-amber-400'
                   }
                 ]

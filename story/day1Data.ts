@@ -1,3 +1,4 @@
+import { SCHOOL_NPC_SPRITES } from '../constants';
 import { StoryNode, CharacterId } from '../types';
 import {
   DAY1_GYM, DAY1_LIBRARY, DAY1_ARCADE, DAY1_EVENING,
@@ -576,7 +577,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${HIKARI}casual_angry.webp`,
+    characterImage: `${HIKARI}school_angry.webp`,
     zh: '正当你盯着那一栏发愣，斜对面「啪」的一声，一个金发女生把笔重重拍在了桌上。',
     en: 'While you are staring at it, a pen slams down on the table across from you. A blonde girl.'
   },
@@ -584,7 +585,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     type: 'speech',
     speakerZh: '光',
     speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_angry.webp`,
+    characterImage: `${HIKARI}school_angry.webp`,
     jp: 'うわあああ、これ絶対おかしいって！「続柄」って何！？漢字は読めるのに意味が全然わかんない！',
     zh: '哇啊啊，这个绝对有问题吧！「続柄」是什么啦！？汉字明明认得，意思完全搞不懂！',
     en: 'Ugh, this cannot be right! What even is "tsuzukigara"? I can read the characters and I have no idea what they mean!',
@@ -604,7 +605,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '光',
         speakerEn: 'Hikari',
-        characterImage: `${HIKARI}casual_surprised.webp`,
+        characterImage: `${HIKARI}school_surprised.webp`,
         jp: '——あっ！{name}！うそ、同じ学校！？',
         zh: '——啊！{name}！骗人吧，同一所学校！？',
         en: '—Wait! {name}! No way, the same school?!',
@@ -619,7 +620,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '光',
         speakerEn: 'Hikari',
-        characterImage: `${HIKARI}casual_happy.webp`,
+        characterImage: `${HIKARI}school_happy.webp`,
         jp: '昨日の今日でこれ？もう運命やん。……あ、ごめん先生。',
         zh: '昨天才见过今天就这样？这不就是命运嘛。……啊，对不起老师。',
         en: 'We met yesterday and now this? That is fate, that is. ...Ah — sorry, sensei.',
@@ -635,7 +636,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        characterImage: `${HIKARI}casual_surprised.webp`,
+        characterImage: `${HIKARI}school_surprised.webp`,
         zh: '她愣了半秒，眉头皱起来，像是在翻一本很乱的相册。',
         en: 'She stops for half a second, frowning, like someone flipping through a badly sorted photo album.'
       },
@@ -643,7 +644,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '光',
         speakerEn: 'Hikari',
-        characterImage: `${HIKARI}casual_surprised.webp`,
+        characterImage: `${HIKARI}school_surprised.webp`,
         jp: '……あれ。あんた、どっかで……坂で、ぶつかりそうになった？',
         zh: '……欸。你，我是不是在哪儿……坡道上，差点撞上的那个？',
         en: '...Huh. Have I — did I nearly flatten you on a hill somewhere?',
@@ -672,7 +673,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'speech',
             speakerZh: '金发的女生',
             speakerEn: 'Blonde Girl',
-            characterImage: `${HIKARI}casual_surprised.webp`,
+            characterImage: `${HIKARI}school_surprised.webp`,
             jp: '……あ。もしかして、そっちも止まってる？',
             zh: '……啊。难不成，你也卡在那儿了？',
             en: '...Oh. Are you stuck on it too?',
@@ -687,7 +688,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'speech',
             speakerZh: '金发的女生',
             speakerEn: 'Blonde Girl',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             jp: 'あはは！仲間だ！よかったー、私だけバカなのかと思った！',
             words: [{ jp: '仲間', reading: 'なかま', zh: '同伴、伙伴', en: 'comrade / one of us' }],
             zh: '啊哈哈！同伴！太好了——我还以为只有我一个笨蛋呢！',
@@ -708,7 +709,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     type: 'speech',
     speakerZh: '光',
     speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_happy.webp`,
+    characterImage: `${HIKARI}school_happy.webp`,
     jp: 'なるほどな。……ま、これから同じ船に乗ってる仲間ってことで！困ったらお互い様、な？',
     zh: '原来如此。……那，从今天起我们就是同一条船上的伙伴啦！有难同当，好吗？',
     en: 'Right, got it. ...Well then — same boat from here on. We bail each other out, yeah?',
@@ -732,7 +733,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             jp: 'あ、そうやん！光！ひかりって書いて、光。覚えやすいやろ？',
             words: [{ jp: '光', reading: 'ひかり', zh: '光', en: 'light' }],
             zh: '啊，对哦！光！写作「光」，念ひかり。好记吧？',
@@ -760,7 +761,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_neutral.webp`,
+            characterImage: `${HIKARI}school_neutral.webp`,
             jp: '半年。……半年おってもな、こういう紙は毎回わからんねん。',
             zh: '半年。……住了半年也一样啊，这种纸每次都还是看不懂。',
             en: 'Six months. ...Six months in, and I still cannot read a form like this.',
@@ -774,7 +775,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             jp: 'せやから、二人おったら二倍わかるようになるやろ！たぶん！',
             zh: '所以说嘛，两个人的话就能懂两倍了吧！大概！',
             en: 'Which is why two of us should understand twice as much! Probably!',
@@ -804,7 +805,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_smug.webp`,
+            characterImage: `${HIKARI}school_smug.webp`,
             jp: 'ないない！沈むときは一緒に沈むやつや！',
             words: [{ jp: '沈む', reading: 'しずむ', zh: '沉没、下沉', en: 'to sink' }],
             zh: '没有没有！这是要沉一起沉的那种船！',
@@ -819,7 +820,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_shy.webp`,
+            characterImage: `${HIKARI}school_shy.webp`,
             jp: '……ええな、そういうん返してくれる人。半年で初めてやわ。',
             zh: '……不错嘛，会这样接话的人。来了半年，你是第一个。',
             en: '...That is nice, actually. Someone who throws it back. Six months here and you are the first.',
@@ -832,7 +833,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_happy.webp`,
+    characterImage: `${HIKARI}school_happy.webp`,
     jp: 'ほな、これ出したら学生証もらいに行こ。写真、変な顔で写ってへんとええけどな。',
     words: [{ jp: '学生証', reading: 'がくせいしょう', zh: '学生证', en: 'student ID card' }],
     zh: '那，交完这个就去领学生证吧。希望照片上别是个怪表情。',
@@ -1414,9 +1415,61 @@ export const DAY1_SCRIPT: StoryNode[] = [
     ]
   },
   {
-    type: 'narration',
+    // characterImage: '' 清掉明日香。上一句给她挂了立绘，
+    // 之后一路到课间都没清过，于是她在讲台边站了整整一节课。
+    type: 'narration', characterImage: '',
     zh: '第一节课的铃响了。你在这间教室里有了一个位置。',
     en: 'The bell goes for first period. You have a place in this room now.'
+  },
+
+  // ---- 第一节课 ----
+  //
+  // 主角对日式课堂的第一印象。先轻敌，再被课本教做人——
+  // 这一段的笑点全在那个落差上，所以中间不能有任何解释。
+  {
+    type: 'narration',
+    zh: '藤原老师推门进来，全班起立、行礼、坐下，一气呵成。你慢了半拍，站起来的时候别人已经在坐下了。',
+    en: 'Fujiwara-sensei comes in; the whole class stands, bows and sits in one motion. You are half a beat late and are still getting up as everybody else goes down.'
+  },
+  {
+    type: 'narration',
+    zh: '第一节是国语。老师在黑板上写下今天的课题，字很漂亮。',
+    en: 'First period is Japanese. She writes the day\u2019s topic on the board in very neat handwriting.'
+  },
+  {
+    type: 'narration',
+    zh: '你环顾了一圈：没有人在做题，没有人在抢答，没有人被叫起来罚站。窗户开着，风进得来。',
+    en: 'You look around. Nobody is grinding exercises, nobody is racing to answer, nobody has been stood up as punishment. The windows are open and the wind comes in.'
+  },
+  {
+    type: 'narration',
+    zh: '——这就是传说中的日式课堂吗。比国内轻松多了嘛。',
+    en: '—So this is the fabled Japanese classroom. This is a great deal easier than back home.'
+  },
+  {
+    type: 'narration',
+    zh: '你带着一种很没道理的从容翻开了课本。',
+    en: 'You open the textbook with an entirely unearned calm.'
+  },
+  {
+    type: 'narration',
+    zh: '「————」',
+    en: '"————"'
+  },
+  {
+    type: 'narration',
+    zh: '一整页竖排。没有标点在你熟悉的位置上。认识的汉字有，但它们排在一起之后就不认识了。',
+    en: 'A full page of vertical text. None of the punctuation is where you expect it. There are characters you know, and once they are placed next to each other you do not know them any more.'
+  },
+  {
+    type: 'narration',
+    zh: '你把课本转了个角度。没有用。',
+    en: 'You turn the book slightly. It does not help.'
+  },
+  {
+    type: 'narration',
+    zh: '这一节课你唯一完全听懂的一句话，是下课铃。',
+    en: 'The only thing you understand completely in that lesson is the bell at the end of it.'
   },
 
   // ==========================================================
@@ -1427,11 +1480,25 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'narration',
-    zh: '第一节课下课铃响完的第四秒，你的桌子周围围了六个人。',
-    en: 'Four seconds after the bell ends first period, there are six people around your desk.'
+    characterImage: SCHOOL_NPC_SPRITES.kenta,
+    zh: '第一节课下课铃响完的第四秒，你的桌子周围围了六个人。带头的是个晒得很黑的男生，一屁股坐在了你前桌的桌子上。',
+    en: 'Four seconds after the bell ends first period, there are six people around your desk. The one leading them is a very tanned boy, who sits himself down on the desk in front of yours.'
   },
   {
     type: 'narration',
+    characterImage: SCHOOL_NPC_SPRITES.aoi,
+    zh: '一个短发女生从他背后探出头来，手里还举着手机，像是随时准备查什么。',
+    en: 'A short-haired girl leans out from behind him with her phone already up, as though ready to look something up at any moment.'
+  },
+  {
+    type: 'narration',
+    characterImage: SCHOOL_NPC_SPRITES.hiroki,
+    zh: '最外圈站着一个戴黑框眼镜的，没挤进来，但也没走。',
+    en: 'On the outside of the ring stands one in black-framed glasses who has not pushed in and has not left either.'
+  },
+  {
+    type: 'narration',
+    characterImage: '',
     zh: '他们在笑，很热情，语速全开。你听懂的部分大概是这样的：',
     en: 'They are smiling, they are friendly, and they are talking at full speed. What reaches you is roughly this:'
   },
@@ -1669,14 +1736,33 @@ export const DAY1_SCRIPT: StoryNode[] = [
         setFlags: ['day1_lunch_canteen'],
         then: [
           {
+            // 人下楼了，画面得跟着下楼。以前这一整段都还挂在教室的背景上。
+            type: 'scene', scene: 'kaisei_cafeteria_hall', bgm: 'town',
+            titleZh: '学生食堂', titleEn: 'The Cafeteria',
+            subtitleZh: '一楼最里面 · 十二点二十', subtitleEn: 'Far end of the ground floor · Twenty past twelve'
+          },
+          {
             type: 'narration',
             zh: '你走到一楼，看见食堂门口排着大约四十个人的队，以及一台全是汉字的售票机。你在原地站了十秒。',
             en: 'You get downstairs and find a queue of roughly forty people outside the cafeteria, and a ticket machine covered end to end in kanji. You stand there for ten seconds.'
           },
           {
             type: 'narration',
+            zh: '按钮是三排四列，一共十二个。你认得出「うどん」和「カレー」。剩下十个不认识。',
+            en: 'Three rows of four buttons, twelve in all. You can read the udon and the curry. The other ten you cannot.'
+          },
+          {
+            type: 'narration',
+            zh: '你身后排上了人。你往旁边让了一步，然后又让了一步，最后让到了队伍外面。',
+            en: 'Somebody joins the queue behind you. You step aside, and then step aside again, and end up outside the queue altogether.'
+          },
+          {
+            type: 'narration',
             zh: '然后你转身上楼了。',
             en: 'Then you turn around and go back up.'
+          },
+          {
+            type: 'scene', scene: 'classroom', bgm: 'chat'
           }
         ]
       },
@@ -1729,17 +1815,60 @@ export const DAY1_SCRIPT: StoryNode[] = [
       }
     ]
   },
+  // 光是怎么找上门的，要跟着上面那三条走。
+  // 以前不管选了什么都写"铃响后三十秒她就在门口"——
+  // 可你要是下楼排了一趟队再回来，那三十秒早就过去了。
+  {
+    type: 'branch',
+    ifFlag: 'day1_lunch_canteen',
+    then: [
+      {
+        type: 'narration',
+        characterImage: `${HIKARI}school_happy.webp`,
+        zh: '你回到教室门口的时候，光已经靠在那儿了，一手拎着一个便利店的袋子。',
+        en: 'Hikari is already leaning by your classroom door when you get back, a convenience store bag in one hand.'
+      },
+      {
+        type: 'speech',
+        speakerZh: '光', speakerEn: 'Hikari',
+        characterImage: `${HIKARI}school_smug.webp`,
+        jp: '券売機、無理やったやろ。あれ半年おっても無理やで。',
+        words: [{ jp: '券売機', reading: 'けんばいき', zh: '售票机', en: 'ticket machine' }],
+        zh: '售票机搞不定吧。那玩意儿待半年也搞不定。',
+        en: 'The ticket machine beat you, right. That thing beats you at six months too.',
+        color: 'bg-amber-400'
+      },
+      {
+        type: 'narration',
+        zh: '你问她怎么知道你去了食堂。她说你回来的方向不对——教室在二楼，你是从楼梯下面上来的。',
+        en: 'You ask how she knows you went. She says you came back from the wrong direction: the classroom is on the second floor and you came up the stairs.'
+      }
+    ],
+    otherwise: [
+      {
+        type: 'narration',
+        characterImage: `${HIKARI}school_happy.webp`,
+        zh: '午休铃响完没多久，光就出现在了你们班门口，一手拎着一个便利店的袋子。',
+        en: 'Not long after the bell, Hikari turns up at your classroom door with a convenience store bag in one hand.'
+      },
+      {
+        type: 'narration',
+        zh: '她扫了一眼你空着的桌子，什么都没问，直接把袋子往你怀里一塞。',
+        en: 'She takes one look at your empty desk, asks nothing, and puts the bag into your arms.'
+      }
+    ]
+  },
   {
     type: 'narration',
-    characterImage: `${HIKARI}casual_happy.webp`,
-    zh: '光在午休铃响后三十秒就出现在了你们班门口，一手拎着一个便利店的袋子，一手把你往楼上拽。',
-    en: 'Hikari appears at your classroom door thirty seconds after the bell, a convenience store bag in one hand, the other hauling you toward the stairs.'
+    characterImage: `${HIKARI}school_happy.webp`,
+    zh: '然后她一手把你往楼上拽。',
+    en: 'Then she hauls you toward the stairs.'
   },
   {
     type: 'speech',
     speakerZh: '光',
     speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_happy.webp`,
+    characterImage: `${HIKARI}school_happy.webp`,
     jp: '屋上な。ここが一番ええねん。海が見えるから。',
     zh: '屋顶啦。这里最好了。因为看得见海。',
     en: 'The roof. Best spot in the school. You can see the sea from here.',
@@ -1773,7 +1902,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ---- 分饭 ----
   {
     type: 'narration',
-    characterImage: `${HIKARI}casual_happy.webp`,
+    characterImage: `${HIKARI}school_happy.webp`,
     zh: '她盘腿坐下，把袋子里的东西一样样摆到中间：两个饭团、一个咖喱面包、一盒炸鸡块、一瓶茶。',
     en: 'She sits down cross-legged and lays the contents of the bag out between you: two onigiri, a curry bun, a box of karaage, a bottle of tea.'
   },
@@ -1785,7 +1914,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_surprised.webp`,
+    characterImage: `${HIKARI}school_surprised.webp`,
     jp: '……あれ？弁当は？',
     words: [{ jp: '弁当', reading: 'べんとう', zh: '便当、盒饭', en: 'a packed lunch' }],
     zh: '……咦？便当呢？',
@@ -1799,7 +1928,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${HIKARI}casual_neutral.webp`,
+    characterImage: `${HIKARI}school_neutral.webp`,
     zh: '她「啊」了一声，然后做了一件你完全没料到的事：她把摆在中间那些东西，非常认真地、一样一样地分成了两堆。',
     en: 'She says "ah", and then does something you did not see coming at all: she divides everything laid out between you into two piles, item by item, with great seriousness.'
   },
@@ -1832,7 +1961,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_smug.webp`,
+            characterImage: `${HIKARI}school_smug.webp`,
             jp: 'あんな、うちの国ではな、腹減っとるやつの前で一人で食うんは、いちばんアカンことやねん。',
             words: [{ jp: '腹が減る', reading: 'はらがへる', zh: '肚子饿', en: 'to be hungry' }],
             zh: '我跟你说，在我们那儿啊，当着饿肚子的人一个人吃，是最要不得的事。',
@@ -1868,14 +1997,14 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${HIKARI}casual_shy.webp`,
+            characterImage: `${HIKARI}school_shy.webp`,
             zh: '她愣住了，然后飞快地摆手，脸上的表情像是被人当众表扬了。',
             en: 'She freezes, then waves both hands very fast, wearing the expression of someone praised in public.'
           },
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_shy.webp`,
+            characterImage: `${HIKARI}school_shy.webp`,
             jp: 'いや、そんなちゃんと言われると、なんか……こっちが恥ずかしいわ。パンやで？パン。',
             zh: '不是，你说得这么正式，搞得我……我这边反而不好意思了。是面包欸？面包而已。',
             en: 'No, if you say it that properly it makes — it makes me embarrassed. It is bread. It is just bread.',
@@ -1910,14 +2039,14 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${HIKARI}casual_surprised.webp`,
+            characterImage: `${HIKARI}school_surprised.webp`,
             zh: '她把手里的饭团停在半空。',
             en: 'She stops with the onigiri halfway to her mouth.'
           },
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             jp: '明日？……ええやん、それ。ほな明日もここな。約束や。',
             words: [{ jp: '約束', reading: 'やくそく', zh: '约定', en: 'a promise' }],
             zh: '明天？……不错嘛，这个。那明天也在这儿。说好了。',
@@ -1940,15 +2069,58 @@ export const DAY1_SCRIPT: StoryNode[] = [
     zh: '两个人在屋顶上安静地吃了一会儿。风从海那边过来，把包装纸吹得哗哗响。',
     en: 'You eat in silence on the roof for a while. The wind comes in off the sea and rattles the wrappers.'
   },
+  // 序章在港边正式认识过的话，这里不能再说"还没自我介绍"——
+  // 她昨天已经喊过主角的名字了。那条线改成两个人一起惊叹缘分。
   {
-    type: 'speech',
-    speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_neutral.webp`,
-    jp: 'そういえばな。国際交流室では書類の話ばっかりやったやろ。ちゃんと自己紹介、してへんかったわ。',
-    words: [{ jp: '自己紹介', reading: 'じこしょうかい', zh: '自我介绍', en: 'introducing yourself' }],
-    zh: '说起来啊。在国际交流室净说表格的事了吧。都没好好自我介绍过。',
-    en: 'Come to think of it. In the exchange office it was all forms, was it not. We never actually introduced ourselves.',
-    color: 'bg-amber-400'
+    type: 'branch',
+    ifFlag: 'prologue_met_hikari',
+    then: [
+      {
+        type: 'speech',
+        speakerZh: '光', speakerEn: 'Hikari',
+        characterImage: `${HIKARI}school_happy.webp`,
+        jp: 'なあ、考えてみ。昨日あの手すりのとこで会って、今日おんなじ交流室で、今おんなじ屋上におるんやで。',
+        words: [{ jp: '手すり', reading: 'てすり', zh: '栏杆', en: 'a railing' }],
+        zh: '喂，你想想。昨天在那个栏杆边碰上，今天在同一间交流室，现在还在同一个屋顶上。',
+        en: 'Hey, think about it. Yesterday at that railing, today the same exchange office, and now the same roof.',
+        color: 'bg-amber-400'
+      },
+      {
+        type: 'narration',
+        zh: '你说这大概叫有缘。她说不对，这叫神户太小了。说完自己先笑出来了。',
+        en: 'You say that is probably what people call fate. She says no, that is what people call Kobe being small. Then she laughs at her own line first.'
+      },
+      {
+        type: 'speech',
+        speakerZh: '光', speakerEn: 'Hikari',
+        characterImage: `${HIKARI}school_happy.webp`,
+        jp: 'まあでも……うれしいわ、正直。同じ学校って聞いたとき、ちょっとガッツポーズしたもん。',
+        zh: '不过嘛……说实话，挺高兴的。听说是同一所学校的时候，我还偷偷握了下拳。',
+        en: 'Still... honestly, I am glad. When I heard it was the same school I did a little fist-pump.',
+        color: 'bg-amber-400'
+      },
+      {
+        type: 'narration',
+        zh: '她说完马上补了一句"没有真的握啊"，但你已经能想象出那个动作了。',
+        en: 'She adds immediately that she did not actually do it. You can picture it perfectly.'
+      },
+      {
+        type: 'effect',
+        relations: [{ char: CharacterId.HIKARI, familiarity: 6, affection: 5, reasonZh: '她承认自己偷偷握了下拳', reasonEn: 'She admitted to the fist-pump' }]
+      }
+    ],
+    otherwise: [
+      {
+        type: 'speech',
+        speakerZh: '光', speakerEn: 'Hikari',
+        characterImage: `${HIKARI}school_neutral.webp`,
+        jp: 'そういえばな。国際交流室では書類の話ばっかりやったやろ。ちゃんと自己紹介、してへんかったわ。',
+        words: [{ jp: '自己紹介', reading: 'じこしょうかい', zh: '自我介绍', en: 'introducing yourself' }],
+        zh: '说起来啊。在国际交流室净说表格的事了吧。都没好好自我介绍过。',
+        en: 'Come to think of it. In the exchange office it was all forms, was it not. We never actually introduced ourselves.',
+        color: 'bg-amber-400'
+      }
+    ]
   },
   {
     type: 'narration',
@@ -1958,7 +2130,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_happy.webp`,
+    characterImage: `${HIKARI}school_happy.webp`,
     jp: '二年B組、光。日本に来て半年。好きなもんは食べ歩き、嫌いなもんは書類。以上！',
     words: [{ jp: '食べ歩き', reading: 'たべあるき', zh: '边走边吃、逛吃', en: 'eating your way around a place' }],
     zh: '二年B班，光。来日本半年。喜欢的是逛吃，讨厌的是各种表格。完毕！',
@@ -1990,14 +2162,14 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             zh: '说到「討厭的是表格」的时候，她「啪」地一拍地面，说了句「せやんな！！」，声音大到楼下操场都听得见。',
             en: 'When you get to "dislikes: paperwork" she slaps the ground and says "RIGHT?!" loudly enough to be heard on the field below.'
           },
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             jp: 'よし、覚えた。……あんたの名前、これでもう忘れへんわ。',
             zh: '好，记住了。……你的名字，我这下不会忘了。',
             en: 'Right. Got it. ...I am not going to forget your name now.',
@@ -2025,14 +2197,14 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${HIKARI}casual_neutral.webp`,
+            characterImage: `${HIKARI}school_neutral.webp`,
             zh: '她「唔」了一声，抱着膝盖看了一会儿海。',
             en: 'She makes a small sound, hugs her knees, and looks at the sea for a while.'
           },
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_neutral.webp`,
+            characterImage: `${HIKARI}school_neutral.webp`,
             jp: '……テレビで見てん。神戸の夜景。ちっちゃい頃に。',
             words: [{ jp: '夜景', reading: 'やけい', zh: '夜景', en: 'a night view' }],
             zh: '……在电视上看到的。神户的夜景。很小的时候。',
@@ -2042,7 +2214,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_shy.webp`,
+            characterImage: `${HIKARI}school_shy.webp`,
             jp: 'それだけ。理由それだけやねん。……しょうもないやろ。',
             zh: '就这样。理由就只有这个。……很没意思吧。',
             en: 'That is it. That is the whole reason. ...Pretty stupid, right.',
@@ -2055,7 +2227,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             zh: '她笑出了声，笑了很久。',
             en: 'She laughs, and keeps laughing for a while.'
           }
@@ -2092,7 +2264,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${HIKARI}casual_surprised.webp`,
+            characterImage: `${HIKARI}school_surprised.webp`,
             zh: '她正在喝茶。这一口茶她没能咽下去。',
             en: 'She is drinking her tea. That mouthful does not go down.'
           },
@@ -2104,7 +2276,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}casual_happy.webp`,
+            characterImage: `${HIKARI}school_happy.webp`,
             jp: 'あんた、日本語まだアカンとか言うてたやん。今の完璧やったで。ずるいわ。',
             zh: '你不是说日语还不行吗。刚才那句完美欸。太狡猾了。',
             en: 'You said your Japanese was still bad. That was perfect. That is cheating.',
@@ -2123,7 +2295,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     type: 'speech',
     speakerZh: '光',
     speakerEn: 'Hikari',
-    characterImage: `${HIKARI}casual_neutral.webp`,
+    characterImage: `${HIKARI}school_neutral.webp`,
     jp: '……最初の一週間な、毎日ここで昼メシ食っとった。誰とも喋らんで。',
     zh: '……刚来那一个星期啊，我每天都在这儿吃午饭。谁也不跟我说话。',
     en: '...First week I was here, I ate lunch up here every day. Did not talk to anyone.',

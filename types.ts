@@ -539,7 +539,9 @@ export type StoryNode =
   // 空手走出去的人不该被店员问「要筷子吗」。
   | { type: 'shop'; budget: number; promptZh: string; promptEn: string; items: ShopItem[]; setFlagsOnPurchase?: string[]; setFlagsOnEmpty?: string[] }
   // 条件插播：满足 flag 时才播这段（用于回收前面的选择）
-  | { type: 'branch'; ifFlag: string; not?: boolean; then: StoryNode[] }
+  // otherwise 是后加的：以前只有 then，想写「有这个 flag 走 A，没有走 B」
+  // 就得写两个 branch，第二个还要记得加 not:true。漏一个 not 就两条都播。
+  | { type: 'branch'; ifFlag: string; not?: boolean; then: StoryNode[]; otherwise?: StoryNode[] }
   // 剧情里问玩家的名字。取代开场的「学员登记」表单：
   // 名字不该在游戏还没开始时填，而该在第一个角色真的开口问你时填。
   | { type: 'nameInput'; promptZh: string; promptEn: string; placeholderZh: string; placeholderEn: string }
