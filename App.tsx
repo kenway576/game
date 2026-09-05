@@ -1181,8 +1181,11 @@ const App: React.FC = () => {
     // 先在这儿把"会不会滚到第二天"算清楚，再一次性改状态。
     // 不能把 setLife 塞进 setGameCalendar 的 updater 里：那个函数
     // 在 StrictMode 下会被跑两遍，体力就会被扣两次。
+    // 早晨不在 AFTERSCHOOL_SLOTS 里，indexOf 给 -1。以前把它当 0（=午休）用，
+    // 于是"早上出门"回来直接是下午——整个午休被无声吃掉了。
+    // 当 -1 用才对：早上出一趟 1 格的门，回来正好是午休。
     const slotIdx = AFTERSCHOOL_SLOTS.indexOf(gameCalendar.timeSlot);
-    const nextSlot = (slotIdx < 0 ? 0 : slotIdx) + cost;
+    const nextSlot = slotIdx + cost;
     const rollsOver = nextSlot >= AFTERSCHOOL_SLOTS.length;
 
     if (rollsOver) {
@@ -1205,6 +1208,12 @@ const App: React.FC = () => {
       if (trip) {
         // 🚪 今天出过门了。窝在家的计数靠这个。
         setLife(l => ({ ...l, wentOutOn: dayIndex(gameCalendar), stayInDays: 0 }));
+        // 🏫 上课日的早上出门，就是翘课。明日香会知道。
+        if (classPending) {
+          setStoryFlags(prev => ({
+            ...prev, skipped_school: true, [classDoneFlag(gameCalendar)]: true
+          }));
+        }
         const drain = staminaCostOf(trip.loc, trip.event, gameCalendar);
         // 温泉和保健室的 drain 是负的，所以两头都要夹
         setLife(l => ({ ...l, stamina: Math.max(0, Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) - drain)) }));
