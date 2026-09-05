@@ -332,6 +332,11 @@ export interface LifeState {
   fishedToday: number;
   // 做过一次的菜。第一次做会多给一点知识——学会了就是学会了。
   cookedDex?: Record<string, number>;
+  // 🔋 今天还剩多少体力，以及这个数是哪一天的。
+  // 记日子是为了读老存档：没有这个字段就当成"今天满的"，
+  // 而不是当成 0 把玩家钉在原地。
+  stamina?: number;
+  staminaOn?: number | null;
 }
 
 // ---------------------------------------------------------

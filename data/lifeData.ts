@@ -25,7 +25,9 @@ export const INITIAL_LIFE_STATE: LifeState = {
   plots: [],
   fishDex: {},
   fishedOn: null,
-  fishedToday: 0
+  fishedToday: 0,
+  stamina: 100,
+  staminaOn: null
 };
 
 // ==========================================================

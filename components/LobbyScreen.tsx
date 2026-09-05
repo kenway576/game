@@ -1,4 +1,5 @@
 import { isSchoolDay } from '../data/calendarLife';
+import StaminaBar from './StaminaBar';
 import React, { useRef } from 'react';
 import { CharacterId, UserState, CustomAssets, AffectionMap, FamiliarityMap, GameCalendar, ProtagonistStats } from '../types';
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity, LOBBY_PORTRAITS } from '../constants';
@@ -32,6 +33,7 @@ interface Props {
   mainStoryPending?: boolean;
   onResumeMainStory?: () => void;
   phoneUnread: number;
+  stamina: number;
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
 }
@@ -39,7 +41,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, phoneUnread, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, phoneUnread, stamina, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -173,6 +175,10 @@ const LobbyScreen: React.FC<Props> = ({
             </span>
           </span>
         </button>
+
+        {/* 🔋 体力。挨着日历放：一个说"还剩几格"，一个说"还撑不撑得住"，
+            这两件事是一起看的。 */}
+        <StaminaBar cur={stamina} en={userState.language === 'en'} />
       </div>
     </div>
 

@@ -48,6 +48,7 @@ import FishDexModal from './components/FishDexModal';
 import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
+import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE } from './data/staminaData';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
@@ -790,6 +791,10 @@ const App: React.FC = () => {
       const today = dayIndex(gameCalendar);
       return {
         ...l,
+        // 🔋 睡一觉回满。这是唯一一个能回满的办法，
+        // 中途只能靠吃东西补一点。
+        stamina: STAMINA_MAX,
+        staminaOn: dayIndex(tomorrow),
         plots: l.plots.map(p =>
           p.seedId && p.lastWaterOn !== today && plantStage(p, today) < 4
             ? { ...p, wilted: true, missedWater: (p.missedWater || 0) + 1 }
@@ -898,7 +903,12 @@ const App: React.FC = () => {
     });
 
   const eatAtCafeteria = (item: CafeteriaItem, firstTime: boolean) => {
-    setLife(l => ({ ...l, yen: Math.max(0, l.yen - item.price) }));
+    setLife(l => ({
+      ...l,
+      yen: Math.max(0, l.yen - item.price),
+      // 🔋 一顿饭。食堂比自己做的回得少一点——排队、吃完还要赶回教室。
+      stamina: Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) + MEAL_RESTORE.cafeteria)
+    }));
     applyStoryEffects(item.effects);
     if (firstTime) setStoryFlags(prev => ({ ...prev, [tastedFlag(item.id)]: true }));
     if (item.word) collectStoryWords([item.word]);
@@ -967,7 +977,15 @@ const App: React.FC = () => {
 
     setLife(l => {
       const next = consumeFor(r, l);
-      return { ...next, cookedDex: { ...(l.cookedDex || {}), [r.id]: ((l.cookedDex || {})[r.id] || 0) + 1 } };
+      return {
+        ...next,
+        cookedDex: { ...(l.cookedDex || {}), [r.id]: ((l.cookedDex || {})[r.id] || 0) + 1 },
+        // 🔋 自己做的一顿是白天唯一能把体力补回来一大块的办法。
+        // 做糊了不算——上面那一支直接 return 了。
+        // 火候完美的多回一点：这是给 QTE 打完之后的实际好处，
+        // 而不只是一行"灵巧 +1"。
+        stamina: Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) + MEAL_RESTORE.cooked + (result === 'perfect' ? 10 : 0))
+      };
     });
 
     const extraEffects = [];
@@ -1060,19 +1078,36 @@ const App: React.FC = () => {
     // 这一趟花掉几格，由地点/事件标价决定：便利店 1 格，二郎系拉面和远门 2 格。
     // 花完今天的额度就直接跳到第二天午后——早上是上学时间，不是可以出门的时段。
     const cost = trip ? getTimeCost(trip.loc, trip.event) : 1;
-    setGameCalendar(prev => {
-      const idx = AFTERSCHOOL_SLOTS.indexOf(prev.timeSlot);
-      const next = (idx < 0 ? 0 : idx) + cost;
-      if (next < AFTERSCHOOL_SLOTS.length) {
-        return { ...prev, timeSlot: AFTERSCHOOL_SLOTS[next] };
-      }
+    // 🔋 这一趟有多累。轻的一趟十几点，打工和部活是它的两倍多——
+    // 所以"还剩两格时间"和"还干得动两件事"不是一回事。
+    // 先在这儿把"会不会滚到第二天"算清楚，再一次性改状态。
+    // 不能把 setLife 塞进 setGameCalendar 的 updater 里：那个函数
+    // 在 StrictMode 下会被跑两遍，体力就会被扣两次。
+    const slotIdx = AFTERSCHOOL_SLOTS.indexOf(gameCalendar.timeSlot);
+    const nextSlot = (slotIdx < 0 ? 0 : slotIdx) + cost;
+    const rollsOver = nextSlot >= AFTERSCHOOL_SLOTS.length;
+
+    if (rollsOver) {
+      // 时间用光会直接滚到第二天。这条路径以前不补体力，
+      // 于是"熬到天亮"的第二天是带着昨天的疲劳开始的。
+      const rolled = advanceCalendarDay(gameCalendar);
       const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
-      return {
-        ...advanceCalendarDay(prev),
+      setLife(l => ({ ...l, stamina: STAMINA_MAX, staminaOn: dayIndex(rolled) }));
+      setGameCalendar({
+        ...rolled,
         timeSlot: 'lunch',
         weather: weathers[Math.floor(Math.random() * weathers.length)]
-      };
-    });
+      });
+    } else {
+      // 🔋 这一趟有多累。轻的一趟十几点，打工和部活是它的两倍多——
+      // 所以"还剩两格时间"和"还干得动两件事"不是一回事。
+      if (trip) {
+        const drain = staminaCostOf(trip.loc, trip.event, gameCalendar);
+        // 温泉和保健室的 drain 是负的，所以两头都要夹
+        setLife(l => ({ ...l, stamina: Math.max(0, Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) - drain)) }));
+      }
+      setGameCalendar(prev => ({ ...prev, timeSlot: AFTERSCHOOL_SLOTS[nextSlot] }));
+    }
   };
 
   // 同意之后才真正进大厅
@@ -2075,6 +2110,7 @@ ${wind}`;
           mainStoryPending={prologueDone && !day1Done && !playingDay1}
           onResumeMainStory={() => setPlayingDay1(true)}
           phoneUnread={totalUnread({ flags: storyFlags, affection: affectionMap, familiarity: familiarityMap, met: metChars })}
+          stamina={life.stamina ?? STAMINA_MAX}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
           lobbyChars={lobbyChars}
           background={background}
@@ -2367,6 +2403,7 @@ ${wind}`;
           language={userState.language}
           calendar={gameCalendar}
           storyFlags={storyFlags}
+          stamina={life.stamina ?? STAMINA_MAX}
           affection={affectionMap}
           familiarity={familiarityMap}
           onClose={() => setGameMode(GameMode.LOBBY)}

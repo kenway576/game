@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { STAMINA_MAX, staminaCostOf, staminaBand } from '../data/staminaData';
 import {
   GameCalendar, Language, StoryFlags, MapLocation,
   AffectionMap, FamiliarityMap, CharacterId
@@ -40,6 +41,7 @@ interface Props {
   language: Language;
   calendar: GameCalendar;
   storyFlags: StoryFlags;
+  stamina: number;
   affection: AffectionMap;
   familiarity: FamiliarityMap;
   onClose: () => void;
@@ -59,7 +61,7 @@ const NAME_ZH: Record<string, string> = {
 const bgOf = (id: string) => SCENE_MAP[id] || SCENE_FALLBACK[id] || SCENE_MAP['street'];
 
 const MapScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, affection, familiarity, onClose, onTravel, metChars
+  language, calendar, storyFlags, stamina, affection, familiarity, onClose, onTravel, metChars
 }) => {
   const en = language === 'en';
   const ctx: EventContext = useMemo(
@@ -111,7 +113,11 @@ const MapScreen: React.FC<Props> = ({
   // ⏳ 今天放学后还剩几格，以及每个地方要花几格
   const slotsLeft = slotsLeftToday(calendar);
   const costOf = (loc: MapLocation) => getTimeCost(loc, pickEventFor(loc.id, ctx));
-  const affordable = (loc: MapLocation) => costOf(loc) <= slotsLeft;
+  // 🔋 体力是第二道门槛。时间够但人不够，去不了——
+  // 打工和部活比逛便利店累一倍多，这就是它们的代价。
+  const tireOf = (loc: MapLocation) => staminaCostOf(loc, pickEventFor(loc.id, ctx), calendar);
+  const hasLegs = (loc: MapLocation) => tireOf(loc) <= stamina;
+  const affordable = (loc: MapLocation) => costOf(loc) <= slotsLeft && hasLegs(loc);
   // 这个时段真正还能去的地方：解锁了、没打烊、今天的时间也还够
   const openNowCount = unlocked.filter(
     l => isLocationOpenNow(l, calendar) && affordable(l)
@@ -320,11 +326,21 @@ const MapScreen: React.FC<Props> = ({
                   )}
                   {/* 这一趟要花掉多少时间 */}
                   <span className={`text-[11px] px-2 py-1 border flex items-center gap-1.5 ${
-                    affordable(selected) ? 'border-white/20 text-white/60' : 'border-rose-500/50 text-rose-300'
+                    costOf(selected) <= slotsLeft ? 'border-white/20 text-white/60' : 'border-rose-500/50 text-rose-300'
                   }`}>
                     {en ? 'Takes' : '要花'}
                     <span className="flex items-center gap-0.5">{slotPips(0, costOf(selected))}</span>
-                    {!affordable(selected) && (en ? ' · no time left today' : ' · 今天来不及了')}
+                    {costOf(selected) > slotsLeft && (en ? ' · no time left today' : ' · 今天来不及了')}
+                  </span>
+                  {/* 🔋 有多累。和时间分开写：拦住玩家的是哪一样，
+                      他必须一眼看得出来——不然就变成"按钮灰了但不知道为什么"。 */}
+                  <span className={`text-[11px] px-2 py-1 border flex items-center gap-1.5 ${
+                    hasLegs(selected) ? 'border-white/20 text-white/60' : 'border-rose-500/50 text-rose-300'
+                  }`}>
+                    {tireOf(selected) < 0
+                      ? <span className="text-emerald-300">🔋 +{-tireOf(selected)}</span>
+                      : <>🔋 −{tireOf(selected)}</>}
+                    {!hasLegs(selected) && (en ? ' · not enough left in you' : ' · 撑不住了')}
                   </span>
                 </div>
               )}
@@ -343,8 +359,8 @@ const MapScreen: React.FC<Props> = ({
                         ? '今天不上学，校内碰不到人。'
                         : '午休。只走得到校内，谁在哪儿要看星期几。👤 表示那儿有人。'))
                 : (en
-                    ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home.'
-                    : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。')}
+                    ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home. 🔋 is a separate question: having the time does not mean you have the legs. Eat something, or go and sit in a hot spring.'
+                    : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。🔋 是另一回事：时间够、人不够也去不了。想缓过来就吃点东西，或者去泡个汤。')}
             </span>
             <button
               onClick={go}
@@ -360,8 +376,10 @@ const MapScreen: React.FC<Props> = ({
                   ? (en ? 'Locked' : '未解锁')
                   : !selOpen
                     ? (en ? 'Not now' : '现在不行')
-                    : !affordable(selected)
+                    : costOf(selected) > slotsLeft
                       ? (en ? 'Too late' : '来不及了')
+                      : !hasLegs(selected)
+                        ? (en ? 'Too tired' : '走不动了')
                       : (en ? 'Go ▶' : '出发 ▶')}
               </span>
             </button>

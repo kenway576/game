@@ -2429,28 +2429,27 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ---- 铺垫（二）：她已经出发了，而且已经走错了 ----
   {
     type: 'narration',
-    zh: '第四节课中途，口袋里震了三下。你趁老师转身写板书的时候偷看了一眼。',
-    en: 'Three buzzes in your pocket during fourth period. You sneak a look while the teacher is turned to the board.'
+    zh: '第四节课中途，口袋里震了三下。你趁老师转身写板书的时候，把手机压在桌肚里看了一眼。',
+    en: 'Three buzzes in your pocket during fourth period. You sneak a look with the phone pressed into the desk while the teacher is turned to the board.'
+  },
+  {
+    // 早上那一屏是十七条堆在一起的"她一整晚都在发"；
+    // 这一屏只有三条，看的是**这三条之间发生了什么**。
+    type: 'phone',
+    savedAsZh: 'なおちゃん', savedAsEn: 'Nao-chan',
+    avatar: '/images/avatars/nao.webp',
+    lines: [
+      { jp: '坂の下ついた', zh: '我到坡道下面了', en: 'I am at the bottom of the slope', time: '15:50' },
+      { jp: 'この坂なっが', zh: '这条坡道好长', en: 'This slope is so long' },
+      { jp: '……待って、これあんたの坂ちゃうくない？', zh: '……等一下，这条好像不是你那条', en: '...Hang on, I do not think this is your one' }
+    ],
+    afterZh: '学校四点十分放学。她三点五十就到了——到了一条不是你那条的坡下面。',
+    afterEn: 'School finishes at ten past four. She got there at ten to — to the bottom of a slope that is not yours.'
   },
   {
     type: 'narration',
-    zh: '「我到坡道下面了」——发送时间：下午三点五十。学校四点十分放学。',
-    en: '"I am at the bottom of the slope." Sent at 3:50 PM. School finishes at 4:10.'
-  },
-  {
-    type: 'narration',
-    zh: '「这条坡道好长」',
-    en: '"This slope is really long"'
-  },
-  {
-    type: 'narration',
-    zh: '「……等一下，这条好像不是你那条」',
-    en: '"...Hang on, I do not think this is your one"'
-  },
-  {
-    type: 'narration',
-    zh: '你把手机扣回口袋，忽然有点想笑。十年了，一点没变。',
-    en: 'You put the phone face down in your pocket and find you want to laugh. Ten years, and not one thing has changed.'
+    zh: '你把手机扣回桌肚里，忽然有点想笑。十年了，一点没变。',
+    en: 'You put the phone face down under the desk and find you want to laugh. Ten years, and not one thing has changed.'
   },
 
   {
