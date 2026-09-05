@@ -553,6 +553,14 @@ const App: React.FC = () => {
     if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
     if (!day1Done || storyFlags['year_end_done']) return;
     if (!isSchoolYearOver(gameCalendar)) return;
+    // 📕 主线最后一章还欠着就先补上。它写的是修了式前一天的坡道，
+    // 错过它整条主线就没有收尾——而玩家只要在三月最后几天没进过大厅
+    // 就会错过。这里兜住。
+    const owed = nextMainChapter({
+      calendar: gameCalendar, flags: storyFlags,
+      familiarity: familiarityMap, met: metChars
+    });
+    if (owed) { setShowRestPlan(false); setActiveMain(owed); return; }
     setShowRestPlan(false);
     setActiveLevelStory(null);
     setActiveTrip({
@@ -566,7 +574,7 @@ const App: React.FC = () => {
       event: null,
       script: YEAR_END
     });
-  }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done]);
+  }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done, familiarityMap, metChars]);
 
   // 修了式演完 → 结算屏。靠 flag 触发，跳过剧本也走得到。
   useEffect(() => {
@@ -1378,10 +1386,19 @@ const App: React.FC = () => {
   // ---------- 存档系统 ----------
   // 双轴之前的旧存档只有 affectionMap。直接补 0 会让"已经攻略到恋人"的角色
   // 突然退回初対面，所以按当时的好感度等级反推一个等价的親密度起点。
-  const migrateFamiliarityMap = (saved: Partial<FamiliarityMap> | undefined, affection: AffectionMap): FamiliarityMap =>
+  // 老存档里没记这个人的親密度时的兜底。
+  // met 要传进来：没见过的人一律 0，不能退回档案里那份初始值。
+  // 否则一个从没露过面的角色会因为读了一次档就变成"朋友"，
+  // 和 continueFromPrologue 那边修掉的是同一个洞。
+  const migrateFamiliarityMap = (
+    saved: Partial<FamiliarityMap> | undefined,
+    affection: AffectionMap,
+    met?: CharacterId[]
+  ): FamiliarityMap =>
     createCharacterRecord(id => {
       const stored = saved?.[id];
       if (typeof stored === 'number' && Number.isFinite(stored)) return stored;
+      if (met && !met.includes(id)) return 0;
       const equivalent = FAMILIARITY_LEVELS[getAffectionLevelIndex(affection[id] || 0)].threshold;
       return Math.max(getInitialFamiliarity(id), equivalent);
     });
@@ -1546,7 +1563,8 @@ const App: React.FC = () => {
       setChatHistories({ ...createCharacterRecord(() => [] as Message[]), ...(data.chatHistories || {}) });
       const loadedAffection = { ...createCharacterRecord(() => 0), ...(data.affectionMap || {}) };
       setAffectionMap(loadedAffection);
-      setFamiliarityMap(migrateFamiliarityMap(data.familiarityMap, loadedAffection));
+      const loadedMet: CharacterId[] = Array.isArray(data.metChars) ? data.metChars : [...VISIBLE_CHARACTER_IDS];
+      setFamiliarityMap(migrateFamiliarityMap(data.familiarityMap, loadedAffection, loadedMet));
       // 记忆为空的角色补上预置的共同记忆（旧存档 & 尚未对话过的角色）
       setMemoryMap(createCharacterRecord(id => (data.memoryMap || {})[id] || getSeedMemory(id)));
 
@@ -1611,7 +1629,7 @@ const App: React.FC = () => {
         try {
           const charId = data.selectedCharId as CharacterId;
           const affectionValue = loadedAffection[charId] || 0;
-          const familiarityValue = migrateFamiliarityMap(data.familiarityMap, loadedAffection)[charId];
+          const familiarityValue = migrateFamiliarityMap(data.familiarityMap, loadedAffection, loadedMet)[charId];
           await startChat(
             CHARACTERS[charId], data.chatMode, data.userState.learningGoal, data.userState.grammarTopic, data.userState.language || 'zh', {
               apiKey: customApiKey, modelName: effectiveModelName, history: (data.messages || []).slice(-RECENT_HISTORY_COUNT),

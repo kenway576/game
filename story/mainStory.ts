@@ -46,8 +46,12 @@ export interface MainChapterDef {
   titleZh: string; titleEn: string;
   // 大厅上那一行小字。要够勾人，又不能剧透。
   teaseZh: string; teaseEn: string;
-  // 最早第几个上学日之后才可能出现
-  minSchoolDay: number;
+  // 最早第几天之后才可能出现。
+  // 数的是**开学以来的日历天**（schoolDayNumber 就是这个口径：
+  // 4/11 是 0，次年 3/23 是 346），不是上过几节课。
+  // 一开始我按"上学日"写了 20/60/115/175/225，而一学年只有 198 个上学日，
+  // 于是第 6 章那句「明天是修了式」会在十一月播出来。
+  minDay: number;
   requiresFlags?: string[];
   minInariFamiliarity?: number;
   script: StoryNode[];
@@ -824,7 +828,7 @@ export const MAIN_CHAPTERS: MainChapterDef[] = [
     titleZh: '描了三遍的鸟居', titleEn: 'The Torii Traced Three Times',
     teaseZh: '地图上有个地方，他描了三遍',
     teaseEn: 'One place on the map he drew three times',
-    minSchoolDay: 20,
+    minDay: 30,   // 5/11
     requiresFlags: ['been_ikuta_shrine'],
     script: CH2
   },
@@ -833,7 +837,7 @@ export const MAIN_CHAPTERS: MainChapterDef[] = [
     titleZh: '名字的帐', titleEn: 'The Ledger of Names',
     teaseZh: '她说，下次把本子一起带来',
     teaseEn: 'She said to bring the notebook next time',
-    minSchoolDay: 60,
+    minDay: 85,   // 7/5
     requiresFlags: ['main_ch2_done'],
     minInariFamiliarity: 90,
     script: CH3
@@ -843,7 +847,7 @@ export const MAIN_CHAPTERS: MainChapterDef[] = [
     titleZh: '他在等谁', titleEn: 'Who He Was Waiting For',
     teaseZh: '两年多，七百多次，什么也没干',
     teaseEn: 'Two years, seven hundred visits, nothing done',
-    minSchoolDay: 115,
+    minDay: 180,   // 10/8
     requiresFlags: ['main_ch3_done'],
     script: CH4
   },
@@ -852,7 +856,7 @@ export const MAIN_CHAPTERS: MainChapterDef[] = [
     titleZh: '一九九五', titleEn: 'Nineteen Ninety-Five',
     teaseZh: '历史课上，老师讲到那一年停了三秒',
     teaseEn: 'In history, the teacher paused three seconds on that year',
-    minSchoolDay: 175,
+    minDay: 281,   // 1/17，正文里写死的那一天
     requiresFlags: ['main_ch4_done'],
     script: CH5
   },
@@ -861,7 +865,7 @@ export const MAIN_CHAPTERS: MainChapterDef[] = [
     titleZh: '同一条坡', titleEn: 'The Same Hill',
     teaseZh: '最后一次走上去',
     teaseEn: 'The last time up',
-    minSchoolDay: 225,
+    minDay: 344,   // 3/21，修了式前几天
     requiresFlags: ['main_ch5_done'],
     script: CH6
   }
@@ -884,7 +888,7 @@ export const nextMainChapter = (ctx: MainCtx): MainChapterDef | null => {
   const day = schoolDayNumber(ctx.calendar);
   for (const ch of MAIN_CHAPTERS) {
     if (ctx.flags[`${ch.id}_done`]) continue;
-    if (day < ch.minSchoolDay) continue;
+    if (day < ch.minDay) continue;
     if (ch.requiresFlags && !ch.requiresFlags.every(f => ctx.flags[f])) continue;
     if (ch.minInariFamiliarity && inariFam(ctx) < ch.minInariFamiliarity) continue;
     return ch;

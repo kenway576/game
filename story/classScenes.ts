@@ -198,6 +198,112 @@ export const SKETCHES: Sketch[] = [
     en: 'The teacher says you must not let miso boil. You remember someone next door saying exactly the same thing.',
     word: { jp: '沸騰', reading: 'ふっとう', zh: '沸腾', en: 'to boil' }
   },
+  // ---- 补的量：英语一年要上四十一次，只有三段的话玩家会看十四遍 ----
+  {
+    subject: 'eigo',
+    zh: '老师放了一段听力。是伦敦口音。全班一片沉默，只有你在心里想：这个人说话有点含糊。',
+    en: 'The teacher plays a listening exercise. London accent. The room goes silent, and the only thought in your head is that this person mumbles.',
+    word: { jp: '訛り', reading: 'なまり', zh: '口音', en: 'accent' }
+  },
+  {
+    subject: 'eigo',
+    zh: '有人举手问 "How are you" 一定要回 "I am fine" 吗。老师说不一定。你在座位上点了很久的头。',
+    en: 'Somebody asks whether "how are you" has to be answered with "I am fine". The teacher says not necessarily. You nod at your desk for quite a while.',
+    word: { jp: '必ず', reading: 'かならず', zh: '一定', en: 'without fail' }
+  },
+  {
+    subject: 'eigo',
+    zh: '同桌把作文推过来，指着一处问对不对。你看了三秒，说对的。他不信，去问了老师。老师说对的。',
+    en: 'The person next to you slides an essay over and points at a line. Three seconds and you say it is fine. He does not believe you and asks the teacher. The teacher says it is fine.',
+    word: { jp: '正しい', reading: 'ただしい', zh: '正确的', en: 'correct' }
+  },
+  {
+    subject: 'eigo',
+    zh: '黑板上抄了一句谚语，下面用假名标了读音。你盯着那行假名看了很久，第一次觉得英语很陌生。',
+    en: 'A proverb goes up on the board with the pronunciation written under it in kana. You look at that row of kana for a long time and English feels unfamiliar for the first time.',
+    word: { jp: 'ことわざ', zh: '谚语', en: 'proverb' }
+  },
+  {
+    subject: 'eigo',
+    zh: '老师叫你起来读，读完补了一句「發音がいいね」。全班转过来看你。你坐下的时候耳朵是热的。',
+    en: 'The teacher has you read and adds that your pronunciation is good. The whole class turns round. Your ears are hot by the time you sit down.',
+    word: { jp: '発音がいい', zh: '发音好', en: 'good pronunciation' }
+  },
+  {
+    subject: 'kokugo',
+    zh: '老师念到一个词停下来，问全班有没有人知道意思。没人举手。他自己讲了三分钟，讲得很高兴。',
+    en: 'The teacher stops on a word and asks if anyone knows what it means. No hands. He explains it himself for three minutes, and enjoys it.',
+    word: { jp: '意味', reading: 'いみ', zh: '意思', en: 'meaning' }
+  },
+  {
+    subject: 'kokugo',
+    zh: '汉字听写。你写的字全对，笔顺全错。老师从你背后走过去的时候什么也没说。',
+    en: 'Kanji dictation. Every character correct, every stroke order wrong. The teacher walks past behind you and says nothing.',
+    word: { jp: '筆順', reading: 'ひつじゅん', zh: '笔顺', en: 'stroke order' }
+  },
+  {
+    subject: 'kokugo',
+    zh: '一整节课都在讲一个「けり」。你到下课都没搞清楚它为什么这么重要。前排有人也没搞清楚。',
+    en: 'A whole period on the particle "keri". You still do not understand why it matters by the bell. Neither, from the look of it, does the person in front of you.',
+    word: { jp: '助動詞', reading: 'じょどうし', zh: '助动词', en: 'auxiliary verb' }
+  },
+  {
+    subject: 'suugaku',
+    zh: '老师写了半黑板，写到一半停下来，退后看了看，把最上面那一行擦了。全班没有人问为什么。',
+    en: 'The teacher fills half the board, stops, steps back to look, and rubs out the top line. Nobody asks why.',
+    word: { jp: '消す', reading: 'けす', zh: '擦掉', en: 'to erase' }
+  },
+  {
+    subject: 'suugaku',
+    zh: '有人问这个学了以后有什么用。老师说没什么用。全班笑了，那个人也笑了，然后大家继续算。',
+    en: 'Somebody asks what this is good for. The teacher says nothing much. The class laughs, the asker laughs, and everyone goes back to working it out.',
+    word: { jp: '役に立つ', reading: 'やくにたつ', zh: '有用', en: 'to be useful' }
+  },
+  {
+    subject: 'suugaku',
+    zh: '你的答案和黑板上不一样。你检查了两遍，是黑板错了。你举手举到一半又放下了。',
+    en: 'Your answer does not match the board. You check twice. The board is wrong. Your hand goes halfway up and comes back down.',
+    word: { jp: '間違い', reading: 'まちがい', zh: '错误', en: 'a mistake' }
+  },
+  {
+    subject: 'nihonshi',
+    zh: '讲到战国。老师讲得比平时快，板书也潦草，看得出他喜欢这一段。',
+    en: 'The Warring States period. He goes faster than usual and his handwriting on the board gets loose. It is obvious he likes this part.',
+    word: { jp: '戦国', reading: 'せんごく', zh: '战国', en: 'the Warring States period' }
+  },
+  {
+    subject: 'nihonshi',
+    zh: '课本上那张老照片是黑白的，拍的是这一带的港口。你把它和窗外对了一下，房子全换了，山没换。',
+    en: 'The old photograph in the textbook is black and white, and it is this harbour. You hold it up against the window. Every building has changed. The mountain has not.',
+    word: { jp: '写真', reading: 'しゃしん', zh: '照片', en: 'photograph' }
+  },
+  {
+    subject: 'nihonshi',
+    zh: '老师问有没有人去过生田神社。举手的人比你想的多。他说那你们脚下踩的东西比课本老。',
+    en: 'The teacher asks who has been to Ikuta Shrine. More hands go up than you expected. He says in that case what you have been standing on is older than the textbook.',
+    word: { jp: '古い', reading: 'ふるい', zh: '古老的', en: 'old' }
+  },
+  {
+    subject: 'taiiku',
+    zh: '排球。你的手臂被砸红了一片。下课的时候有人递给你一瓶冰的运动饮料，没说是谁买的。',
+    en: 'Volleyball. One forearm comes out red. At the bell somebody hands you a cold sports drink without saying who paid for it.',
+    word: { jp: '差し入れ', reading: 'さしいれ', zh: '慰劳的东西', en: 'a little something brought for someone' },
+    scene: 'gym'
+  },
+  {
+    subject: 'taiiku',
+    zh: '下雨，改在体育馆做柔软体操。全班一起做，动作全都对不上，广播里的音乐一直在放。',
+    en: 'Rain, so it is stretches in the gym instead. The whole class does them together and none of them line up. The music on the tannoy keeps going regardless.',
+    word: { jp: '柔軟', reading: 'じゅうなん', zh: '柔软（体操）', en: 'stretching' },
+    scene: 'gym'
+  },
+  {
+    subject: 'bijutsu',
+    zh: '你把调色盘洗干净了才发现下节还是美术。旁边那个人笑了很久，然后把自己的挤了一半给你。',
+    en: 'You wash your palette clean and only then find out the next period is art as well. The person beside you laughs for a while, then squeezes half of theirs onto yours.',
+    word: { jp: 'パレット', zh: '调色盘', en: 'palette' },
+    scene: 'art_room'
+  },
   {
     subject: 'katei',
     zh: '今天量了每个人的手掌。老师说这是为了知道自己的一把米是多少。你的一把比标准少了一点。',

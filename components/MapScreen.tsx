@@ -354,10 +354,10 @@ const MapScreen: React.FC<Props> = ({
                 ? (en
                     ? (isWeekend(calendar)
                         ? 'No school today, so there is nobody on campus to run into.'
-                        : 'Lunch break. You can only get as far as the campus, and who is where depends on the day of the week. 👤 means somebody is there.')
+                        : 'Lunch break. You can get as far as the campus, and the shrine at the bottom of the hill. Who is where depends on the day of the week. 👤 means somebody is there.')
                     : (isWeekend(calendar)
                         ? '今天不上学，校内碰不到人。'
-                        : '午休。只走得到校内，谁在哪儿要看星期几。👤 表示那儿有人。'))
+                        : '午休。走得到校内，还有坡下面那座神社。谁在哪儿要看星期几。👤 表示那儿有人。'))
                 : (en
                     ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home. 🔋 is a separate question: having the time does not mean you have the legs. Eat something, or go and sit in a hot spring.'
                     : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。🔋 是另一回事：时间够、人不够也去不了。想缓过来就吃点东西，或者去泡个汤。')}

@@ -687,15 +687,19 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ]
   },
   {
-    id: 'nada_onsen', district: 'far',
+    // 滩温泉在市区里（介绍第一句就是这么写的），却被归在 far 区、
+    // 花两格时间——那是有马温泉的定价，不是它的。
+    // 而且它是这套系统里唯一一个"泡完还能再干一件事"的地方：
+    // 花一格，回二十五点体力。放在 far 区花两格的话，
+    // 泡完当天就没时间了，回的那点体力等于白回。
+    id: 'nada_onsen', district: 'sannomiya',
     timeSlots: ['afternoon', 'night'],
-    timeCost: 2,   // 泡完汤浑身发软，哪儿也去不了了
+    timeCost: 1,
     nameJp: '灘温泉', reading: 'なだおんせん',
     nameZh: '滩温泉', nameEn: 'Nada Onsen',
     blurbZh: '市区里的天然温泉，从地底下打上来的。四百四十日元，本地老头能在里面泡掉一整个下午。',
     blurbEn: 'A natural hot spring inside the city, pumped up from underground. Four hundred and forty yen, and the local old men spend a whole afternoon in it.',
     mapScene: 'nada_onsen_exterior',
-    requiresFlag: 'map_far',
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
     ambientZh: ['你在冷水池和热水池之间来回了四趟。出来的时候感觉自己被重装了一遍。'],
