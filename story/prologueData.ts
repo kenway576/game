@@ -24,28 +24,28 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '出隧道的时候，车厢一下子亮了。你眯了一下眼睛。',
-    en: 'Coming out of the tunnel the carriage goes bright all at once. You squint.'
+    zh: '出隧道的那一下，整节车厢忽然亮了起来，亮得毫无预告，像是有人在外面一把拉开了窗帘。你眯起眼睛，花了大概三秒钟才重新看清东西。',
+    en: 'Coming out of the tunnel the whole carriage lit up at once, without any warning, as though somebody outside had pulled a curtain back in one movement. You screwed your eyes shut and it took about three seconds before things resolved again.'
   },
   {
     type: 'narration',
-    zh: '左边是山。右边是海。',
-    en: 'Mountains on the left. Sea on the right.'
+    zh: '左边是山，右边是海，中间夹着一条铁轨和坐在铁轨上的你。地理课本上写过神户是这个样子，但课本没提这两样东西离得有多近。',
+    en: 'Mountains on the left, sea on the right, and between them one railway line with you sitting on it. A textbook had told you Kobe was arranged this way. The textbook had not mentioned how close together the two of them were.'
   },
   {
     type: 'narration',
-    zh: '……好近。海离铁轨大概只有五十米，近到你怀疑涨潮的时候会不会漫上来。',
-    en: '...That is close. The water is maybe fifty metres from the rails. Close enough that you wonder what happens at high tide.'
+    zh: '……真的很近。目测五十米，也许更少。你认真地想了一下涨潮的时候会不会漫上来，想完又觉得这个担心大概是多余的——毕竟这条线已经开了一百多年，如果会漫早就漫了。',
+    en: '...Genuinely close. Fifty metres by eye, possibly less. You gave some serious thought to whether it came over the track at high tide, and then decided the worry was probably unnecessary, given that the line had been running for over a century and would have flooded by now if it were going to.'
   },
   {
     type: 'narration',
-    zh: '为了今天你背了三千多个日语单词。而你现在脑子里唯一冒出来的一句是「好近」。',
-    en: 'You learned over three thousand Japanese words for today. The only thing your head has produced so far is "that is close".'
+    zh: '为了今天，你背了三千多个日语单词。三个月，每天四十个，最后一个月还加了量。而此刻浮在你脑子里的只有「近い」这两个音。三千多个词，用掉了一个。',
+    en: 'For today you had memorised over three thousand Japanese words. Three months of it, forty a day, and more than that in the last month. What was floating in your head at this moment was the two syllables for close. Three thousand words, and you had spent one.'
   },
   {
     type: 'narration',
-    zh: '行李箱立在腿边，轮子随着车厢晃动一下一下地磕着你的脚踝。你没有挪开。',
-    en: 'Your suitcase stands against your leg, its wheels knocking your ankle each time the carriage rocks. You leave it there.'
+    zh: '行李箱立在腿边，车厢每晃一下，轮子就磕你脚踝一下，磕得很有规律，像节拍器。你没有把它挪开。有那么一会儿你甚至开始跟着那个节奏数数，数到三十七，然后忘了自己为什么在数。',
+    en: 'The suitcase stood against your leg, and every time the carriage swayed the wheel knocked against your ankle, regularly, like a metronome. You did not move it. For a while you even counted along with it, got to thirty-seven, and then forgot why you had started.'
   },
   {
     type: 'choice',
@@ -63,18 +63,18 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '玻璃是凉的。你把额头贴上去，一直看到眼睛发酸。',
-            en: 'The glass is cold. You put your forehead against it and keep looking until your eyes sting.'
+            zh: '车窗玻璃凉得恰到好处，是那种一整个上午都没人碰过的凉法。你把额头贴上去，就那么贴着，一直贴到眉骨开始发麻才想起来该挪开了。',
+            en: 'The window glass was cool in exactly the right way, the particular coolness of something nobody has touched all morning. You put your forehead against it and left it there, and only when your brow started to go numb did it occur to you to move.'
           },
           {
             type: 'narration',
-            zh: '海一直在。防波堤挡过它两次。仓库挡过一次。挡完了它还在。',
-            en: 'The sea stays. A breakwater takes it away twice. A row of warehouses once. It is still there afterwards.'
+            zh: '海一直在那儿。防波堤把它挡掉过一次，又一次；一排仓库把它整个吃掉了大概二十秒。但每一次，就在你以为它不见了的时候，它又从下一个空隙里回来了，像是有人在跟你确认什么事情。',
+            en: 'The sea stayed where it was. A breakwater took it away once, and then again; a row of warehouses swallowed the whole of it for about twenty seconds. And every time, just as you had accepted it was gone, it came back through the next gap, as though somebody were confirming something with you.'
           },
           {
             type: 'narration',
-            zh: '你把手机举起来，想拍一张。取景框里全是自己的倒影和玻璃上的手印。你把手机收了回去。',
-            en: 'You lift your phone to take a picture. The frame is mostly your own reflection and a handprint on the glass. You put the phone away.'
+            zh: '你举起手机想拍一张。取景框里是自己的倒影、玻璃上的一枚手印，以及非常勉强的、大概占画面五分之一的海。你看了两秒，把手机收了回去。有些东西大概本来就不该带走。',
+            en: 'You lifted your phone to take a picture. What was in the frame was your own reflection, one handprint on the glass, and, at a stretch, about a fifth of a frame of sea. You looked at it for two seconds and put the phone away. Some things are probably not meant to be taken with you.'
           }
         ]
       },
@@ -89,8 +89,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你翻开卷了边的单词本。「引っ越す」「手続き」「近所」。这一页你昨天在飞机上背了四遍。',
-            en: 'You open the dog-eared notebook. "To move house." "Paperwork." "Neighborhood." You went through this page four times on the plane yesterday.'
+            zh: '你翻开那本卷了边的单词本。「引っ越す」「手続き」「近所」——搬家、手续、邻里。这一页你昨天在飞机上背了四遍，第四遍的时候旁边那位老先生已经睡着了，睡得很沉。',
+            en: 'You opened the dog-eared vocabulary book. To move house. Paperwork. The neighbourhood. You had been through this page four times on the plane yesterday, and by the fourth the old gentleman next to you had gone to sleep, deeply.'
           },
           {
             type: 'narration',
@@ -110,8 +110,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '牛皮封面被摩挲得发亮。你翻到中间某一页，上面是一行褪色的钢笔字：「海が見えたら、もうすぐ神戸」。',
-            en: 'The leather cover is worn glossy. You turn to a page in the middle: a faded line of fountain pen ink. "When you can see the sea, Kobe is close."'
+            zh: '牛皮封面被摸得发亮，边角那一圈已经磨成了浅褐色。你翻到中间某一页——说起来，你外公写字有一个坚持：从不用圆珠笔，只用钢笔，理由是圆珠笔「没有轻重」。你小时候完全听不懂这句话。现在看着这一行深浅不一的墨迹，你大概懂了一点：「海が見えたら、もうすぐ神戸」。',
+            en: 'The leather cover had been handled to a shine and the corners had worn to a paler brown. You opened it somewhere in the middle. Your grandfather, incidentally, had one rule about writing: never a biro, only a fountain pen, on the grounds that a biro had no weight to it. As a child you had no idea what he meant. Looking at this line now, at the ink going light and dark along it, you thought you understood a little: once you can see the sea, you are nearly in Kobe.'
           },
           {
             type: 'narration',
@@ -164,18 +164,18 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '车门滑开，微甜的海风混杂着关西老街烘焙面包的香气扑面而来。你一手拉过沉重的黑色行李箱，稳稳跨出了车厢。',
-    en: 'The doors slide open and a faintly sweet sea breeze rushes in, tangled with the smell of bread baking somewhere in the old Kansai streets. You haul your heavy black suitcase and step down firmly onto the platform.'
+    zh: '车门滑开的时候，最先到的是风，然后才是味道。风是咸的，味道里有一半是烤面包——不知道哪儿在烤，但确实在烤，而且烤了有一会儿了。你拉起那个二十三公斤的箱子跨出车厢，落地的那一下比想象中响。',
+    en: 'When the doors slid open the wind arrived first and the smell a moment after. The wind was salt, and half the smell was baking bread; you could not tell from where, but somebody was baking and had been for a while. You hauled the twenty-three-kilo case out after you, and it landed more loudly than you had expected.'
   },
   {
     type: 'narration',
-    zh: '在出闸机前，一位抱着大包小包、正匆忙赶路的年轻母亲不小心掉落了怀里的儿童画册。',
-    en: 'At the ticket gates, a young mother juggling far too many bags fumbles, and the children’s picture book she was carrying slips from her arms.'
+    zh: '出闸机前面有一位年轻母亲，两只手上挂满了袋子，另外还要腾出一只手牵孩子——这个算术显然不成立，于是有东西掉了下来。是一本儿童画册。',
+    en: 'In front of the gates there was a young mother with bags hanging off both hands and a child who also needed a hand, which is arithmetic that does not work, and so something fell. It was a picture book.'
   },
   {
     type: 'narration',
-    zh: '画册滑到了你的脚边。她没有察觉，正手忙脚乱地把孩子往闸机里领。',
-    en: 'It slides to a stop at your feet. She has not noticed — she is busy steering her child through the gate.'
+    zh: '画册在地砖上滑了一小段，停在你鞋子前面。她完全没察觉，正忙着把孩子往闸机里塞——那个孩子对进闸机这件事显然有自己的意见。',
+    en: 'The book slid a short way across the tiles and stopped in front of your shoe. She had not noticed at all; she was busy getting the child through the gate, and the child clearly had views of his own about going through it.'
   },
   {
     type: 'choice',
@@ -210,8 +210,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '年轻母亲愣了半秒，随即露出极其真诚温暖的笑容，微微鞠了个躬。',
-            en: 'The young mother freezes for half a second, then breaks into a completely genuine, warm smile and bows slightly.'
+            zh: '她愣了半秒，然后笑了，还欠了欠身——欠得相当郑重，郑重得像是你替她搬了一整套家具，而不是捡了一本掉在地上的画册。',
+            en: 'She blanked for half a second, then smiled and bowed, and bowed rather formally, formally enough for somebody who had moved a suite of furniture for her rather than picked a picture book up off the floor.'
           },
           {
             type: 'speech',
@@ -227,8 +227,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '只是几句最基础的日常口语。但当书本上的单词真正变成连接人与人之间善意的桥梁时，那种踏实的成就感，是任何考试分数都替代不了的。',
-            en: 'Just a few lines of the most basic everyday Japanese. But when textbook words become an actual bridge of goodwill between two people, the feeling that settles in your chest is something no exam score has ever given you.'
+            zh: '整件事从头到尾用掉的日语不超过五个音节，其中三个还是卡住的。但你走进检票口的时候发现自己的耳朵有点热，而且走得比刚才快。',
+            en: 'The whole exchange had used up fewer than five syllables of Japanese, three of which had jammed. But going through the gate you noticed your ears were warm, and that you were walking faster than before.'
           }
         ]
       },
@@ -245,18 +245,18 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你捡起画册，快步追上去递到她手里。「あの……」到了嘴边的那句话，最后还是没能完整地说出来。',
-            en: 'You pick up the book, catch up, and press it into her hands. "Um..." The sentence you had ready dissolves before it can finish.'
+            zh: '你捡起来追了上去，把画册递过去。「あの……」这两个音出来了，后面那句在喉咙口卡住了。你昨天还在飞机上背过这个句型，背了四遍。',
+            en: 'You picked it up, caught her up and held it out. The two syllables for excuse me came out. The rest of it stopped in your throat. You had been through that exact pattern on the plane yesterday. Four times.'
           },
           {
             type: 'narration',
-            zh: '她还是笑着道了谢。你点点头，转身拉起行李箱。',
-            en: 'She thanks you anyway, smiling. You nod, turn, and take hold of your suitcase again.'
+            zh: '她还是道了谢，说了一长串，语速快得你只听懂开头那三个字。你点了点头，转身去拉行李箱。',
+            en: 'She thanked you anyway, at some length and fast enough that you caught the first three syllables and nothing else. You nodded and turned back to your case.'
           },
           {
             type: 'narration',
-            zh: '走出十几步，你才小声地、对着空气把那句话补完了：「……落としましたよ。」',
-            en: 'A dozen steps later, quietly, to nobody at all, you finish the sentence: "...you dropped this."'
+            zh: '走出十几步，你才小声地、对着前方空无一人的地方，把刚才那句话补完了：「……落としましたよ。」发音很标准。晚了大概四十秒。',
+            en: 'A dozen paces on you finished the sentence quietly, aimed at a piece of empty air ahead of you: you dropped this. The pronunciation was good. It was about forty seconds late.'
           }
         ]
       },
