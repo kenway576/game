@@ -352,7 +352,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         words: [{ jp: '持つ', reading: 'もつ', zh: '拿、带', en: 'to carry / to hold' }],
         hintZh: '袋子看着挺沉',
         hintEn: 'The bag looks heavy.',
-        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你没等人开口就伸了手', reasonEn: 'You put your hand out before being asked' }],
+        effects: [{ stat: 'kindness', amount: 1, reasonZh: '你没等人开口就伸了手', reasonEn: 'You put your hand out before being asked' }],
         relations: [{ char: CharacterId.MIYUKI, familiarity: 8, affection: 6, reasonZh: '她愣了一下才把袋子给你', reasonEn: 'It took her a moment to hand it over' }],
         setFlags: ['day1_miyuki_trash'],
         then: [
@@ -727,7 +727,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         jp: '同じ船に乗ってるなら、名前ぐらい知っておきたいです。',
         hintZh: '你先问了名字',
         hintEn: 'You ask her name first.',
-        effects: [{ stat: 'charm', amount: 2, reasonZh: '你把一句客套接成了一次自我介绍', reasonEn: 'You turned a pleasantry into an introduction' }],
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '你把一句客套接成了一次自我介绍', reasonEn: 'You turned a pleasantry into an introduction' }],
         relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 5, reasonZh: '她报名字的时候声音特别大', reasonEn: 'She said her name much too loudly' }],
         then: [
           {
@@ -755,7 +755,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         words: [{ jp: '留学生', reading: 'りゅうがくせい', zh: '留学生', en: 'exchange student' }],
         hintZh: '她刚才说「私だけバカなのかと」',
         hintEn: 'She just said she thought she was the only idiot here.',
-        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你问了一个能问出东西的问题', reasonEn: 'You asked a question that actually goes somewhere' }],
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你问了一个能问出东西的问题', reasonEn: 'You asked a question that actually goes somewhere' }],
         relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 6, reasonZh: '她答得比你问的多', reasonEn: 'She answered rather more than you asked' }],
         then: [
           {
@@ -929,7 +929,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         labelEn: 'Look at it a little longer',
         hintZh: '你其实是在看「港見高校」那四个字',
         hintEn: 'What you are actually looking at is the school\u2019s name.',
-        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你把学校的名字一个字一个字念了一遍', reasonEn: 'You read the school\u2019s name character by character' }],
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你把学校的名字一个字一个字念了一遍', reasonEn: 'You read the school\u2019s name character by character' }],
         relations: [],
         setFlags: ['day1_card_look'],
         then: [
@@ -1040,7 +1040,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         words: [{ jp: '予言', reading: 'よげん', zh: '预言', en: 'prediction' }],
         hintZh: '说出口就收不回来了',
         hintEn: 'There is no taking this one back.',
-        effects: [{ stat: 'guts', amount: 2, reasonZh: '你对一个刚认识三十秒的人说了实话', reasonEn: 'You told the truth to someone you had known for thirty seconds' }],
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '你对一个刚认识三十秒的人说了实话', reasonEn: 'You told the truth to someone you had known for thirty seconds' }],
         relations: [{ char: CharacterId.ASUKA, familiarity: 14, affection: 4, reasonZh: '她第一次没接上话', reasonEn: 'For once she had no line ready' }],
         setFlags: ['day1_meta_said'],
         then: [
@@ -1282,8 +1282,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintEn: 'After that "ookini" last night, you spent the evening looking things up.',
         requiresFlag: 'prologue_checkout_kansai',
         effects: [
-          { stat: 'guts', amount: 2, reasonZh: '第一天就敢在全班面前用方言', reasonEn: 'Day one, and you used dialect in front of the whole class' },
-          { stat: 'charm', amount: 2, reasonZh: '全班都笑了，但没有一个人在嘲笑你', reasonEn: 'The whole class laughed, and none of it was at you' }
+          { stat: 'guts', amount: 1, reasonZh: '第一天就敢在全班面前用方言', reasonEn: 'Day one, and you used dialect in front of the whole class' },
+          { stat: 'charm', amount: 1, reasonZh: '全班都笑了，但没有一个人在嘲笑你', reasonEn: 'The whole class laughed, and none of it was at you' }
+        ],
+        // 这是在全班面前说的，明日香和光都在场——以前这三个选项一点关系变化都没有。
+        relations: [
+          { char: CharacterId.HIKARI, familiarity: 4, affection: 2, reasonZh: '她在后排笑出了声', reasonEn: 'She laughed out loud from the back row' },
+          { char: CharacterId.ASUKA, familiarity: 2, reasonZh: '她第一次正眼看了你一下', reasonEn: 'She looked at you properly for the first time' }
         ],
         setFlags: ['day1_intro_kansai'],
         then: [
@@ -1313,6 +1318,10 @@ export const DAY1_SCRIPT: StoryNode[] = [
           { stat: 'guts', amount: 1, reasonZh: '在三十几个人面前把整句说完了', reasonEn: 'You finished the whole sentence in front of thirty people' },
           { stat: 'knowledge', amount: 1, reasonZh: '一个助词都没错', reasonEn: 'Not one particle out of place' }
         ],
+        relations: [
+          { char: CharacterId.ASUKA, familiarity: 4, affection: 2, reasonZh: '一个字都没有省，她注意到了', reasonEn: 'You did not cut a single corner, and she noticed' },
+          { char: CharacterId.HIKARI, familiarity: 2, reasonZh: '她冲你比了个大拇指', reasonEn: 'She gave you a thumbs up' }
+        ],
         setFlags: ['day1_intro_polite'],
         then: [
           {
@@ -1337,6 +1346,10 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '排练过二十遍的句子，一个字都想不起来',
         hintEn: 'Twenty rehearsals, and not one word of it is there.',
         effects: [{ stat: 'proficiency', amount: 1, reasonZh: '你在三十几个人面前把慌乱吞了下去', reasonEn: 'You swallowed the panic with thirty people watching' }],
+        relations: [
+          { char: CharacterId.HIKARI, familiarity: 3, affection: 3, reasonZh: '她是第一个鼓掌的', reasonEn: 'She was the first one to clap' },
+          { char: CharacterId.ASUKA, familiarity: 1, reasonZh: '她没有笑，也没有移开视线', reasonEn: 'She did not laugh, and did not look away either' }
+        ],
         setFlags: ['day1_intro_stuck'],
         then: [
           {
@@ -1554,7 +1567,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '承认听不懂，比假装听懂难',
         hintEn: 'Admitting it is harder than faking it.',
         effects: [
-          { stat: 'guts', amount: 2, reasonZh: '你当着六个人的面承认自己没听懂', reasonEn: 'You admitted, in front of six people, that you had not understood' },
+          { stat: 'guts', amount: 1, reasonZh: '你当着六个人的面承认自己没听懂', reasonEn: 'You admitted, in front of six people, that you had not understood' },
           { stat: 'knowledge', amount: 1, reasonZh: '慢速重复的那一遍，你真的听懂了', reasonEn: 'The slow repeat, you actually understood' }
         ],
         setFlags: ['day1_break_asked'],
@@ -1793,7 +1806,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         labelEn: 'Open the journal — see if your grandfather ever wrote about the cafeteria',
         hintZh: '他在这所学校待过三年',
         hintEn: 'He was at this school for three years.',
-        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你查到了半个世纪前的午饭价格', reasonEn: 'You looked up the price of lunch half a century ago' }],
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你查到了半个世纪前的午饭价格', reasonEn: 'You looked up the price of lunch half a century ago' }],
         setFlags: ['day1_lunch_journal'],
         then: [
           {
@@ -1949,7 +1962,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         jp: '大丈夫。自分で食べて。',
         hintZh: '这是她的午饭，不是你的',
         hintEn: 'That is her lunch, not yours.',
-        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你没有理所当然地接下别人的午饭', reasonEn: 'You did not simply take somebody else’s lunch' }],
+        effects: [{ stat: 'kindness', amount: 1, reasonZh: '你没有理所当然地接下别人的午饭', reasonEn: 'You did not simply take somebody else’s lunch' }],
         relations: [{ char: CharacterId.HIKARI, familiarity: 8, affection: 5, reasonZh: '她把面包推回来的力气比你大', reasonEn: 'She pushed it back harder than you pushed it away' }],
         setFlags: ['day1_lunch_refused'],
         then: [
@@ -1982,7 +1995,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         jp: '……ありがとう。いただきます。',
         hintZh: '「いただきます」这句你会说',
         hintEn: 'This is one phrase you do know.',
-        effects: [{ stat: 'charm', amount: 2, reasonZh: '你把「谢谢」说得很像回事', reasonEn: 'You made "thank you" sound like it meant something' }],
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '你把「谢谢」说得很像回事', reasonEn: 'You made "thank you" sound like it meant something' }],
         relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 6, reasonZh: '她被正经道谢，反而有点不好意思', reasonEn: 'Thanked properly, she was the one who got embarrassed' }],
         setFlags: ['day1_lunch_accepted'],
         then: [
@@ -2185,7 +2198,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '你更想知道她的答案',
         hintEn: 'You would rather have her answer than give yours.',
         effects: [
-          { stat: 'knowledge', amount: 2, reasonZh: '你把问题抛了回去，还问对了地方', reasonEn: 'You turned the question round, and aimed it well' }
+          { stat: 'knowledge', amount: 1, reasonZh: '你把问题抛了回去，还问对了地方', reasonEn: 'You turned the question round, and aimed it well' }
         ],
         relations: [{ char: CharacterId.HIKARI, familiarity: 8, affection: 8, reasonZh: '她答这个问题的时候，语速第一次慢了下来', reasonEn: 'Answering that, her pace dropped for the first time' }],
         setFlags: ['day1_hikari_why'],
@@ -2242,7 +2255,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '现学现卖她的格式',
         hintEn: 'Her format, used against her.',
         effects: [
-          { stat: 'charm', amount: 2, reasonZh: '你用她自己的句式反将了一军', reasonEn: 'You turned her own format back on her' },
+          { stat: 'charm', amount: 1, reasonZh: '你用她自己的句式反将了一军', reasonEn: 'You turned her own format back on her' },
           { stat: 'guts', amount: 1, reasonZh: '第一天就敢开这种玩笑', reasonEn: 'That is a bold joke for day one' }
         ],
         relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 6, reasonZh: '她被自己的句式噎了一下', reasonEn: 'Her own sentence pattern came back and got her' }],

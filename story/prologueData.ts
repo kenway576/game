@@ -499,7 +499,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         labelEn: 'Switch on the desk lamp and read every annotation, page by page',
         hintZh: '这些地方，他一定是想让你去的',
         hintEn: 'These places — he must have meant for you to go.',
-        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '读懂了半个世纪前的一整座城市', reasonEn: 'You read an entire city as it was half a century ago' }],
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '读懂了半个世纪前的一整座城市', reasonEn: 'You read an entire city as it was half a century ago' }],
         setFlags: ['prologue_read_journal_deep'],
         then: [
           {
@@ -642,7 +642,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 hintZh: '外公说过：遇到不懂的，就大大方方地问',
                 hintEn: 'Your grandfather wrote it down: when you do not understand, ask, openly.',
                 effects: [
-                  { stat: 'knowledge', amount: 2, reasonZh: '把这条巷子的来历问明白了', reasonEn: 'You got the history of this alley straight from someone who knew it' },
+                  { stat: 'knowledge', amount: 1, reasonZh: '把这条巷子的来历问明白了', reasonEn: 'You got the history of this alley straight from someone who knew it' },
                   { stat: 'guts', amount: 1, reasonZh: '对着陌生人主动提了个问题', reasonEn: 'You asked a stranger a question, unprompted' }
                 ],
                 relations: [
@@ -916,7 +916,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 hintZh: '你很想知道自己到底哪里写着「刚下飞机」',
                 hintEn: 'You genuinely want to know where it says "fresh off the plane" on you.',
                 effects: [
-                  { stat: 'charm', amount: 2, reasonZh: '被搭话时不但接住了，还打了回去', reasonEn: 'You did not just catch it — you threw it back' }
+                  { stat: 'charm', amount: 1, reasonZh: '被搭话时不但接住了，还打了回去', reasonEn: 'You did not just catch it — you threw it back' }
                 ],
                 relations: [
                   { char: CharacterId.HIKARI, familiarity: 14, affection: 3, reasonZh: '第一句话就跟她对上了拍子', reasonEn: 'You matched her rhythm from the very first line' }
@@ -1131,7 +1131,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 hintEn: 'The whole arcade has been teaching you that ending.',
                 requires: { stat: 'guts', min: 1 },
                 effects: [
-                  { stat: 'charm', amount: 2, reasonZh: '来的第一天就敢学舌关西腔', reasonEn: 'Day one, and already mimicking the local accent' },
+                  { stat: 'charm', amount: 1, reasonZh: '来的第一天就敢学舌关西腔', reasonEn: 'Day one, and already mimicking the local accent' },
                   { stat: 'guts', amount: 1, reasonZh: '拿一句现学的方言去冒险', reasonEn: 'You gambled on a dialect you learned ten minutes ago' }
                 ],
                 relations: [
@@ -1547,7 +1547,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             // 等于凭空说出一个游戏从没教过的词。勇气在真纪那一幕已经考过了。
             requiresFlag: 'prologue_maki_kansai',
             effects: [
-              { stat: 'charm', amount: 2, reasonZh: '来的第一天就用上了关西腔', reasonEn: 'Day one, and already speaking Kansai' },
+              { stat: 'charm', amount: 1, reasonZh: '来的第一天就用上了关西腔', reasonEn: 'Day one, and already speaking Kansai' },
               { stat: 'guts', amount: 1, reasonZh: '敢把刚学会的话立刻用出去', reasonEn: 'You used a phrase the same hour you learned it' }
             ],
             setFlags: ['prologue_checkout_kansai', 'prologue_checkout_jp'],
@@ -1824,7 +1824,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 hintEn: 'Milk and eggs. All of it uphill.',
                 effects: [
                   { stat: 'guts', amount: 1, reasonZh: '第二次主动开口，比第一次容易了一点', reasonEn: 'The second time speaking up came easier than the first' },
-                  { stat: 'kindness', amount: 2, reasonZh: '看见了别人手里的重量', reasonEn: 'You noticed the weight in someone else’s hand' }
+                  { stat: 'kindness', amount: 1, reasonZh: '看见了别人手里的重量', reasonEn: 'You noticed the weight in someone else’s hand' }
                 ],
                 relations: [
                   { char: CharacterId.MIYUKI, familiarity: 6, affection: 4, reasonZh: '在坡道上替她拎了半程', reasonEn: 'You carried half her load up the hill' }
@@ -1872,7 +1872,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 hintZh: '你的冰箱现在还是空的',
                 hintEn: 'Your fridge is still completely empty.',
                 effects: [
-                  { stat: 'knowledge', amount: 2, reasonZh: '把这一带的生活地图问到手了', reasonEn: 'You got the neighborhood’s survival map straight from a local' }
+                  { stat: 'knowledge', amount: 1, reasonZh: '把这一带的生活地图问到手了', reasonEn: 'You got the neighborhood’s survival map straight from a local' }
                 ],
                 relations: [
                   { char: CharacterId.MIYUKI, familiarity: 5, affection: 2, reasonZh: '问了一个只有邻居会问的问题', reasonEn: 'You asked the kind of question only a neighbour asks' }
@@ -1973,7 +1973,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 hintZh: '明天早上在楼梯上再遇见，总不能一直叫「那个」',
                 hintEn: 'You will meet on the stairs tomorrow. You cannot keep calling her "um".',
                 effects: [
-                  { stat: 'guts', amount: 2, reasonZh: '把今天最难开口的一句问了出来', reasonEn: 'You asked the hardest question of the day' }
+                  { stat: 'guts', amount: 1, reasonZh: '把今天最难开口的一句问了出来', reasonEn: 'You asked the hardest question of the day' }
                 ],
                 relations: [
                   { char: CharacterId.MIYUKI, familiarity: 6, affection: 5, reasonZh: '问了她的名字，并且记住了', reasonEn: 'You asked her name — and kept it' }

@@ -70,8 +70,8 @@ export const DAY1_GYM: StoryNode[] = [
         hintZh: '你打了十年球。刚才那一下只是没接住而已',
         hintEn: 'You have played for ten years. You just did not catch that one.',
         effects: [
-          { stat: 'guts', amount: 3, reasonZh: '你在一个陌生国家的体育馆里报了自己的名号', reasonEn: 'You announced yourself in a gym in a country you had just arrived in' },
-          { stat: 'charm', amount: 2, reasonZh: '她第一次收起了笑', reasonEn: 'It was the first time she stopped grinning' }
+          { stat: 'guts', amount: 2, reasonZh: '你在一个陌生国家的体育馆里报了自己的名号', reasonEn: 'You announced yourself in a gym in a country you had just arrived in' },
+          { stat: 'charm', amount: 1, reasonZh: '她第一次收起了笑', reasonEn: 'It was the first time she stopped grinning' }
         ],
         relations: [{ char: CharacterId.SORA, familiarity: 24, affection: 8, reasonZh: '她找到了一个打得过她的人', reasonEn: 'She found someone who can take her' }],
         setFlags: ['day1_sora_mamba'],
@@ -165,7 +165,7 @@ export const DAY1_GYM: StoryNode[] = [
         words: [{ jp: '展開', reading: 'てんかい', zh: '展开、发展', en: 'how it unfolds' }],
         hintZh: '即视感强到有点可疑',
         hintEn: 'The déjà vu is frankly suspicious.',
-        effects: [{ stat: 'charm', amount: 2, reasonZh: '你把气氛的尴尬变成了一个笑话', reasonEn: 'You turned the awkwardness into a joke' }],
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '你把气氛的尴尬变成了一个笑话', reasonEn: 'You turned the awkwardness into a joke' }],
         relations: [{ char: CharacterId.SORA, familiarity: 20, affection: 4, reasonZh: '她笑到要扶墙', reasonEn: 'She had to hold onto the wall' }],
         setFlags: ['day1_sora_trope'],
         then: [
@@ -221,7 +221,7 @@ export const DAY1_GYM: StoryNode[] = [
         hintZh: '她问了，你就答了',
         hintEn: 'She asked. You answered.',
         effects: [
-          { stat: 'guts', amount: 2, reasonZh: '在自己完全不行的项目上点了头', reasonEn: 'You said yes to the one thing you are certainly bad at' }
+          { stat: 'guts', amount: 1, reasonZh: '在自己完全不行的项目上点了头', reasonEn: 'You said yes to the one thing you are certainly bad at' }
         ],
         relations: [{ char: CharacterId.SORA, familiarity: 18, affection: 5, reasonZh: '她教你投篮的时候比自己投还认真', reasonEn: 'She took teaching you the shot more seriously than her own' }],
         setFlags: ['day1_sora_played'],
@@ -333,7 +333,7 @@ export const DAY1_GYM: StoryNode[] = [
   {
     type: 'effect',
     setFlags: ['day1_met_sora', 'day1_deep_sora'],
-    effects: [{ stat: 'guts', amount: 2, reasonZh: '在体育馆门口没有转身就走', reasonEn: 'You did not turn around at the gym door' }],
+    effects: [{ stat: 'guts', amount: 1, reasonZh: '在体育馆门口没有转身就走', reasonEn: 'You did not turn around at the gym door' }],
     relations: [{ char: CharacterId.SORA, familiarity: 12, reasonZh: '她主动问了明天', reasonEn: 'She was the one who asked about tomorrow' }]
   }
 ];
@@ -405,7 +405,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
         hintZh: '这个场景实在太像某部动画了',
         hintEn: 'The scene resembles a certain anime a little too closely.',
         effects: [
-          { stat: 'guts', amount: 2, reasonZh: '对一个刚认识的人开这种玩笑，需要点胆量', reasonEn: 'That is a bold joke to make at someone you just met' }
+          { stat: 'guts', amount: 1, reasonZh: '对一个刚认识的人开这种玩笑，需要点胆量', reasonEn: 'That is a bold joke to make at someone you just met' }
         ],
         relations: [{ char: CharacterId.REI, familiarity: 20, affection: 4, reasonZh: '她给了一个你完全没料到的回答', reasonEn: 'She gave you an answer you did not see coming' }],
         setFlags: ['day1_rei_trope'],
@@ -453,7 +453,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
         labelEn: 'Read the titles on the table',
         hintZh: '认得一半的汉字',
         hintEn: 'You recognise about half the characters.',
-        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '硬啃下了几个建筑术语', reasonEn: 'You chewed through a few architectural terms' }],
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '硬啃下了几个建筑术语', reasonEn: 'You chewed through a few architectural terms' }],
         relations: [{ char: CharacterId.REI, familiarity: 14, affection: 2, reasonZh: '你真的去看了那些书名', reasonEn: 'You actually read the titles' }],
         then: [
           {
@@ -471,7 +471,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
         hintZh: '图书室里有一种不用说话的规矩',
         hintEn: 'A library has rules about talking that nobody has to state.',
         effects: [
-          { stat: 'kindness', amount: 2, reasonZh: '你没有打断一个正在专心的人', reasonEn: 'You did not interrupt someone who was concentrating' }
+          { stat: 'kindness', amount: 1, reasonZh: '你没有打断一个正在专心的人', reasonEn: 'You did not interrupt someone who was concentrating' }
         ],
         relations: [{ char: CharacterId.REI, familiarity: 16, affection: 3, reasonZh: '她翻页的节奏一直没被打乱', reasonEn: 'Her page-turning never once lost its rhythm' }],
         setFlags: ['day1_rei_sat'],
@@ -551,7 +551,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
         hintZh: '三年，一整片街区',
         hintEn: 'Three years. An entire district.',
         effects: [
-          { stat: 'knowledge', amount: 2, reasonZh: '你搞清楚了这张图是怎么来的', reasonEn: 'You worked out what it took to make that sheet' }
+          { stat: 'knowledge', amount: 1, reasonZh: '你搞清楚了这张图是怎么来的', reasonEn: 'You worked out what it took to make that sheet' }
         ],
         relations: [{ char: CharacterId.REI, familiarity: 14, affection: 4, reasonZh: '她第一次被问了"怎么做的"，而不是"为什么做"', reasonEn: 'For once she was asked how, not why' }],
         setFlags: ['day1_rei_counted'],
@@ -600,7 +600,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
         hintZh: '同一片街区，隔了五十年',
         hintEn: 'The same district, fifty years apart.',
         effects: [
-          { stat: 'charm', amount: 2, reasonZh: '你把自己最珍贵的那本递了出去', reasonEn: 'You handed over the thing you value most' },
+          { stat: 'charm', amount: 1, reasonZh: '你把自己最珍贵的那本递了出去', reasonEn: 'You handed over the thing you value most' },
           { stat: 'knowledge', amount: 1, reasonZh: '两张图对上了七条街', reasonEn: 'Seven streets lined up between the two sheets' }
         ],
         relations: [{ char: CharacterId.REI, familiarity: 18, affection: 6, reasonZh: '她把两张纸的边缘对齐了三次', reasonEn: 'She lined the edges of the two sheets up three times' }],
@@ -669,7 +669,7 @@ export const DAY1_LIBRARY: StoryNode[] = [
         hintZh: '图书馆里有一种不用说出口的规矩',
         hintEn: 'A library has rules nobody has to state.',
         effects: [
-          { stat: 'kindness', amount: 2, reasonZh: '你知道什么时候该走', reasonEn: 'You knew when to leave' }
+          { stat: 'kindness', amount: 1, reasonZh: '你知道什么时候该走', reasonEn: 'You knew when to leave' }
         ],
         relations: [{ char: CharacterId.REI, familiarity: 8, affection: 2, reasonZh: '她说了「また」，虽然听上去只是客套', reasonEn: 'She said "again", though it sounded like a formality' }],
         setFlags: ['day1_rei_left_early'],
@@ -768,7 +768,7 @@ export const DAY1_ARCADE: StoryNode[] = [
         words: [{ jp: '生意気', reading: 'なまいき', zh: '嚣张、狂', en: 'cheeky' }],
         hintZh: '你甚至能猜到她下一句要说什么',
         hintEn: 'You can practically predict her next line.',
-        effects: [{ stat: 'guts', amount: 2, reasonZh: '当面拆穿一个后辈的人设，很勇', reasonEn: 'Calling out an underclassman to her face takes something' }],
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '当面拆穿一个后辈的人设，很勇', reasonEn: 'Calling out an underclassman to her face takes something' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 20, affection: 5, reasonZh: '她被说中了，而且不太甘心', reasonEn: 'You got it right, and she did not enjoy that' }],
         setFlags: ['day1_maki_trope'],
         then: [
@@ -830,7 +830,7 @@ export const DAY1_ARCADE: StoryNode[] = [
         hintZh: '第一顿饭还是想自己点',
         hintEn: 'You would like to order your own first meal, thanks.',
         effects: [
-          { stat: 'guts', amount: 2, reasonZh: '在完全看不懂的菜单前伸出了手指', reasonEn: 'You put a finger on a menu you could not read' },
+          { stat: 'guts', amount: 1, reasonZh: '在完全看不懂的菜单前伸出了手指', reasonEn: 'You put a finger on a menu you could not read' },
           { stat: 'proficiency', amount: 1, reasonZh: '至少你的手没有抖', reasonEn: 'Your hand, at least, did not shake' }
         ],
         relations: [{ char: CharacterId.MAKI, familiarity: 16, affection: 3, reasonZh: '她笑归笑，还是让你自己点完了', reasonEn: 'She laughed — and still let you finish the order yourself' }],
@@ -966,15 +966,52 @@ export const DAY1_ARCADE: StoryNode[] = [
 // ==========================================================
 // 擦肩而过：没走那条路的人，也让你看见一眼
 // ==========================================================
-const CAMEO_SORA: StoryNode[] = [
-  // 深度线结束、往外走的路上。没有这一句换景的话，路过某处会贴在上一场的背景上放，
-  // 观感就是无缘无故跳了个地方。
+// ==========================================================
+// 回去的路上
+//
+// 【之前是怎么坏的】
+// 深度线一结束，下一个节点就是"经过体育馆侧门"——**硬切**。
+// 上一秒你还站在图书馆里，铃刚说完那句「また」，下一秒画面已经
+// 在体育馆了，再下一秒又跳到校门口的真希。三段之间一句衔接都没有，
+// 读起来就是三个不相干的片段被钉在一起。
+//
+// 【现在怎么接】
+// 先给一段共用的"离开"：收东西、走廊、放学的声音。有了这一段，
+// 后面那些照面才有了共同的处境——**你在回家的路上，顺路看见的**。
+// 每一段之间也补一句移动，画面不再是跳的，是走过去的。
+// ==========================================================
+
+// 深度线结束 → 起身往外走。三条线共用。
+export const DAY1_LEAVING: StoryNode[] = [
   { type: 'scene', scene: 'hallway', bgm: 'town' },
   {
+    type: 'narration', characterImage: '',
+    zh: '你把椅子推回原位，背上书包。走廊里已经是放学的动静了——鞋柜的门在响，有人在楼梯上跑，广播里在念明天的日程，念到一半被下课铃盖过去。',
+    en: 'You push the chair back in and shoulder your bag. The corridor already sounds like the end of the day: locker doors, somebody running on the stairs, the tannoy reading out tomorrow\u2019s timetable until the bell talks over it.'
+  },
+  {
     type: 'narration',
-    characterImage: `${SORA}happy.webp`,
-    zh: '经过体育馆侧门时，里面传来一声很响的「ナイッシュー！」。你往里看了一眼——一个短发女生正一个人练投篮，投进了还自己给自己喊了一声好。',
-    en: 'Passing the side door of the gym you hear a very loud "nice shot!" from inside. You glance in: a short-haired girl practising free throws alone, calling her own shots.'
+    zh: '你顺着人流往校门口走。这条路你今天早上走过一次，那时候是反方向。',
+    en: 'You go with the flow towards the gate. You walked this corridor once this morning, in the other direction.'
+  }
+];
+
+const CAMEO_SORA: StoryNode[] = [
+  {
+    type: 'narration', characterImage: '',
+    zh: '经过体育馆侧门的时候，里面传来一声很响的「ナイッシュー！」。',
+    en: 'Passing the side door of the gym, a very loud "nice shot!" comes out of it.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${SORA}school_happy.webp`,
+    zh: '你停下来往里看了一眼。一个短发女生一个人在练投篮，投进了还自己给自己喊了一声好。馆里没有别人。',
+    en: 'You stop and look in. A short-haired girl is practising free throws on her own, calling her own shots. There is nobody else in there.'
+  },
+  {
+    type: 'narration', characterImage: '',
+    zh: '你站了几秒钟就走了。她没有发现你。',
+    en: 'You watch for a few seconds and move on. She does not notice you.'
   },
   {
     type: 'effect',
@@ -984,20 +1021,22 @@ const CAMEO_SORA: StoryNode[] = [
 ];
 
 const CAMEO_REI: StoryNode[] = [
-  // 深度线结束、往外走的路上。没有这一句换景的话，路过某处会贴在上一场的背景上放，
-  // 观感就是无缘无故跳了个地方。
-  { type: 'scene', scene: 'hallway', bgm: 'town' },
+  {
+    type: 'narration', characterImage: '',
+    zh: '再往前是图书馆。门开着，里面的灯还亮着一半。',
+    en: 'Further along is the library. The door is open and half the lights are still on.'
+  },
   {
     type: 'narration',
     characterImage: `${REI}thinking.webp`,
-    zh: '路过图书馆，门开着。靠窗最里面那张桌子上摊着五六本书，一个戴红框眼镜的女生坐在后面，一动不动。',
-    en: 'You pass the library. The door is open. At the furthest table by the window, five or six books lie open, and a girl in red-framed glasses sits behind them, completely still.'
+    zh: '靠窗最里面那张桌子上摊着五六本书，一个戴红框眼镜的女生坐在后面。',
+    en: 'At the furthest table by the window, five or six books lie open, and a girl in red-framed glasses sits behind them.'
   },
   {
     type: 'narration',
     characterImage: '',
-    zh: '你走出十几米，忽然意识到刚才那半分钟里，她一次都没有动过。',
-    en: 'Ten metres on, it occurs to you that in that half minute she did not move once.'
+    zh: '你走出十几米才反应过来：刚才那半分钟里，她一次都没有动过。',
+    en: 'Ten metres on it registers: in that half minute she did not move once.'
   },
   {
     type: 'effect',
@@ -1007,14 +1046,22 @@ const CAMEO_REI: StoryNode[] = [
 ];
 
 const CAMEO_MAKI: StoryNode[] = [
-  // 深度线结束、往外走的路上。没有这一句换景的话，路过某处会贴在上一场的背景上放，
-  // 观感就是无缘无故跳了个地方。
   { type: 'scene', scene: 'school_gate', bgm: 'town' },
+  {
+    type: 'narration', characterImage: '',
+    zh: '出了教学楼就是校门。这个点门口全是人，自行车推出来的声音一辆接一辆。',
+    en: 'Out of the building and the gate is right there. It is thick with people at this hour, bicycles coming out one after another.'
+  },
   {
     type: 'narration',
     characterImage: `${MAKI}punk_laugh.webp`,
-    zh: '校门口有个粉头发的女生正倒着走路，一边冲身后的人大声说着什么。她胸前的领结颜色和你们班不一样——低一届的。',
-    en: 'A pink-haired girl is walking backwards out of the school gate, hollering something at someone behind her. Her ribbon is a different colour from your class. A year below.'
+    zh: '有个粉头发的女生正倒着走路，一边冲身后的人大声说着什么。她胸前的领结颜色和你们班不一样——低一届的。',
+    en: 'A pink-haired girl is walking backwards, hollering something at somebody behind her. Her ribbon is a different colour from your class. A year below.'
+  },
+  {
+    type: 'narration', characterImage: '',
+    zh: '她倒着走出去七八米，差点撞上门柱，自己蹦开了。整个过程她一次都没回头看路。',
+    en: 'She gets seven or eight metres like that, nearly walks into the gatepost, and hops clear of it. She does not once look where she is going.'
   },
   {
     type: 'effect',
@@ -1033,9 +1080,9 @@ const CAMEO_MAKI: StoryNode[] = [
 //
 // 深度线还是只能选一条（那是选择的重量所在），
 // 但"路过时瞥了一眼"这种程度的照面，没有理由三缺一。
-export const DAY1_CAMEO_AFTER_GYM: StoryNode[] = [...CAMEO_REI, ...CAMEO_MAKI];
-export const DAY1_CAMEO_AFTER_LIB: StoryNode[] = [...CAMEO_SORA, ...CAMEO_MAKI];
-export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [...CAMEO_SORA, ...CAMEO_REI];
+export const DAY1_CAMEO_AFTER_GYM: StoryNode[] = [...DAY1_LEAVING, ...CAMEO_REI, ...CAMEO_MAKI];
+export const DAY1_CAMEO_AFTER_LIB: StoryNode[] = [...DAY1_LEAVING, ...CAMEO_SORA, ...CAMEO_MAKI];
+export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [...DAY1_LEAVING, ...CAMEO_SORA, ...CAMEO_REI];
 
 // ==========================================================
 // 傍晚：稻荷 → 奈绪（两个都必遇，让 8 个人在一周目里全部露面）
@@ -1080,7 +1127,7 @@ export const DAY1_EVENING: StoryNode[] = [
         jp: '……わかった。こういうのが出てくる話なんだな、これ。',
         hintZh: '白发、赤脚、神社、说话像谜语。够明显了',
         hintEn: 'White hair, bare feet, a shrine, riddles. The signs are not subtle.',
-        effects: [{ stat: 'guts', amount: 2, reasonZh: '你对着一个明显不太对劲的人开了口', reasonEn: 'You spoke up at someone visibly not quite right' }],
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '你对着一个明显不太对劲的人开了口', reasonEn: 'You spoke up at someone visibly not quite right' }],
         relations: [{ char: CharacterId.INARI, familiarity: 16, affection: 4, reasonZh: '她被逗乐了，笑了很久', reasonEn: 'She found that funny, and kept finding it funny' }],
         setFlags: ['day1_inari_trope'],
         then: [
@@ -1115,7 +1162,7 @@ export const DAY1_EVENING: StoryNode[] = [
         words: [{ jp: '謂れ', reading: 'いわれ', zh: '来历、典故', en: 'the story behind it' }],
         hintZh: '外公的地图上，这里描了三遍',
         hintEn: 'Your grandfather traced this one spot three times.',
-        effects: [{ stat: 'knowledge', amount: 2, reasonZh: '她讲了一段哪本书上都没有的来历', reasonEn: 'She told you a history that is in no book' }],
+        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '她讲了一段哪本书上都没有的来历', reasonEn: 'She told you a history that is in no book' }],
         relations: [{ char: CharacterId.INARI, familiarity: 12, affection: 2, reasonZh: '你对着一座神社问了正经问题', reasonEn: 'You asked a serious question at a shrine' }],
         then: [
           {
@@ -1136,7 +1183,7 @@ export const DAY1_EVENING: StoryNode[] = [
         hintZh: '四月的傍晚，她赤着脚',
         hintEn: 'It is an April evening and she is barefoot.',
         effects: [
-          { stat: 'kindness', amount: 3, reasonZh: '你先看见的是冷，不是怪', reasonEn: 'What you noticed first was the cold, not the strangeness' }
+          { stat: 'kindness', amount: 2, reasonZh: '你先看见的是冷，不是怪', reasonEn: 'What you noticed first was the cold, not the strangeness' }
         ],
         relations: [{ char: CharacterId.INARI, familiarity: 20, affection: 6, reasonZh: '一千八百年里，这件事发生过的次数不多', reasonEn: 'In eighteen centuries, this has not happened often' }],
         setFlags: ['day1_inari_blazer'],
@@ -1212,9 +1259,29 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
+    zh: '你还没走到跟前就认出她了。隔着二十米、只有一个后脑勺和一个蹲着的姿势，你也认得出来。',
+    en: 'You know who it is before you are anywhere near. Twenty metres off, the back of a head and a crouch, and you know.'
+  },
+  {
+    type: 'narration',
+    zh: '奈绪。你们两家在国外做了十年邻居——她家在你隔壁那栋，中间隔一道齐腰的矮墙，小学六年是同一条路上下学。',
+    en: 'Nao. Your families were neighbours abroad for ten years: her house next to yours with a waist-high wall between, and six years of primary school walking the same road.'
+  },
+  {
+    type: 'narration',
+    zh: '她比你早一年回日本。你决定来神户交换的那天，第一个知道的人是她——因为你还没告诉家里就先给她发了消息。',
+    en: 'She came back to Japan a year ahead of you. On the day you decided to take the exchange, she was the first to know, because you messaged her before you told your own family.'
+  },
+  {
+    type: 'narration',
     characterImage: `${NAO}casual_neutral.webp`,
     zh: '你走近的时候她抬起头，脸上先是「啊」，然后是「终于」，最后是一种非常复杂的、看起来快哭了但其实是在生气的表情。',
     en: 'She looks up as you get closer. Her face does "ah", then "finally", and then settles into something extremely complicated that looks like crying but is in fact annoyance.'
+  },
+  {
+    type: 'narration',
+    zh: '这个表情你也认得。上一次见到是十二岁，因为你把她的自行车骑进了水沟里。',
+    en: 'You know that expression too. The last time you saw it you were twelve, and it was because you had ridden her bicycle into a ditch.'
   },
   {
     type: 'speech',
@@ -1347,7 +1414,7 @@ export const DAY1_EVENING: StoryNode[] = [
         words: [{ jp: '幼馴染', reading: 'おさななじみ', zh: '青梅竹马', en: 'childhood friend' }],
         hintZh: '坡道口等人、拎着一袋米、嘴上嫌你',
         hintEn: 'Waiting at the bottom of a hill with a bag of rice, complaining.',
-        effects: [{ stat: 'charm', amount: 2, reasonZh: '你说了一句她一直在等的话', reasonEn: 'You said the thing she had been waiting for someone to say' }],
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '你说了一句她一直在等的话', reasonEn: 'You said the thing she had been waiting for someone to say' }],
         relations: [{ char: CharacterId.NAO, affection: 8, familiarity: 4, reasonZh: '她笑着骂了你，但没有否认', reasonEn: 'She swore at you, laughing, and did not deny it' }],
         setFlags: ['day1_nao_trope'],
         then: [
@@ -1410,7 +1477,7 @@ export const DAY1_EVENING: StoryNode[] = [
         words: [{ jp: '助かる', reading: 'たすかる', zh: '得救、帮大忙了', en: 'to be a great help' }],
         hintZh: '她从三宫一路拎上来的',
         hintEn: 'She carried this up from Sannomiya.',
-        effects: [{ stat: 'kindness', amount: 2, reasonZh: '你没有把她的好意当成理所当然', reasonEn: 'You did not take it for granted' }],
+        effects: [{ stat: 'kindness', amount: 1, reasonZh: '你没有把她的好意当成理所当然', reasonEn: 'You did not take it for granted' }],
         relations: [{ char: CharacterId.NAO, affection: 5, familiarity: 3, reasonZh: '她被正经道谢，反而不知道该怎么办', reasonEn: 'Thanked sincerely, she had no idea what to do with it' }],
         then: [
           {
@@ -1508,7 +1575,10 @@ export const DAY1_EVENING: StoryNode[] = [
     ]
   },
   // ---- 一起上坡 ----
-  { type: 'scene', scene: 'kitano_slope', bgm: 'night' },
+  // 原来这里切到 kitano_slope，而那张图是**白天**的樱花坡——
+  // 一整段都在傍晚六点四十，画面却跳回了白天。
+  // 坡道口那张黄昏图一路用到底。
+  { type: 'scene', scene: 'kitano_slope_foot_dusk', bgm: 'night' },
   {
     type: 'narration',
     characterImage: `${NAO}casual_neutral.webp`,
