@@ -1,4 +1,5 @@
 import { StoryNode, StoryFlags, GameCalendar, TimeSlot } from '../types';
+import { OTAKU_SCENES_2 } from './otakuScenes2';
 import { NPC_ARCS } from './npcArcs';
 import { OTAKU_SCENES } from './otakuScenes';
 import { STREET_PEOPLE } from './streetPeople';
@@ -1211,7 +1212,7 @@ const eligible = (s: StreetScene, locationId: string, ctx: StreetCtx): boolean =
 // 有下文的那一批彩蛋（带选择、带主角吐槽）单独放一个文件，
 // 但走的是同一个池子——玩家不该感觉到「这是另一套系统」。
 // 街上那几个会反复遇到的人（占卜的、看地下偶像的、遛狗的…）也进同一个池子。
-export const ALL_STREET_SCENES: StreetScene[] = [...STREET_SCENES, ...EASTER_SCENES, ...STREET_PEOPLE, ...OTAKU_SCENES, ...NPC_ARCS];
+export const ALL_STREET_SCENES: StreetScene[] = [...STREET_SCENES, ...EASTER_SCENES, ...STREET_PEOPLE, ...OTAKU_SCENES, ...OTAKU_SCENES_2, ...NPC_ARCS];
 
 export const pickStreetScene = (locationId: string, ctx: StreetCtx): StreetScene | null => {
   const pool = ALL_STREET_SCENES.filter(s => eligible(s, locationId, ctx));

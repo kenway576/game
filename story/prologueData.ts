@@ -415,8 +415,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '手心有点酸，但看着这间干干净净的屋子，你心里意外地踏实。',
-            en: 'Your palms ache a little. But looking at the clean, ordered room, you feel unexpectedly steady.'
+            zh: '手心是酸的。屋子空得能听见自己的脚步声，但地板是刚擦过的，还有点潮。',
+            en: 'Your palms ache. The room is empty enough to echo your own footsteps, and the floor has been mopped recently and is still slightly damp.'
           }
         ]
       },
@@ -1955,8 +1955,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'narration',
-                    zh: '你忽然意识到，这些声音从明天起也会是你的日常。',
-                    en: 'It occurs to you that from tomorrow, those sounds will be your ordinary life too.'
+                    zh: '自行车、关门、远处的电车、楼下有人在喊小孩的名字。这些声音明天还会再响一遍。',
+                    en: 'A bicycle, a door, a train somewhere, somebody downstairs calling a child in. All of it will happen again tomorrow.'
                   }
                 ]
               }
@@ -2501,8 +2501,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '折到第七页时，你意识到自己在给未来的自己排行程。',
-        en: 'By the seventh folded corner you realize what you are doing: making plans for a future version of yourself.'
+        zh: '折到第七页你停了一下。这些地方都在两个月以后。',
+        en: 'You stop at the seventh corner. All of these places are two months away.'
       }
     ]
   },

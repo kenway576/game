@@ -403,8 +403,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '下楼的时候你在心里添了第二条：隔壁住着一位温柔的、年长的、独居的女性。',
-    en: 'On the way down you add a second entry in your head: a gentle, older, unattached woman lives next door.'
+    zh: '下楼的时候你在手账边上添了第二条：隔壁，年长，一个人住，做饭的量总是不对。',
+    en: 'On the way down you add a second item in the margin: next door, older, lives alone, never gets the quantities right.'
   },
   {
     type: 'narration',
