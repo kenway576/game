@@ -18,13 +18,25 @@ export interface EventContext {
   calendar: GameCalendar;
   affection: AffectionMap;
   familiarity: FamiliarityMap;
+  // 已经正式认识的人。不传 = 老调用点，一律按"都认识"处理，
+  // 免得漏改一个地方就把所有事件都锁死。
+  met?: CharacterId[];
 }
 
-const famOf = (ctx: EventContext, id: CharacterId) =>
-  ctx.familiarity[id] ?? getInitialFamiliarity(id);
+// 没见过的人親密度按 0 算，不能拿设定表里的初始值。
+// 那些数字（光 95、真希 100）说的是"认识之后有多熟"，
+// 不是"素不相识时有多熟"——拿它去过門槛，就会出现
+// 三个人的合照里站着一个你还没打过招呼的人。
+const famOf = (ctx: EventContext, id: CharacterId) => {
+  if (ctx.met && !ctx.met.includes(id)) return 0;
+  return ctx.familiarity[id] ?? getInitialFamiliarity(id);
+};
 
 export const eventAvailable = (ev: MapEventDef, ctx: EventContext): boolean => {
   if (!ev.repeatable && eventPlayed(ev, ctx.flags)) return false;
+  // 出场的人必须都认识。introduces 是给"这一场就是初次见面"留的口子。
+  if (ctx.met && !ev.introduces && ev.chars.length
+      && !ev.chars.every(c => ctx.met!.includes(c))) return false;
   if (ev.timeSlots && !ev.timeSlots.includes(ctx.calendar.timeSlot)) return false;
   if (ev.weather && !ev.weather.includes(ctx.calendar.weather)) return false;
   if (ev.requiresFlags && !ev.requiresFlags.every(f => ctx.flags[f])) return false;

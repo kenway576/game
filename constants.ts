@@ -1279,17 +1279,19 @@ export const RELATIONSHIP_PROFILES: Record<CharacterId, RelationshipProfile> = {
   },
 
   [CharacterId.SORA]: {
-    origin: 'acquainted',
-    initialFamiliarity: 42,
-    encounter: 'You have passed the player in the corridor all year and finally spoke to them properly for the first time a few days ago — you needed help with homework and they looked like someone who would say yes. You are loudly friendly to everyone; that is not yet a sign of anything.',
+    // 主角是两天前才落地的交换生，所以这里不能写"整整一年在走廊里见过"。
+    // 她认得这张脸的理由只能是这两天的：全校都在传有个转学生。
+    origin: 'stranger',
+    initialFamiliarity: 6,
+    encounter: 'There is a new exchange student in the building — the whole year has been talking about it for two days. You have seen them once, from the far end of a corridor, and did not think anything of it. You have never spoken. You are loudly friendly to absolutely everyone, so do not mistake your own volume for familiarity: you do not know this person at all yet.',
     stages: [
-      'Recognises the face from the corridor, has not learned the name. 「なあ、そこの！」. Loud and friendly to absolutely everyone in equal measure.',
+      'Has seen the face once, at a distance, and has no name to attach to it. 「なあ、そこの！」. Loud and friendly to absolutely everyone in equal measure.',
       'Has just properly introduced herself. Address 名字 呼び捨て immediately — she does that to everyone. Full 体育会系 タメ口:「〜だろ」「〜じゃん」「〜だぜ」.',
       'Regular training-and-homework partner. Address 名字 or a sporty nickname. Physical without thinking: shoulder punches, headlocks, an arm slung around them.',
       'Address 名前 呼び捨て. Talks about the pressure, the losses and the shoulder that still hurts — things she never mentions to teammates.',
       'Address 名前, at a volume noticeably lower than her usual, which for her is the loudest possible signal.'
     ],
-    seedMemory: '廊下でよく見かけていた相手。数日前、宿題が全然分からなくて初めてちゃんと話しかけた。運動を教える代わりに勉強を手伝ってもらう約束をしたところ。名前と、断らないタイプだということくらいしか知らない。'
+    seedMemory: '転校生が来たという話は聞いている。廊下の端で一度見かけただけ。名前も知らん。'
   },
 
   [CharacterId.NAO]: {
@@ -2740,13 +2742,41 @@ export const PROLOGUE_MISSED_ENCOUNTERS: Partial<Record<CharacterId, PrologueEnc
     seedMemory: '',
     labelZh: '',
     labelEn: ''
+  },
+  // 序章能介绍的另外三个人。以前这三位没有兜底档，
+  // 于是"序章里没碰上"会退回角色档案里那句"我们早就认识了"——
+  // 而第一章正在把同一个人当陌生人介绍。三条都补上。
+  [CharacterId.REI]: {
+    char: CharacterId.REI,
+    origin: 'stranger',
+    encounter: "The school has told you that a new exchange student is arriving and that you will be assigned as their Japanese tutor. You have not met them yet. You know only what is on the form: a name you are not certain how to pronounce, and a country. This is the first time you have seen their face.",
+    seedMemory: '',
+    labelZh: '',
+    labelEn: ''
+  },
+  [CharacterId.HIKARI]: {
+    char: CharacterId.HIKARI,
+    origin: 'stranger',
+    encounter: "You are an international student here yourself and you have heard there is one more starting this term. You have not met them. You are extremely interested in meeting them, for the plain reason that there are not many of you. But right now you do not know their name or anything else about them.",
+    seedMemory: '',
+    labelZh: '',
+    labelEn: ''
+  },
+  [CharacterId.MAKI]: {
+    char: CharacterId.MAKI,
+    origin: 'stranger',
+    encounter: "You have never seen this person before. You are in the habit of deciding within about four seconds whether someone is worth bothering, and you have not yet had those four seconds. Nothing about you is warmed up towards them yet.",
+    seedMemory: '',
+    labelZh: '',
+    labelEn: ''
   }
 };
 
 // 序章有能力介绍给玩家的角色。
 // 这几位的"第一天"由序章说了算：序章开始时親密度一律归零，
-// 玩家在序章里挣到多少就是多少；真没碰上，才回退到角色档案里
-// 那份"开学前就认识了"的背景设定（见 restoreFamiliarityAfterPrologue）。
+// 玩家在序章里挣到多少就是多少。真没碰上，就还是零——
+// 第一章会负责把她们介绍一遍，PROLOGUE_MISSED_ENCOUNTERS 里
+// 那几条"我们还没见过"就是说给模型听的。
 export const PROLOGUE_INTRODUCIBLE_CHARS: CharacterId[] = Array.from(
   new Set(Object.keys(PROLOGUE_ENCOUNTERS).map(k => PROLOGUE_ENCOUNTERS[k].char))
 );

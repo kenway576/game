@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode } from './types';
-import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, didMeetInPrologue, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver } from './constants';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
@@ -722,15 +722,15 @@ const App: React.FC = () => {
   // 结算屏上按「进入第 1 章」：把序章的相遇写进各角色的长期记忆，然后进大厅
   const continueFromPrologue = () => {
     audioManager.playSfx('confirm');
-    // 序章里没碰上的人：回到她们档案里"开学前就认识了"的那份背景设定
-    setFamiliarityMap(prev => {
-      const next = { ...prev };
-      PROLOGUE_INTRODUCIBLE_CHARS.forEach(id => {
-        if (didMeetInPrologue(id, storyFlags)) return;
-        next[id] = Math.max(next[id] || 0, getInitialFamiliarity(id));
-      });
-      return next;
-    });
+    // 序章里没碰上的人：**什么都不补**。
+    //
+    // 这里原来会把她们抬回档案里"开学前就认识了"那份初始親密度
+    // （光 95、真希 100、丽 45），于是一个序章里从头到尾没露过面的人，
+    // 一进大厅就是"朋友"档。而第一章又把同一个人当陌生人重新介绍一遍——
+    // 玩家看到的就是"没正式认识，但已经很熟"。
+    //
+    // 两份设定冲突时，以玩家真的演过的那一份为准：没碰上就是没碰上，
+    // 第一章会负责介绍她们。那几个初始值只在序章都没机会出场时才有意义。
     setMemoryMap(prev => {
       const next = { ...prev };
       ALL_CHARACTER_IDS.forEach(id => {
@@ -835,7 +835,8 @@ const App: React.FC = () => {
       flags: storyFlags,
       calendar: gameCalendar,
       affection: affectionMap,
-      familiarity: familiarityMap
+      familiarity: familiarityMap,
+      met: metChars
     });
     if (!ev) {
       if (loc.id === 'hyakkin_store') { setCurrentScene(loc.id); setActiveStore('hyakkin'); setGameMode(GameMode.STORE); return; }

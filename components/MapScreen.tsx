@@ -65,8 +65,8 @@ const MapScreen: React.FC<Props> = ({
 }) => {
   const en = language === 'en';
   const ctx: EventContext = useMemo(
-    () => ({ flags: storyFlags, calendar, affection, familiarity }),
-    [storyFlags, calendar, affection, familiarity]
+    () => ({ flags: storyFlags, calendar, affection, familiarity, met: metChars }),
+    [storyFlags, calendar, affection, familiarity, metChars]
   );
 
   const unlocked = useMemo(

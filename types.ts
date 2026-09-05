@@ -427,6 +427,8 @@ export interface MapEventDef {
   // 关系门槛。多人剧情就是在这儿写"两个人都得熟到一定程度"。
   minAffection?: Partial<Record<CharacterId, number>>;
   minFamiliarity?: Partial<Record<CharacterId, number>>;
+  // 这一场**就是**初次见面，所以不要求提前认识 chars 里的人。
+  introduces?: boolean;
   // 默认只演一次。设 true 则每次去都可能再演。
   repeatable?: boolean;
   // 同时满足条件时，数字大的先演。默认 0。
