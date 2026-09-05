@@ -32,6 +32,10 @@ interface Props {
   // 第一章还没打完 → 左上角变成回主线的入口
   mainStoryPending?: boolean;
   onResumeMainStory?: () => void;
+  // 🏫 今天要上学，而且早上那节课还没上
+  classPending?: boolean;
+  classLine?: string;
+  onGoToClass?: () => void;
   phoneUnread: number;
   stamina: number;
   onOpenProtagonistProfile: () => void;
@@ -41,7 +45,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, phoneUnread, stamina, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, phoneUnread, stamina, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -95,6 +99,17 @@ const LobbyScreen: React.FC<Props> = ({
             </h2>
             <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest">
               {userState.language === 'en' ? 'The first day is not over yet' : '第一天还没有过完'}
+            </p>
+          </button>
+        ) : classPending ? (
+          // 🏫 上课日的早晨。这一格以前是空的：玩家醒来，什么都点不了，
+          // 只能等它过去。一周有五个这样的早晨。
+          <button onClick={onGoToClass} className="-skew-x-12 text-left group">
+            <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-yellow-400 group-hover:text-yellow-300">
+              {userState.language === 'en' ? 'GO TO SCHOOL ▶' : '去上学 ▶'}
+            </h2>
+            <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest truncate max-w-[62vw] md:max-w-none">
+              {classLine}
             </p>
           </button>
         ) : (
