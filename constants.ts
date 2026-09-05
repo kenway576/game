@@ -171,6 +171,16 @@ export const SCENE_MAP: Record<string, string> = {
   'drugstore_exterior':            '/images/backgrounds/bg_drugstore_exterior.webp',
   'drugstore_interior':            '/images/backgrounds/bg_drugstore_interior.webp',
   'drugstore':                     '/images/backgrounds/bg_drugstore_interior.webp',
+  // 🛍️ 三宫商店街名店（Book Off、骏河屋、优衣库）
+  'bookoff_exterior':              '/images/backgrounds/bg_bookoff_exterior.webp',
+  'bookoff_interior':              '/images/backgrounds/bg_bookoff_interior.webp',
+  'bookoff':                       '/images/backgrounds/bg_bookoff_interior.webp',
+  'surugaya_exterior':             '/images/backgrounds/bg_surugaya_exterior.webp',
+  'surugaya_interior':             '/images/backgrounds/bg_surugaya_interior.webp',
+  'surugaya':                      '/images/backgrounds/bg_surugaya_interior.webp',
+  'uniqlo_exterior':               '/images/backgrounds/bg_uniqlo_exterior.webp',
+  'uniqlo_interior':               '/images/backgrounds/bg_uniqlo_interior.webp',
+  'uniqlo':                        '/images/backgrounds/bg_uniqlo_interior.webp',
   'tackle_shop':                   '/images/backgrounds/bg_suma_fishing_pier.webp',
   // 🏫 校园日常实景拓展
   'school_gym_storage':            '/images/backgrounds/bg_school_gym_storage.webp',

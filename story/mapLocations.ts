@@ -451,6 +451,72 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ]
   },
   {
+    id: 'bookoff_sannomiya', district: 'sannomiya',
+    nameJp: 'BOOKOFF 三宮センター街店', reading: 'ブックオフ さんのみやセンターがいてん',
+    nameZh: 'Book Off 三宫中心街店', nameEn: 'Book Off Sannomiya Center Gai',
+    blurbZh: '三宫中心街拱廊下醒目的黄蓝招牌。门口推车里堆满 110 円特价文库和二手漫画。',
+    blurbEn: 'The bright yellow and blue sign under the Sannomiya arcade roof. Carts out front packed with 110-yen manga and bunko novels.',
+    mapScene: 'bookoff_exterior',
+    extraScenes: ['bookoff_interior'],
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
+    regulars: [CharacterId.REI, CharacterId.HIKARI],
+    ambientZh: [
+      '门口 110 円的特价漫画框前挤满了翻书的学生，你在文库本专区挑到了一本昭和年代的怪谈短篇集。',
+      '在深处的旧轻小说书架前站了半小时，出来时手里多了两本带书皮的二手文库。'
+    ],
+    ambientEn: [
+      'Students crowd the 110-yen discounted manga carts; you fish out a vintage paperback of Showa-era ghost stories.',
+      'You spend half an hour by the back light-novel shelves and leave with two second-hand paperbacks in clean jackets.'
+    ]
+  },
+  {
+    id: 'surugaya_sannomiya', district: 'sannomiya',
+    nameJp: '駿河屋 神戸三宮店', reading: 'するがや こうべさんのみやてん',
+    nameZh: '骏河屋 神户三宫店（Center Plaza）', nameEn: 'Surugaya Kobe Sannomiya',
+    blurbZh: '三宫 Center Plaza 里的中古二次元圣地。一整排扭蛋机、玻璃手办柜与满墙挂满的吧唧盲盒。',
+    blurbEn: 'The otaku treasure hub inside Sannomiya Center Plaza. Endless gachapon machines, glass figure display cases, and walls of anime badges.',
+    mapScene: 'surugaya_exterior',
+    extraScenes: ['surugaya_interior'],
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['afternoon', 'night'],
+    regulars: [CharacterId.SORA, CharacterId.MAKI],
+    ambientZh: [
+      '玻璃展柜里摆着中古手办和古董主机卡带，你在亚克力立牌区找到了同校很多人在追的动画角色。',
+      '在门口一整排扭蛋机前投了两枚硬币，拧出来一个神户限定的微型生田神社鸟居挂件。'
+    ],
+    ambientEn: [
+      'Glass showcases line the aisle with retro game cartridges and anime figurines; you spot keychains popular at school.',
+      'You drop two hundred-yen coins into a gachapon machine out front and get a Kobe-exclusive mini shrine gate strap.'
+    ]
+  },
+  {
+    id: 'uniqlo_sannomiya', district: 'sannomiya',
+    nameJp: 'ユニクロ 神戸三宮店', reading: 'ユニクロ こうべさんのみやてん',
+    nameZh: '优衣库 三宫中心街店', nameEn: 'UNIQLO Kobe Sannomiya',
+    blurbZh: '三宫中心街宽敞明亮的两层落地玻璃旗舰店。展示着当季极简日系常服与动漫联名 UT。',
+    blurbEn: 'The airy two-story flagship with glass display windows in Sannomiya Center Gai, featuring seasonal basics and anime UT collections.',
+    mapScene: 'uniqlo_exterior',
+    extraScenes: ['uniqlo_interior'],
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon', 'night'],
+    regulars: [CharacterId.NAO, CharacterId.ASUKA],
+    ambientZh: [
+      '明亮挑高的木色展台前，新一季的联名 UT 和轻量羽绒服叠得整整齐齐，店员正在给假人模特调整围巾。',
+      '你在保暖内衣区挑了一件长袖打底，走下电动扶梯时收银台的小姐姐微笑着向你鞠躬。'
+    ],
+    ambientEn: [
+      'Neatly folded stacks of graphic UT tees and light jackets line the blonde-wood tables; a clerk straightens a mannequin’s scarf.',
+      'You pick up a thermal base layer and the cashier bows pleasantly as you step toward the escalator.'
+    ]
+  },
+  {
     id: 'tackle_shop', district: 'harbor',
     nameJp: 'みなと釣具', reading: 'みなとつりぐ',
     nameZh: '港口渔具店', nameEn: 'Minato Tackle',
