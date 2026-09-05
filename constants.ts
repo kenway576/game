@@ -338,6 +338,19 @@ export const CITY_NPC_SPRITES = {
   yuki:      '/images/characters/npc_city_yuki.webp',      // 北野坡道摄影女大学生（由纪）
 } as const;
 
+// 🏪 便利店店员美咲。她在序章里给主角结过第一次账，
+// 而这个游戏里只有一家便利店，所以她是主角这一年里
+// 见得最多的人之一——只是她不算"角色"，没有好感度。
+// 表情单独列一张表，让正篇也能用上，而不是只在序章露一次脸。
+export const CLERK_MISAKI_SPRITES = {
+  welcome: '/images/characters/clerk_misaki_welcome.webp',
+  smile:   '/images/characters/clerk_misaki_smile.webp',
+  think:   '/images/characters/clerk_misaki_think.webp',
+  laugh:   '/images/characters/clerk_misaki_laugh.webp',
+  shy:     '/images/characters/clerk_misaki_shy.webp',
+  bag:     '/images/characters/clerk_misaki_bag.webp'
+} as const;
+
 // 🎬 经典动漫客串彩蛋 NPC 立绘（纯净无白边透明通道）
 export const EASTER_EGG_SPRITES = {
   // 《我的青春恋爱物语果然有问题。》

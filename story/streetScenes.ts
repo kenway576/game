@@ -1,7 +1,7 @@
 import { StoryNode, StoryFlags, GameCalendar, TimeSlot } from '../types';
 // 立绘路径从 constants 那三张表取，不在这儿再抄一遍——
 // 抄两遍的代价是换图时漏掉一处，而漏掉的那处不报错，只显示碎图标。
-import { SCHOOL_NPC_SPRITES, CITY_NPC_SPRITES, EASTER_EGG_SPRITES, schoolDayNumber } from '../constants';
+import { SCHOOL_NPC_SPRITES, CITY_NPC_SPRITES, EASTER_EGG_SPRITES, CLERK_MISAKI_SPRITES, schoolDayNumber } from '../constants';
 import { EASTER_SCENES } from './easterScenes';
 
 // ---------------------------------------------------------
@@ -326,6 +326,80 @@ export const STREET_SCENES: StreetScene[] = [
         en: 'She says something long, fast and heavily accented. You catch the last word only: slowly.'
       },
       seen('你听懂了整句话里最要紧的那两个字', 'You caught the only part of that sentence that mattered')
+    ]
+  },
+  // 🏪 便利店店员美咲。序章里她给主角结了第一次账，
+  // 从那以后她一直在那儿，而主角一直没跟她说过第二句话。
+  // 三条，按学年往后排：认出你 → 记住你买什么 → 那句一直没说出口的话。
+  // 这是这个游戏里唯一一条不属于任何"角色"的关系线，
+  // 也是唯一一条**只靠反复出现在同一个地方**建立起来的。
+  {
+    id: 'st_misaki_again', locationIds: ['convenience_store'], weight: 6, minDay: 12,
+    script: [
+      {
+        type: 'narration', characterImage: CLERK_MISAKI_SPRITES.welcome,
+        zh: '「いらっしゃいませ。」是同一个人。名牌上写着「みさき」，你上次没看清。',
+        en: '"Welcome." It is the same person. The badge says Misaki. You did not get a good look at it last time.'
+      },
+      {
+        type: 'narration', characterImage: CLERK_MISAKI_SPRITES.smile,
+        zh: '结账的时候她多看了你一眼，看的是你那身制服。她没说什么，但那一眼里有个"哦"。',
+        en: 'At the till she glances at you a second longer, at the uniform. She does not say anything, but there is an "ah" in the glance.'
+      },
+      seen('你成了一家便利店的常客，虽然还没有人这么说', 'You have become a regular somewhere, though nobody has said so')
+    ]
+  },
+  {
+    id: 'st_misaki_usual', locationIds: ['convenience_store'], weight: 6, minDay: 90,
+    requiresFlags: ['st_misaki_again'],
+    script: [
+      {
+        type: 'narration', characterImage: CLERK_MISAKI_SPRITES.think,
+        zh: '你把东西放上柜台。她扫到一半停了一下，看了看那盒饭团，又看了看你。',
+        en: 'You put your things on the counter. Halfway through scanning she pauses, looks at the onigiri, then at you.'
+      },
+      {
+        type: 'narration', characterImage: CLERK_MISAKI_SPRITES.laugh,
+        zh: '「いつもの、ですね。」她说完自己先笑了，像是也没想到自己会说这句。',
+        en: '"The usual, then." She laughs at herself for saying it, as if she had not planned to.'
+      },
+      {
+        type: 'narration',
+        zh: '你其实没意识到自己每次买的是同一样东西。走出自动门以后你想了一路。',
+        en: 'You had not registered that you buy the same thing every time. You think about it the whole way out.'
+      },
+      seen('有人替你记住了你自己没注意的事', 'Somebody has been keeping track of something you had not noticed yourself'),
+      {
+        type: 'effect',
+        effects: [{ stat: 'kindness', amount: 1, reasonZh: '被人记住是一件会往回还的事', reasonEn: 'Being remembered is a thing that comes back around' }]
+      }
+    ]
+  },
+  {
+    id: 'st_misaki_last', locationIds: ['convenience_store'], weight: 8, minDay: 300,
+    requiresFlags: ['st_misaki_usual'],
+    script: [
+      {
+        type: 'narration', characterImage: CLERK_MISAKI_SPRITES.bag,
+        zh: '她装袋的时候动作比平时慢。袋口折了两次，第二次是多余的。',
+        en: 'She bags it more slowly than usual. She folds the top over twice, and the second fold is not necessary.'
+      },
+      {
+        type: 'narration', characterImage: CLERK_MISAKI_SPRITES.shy,
+        zh: '「あの……三月で、帰るんですか。」她问完就低下头去理收银台上的东西，那上面本来也没什么好理的。',
+        en: '"Um... are you going back, in March?" Having asked, she looks down and starts tidying the counter, which did not need tidying.'
+      },
+      {
+        type: 'narration',
+        zh: '你说是。她「そうですか」了一声，把袋子递过来，说了句「ありがとうございました」。',
+        en: 'You say yes. She says "I see", passes the bag over, and thanks you for your custom.'
+      },
+      {
+        type: 'narration',
+        zh: '和第一次一模一样的一句。你在自动门外面站了一会儿。',
+        en: 'Word for word what she said the first time. You stand outside the automatic door for a moment.'
+      },
+      seen('这一年里你最常见到的人，你连她的姓都不知道', 'The person you saw most this year, and you never learned her surname')
     ]
   },
   {
@@ -1018,6 +1092,14 @@ export const STREET_SCENES: StreetScene[] = [
         en: 'She takes the hat from you and says thank you, not loudly. Then she turns and carries on up the slope.'
       },
       {
+        // 备用那张立绘用在这儿：她走上去、停住、回头。
+        // 第一张是接帽子的正面，这一张是隔着二十级台阶的那个回头，
+        // 两张分开才对得上"四秒"这个说法。
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.megumi_alt,
+        zh: '走出二十级台阶她停了一下，回头看了看你手里那顶已经空了的手。她没有再说什么，帽子按在头上继续走了。',
+        en: 'Twenty steps up she stops and looks back at the hand you are still holding out, empty now. She does not say anything else. The hat goes on and she carries on.'
+      },
+      {
         type: 'narration',
         zh: '她走了以后你还站在原地。刚才那件事一共花了四秒，而你打算记很久。',
         en: 'You are still standing there after she has gone. The whole thing took four seconds and you intend to keep it for a while.'
@@ -1067,6 +1149,12 @@ export const STREET_SCENES: StreetScene[] = [
         type: 'narration',
         zh: '「明明大家都看不见我，你买两罐给谁喝啊？」女生挑眉看着他。男生只是打了个哈欠：「因为我想看你喝。」',
         en: '"Nobody else can see me anyway, who did you buy two for?" she arches an eyebrow. The boy merely yawns: "Because I wanted to see you drink it."'
+      },
+      {
+        // 备用那张用在这儿：她没有反驳，只是把拉环拉开了。
+        type: 'narration', characterImage: EASTER_EGG_SPRITES.mai_alt,
+        zh: '她没有反驳。拉环拉开的时候「啵」了一声，海风把那个声音带得很远。她喝了一口，没有看他。',
+        en: 'She does not argue. The ring-pull gives a small pop and the sea wind carries the sound a long way. She takes a mouthful without looking at him.'
       },
       seen('你隐隐察觉到了某种不被常理所束缚的默契', 'You sensed an unspoken understanding unconstrained by ordinary logic')
     ]
