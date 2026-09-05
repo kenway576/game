@@ -45,6 +45,8 @@ interface Props {
   onEffects: (effects: StoryEffect[]) => void;
   // 関係（親密度/好感度）变动同样上抛
   onRelations: (relations: StoryRelationEffect[]) => void;
+  // 剧情中途置的 flag 即时上报（不给的话要等整章播完才生效）
+  onFlags?: (flags: string[]) => void;
   onSceneChange: (scene: string) => void;
   // 台词里挂的生词进单词本（App 侧去重）
   onCollectWords: (words: StoryWord[]) => void;
@@ -93,7 +95,7 @@ const StoryScreen: React.FC<Props> = ({
   initialProgress, onOpenSystemMenu, playerName, onSetPlayerName,
   storyAffection = 0, storyFamiliarity = 0,
   chapterNameZh, chapterNameEn, allowSkip,
-  onEffects, onRelations, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
+  onEffects, onRelations, onFlags, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
 }) => {
   const en = language === 'en';
 
@@ -136,7 +138,7 @@ const StoryScreen: React.FC<Props> = ({
   const node = nodes[idx];
   const isDisplayNode = node?.type === 'narration' || node?.type === 'speech';
   const isBlockingNode = node?.type === 'choice' || node?.type === 'shop'
-    || node?.type === 'cg' || node?.type === 'nameInput';
+    || node?.type === 'cg' || node?.type === 'nameInput' || node?.type === 'phone';
 
   const advance = useCallback(() => setIdx(i => i + 1), []);
 
@@ -145,11 +147,19 @@ const StoryScreen: React.FC<Props> = ({
     setNodes(prev => [...prev.slice(0, idx + 1), ...extra, ...prev.slice(idx + 1)]);
   };
 
+  // flag 一置上就要交给游戏本体，不能攒到这一章播完再给。
+  //
+  // 以前只写进 flagsRef，等 onFinish 一次性交出去。序章和第一章各有一两个
+  // 小时那么长，这段时间里背包、地图解锁、手机消息——所有挂 flag 的东西
+  // 全是过期的。最直观的表现：剧情里刚领到学生证，打开持ち物却没有。
+  //
+  // 关系（onRelations）本来就是即时上报的，flag 没有理由不是。
   const applyFlags = (list?: string[]) => {
     if (!list?.length) return;
     const next = { ...flagsRef.current };
     list.forEach(f => { next[f] = true; });
     flagsRef.current = next;
+    onFlags?.(list);
   };
 
   const applyRelations = (list?: StoryRelationEffect[]) => {
@@ -661,6 +671,16 @@ const StoryScreen: React.FC<Props> = ({
       )}
 
       {/* 全屏 CG */}
+      {/* 📱 手机。剧情里收到消息时，直接把聊天界面推到画面中间，
+          一条一条冒出来——比用旁白复述"她发了十七条"直观得多。 */}
+      {node?.type === 'phone' && (
+        <PhoneCard
+          node={node}
+          en={en}
+          onDone={() => { audioManager.playSfx('page'); advance(); }}
+        />
+      )}
+
       {node?.type === 'cg' && (
         <div
           className="absolute inset-0 z-40 bg-black flex flex-col items-center justify-center p-4 md:p-10 cursor-pointer animate-in fade-in duration-700"
@@ -1147,6 +1167,100 @@ const StoryScreen: React.FC<Props> = ({
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+// ---------------------------------------------------------
+// 剧情里的手机
+//
+// 和 PhoneScreen 长得像，但不是同一个东西：那个是玩家自己点开的、
+// 能翻能回的完整应用；这个是**剧情推给你看的一屏**，只往下冒，
+// 冒完点一下就收起来。所以它不需要联系人列表、不需要返回、
+// 也不需要知道存档里的任何状态。
+// ---------------------------------------------------------
+const PhoneCard: React.FC<{
+  node: Extract<StoryNode, { type: 'phone' }>;
+  en: boolean;
+  onDone: () => void;
+}> = ({ node, en, onDone }) => {
+  const [shown, setShown] = React.useState(0);
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const total = node.lines.length;
+  const allOut = shown >= total;
+
+  React.useEffect(() => {
+    if (allOut) return;
+    const t = setTimeout(() => setShown(n => n + 1), shown === 0 ? 260 : 520);
+    return () => clearTimeout(t);
+  }, [shown, allOut]);
+
+  // 新气泡冒出来就跟着往下滚。不滚的话超过一屏之后
+  // 玩家看到的永远是最早那两条，最后一句（也就是最要紧的那句）在框外面。
+  // 一定要用瞬移而不是 scroll-smooth：气泡半秒一条，
+  // 平滑滚动还没走到底下一条就又开始了，最后停在半路上。
+  // 再补一帧是因为气泡有入场动画，第一次量到的高度还不是最终高度。
+  React.useEffect(() => {
+    const stick = () => { const el = listRef.current; if (el) el.scrollTop = el.scrollHeight; };
+    stick();
+    const r = requestAnimationFrame(stick);
+    return () => cancelAnimationFrame(r);
+  }, [shown, allOut]);
+
+  return (
+    <div
+      className="absolute inset-0 z-40 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+      onClick={() => { if (allOut) onDone(); else setShown(total); }}
+    >
+      <div className="w-full max-w-sm" onClick={e => e.stopPropagation()}>
+        {/* 机身 */}
+        <div className="rounded-[2rem] bg-[#0e1014] border border-white/12 shadow-[0_30px_90px_rgba(0,0,0,0.8)] overflow-hidden">
+          {/* 顶栏 */}
+          <div className="flex items-center gap-3 px-5 py-3.5 border-b border-white/8 bg-[#14171d]">
+            {node.avatar && <img src={node.avatar} alt="" className="w-8 h-8 rounded-full object-cover" />}
+            <span className="text-[13px] font-bold text-white truncate">
+              {en ? node.savedAsEn : node.savedAsZh}
+            </span>
+          </div>
+
+          {/* 气泡 */}
+          <div ref={listRef} className="px-4 py-4 space-y-2 max-h-[52dvh] overflow-y-auto">
+            {node.lines.slice(0, shown).map((l, i) => (
+              <div key={i} className={l.fromMe ? 'flex justify-end' : 'flex justify-start'}
+                   style={{ animation: 'bubbleIn 220ms ease-out' }}>
+                <span className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 ${
+                  l.fromMe ? 'bg-[#2f6f4f] rounded-br-md' : 'bg-[#1e2129] rounded-bl-md'
+                }`}>
+                  {l.jp && <span className="block text-[13px] text-white leading-relaxed">{l.jp}</span>}
+                  <span className={`block leading-relaxed ${l.jp ? 'text-[11px] text-white/45 mt-1' : 'text-[13px] text-white'}`}>
+                    {en ? l.en : l.zh}
+                  </span>
+                  {l.time && <span className="block text-[9px] text-white/25 mt-1 text-right font-mono">{l.time}</span>}
+                </span>
+              </div>
+            ))}
+            {!allOut && (
+              <div className="flex justify-start">
+                <span className="bg-[#1e2129] rounded-2xl rounded-bl-md px-3.5 py-3 inline-flex gap-1">
+                  {[0, 1, 2].map(d => (
+                    <i key={d} className="w-1.5 h-1.5 rounded-full bg-white/40"
+                       style={{ animation: `typing 1s ${d * 0.15}s infinite` }} />
+                  ))}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {allOut && (node.afterZh || node.afterEn) && (
+          <p className="mt-4 text-center text-sm text-white/70 leading-relaxed px-2">
+            {en ? node.afterEn : node.afterZh}
+          </p>
+        )}
+        <p className="mt-3 text-center text-[10px] text-white/30 tracking-widest uppercase">
+          {allOut ? (en ? 'tap to put it away' : '点一下收起来') : (en ? 'tap to skip' : '点一下跳过')}
+        </p>
+      </div>
     </div>
   );
 };

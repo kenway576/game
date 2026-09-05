@@ -531,6 +531,18 @@ export type StoryNode =
   // 无条件属性 / 关系增益（剧情自动给的）
   | { type: 'effect'; effects?: StoryEffect[]; relations?: StoryRelationEffect[]; setFlags?: string[] }
   // 全屏 CG 插画。播放后永久解锁到回忆图鉴。
+  // 📱 手机节点：剧情里直接把聊天界面弹出来，而不是用旁白复述短信内容。
+  // 「十七条未读，全是同一个人发的」这种东西，念给玩家听远不如让他自己看。
+  // savedAs 是通讯录里存的名字（奈绪那条存的是十年前存好的那个）。
+  | {
+      type: 'phone';
+      savedAsZh: string; savedAsEn: string;
+      avatar?: string;
+      // 一条一条冒出来。time 只在需要强调时间差的时候写（凌晨十一点零四那种）。
+      lines: { jp?: string; zh: string; en: string; time?: string; fromMe?: boolean }[];
+      // 全部冒完之后底下那句旁白
+      afterZh?: string; afterEn?: string;
+    }
   | { type: 'cg'; cgId: string; imageUrl: string; titleZh: string; titleEn: string; captionZh: string; captionEn: string }
   // 分歧选项
   | { type: 'choice'; promptZh: string; promptEn: string; options: StoryOption[] }

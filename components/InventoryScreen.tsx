@@ -27,6 +27,8 @@ interface Props {
   language: Language;
   life: LifeState;
   storyFlags: StoryFlags;
+  // 有些东西不是拿出来看看就完了：地图要打开地图，手账要能翻
+  onAction?: (action: 'map' | 'journal') => void;
   onClose: () => void;
 }
 
@@ -42,7 +44,7 @@ const KIND_COLOR: Record<ItemKind, { text: string; bg: string; border: string }>
   gear:     { text: 'text-white/70',   bg: 'bg-white/70',   border: 'border-white/40' }
 };
 
-const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onClose }) => {
+const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction, onClose }) => {
   const en = language === 'en';
   const [filter, setFilter] = useState<ItemKind | 'all'>('all');
   const [pick, setPick] = useState<string | null>(null);
@@ -237,6 +239,22 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onClose 
               )}
 
               {/* 有大图的（学生证）能点开看 */}
+              {/* 地图和手账不是"看一眼"就完了的东西 */}
+              {sel.item.action && (
+                <div className="mt-6">
+                  <button
+                    onClick={() => { audioManager.playSfx('page'); onAction?.(sel.item.action!); }}
+                    className="bg-yellow-400 hover:bg-white text-black px-5 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+                  >
+                    <span className="block transform skew-x-12">
+                      {sel.item.action === 'map'
+                        ? (en ? 'Spread it out' : '摊开来看')
+                        : (en ? 'Read it' : '翻开读')}
+                    </span>
+                  </button>
+                </div>
+              )}
+
               {sel.item.image && (
                 <div className="mt-6">
                   <button

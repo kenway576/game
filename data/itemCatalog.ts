@@ -33,6 +33,9 @@ export interface ResolvedItem {
   worth?: number;                   // 卖得掉的东西标个价
   word?: StoryWord;
   image?: string;                   // 有大图的（学生证）点开能看
+  // 这件东西点开之后能干什么。不写 = 只能看说明。
+  // 'map' 打开神户地图，'journal' 翻外公的手账。
+  action?: 'map' | 'journal';
 }
 
 const seedById = (id: string) => SEEDS.find(s => s.id === id);
@@ -124,7 +127,8 @@ export const KEEPSAKES: Keepsake[] = [
     nameJp: '祖父の神戸地図', reading: 'そふのこうべちず',
     descZh: '一张折了太多次的旧地图，折痕处已经起毛。上面有几个地方被圈了出来，笔迹是外公的，但没有写任何说明。你把它钉在软木板正中间。',
     descEn: 'An old map folded too many times, furred along the creases. A few places are circled in your grandfather’s hand, with nothing written to say why. You pinned it dead centre on the corkboard.',
-    subZh: '钉在软木板上', subEn: 'Pinned to the corkboard'
+    subZh: '钉在软木板上', subEn: 'Pinned to the corkboard',
+    action: 'map'
   },
   {
     key: 'keepsake_journal', kind: 'keepsake', emoji: '🕯',
@@ -133,6 +137,7 @@ export const KEEPSAKES: Keepsake[] = [
     descZh: '皮面已经软了，橡皮筋松得箍不住。写的是日语，字很小很密。你读得不快，但每天都读一点。',
     descEn: 'The leather has gone soft and the elastic no longer holds it shut. It is written in Japanese, small and dense. You are slow at it, but you read a little every day.',
     subZh: '每天读一点', subEn: 'A little every day',
+    action: 'journal',
     requiresFlag: 'prologue_read_journal_deep',
     word: { jp: '手帳', reading: 'てちょう', zh: '手账、记事本', en: 'notebook / journal' }
   },

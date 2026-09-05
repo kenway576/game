@@ -24,6 +24,7 @@ import { dayKindOf } from './data/calendarLife';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
+import JournalModal from './components/JournalModal';
 import CafeteriaScreen from './components/CafeteriaScreen';
 import PhoneScreen from './components/PhoneScreen';
 import { PhoneAppId, readFlag as msgReadFlag, totalUnread } from './data/phoneData';
@@ -137,6 +138,7 @@ const App: React.FC = () => {
   const [showWordbook, setShowWordbook] = useState(false);
   const [showCgGallery, setShowCgGallery] = useState(false);
   const [showEndings, setShowEndings] = useState(false);
+  const [showJournal, setShowJournal] = useState(false);
   // 谈话额度 + 冷淡期。见 data/socialLimits.ts：
   // 聊天不加计数器，改成"她自己说今天到此为止"。
   const [social, setSocial] = useState<SocialState>(INITIAL_SOCIAL_STATE);
@@ -379,7 +381,7 @@ const App: React.FC = () => {
   }, [messages, isStreaming]);
 
   // 🔊 主要弹窗开 / 关的提示音（关闭多为点背景遮罩，通用点击音覆盖不到）
-  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || showEndings || showInventory || showPhone || !!saveLoadMode;
+  const anyModalOpen = showSystemMenu || showHistoryLog || showWordbook || showCgGallery || showEndings || showJournal || showInventory || showPhone || !!saveLoadMode;
   const prevModalOpenRef = useRef(false);
   useEffect(() => {
     if (anyModalOpen === prevModalOpenRef.current) return;
@@ -644,6 +646,19 @@ const App: React.FC = () => {
   // 去重键走同步的 ref：StrictMode 会把 effect 跑两遍，
   // 只靠 setState updater 里判重会把计数算成两倍。
   const storyWordKeysRef = useRef<Set<string>>(new Set());
+  // 剧情中途置上的 flag 立刻并进全局。
+  // 以前要等一整章播完才交出来，于是剧情里刚拿到手的东西，
+  // 打开背包／地图／手机全都还看不见——最直观的就是刚领的学生证不在持ち物里。
+  const applyStoryFlags = (list: string[]) => {
+    if (!list?.length) return;
+    setStoryFlags(prev => {
+      const next = { ...prev };
+      let changed = false;
+      for (const f of list) if (!next[f]) { next[f] = true; changed = true; }
+      return changed ? next : prev;
+    });
+  };
+
   const collectStoryWords = (words: StoryWord[]) => {
     if (!words.length) return;
     const now = Date.now();
@@ -1226,11 +1241,16 @@ const App: React.FC = () => {
 
   // 序章中途进度：StoryScreen 每前进一步就写在 PROLOGUE_PROGRESS_KEY 下。
   // 存档槽要能把这一份一起带走，否则"序章存了三个档"读回来全是同一个位置。
-  const isUsablePrologueProgress = (p: unknown): p is StoryProgress => {
+  // 版本号要传进来：序章和第一章是两套剧本、两个版本号。
+  // 以前这里写死了序章的版本，于是第一章的进度**永远**校验不过，
+  // 存档里带走的那一份一律是 null——换个槽位读回来就从头再看一遍第一章。
+  const isUsableProgress = (p: unknown, version: string): p is StoryProgress => {
     const q = p as StoryProgress | null;
-    return !!q && q.version === PROLOGUE_SCRIPT_VERSION
+    return !!q && q.version === version
       && Array.isArray(q.nodes) && q.idx > 0 && q.idx < q.nodes.length;
   };
+  const isUsablePrologueProgress = (p: unknown): p is StoryProgress =>
+    isUsableProgress(p, PROLOGUE_SCRIPT_VERSION);
 
   const readPrologueProgress = (): StoryProgress | null => {
     try {
@@ -1249,7 +1269,7 @@ const App: React.FC = () => {
       const raw = localStorage.getItem(DAY1_PROGRESS_KEY);
       if (!raw) return null;
       const p = JSON.parse(raw);
-      return isUsablePrologueProgress(p) ? p : null;
+      return isUsableProgress(p, DAY1_VERSION) ? p : null;
     } catch { return null; }
   };
 
@@ -1405,7 +1425,7 @@ const App: React.FC = () => {
       setMetChars(Array.isArray(data.metChars) ? data.metChars : [...VISIBLE_CHARACTER_IDS]);
       // 存档停在第一章 → 回到第一章，并且把进度对齐到这个槽位。
       // 不能一律 false：那样在第一章里存的档永远读不回第一章。
-      const day1Slot = isUsablePrologueProgress(data.day1Progress) ? data.day1Progress : null;
+      const day1Slot = isUsableProgress(data.day1Progress, DAY1_VERSION) ? data.day1Progress : null;
       const resumeDay1 = !!data.playingDay1 && !(data.day1Done ?? false);
       if (resumeDay1 && day1Slot) {
         try { localStorage.setItem(DAY1_PROGRESS_KEY, JSON.stringify(day1Slot)); } catch { /* 存不下就用共享那份 */ }
@@ -2014,6 +2034,7 @@ ${wind}`;
           background={background}
           onEffects={applyStoryEffects}
           onRelations={applyStoryRelations}
+          onFlags={applyStoryFlags}
           onSceneChange={setCurrentScene}
           onCollectWords={collectStoryWords}
           onUnlockCg={unlockStoryCg}
@@ -2151,6 +2172,11 @@ ${wind}`;
           language={userState.language}
           life={life}
           storyFlags={storyFlags}
+          onAction={a => {
+            setShowInventory(false);
+            if (a === 'map') setShowKobeMap(true);
+            else setShowJournal(true);
+          }}
           onClose={() => setShowInventory(false)}
         />
       )}
@@ -2225,6 +2251,14 @@ ${wind}`;
         />
       )}
 
+      {showJournal && (
+        <JournalModal
+          language={userState.language}
+          storyFlags={storyFlags}
+          onClose={() => setShowJournal(false)}
+        />
+      )}
+
       {showEndings && (
         <EndingsModal
           language={userState.language}
@@ -2265,8 +2299,12 @@ ${wind}`;
         />
       )}
 
-      {/* 第 1 章：开学第一天。和专属剧情共用同一套引擎 */}
+      {/* 第 1 章：开学第一天。和专属剧情共用同一套引擎。
+          外面这层 fixed 不能省：StoryScreen 自己是 min-h-[100dvh] relative，
+          从大厅点「继续第 1 章」时大厅还挂着，不盖住的话剧情会被排到
+          大厅**下面一屏**——画面上什么都没变，得往下滚才看得见。 */}
       {playingDay1 && (
+        <div className="fixed inset-0 z-[130] overflow-hidden">
         <StoryScreen
           key="day1"
           script={DAY1_SCRIPT}
@@ -2282,12 +2320,14 @@ ${wind}`;
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onEffects={applyStoryEffects}
           onRelations={applyStoryRelations}
+          onFlags={applyStoryFlags}
           onSceneChange={setCurrentScene}
           onCollectWords={collectStoryWords}
           onUnlockCg={unlockStoryCg}
           onRestore={restoreStoryProgress}
           onFinish={finishDay1}
         />
+        </div>
       )}
 
       {/* 专属剧情：复用序章那套引擎（打字机 / 选项 / 生词 / CG / 存档续玩全都白拿）。
@@ -2309,6 +2349,7 @@ ${wind}`;
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onEffects={applyStoryEffects}
           onRelations={applyStoryRelations}
+          onFlags={applyStoryFlags}
           onSceneChange={setCurrentScene}
           onCollectWords={collectStoryWords}
           onUnlockCg={unlockStoryCg}
@@ -2361,6 +2402,7 @@ ${wind}`;
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onEffects={applyStoryEffects}
           onRelations={applyStoryRelations}
+          onFlags={applyStoryFlags}
           onSceneChange={setCurrentScene}
           onCollectWords={collectStoryWords}
           onUnlockCg={unlockStoryCg}

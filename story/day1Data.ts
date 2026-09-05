@@ -61,28 +61,32 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ---- 铺垫：奈绪从昨晚开始就在刷屏 ----
   {
     type: 'narration',
-    zh: '手机在桌上震了一下。你拿起来看——十七条未读，全是同一个人发的，从昨晚十一点开始。',
-    en: 'Your phone buzzes on the desk. You pick it up: seventeen unread messages, all from the same person, starting at eleven last night.'
+    zh: '手机在桌上震了一下。',
+    en: 'Your phone buzzes on the desk.'
+  },
+  {
+    // 这十七条以前是用旁白复述的。念给玩家听，远不如让他自己看。
+    type: 'phone',
+    savedAsZh: 'なおちゃん', savedAsEn: 'Nao-chan',
+    avatar: '/images/avatars/nao.webp',
+    lines: [
+      { jp: 'ついた？', zh: '到了吗？', en: 'Are you there yet?', time: '23:01' },
+      { jp: 'ついた？？', zh: '到了吗？？', en: 'Are you there yet??' },
+      { jp: 'なんで返さへんの', zh: '怎么不回啊', en: 'Why are you not answering' },
+      { jp: 'あ、まだ飛行機か。ごめん', zh: '啊，还在飞机上吧。抱歉', en: 'Ah, still on the plane. Sorry', time: '23:04' },
+      { jp: '明日むかえ行くわ', zh: '明天我去接你', en: 'I will come and get you tomorrow' },
+      { jp: 'てか学校どこ', zh: '话说你学校在哪', en: 'Wait, where is your school' },
+      { jp: 'ええわ自分で調べた', zh: '算了我自己查到了', en: 'Never mind, I looked it up' },
+      { jp: '……これ大阪の学校ちゃう？', zh: '……这个是大阪的学校吧？', en: '...I think this one is in Osaka?' },
+      { jp: '坂の下で待っとくで。米、買うたし。', zh: '放学在坡道下面等你。米，我买了。', en: 'I will wait at the bottom of the slope. I bought rice.', time: '06:40' }
+    ],
+    afterZh: '十七条。最后一条是今天早上六点四十的。',
+    afterEn: 'Seventeen of them. The last one came in at twenty to seven this morning.'
   },
   {
     type: 'narration',
-    zh: '「到了没」「到了没」「怎么不回」「啊算了你肯定在飞机上」——最后这条是昨晚十一点零四分发的。你昨天下午两点就落地了。',
-    en: '"Are you there yet" "Are you there yet" "Why are you not answering" "Never mind, you must still be on the plane" — that last one was sent at 11:04 last night. You landed at two in the afternoon the day before.'
-  },
-  {
-    type: 'narration',
-    zh: '「明天我去接你」「等等你学校在哪」「算了我查到了」「……这个是大阪的学校吧」',
-    en: '"I will come and get you tomorrow" "Wait, where is your school" "Never mind, I found it" "...I think this one is in Osaka"'
-  },
-  {
-    type: 'narration',
-    zh: '最后一条是今天早上六点四十的：「放学在坡道下面等你。我买了米。」',
-    en: 'The last one came in at 6:40 this morning: "Will wait at the bottom of the slope after school. I bought rice."'
-  },
-  {
-    type: 'narration',
-    zh: '你没有告诉过她你住哪条坡道。你也没有告诉过她你家没有米。',
-    en: 'You never told her which slope you live on. You also never told her there was no rice in the flat.'
+    zh: '你昨天下午两点就落地了。而且你没有告诉过她你住哪条坡道，也没有告诉过她你家没有米。',
+    en: 'You landed at two in the afternoon the day before. And you never told her which slope you live on, or that there was no rice in the flat.'
   },
   {
     type: 'narration',
