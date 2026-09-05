@@ -45,8 +45,8 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${I}neutral.webp`,
-    zh: '她坐在一块石头上，赤着脚，鞋摆在旁边。她一直是这样，你已经不问了。',
-    en: 'She is sitting on a rock with her shoes beside her and her feet bare. She always is. You have stopped asking.'
+    zh: '她坐在一块石头上，晃着一只脚。四月的石头是凉的——凉到你光是站在旁边都替她觉得冷。她像是不知道这回事。她一直是这样，你已经不问了。',
+    en: 'She is sitting on a rock, swinging one foot. April stone is cold — cold enough that you feel it on her behalf just standing there. She appears not to have noticed. She always is like this. You have stopped asking.'
   },
   {
     type: 'speech',
@@ -162,8 +162,8 @@ export const INARI_STORY_1: StoryNode[] = [
         id: 'inari1_shoes',
         labelZh: '把自己的外套铺在石头上，让她坐着不硌',
         labelEn: 'Spread your blazer on the rock so it is not hard to sit on',
-        hintZh: '她赤着脚，坐在四月的石头上',
-        hintEn: 'She is barefoot, on a rock, in April.',
+        hintZh: '四月的石头，她已经坐了不知道多久',
+        hintEn: 'April stone, and she has been sitting on it for who knows how long.',
         effects: [{ stat: 'kindness', amount: 2, reasonZh: '你把一个神明当成了一个会冷的人', reasonEn: 'You treated a deity as someone who could get cold' }],
         relations: [{ char: CharacterId.INARI, familiarity: 5, affection: 9, reasonZh: '很少有人操心她冷不冷', reasonEn: 'Not many people worry about whether she is cold' }],
         setFlags: ['inari_story_blazer'],

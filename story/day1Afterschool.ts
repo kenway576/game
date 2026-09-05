@@ -1097,12 +1097,12 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${INARI}casual_neutral.webp`,
-    zh: '鸟居底下坐着一个人。白发，赤脚，脚边放着一双没穿的木屐。四月的傍晚已经很凉了。',
-    en: 'Someone is sitting under the torii. White hair, bare feet, a pair of unworn geta set beside her. April evenings here are already cold.'
+    zh: '鸟居底下坐着一个人。橘红色的长发一直垂到石阶上。她头顶有两只耳朵，身后铺开的那一团东西你数了两遍，两遍都是九条。',
+    en: 'Someone is sitting under the torii, vermilion hair spilling all the way onto the step. There are two ears on top of her head, and the mass spread out behind her comes to nine when you count it. It also comes to nine when you count it again.'
   },
   {
     type: 'speech',
-    speakerZh: '白发的女子', speakerEn: 'White-haired Woman',
+    speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
     characterImage: `${INARI}casual_happy.webp`,
     jp: 'ふぅん。……その地図、ずいぶん古いのう。',
     words: [{ jp: '古い', reading: 'ふるい', zh: '旧的、古老的', en: 'old' }],
@@ -1125,8 +1125,8 @@ export const DAY1_EVENING: StoryNode[] = [
         labelZh: '「……好，我明白了。这游戏是有超自然线的对吧。」',
         labelEn: '"...Right. Okay. So this one has a supernatural route."',
         jp: '……わかった。こういうのが出てくる話なんだな、これ。',
-        hintZh: '白发、赤脚、神社、说话像谜语。够明显了',
-        hintEn: 'White hair, bare feet, a shrine, riddles. The signs are not subtle.',
+        hintZh: '狐狸耳朵、九条尾巴、神社、说话像谜语。够明显了',
+        hintEn: 'Fox ears, nine tails, a shrine, riddles. The signs are not subtle.',
         effects: [{ stat: 'guts', amount: 1, reasonZh: '你对着一个明显不太对劲的人开了口', reasonEn: 'You spoke up at someone visibly not quite right' }],
         relations: [{ char: CharacterId.INARI, familiarity: 16, affection: 4, reasonZh: '她被逗乐了，笑了很久', reasonEn: 'She found that funny, and kept finding it funny' }],
         setFlags: ['day1_inari_trope'],
@@ -1139,7 +1139,7 @@ export const DAY1_EVENING: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '白发的女子', speakerEn: 'White-haired Woman',
+            speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
             characterImage: `${INARI}casual_happy.webp`,
             jp: 'くくく……そういう言い方をした人の子は、そなたで四人目じゃ。',
             words: [{ jp: '人の子', reading: 'ひとのこ', zh: '人类（神明对人的称呼）', en: 'child of man' }],
@@ -1167,7 +1167,7 @@ export const DAY1_EVENING: StoryNode[] = [
         then: [
           {
             type: 'speech',
-            speakerZh: '白发的女子', speakerEn: 'White-haired Woman',
+            speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
             characterImage: `${INARI}casual_neutral.webp`,
             jp: '典故なぞ、いくらでもあるわ。……千八百年ぶんもな。',
             zh: '典故嘛，要多少有多少。……足足一千八百年份的。',
@@ -1180,10 +1180,10 @@ export const DAY1_EVENING: StoryNode[] = [
         id: 'inari_feet',
         labelZh: '什么也没问，先把外套脱下来递过去',
         labelEn: 'Ask nothing. Take your blazer off and hold it out to her',
-        hintZh: '四月的傍晚，她赤着脚',
-        hintEn: 'It is an April evening and she is barefoot.',
+        hintZh: '四月的傍晚，她坐在石阶上，一动不动',
+        hintEn: 'An April evening, and she has been sitting on that stone step without moving.',
         effects: [
-          { stat: 'kindness', amount: 2, reasonZh: '你先看见的是冷，不是怪', reasonEn: 'What you noticed first was the cold, not the strangeness' }
+          { stat: 'kindness', amount: 2, reasonZh: '你先看见的是冷，不是那九条尾巴', reasonEn: 'What you noticed first was the cold, not the nine tails' }
         ],
         relations: [{ char: CharacterId.INARI, familiarity: 20, affection: 6, reasonZh: '一千八百年里，这件事发生过的次数不多', reasonEn: 'In eighteen centuries, this has not happened often' }],
         setFlags: ['day1_inari_blazer'],
@@ -1201,7 +1201,7 @@ export const DAY1_EVENING: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '白发的女子', speakerEn: 'White-haired Woman',
+            speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
             characterImage: `${INARI}casual_neutral.webp`,
             jp: '……妾に、寒かろうと申すか。',
             words: [{ jp: '寒い', reading: 'さむい', zh: '冷', en: 'cold' }],
@@ -1216,7 +1216,7 @@ export const DAY1_EVENING: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '白发的女子', speakerEn: 'White-haired Woman',
+            speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
             characterImage: `${INARI}casual_happy.webp`,
             jp: 'ふふ。……ここに座る者は多いが、そう言うたのは、汝で四人目じゃ。',
             words: [{ jp: '座る', reading: 'すわる', zh: '坐', en: 'to sit' }],
