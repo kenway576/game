@@ -101,17 +101,69 @@ export const holidayOn = (cal: GameCalendar): HolidayDef | null => {
 };
 
 // ---------------------------------------------------------
-// 长假。学年从 4/11 到次年 3/24，中间三段：
-//   暑假 7/21 – 8/31、寒假 12/26 – 1/7、学年末 3/25 起（已在学年之外）
+// 长假
+//
+// 日本的公立高中是三学期制，长假就是学期之间的缝，一共三段：
+//   夏休み  7/21 – 8/31   四十二天
+//   冬休み  12/26 – 1/7   十三天
+//   春休み  3/25 – 4/7    十四天（在 4/11 开学之前，玩不到）
+// 没有"春假秋假"那种东西——秋天最长的一段是十月体育之日
+// 前后连出来的三连休，那是节假日不是学期假。
+//
+// 所以玩家在这一年里真正会过到的是两段：暑假四十二天，寒假十三天。
+// 春休み照样写在这儿，因为 dayLabel 要能认出学年之外的日子，
+// 也因为漏掉它这张表就不是真的日本校历了。
+//
 // 长假期间学校关门，但社团照常——所以"去学校"这件事在暑假里
 // 反而是有内容的：只有社团的人在。
 // ---------------------------------------------------------
-interface VacationDef { nameZh: string; nameEn: string; from: [number, number]; to: [number, number] }
+interface VacationDef { nameZh: string; nameEn: string; nameJp: string; from: [number, number]; to: [number, number] }
 
 export const VACATIONS: VacationDef[] = [
-  { nameZh: '暑假', nameEn: 'Summer holiday', from: [7, 21], to: [8, 31] },
-  { nameZh: '寒假', nameEn: 'Winter holiday', from: [12, 26], to: [1, 7] }
+  { nameZh: '暑假', nameEn: 'Summer holiday', nameJp: '夏休み', from: [7, 21], to: [8, 31] },
+  { nameZh: '寒假', nameEn: 'Winter holiday', nameJp: '冬休み', from: [12, 26], to: [1, 7] },
+  { nameZh: '春假', nameEn: 'Spring holiday', nameJp: '春休み', from: [3, 25], to: [4, 7] }
 ];
+
+// ---------------------------------------------------------
+// 学期与考试
+//
+// 三学期制的节奏是：始业式 → 上课 → 期末考 → 终业式 → 放假。
+// 期末考排在放假前一周，这一周是塾最挤的时候——
+// 补习班这个东西在这个游戏里之所以有意义，全靠这三个星期。
+// ---------------------------------------------------------
+export interface TermExam {
+  id: string;
+  nameZh: string; nameEn: string; nameJp: string;
+  from: [number, number]; to: [number, number];
+}
+
+export const TERM_EXAMS: TermExam[] = [
+  { id: 'exam_1', nameZh: '第一学期期末考', nameEn: 'First-term finals', nameJp: '一学期期末考査', from: [7, 8],  to: [7, 14] },
+  { id: 'exam_2', nameZh: '第二学期期末考', nameEn: 'Second-term finals', nameJp: '二学期期末考査', from: [12, 12], to: [12, 18] },
+  { id: 'exam_3', nameZh: '学年末考试',     nameEn: 'Year-end exams',     nameJp: '学年末考査',     from: [2, 20],  to: [2, 26] }
+];
+
+export const examOn = (cal: GameCalendar): TermExam | null =>
+  TERM_EXAMS.find(e => {
+    const cur = cal.month * 100 + cal.day;
+    return cur >= e.from[0] * 100 + e.from[1] && cur <= e.to[0] * 100 + e.to[1];
+  }) || null;
+
+// 离下一场考试还有几天。没有下一场（或者已经在考）返回 null。
+// 塾的收益按这个数放大：临考前一周去补习，比十月里去有用得多。
+export const daysToExam = (cal: GameCalendar): number | null => {
+  const cur = cal.month * 100 + cal.day;
+  let best: number | null = null;
+  for (const e of TERM_EXAMS) {
+    const a = e.from[0] * 100 + e.from[1];
+    if (a <= cur) continue;
+    // 粗略按"月差 × 30 + 日差"算，够用了：这只是用来分档的
+    const d = (e.from[0] - cal.month) * 30 + (e.from[1] - cal.day);
+    if (d > 0 && (best === null || d < best)) best = d;
+  }
+  return best;
+};
 
 const inRange = (cal: GameCalendar, v: VacationDef): boolean => {
   const cur = cal.month * 100 + cal.day;
@@ -143,7 +195,10 @@ export const dayLabel = (cal: GameCalendar, language: Language): string => {
   const h = holidayOn(cal);
   if (h) return en ? h.nameEn : `${h.nameZh}（${h.nameJp}）`;
   const v = vacationOn(cal);
-  if (v) return en ? v.nameEn : v.nameZh;
+  if (v) return en ? v.nameEn : `${v.nameZh}（${v.nameJp}）`;
+  // 考试周照常上学，但它得有个名字——不然玩家不知道这一周为什么忽然不一样
+  const ex = examOn(cal);
+  if (ex && !isWeekend(cal)) return en ? ex.nameEn : `${ex.nameZh}（${ex.nameJp}）`;
   if (isWeekend(cal)) return en ? (weekdayNum(cal) === 6 ? 'Saturday' : 'Sunday') : (weekdayNum(cal) === 6 ? '周六' : '周日');
   return '';
 };
@@ -154,9 +209,17 @@ export const dayMood = (cal: GameCalendar, language: Language): string => {
   if (h) return en ? h.moodEn : h.moodZh;
   const v = vacationOn(cal);
   if (v) {
-    return v.nameEn === 'Summer holiday'
-      ? (en ? 'No lessons. The gym is open and somebody is always in it.' : '没有课。体育馆开着，里面永远有人。')
-      : (en ? 'No lessons. The city is cold and the shrine is busy.' : '没有课。街上很冷，神社那边很挤。');
+    if (v.nameEn === 'Summer holiday')
+      return en ? 'No lessons. The gym is open and somebody is always in it.' : '没有课。体育馆开着，里面永远有人。';
+    if (v.nameEn === 'Winter holiday')
+      return en ? 'No lessons. The city is cold and the shrine is busy.' : '没有课。街上很冷，神社那边很挤。';
+    return en ? 'Between school years. The classrooms upstairs are being cleared out.' : '学年和学年之间。楼上的教室在搬东西。';
+  }
+  const ex = examOn(cal);
+  if (ex && !isWeekend(cal)) {
+    return en
+      ? 'Exam week. Half days, and the cram school in Sannomiya is full by four.'
+      : '考试周。上半天课，三宫那家塾四点就坐满了。';
   }
   return en
     ? 'No school today. The whole day is yours to spend.'

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { jukuHint, jukuTier, JUKU_FEE } from '../story/jukuScenes';
 import { STAMINA_MAX, staminaCostOf, staminaBand } from '../data/staminaData';
 import {
   GameCalendar, Language, StoryFlags, MapLocation,
@@ -42,6 +43,7 @@ interface Props {
   calendar: GameCalendar;
   storyFlags: StoryFlags;
   stamina: number;
+  yen: number;
   affection: AffectionMap;
   familiarity: FamiliarityMap;
   onClose: () => void;
@@ -61,7 +63,7 @@ const NAME_ZH: Record<string, string> = {
 const bgOf = (id: string) => SCENE_MAP[id] || SCENE_FALLBACK[id] || SCENE_MAP['street'];
 
 const MapScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, stamina, affection, familiarity, onClose, onTravel, metChars
+  language, calendar, storyFlags, stamina, yen, affection, familiarity, onClose, onTravel, metChars
 }) => {
   const en = language === 'en';
   const ctx: EventContext = useMemo(
@@ -117,7 +119,9 @@ const MapScreen: React.FC<Props> = ({
   // 打工和部活比逛便利店累一倍多，这就是它们的代价。
   const tireOf = (loc: MapLocation) => staminaCostOf(loc, pickEventFor(loc.id, ctx), calendar);
   const hasLegs = (loc: MapLocation) => tireOf(loc) <= stamina;
-  const affordable = (loc: MapLocation) => costOf(loc) <= slotsLeft && hasLegs(loc);
+  // 🏫 塾要钱。付不起就跟时间和体力一样，是一道真的门槛。
+  const canPay = (loc: MapLocation) => loc.id !== 'juku' || yen >= JUKU_FEE;
+  const affordable = (loc: MapLocation) => costOf(loc) <= slotsLeft && hasLegs(loc) && canPay(loc);
   // 这个时段真正还能去的地方：解锁了、没打烊、今天的时间也还够
   const openNowCount = unlocked.filter(
     l => isLocationOpenNow(l, calendar) && affordable(l)
@@ -332,6 +336,25 @@ const MapScreen: React.FC<Props> = ({
                     <span className="flex items-center gap-0.5">{slotPips(0, costOf(selected))}</span>
                     {costOf(selected) > slotsLeft && (en ? ' · no time left today' : ' · 今天来不及了')}
                   </span>
+                  {/* 🏫 塾：学费和"现在去划不划算"。
+                      这个地方的全部乐趣就是挑时候，藏起来就没有了。 */}
+                  {selected.id === 'juku' && (
+                    <span className={`text-[11px] px-2 py-1 border flex items-center gap-1.5 ${
+                      canPay(selected) ? 'border-white/20 text-white/60' : 'border-rose-500/50 text-rose-300'
+                    }`}>
+                      💴 ¥{JUKU_FEE.toLocaleString()}
+                      {!canPay(selected) && (en ? ' · not enough' : ' · 钱不够')}
+                    </span>
+                  )}
+                  {selected.id === 'juku' && (
+                    <span className={`text-[11px] px-2 py-1 border ${
+                      jukuTier(calendar) === 'crunch'
+                        ? 'border-amber-400/70 text-amber-300'
+                        : 'border-white/20 text-white/55'
+                    }`}>
+                      {jukuHint(calendar, en)}
+                    </span>
+                  )}
                   {/* 🔋 有多累。和时间分开写：拦住玩家的是哪一样，
                       他必须一眼看得出来——不然就变成"按钮灰了但不知道为什么"。 */}
                   <span className={`text-[11px] px-2 py-1 border flex items-center gap-1.5 ${
@@ -380,6 +403,8 @@ const MapScreen: React.FC<Props> = ({
                       ? (en ? 'Too late' : '来不及了')
                       : !hasLegs(selected)
                         ? (en ? 'Too tired' : '走不动了')
+                        : !canPay(selected)
+                          ? (en ? 'Cannot afford it' : '付不起')
                       : (en ? 'Go ▶' : '出发 ▶')}
               </span>
             </button>

@@ -51,6 +51,7 @@ import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slots
 import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE } from './data/staminaData';
 import { buildClassMorning, classHeadline } from './story/classMorning';
 import { nextMainChapter, MainChapterDef } from './story/mainStory';
+import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
@@ -918,6 +919,15 @@ const App: React.FC = () => {
     // 到过就记一笔。写在最前面是因为下面店、钓点、花园各自 return 走了，
     // 记在后面的话这三种地方永远上不了外公那张地图。
     setStoryFlags(prev => (prev[beenFlag(loc.id)] ? prev : { ...prev, [beenFlag(loc.id)]: true }));
+    // 🏫 塾是一次要交钱的出门。钱不够就不让进——
+    // 门口那句话由 MapScreen 说，这里只兜底。
+    if (loc.id === 'juku') {
+      if (life.yen < JUKU_FEE) { audioManager.playSfx('error'); return; }
+      setLife(l => ({ ...l, yen: Math.max(0, l.yen - JUKU_FEE) }));
+      setGameMode(GameMode.LOBBY);
+      setActiveTrip({ loc, event: null, script: buildJukuScript(gameCalendar) });
+      return;
+    }
     const ev = pickEventFor(loc.id, {
       flags: storyFlags,
       calendar: gameCalendar,
@@ -2539,6 +2549,7 @@ ${wind}`;
           calendar={gameCalendar}
           storyFlags={storyFlags}
           stamina={life.stamina ?? STAMINA_MAX}
+          yen={life.yen}
           affection={affectionMap}
           familiarity={familiarityMap}
           onClose={() => setGameMode(GameMode.LOBBY)}

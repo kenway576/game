@@ -342,6 +342,34 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientEn: ['You order the plain one. Pork bone and dried sardine in the same pot: a touch salty at first, exactly right by the third mouthful.']
   },
   {
+    // 🏫 塾。三宫一栋窄楼的三层。
+    //
+    // 它和图书馆的区别不在"能不能学习"，而在**时候**：
+    // 十月里去一趟，回来只是知识 +1；期末考前一周去，
+    // 那一趟的价值翻倍。所以它不是又一个刷属性的地方，
+    // 而是一个"什么时候去"的判断。
+    //
+    // 只开夜里：白天要上课，这就是补习班存在的理由。
+    id: 'juku', district: 'sannomiya',
+    nameJp: '進学塾 灘和ゼミ', reading: 'しんがくじゅく なだわゼミ',
+    nameZh: '升学塾 滩和研习班', nameEn: 'Nadawa Cram School',
+    blurbZh: '三宫一栋窄楼的三层。隔间、白板、写着「合格祈願」的横幅。九点半才放人。',
+    blurbEn: 'Third floor of a narrow building in Sannomiya. Booths, a whiteboard, a banner reading "pray for a pass". They let you out at half nine.',
+    mapScene: 'juku_night',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['night'],
+    ambientZh: [
+      '隔间的挡板上贴满了前人留下的便利贴。有一张只写了「あと12日」，日期是去年的。',
+      '你隔壁那个人从头到尾没抬过头。你走的时候他还在。'
+    ],
+    ambientEn: [
+      'The partition is papered with sticky notes left by whoever sat here before. One of them says only "12 days left", and the date on it is from last year.',
+      'The person in the next booth does not look up once. He is still there when you leave.'
+    ]
+  },
+  {
     id: 'junkudo_bookstore', district: 'sannomiya',
     nameJp: 'ジュンク堂書店', reading: 'ジュンクどうしょてん',
     nameZh: '淳久堂书店', nameEn: 'Junkudo Books',
