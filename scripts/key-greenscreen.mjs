@@ -50,6 +50,7 @@ const HI = num('--hi', 72);
 const DESPILL = num('--despill', 1);
 const PAD = num('--pad', 8);
 const DRY = ARGS.includes('--dry');
+const HOLES = ARGS.includes('--holes');
 
 const VALUE_FLAGS = new Set(['-o', '-d', '--height', '--lo', '--hi', '--despill', '--pad']);
 const valueIdx = new Set(
@@ -101,6 +102,13 @@ for (const file of files) {
     const p = stack.pop();
     const x = p % W, y = (p - x) / W;
     push(x + 1, y); push(x - 1, y); push(x, y + 1); push(x, y - 1);
+  }
+
+  // 角色身上完全没有绿色时，允许一并清理被手臂/腰部围住的内侧绿幕洞
+  if (HOLES) {
+    for (let p = 0; p < W * H; p++) {
+      if (!isBg[p] && green[p] >= LO) isBg[p] = 1;
+    }
   }
 
   // ---- 3) 由绿度算 alpha + 去溢色 ----

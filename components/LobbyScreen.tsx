@@ -1,4 +1,5 @@
 import { isSchoolDay } from '../data/calendarLife';
+import { canGoOutAtAll } from '../data/staminaData';
 import StaminaBar from './StaminaBar';
 import React, { useRef } from 'react';
 import { CharacterId, UserState, CustomAssets, AffectionMap, FamiliarityMap, GameCalendar, ProtagonistStats } from '../types';
@@ -51,6 +52,8 @@ const LobbyScreen: React.FC<Props> = ({
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
   onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, background
 }) => {
+  // 连最轻的一趟都撑不住 = 今天出不去了
+  const spent = !canGoOutAtAll(stamina, calendar);
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
   // 卡片上显示关系"名称"而不是数字——「朋友 · 无意」比「♥ 130」更说明现在处在哪一步
@@ -154,7 +157,11 @@ const LobbyScreen: React.FC<Props> = ({
             回自己房间、出门、掏手机。 */}
         {([
           { key: 'room',  on: onOpenRoom,  icon: '🏠', zh: '回房间', en: 'My room' },
-          { key: 'map',   on: onOpenMap,   icon: '🗺',  zh: '出门',   en: 'Go out', primary: true },
+          // 🚪 走不动的时候「出门」不再是那个亮黄色的主按钮。
+          // 它还点得动（点了会说一句话），但它得先看上去不像今天该做的事。
+          { key: 'map',   on: onOpenMap,   icon: spent ? '🛏' : '🗺',
+            zh: spent ? '走不动了' : '出门', en: spent ? 'Too tired' : 'Go out',
+            primary: !spent },
           { key: 'phone', on: onOpenPhone, icon: '📱', zh: '手机',   en: 'Phone', badge: phoneUnread },
           { key: 'day',   on: onOpenDayPlan, icon: '📅', zh: '今天',   en: 'Today' }
         ] as { key: string; on: () => void; icon: string; zh: string; en: string; primary?: boolean; badge?: number }[]).map(b => (

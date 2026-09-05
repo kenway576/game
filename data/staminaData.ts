@@ -79,3 +79,48 @@ export const staminaBand = (cur: number): {
 // 吃东西回多少。做出来的饭比买的管用——
 // 这样厨房那套系统就不只是给好感度加分用的了。
 export const MEAL_RESTORE = { cooked: 35, cafeteria: 25, bought: 15 };
+
+// ==========================================================
+// 🚪 走不动的时候，游戏该说什么
+//
+// 「体力不足」是系统消息，不是这个游戏该有的说法。
+// 主角是个十七岁的人，他不会在心里想"体力不足"，
+// 他会想"鞋都脱了"。
+//
+// 所以按时段和天气分开写，而且**每次随机取一条**——
+// 同一句话听三遍就变回系统消息了。
+// ==========================================================
+const TIRED_LINES: { zh: string; en: string }[] = [
+  { zh: '鞋已经脱了。今天就这样吧。', en: 'The shoes are already off. That will do for today.' },
+  { zh: '你站起来了一半，又坐回去了。', en: 'You get half way up and sit back down.' },
+  { zh: '书包还在门口没动。你也没动。', en: 'The bag has not moved from the door. Neither have you.' },
+  { zh: '不是不想去。是腿不同意。', en: 'It is not that you do not want to. Your legs have views.' },
+  { zh: '你摸了摸口袋里的钥匙，最后把它放回桌上了。', en: 'You feel for the key in your pocket, and end up putting it back on the desk.' }
+];
+
+const TIRED_NIGHT: { zh: string; en: string }[] = [
+  { zh: '外面已经黑了，而你今天走了太多路。明天再说。', en: 'It is dark out and you have walked too far today. Tomorrow.' },
+  { zh: '这个点出门，回来就得爬那条坡。你想了三秒，放弃了。', en: 'Go out now and you have that hill to climb on the way back. Three seconds of thought, and no.' },
+  { zh: '你把外套拿起来又挂回去了。挂钩响了一下。', en: 'You take the jacket down and hang it back up. The hook clicks.' }
+];
+
+const TIRED_RAIN: { zh: string; en: string }[] = [
+  { zh: '雨还在下，你连伞都不想找。', en: 'It is still raining and you cannot even face looking for the umbrella.' },
+  { zh: '窗户上的水一直在流。今天就在里面待着吧。', en: 'The water keeps running down the window. Stay in today.' }
+];
+
+export const tiredLine = (cal: GameCalendar, en: boolean): string => {
+  const pool = cal.weather === 'rainy'
+    ? TIRED_RAIN
+    : cal.timeSlot === 'night'
+      ? TIRED_NIGHT
+      : TIRED_LINES;
+  const p = pool[Math.floor(Math.random() * pool.length)];
+  return en ? p.en : p.zh;
+};
+
+// 出门这件事本身的门槛：连最轻的一趟都撑不住，就是走不动了。
+// 8 是便利店那一趟的价钱——这个游戏里最便宜的一次出门。
+export const CHEAPEST_TRIP = 8;
+export const canGoOutAtAll = (stamina: number, cal: GameCalendar): boolean =>
+  stamina >= CHEAPEST_TRIP + (cal.weather === 'rainy' ? 6 : 0);

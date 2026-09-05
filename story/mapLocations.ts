@@ -429,6 +429,28 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientEn: ['You walk the storage aisle twice and leave with a draining basket you have no use for.']
   },
   {
+    id: 'sannomiya_drugstore', district: 'sannomiya',
+    nameJp: 'マツモトキヨシ 三宮店', reading: 'マツモトキヨシ さんのみやてん',
+    nameZh: '松本清药妆店（三宫中心街）', nameEn: 'Matsumoto Kiyoshi Drugstore',
+    blurbZh: '三宫中心街入口显眼的黄色大招牌。门口堆满了特价防晒霜和润唇膏，店员七海小姐微笑着迎接客人。',
+    blurbEn: 'The bold yellow sign at the entrance to Sannomiya Center Gai. Piles of discounted sunscreen out front, and the clerk Nanami greets shoppers with a smile.',
+    mapScene: 'drugstore_exterior',
+    extraScenes: ['drugstore_interior'],
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon', 'night'],
+    regulars: [CharacterId.ASUKA, CharacterId.MIYUKI],
+    ambientZh: [
+      '店员小姐微笑着递给你一个小购物篮，还轻声提醒你今天会员积分双倍。',
+      '你在眼药水和维生素货架前站了一会儿，买了一瓶提神用的清凉眼药水。'
+    ],
+    ambientEn: [
+      'The shop clerk offers you a basket with a welcoming smile, mentioning double points today.',
+      'You look over the eye drops and vitamin section, picking up a bottle to keep alert during late study sessions.'
+    ]
+  },
+  {
     id: 'tackle_shop', district: 'harbor',
     nameJp: 'みなと釣具', reading: 'みなとつりぐ',
     nameZh: '港口渔具店', nameEn: 'Minato Tackle',

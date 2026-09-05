@@ -48,7 +48,7 @@ import FishDexModal from './components/FishDexModal';
 import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
-import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE } from './data/staminaData';
+import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE, canGoOutAtAll, tiredLine } from './data/staminaData';
 import { buildClassMorning, classHeadline } from './story/classMorning';
 import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
@@ -2271,7 +2271,17 @@ ${wind}`;
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onOpenCgGallery={() => setShowCgGallery(true)}
           onOpenRoom={() => setGameMode(GameMode.ROOM)}
-          onOpenMap={() => setGameMode(GameMode.MAP)}
+          onOpenMap={() => {
+            // 🚪 连最轻的一趟都撑不住，就别打开地图了。
+            // 开一张全灰的地图让玩家自己看出来"哦我走不动"，
+            // 比直接说一句"鞋都脱了"要糟得多。
+            if (!canGoOutAtAll(life.stamina ?? STAMINA_MAX, gameCalendar)) {
+              audioManager.playSfx('error');
+              flashLife(tiredLine(gameCalendar, userState.language === 'en'));
+              return;
+            }
+            setGameMode(GameMode.MAP);
+          }}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenInventory={() => setShowInventory(true)}
           onOpenPhone={() => setShowPhone(true)}

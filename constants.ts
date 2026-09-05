@@ -108,7 +108,11 @@ export const SCENE_MAP: Record<string, string> = {
   'shirou_high_jump_sunset': '/images/backgrounds/cg_shirou_high_jump_sunset.webp',
   // 🚃 序章（第0章）专用场景。图尚未交付时由 SCENE_FALLBACK 顶上，不会开天窗。
   'train_interior':      '/images/backgrounds/bg_jr_train_interior.webp',
-  'sannomiya_station':   '/images/backgrounds/bg_sannomiya_station_gate.webp',
+  // JR 三宫站的检票口内。原来那张是序章便利店那对母子的图，
+  // 放学后一趟一趟去三宫站，看到的永远是同一对陌生母子。
+  'sannomiya_station':   '/images/backgrounds/bg_sannomiya_jr_concourse.webp',
+  // 站前的十字路口。站外的戏用这张，站内用上面那张。
+  'sannomiya_crossing':  '/images/backgrounds/bg_sannomiya_crossing_dusk.webp',
   'umikaze_exterior':    '/images/backgrounds/bg_umikaze_apartment_exterior.webp',
   'apartment_room':      '/images/backgrounds/bg_umikaze_room_201.webp',
   'apartment_balcony':   '/images/backgrounds/bg_umikaze_balcony_harbor.webp',
@@ -161,6 +165,9 @@ export const SCENE_MAP: Record<string, string> = {
   'hundred_yen_shop_exterior':     '/images/backgrounds/bg_hundred_yen_shop_exterior.webp',
   'hundred_yen_shop_interior':     '/images/backgrounds/bg_hundred_yen_shop_interior.webp',
   'hundred_yen_shop':              '/images/backgrounds/bg_hundred_yen_shop_interior.webp',
+  'drugstore_exterior':            '/images/backgrounds/bg_drugstore_exterior.webp',
+  'drugstore_interior':            '/images/backgrounds/bg_drugstore_interior.webp',
+  'drugstore':                     '/images/backgrounds/bg_drugstore_interior.webp',
   'tackle_shop':                   '/images/backgrounds/bg_suma_fishing_pier.webp',
   // 🏫 校园日常实景拓展
   'school_gym_storage':            '/images/backgrounds/bg_school_gym_storage.webp',
@@ -343,6 +350,21 @@ export const CITY_NPC_SPRITES = {
   yuki:      '/images/characters/npc_city_yuki.webp',      // 北野坡道摄影女大学生（由纪）
 } as const;
 
+// 🚶 街上的人（第二批）。
+// 第一批二十个是"某个地方的固定班底"——食堂阿姨、渔具店老板。
+// 这一批不一样：他们是**路过的人**，占卜的、去看地下偶像的、遛狗的、
+// 在高架下弹琴的。一座城市的生活气不来自店主，来自这些人。
+export const STREET_NPC_SPRITES = {
+  uranai:        '/images/characters/npc_uranai.webp',
+  idol_otaku:    '/images/characters/npc_idol_otaku.webp',
+  ramen_oyaji:   '/images/characters/npc_ramen_oyaji.webp',
+  bus_obaa:      '/images/characters/npc_bus_obaa.webp',
+  busker:        '/images/characters/npc_busker.webp',
+  dog_walker:    '/images/characters/npc_dog_walker.webp',
+  koban:         '/images/characters/npc_koban.webp',
+  conbini_night: '/images/characters/npc_conbini_night.webp'
+} as const;
+
 // 🏪 便利店店员美咲。她在序章里给主角结过第一次账，
 // 而这个游戏里只有一家便利店，所以她是主角这一年里
 // 见得最多的人之一——只是她不算"角色"，没有好感度。
@@ -354,6 +376,14 @@ export const CLERK_MISAKI_SPRITES = {
   laugh:   '/images/characters/clerk_misaki_laugh.webp',
   shy:     '/images/characters/clerk_misaki_shy.webp',
   bag:     '/images/characters/clerk_misaki_bag.webp'
+} as const;
+
+// 💊 三宫中心街药妆店店员七海（立绘纯净无绿幕/溢色透明通道）
+export const CLERK_DRUGSTORE_SPRITES = {
+  welcome:   '/images/characters/clerk_drugstore_welcome.webp',
+  smile:     '/images/characters/clerk_drugstore_smile.webp',
+  recommend: '/images/characters/clerk_drugstore_recommend.webp',
+  think:     '/images/characters/clerk_drugstore_think.webp'
 } as const;
 
 // 🎬 经典动漫客串彩蛋 NPC 立绘（纯净无白边透明通道）
@@ -2232,7 +2262,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     id: 'sannomiya',
     nameJp: '三宮', reading: 'さんのみや',
     nameZh: '三宫', nameEn: 'Sannomiya',
-    image: '/images/backgrounds/bg_sannomiya_station_gate.webp',
+    image: '/images/backgrounds/bg_sannomiya_crossing_dusk.webp',
     descZh: '山脚下灯最密的那一片。神户真正的市中心——车站、商店街、百货店全挤在这里。你昨天就是从那儿走上来的。',
     descEn: 'The densest patch of light at the foot of the hill. Kobe\'s actual centre: the station, the arcades and the department stores all packed together. You walked up from there yesterday.',
     word: { jp: '駅', reading: 'えき', zh: '车站', en: 'station' }
