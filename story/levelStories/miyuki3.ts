@@ -74,7 +74,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${M}neutral.webp`,
+    characterImage: `${M}cardigan_neutral.webp`,
     zh: '她跟进来要拦。你把她请回阳台的椅子上，她拦了三次，你请了三次。',
     en: 'She follows to stop you. You steer her back to the chair on the balcony. She objects three times and you steer three times.'
   },
@@ -115,7 +115,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${M}shy.webp`,
+    characterImage: `${M}cardigan_shy.webp`,
     zh: '她没有争。她端起杯子，喝了一口，然后就那样捧着，很久没有放下。',
     en: 'She does not argue. She lifts the cup, drinks, and then holds it without putting it down for a long time.'
   },
@@ -143,7 +143,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             zh: '杯子在她手里晃了一下。有一点茶洒在了手背上，她没有擦。',
             en: 'The cup moves in her hands. A little tea goes over the back of one of them. She does not wipe it.'
           },
@@ -160,7 +160,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             jp: '……その呼び方、',
             zh: '……那个叫法，',
             en: '...That way of saying it,',
@@ -199,7 +199,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${M}neutral.webp`,
+            characterImage: `${M}cardigan_neutral.webp`,
             zh: '她说不行，今天要洗床单、要去买 101 的药、要给 103 留门。',
             en: 'She says she cannot: sheets, the prescription for 101, leaving the door for 103.'
           },
@@ -235,7 +235,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${M}neutral.webp`,
+            characterImage: `${M}cardigan_neutral.webp`,
             zh: '她第一反应是笑着说「どちらでも」。',
             en: 'Her first response is to smile and say either is fine.'
           },
@@ -253,7 +253,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             jp: '……「さん」、なしで。',
             zh: '……不要加「さん」。',
             en: '...Without the "san".',
@@ -321,7 +321,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '深雪', speakerEn: 'Miyuki',
-        characterImage: `${M}shy.webp`,
+        characterImage: `${M}cardigan_shy.webp`,
         jp: '最初から二人分。ずっと、あなたの分。',
         zh: '从一开始就是两人份。一直，都是你的那一份。',
         en: 'Two portions from the start. All of it, your portion.',
@@ -348,7 +348,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '深雪', speakerEn: 'Miyuki',
-        characterImage: `${M}love.webp`,
+        characterImage: `${M}cardigan_love.webp`,
         jp: '……もう一回、呼んで。',
         zh: '……再叫一次。',
         en: '...Say it again.',
@@ -416,7 +416,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '深雪', speakerEn: 'Miyuki',
-        characterImage: `${M}happy.webp`,
+        characterImage: `${M}cardigan_happy.webp`,
         jp: 'あと、これからは呼び捨てでいいわよ。「さん」、いらない',
         zh: '还有，以后直接叫就行了。不用「さん」。',
         en: 'And from now on you can just say it. You do not need the "san".',

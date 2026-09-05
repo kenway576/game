@@ -70,7 +70,7 @@ export const NAO_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${N}curious.webp`,
+    characterImage: `${N}casual_curious.webp`,
     zh: '你笑完之后转过头，看见她正在看着你。',
     en: 'When you stop, you turn and find her looking at you.'
   },
@@ -159,7 +159,7 @@ export const NAO_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她愣了一下，然后非常快地答了：「なんもない」。',
             en: 'She blinks and answers very fast: nothing.'
           },
@@ -241,7 +241,7 @@ export const NAO_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}angry.webp`,
+    characterImage: `${N}casual_angry.webp`,
     jp: 'なんか、ずるい。誰も悪ないのに。',
     zh: '总觉得，很赖皮。明明谁都没做错。',
     en: 'It feels unfair. Even though nobody did anything wrong.',
@@ -275,7 +275,7 @@ export const NAO_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她愣了很久。',
             en: 'It takes her a long time.'
           },
@@ -292,7 +292,7 @@ export const NAO_STORY_2: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}happy.webp`,
+            characterImage: `${N}casual_happy.webp`,
             jp: 'ほらな。これは私しか持ってへんもん。',
             zh: '你看吧。这个只有我有。',
             en: 'See. This one is only mine.',
@@ -365,7 +365,7 @@ export const NAO_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她看着你，像是从来没想过这个方案存在。',
             en: 'She looks at you as though this option had not been on the list.'
           },

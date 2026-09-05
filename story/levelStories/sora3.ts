@@ -110,7 +110,7 @@ export const SORA_STORY_3: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}shock.webp`,
+    characterImage: `${S}school_sad.webp`,
     jp: 'で、こわいことに気づいてん。',
     zh: '然后我发现了一件很可怕的事。',
     en: 'And I noticed something frightening.',
@@ -174,7 +174,7 @@ export const SORA_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她抬起头，像是从来没想过这件事可以被重新量。',
             en: 'Her head comes up. It has evidently never occurred to her that it could be measured again.'
           },
@@ -210,7 +210,7 @@ export const SORA_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她非常久地看着你。然后她笑了——不是那个装回去的笑，是那种被戳穿之后没办法的笑。',
             en: 'She looks at you for a very long time. Then she laughs, and it is not the one she puts on. It is the one that arrives when there is nothing left to do about it.'
           }
@@ -247,7 +247,7 @@ export const SORA_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她没有说话。风把申请书吹得响了一下。',
             en: 'She says nothing. The wind snaps the form once.'
           }
@@ -267,14 +267,14 @@ export const SORA_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她整个人转过来。',
             en: 'The whole of her turns round.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             jp: '……全部？',
             zh: '……全部？',
             en: '...All of them?',
@@ -443,7 +443,7 @@ export const SORA_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '空', speakerEn: 'Sora',
-        characterImage: `${S}happy.webp`,
+        characterImage: `${S}school_happy.webp`,
         jp: '……そっか。',
         zh: '……这样啊。',
         en: '...Right.',
@@ -457,7 +457,7 @@ export const SORA_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '空', speakerEn: 'Sora',
-        characterImage: `${S}happy.webp`,
+        characterImage: `${S}school_happy.webp`,
         jp: 'あんた、ウチの一号やからな。',
         words: [{ jp: '一号', reading: 'いちごう', zh: '第一号', en: 'number one' }],
         zh: '你是我的一号啊。',

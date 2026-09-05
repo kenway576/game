@@ -115,7 +115,7 @@ export const INARI_STORY_3: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}sad.webp`,
+    characterImage: `${I}knit_sad.webp`,
     jp: '金魚のな。あの紙が破れることすら、知らなんだ。',
     zh: '金鱼那个啊。连那张纸会破，我都不知道。',
     en: 'The goldfish. I did not even know that the paper tears.',
@@ -150,7 +150,7 @@ export const INARI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}knit_thinking.webp`,
             zh: '她整个人转过来看你，那种毫无准备的表情，你只在她捞破纸网的时候见过一次。',
             en: 'She turns her whole self towards you with the unprepared look you have seen exactly once before, over a torn paper scoop.'
           },
@@ -205,7 +205,7 @@ export const INARI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}casual_happy.webp`,
+            characterImage: `${I}knit_neutral.webp`,
             zh: '你们去了神社外面那家七点开门的咖啡店。她点了最贵的那个套餐，因为她不知道该点什么。',
             en: 'You go to the coffee shop outside the shrine that opens at seven. She orders the most expensive set because she does not know what to order.'
           },
@@ -234,7 +234,7 @@ export const INARI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}knit_thinking.webp`,
             zh: '她看着那片空白，很久。',
             en: 'She looks at the blank space for a long time.'
           },
@@ -314,7 +314,7 @@ export const INARI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '稻荷', speakerEn: 'Inari',
-        characterImage: `${I}shy.webp`,
+        characterImage: `${I}knit_neutral.webp`,
         jp: 'わらわは死なぬ。じゃが、今日から数えることにした。',
         zh: '我不会死。不过，从今天开始我决定数了。',
         en: 'I will not die. But from today I have decided to count.',
@@ -336,14 +336,14 @@ export const INARI_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${I}happy.webp`,
+        characterImage: `${I}knit_neutral.webp`,
         zh: '她伸手去够你的手，动作生疏得可笑——她够了两次才够到。',
         en: 'She reaches for your hand, so unpractised that it is funny. It takes her two attempts.'
       },
       {
         type: 'speech',
         speakerZh: '稻荷', speakerEn: 'Inari',
-        characterImage: `${I}happy.webp`,
+        characterImage: `${I}knit_neutral.webp`,
         jp: '一日目じゃ。ちゃんと数えるからな。',
         zh: '第一天了。我会好好数的。',
         en: 'Day one. I shall count them properly.',
@@ -378,7 +378,7 @@ export const INARI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '稻荷', speakerEn: 'Inari',
-        characterImage: `${I}sly.webp`,
+        characterImage: `${I}knit_thinking.webp`,
         jp: '鉛筆じゃ。消せるようにな。',
         zh: '铅笔哦。为了能擦掉。',
         en: 'Pencil. So that it can be rubbed out.',
@@ -410,14 +410,14 @@ export const INARI_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${I}happy.webp`,
+        characterImage: `${I}knit_neutral.webp`,
         zh: '她站起来，把毛衣上的雪拍掉——那些雪终于化了一点。',
         en: 'She stands and knocks the snow off the jumper. Some of it has finally begun to melt.'
       },
       {
         type: 'speech',
         speakerZh: '稻荷', speakerEn: 'Inari',
-        characterImage: `${I}happy.webp`,
+        characterImage: `${I}knit_neutral.webp`,
         jp: '毎年、なぞりに来い。わらわが忘れる前にな。',
         zh: '每年都来让我描一遍。趁我还没忘之前。',
         en: 'Come every year and make me go over it. Before I forget.',

@@ -129,7 +129,7 @@ export const HIKARI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${H}surprised.webp`,
+            characterImage: `${H}casual_surprised.webp`,
             zh: '她笑了一半停住了。',
             en: 'The smile gets halfway and stops.'
           },

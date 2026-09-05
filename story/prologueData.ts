@@ -155,7 +155,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'sannomiya_station',
+    scene: 'sannomiya_station_prologue',
     bgm: 'town',
     titleZh: '三宫站 · 中央出闸口',
     titleEn: 'Sannomiya Station · Central Gates',
@@ -1219,8 +1219,23 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '绕回坡道口时，一家便利店的白光从玻璃门里泼到人行道上。你推门进去，自动门「ピンポーン」响了一声。',
-    en: 'Back at the foot of the slope, the white glare of a convenience store spills across the pavement. You push in, and the door chimes.'
+    zh: '绕回坡道口的时候，一家便利店的白光从玻璃门里泼到人行道上。你停在门口没进去。',
+    en: 'Back at the foot of the slope, the white glare of a convenience store spills across the pavement. You stop at the door instead of going in.'
+  },
+  {
+    type: 'narration',
+    zh: '这就是那个便利店。你在屏幕上看过大概两百次的那个便利店。玻璃门、关东煮的锅、货架上那排一模一样的饭团。',
+    en: 'So this is the convenience store. The one you have seen on a screen roughly two hundred times. The glass door, the oden pot, the row of identical rice balls on the shelf.'
+  },
+  {
+    type: 'narration',
+    zh: '按你看过的那些东西的规矩，推开这扇门，出来的时候应该已经在异世界了。',
+    en: 'By the rules of the things you have watched, you push this door open and when you come out you are in another world.'
+  },
+  {
+    type: 'narration',
+    zh: '你推了门。自动门「ピンポーン」响了一声。你还在神户。',
+    en: 'You push the door. It goes ping-pong. You are still in Kobe.'
   },
   {
     type: 'scene',
@@ -2368,9 +2383,19 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     color: 'bg-sky-500'
   },
   {
+    type: 'narration',
+    zh: '「うかがってもいいですか」。这句你没听懂。你背过的三千个词里没有这个用法——你只抓住了中间那两个字：名前。',
+    en: '"Ukagatte mo ii desu ka." You do not have that one. It is not in the three thousand words you memorised. What you do catch is the two syllables in the middle: namae.'
+  },
+  {
+    type: 'narration',
+    zh: '名前。名字。她在问你的名字。你在心里给自己鼓了一下掌，然后才意识到她已经把笔递过来了。',
+    en: 'Namae. Name. She is asking for your name. You congratulate yourself internally, and only then notice that the pen has been held out for some time.'
+  },
+  {
     type: 'nameInput',
-    promptZh: '钢笔递到了你手里。写下去的这个名字，这座城市里的每一个人都会这样叫你。',
-    promptEn: 'She holds out the pen. Whatever you write here is what everyone in this city will call you.',
+    promptZh: '钢笔已经递到你手里了。写下去的这个名字，这座城市里的每一个人都会这样叫你。',
+    promptEn: 'The pen is already in your hand. Whatever you write here is what everyone in this city will call you.',
     placeholderZh: '写下你的名字……',
     placeholderEn: 'Write your name...'
   },
@@ -2494,21 +2519,37 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '夜深了。海风吹动着窗帘，远处的摩天轮闪烁着温柔的彩色光带。',
-    en: 'The night deepens. Sea wind stirs the curtains, and far off the ferris wheel turns through soft bands of color.'
+    zh: '十一点。你躺下了。',
+    en: 'Eleven o’clock. You lie down.'
   },
   {
     type: 'narration',
-    zh: '你躺在床上，听着墙上钟表平缓有力的滴答声。明天清晨，港见高校高二 B 班的教室门就将向你敞开。',
-    en: 'You lie in bed listening to the steady, deliberate tick of the wall clock. Tomorrow morning, the door of Class 2-B will open for you.'
+    zh: '十一点零六分，你坐起来把闹钟又检查了一遍。设的是六点二十。你把它改成了六点十分。',
+    en: 'At six minutes past you sit up and check the alarm again. It is set for twenty past six. You change it to ten past.'
   },
   {
-    type: 'speech',
-    speakerZh: '你',
-    speakerEn: 'You',
-    jp: 'おやすみ、神戸。',
-    zh: '晚安，神户。……明天见。',
-    en: 'Good night, Kobe. ...See you tomorrow.',
-    color: 'bg-yellow-500'
+    type: 'narration',
+    zh: '十一点十四分，你想起来自己没确认制服的领带该怎么打。你查了三分钟视频，然后决定明天早上再说。',
+    en: 'At fourteen minutes past it occurs to you that you have not checked how the tie is supposed to go. You watch three minutes of video and decide it can wait until morning.'
+  },
+  {
+    type: 'narration',
+    zh: '十一点二十九分，你在黑暗里睁着眼睛，脑子里过明天可能会发生的事。第一件是自我介绍。你在心里排练了三个版本，三个都不满意。',
+    en: 'At twenty-nine minutes past you are lying with your eyes open in the dark, going through what might happen tomorrow. The first thing is the self-introduction. You rehearse three versions and are happy with none of them.'
+  },
+  {
+    type: 'narration',
+    zh: '窗外有电车过去。你数了一下，从声音出现到消失是九秒。',
+    en: 'A train goes past outside. You count: nine seconds from the sound arriving to it going.'
+  },
+  {
+    type: 'narration',
+    zh: '你打算等下一班过来，再数一次。',
+    en: 'You decide to wait for the next one and count again.'
+  },
+  {
+    type: 'narration',
+    zh: '你没有等到。',
+    en: 'You do not make it.'
   }
 ];

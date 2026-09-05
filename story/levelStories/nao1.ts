@@ -100,7 +100,7 @@ export const NAO_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她听得很认真。认真到你察觉出不对——她不是在听故事，她是在记。',
             en: 'She listens carefully. Carefully enough that you notice something off: she is not following a story, she is memorising.'
           },
@@ -163,14 +163,14 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}angry.webp`,
+            characterImage: `${N}casual_angry.webp`,
             zh: '她转过身来，脸上的表情你只见过两次，两次都是小学的时候。',
             en: 'She turns round. You have seen that expression twice before, both times in primary school.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}angry.webp`,
+            characterImage: `${N}casual_angry.webp`,
             jp: 'ずるい。そういうの、すぐ分かっちゃうの、ずるい。',
             zh: '赖皮。这种事你一下就看出来，太赖皮了。',
             en: 'That is not fair. You always work it out straight away. It is not fair.',
@@ -265,7 +265,7 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她愣住了。',
             en: 'She goes still.'
           },
@@ -304,7 +304,7 @@ export const NAO_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}happy.webp`,
+            characterImage: `${N}casual_happy.webp`,
             zh: '她笑出了声，一边笑一边说这条不算，因为这条她也知道。',
             en: 'She laughs out loud, and says through it that this one does not count, because she knew that one too.'
           },
@@ -361,7 +361,7 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她张嘴要答，然后发现自己答不上来——不是不知道，是从来没整理过。',
             en: 'She opens her mouth to answer, and finds she cannot. Not because she does not know, but because she has never sorted it.'
           },

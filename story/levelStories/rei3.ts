@@ -140,14 +140,14 @@ export const REI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             zh: '她抬起头，很快。这是你见过她动作最快的一次。',
             en: 'Her head comes up fast. It is the fastest you have ever seen her move.'
           },
           {
             type: 'speech',
             speakerZh: '铃', speakerEn: 'Rei',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             jp: '……全部で、たぶん四千ページある。',
             zh: '……全部加起来，大概四千页。',
             en: '...That is somewhere around four thousand pages.',
@@ -165,7 +165,7 @@ export const REI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             zh: '你后来才明白她算的不是页数。她算的是"这个人打算在这儿待多久"。',
             en: 'You understand later that she was not calculating pages. She was calculating how long this person intends to be around.'
           }
@@ -233,14 +233,14 @@ export const REI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             zh: '她凑过来看，看完之后整个人僵住了。',
             en: 'She leans over to look, and having looked, goes completely still.'
           },
           {
             type: 'speech',
             speakerZh: '铃', speakerEn: 'Rei',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             jp: '……それ、私も気づいてなかった。',
             zh: '……那件事，我自己都没注意到。',
             en: '...I had not noticed that about myself.',
@@ -259,7 +259,7 @@ export const REI_STORY_3: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '铃', speakerEn: 'Rei',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             jp: '……待って。心拍が、また。',
             zh: '……等一下。心跳，又。',
             en: '...Wait. The pulse. Again.',
@@ -278,14 +278,14 @@ export const REI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${R}lecturing.webp`,
+    characterImage: `${R}winter_thinking.webp`,
     zh: '春季大三角、狮子座的镰刀、北斗七星第二颗其实是双星、那颗星的光走了八十三年才到这儿。',
     en: 'The spring triangle, the sickle of Leo, the fact that the second star of the Plough is a double, that the light from it has been travelling eighty-three years to get here.'
   },
   {
     type: 'speech',
     speakerZh: '铃', speakerEn: 'Rei',
-    characterImage: `${R}lecturing.webp`,
+    characterImage: `${R}winter_thinking.webp`,
     jp: '八十三年前に出た光を、今、私たちが受け取っている。',
     words: [{ jp: '受け取る', reading: 'うけとる', zh: '接收、收下', en: 'to receive' }],
     zh: '八十三年前发出的光，现在，被我们接收到了。',
@@ -335,14 +335,14 @@ export const REI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             zh: '她从目镜上抬起头。夜里看不清她的表情，但你听见她吸了一口气。',
             en: 'She lifts her head from the eyepiece. You cannot see her face in the dark, but you hear her take a breath.'
           },
           {
             type: 'speech',
             speakerZh: '铃', speakerEn: 'Rei',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             jp: '……そういうことを、言う人だとは、',
             zh: '……我没有想到，你是会说这种话的人，',
             en: '...I had not predicted that you would be a person who says that sort of thing,',
@@ -367,14 +367,14 @@ export const REI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             zh: '她慢慢地转过来。',
             en: 'She turns round slowly.'
           },
           {
             type: 'speech',
             speakerZh: '铃', speakerEn: 'Rei',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             jp: '……それは、観測を続けるという意味？　それとも、',
             zh: '……那是"继续观测"的意思？还是说，',
             en: '...Do you mean you will keep observing? Or do you mean,',
@@ -401,14 +401,14 @@ export const REI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             zh: '她没有翻本子。她背下来了。',
             en: 'She does not open the notebook. She has it by heart.'
           },
           {
             type: 'speech',
             speakerZh: '铃', speakerEn: 'Rei',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             jp: '……百六。今夜が、最高値。',
             zh: '……一百零六。今晚是最高值。',
             en: '...One hundred and six. Tonight is the maximum.',
@@ -422,7 +422,7 @@ export const REI_STORY_3: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '铃', speakerEn: 'Rei',
-            characterImage: `${R}shy.webp`,
+            characterImage: `${R}winter_shy.webp`,
             jp: '……気温は、今年でいちばん低いのに。',
             zh: '……明明气温是今年最低的。',
             en: '...Even though the temperature is the lowest of the year.',

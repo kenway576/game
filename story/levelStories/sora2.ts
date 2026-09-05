@@ -110,7 +110,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她转过来的时候明显吓了一跳，随即整个人换上了那副笑：「うわ、なんでおるん」。',
             en: 'She jumps when she turns, and the grin goes straight on: what are you doing here.'
           },
@@ -143,7 +143,7 @@ export const SORA_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她没有立刻说话。她先低头看了一眼自己的右手，然后才抬起头。',
             en: 'She does not speak straight away. She looks down at her own right hand first, and only then looks up.'
           },
@@ -300,7 +300,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她整个人僵了一下。',
             en: 'Something in her locks.'
           },
@@ -358,7 +358,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}shock.webp`,
+            characterImage: `${S}school_sad.webp`,
             zh: '她愣了一下，然后答了：初中的教练。',
             en: 'It stops her. Then she answers: her middle-school coach.'
           },
@@ -395,7 +395,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}happy.webp`,
+            characterImage: `${S}school_happy.webp`,
             zh: '她马上就笑了：「おう、せやな」。',
             en: 'The grin arrives at once. Right, yeah.'
           },

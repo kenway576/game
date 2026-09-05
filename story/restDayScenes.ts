@@ -503,7 +503,7 @@ export const CLUB_COUNCIL: StoryNode[] = [
 export const CLUB_MUSIC: StoryNode[] = [
   { type: 'scene', scene: 'music_room', bgm: 'town', titleZh: '軽音部（仮）', titleEn: 'Light Music Club (Provisional)', subtitleZh: '休息日 · 音乐室', subtitleEn: 'Day off · The music room' },
   { type: 'narration', zh: '音乐室的门半开着，里面在放很吵的东西。走近了才听出来是有人在弹，不是在放。', en: 'The music room door is ajar and something very loud is coming out. Up close you realise somebody is playing it, not playing it back.' },
-  { type: 'narration', characterImage: `${MAKI}punk_neutral.webp`, zh: '真希。她背对着门，插着电，音量开得比这个房间应该承受的大。', en: 'Maki, with her back to the door, plugged in, at a volume this room was not designed for.' },
+  { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '真希。她背对着门，插着电，音量开得比这个房间应该承受的大。', en: 'Maki, with her back to the door, plugged in, at a volume this room was not designed for.' },
   { type: 'narration', zh: '她弹错了一个地方，停下来，骂了一句，从头再来。你在门口站了六遍。', en: 'She fluffs something, stops, swears, and starts again. You stand in the doorway through six of these.' },
   {
     type: 'choice',
@@ -519,7 +519,7 @@ export const CLUB_MUSIC: StoryNode[] = [
         then: [
           { type: 'narration', characterImage: `${MAKI}angry_alt.webp`, zh: '她整张脸红到耳朵，然后开始骂你，骂了大概三分钟，一句重复的都没有。', en: 'She goes red to the ears and swears at you for about three minutes without repeating herself once.' },
           { type: 'narration', zh: '骂完之后她没赶你走。她背过身去，说了一句「……もっかいだけな」。这一遍她弹得比刚才慢。', en: 'Having told you off she does not throw you out. She turns her back and says, only once more then. This time she plays it slower.' },
-          { type: 'narration', characterImage: `${MAKI}shy_alt.webp`, zh: '这一遍没错。弹完她没回头，肩膀在等。', en: 'This time it is clean. She does not turn round. Her shoulders are waiting.' }
+          { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '这一遍没错。弹完她没回头，肩膀在等。', en: 'This time it is clean. She does not turn round. Her shoulders are waiting.' }
         ]
       },
       {
@@ -530,7 +530,7 @@ export const CLUB_MUSIC: StoryNode[] = [
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你数了椅子', reasonEn: 'You counted the chairs' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 7, affection: 5, reasonZh: '她说了实话，而且说得很快', reasonEn: 'She told the truth, very fast' }],
         then: [
-          { type: 'narration', characterImage: `${MAKI}punk_pout.webp`, zh: '「三人」，她说。然后停了一下，「……届出上は」。', en: 'Three, she says. Then a pause. On the paperwork.' },
+          { type: 'narration', characterImage: `${MAKI}pout.webp`, zh: '「三人」，她说。然后停了一下，「……届出上は」。', en: 'Three, she says. Then a pause. On the paperwork.' },
           { type: 'narration', zh: '实际上是一个。另外两个是她拿章鱼烧买通的一年级，从来没来过。', en: 'Actually one. The other two are first-years she bought with takoyaki and who have never once turned up.' },
           { type: 'narration', characterImage: `${MAKI}smug.webp`, zh: '她说这个的时候一点都不难过。她说：房间大，一个人用刚好。', en: 'She is not remotely sad about it. She says the room is big and one person is about right.' }
         ]
@@ -713,8 +713,8 @@ export const OUTING_AUTUMN: StoryNode[] = [
 export const OUTING_HATSUMODE: StoryNode[] = [
   { type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'night', titleZh: '初詣', titleEn: 'The First Visit', subtitleZh: '冬 · 元旦 · 生田神社', subtitleEn: 'Winter · New Year · Ikuta Shrine' },
   { type: 'narration', zh: '元旦零点，生田神社的队从鸟居一直排到马路对面。你们排了五十分钟。', en: 'Midnight on New Year\'s Day. The queue at Ikuta runs from the torii to the far side of the road. You are in it fifty minutes.' },
-  { type: 'narration', characterImage: `${ASUKA}casual_neutral.webp`, zh: '明日香穿的是私服。你几乎没见过她穿私服，她自己也不太自在，一直在整理围巾。', en: 'Asuka is in her own clothes. You have almost never seen this, and neither has she; she keeps rearranging her scarf.' },
-  { type: 'narration', characterImage: `${INARI}summer_neutral.webp`, zh: '稻荷不用排队。你们排到一半的时候她已经站在里面了，靠着一根柱子，手里拿着一杯甜酒。', en: 'Inari does not queue. Halfway up you find her already inside, leaning on a pillar with a cup of amazake.' },
+  { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '明日香穿的是私服。你几乎没见过她穿私服，她自己也不太自在，一直在整理围巾。', en: 'Asuka is in her own clothes. You have almost never seen this, and neither has she; she keeps rearranging her scarf.' },
+  { type: 'narration', characterImage: `${INARI}neutral.webp`, zh: '稻荷不用排队。你们排到一半的时候她已经站在里面了，靠着一根柱子，手里拿着一杯甜酒。', en: 'Inari does not queue. Halfway up you find her already inside, leaning on a pillar with a cup of amazake.' },
   { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}sly.webp`, jp: '毎年、この日だけは混むのう。年に一度、皆が思い出すのじゃ。', zh: '每年就这一天挤。一年一次，大家会想起来。', en: 'Only on this one day of the year. Once a year, everybody remembers.', color: 'bg-amber-500' },
   {
     type: 'choice',
@@ -1119,7 +1119,7 @@ export const TRIP_KYOTO: StoryNode[] = [
 export const GROUP_KARAOKE: StoryNode[] = [
   { type: 'scene', scene: 'sannomiya_karaoke_room', bgm: 'town', titleZh: '三个人，两小时，一个包厢', titleEn: 'Three People, Two Hours, One Booth', subtitleZh: '放学后 · 三宫的卡拉OK', subtitleEn: 'After school · Karaoke in Sannomiya' },
   { type: 'narration', zh: '学生优惠，两小时七百日元，饮料吧无限。这个价格是真希查出来的，她查了四家。', en: 'Student rate, seven hundred yen for two hours, drinks bar included. Maki found it. She compared four places.' },
-  { type: 'narration', characterImage: `${MAKI}punk_neutral.webp`, zh: '进包厢之前她先声明了一条规矩：不许点谁都会唱的那种。', en: 'Before going in she lays down one rule: nothing everybody already knows.' },
+  { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '进包厢之前她先声明了一条规矩：不许点谁都会唱的那种。', en: 'Before going in she lays down one rule: nothing everybody already knows.' },
   { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空第一首就点了一首谁都会唱的。', en: 'Sora’s first pick is a song everybody knows.' },
   { type: 'narration', characterImage: `${HIKARI}casual_happy.webp`, zh: '光笑得从沙发上滑下去了。', en: 'Hikari laughs herself off the sofa.' },
   {
@@ -1141,8 +1141,8 @@ export const GROUP_KARAOKE: StoryNode[] = [
         then: [
           { type: 'narration', zh: '前奏起来的时候你后悔了。副歌那一句的语速你从来没跟上过。', en: 'You regret it during the intro. You have never once kept up with that line in the chorus.' },
           { type: 'narration', zh: '你没跟上。你唱错了三个地方，最后一句直接跑没了。', en: 'You do not keep up. Three mistakes, and the last line simply gets away from you.' },
-          { type: 'narration', characterImage: `${SORA}happy.webp`, zh: '空鼓掌鼓得整个包厢都在响。她说"うまいやん"，说得非常真诚，而且非常不准确。', en: 'Sora applauds hard enough to fill the booth. She says you were good, with total sincerity and total inaccuracy.' },
-          { type: 'narration', characterImage: `${MAKI}shy_alt.webp`, zh: '真希什么都没说。但她把那首歌加进了后面的列表里，加了两次。', en: 'Maki says nothing. She does add that song to the queue again. Twice.' }
+          { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空鼓掌鼓得整个包厢都在响。她说"うまいやん"，说得非常真诚，而且非常不准确。', en: 'Sora applauds hard enough to fill the booth. She says you were good, with total sincerity and total inaccuracy.' },
+          { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '真希什么都没说。但她把那首歌加进了后面的列表里，加了两次。', en: 'Maki says nothing. She does add that song to the queue again. Twice.' }
         ]
       },
       {

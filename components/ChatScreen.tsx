@@ -251,15 +251,16 @@ const ChatScreen: React.FC<Props> = ({
               <div className="text-5xl md:text-6xl mb-4 animate-bounce">{skin.icon}</div>
               <p className={`${skin.accent} font-black uppercase tracking-[0.4em] text-xs md:text-sm mb-2`}>{skin.title || T.levelUpTitle}</p>
               <h2 className={`text-4xl md:text-5xl font-black italic text-white mb-6 ${skin.glow}`}>Lv.{lv} <span className={skin.name}>{label}</span></h2>
+              {/* 这里以前列的是「解锁了 casual / ikuta_shrine_gate」——
+                  那是文件名，不是给玩家看的东西。而且把"关系变近了"
+                  翻译成一张清单，本身就把这件事变小了。
+                  现在只说发生了什么，剩下的让玩家自己撞见。 */}
               {(newOutfits.length > 0 || newScenes.length > 0) && (
-                <div className="mb-8 space-y-2 text-left bg-black/40 border border-white/10 rounded-sm p-4">
-                  {newOutfits.length > 0 && (
-                    <p className="text-[11px] md:text-xs text-white/80"><span className="text-yellow-400 font-black uppercase tracking-widest mr-2">👗 {T.unlockOutfits}</span>{newOutfits.join(' / ')}</p>
-                  )}
-                  {newScenes.length > 0 && (
-                    <p className="text-[11px] md:text-xs text-white/80"><span className="text-cyan-400 font-black uppercase tracking-widest mr-2">🗺️ {T.unlockScenes}</span>{newScenes.join(' / ')}</p>
-                  )}
-                </div>
+                <p className="mb-8 text-[11px] md:text-xs text-white/55 leading-relaxed">
+                  {isFam
+                    ? (userState.language === 'en' ? 'She talks to you differently now. You will notice where.' : '她跟你说话的方式变了。在哪儿变的，你自己会发现。')
+                    : (userState.language === 'en' ? 'Something has moved. She has not said so.' : '有什么东西动了一下。她没有说。')}
+                </p>
               )}
               <button onClick={onLevelUpContinue} className={`w-full ${skin.button} text-white font-black py-4 uppercase tracking-[0.3em] text-sm transition-all shadow-xl rounded-sm`}>{T.levelUpContinue}</button>
             </div>

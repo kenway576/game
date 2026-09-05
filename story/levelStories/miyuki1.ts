@@ -41,7 +41,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',
-    characterImage: `${M}apron_happy.webp`,
+    characterImage: `${M}happy.webp`,
     jp: 'あら、ちょうどよかった。今日もね、作りすぎちゃって。',
     words: [{ jp: '作りすぎる', reading: 'つくりすぎる', zh: '做太多了', en: 'to make too much' }],
     zh: '哎呀，正好。今天也是，做多了。',
@@ -199,14 +199,14 @@ export const MIYUKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${M}cardigan_neutral.webp`,
+    characterImage: `${M}neutral.webp`,
     zh: '她在旁边擦盘子。水声很大，所以两个人都不用说话，这件事让人很舒服。',
     en: 'She dries beside you. The water is loud enough that neither of you has to talk, which is comfortable.'
   },
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',
-    characterImage: `${M}cardigan_neutral.webp`,
+    characterImage: `${M}neutral.webp`,
     jp: 'ねえ。日本のご飯、飽きない？',
     words: [{ jp: '飽きる', reading: 'あきる', zh: '腻、厌倦', en: 'to get tired of' }],
     zh: '喂。日本的饭，吃不腻吗？',
@@ -221,7 +221,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',
-    characterImage: `${M}cardigan_neutral.webp`,
+    characterImage: `${M}neutral.webp`,
     jp: 'よかった。……作りすぎちゃう癖、なかなか直らなくて。',
     zh: '那就好。……做太多这个毛病，一直改不掉。',
     en: 'Good. ...I cannot seem to get out of the habit of making too much.',
@@ -234,7 +234,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${M}cardigan_neutral.webp`,
+    characterImage: `${M}neutral.webp`,
     zh: '她把最后一个盘子放进柜子，关上柜门，然后转过身来，笑得跟平常一模一样。',
     en: 'She puts the last plate in the cupboard, closes the door, turns round, and smiles exactly as she always does.'
   },
@@ -262,7 +262,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',
-    characterImage: `${M}cardigan_happy.webp`,
+    characterImage: `${M}happy.webp`,
     jp: 'また作りすぎたら、呼ぶわね。',
     zh: '下次再做多了，就叫你。',
     en: 'If I make too much again, I will call you.',

@@ -53,6 +53,7 @@ import { buildClassMorning, classHeadline } from './story/classMorning';
 import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
+import { promiseDue } from './story/day2Promises';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
@@ -558,6 +559,28 @@ const App: React.FC = () => {
     ? SCHOOL_TRIP[tripDay - 1]
     : null;
 
+  // 📌 第一天答应过的事到点了。奈绪说了"明天在车站等"，
+  // 昴说了"明天四点体育馆"——这两个约以前一个都没兑现，
+  // 玩家记得，游戏不记得。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
+    if (!day1Done) return;
+    const due = promiseDue(gameCalendar.month, gameCalendar.day, gameCalendar.timeSlot, storyFlags as Record<string, boolean>);
+    if (!due) return;
+    setShowRestPlan(false);
+    setActiveTrip({
+      loc: {
+        id: `promise_${due.id}`, district: 'sannomiya',
+        nameJp: '', reading: '', nameZh: due.titleZh, nameEn: due.titleEn,
+        blurbZh: '昨天答应过的', blurbEn: 'Something you agreed to yesterday',
+        timeCost: 1
+      },
+      event: null,
+      script: [...due.script, { type: 'effect', setFlags: [`${due.id}_done`] }]
+    });
+  }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done]);
+
   // ✈️ 修学旅行那四天，一进大厅就演当天那一段。
   useEffect(() => {
     if (gameMode !== GameMode.LOBBY) return;
@@ -623,9 +646,14 @@ const App: React.FC = () => {
     // 学年已经走完 → 不再问"今天怎么过"。最后一天之后没有下一个休息日要安排，
     // 而且结算屏正压在上面，两块面板叠在一起看着像出了 bug。
     if (showYearEnd || isSchoolYearOver(gameCalendar)) return;
-    if (dayKindOf(gameCalendar) === 'school') return;
+    // 上学日以前直接跳过这个面板，把玩家丢进大厅——
+    // 于是"今天去不去上学、怎么去"这件事在界面上根本不存在。
+    // 现在上学日也问，只是问的是「今天还去学校吗」（面板自己会换标题）。
     if (storyFlags[plannedFlag(gameCalendar)]) return;
     if (gameCalendar.timeSlot !== 'lunch' && gameCalendar.timeSlot !== 'morning') return;
+    // 早上是在自己房间里醒的。面板叠在房间上，不是叠在人物名单上——
+    // "睁开眼睛，然后决定今天怎么过"，顺序应该是这个。
+    if (gameCalendar.timeSlot === 'morning') setCurrentScene('apartment_room');
     setShowRestPlan(true);
   }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, day1Done, showYearEnd]);
 
@@ -647,6 +675,16 @@ const App: React.FC = () => {
     closeRestPlan();
     const script = plan.script(restPlanCtx);
     const done = plan.doneFlag(restPlanCtx);
+    // 🎒 去上学 → 直接演今天早上那节课，不用再回大厅点一次。
+    if (plan.id === 'go_school') { goToClass(); return; }
+    // 🍱 早上做便当 → 打开厨房。做完（或者不做）回来还能去上学，
+    // 因为它 wholeDay: false，不吃掉今天早上。
+    if (plan.id === 'morning_bento') {
+      setCurrentScene('apartment_room');
+      setGameMode(GameMode.ROOM);
+      setInKitchen(true);
+      return;
+    }
     if (!script.length) {
       setGameMode(GameMode.MAP);
       return;

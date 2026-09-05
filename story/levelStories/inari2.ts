@@ -119,7 +119,7 @@ export const INARI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}summer_curious.webp`,
             zh: '她愣住了。真的愣住了——不是那种装出来的「哦呀」，是一秒钟里什么都没准备好的那种。',
             en: 'She freezes. Genuinely freezes; not the performed "oh my", but a full second with nothing prepared.'
           },
@@ -168,7 +168,7 @@ export const INARI_STORY_2: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}sly.webp`,
+            characterImage: `${I}summer_happy.webp`,
             jp: 'あの子の曾祖父も、そこで七回失敗しておったよ。',
             zh: '那孩子的曾祖父，也在那个位置失败过七次哦。',
             en: 'That boy’s great-grandfather failed seven times in that same spot.',
@@ -218,7 +218,7 @@ export const INARI_STORY_2: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}sad.webp`,
+            characterImage: `${I}summer_neutral.webp`,
             jp: '……よう聞いておったのう。',
             zh: '……听得很仔细呢。',
             en: '...You were listening closely.',
@@ -273,7 +273,7 @@ export const INARI_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}summer_neutral.webp`,
     jp: '名前じゃ。ここに来て、二度目も来た者の。',
     zh: '名字。来过这里，而且来了第二次的人的名字。',
     en: 'Names. Of those who came here, and then came a second time.',
@@ -291,14 +291,14 @@ export const INARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${I}sad.webp`,
+    characterImage: `${I}summer_neutral.webp`,
     zh: '你数了一下最后一页：十一个名字，十一个都补齐了。',
     en: 'You count the last page. Eleven names. All eleven have both dates.'
   },
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}summer_neutral.webp`,
     jp: 'わらわは忘れぬ。忘れられぬ、が正しいかの。',
     zh: '我不会忘。或者说，是忘不掉，比较准确。',
     en: 'I do not forget. Or rather, I cannot; that is the more accurate way to put it.',
@@ -331,14 +331,14 @@ export const INARI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}summer_curious.webp`,
             zh: '她把册子合上了，很快，像是被烫到。',
             en: 'She shuts the book fast, as though it burned.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}sad.webp`,
+            characterImage: `${I}summer_neutral.webp`,
             jp: 'わらわはな、書いた日から数え始めてしまうのじゃ。',
             zh: '我啊，从写下去的那天起，就会开始数了。',
             en: 'You see, from the day I write it, I begin counting.',
@@ -351,7 +351,7 @@ export const INARI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}shy.webp`,
+            characterImage: `${I}summer_shy.webp`,
             zh: '你说那就数吧。她说你不懂。你说你确实不懂——你只有一次。',
             en: 'You say then count. She says you do not understand. You say no, you do not; you only get the one.'
           },
@@ -381,7 +381,7 @@ export const INARI_STORY_2: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}sad.webp`,
+            characterImage: `${I}summer_neutral.webp`,
             jp: '……それは、優しいのか、ずるいのか。',
             zh: '……那到底是温柔，还是狡猾呢。',
             en: '...I wonder whether that is kindness or cunning.',
@@ -417,14 +417,14 @@ export const INARI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}sad.webp`,
+            characterImage: `${I}summer_neutral.webp`,
             zh: '你抬头。她把脸转开了。',
             en: 'You look up. She has turned her face away.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}sad.webp`,
+            characterImage: `${I}summer_neutral.webp`,
             jp: '一番最初のは、な。字を教えてくれた者じゃ。',
             zh: '最开始那个啊。是教我写字的人。',
             en: 'The very first one. He is the one who taught me to write.',
@@ -448,7 +448,7 @@ export const INARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${I}majestic.webp`,
+    characterImage: `${I}summer_neutral_alt.webp`,
     zh: '她站起来的时候，你第一次看清那件事——她的影子不动。风把树影吹得乱七八糟，她的没有动过一下。',
     en: 'When she stands, you see it clearly for the first time: her shadow does not move. The wind throws every other shadow about and hers has not shifted once.'
   },

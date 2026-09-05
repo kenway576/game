@@ -66,7 +66,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',
-    characterImage: `${M}happy.webp`,
+    characterImage: `${M}cardigan_happy.webp`,
     jp: 'あら。起こしちゃった？',
     zh: '哎呀。把你吵醒了？',
     en: 'Oh dear. Did I wake you?',
@@ -135,14 +135,14 @@ export const MIYUKI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${M}neutral_alt.webp`,
+            characterImage: `${M}cardigan_neutral_alt.webp`,
             zh: '笑容没有消失。它只是停止了更新——像一张照片留在她脸上。',
             en: 'The smile does not go. It simply stops updating, and sits on her face like a photograph.'
           },
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${M}neutral.webp`,
+            characterImage: `${M}cardigan_neutral.webp`,
             jp: '……癖なの。ずっと二人分作ってて',
             zh: '……是习惯。一直都做两人份，',
             en: '...It is a habit. I always make two portions,',
@@ -193,7 +193,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             jp: '……変な感じ。',
             zh: '……感觉好奇怪。',
             en: '...This feels strange.',
@@ -256,7 +256,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${M}neutral.webp`,
+    characterImage: `${M}cardigan_neutral.webp`,
     zh: '她沉默了。这是今天晚上第一次，她的沉默不是在等你说话。',
     en: 'She is quiet. It is the first time tonight her silence is not waiting for you to speak.'
   },
@@ -298,7 +298,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${M}neutral_alt.webp`,
+            characterImage: `${M}cardigan_neutral_alt.webp`,
             zh: '她笑了。这次的笑是真的，但笑得很难看。',
             en: 'She laughs. This one is real, and it is not a good laugh.'
           },
@@ -318,14 +318,14 @@ export const MIYUKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             zh: '她低下头。你看不见她的表情。过了很久她说了一句话，声音很小。',
             en: 'She lowers her head. You cannot see her face. After a long time she says something, very quietly.'
           },
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             jp: '……ずるいわ、それ。',
             zh: '……那样很赖皮啊。',
             en: '...That is unfair of you.',
@@ -355,7 +355,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${M}neutral.webp`,
+            characterImage: `${M}cardigan_neutral.webp`,
             zh: '她愣住了。她没想到那件事有人听见。',
             en: 'She stops. It had not occurred to her that anybody heard.'
           },
@@ -391,14 +391,14 @@ export const MIYUKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             zh: '她的手停在半空，停了三秒，然后放下了。',
             en: 'Her hand stops in mid-air for three seconds, and then comes down.'
           },
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${M}shy.webp`,
+            characterImage: `${M}cardigan_shy.webp`,
             jp: '……こういうの、慣れてないの。',
             zh: '……这种事，我不习惯。',
             en: '...I am not used to this sort of thing.',
@@ -429,7 +429,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',
-    characterImage: `${M}happy.webp`,
+    characterImage: `${M}cardigan_happy.webp`,
     jp: 'ごめんなさいね、変な話しちゃって。忘れてちょうだい',
     zh: '抱歉啊，讲了些奇怪的话。忘掉吧。',
     en: 'I am sorry, that was an odd thing to talk about. Do forget it.',
@@ -453,7 +453,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',
-    characterImage: `${M}happy.webp`,
+    characterImage: `${M}cardigan_happy.webp`,
     jp: 'だから、そのままでいさせて。ね？',
     zh: '所以，就让我这样吧。好吗？',
     en: 'So let me stay that way. All right?',

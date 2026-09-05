@@ -47,7 +47,7 @@ export const MAKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}punk_neutral.webp`,
+    characterImage: `${K}neutral.webp`,
     zh: '她已经在了。她永远已经在了。',
     en: 'She is already there. She is always already there.'
   },
@@ -64,7 +64,7 @@ export const MAKI_STORY_3: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}punk_neutral.webp`,
+    characterImage: `${K}neutral.webp`,
     jp: '知っとった。先月から貼ってあんねん。',
     zh: '我早就知道。上个月就贴了。',
     en: 'I knew. It has been up since last month.',
@@ -124,7 +124,7 @@ export const MAKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}punk_neutral.webp`,
+    characterImage: `${K}neutral.webp`,
     zh: '最后一局结束的时候，屏幕上跳出排行榜。第一名是 MAKI。第二名也是。第三名还是。',
     en: 'When the last round ends the leaderboard comes up. First place is MAKI. So is second. So is third.'
   },
@@ -214,7 +214,7 @@ export const MAKI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}punk_pout.webp`,
+            characterImage: `${K}pout.webp`,
             zh: '她"せやけど"了一声，然后没有接下去。',
             en: 'She starts to object and does not finish.'
           },
@@ -344,7 +344,7 @@ export const MAKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}punk_love.webp`,
+        characterImage: `${K}happy.webp`,
         jp: 'ざぁこって言うたん、全部うそ。一回も思ったことない。',
         zh: '我说的那些"杂鱼"，全是假的。一次都没那么想过。',
         en: 'Every time I called you a weakling, that was a lie. I have never once thought it.',
@@ -361,7 +361,7 @@ export const MAKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}punk_love.webp`,
+        characterImage: `${K}happy.webp`,
         jp: '……で、これ、勝負ちゃうからな。',
         zh: '……然后，这个不是比赛啊。',
         en: '...And this is not a match, all right.',
@@ -389,14 +389,14 @@ export const MAKI_STORY_3: StoryNode[] = [
     otherwise: [
       {
         type: 'narration',
-        characterImage: `${K}punk_neutral.webp`,
+        characterImage: `${K}neutral.webp`,
         zh: '她投了最后一枚硬币，打完一局，第一名。输名字的时候她只用了两个字母，剩下两格空着。',
         en: 'She puts in a last coin, plays a round, takes first. She types two letters into the name and leaves the other two blank.'
       },
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}punk_neutral.webp`,
+        characterImage: `${K}neutral.webp`,
         jp: '空けとく。埋めたかったら、自分で来て埋めや。',
         words: [{ jp: '埋める', reading: 'うめる', zh: '填上', en: 'to fill in' }],
         zh: '空着。想填的话，自己来填。',

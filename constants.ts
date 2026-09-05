@@ -110,6 +110,10 @@ export const SCENE_MAP: Record<string, string> = {
   'train_interior':      '/images/backgrounds/bg_jr_train_interior.webp',
   // 🚉 JR三之宫站检票口刷卡闸机（实景）
   'sannomiya_station':           '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
+  // 序章专用：出闸口那张有一对母子。剧情上主角第一次出站看见的
+  // 就是这个画面（他后来在便利店又碰到了她们），所以序章留着它，
+  // 正篇一律用上面那张真实的闸机图。
+  'sannomiya_station_prologue':  '/images/backgrounds/bg_sannomiya_station_gate.webp',
   'sannomiya_ticket_gates':      '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
   'jr_sannomiya_gates':          '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
   // 另一个 JR 车站的检票口。三宫那张换成真实的之后，

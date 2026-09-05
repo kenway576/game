@@ -1080,9 +1080,16 @@ const CAMEO_MAKI: StoryNode[] = [
 //
 // 深度线还是只能选一条（那是选择的重量所在），
 // 但"路过时瞥了一眼"这种程度的照面，没有理由三缺一。
-export const DAY1_CAMEO_AFTER_GYM: StoryNode[] = [...DAY1_LEAVING, ...CAMEO_REI, ...CAMEO_MAKI];
-export const DAY1_CAMEO_AFTER_LIB: StoryNode[] = [...DAY1_LEAVING, ...CAMEO_SORA, ...CAMEO_MAKI];
-export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [...DAY1_LEAVING, ...CAMEO_SORA, ...CAMEO_REI];
+// ⚠️ 这三组里以前都带着 DAY1_LEAVING（从教室起身、走廊、往校门口走）。
+// 但它们是接在深度线**之后**的——于是玩家选了"往三宫走，钻进商店街"，
+// 逛完商店街之后画面一转，他又回到了教室在推椅子。
+//
+// 离校这件事应该发生在选择**之前**：先出校门，再决定去哪儿。
+// 所以 DAY1_LEAVING 从这三组里拿掉了，改由 day1Data 在选项前面播。
+// 体育馆和图书室是校内的，但那两条线自己会写清楚"你还没走"。
+export const DAY1_CAMEO_AFTER_GYM: StoryNode[] = [...CAMEO_REI, ...CAMEO_MAKI];
+export const DAY1_CAMEO_AFTER_LIB: StoryNode[] = [...CAMEO_SORA, ...CAMEO_MAKI];
+export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [...CAMEO_SORA, ...CAMEO_REI];
 
 // ==========================================================
 // 傍晚：稻荷 → 奈绪（两个都必遇，让 8 个人在一周目里全部露面）

@@ -2,7 +2,7 @@ import { SCHOOL_NPC_SPRITES } from '../constants';
 import { StoryNode, CharacterId } from '../types';
 import {
   DAY1_GYM, DAY1_LIBRARY, DAY1_ARCADE, DAY1_EVENING,
-  DAY1_CAMEO_AFTER_GYM, DAY1_CAMEO_AFTER_LIB, DAY1_CAMEO_AFTER_ARC
+  DAY1_CAMEO_AFTER_GYM, DAY1_CAMEO_AFTER_LIB, DAY1_CAMEO_AFTER_ARC, DAY1_LEAVING
 } from './day1Afterschool';
 
 // ---------------------------------------------------------
@@ -432,8 +432,38 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '推开公寓大门的瞬间，一阵山风卷着满坡的落樱扑面而来。有一片打着旋儿黏在了你的袖口上。',
-    en: 'The moment you push the front door open, a gust off the hill throws a slope’s worth of petals into your face. One of them spins down and sticks to your cuff.'
+    zh: '推开公寓大门，风是从坡上下来的，带着一坡的落樱。一片粘在了你袖口上。',
+    en: 'You push the front door open. The wind comes down the slope with a slope’s worth of petals in it. One sticks to your cuff.'
+  },
+  {
+    type: 'narration',
+    zh: '你走了大概三十米就停了一次——路边有一台自动贩卖机，卖的东西你一半没见过。你看了很久，最后没买。',
+    en: 'Thirty metres on you stop for the first time. There is a vending machine at the kerb and you have not seen half of what is in it. You look for a while and buy nothing.'
+  },
+  {
+    type: 'narration',
+    zh: '又走了五十米，一只三花猫从围墙上跳下来，横穿马路。你站住等它过完，还目送了一段。',
+    en: 'Fifty metres further a calico drops off a wall and crosses the road. You stand and let it, and then watch it go a while longer.'
+  },
+  {
+    type: 'narration',
+    zh: '路口有一块告示牌，上面的字你只认得三分之一。你站在那儿把它读完了，读到一半才发现旁边有人在等你让路。',
+    en: 'There is a notice board at the junction and you can read about a third of it. You stand and get to the end of it, and halfway through notice somebody waiting for you to move.'
+  },
+  {
+    type: 'narration',
+    zh: '坡道拐弯的地方能看见海。你又停了一次。',
+    en: 'You can see the sea from the bend in the slope. You stop again.'
+  },
+  {
+    type: 'narration',
+    zh: '你掏出手机看时间。七点四十三。',
+    en: 'You get your phone out. Seven forty-three.'
+  },
+  {
+    type: 'narration',
+    zh: '开学式八点整。从这儿到校门口，昨天拖着行李箱走了十二分钟。',
+    en: 'The ceremony is at eight. From here to the school gate took twelve minutes yesterday, with a suitcase.'
   },
   {
     type: 'choice',
@@ -2466,10 +2496,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
     zh: '值日的同学在擦黑板。窗外的天还很亮。第一天结束了——但今天还没有结束。',
     en: 'Someone on cleaning duty is wiping the board. It is still bright outside. The first day is over. The day is not.'
   },
+  // 先出校门，再决定去哪儿。这一段以前在深度线之后，
+  // 于是选了商店街的玩家逛完街会莫名其妙回到教室推椅子。
+  ...DAY1_LEAVING,
   {
     type: 'choice',
-    promptZh: '回家之前，你还有一下午。',
-    promptEn: 'You have an afternoon before you have to go home.',
+    promptZh: '你站在校门口。回家之前，你还有一下午。',
+    promptEn: 'You are standing at the school gate. You have an afternoon before you have to go home.',
     options: [
       {
         id: 'day1_go_gym',

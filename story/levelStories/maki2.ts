@@ -84,7 +84,7 @@ export const MAKI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}punk_angry.webp`,
             zh: '她整个人弹了一下，手机差点掉了，接住之后马上换了个姿势——靠在栏杆上，一副等了很久很久也无所谓的样子。',
             en: 'She jumps hard enough to nearly drop the phone, catches it, and immediately rearranges herself against the rail into a posture of total indifference.'
           },
@@ -121,7 +121,7 @@ export const MAKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}punk_neutral.webp`,
             zh: '她整个人僵了三秒，然后开始说话——说得非常快，全是关于游戏厅哪台机器坏了。',
             en: 'She locks up for three seconds and then starts talking, very fast, entirely about which machine at the arcade is broken.'
           },
@@ -157,14 +157,14 @@ export const MAKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}punk_angry.webp`,
             zh: '她抬起头看你，眼神是那种被自己出卖了的眼神。',
             en: 'She looks up at you with the expression of somebody betrayed by herself.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}punk_angry.webp`,
             jp: '……なんも言うなよ。',
             zh: '……什么都别说。',
             en: '...Do not say anything.',
@@ -254,7 +254,7 @@ export const MAKI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}punk_angry.webp`,
             zh: '她张嘴要顶回来，顶到一半停了。',
             en: 'She opens her mouth to bat it back and stops halfway.'
           },
@@ -265,14 +265,14 @@ export const MAKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}punk_neutral.webp`,
             zh: '她低下头，很久没说话。头顶又过去一列电车，九十秒。',
             en: 'She looks down and says nothing. Another train goes over. Ninety seconds.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}punk_neutral.webp`,
             jp: '……そんなん、教えられてへんもん。',
             zh: '……那种事，没有人教过我啊。',
             en: '...Nobody ever taught me that.',
@@ -372,7 +372,7 @@ export const MAKI_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}smug.webp`,
+    characterImage: `${K}punk_neutral.webp`,
     jp: 'センパイ、来週な。水曜。ゲーセン。',
     zh: '前辈，下周啊。周三。游戏厅。',
     en: 'Senpai. Next week. Wednesday. Arcade.',
@@ -385,14 +385,14 @@ export const MAKI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}shy_alt.webp`,
+    characterImage: `${K}punk_neutral.webp`,
     zh: '走出七八步之后她停下，没有回头，说了最后一句。',
     en: 'Seven or eight steps on she stops, without turning round, and says one last thing.'
   },
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}shy_alt.webp`,
+    characterImage: `${K}punk_neutral.webp`,
     jp: '……今日のこと、勝負にせんといてな。',
     zh: '……今天的事，别拿去当比赛啊。',
     en: '...Do not turn tonight into a match.',

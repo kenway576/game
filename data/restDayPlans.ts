@@ -88,6 +88,31 @@ export const REST_PLANS: RestPlan[] = [
     doneFlag: () => ''
   },
 
+  // ---- 去上学。上学日的默认选项，排在最前面。 ----
+  //
+  // 以前这个面板只在休息日弹，上学日直接把玩家丢进大厅——
+  // 于是"怎么去上课"这件事在界面上根本不存在。
+  // 现在它是一个选项，而且是第一个。
+  {
+    id: 'go_school', icon: '🎒', kinds: SCHOOL, wholeDay: false,
+    titleZh: '去上学', titleEn: 'Go in',
+    descZh: '书包、便当、还有那条走了两百次的坡。今天第一节课是什么，你已经能记住了。',
+    descEn: 'Bag, lunch, and the hill you have walked two hundred times. You can remember what first period is now.',
+    script: () => [],
+    available: ctx => !!ctx.flags['day1_done'],
+    doneFlag: () => ''
+  },
+  // ---- 早上做便当。做完再去上学，所以它不占一整天。 ----
+  {
+    id: 'morning_bento', icon: '🍱', kinds: SCHOOL, wholeDay: false,
+    titleZh: '早起做个便当带去', titleEn: 'Get up early and make a lunch to take',
+    descZh: '六点起。厨房是冷的，米是昨晚泡上的。做完还来得及走那条坡。',
+    descEn: 'Up at six. The kitchen is cold and the rice has been soaking since last night. There is still time for the hill afterwards.',
+    script: () => [],
+    available: ctx => !!ctx.flags['day1_done'],
+    doneFlag: () => ''
+  },
+
   // ---- 翘课。只有上学日才有。 ----
   {
     id: 'skip_sleep', icon: '🛏️', kinds: SCHOOL, wholeDay: true,

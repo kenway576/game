@@ -143,7 +143,7 @@ export const NAO_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她愣住了。',
             en: 'She stops.'
           },
@@ -207,7 +207,7 @@ export const NAO_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她读完之后很长时间没有说话。然后她笑了，笑得很难看。',
             en: 'She reads it and says nothing for a long time. Then she laughs, and it is not a pretty laugh.'
           },
@@ -240,7 +240,7 @@ export const NAO_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}curious.webp`,
+            characterImage: `${N}casual_curious.webp`,
             zh: '她瞪大了眼睛：「え、それ、どういう意味」。',
             en: 'Her eyes go wide. What is that supposed to mean.'
           },
@@ -299,7 +299,7 @@ export const NAO_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${N}angry.webp`,
+        characterImage: `${N}casual_angry.webp`,
         zh: '她扑过来要抢，没抢到。',
         en: 'She lunges for it and does not get there.'
       },
@@ -383,7 +383,7 @@ export const NAO_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '奈绪', speakerEn: 'Nao',
-        characterImage: `${N}happy.webp`,
+        characterImage: `${N}casual_happy.webp`,
         jp: '古いほう、捨てへん。でも、もう見返さへん。',
         words: [{ jp: '見返す', reading: 'みかえす', zh: '重看、翻回去看', en: 'to look back over' }],
         zh: '旧的那本，不扔。但不再翻了。',
@@ -411,7 +411,7 @@ export const NAO_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${N}happy.webp`,
+        characterImage: `${N}casual_happy.webp`,
         zh: '走出校门的时候她走在里侧，跟十年前一样。区别是这次她走得比你快半步。',
         en: 'Going out of the gate she takes the inside, the way she always did. The difference is that this time she is half a step ahead.'
       },
