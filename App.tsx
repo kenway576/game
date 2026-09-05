@@ -52,6 +52,7 @@ import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE } from './data/staminaData';
 import { buildClassMorning, classHeadline } from './story/classMorning';
 import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
+import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
@@ -547,6 +548,33 @@ const App: React.FC = () => {
     if (queued.length) setPendingLevelUps(q => [...q, ...queued]);
   };
 
+  // ✈️ 修学旅行。十一月十四到十七（火～金），四天，一天一段。
+  // 这四天没有别的可干——这本来就是修学旅行的样子，
+  // 所以它排在上课和主线前面，而且不需要玩家点"去"。
+  const tripDay = (day1Done && !playingDay1) ? tripDayOn(gameCalendar.month, gameCalendar.day) : 0;
+  const tripToday = tripDay > 0 && !storyFlags[SCHOOL_TRIP[tripDay - 1].id + '_done']
+    ? SCHOOL_TRIP[tripDay - 1]
+    : null;
+
+  // ✈️ 修学旅行那四天，一进大厅就演当天那一段。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
+    if (!tripToday) return;
+    setShowRestPlan(false);
+    setActiveTrip({
+      loc: {
+        id: 'school_trip', district: 'far',
+        nameJp: '修学旅行', reading: 'しゅうがくりょこう',
+        nameZh: tripToday.titleZh, nameEn: tripToday.titleEn,
+        blurbZh: '沖縄・三泊四日', blurbEn: 'Okinawa, three nights',
+        timeCost: 3
+      },
+      event: null,
+      script: tripToday.script
+    });
+  }, [gameMode, tripToday, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd]);
+
   // 🎓 学年走完了（4/11 → 次年 3/24，347 天）→ 演修了式。
   // 排在休息日面板前面：最后一天不问你想干什么。
   useEffect(() => {
@@ -790,6 +818,7 @@ const App: React.FC = () => {
 
   const classPending = day1Done
     && !playingDay1
+    && tripDayOn(gameCalendar.month, gameCalendar.day) === 0
     && gameCalendar.timeSlot === 'morning'
     && dayKindOf(gameCalendar) === 'school'
     && !storyFlags[classDoneFlag(gameCalendar)]
