@@ -50,6 +50,7 @@ import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
 import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE } from './data/staminaData';
 import { buildClassMorning, classHeadline } from './story/classMorning';
+import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
@@ -119,6 +120,8 @@ const App: React.FC = () => {
   const [metChars, setMetChars] = useState<CharacterId[]>([]);
   // 🏫 今天早上那节课的剧本。null = 没在上课。
   const [activeClass, setActiveClass] = useState<StoryNode[] | null>(null);
+  // 📕 正在播的主线章节
+  const [activeMain, setActiveMain] = useState<MainChapterDef | null>(null);
   const markMet = (ids: CharacterId[]) => {
     if (!ids.length) return;
     setMetChars(prev => {
@@ -547,7 +550,7 @@ const App: React.FC = () => {
   // 排在休息日面板前面：最后一天不问你想干什么。
   useEffect(() => {
     if (gameMode !== GameMode.LOBBY) return;
-    if (activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
     if (!day1Done || storyFlags['year_end_done']) return;
     if (!isSchoolYearOver(gameCalendar)) return;
     setShowRestPlan(false);
@@ -563,7 +566,7 @@ const App: React.FC = () => {
       event: null,
       script: YEAR_END
     });
-  }, [gameMode, gameCalendar, storyFlags, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done]);
+  }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done]);
 
   // 修了式演完 → 结算屏。靠 flag 触发，跳过剧本也走得到。
   useEffect(() => {
@@ -576,7 +579,7 @@ const App: React.FC = () => {
   // 选完、或者点了"待会儿再说"，都记一个 flag，今天不再打扰。
   useEffect(() => {
     if (gameMode !== GameMode.LOBBY) return;
-    if (activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
     if (!day1Done) return;
     // 学年已经走完 → 不再问"今天怎么过"。最后一天之后没有下一个休息日要安排，
     // 而且结算屏正压在上面，两块面板叠在一起看着像出了 bug。
@@ -585,7 +588,7 @@ const App: React.FC = () => {
     if (storyFlags[plannedFlag(gameCalendar)]) return;
     if (gameCalendar.timeSlot !== 'lunch' && gameCalendar.timeSlot !== 'morning') return;
     setShowRestPlan(true);
-  }, [gameMode, gameCalendar, storyFlags, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, day1Done, showYearEnd]);
+  }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, day1Done, showYearEnd]);
 
   const restPlanCtx = {
     calendar: gameCalendar, flags: storyFlags,
@@ -632,7 +635,7 @@ const App: React.FC = () => {
   // 所以留在队列里，等玩家下次找她说话（出口二）。
   useEffect(() => {
     if (gameMode !== GameMode.LOBBY) return;
-    if (activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
     if (!pendingLevelUps.length) return;
     const eligible = (e: { charId: CharacterId; axis: RelationshipAxis; level: number }) => {
       const d = findLevelStory(e.charId, e.axis, e.level);
@@ -644,7 +647,7 @@ const App: React.FC = () => {
     const def = findLevelStory(entry.charId, entry.axis, entry.level)!;
     setPendingLevelUps(q => q.filter((_, i) => i !== idx));
     setActiveLevelStory({ charId: entry.charId, def });
-  }, [gameMode, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, pendingLevelUps, storyFlags]);
+  }, [gameMode, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, pendingLevelUps, storyFlags]);
 
   // 剧本台词里的生词进单词本。
   // 去重键走同步的 ref：StrictMode 会把 effect 跑两遍，
@@ -782,6 +785,43 @@ const App: React.FC = () => {
     && dayKindOf(gameCalendar) === 'school'
     && !storyFlags[classDoneFlag(gameCalendar)]
     && !isSchoolYearOver(gameCalendar);
+
+  // 📕 现在能不能演主线。放学后和夜里都行，早上不行——
+  // 早上要上学，而神社那段全是傍晚之后的天色。
+  const mainChapter = (day1Done && !playingDay1 && !isSchoolYearOver(gameCalendar)
+    && gameCalendar.timeSlot !== 'morning')
+    ? nextMainChapter({
+        calendar: gameCalendar, flags: storyFlags,
+        familiarity: familiarityMap, met: metChars
+      })
+    : null;
+
+  const startMainChapter = () => {
+    if (!mainChapter) return;
+    audioManager.playSfx('confirm');
+    setActiveMain(mainChapter);
+  };
+
+  // 主线一章花掉一格时间和一趟神社的脚力。
+  // 它是一次真的出门，不能白送。
+  const finishMainChapter = (flags: StoryFlags) => {
+    const ch = activeMain;
+    setActiveMain(null);
+    setStoryFlags(prev => ({ ...prev, ...flags, ...(ch ? { [`${ch.id}_done`]: true } : {}) }));
+    setLife(l => ({
+      ...l,
+      stamina: Math.max(0, (l.stamina ?? STAMINA_MAX) - 18),
+      wentOutOn: dayIndex(gameCalendar), stayInDays: 0
+    }));
+    setGameCalendar(prev => {
+      const i = AFTERSCHOOL_SLOTS.indexOf(prev.timeSlot);
+      const next = (i < 0 ? 0 : i) + 1;
+      return next < AFTERSCHOOL_SLOTS.length
+        ? { ...prev, timeSlot: AFTERSCHOOL_SLOTS[next] }
+        : prev;   // 已经是夜里了就停在夜里，让玩家自己回去睡
+    });
+    setGameMode(GameMode.LOBBY);
+  };
 
   const goToClass = () => {
     const script = buildClassMorning(gameCalendar, {
@@ -2175,6 +2215,8 @@ ${wind}`;
           classPending={classPending}
           classLine={classHeadline(gameCalendar, userState.language === 'en')}
           onGoToClass={goToClass}
+          mainChapter={mainChapter}
+          onStartMainChapter={startMainChapter}
           phoneUnread={totalUnread({ flags: storyFlags, affection: affectionMap, familiarity: familiarityMap, met: metChars })}
           stamina={life.stamina ?? STAMINA_MAX}
           onOpenProtagonistProfile={() => setShowProtagonistProfile(true)}
@@ -2511,6 +2553,34 @@ ${wind}`;
           onUnlockCg={unlockStoryCg}
           onRestore={restoreStoryProgress}
           onFinish={finishTrip}
+        />
+        </div>
+      )}
+
+      {/* 📕 主线。一学年五章，全在生田神社 */}
+      {activeMain && (
+        <div className="fixed inset-0 z-[130] overflow-hidden">
+        <StoryScreen
+          key={`main-${activeMain.id}`}
+          script={activeMain.script}
+          scriptVersion={`${activeMain.id}-v1`}
+          progressKey={`kobe_study_main_${activeMain.id}`}
+          chapterNameZh={`第 ${activeMain.n} 章`}
+          chapterNameEn={`Chapter ${activeMain.n}`}
+          language={userState.language}
+          stats={protagonistStats}
+          background={background}
+          playerName={userState.playerName}
+          onSetPlayerName={(name) => setUserState(prev => ({ ...prev, playerName: name }))}
+          onOpenSystemMenu={() => setShowSystemMenu(true)}
+          onEffects={applyStoryEffects}
+          onRelations={applyStoryRelations}
+          onFlags={applyStoryFlags}
+          onSceneChange={setCurrentScene}
+          onCollectWords={collectStoryWords}
+          onUnlockCg={unlockStoryCg}
+          onRestore={restoreStoryProgress}
+          onFinish={finishMainChapter}
         />
         </div>
       )}

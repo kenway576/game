@@ -36,6 +36,10 @@ interface Props {
   classPending?: boolean;
   classLine?: string;
   onGoToClass?: () => void;
+  // 📕 主线：外公那张地图。排在上课前面——
+  // 它一学年只出现五次，出现的时候就该是当天最要紧的事。
+  mainChapter?: { titleZh: string; titleEn: string; teaseZh: string; teaseEn: string; n: number } | null;
+  onStartMainChapter?: () => void;
   phoneUnread: number;
   stamina: number;
   onOpenProtagonistProfile: () => void;
@@ -45,7 +49,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, phoneUnread, stamina, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, background
 }) => {
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
@@ -92,7 +96,18 @@ const LobbyScreen: React.FC<Props> = ({
           第一章没打完的时候，这一块变成回主线的入口：以前存档一读回来
           就掉在大厅里，主线断在半路，界面上没有任何地方能回去。 */}
       <div className="bg-black/85 backdrop-blur text-white px-5 md:px-8 py-2.5 md:py-3.5 border-l-4 border-yellow-500 skew-x-12 transform origin-top-left pointer-events-auto shadow-2xl">
-        {mainStoryPending ? (
+        {mainChapter ? (
+          <button onClick={onStartMainChapter} className="-skew-x-12 text-left group">
+            <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-amber-300 group-hover:text-amber-200">
+              {userState.language === 'en'
+                ? `CHAPTER ${mainChapter.n} · ${mainChapter.titleEn} ▶`
+                : `第 ${mainChapter.n} 章 · ${mainChapter.titleZh} ▶`}
+            </h2>
+            <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest truncate max-w-[62vw] md:max-w-none">
+              {userState.language === 'en' ? mainChapter.teaseEn : mainChapter.teaseZh}
+            </p>
+          </button>
+        ) : mainStoryPending ? (
           <button onClick={onResumeMainStory} className="-skew-x-12 text-left group">
             <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-yellow-400 group-hover:text-yellow-300">
               {userState.language === 'en' ? 'CONTINUE CHAPTER 1 ▶' : '继续第 1 章 ▶'}
