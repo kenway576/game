@@ -152,8 +152,8 @@ export const MAKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '然后她意识到了这个数字意味着什么。',
-            en: 'And then she realises what that number implies.'
+            zh: '她把手机举在那儿，没有放下去。屏幕自己暗掉了，她还举着。',
+            en: 'She holds the phone where it is and does not put it down. The screen goes dark by itself and she is still holding it up.'
           },
           {
             type: 'narration',

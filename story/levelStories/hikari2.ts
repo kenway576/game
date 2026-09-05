@@ -429,8 +429,8 @@ export const HIKARI_STORY_2: StoryNode[] = [
   // ---- 落地：墙立起来 ----
   {
     type: 'narration',
-    zh: '轿厢快到底了。她抬起头，很快地擦了一下脸，然后又笑了——这一次你看得很清楚，那个笑是怎么被装回去的。',
-    en: 'The car is nearly down. She lifts her head, wipes her face quickly, and smiles again. This time you watch exactly how the smile gets put back on.'
+    zh: '轿厢快到底了。她抬起头，很快地擦了一下脸。笑是从嘴角先回来的，眼睛慢了半拍。你全程都在看。',
+    en: 'The car is nearly down. She lifts her head and wipes her face quickly. The smile comes back at the mouth first; the eyes are half a beat behind. You watch the whole of it.'
   },
   {
     type: 'speech',

@@ -157,8 +157,8 @@ export const HIKARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '然后她把手放下来，插进口袋里，接着说话，语速比刚才慢。',
-            en: 'Then she lowers her arm, puts her hands in her pockets, and goes on talking, slower than before.'
+            zh: '她把手放下来插进口袋。再开口的时候语速慢了下来，慢得像在挑词。',
+            en: 'She puts her hands down and into her pockets. When she starts again she is slower, slow enough to look like she is choosing the words.'
           },
           {
             type: 'speech',
@@ -238,8 +238,8 @@ export const HIKARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '查了三分钟，她把手机转过来给你看，然后抬起手指了一个方向。',
-            en: 'Three minutes later she turns the screen towards you, then lifts her arm and points.'
+            zh: '查了三分钟，她把手机转过来给你看。屏幕还没收回去，另一只手已经指出去了。',
+            en: 'Three minutes of looking, then she turns the phone round to show you. Her other hand is already pointing before the screen goes back.'
           },
           {
             type: 'narration',

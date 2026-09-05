@@ -141,8 +141,8 @@ const EV_GROUP_RAMEN: MapEventDef = {
           then: [
             {
               type: 'narration',
-              zh: '她们同时转过头看了你一眼，然后同时转回去，同时把第一口面吸进嘴里。',
-              en: 'They both turn to look at you at the same moment, both turn back at the same moment, and take their first mouthful at the same moment.'
+              zh: '她们同时转过头看了你一眼。转回去也是同时的。第一口面也是。',
+              en: 'They both turn and look at you at the same moment. They turn back at the same moment. The first mouthful of noodles goes in at the same moment.'
             },
             {
               type: 'narration',
@@ -252,8 +252,8 @@ const EV_GROUP_RAMEN: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '大概过了两分钟，你听见左边的筷子先动了，然后是右边的。数数这件事没有人再提起过。',
-              en: 'About two minutes later you hear the chopsticks start up again on your left, and then on your right. Nobody mentions the counting again.'
+              zh: '大概过了两分钟，左边的筷子先动了。右边的隔了三秒。数数这件事没有人再提起。',
+              en: 'About two minutes later the chopsticks on the left start up. The ones on the right take another three seconds. Nobody mentions the counting again.'
             },
             {
               type: 'speech',
@@ -357,8 +357,8 @@ const EV_GROUP_MERIKEN: MapEventDef = {
     { type: 'scene', scene: 'meriken_park', bgm: 'town', titleZh: '美利坚公园', titleEn: 'Meriken Park', subtitleZh: '周日 下午 3:00', subtitleEn: 'Sunday, 3:00 PM' },
     {
       type: 'narration',
-      zh: '这件事的起因是光在群里发了一句「明天去海边」，然后在没有人回复的情况下，自己把时间地点都定好了。',
-      en: 'This began when Hikari posted "beach tomorrow" in the group chat and then, with nobody having replied, fixed the time and place herself.'
+      zh: '这件事的起因是光在群里发了一句「明天去海边」。没有人回复。她隔了四分钟，自己把时间和地点都发了出来。',
+      en: 'This began with Hikari posting "beach tomorrow" in the group chat. Nobody replied. Four minutes later she posted the time and the place herself.'
     },
     {
       type: 'narration',
@@ -577,8 +577,8 @@ const EV_GROUP_MERIKEN: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '你答不上来。铃看了你两秒，把罐子贴在自己脸颊上，然后转回去继续看那个应用。',
-              en: 'You have no answer. Rei looks at you for two seconds, presses the can to her cheek, and turns back to her app.'
+              zh: '你答不上来。铃看了你两秒，把罐子贴在自己脸颊上。贴着的时候她已经转回去看那个应用了。',
+              en: 'You have no answer. Rei looks at you for two seconds and presses the can against her own cheek. It is still there when she turns back to the app.'
             },
             {
               type: 'narration',

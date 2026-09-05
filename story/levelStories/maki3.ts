@@ -229,8 +229,8 @@ export const MAKI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她的整套办法建立在"有对手"上。而她太强了，强到把对手都赶跑了。',
-            en: 'Her entire method depends on having an opponent. And she is good enough that she has driven them all off.'
+            zh: '屏幕上那十行名字，你一行一行看下去。真的是十个她。',
+            en: 'You read down the ten lines of names on the screen, one at a time. It really is ten of her.'
           }
         ]
       },

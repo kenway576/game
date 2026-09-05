@@ -85,8 +85,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '而且他在空中的姿势……很难形容。硬要说的话，像是有人把他按了暂停，然后手动拖到了横杆那一边。',
-        en: 'And the shape he made in the air is hard to describe. If pressed: as though somebody paused him, and then dragged him manually to the far side of the bar.'
+        zh: '而且他在空中的姿势……很难形容。像是有人按了暂停，再用手把他拖到了横杆那一边。',
+        en: 'And his shape in the air is hard to describe. As if somebody had hit pause and then dragged him over the bar by hand.'
       },
       {
         type: 'narration',
@@ -157,8 +157,8 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '他愣了一下，然后说了句谢谢，语气认真得有点过头。',
-                en: 'He blinks, then thanks you, rather more seriously than the situation calls for.'
+                zh: '他愣了一下。说谢谢的时候他鞠了半个躬，认真得有点过头。',
+                en: 'He blanks for a second. When he thanks you he goes into half a bow, rather more seriously than the occasion calls for.'
               },
               {
                 type: 'narration',
@@ -167,8 +167,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration', characterImage: E.shirou,
-                zh: '第十二次他停下来，说今天就到这儿。然后他把那根竹竿仔细擦了一遍，才收起来。',
-                en: 'On the twelfth he stops and says that is enough for today. Then he wipes the bamboo pole down carefully before putting it away.'
+                zh: '第十二次他停下来，说今天就到这儿。竹竿他擦了一遍才收，从头擦到尾，两遍。',
+                en: 'On the twelfth he stops and says that is enough for today. He wipes the bamboo pole down before putting it away. End to end. Twice.'
               },
               {
                 type: 'narration',
@@ -187,8 +187,8 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你走出二十米，身后又是一声闷响，然后是横杆落地的声音。',
-                en: 'Twenty metres on there is another thud behind you, and then the sound of the bar coming down.'
+                zh: '你走出二十米，身后又是一声闷响。隔了大概一秒，横杆才落地。',
+                en: 'Twenty metres on there is another thud behind you. About a second after it, the bar comes down.'
               },
               {
                 type: 'narration',
@@ -263,8 +263,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '他按了一分钟，然后掏出手机贴在耳朵上，开始跟电话那头汇报进度。',
-        en: 'He sets it for a minute, then puts a phone to his ear and starts reporting progress to whoever is on the other end.'
+        zh: '他按了一分钟。手机贴到耳朵上的时候另一只手还按着，他开始跟电话那头汇报进度。',
+        en: 'He presses for a minute. The phone goes to his ear with the other hand still pressing, and he starts giving somebody a progress report.'
       },
       {
         type: 'narration',
@@ -341,8 +341,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '然后他拿出第二根香蕉，剥了皮，重新放了进去。',
-                en: 'Then he produces a second banana, peels it, and puts that in instead.'
+                zh: '他拿出第二根香蕉。剥皮，放回去，位置和刚才一模一样。',
+                en: 'He produces a second banana. Peels it, puts it back, in exactly the same position as before.'
               },
               {
                 type: 'narration',
@@ -629,8 +629,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '然后他蹲了下来，跟小孩说了一句什么，语气很平。',
-                en: 'Then he crouches down and says something to the child in a very level voice.'
+                zh: '他蹲了下来，蹲到和小孩一样高，说了一句什么。语气跟刚才对你说话时一模一样。',
+                en: 'He crouches down, all the way down to the child, and says something. In exactly the tone he used on you.'
               },
               {
                 type: 'narration',
@@ -707,8 +707,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration', characterImage: E.anya,
-        zh: '那个小孩忽然转过头，非常认真地看着你，然后说了三个字：「バナナのほう」。',
-        en: 'The child turns round, looks at you with total seriousness, and says: the banana one.'
+        zh: '那个小孩忽然转过头，非常认真地看着你。看了三秒，说：「バナナのほう。」',
+        en: 'The child turns round and looks at you with total seriousness. Three seconds of it. Then: "The banana one."'
       },
       {
         type: 'narration',
@@ -802,8 +802,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '她好像在给自己打气。她深吸了一口气，然后说了一句什么，声音小得只有她自己听得见。',
-        en: 'She appears to be psyching herself up. She takes a breath and says something too quietly for anybody but herself.'
+        zh: '她好像在给自己打气。深吸一口气，嘴唇动了几下，声音小得连你都听不见。',
+        en: 'She seems to be talking herself into something. A deep breath, her lips moving, at a volume even you cannot pick up.'
       },
       {
         type: 'narration',
@@ -868,8 +868,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration', characterImage: E.nagisa,
-                zh: '她愣住了，然后急急忙忙地道谢，进去了。',
-                en: 'She freezes, thanks you in a hurry, and goes in.'
+                zh: '她愣住了。道谢的时候话都撞在一起，人已经进门了。',
+                en: 'She freezes. The thank-you comes out with the words on top of each other, and she is already through the door.'
               },
               {
                 type: 'narration',
@@ -1042,8 +1042,8 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration', characterImage: E.anna,
-                zh: '她抬头看了你两秒钟，然后眼睛亮了。她说了句谢谢，接过去，三口吃完了。',
-                en: 'She looks up at you for two seconds and then lights up. She thanks you, takes it, and finishes it in three bites.'
+                zh: '她抬头看了你两秒钟。眼睛亮起来和伸手是同一个动作。谢谢是嚼着说的，三口就没了。',
+                en: 'She looks up at you for two seconds. Her eyes lighting up and her hand coming out are the same motion. The thank-you is said around a mouthful. Three bites and it is gone.'
               },
               {
                 type: 'narration',

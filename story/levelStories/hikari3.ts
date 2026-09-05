@@ -609,8 +609,8 @@ export const HIKARI_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '她说得很轻松，轻松得像在讲一个笑话。你知道那不是笑话——那是她想了三周之后挑出来的最优解。',
-        en: 'She says it lightly, like a joke. You know it is not a joke. It is the best answer she could find in three weeks of looking.'
+        zh: '她说得很轻松，轻松得像在讲一个笑话。但她说到第三句就没有停顿了，一个磕巴都没有。这段话她练过。',
+        en: 'She says it lightly, as light as a joke. But from the third sentence on there are no pauses in it, not one stumble. She has practised this.'
       },
       {
         type: 'narration',

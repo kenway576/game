@@ -401,8 +401,8 @@ export const SORA_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '然后她站起来去捡球，说时间不早了，该走了。',
-            en: 'Then she gets up to fetch the ball and says it is getting late, they should go.'
+            zh: '她站起来去捡球。背对着你说时间不早了，该走了。球捡了很久。',
+            en: 'She gets up to fetch the ball. With her back to you she says it is getting late and you should go. Fetching the ball takes a while.'
           },
           {
             type: 'narration',

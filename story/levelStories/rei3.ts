@@ -294,8 +294,8 @@ export const REI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她讲到这里停了一下，然后自己接了下去，声音低了很多。',
-    en: 'She pauses there, and then goes on herself, much more quietly.'
+    zh: '她讲到这里停了一下。你没有接话。她自己接了下去，声音低了很多。',
+    en: 'She stops there. You do not fill it. She carries on herself, much lower.'
   },
   {
     type: 'speech',

@@ -144,8 +144,8 @@ export const REI_PARTING: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '她犹豫了一下，像是在决定要不要多说一句。然后她把书抱在胸前，微微欠了欠身。',
-        en: 'She hesitates, as if deciding whether to add one more thing. Then she hugs the book to her chest and inclines her head a fraction.'
+        zh: '她犹豫了一下，像是在决定要不要多说一句。最后她把书抱到胸前，欠了欠身，那一句没有说。',
+        en: 'She hesitates, as if deciding whether to add something. In the end she gathers the book to her chest and bows slightly, and the something goes unsaid.'
       },
       {
         type: 'speech',

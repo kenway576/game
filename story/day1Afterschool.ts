@@ -103,8 +103,8 @@ export const DAY1_GYM: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你把球捡起来，在指尖上颠了两下，然后从三分线外投了出去。',
-            en: 'You pick the ball up, bounce it twice on your fingertips, and shoot from outside the arc.'
+            zh: '你把球捡起来。在指尖上颠了两下，颠第三下的时候手已经抬起来了。三分线外。',
+            en: 'You pick the ball up. Two bounces on your fingertips; on what would have been the third, your hand is already up. From outside the arc.'
           },
           {
             type: 'narration',
@@ -676,8 +676,8 @@ export const DAY1_LIBRARY: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你把椅子推回去，尽量不发出声音，然后说了句「打扰了」。',
-            en: 'You push the chair back in as quietly as you can and say that you will not keep her.'
+            zh: '你把椅子推回去。椅腿还是刮了一下地板。你说了句「打扰了」，声音比那一下还轻。',
+            en: 'You push the chair back in. The leg scrapes the floor anyway. You say you will not keep her, more quietly than the scrape.'
           },
           {
             type: 'speech',
@@ -859,8 +859,8 @@ export const DAY1_ARCADE: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '老板从铁板后面抬起头，看了看你的手指，又看了看她，然后开始翻丸子。',
-            en: 'The man behind the griddle looks up, looks at your finger, looks at her, and starts turning the batter.'
+            zh: '老板从铁板后面抬起头。他先看你的手指，再看她。看完，锥子就下去了。',
+            en: 'The owner looks up from behind the griddle. Your fingers first, then her. Once he has looked, the pick goes in.'
           },
           {
             type: 'speech',
@@ -911,8 +911,8 @@ export const DAY1_ARCADE: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她咬着一颗章鱼烧，含混地「あ？」了一声，然后才反应过来你在问什么。',
-    en: 'She bites into a takoyaki, makes a muffled noise, and only then works out what you are asking.'
+    zh: '她嘴里含着一颗章鱼烧，「あ？」了一声。又嚼了两下，才反应过来你问的是什么。',
+    en: 'She has a takoyaki in her mouth and manages an "ah?". Two more chews and it lands, what you were asking.'
   },
   {
     type: 'speech',
@@ -1388,8 +1388,8 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你说没有。她「哦」了一声，接受了这个答案，然后立刻把袋子塞给你。',
-    en: 'You say it did not. She says "oh", accepts this ruling, and immediately shoves a bag into your hands.'
+    zh: '你说没有。她「哦」了一声。这个字还没说完，袋子已经在你手里了。',
+    en: 'You say no. She says "oh". The word is not finished before the bag is in your hands.'
   },
   {
     type: 'speech',
@@ -1562,8 +1562,8 @@ export const DAY1_EVENING: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你把小票展平，看了一眼总额，然后收进钱包夹层。一千八百四十日元。',
-            en: 'You flatten the receipt, read the total, and file it in your wallet. One thousand eight hundred and forty yen.'
+            zh: '你把小票展平看了一眼。一千八百四十日元。你把它折成四折，收进钱包夹层。',
+            en: 'You flatten the receipt and look at the total. One thousand eight hundred and forty yen. You fold it in four and put it in your wallet.'
           },
           {
             type: 'narration',
@@ -1601,8 +1601,8 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你问她鸡蛋为什么有两盒。她低头看了看袋子，「啊」了一声，然后说了句「……昨天也买了吧」。',
-    en: 'You ask about the two boxes of eggs. She looks into the bag, says "ah", and then, "...I think I bought some yesterday as well."'
+    zh: '你问她鸡蛋为什么有两盒。她低头看袋子，看了三秒，「啊」了一声：「……昨天也买了吧。」',
+    en: 'You ask why there are two boxes of eggs. She looks down into the bag for three seconds and says "ah". "...I think I bought some yesterday as well."'
   },
   {
     type: 'narration',
@@ -1672,8 +1672,8 @@ export const DAY1_EVENING: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        zh: '你只好承认午饭没吃。她「啊」了一声，然后开始翻袋子，翻了半天，掏出一个已经压扁了的红豆面包塞给你。',
-        en: 'You admit you skipped lunch. She says "ah", starts digging through the bags, and after some time produces a badly squashed red bean bun and pushes it at you.'
+        zh: '你只好承认午饭没吃。她「啊」了一声就开始翻袋子。翻得很久，久到你想说算了。掏出来的是一个压扁了的红豆面包。',
+        en: 'You end up admitting you skipped lunch. She says "ah" and starts digging through the bag. It goes on long enough that you nearly tell her not to bother. What comes out is a flattened anpan.'
       },
       {
         type: 'narration',
@@ -1694,8 +1694,8 @@ export const DAY1_EVENING: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        zh: '你说吃了，是同学分给你的。她「哦」了一声，点了点头，然后又点了一次，然后就没说话了。',
-        en: 'You say you did eat: a classmate shared hers. She says "oh", nods, nods again, and then stops talking.'
+        zh: '你说吃了，是同学分给你的。她「哦」了一声，点了下头。隔了两秒又点了一下。这一路她再没说话。',
+        en: 'You say you did; a classmate shared with you. She says "oh" and nods. Two seconds later she nods again. She does not say anything else the rest of the way.'
       },
       {
         type: 'narration',
@@ -1758,8 +1758,8 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她说了两遍。第二遍像是说给自己听的。然后她挥了挥手，转身下坡，走的是——你注意到了——错误的那个方向。',
-    en: 'She says it twice. The second time sounds like it was for her own benefit. Then she waves, turns, and heads back down the slope in — you notice — the wrong direction.'
+    zh: '她说了两遍。第二遍像是说给自己听的。挥手，转身，下坡。你看着她走，走了大概十米才反应过来：那个方向是错的。',
+    en: 'She says it twice. The second one sounds like it is for herself. A wave, a turn, down the slope. You watch her go about ten metres before it registers that the direction is wrong.'
   },
   {
     type: 'narration',

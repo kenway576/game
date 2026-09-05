@@ -278,8 +278,8 @@ export const REI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她低头，在那一格里写下「1880s」，然后在备注栏加了一行小字。',
-            en: 'She looks down and writes 1880s in the cell, then adds a small line in the notes column.'
+            zh: '她低头在那一格里写下「1880s」。写完没停笔，又在备注栏加了一行更小的字。',
+            en: 'She writes 1880s in the cell. The pen does not stop; a line of smaller writing goes into the notes column as well.'
           },
           {
             type: 'narration',

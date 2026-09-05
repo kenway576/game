@@ -382,8 +382,8 @@ export const ASUKA_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你把本子合上，推回她那边，然后继续分你手上那摞。',
-            en: 'You close the notebook, push it back to her side, and go on sorting your own stack.'
+            zh: '你把本子合上推回她那边。她没接，本子停在两张桌子中间。你继续分你手上那摞。',
+            en: 'You close the notebook and push it back to her side. She does not take it, and it sits between the two desks. You go back to sorting your own pile.'
           },
           {
             type: 'narration',

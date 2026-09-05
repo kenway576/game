@@ -423,8 +423,8 @@ const EV_BOOKSTORE_REI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              zh: '你没有回答她的问题。你只是抬起手，按在自己胸口正中偏左的位置，然后停在那儿。',
-              en: 'You do not answer her question. You just raise your hand, put it flat on your chest a little left of centre, and leave it there.'
+              zh: '你没有回答她的问题。你抬起手，按在自己胸口正中偏左的地方。手就停在那儿，没有再动。',
+              en: 'You do not answer her question. You raise a hand and put it against your chest, slightly left of centre. It stays there and does not move.'
             },
             {
               type: 'narration',
@@ -502,8 +502,8 @@ const EV_BOOKSTORE_REI: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '她把袋子夹在腋下，走进傍晚的三宫。走了几步，又停下来，回头看了你一眼，然后继续走。',
-      en: 'She tucks the bag under her arm and walks out into evening Sannomiya. A few steps on she stops, looks back at you once, and keeps going.'
+      zh: '她把袋子夹在腋下走进傍晚的三宫。走了几步停下来，回头看了你一眼。看完继续走，没有再回头。',
+      en: 'She tucks the bag under her arm and walks off into the Sannomiya evening. A few paces on she stops and looks back at you. Then she keeps going, and does not look again.'
     },
     { type: 'effect', relations: [{ char: CharacterId.REI, familiarity: 6, affection: 3, reasonZh: '她回了一次头', reasonEn: 'She looked back once' }] }
   ]
@@ -887,8 +887,8 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '她把最后一个芝麻团子塞进嘴里，含糊地说了句「走啦」，然后语速就恢复正常了。',
-              en: 'She puts the last sesame ball in her mouth, says something like "let us go" around it, and her pace returns to normal.'
+              zh: '她把最后一个芝麻团子塞进嘴里，含糊地说了句「走啦」。这三个字之后，她的语速就回到平时那个速度了。',
+              en: 'She puts the last sesame ball in her mouth and says, thickly, that she is off. After those words her speech goes back to its usual rate.'
             }
           ]
         },
@@ -925,8 +925,8 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '你从书包里掏出手账，翻到空白页，写下三行：皮、馅、烫嘴程度。她凑过来看了两秒，然后一把抢过笔。',
-              en: 'You get the journal out of your bag, find a blank page, and write three lines: skin, filling, how badly it burns your mouth. She leans in for two seconds, then grabs the pen out of your hand.'
+              zh: '你从书包里掏出手账，翻到空白页，写下三行：皮、馅、烫嘴程度。她凑过来看。看到第二行的时候笔就被抢走了。',
+              en: 'You get the journal out, find a blank page, and write three lines: skin, filling, how much it burns. She leans in to look. By the second line the pen has been taken off you.'
             },
             {
               type: 'speech',
@@ -1128,8 +1128,8 @@ const EV_SLOPE_NAO: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '你说，米和味噌不是从天上掉下来的。她盯着那张纸看了很久，然后忽然笑了一下，把它折起来塞进了自己口袋。',
-              en: 'You say that rice and miso do not fall out of the sky. She looks at the paper for a long moment, then laughs once, folds it, and puts it in her own pocket.'
+              zh: '你说，米和味噌不是从天上掉下来的。她盯着那张纸看了很久。笑出来的时候纸已经在她手里折起来了，折了两折，进了自己口袋。',
+              en: 'You say that rice and miso do not fall out of the sky. She stares at the paper for a long time. By the time she laughs it is already folded in her hands, twice, and going into her own pocket.'
             },
             {
               type: 'speech',
@@ -1265,8 +1265,8 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              zh: '你坐下，点了咖啡，然后就没再说话。她也没有。',
-              en: 'You sit, order a coffee, and say nothing more. Neither does she.'
+              zh: '你坐下，点了咖啡。之后你没有再说话。她也没有。',
+              en: 'You sit down and order a coffee. After that you do not say anything. Neither does she.'
             },
             {
               type: 'narration',
@@ -2084,8 +2084,8 @@ const EV_PORTLINER_FIRST: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '那个小孩全程没说话，鼻子贴在玻璃上。到站的时候他跟你说了句「またね」，然后被他妈妈牵走了。',
-      en: 'The child says nothing the whole way, nose against the glass. At the station he says "see you" to you and is led away by his mother.'
+      zh: '那个小孩全程没说话，鼻子贴在玻璃上。到站的时候他跟你说了句「またね」。他妈妈牵着他走的时候他还在回头。',
+      en: 'The child does not say a word the whole way, nose against the glass. At the stop he tells you "see you". His mother leads him off and he is still looking back.'
     },
     {
       type: 'narration',

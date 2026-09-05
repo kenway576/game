@@ -124,7 +124,7 @@ const HOME_SUMMER: StoryNode[] = [
         hintEn: 'Too hot. Your brain runs at half speed.',
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '在三十四度里背下来的词，忘得慢', reasonEn: 'Words learned at thirty-four degrees stick better' }],
         then: [
-          { type: 'narration', zh: '你背了二十个词，忘了十五个，剩下五个大概能记一辈子——因为它们是和这个温度一起记住的。', en: 'You learn twenty words, forget fifteen, and the remaining five you will probably keep for life, because they went in attached to this temperature.' }
+          { type: 'narration', zh: '你背了二十个词。合上本子的时候还记得五个。多年以后你再看到这五个词，先想起来的会是这个温度。', en: 'You go through twenty words. Five of them are still there when you close the book. Years from now, what these five will bring back first is this temperature.' }
         ]
       },
       {
@@ -133,7 +133,7 @@ const HOME_SUMMER: StoryNode[] = [
         hintEn: 'This is what summer is for.',
         effects: [{ stat: 'kindness', amount: 2, reasonZh: '你没有跟这个夏天较劲', reasonEn: 'You did not fight the summer' }],
         then: [
-          { type: 'narration', zh: '你趴了两个小时。中间睡着了一次，梦见自己在冬天，冷得发抖，然后被热醒。', en: 'Two hours. You fall asleep once and dream it is winter and you are shivering, then wake up because of the heat.' }
+          { type: 'narration', zh: '你趴了两个小时。中间睡着过一次，梦见自己在冬天，冷得发抖。醒过来是因为热。', en: 'Two hours. You fall asleep once and dream it is winter and you are shivering. What wakes you is the heat.' }
         ]
       }
     ]
@@ -490,7 +490,7 @@ export const CLUB_COUNCIL: StoryNode[] = [
         setFlags: ['restday_dragged_asuka_out'],
         then: [
           { type: 'narration', characterImage: `${ASUKA}angry.webp`, zh: '她当然反对。她列举了三条理由，每一条都成立。', en: 'She objects, of course, on three grounds, all of them valid.' },
-          { type: 'narration', zh: '你把她的笔收了，把文件扣过来压好，然后站在门口等。', en: 'You take her pen, turn the papers face down, and go and wait by the door.' },
+          { type: 'narration', zh: '你把她的笔收了，把文件扣过来压好。做完这些你站到门口，没有催她。', en: 'You take her pen away and turn the papers face down with something on top. That done, you go and stand by the door without hurrying her.' },
           { type: 'narration', characterImage: `${ASUKA}shy.webp`, zh: '她坐了大概三十秒，然后站起来，很小声地说了句「……一時間だけよ」。', en: 'She sits there about thirty seconds, then stands, and says very quietly that it is one hour only.' },
           { type: 'narration', zh: '一小时后你们还在元町。三小时后她第一次说了"今天真的挺好的"。', en: 'An hour later you are still in Motomachi. Three hours later she says, for the first time, that today was rather good.' }
         ]
@@ -518,7 +518,7 @@ export const CLUB_MUSIC: StoryNode[] = [
         relations: [{ char: CharacterId.MAKI, familiarity: 5, affection: 8, reasonZh: '她骂了你三分钟，然后又弹了一遍', reasonEn: 'She swore at you for three minutes and then played it again' }],
         then: [
           { type: 'narration', characterImage: `${MAKI}angry_alt.webp`, zh: '她整张脸红到耳朵，然后开始骂你，骂了大概三分钟，一句重复的都没有。', en: 'She goes red to the ears and swears at you for about three minutes without repeating herself once.' },
-          { type: 'narration', zh: '骂完之后她没赶你走。她背过身，说了一句「……もっかいだけな」，然后又弹了一遍。', en: 'When she has finished she does not throw you out. She turns her back, says just the once, then, and plays it again.' },
+          { type: 'narration', zh: '骂完之后她没赶你走。她背过身去，说了一句「……もっかいだけな」。这一遍她弹得比刚才慢。', en: 'Having told you off she does not throw you out. She turns her back and says, only once more then. This time she plays it slower.' },
           { type: 'narration', characterImage: `${MAKI}shy_alt.webp`, zh: '这一遍没错。弹完她没回头，肩膀在等。', en: 'This time it is clean. She does not turn round. Her shoulders are waiting.' }
         ]
       },
@@ -1038,7 +1038,7 @@ export const TRIP_KYOTO: StoryNode[] = [
         setFlags: ['trip_kyoto_back'],
         then: [
           { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '她在最后面走。她说这样能看见所有人，谁掉队她马上知道。', en: 'She is walking at the back. That way she can see everybody, she says, and knows at once if anyone falls behind.' },
-          { type: 'narration', zh: '你问那谁看着她。她愣了一下，然后笑了，说这个问题她没想过。', en: 'You ask who is watching her. She blinks, then laughs, and says she has never considered the question.' },
+          { type: 'narration', zh: '你问那谁看着她。她愣了一下。笑出来之前那半秒里，她是真的在想。', en: 'You ask who is watching out for her. She blinks. In the half second before she laughs, she is actually thinking about it.' },
           { type: 'narration', characterImage: `${MIYUKI}cardigan_shy.webp`, zh: '接下来的四百级台阶你们走在一起。她第一次没有走在最后面。', en: 'You do the next four hundred steps together. For once she is not last.' }
         ]
       },

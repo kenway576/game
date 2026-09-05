@@ -143,8 +143,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '她转头看见你，做了个"别说出去"的口型，然后继续用非常生硬的日语跟那两个人说话。',
-        en: 'She catches your eye, mouths at you not to tell, and goes back to speaking very stilted Japanese at them.'
+        zh: '她转头看见你，做了个"别说出去"的口型。做完就转回去了，继续用非常生硬的日语跟那两个人说话。',
+        en: 'She turns, sees you, and mouths at you not to say anything. Then she turns back and carries on in her extremely stiff Japanese with the other two.'
       },
       seen('你握住了这所学校的一个秘密', 'You are now holding one of this school’s secrets')
     ]
@@ -192,8 +192,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你没有。他说没事，然后徒手把链条装了回去，手上黑了一片，一点不在意。',
-        en: 'You do not. He says never mind and puts it back on by hand, gets black to the wrist, and does not care.'
+        zh: '你没有。他说没事，徒手就把链条挂了回去。装完他看了看自己的手，两只手都黑了，他在裤子上抹了两下。',
+        en: 'You do not. He says never mind and puts the chain back on with his bare hands. Afterwards he looks at them, both black, and wipes them twice on his trousers.'
       },
       seen('你学会了一句只在需要工具时才用得上的日语', 'You learned a Japanese sentence that is only useful when you need a tool')
     ]
@@ -208,8 +208,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '他做到一半停下来，把橡皮擦得很干净，然后从那一题的第一行重新开始。',
-        en: 'Halfway through he stops, rubs it out very cleanly, and starts that question again from the first line.'
+        zh: '他做到一半停下来。橡皮擦过的地方擦得很干净，干净到看不出写过。他从那一题的第一行重新开始。',
+        en: 'Halfway through he stops. What the eraser has been over is clean, clean enough that nothing shows. He starts that question again from its first line.'
       },
       seen('你看了一分钟别人怎么念书', 'You watched somebody study, for a minute')
     ]
@@ -338,8 +338,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '中间有一次没响。他停了半秒，把那一件翻过来重扫，然后节拍就接上了。',
-        en: 'One of them does not beep. He stops for half a second, turns it over, scans again, and the rhythm resumes.'
+        zh: '中间有一次没响。他停了半秒，把那一件翻过来重扫。第二下响了，节拍就接上了。',
+        en: 'One of them does not beep. He stops for half a second, turns it over and runs it again. The second pass beeps, and the rhythm picks back up.'
       },
       seen('你在一个便利店里看见了一种奇怪的完美', 'You saw a strange kind of perfection in a convenience store')
     ]
@@ -1014,8 +1014,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '她从你手里接过帽子，没有夸张的感谢，只是淡淡地微笑道了声谢，然后转身继续走上坡道。',
-        en: 'She takes the hat with a quiet, polite thank-you, untheatrical and entirely calm, before continuing up the slope.'
+        zh: '她从你手里接过帽子，说了声谢谢，声音不大。说完她就转身继续上坡了。',
+        en: 'She takes the hat from you and says thank you, not loudly. Then she turns and carries on up the slope.'
       },
       {
         type: 'narration',

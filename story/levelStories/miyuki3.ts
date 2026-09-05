@@ -356,8 +356,8 @@ export const MIYUKI_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '你叫了很多次。到第五次的时候她终于哭了，而且是笑着哭的——这是她第一次在别人面前不忙着解释自己在干什么。',
-        en: 'You say it many times. At the fifth she finally cries, and she is laughing while she does. It is the first time she has been in front of somebody without explaining herself.'
+        zh: '你叫了很多次。到第五次的时候她终于哭了，而且是笑着哭的。她没有去拿纸巾，也没有说抱歉。',
+        en: 'You call her name a lot of times. On the fifth she finally cries, and she is laughing while she does it. She does not reach for a tissue and she does not apologise.'
       },
       {
         type: 'effect',
@@ -424,8 +424,8 @@ export const MIYUKI_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '你叫了一声。她"はい"了一句，声音很轻，然后转身去洗那两个杯子。',
-        en: 'You say it. She answers, very quietly, and turns to wash the two cups.'
+        zh: '你叫了一声。她"はい"了一句，声音很轻。答完她就转过身去了，去洗那两个杯子。',
+        en: 'You call out to her. She answers, quietly. Having answered she turns away, to wash the two cups.'
       },
       {
         type: 'narration',

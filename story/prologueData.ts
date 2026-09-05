@@ -68,8 +68,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '海一直在。中间被防波堤挡过两次，被一排仓库挡过一次，然后又出来了。',
-            en: 'The sea stays. A breakwater takes it away twice, a row of warehouses once, and then it comes back.'
+            zh: '海一直在。防波堤挡过它两次。仓库挡过一次。挡完了它还在。',
+            en: 'The sea stays. A breakwater takes it away twice. A row of warehouses once. It is still there afterwards.'
           },
           {
             type: 'narration',
@@ -89,8 +89,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你翻开卷了边的单词本。「引っ越す」「手続き」「近所」——全是接下来几天真的会用上的词。',
-            en: 'You open the dog-eared notebook. "To move house." "Paperwork." "Neighborhood." Every one of them a word you will actually need this week.'
+            zh: '你翻开卷了边的单词本。「引っ越す」「手続き」「近所」。这一页你昨天在飞机上背了四遍。',
+            en: 'You open the dog-eared notebook. "To move house." "Paperwork." "Neighborhood." You went through this page four times on the plane yesterday.'
           },
           {
             type: 'narration',
@@ -319,8 +319,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '在坡道中段一处向阳的静谧拐角，你找到了那栋三层的复古洋馆公寓——「海风庄」。门牌上的黄铜字被擦得很亮。',
-    en: 'At a quiet, sun-facing bend halfway up the slope, you find it: a three-story retro Western-style apartment house. Umikaze-so. The brass letters on the nameplate have been polished bright.'
+    zh: '坡走到一半有个拐角。你差点走过去，是门牌上那三个黄铜字把你叫回来的：海风荘。三层楼，木头窗框，外墙的漆补过。',
+    en: 'There is a bend halfway up. You nearly walk past it; what calls you back is three brass characters on a nameplate. Umikaze-so. Three storeys, wooden window frames, paint patched in places.'
   },
   {
     type: 'narration',
@@ -352,8 +352,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你放下行李箱，快步走到阳台推开门——整座神户港的全景瞬间铺开在眼前。',
-    en: 'You drop the suitcase, cross the room, and push the balcony door open — and the entire port of Kobe unfolds in front of you at once.'
+    zh: '你把行李箱扔在门口就去开阳台门。门轨涩，推到一半卡了一下。第二下推开的时候，风先进来的。',
+    en: 'You leave the suitcase by the door and go for the balcony. The track is stiff and it jams halfway. On the second shove it opens, and what comes in first is the wind.'
   },
   {
     type: 'narration',
@@ -394,8 +394,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '词典、语法书、三本翻烂了的真题集，按厚度一本本排开。最后你退后两步看了看——像样了。',
-            en: 'Dictionary, grammar reference, three past-paper collections worn soft at the corners, all lined up by thickness. You step back two paces to look. Yes. That will do.'
+            zh: '词典、语法书、三本翻烂了的真题集，按厚度排开。你退后两步看了看，又回去把最左边那本往里推了一厘米。',
+            en: 'Dictionary, grammar reference, three past-paper collections worn soft at the corners, lined up by thickness. You step back two paces to look, then go back and push the leftmost one in by a centimetre.'
           }
         ]
       },
@@ -454,8 +454,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '把书本安顿好之后，你从随身背包里郑重地拿出了最后一样东西——一本厚实的牛皮封面手账。',
-    en: 'With everything else settled, you take the last item out of your backpack, carefully: a thick journal bound in worn leather.'
+    zh: '书排完了，背包里还剩一样。你把它拿出来的时候两只手都用上了，虽然它并不重。牛皮封面，很厚。',
+    en: 'The books are done and there is one thing left in the backpack. You use both hands to lift it out, though it is not heavy. Leather cover. Thick.'
   },
   {
     // 序章唯一一张 CG。播完永久进回忆图鉴——
@@ -485,8 +485,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '手账的后半部分厚得有些异样——里面夹着几张手绘的神户老地图，边角写满了密密麻麻的注记。',
-    en: 'The back half of the journal is oddly thick. Tucked inside are several hand-drawn maps of old Kobe, their margins crowded with dense annotations.'
+    zh: '后半本比前半本鼓。你捏着书脊翻开，里面夹着几张对折的纸。展开是手绘的神户地图，边上写满了字，小得要凑近才看得清。',
+    en: 'The back half sits fatter than the front. You hold the spine and open it: folded sheets inside. Unfolded, they are hand-drawn maps of Kobe, the margins written over in a hand small enough that you have to lean in.'
   },
   {
     type: 'choice',
@@ -514,8 +514,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '……没有下文了。你合上手账，心里第一次对这座城市生出了一点别的东西——不只是好奇。',
-            en: 'Nothing follows it. You close the journal. For the first time, this city stirs something in you that is not only curiosity.'
+            zh: '……下面是空的。这一页写完就没再写了。你把手账合上，在桌边坐了一会儿没动。',
+            en: 'The rest of the page is blank. He wrote that line and did not write another. You close the journal and sit at the desk for a while without moving.'
           }
         ]
       },
@@ -530,8 +530,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你用手掌把封面抚平，把它摆在书桌正中间——不是收进抽屉，而是放在每天一抬头就能看见的位置。',
-            en: 'You smooth the cover flat with your palm and place it dead center on the desk. Not tucked into a drawer — right where you will see it every time you look up.'
+            zh: '你把封面按平，把它摆在书桌正中间。抽屉是空的，但你没往里放。',
+            en: 'You press the cover flat and set it in the middle of the desk. The drawer is empty. You do not put it in the drawer.'
           },
           {
             type: 'narration',
@@ -551,8 +551,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你把手账合上，站起身抓起外套。他写的是「去走出属于你自己的精彩青春」——那就从今天傍晚开始走。',
-            en: 'You close the journal, stand, and grab your jacket. He wrote: go and live a youth that is your own. Fine. It starts this evening.'
+            zh: '你抓起外套。他写的是「去走出属于你自己的精彩青春」。这句话你外公说得出口，你说不出口，但你已经在穿鞋了。',
+            en: 'You grab your jacket. He wrote: go and live a youth that is your own. He could say a thing like that out loud; you could not. You are already putting your shoes on.'
           }
         ]
       }
@@ -578,8 +578,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '路灯一盏接一盏亮起来。反正也不赶时间——先在这一带随便转转吧。',
-    en: 'The streetlights come on one after another down the hill. There is no rush. You may as well wander a little first.'
+    zh: '路灯一盏接一盏亮起来，从坡底往上追。你走到门口才想起来自己没有目的地。',
+    en: 'The streetlights come on one after another, chasing up the hill from the bottom. You get as far as the door before it occurs to you that you have nowhere to be.'
   },
   {
     type: 'choice',
@@ -653,8 +653,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   {
                     type: 'narration',
                     characterImage: '/images/characters/rei/casual_neutral.webp',
-                    zh: '她转过头，眼镜后面那双眼睛认真地看了你两秒——不是防备，更像是在确认你是真的想知道。',
-                    en: 'She turns. Behind the glasses her eyes study you for two seconds — not wary, more as if confirming that you actually want to know.'
+                    zh: '她转过头看了你两秒。镜片反光，你看不清那两秒里她在想什么。然后她把书往臂弯里换了个手。',
+                    en: 'She turns and looks at you for two seconds. The lenses catch the light and you cannot see what happens in those two seconds. Then she shifts the book to her other arm.'
                   },
                   {
                     type: 'speech',
@@ -671,8 +671,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'narration',
-                    zh: '她说话时语速很慢，每个词都咬得清清楚楚——像是习惯了对听不太懂日语的人说话。',
-                    en: 'She speaks slowly, every word fully articulated — like someone used to talking to people whose Japanese is not there yet.'
+                    zh: '她说得很慢，每个词之间留一点空。她没有问你听不听得懂，也没有换成简单的说法。',
+                    en: 'She speaks slowly, leaving a little space between the words. She does not ask whether you follow, and she does not switch to easier ones.'
                   },
                   {
                     type: 'narration',
@@ -771,8 +771,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'narration',
-                    zh: '你忽然有点后悔——刚才那句话，其实可以说得更长一点的。',
-                    en: 'You feel a small pang of regret. That sentence could have been longer than it was.'
+                    zh: '她走了以后你才想起来，那句话你本来还有半句没说。',
+                    en: 'It is only after she has gone that you remember there was another half to that sentence.'
                   }
                 ]
               }
@@ -798,8 +798,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '风比坡道上大得多，带着咸味直往领口里灌。你张开嘴，用力吸了一口——然后忍不住笑了出来。',
-            en: 'The wind is far stronger here, salt-thick, driving straight into your collar. You open your mouth and pull in a lungful of it — and find yourself laughing.'
+            zh: '风比坡道上大得多，从领口往里灌，是咸的。你吸了一口，呛了一下，站在那儿笑了半天。',
+            en: 'The wind is much stronger here. It goes in at the collar and it tastes of salt. You take a mouthful, choke on it, and stand there laughing for a while.'
           },
           {
             type: 'narration',
@@ -809,8 +809,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           // ---- 偶遇 · 栏杆上的黄色卫衣 ----
           {
             type: 'narration',
-            zh: '——就在这时，右手边的栏杆那儿炸开一声惊呼。',
-            en: '—And right then, a yelp goes off at the railing to your right.'
+            zh: '右手边的栏杆那儿炸开一声惊呼。',
+            en: 'A yelp goes off at the railing to your right.'
           },
           {
             type: 'narration',
@@ -833,8 +833,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她拍完回过头，正好和你对上视线。然后——她的眼睛一下子亮了。',
-            en: 'She turns from the shot and her eyes land straight on you. And then — they light up.'
+            zh: '她拍完回过头，正好和你对上视线。你还没来得及移开，她的眼睛就亮了。',
+            en: 'She turns from the shot and her eyes land straight on you. Before you can look away, they light up.'
           },
           {
             type: 'speech',
@@ -926,8 +926,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   {
                     type: 'narration',
                     characterImage: '/images/characters/hikari/casual_smug.webp',
-                    zh: '她「唔」了一声，退后半步，从头到脚把你打量了一遍，然后掰着手指数了起来。',
-                    en: 'She goes "hmm", takes half a step back, looks you over from top to bottom, and starts counting on her fingers.'
+                    zh: '她「唔」了一声，退后半步。你被从头到脚看了一遍，包括鞋。看完她举起一只手，掰起了大拇指。',
+                    en: 'She goes "hmm" and takes half a step back. You are looked over from head to foot, shoes included. Then she holds up a hand and bends down the thumb.'
                   },
                   {
                     type: 'speech',
@@ -992,8 +992,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   {
                     type: 'narration',
                     characterImage: '',
-                    zh: '她朝你挥了挥手就跑了，黄色的卫衣很快被人流吞没。你站在原地才想起来——连名字都没问。',
-                    en: 'She waves and takes off, the yellow hoodie swallowed by the crowd within seconds. Standing there, it occurs to you that you never asked her name.'
+                    zh: '她挥了下手就跑了。那件黄卫衣在人群里还能看见两三秒。等看不见了你才想起来，名字没问。',
+                    en: 'She waves and goes. The yellow hoodie stays visible in the crowd for another two or three seconds. Once it is not, you remember you did not ask her name.'
                   }
                 ]
               }
@@ -1107,8 +1107,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'narration',
-                    zh: '你照做了。第一口烫得眼泪都出来了，第二口才尝出味道——外面焦脆，里面是流动的。',
-                    en: 'You do as told. The first bite brings tears. The second one you actually taste: crisp outside, molten within.'
+                    zh: '你照做了。第一口烫得眼泪都出来了。第二口才尝出味道来。外面是脆的，里面还在动。',
+                    en: 'You do as told. The first bite brings tears to your eyes. The second one you actually taste. Crisp outside. Still moving inside.'
                   },
                   {
                     type: 'speech',
@@ -1142,8 +1142,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   {
                     type: 'narration',
                     characterImage: '/images/characters/maki/punk_laugh.webp',
-                    zh: '她愣了半秒，然后笑得差点把手里的章鱼烧甩出去。',
-                    en: 'She freezes for half a second, then laughs so hard she nearly launches the takoyaki out of her hand.'
+                    zh: '她愣了半秒。笑起来的时候手一抖，签子上那颗章鱼烧差点飞出去。',
+                    en: 'She freezes for half a second. When she laughs her hand jerks and the takoyaki on the stick nearly goes flying.'
                   },
                   {
                     type: 'speech',
@@ -1192,8 +1192,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'narration',
-                    zh: '这个念头没让你难过——反而让你想快点跟上。',
-                    en: 'The thought does not make you sad. It makes you want to catch up faster.'
+                    zh: '你以为这个念头会让你难过。结果你只是走快了两步。',
+                    en: 'You expect the thought to make you sad. What it actually does is make you walk two paces faster.'
                   }
                 ]
               }
@@ -1247,8 +1247,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你摸了摸口袋——今天能花在晚饭上的，差不多就一千日元。',
-    en: 'You check your pocket. What you can spend on dinner tonight comes to about a thousand yen.'
+    zh: '你摸了摸口袋。硬币加起来一千出头，晚饭得从这里面出。',
+    en: 'You check your pocket. The coins come to a bit over a thousand, and dinner has to come out of that.'
   },
   {
     type: 'shop',
@@ -1481,8 +1481,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '你把挑选好的东西放到收银台上。店员利落地扫码，然后抬起头问了一句。',
-        en: 'You set everything on the counter. The clerk scans it all briskly, then looks up and asks:'
+        zh: '你把东西放到收银台上。扫码的声音一声接一声，四下就完了。他抬起头问了一句。',
+        en: 'You set everything on the counter. The scanner beeps four times, close together, and it is done. He looks up and asks:'
       },
       {
         type: 'speech',
@@ -1554,8 +1554,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
             then: [
               {
                 type: 'narration',
-                zh: '店员正在装袋的手停了一下，然后笑出了声。',
-                en: 'The clerk’s hands pause mid-bag. Then he laughs out loud.'
+                zh: '装袋的手停在半空。他先是没出声，一秒之后才笑出来。',
+                en: 'His hands stop halfway into the bag. Nothing for a second, and then he laughs.'
               },
               {
                 type: 'speech',
@@ -1598,8 +1598,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               },
               {
                 type: 'narration',
-                zh: '——正因为一如往常，你才更高兴。她没有把你当成一个需要特殊照顾的外国人。',
-                en: 'And it is precisely because it was unremarkable that you are pleased. She did not treat you as a foreigner in need of handling.'
+                zh: '她没有放慢语速，没有换词，也没有多看你一眼。你拎着袋子走出去，发现自己在笑。',
+                en: 'She did not slow down, did not change her words, did not give you an extra look. You are outside with the bag before you notice you are smiling.'
               }
             ]
           },
@@ -1619,8 +1619,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               },
               {
                 type: 'narration',
-                zh: '她一句多余的话都没说，态度也没有半点变化。你反倒有点懊恼——那句话你明明会说的。',
-                en: 'She says nothing extra and her manner does not change one degree. If anything that makes it worse. You knew that sentence. You could have said it.'
+                zh: '她一句多余的话都没说，找零、鞠躬、下一位。走出自动门以后你在原地站了两秒。那句话你会说的。',
+                en: 'She says nothing extra. Change, bow, next customer. You stand still for two seconds on the other side of the automatic door. You knew that sentence.'
               }
             ]
           }
@@ -1640,8 +1640,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '经过收银台的时候，店员抬起头，很自然地朝你点了下头——像是在说「只是看看也没关系哦」。',
-        en: 'As you pass the register the clerk looks up and gives you an easy little nod — as if to say that just looking is perfectly fine.'
+        zh: '经过收银台的时候店员抬了下头，朝你点了点，然后就低回去继续理烟盒了。',
+        en: 'The clerk glances up as you pass the register, gives you a nod, and goes back to squaring up the cigarette packs.'
       },
       {
         type: 'narration',
@@ -1700,8 +1700,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她抬头的瞬间和你对上了视线——然后你们俩同时愣了半秒。',
-    en: 'She looks up, and your eyes meet. For half a second, you both freeze.'
+    zh: '她抬头，你们对上了视线。两个人都没动，半秒之后才各自把眼睛移开。',
+    en: 'She looks up and your eyes meet. Neither of you moves. Half a second later you both look away.'
   },
   {
     type: 'narration',
@@ -2167,8 +2167,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   {
                     type: 'narration',
                     characterImage: '/images/characters/miyuki/happy.webp',
-                    zh: '她看见了，眼睛弯了一下，然后才进门。门关上的声音很轻。',
-                    en: 'She sees it. Her eyes curve, and only then does she step inside. The door closes quietly.'
+                    zh: '她看见了。眼睛弯了一下，人才进门。关门的声音轻得像是特意的。',
+                    en: 'She sees it. Her eyes curve first, and then she goes in. The door shuts so quietly it seems deliberate.'
                   },
                   {
                     type: 'narration',
@@ -2255,8 +2255,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '余光里，她看了你一会儿，然后合上杂志，安静地走向了收银台。',
-            en: 'In the corner of your vision, she looks at you for a moment, then closes the magazine and walks quietly to the register.'
+            zh: '余光里她在看你。看了有一会儿。杂志合上的时候纸页扑了一声，她朝收银台去了。',
+            en: 'She is looking at you, in the corner of your vision. For a while. The magazine gives a small flap as it shuts, and she heads for the register.'
           },
           {
             type: 'scene',
@@ -2275,8 +2275,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '经过 202 室门口时，里面透出暖黄色的灯光。你在门前站了两秒，然后掏出了自己的钥匙。',
-            en: 'Passing Room 202, warm yellow light leaks from under the door. You stand there for two seconds, then take out your own key.'
+            zh: '202 室的门缝底下透出一道黄光，里面有电视的声音。你在那儿站了两秒。然后你掏出了自己那把钥匙。',
+            en: 'A strip of yellow light under the door of 202, and a television going behind it. You stand there for two seconds. Then you get out your own key.'
           }
         ]
       }
@@ -2297,8 +2297,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你把明天开学要穿的深蓝色制服熨得平平整整，仔细地把银色校徽别在领口——兵库县立港见高等学校，高二 B 班。',
-    en: 'You press tomorrow’s navy uniform flat, and pin the silver crest carefully to the collar. Minatomi Senior High School, Kobe. Second year, Class B.'
+    zh: '你把明天要穿的制服熨了两遍。校徽别在领口，别歪了一次，拆下来重别。兵库县立港见高等学校，高二 B 班。',
+    en: 'You iron tomorrow’s uniform twice. The crest goes on the collar, crooked the first time, so you unpin it and do it again. Hyogo Prefectural Minatomi Senior High School. Second year, Class B.'
   },
   // ==========================================================
   // 【回覧板】深雪敲门 —— 玩家的名字在这里第一次被人问起
@@ -2331,8 +2331,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
       {
         type: 'narration',
         characterImage: '/images/characters/miyuki/neutral.webp',
-        zh: '门外站着一位银发的女子——就是便利店里那个你移开了视线的人。她手里拿着一个夹着纸的木板夹。',
-        en: 'A silver-haired woman is standing outside — the one you looked away from in the convenience store. She is holding a wooden clipboard with papers wedged into it.'
+        zh: '门外站着一位银发的女子。就是便利店里那个你移开了视线的人。她手里拿着一块夹了纸的木板夹。',
+        en: 'A silver-haired woman is standing outside. The one you looked away from in the convenience store. She is holding a wooden clipboard with papers wedged into it.'
       }
     ]
   },
@@ -2377,8 +2377,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'narration',
     characterImage: '/images/characters/miyuki/happy.webp',
-    zh: '她接过木板夹，低头看了一眼，然后轻声把那几个音念了一遍——像是在确认自己没有读错。',
-    en: 'She takes the clipboard back, glances down, and says the syllables once under her breath — as if checking she has them right.'
+    zh: '她接过木板夹低头看了一眼，很小声地把那几个音念了一遍。念到第三个字的时候停了半拍，又从头念了一次。',
+    en: 'She takes the clipboard back, glances down, and says the syllables once, very quietly. She stalls half a beat on the third one and starts again from the beginning.'
   },
   {
     type: 'speech',
@@ -2400,8 +2400,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   {
     type: 'narration',
     characterImage: '',
-    zh: '门关上了。你站在现地想了一会儿——来到这个国家的第一天，你的名字终于被写在了某个地方。',
-    en: 'The door closes. You stand there a moment. Your first day in this country, and your name is finally written down somewhere.'
+    zh: '门关上了。你在原地站着，手还搭在门把上。这个国家里现在有一块木板夹，上面写着你的名字。',
+    en: 'The door closes. You stay where you are with your hand still on the handle. Somewhere in this country there is now a clipboard with your name on it.'
   },
 
   {
@@ -2487,8 +2487,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        zh: '最后你打开了那盒神户布丁。焦糖的苦和奶味在舌尖上化开——好吃得有点犯规。',
-        en: 'Last, you open the Kobe pudding. Caramel bitterness and cream dissolve on your tongue. It is unfairly good.'
+        zh: '最后你打开了那盒神户布丁。第一口下去你就开始算，明天的预算够不够再买一个。',
+        en: 'Last, you open the Kobe pudding. One spoonful in, you start working out whether tomorrow’s budget stretches to another one.'
       }
     ]
   },

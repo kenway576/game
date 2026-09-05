@@ -323,8 +323,8 @@ export const INARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她说完侧过头看你，看了两秒，然后又转回去看那棵树。',
-            en: 'She tilts her head at you for two seconds, then turns back to the tree.'
+            zh: '她说完侧过头看你，看了两秒。转回去看那棵树的时候，尾巴扫过了地上的落叶。',
+            en: 'She says it and turns her head to look at you for two seconds. Turning back to the tree, one of the tails drags through the leaf litter.'
           },
           {
             type: 'narration',

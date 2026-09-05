@@ -55,8 +55,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你把外公那本手账塞进书包侧袋——不知道为什么，带着它心里踏实一点。',
-    en: 'You slide your grandfather’s journal into the side pocket of your bag. You cannot say why; it just makes the day feel more possible.'
+    zh: '你把外公那本手账塞进书包侧袋。它在那儿放着不干什么，但你昨天也是这么塞的。',
+    en: 'You slide your grandfather’s journal into the side pocket of your bag. It does nothing sitting there, but you put it there yesterday too.'
   },
   // ---- 铺垫：奈绪从昨晚开始就在刷屏 ----
   {
@@ -90,8 +90,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你在心里给她记了一笔，然后把手机塞进口袋。回复留到中午——她现在应该还在睡。',
-    en: 'You make a mental note of that and put the phone in your pocket. You will reply at lunch. She will still be asleep now.'
+    zh: '你把手机扣进口袋。回复留到中午吧，她现在肯定还在睡。',
+    en: 'You put the phone face down in your pocket. You will reply at lunch. She is definitely still asleep.'
   },
   {
     type: 'narration',
@@ -173,13 +173,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '第一次太松，第二次太紧，第三次总算对了。你退后半步端详镜子里那个人——深蓝制服，银色校徽，看上去像个正经的高中生。',
-            en: 'Too loose the first time, too tight the second. The third comes out right. You step back and look at the person in the mirror: navy uniform, silver crest. He looks like a proper high schooler.'
+            zh: '第一次太松，第二次太紧，第三次总算对了。你退后半步。镜子里那个人穿着深蓝制服，领口别着银色校徽。',
+            en: 'Too loose the first time, too tight the second. The third comes out right. You step back. The person in the mirror is wearing a navy uniform with a silver crest on the collar.'
           },
           {
             type: 'narration',
-            zh: '「看上去像」。你在心里补了这三个字，然后拎起书包出门了。',
-            en: '"Looks like." You add the qualifier silently, pick up your bag, and go.'
+            zh: '「看上去像。」你在心里加了这四个字。书包在门口，你拎起来就走了。',
+            en: '"Looks like one." You add that to it, silently. The bag is by the door. You pick it up and go.'
           }
         ]
       }
@@ -252,8 +252,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
       {
         type: 'narration',
         characterImage: `${MIYUKI}neutral.webp`,
-        zh: '她看见你，动作停了一下——然后还是很轻地点了下头。',
-        en: 'She sees you and her hand pauses on the door. Then she gives a small nod anyway.'
+        zh: '她看见你了。开门的手停在半路。停完，她还是点了下头，很轻。',
+        en: 'She sees you. Her hand stops halfway on the door. When it has stopped, she gives a small nod anyway.'
       },
       {
         type: 'speech',
@@ -803,8 +803,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '她愣了半秒，然后笑得整个人往桌子上趴。靠窗那位老师抬起头，又低了下去——今天第二次。',
-            en: 'She freezes for half a second, then folds forward onto the desk laughing. The teacher by the window looks up and goes back down. Second time today.'
+            zh: '她愣了半秒。下一秒整个人趴到了桌子上，肩膀一抽一抽的。靠窗那位老师抬起头又低下去。今天第二次了。',
+            en: 'She freezes for half a second. The next one she is face down on the desk with her shoulders going. The teacher by the window looks up and back down. Second time today.'
           },
           {
             type: 'speech',
@@ -818,8 +818,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她说完自己又笑了一阵，然后忽然安静下来，把表格的边角捏得很平。',
-            en: 'She laughs at her own line a while longer, then goes abruptly quiet and smooths the corner of her form flat.'
+            zh: '她自己又笑了一阵。笑完忽然就没声了。她低头把表格的边角捏了又捏，捏得很平。',
+            en: 'She laughs at her own line for a while longer. Then the sound just stops. She looks down and works the corner of her form flat between her fingers.'
           },
           {
             type: 'speech',
@@ -944,8 +944,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '看得见港口的学校。你从教学楼的窗户往外看过一次——确实看得见。你想了一下，觉得这个名字取得实在。',
-            en: 'A school from which the harbour can be seen. You looked out of a classroom window once and found that it can. You decide it is an honest sort of name.'
+            zh: '看得见港口的学校。你早上从二楼窗户往外看过一次。确实看得见。',
+            en: 'A school from which the harbour can be seen. You looked out of a second-floor window this morning. It can.'
           },
           {
             type: 'speech',
@@ -1269,8 +1269,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '数清单其实是个挺好用的办法——只要还在数，脑子里就还腾得出地方放紧张以外的东西。',
-    en: 'The tally turns out to be a useful trick. As long as you are counting, there is room left in your head for something other than being afraid.'
+    zh: '你数到第四条的时候，发现自己的手不抖了。',
+    en: 'Somewhere around the fourth item you notice your hands have stopped shaking.'
   },
   {
     type: 'choice',
@@ -1298,8 +1298,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '教室静了半秒，然后炸开一片笑声。不是嘲笑——是那种「这家伙可以」的笑。',
-            en: 'Half a second of silence, then the room breaks up. Not mocking laughter. The other kind: this guy is all right.'
+            zh: '教室静了半秒。然后是笑声，从后排先起来的。有人拍了下桌子。',
+            en: 'Half a second of silence. Then laughing, starting from the back rows. Somebody slaps a desk.'
           },
           {
             type: 'narration',
@@ -1426,8 +1426,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
       {
         type: 'narration',
         characterImage: `${ASUKA}neutral.webp`,
-        zh: '斜前方的明日香把讲义分下来的时候，多看了你一眼。只有一眼，然后就转回去了。',
-        en: 'When Asuka passes the handouts back she glances at you. Once, and then she faces front again.'
+        zh: '斜前方的明日香把讲义往后递的时候多看了你一眼。就一眼。她转回去的速度快得像是被抓到了。',
+        en: 'Asuka glances at you as she passes the handouts back. Once. She faces front again fast enough to look like someone who has been caught.'
       }
     ]
   },
@@ -1925,8 +1925,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '然后她抬头看你，看了两秒，视线落到你空着的两只手上。',
-    en: 'Then she looks up at you, for two seconds, and her eyes drop to your two empty hands.'
+    zh: '她抬头看你。两秒之后，那道视线落到了你空着的两只手上。',
+    en: 'She looks up at you. Two seconds later her eyes land on your two empty hands.'
   },
   {
     type: 'speech',
@@ -1946,8 +1946,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${HIKARI}school_neutral.webp`,
-    zh: '她「啊」了一声，然后做了一件你完全没料到的事：她把摆在中间那些东西，非常认真地、一样一样地分成了两堆。',
-    en: 'She says "ah", and then does something you did not see coming at all: she divides everything laid out between you into two piles, item by item, with great seriousness.'
+    zh: '她「啊」了一声。接下来的三十秒里，她把摆在中间的东西一样一样分成了两堆，中途还调换过一次。',
+    en: 'She says "ah". Over the next thirty seconds she sorts everything laid out between you into two piles, one item at a time, swapping two of them over partway through.'
   },
   {
     type: 'narration',
@@ -2051,8 +2051,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你接过面包，然后说：明天我带一个还你。你不确定自己的语法对不对，但这句她听懂了。',
-            en: 'You take the bun, then say: tomorrow I will bring you one. You are not sure the grammar held, but she understood it.'
+            zh: '你接过面包。「明天我带一个还你。」这句话你说得很慢，语法多半是错的。她听懂了。',
+            en: 'You take the bread. "Tomorrow I bring one, give back you." You say it slowly and the grammar is almost certainly wrong. She understands it.'
           },
           {
             type: 'narration',
@@ -2141,8 +2141,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她把手在裙子上擦了擦，然后很正式地转过来面对你，跪坐好。',
-    en: 'She wipes her hands on her skirt, turns to face you properly, and sits up on her heels.'
+    zh: '她把手在裙子上擦了擦。转过来面对你的时候，膝盖并拢了，坐姿也换了一个。',
+    en: 'She wipes her hands on her skirt. When she turns to face you her knees have come together and she has changed how she is sitting.'
   },
   {
     type: 'speech',
@@ -2320,8 +2320,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她说得很轻松，像在讲别人的事。然后立刻岔开了话题，问你要不要吃一半的咖喱面包。',
-    en: 'She says it lightly, as though it happened to someone else. Then she changes the subject at once and offers you half a curry bun.'
+    zh: '她说得很轻松，像在讲别人的事。说完没等你接话就把咖喱面包举了起来，问你吃不吃一半。',
+    en: 'She says it lightly, as though it happened to someone else. Before you can answer she has the curry bun up in the air, asking if you want half.'
   },
   {
     type: 'narration',
@@ -2676,8 +2676,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '楼下有人回来了，铁楼梯响了六下。隔壁的电视很小声，隔着墙只听得见语调，听不出内容。远处有电车过去，然后是很久的安静。',
-    en: 'Somebody comes home downstairs; the iron staircase rings six times. Next door the television is very low — through the wall you get the shape of the speech but not the words. A train goes by somewhere, and then it is quiet for a long time.'
+    zh: '楼下有人回来了，铁楼梯响了六下。隔壁的电视很小声，隔着墙只听得见语调，听不出内容。远处过去一列电车。电车过完之后，很久都没有声音。',
+    en: 'Somebody comes home downstairs and the iron staircase rings six times. The television next door is low enough that through the wall you get the intonation but not the words. A train goes past in the distance. After the train there is no sound for a long time.'
   },
   {
     type: 'narration',
