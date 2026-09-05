@@ -471,5 +471,116 @@ export const STREET_PEOPLE: StreetScene[] = [
         effects: [{ stat: 'kindness', amount: 2, reasonZh: '深夜的城市里有一小群互相不认识的人醒着', reasonEn: 'A small number of people who do not know each other are awake in this city at night' }]
       }
     ]
+  },
+  // ---------------------------------------------------------
+  // 💼 三宫通勤OL 智惠
+  // ---------------------------------------------------------
+  {
+    id: 'sp_chie_1', locationIds: ['sannomiya_crossing', 'sannomiya_station'],
+    weight: 6, minDay: 10, timeSlots: ['morning', 'night'],
+    script: [
+      {
+        type: 'narration', characterImage: P.commuter_chie,
+        zh: '三宫车站的人流像退潮一样往闸机涌。前面一个穿风衣的姐姐正低头翻找月票，一管荧光笔从手提包边沿滑了出来。',
+        en: 'The rush of people pours toward the ticket gates like an outgoing tide. Ahead of you, a woman in a trench coat searches her tote for her commuter pass, and a highlighter slips out.'
+      },
+      {
+        type: 'narration', characterImage: P.commuter_chie,
+        zh: '你快走两步帮她捡了起来。她接过去时松了口气，有些不好意思地笑笑：「助かりました！急行に乗れそうにないところでした……」',
+        en: 'You step forward and catch it for her. She takes it with relief and an apologetic smile: "Thank you so much! I thought I was about to miss the rapid train..."'
+      },
+      {
+        type: 'narration',
+        zh: '她从便利店纸袋里拿出一罐还没开封的微糖黑咖啡塞到你手里，道了声谢便快步刷卡进了闸机。风衣带子在风里晃了一下。',
+        en: 'She presses an unopened can of warm black coffee from her convenience store bag into your hands with a grateful bow before tapping through the gate.'
+      },
+      seen('三宫站赶早班车的人，生活总是按分秒计算的', 'For the morning commuters at Sannomiya, life is measured in seconds')
+    ]
+  },
+  // ---------------------------------------------------------
+  // 🏃 田径社学妹 枫
+  // ---------------------------------------------------------
+  {
+    id: 'sp_kaede_1', locationIds: ['kitano_tenman_shrine', 'harbor_mosaic', 'school_courtyard'],
+    weight: 6, minDay: 8, timeSlots: ['morning', 'afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: P.track_kaede,
+        zh: '坡道台阶上有个人在做跑后拉伸。脖子上搭着一条雪白的毛巾，呼吸匀长而精神。',
+        en: 'Somebody is doing post-run stretches on the slope steps. A snow-white sports towel is draped around her neck, her breathing even and full of energy.'
+      },
+      {
+        type: 'narration', characterImage: P.track_kaede,
+        zh: '看见你走过来，她擦了擦额头的汗，元气满满地挥了挥水壶：「前辈！今天也是走坡道锻炼吗？神户这片坡跑起来虽然要命，但吹到山顶的风真的很爽呢！」',
+        en: 'Seeing you come up, she wipes her brow and waves her water bottle cheerfully: "Senpai! Walking the slopes today too? The hills here are brutal to run, but the breeze at the crest is the best!"'
+      },
+      {
+        type: 'effect',
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '跟正在晨练的学妹打了个照面，脚步也轻快了一点', reasonEn: 'Exchanged greetings with an athletic underclassman; your steps feel lighter' }]
+      }
+    ]
+  },
+  // ---------------------------------------------------------
+  // ☕ 北野咖啡师 柚木
+  // ---------------------------------------------------------
+  {
+    id: 'sp_yuzuki_1', locationIds: ['retro_kissaten', 'kitano_slope_foot'],
+    weight: 6, minDay: 12, timeSlots: ['afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: P.barista_yuzuki,
+        zh: '老洋房改建的喫茶店门前，一位戴着贝雷软帽的小姐姐正端着木托盘收走窗台边的小铜铃。空气里飘着烘焙极深的新鲜咖啡香。',
+        en: 'Outside the cafe converted from an old Western house, a young woman in a barista apron clears a small bell from the sill. The air smells richly of dark-roast beans.'
+      },
+      {
+        type: 'narration', characterImage: P.barista_yuzuki,
+        zh: '她注意到你的目光，停下脚步温和地欠了欠身：「今天的曼特宁是神户老派的炭火煎焙哦。走累了的话，随时可以进来歇歇脚呢。」',
+        en: 'She notices your glance and pauses with a polite, welcoming bow: "Today\'s Mandheling is done in the classic Kobe charcoal-roasted style. Come in and take a rest if you get tired."'
+      },
+      seen('神户的咖啡香气，总是在走过下坡路拐角时突然扑过来', 'The aroma of Kobe coffee always catches you as you turn a downhill corner')
+    ]
+  },
+  // ---------------------------------------------------------
+  // 📚 书店店员 晴树
+  // ---------------------------------------------------------
+  {
+    id: 'sp_haruki_1', locationIds: ['junkudo_bookstore', 'sannomiya_arcade'],
+    weight: 6, minDay: 15, timeSlots: ['afternoon', 'night'],
+    script: [
+      {
+        type: 'narration', characterImage: P.clerk_haruki,
+        zh: '书店高大的书架下，戴着细圆眼镜的小哥正捧着一摞文库本核对书脊上的分类标签。',
+        en: 'Beneath the towering shelves of the bookstore, a young clerk with round spectacles is checking classification labels on a stack of paperbacks.'
+      },
+      {
+        type: 'narration', characterImage: P.clerk_haruki,
+        zh: '你仰头找那本参考书找了半天。他停下手里的活，推了推镜框小声说：「你在找那本《关西方言与近代神户》吗？最后两本新刊我刚才放去三楼语言学展台了，我带你过去吧。」',
+        en: 'You crane your neck searching for a title. He puts down his stack, adjusts his glasses and whispers: "Looking for Kansai Dialect and Modern Kobe? The last two copies went to the third floor linguistics display. Let me show you."'
+      },
+      seen('在几万本书的屋子里，有人能一秒指出你要的那一本在哪', 'In a building of ten thousand books, somebody points out the exact one in seconds')
+    ]
+  },
+  // ---------------------------------------------------------
+  // 📷 街头摄影生 佳奈
+  // ---------------------------------------------------------
+  {
+    id: 'sp_kana_1', locationIds: ['sannomiya_crossing', 'nankinmachi', 'harbor_mosaic'],
+    weight: 6, minDay: 20, timeSlots: ['afternoon'],
+    script: [
+      {
+        type: 'narration', characterImage: P.artist_kana,
+        zh: '三宫天桥的转角处，一个戴着深蓝贝雷帽的女生正端着一台沉甸甸的金属旁轴胶片机，对着夕阳下的阪急大楼和大十字路口连按快门。',
+        en: 'At the bend of the Sannomiya skybridge, a girl in a beret is holding a heavy metallic rangefinder camera, framing shots of the Hankyu building against the evening sky.'
+      },
+      {
+        type: 'narration', characterImage: P.artist_kana,
+        zh: '咔嚓一声轻响后，她放下相机朝你眨了眨眼：「刚才那个光线从高架斜切过来太妙了！……啊，抱歉，顺便把你当成了构图里的路人甲，不过神态超有故事感哦。」',
+        en: 'With a quiet click, she lowers the camera and winks at you: "The way the light cuts across the viaduct just now was incredible! ... Ah, sorry, you ended up in my frame as an accidental extra, but it had amazing story atmosphere."'
+      },
+      {
+        type: 'effect',
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '在别人的街头取景框里被认真定格了一下', reasonEn: 'Briefly captured in somebody else’s viewfinder' }]
+      }
+    ]
   }
 ];

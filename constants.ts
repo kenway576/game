@@ -108,11 +108,14 @@ export const SCENE_MAP: Record<string, string> = {
   'shirou_high_jump_sunset': '/images/backgrounds/cg_shirou_high_jump_sunset.webp',
   // 🚃 序章（第0章）专用场景。图尚未交付时由 SCENE_FALLBACK 顶上，不会开天窗。
   'train_interior':      '/images/backgrounds/bg_jr_train_interior.webp',
-  // JR 三宫站的检票口内。原来那张是序章便利店那对母子的图，
-  // 放学后一趟一趟去三宫站，看到的永远是同一对陌生母子。
-  'sannomiya_station':   '/images/backgrounds/bg_sannomiya_jr_concourse.webp',
-  // 站前的十字路口。站外的戏用这张，站内用上面那张。
-  'sannomiya_crossing':  '/images/backgrounds/bg_sannomiya_crossing_dusk.webp',
+  // 🚉 JR三之宫站检票口刷卡闸机（实景）
+  'sannomiya_station':           '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
+  'sannomiya_ticket_gates':      '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
+  'jr_sannomiya_gates':          '/images/backgrounds/bg_sannomiya_ticket_gates.webp',
+  // 🌉 三宫天桥上望向大十字路口与神户阪急大楼（实景标志性视角）
+  'sannomiya_crossing':          '/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',
+  'sannomiya_skybridge_crossing':'/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',
+  'sannomiya_hankyu_crossing':   '/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',
   'umikaze_exterior':    '/images/backgrounds/bg_umikaze_apartment_exterior.webp',
   'apartment_room':      '/images/backgrounds/bg_umikaze_room_201.webp',
   'apartment_balcony':   '/images/backgrounds/bg_umikaze_balcony_harbor.webp',
@@ -362,7 +365,12 @@ export const STREET_NPC_SPRITES = {
   busker:        '/images/characters/npc_busker.webp',
   dog_walker:    '/images/characters/npc_dog_walker.webp',
   koban:         '/images/characters/npc_koban.webp',
-  conbini_night: '/images/characters/npc_conbini_night.webp'
+  conbini_night: '/images/characters/npc_conbini_night.webp',
+  commuter_chie: '/images/characters/npc_commuter_chie.webp',  // 三宫通勤OL（智惠）
+  track_kaede:   '/images/characters/npc_track_kaede.webp',    // 田径社女子高生（枫）
+  barista_yuzuki:'/images/characters/npc_barista_yuzuki.webp', // 北野咖啡师（柚木）
+  clerk_haruki:  '/images/characters/npc_clerk_haruki.webp',   // 书店店员小哥（晴树）
+  artist_kana:   '/images/characters/npc_artist_kana.webp',    // 街头摄影美术生（佳奈）
 } as const;
 
 // 🏪 便利店店员美咲。她在序章里给主角结过第一次账，
@@ -2262,7 +2270,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     id: 'sannomiya',
     nameJp: '三宮', reading: 'さんのみや',
     nameZh: '三宫', nameEn: 'Sannomiya',
-    image: '/images/backgrounds/bg_sannomiya_crossing_dusk.webp',
+    image: '/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',
     descZh: '山脚下灯最密的那一片。神户真正的市中心——车站、商店街、百货店全挤在这里。你昨天就是从那儿走上来的。',
     descEn: 'The densest patch of light at the foot of the hill. Kobe\'s actual centre: the station, the arcades and the department stores all packed together. You walked up from there yesterday.',
     word: { jp: '駅', reading: 'えき', zh: '车站', en: 'station' }
