@@ -337,6 +337,10 @@ export interface LifeState {
   // 而不是当成 0 把玩家钉在原地。
   stamina?: number;
   staminaOn?: number | null;
+  // 🚪 最后一次出门是哪一天，以及一共窝了几天。
+  // 有人会因为这个来问你——这是这两个数字唯一的用处。
+  wentOutOn?: number | null;
+  stayInDays?: number;
 }
 
 // ---------------------------------------------------------

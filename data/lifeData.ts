@@ -27,7 +27,9 @@ export const INITIAL_LIFE_STATE: LifeState = {
   fishedOn: null,
   fishedToday: 0,
   stamina: 100,
-  staminaOn: null
+  staminaOn: null,
+  wentOutOn: null,
+  stayInDays: 0
 };
 
 // ==========================================================

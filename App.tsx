@@ -20,7 +20,7 @@ import RestDayPanel from './components/RestDayPanel';
 import YearEndScreen from './components/YearEndScreen';
 import { YEAR_END } from './story/yearEnd';
 import { plansFor, plannedFlag, RestPlan } from './data/restDayPlans';
-import { dayKindOf } from './data/calendarLife';
+import { dayKindOf, isSchoolDay } from './data/calendarLife';
 import { ProtagonistProfileModal } from './components/ProtagonistProfileModal';
 import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
@@ -777,6 +777,24 @@ const App: React.FC = () => {
         return next;
       });
     }
+
+    // 🚪 今天一步没出。会有人问起来——不是马上，也不是每次，
+    // 而是攒到一定程度才有人开口，因为现实里就是这样：
+    // 一天没露面没人说什么，第三天才会有人问「你还好吧」。
+    const today = dayIndex(gameCalendar);
+    const stayedIn = life.wentOutOn !== today;
+    if (stayedIn) {
+      const n = (life.stayInDays ?? 0) + 1;
+      setLife(l => ({ ...l, stayInDays: n }));
+      setStoryFlags(prev => {
+        const next = { ...prev };
+        if (n >= 1) next['stayed_in_1'] = true;
+        if (n >= 3) next['stayed_in_3'] = true;
+        // 上学日窝在家里 = 翘课。班长会知道。
+        if (isSchoolDay(gameCalendar)) next['skipped_school'] = true;
+        return next;
+      });
+    }
     setGameCalendar(prev => {
       const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
       return {
@@ -1092,7 +1110,10 @@ const App: React.FC = () => {
       // 于是"熬到天亮"的第二天是带着昨天的疲劳开始的。
       const rolled = advanceCalendarDay(gameCalendar);
       const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
-      setLife(l => ({ ...l, stamina: STAMINA_MAX, staminaOn: dayIndex(rolled) }));
+      setLife(l => ({
+        ...l, stamina: STAMINA_MAX, staminaOn: dayIndex(rolled),
+        wentOutOn: dayIndex(gameCalendar), stayInDays: 0
+      }));
       setGameCalendar({
         ...rolled,
         timeSlot: 'lunch',
@@ -1102,6 +1123,8 @@ const App: React.FC = () => {
       // 🔋 这一趟有多累。轻的一趟十几点，打工和部活是它的两倍多——
       // 所以"还剩两格时间"和"还干得动两件事"不是一回事。
       if (trip) {
+        // 🚪 今天出过门了。窝在家的计数靠这个。
+        setLife(l => ({ ...l, wentOutOn: dayIndex(gameCalendar), stayInDays: 0 }));
         const drain = staminaCostOf(trip.loc, trip.event, gameCalendar);
         // 温泉和保健室的 drain 是负的，所以两头都要夹
         setLife(l => ({ ...l, stamina: Math.max(0, Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) - drain)) }));

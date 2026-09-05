@@ -332,6 +332,43 @@ export const PHONE_MESSAGES: PhoneMessage[] = [
       { jp: 'あれ最初みんな引くんだよね。でもさ', zh: '那个大家一开始都嫌弃的。可是啊', en: 'Everyone recoils from that at first. But you know' },
       { jp: '二回目からうまいでしょ', zh: '第二次开始就好吃了吧', en: 'From the second time it is good, right' }
     ]
+  },
+
+  // ---- 🚪 你一天没出门 ----
+  //
+  // 三条，越来越往里问，而且是三个不同的人——
+  // 谁先注意到你不见了，本身就是一句人物介绍。
+  //
+  // 奈绪最快：她一天要给你发四条，一条没回就知道了。
+  // 深雪第二：她隔着一道门，看的是灯和鞋。
+  // 明日香最后，而且她问的不是你好不好，是出席簿。
+  // 但她那条的最后一句露了馅。
+  {
+    id: 'msg_nao_shutin', char: CharacterId.NAO, requiresFlags: ['stayed_in_1'],
+    lines: [
+      { jp: '今日、一歩も出てへんやろ', zh: '今天一步都没出去吧', en: 'You have not set foot outside today, have you' },
+      { jp: 'なんでわかるかって？既読が早すぎんねん', zh: '问我怎么知道的？你已读得太快了', en: 'How do I know? You are reading these far too fast' }
+    ],
+    word: { jp: '一歩も', reading: 'いっぽも', zh: '一步也（不）', en: 'not one step' }
+  },
+  {
+    id: 'msg_miyuki_shutin', char: CharacterId.MIYUKI, requiresFlags: ['stayed_in_3'],
+    lines: [
+      { jp: '三日、玄関の靴が動いてないの', zh: '三天了，玄关的鞋一直没动过', en: 'Three days now and the shoes by your door have not moved' },
+      { jp: '見てるつもりはないのよ。目に入るだけ', zh: '我不是在盯着看。是它就在那儿', en: 'I am not watching. It is simply there' },
+      { jp: '……お味噌汁、置いとくわね', zh: '……味噌汤，我放门口了', en: '...I will leave some miso soup outside' }
+    ],
+    word: { jp: '目に入る', reading: 'めにはいる', zh: '映入眼帘', en: 'to catch one’s eye' }
+  },
+  {
+    id: 'msg_asuka_shutin', char: CharacterId.ASUKA, requiresFlags: ['skipped_school'],
+    lines: [
+      { jp: '欠席の理由、書いておくけれど', zh: '缺席理由我可以先帮你写上', en: 'I can fill in a reason for the absence' },
+      { jp: '「体調不良」でいい？それとも本当のこと？', zh: '写「身体不适」可以吗？还是写真的？', en: '"Unwell" — is that all right? Or shall I put the real one?' },
+      { jp: '……別に、責めてるわけじゃないわよ', zh: '……我又不是在怪你', en: '...I am not telling you off, you know' },
+      { jp: '明日、席空いてるの見るの、嫌なだけ', zh: '只是不喜欢看见那个座位空着', en: 'I just do not like looking at the empty chair' }
+    ],
+    word: { jp: '欠席', reading: 'けっせき', zh: '缺席', en: 'absence' }
   }
 ];
 
