@@ -1,4 +1,5 @@
 import { StoryWord, StoryFlags, LifeState } from '../types';
+import { findBook } from './cookData';
 import { SEEDS, FISH, RODS, POT_ITEM, BAIT_ITEM, fishValue } from './lifeData';
 
 // ---------------------------------------------------------
@@ -106,6 +107,16 @@ export const resolveItem = (key: string): ResolvedItem | null => {
       descZh: '素烧的，底下有个洞。百元店标价 550 日元——老板娘对此毫无解释的意思。',
       descEn: 'Unglazed, with a hole in the bottom. Marked 550 yen in the hundred-yen shop, a fact the owner declines to explain.',
       word: { jp: '鉢', reading: 'はち', zh: '盆', en: 'pot' }
+    };
+  }
+
+  // 📖 料理本。买了就一直在包里——它不是消耗品，是"你会做什么"的凭证。
+  const book = findBook(key);
+  if (book) {
+    return {
+      key, kind: 'gear', iconId: 'item_book', emoji: book.emoji,
+      nameZh: book.nameZh, nameEn: book.nameEn, nameJp: book.nameJp, reading: book.reading,
+      descZh: book.descZh, descEn: book.descEn
     };
   }
 

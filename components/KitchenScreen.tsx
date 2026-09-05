@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Language, LifeState, StoryEffect, RecipeDef } from '../types';
-import { RECIPES, canCook, consumeFor, fishCounts } from '../data/cookData';
+import { Language, LifeState, StoryEffect, RecipeDef, StoryFlags } from '../types';
+import { RECIPES, canCook, consumeFor, fishCounts, recipeKnown } from '../data/cookData';
 import { SEEDS, findFish } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
@@ -17,16 +17,22 @@ import { CookingQTEModal, CookingResult } from './CookingQTEModal';
 interface Props {
   language: Language;
   life: LifeState;
+  storyFlags: StoryFlags;
   onClose: () => void;
   onCook: (recipe: RecipeDef, firstTime: boolean, result: CookingResult) => void;
 }
 
-const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => {
+const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, onCook }) => {
   const en = language === 'en';
   const [selId, setSelId] = useState<string | null>(null);
   const sel = RECIPES.find(r => r.id === selId) || RECIPES[0];
   const dex = life.cookedDex || {};
   const madeCount = Object.keys(dex).length;
+  // 📖 还没学会的菜照样列出来，只是灰着、给一句不说是谁的提示。
+  // 全藏起来玩家不知道厨房还有多深，全说清楚菜单就变成任务清单了——
+  // 这跟地图上处理没解锁的地点是同一套道理。
+  const known = (r: RecipeDef) => recipeKnown(r, life, storyFlags as Record<string, boolean>);
+  const knownCount = RECIPES.filter(known).length;
 
   const fc = fishCounts(life.items);
 
@@ -106,7 +112,8 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
           </div>
           <div className="text-[10px] font-mono text-white/35">
             台所 <span className="text-white/25">だいどころ</span>
-            <span className="ml-3 text-white/30">{en ? 'learned' : '学会'} {madeCount}/{RECIPES.length}</span>
+            <span className="ml-3 text-white/30">{en ? 'made' : '做过'} {madeCount}/{knownCount}
+            <span className="ml-3 text-white/25">{en ? 'recipes' : '菜谱'} {knownCount}/{RECIPES.length}</span></span>
           </div>
         </div>
         <button
@@ -121,7 +128,8 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
         {/* 菜谱 */}
         <div className="md:w-[340px] shrink-0 overflow-y-auto border-b md:border-b-0 md:border-r border-white/10 max-h-[38dvh] md:max-h-none">
           {RECIPES.map(r => {
-            const can = canCook(r, life);
+            const got = known(r);
+            const can = got && canCook(r, life);
             const made = !!dex[r.id];
             return (
               <button key={r.id}
@@ -133,9 +141,11 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
                   className={`shrink-0 ${can ? '' : 'grayscale brightness-50'}`} />
                 <span className="min-w-0 flex-1">
                   <span className={`block text-sm font-bold truncate ${can ? 'text-white' : 'text-white/35'}`}>
-                    {en ? r.nameEn : r.nameZh}
+                    {got ? (en ? r.nameEn : r.nameZh) : '???'}
                   </span>
-                  <span className="block text-[10px] font-mono text-white/30 truncate">{r.nameJp}</span>
+                  <span className="block text-[10px] font-mono text-white/30 truncate">
+                    {got ? r.nameJp : (en ? 'not learned yet' : '还不会做')}
+                  </span>
                 </span>
                 {made && <span className="text-[10px] text-amber-400/80 shrink-0">×{dex[r.id]}</span>}
                 {can && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />}
@@ -147,6 +157,24 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
         {/* 详情 */}
         <div className="flex-1 min-h-0 overflow-y-auto p-5 md:p-8">
           {sel && (
+            !known(sel) ? (
+              // 还没学会：不给名字、不给材料、不给数值。
+              // 只留一句提示——它要够具体，让人想得起来该往哪儿走，
+              // 又不能具体到写出是谁教的。
+              <>
+                <ItemIcon id={sel.id} emoji={sel.emoji} size={104} className="mb-3 grayscale brightness-50" />
+                <h2 className="text-2xl md:text-3xl font-black text-white/40">???</h2>
+                <p className="mt-6 max-w-md text-sm text-white/55 leading-relaxed italic">
+                  {en ? sel.learn?.hintEn : sel.learn?.hintZh}
+                </p>
+                {!!sel.learn?.books?.length && (
+                  <p className="mt-4 text-[11px] text-white/35">
+                    {en ? 'There is also a book about it, if nobody is going to teach you.'
+                        : '也有书在讲这个。要是没人打算教你的话。'}
+                  </p>
+                )}
+              </>
+            ) : (
             <>
               <ItemIcon id={sel.id} emoji={sel.emoji} size={104} className="mb-3" />
               <h2 className="text-2xl md:text-3xl font-black text-white">{en ? sel.nameEn : sel.nameZh}</h2>
@@ -203,6 +231,7 @@ const KitchenScreen: React.FC<Props> = ({ language, life, onClose, onCook }) => 
                 </button>
               </div>
             </>
+            )
           )}
         </div>
       </div>

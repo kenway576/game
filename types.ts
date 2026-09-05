@@ -318,6 +318,16 @@ export interface RecipeDef {
   emoji: string;
   descZh: string; descEn: string;
   word?: StoryWord;
+  // 📖 怎么学会的。不写 = 一开始就会（家常的那三样）。
+  // flags 和 books 是**或**的关系：谁教过你、或者你买了哪本书，
+  // 有一条成立就算学会了。所以不走某条人物线的玩家不会被卡死。
+  learn?: {
+    flags?: string[];
+    books?: string[];
+    // 还没学会时列在菜单里的那句话。不说是谁教的——
+    // 说了菜单就变成任务清单了。
+    hintZh: string; hintEn: string;
+  };
 }
 
 export interface LifeState {

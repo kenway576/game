@@ -45,6 +45,7 @@ export const RECIPES: RecipeDef[] = [
   },
   {
     id: 'dish_ooba_tempura',
+    learn: { flags: ['inari_story_1_done'], hintZh: '有人在神社后面指给你看过那几片叶子。', hintEn: 'Somebody pointed those leaves out to you behind a shrine.' },
     nameJp: '大葉の天ぷら', reading: 'おおばのてんぷら', nameZh: '紫苏天妇罗', nameEn: 'Shiso Tempura',
     needs: [{ itemId: 'crop_shiso', n: 2 }],
     effects: [
@@ -57,6 +58,7 @@ export const RECIPES: RecipeDef[] = [
   },
   {
     id: 'dish_pasta',
+    learn: { flags: ['hikari_story_1_done'], hintZh: '要有人先让你相信「随便做做就行」。', hintEn: 'Somebody has to talk you into just throwing it together first.' },
     nameJp: 'トマトパスタ', reading: 'トマトパスタ', nameZh: '番茄意面', nameEn: 'Tomato Pasta',
     needs: [{ itemId: 'crop_tomato', n: 2 }, { itemId: 'crop_basil', n: 1 }],
     effects: [
@@ -84,6 +86,7 @@ export const RECIPES: RecipeDef[] = [
   },
   {
     id: 'dish_nanban',
+    learn: { flags: ['rei_story_1_done'], books: ['book_kansai'], hintZh: '南蛮是哪来的、为什么要泡醋——先得有人跟你讲清楚。', hintEn: 'Where nanban came from and why it sits in vinegar: somebody has to explain that first.' },
     nameJp: 'アジの南蛮漬け', reading: 'アジのなんばんづけ', nameZh: '竹荚鱼南蛮渍', nameEn: 'Nanban-Pickled Horse Mackerel',
     needFish: [{ fishId: 'fish_aji', n: 2 }],
     needs: [{ itemId: 'crop_negi', n: 1 }],
@@ -98,6 +101,7 @@ export const RECIPES: RecipeDef[] = [
   },
   {
     id: 'dish_takoyaki',
+    learn: { flags: ['nao_story_1_done'], books: ['book_kansai'], hintZh: '这边人人都会。所以没有人会想到要教你。', hintEn: 'Everyone here can do it, which is exactly why nobody thinks to teach you.' },
     nameJp: 'たこ焼き', reading: 'たこやき', nameZh: '章鱼烧', nameEn: 'Takoyaki',
     needFish: [{ fishId: 'fish_tako', n: 1 }],
     needs: [{ itemId: 'crop_negi', n: 1 }],
@@ -112,6 +116,7 @@ export const RECIPES: RecipeDef[] = [
   },
   {
     id: 'dish_taimeshi',
+    learn: { flags: ['miyuki_story_2_done'], books: ['book_sakana'], hintZh: '整条鱼下锅这件事，得有人在旁边看着你做一次。', hintEn: 'Putting a whole fish in the pot is something somebody has to stand next to you for, once.' },
     nameJp: '鯛めし', reading: 'たいめし', nameZh: '鲷鱼饭', nameEn: 'Sea Bream Rice',
     needFish: [{ fishId: 'fish_madai', n: 1 }],
     needs: [{ itemId: 'crop_shiso', n: 1 }],
@@ -127,6 +132,7 @@ export const RECIPES: RecipeDef[] = [
   },
   {
     id: 'dish_bento',
+    learn: { flags: ['miyuki_story_1_done'], hintZh: '格子怎么塞满，是有人教的，不是自己悟的。', hintEn: 'How to pack the gaps is taught, not worked out.' },
     nameJp: 'お弁当', reading: 'おべんとう', nameZh: '便当', nameEn: 'Bento',
     needs: [
       { itemId: 'crop_tomato', n: 1 },
@@ -144,6 +150,7 @@ export const RECIPES: RecipeDef[] = [
   },
   {
     id: 'dish_himawari_seeds',
+    learn: { flags: ['maki_story_1_done'], books: ['book_sakana'], hintZh: '把一朵花拆掉这种事，你需要一个理由。', hintEn: 'Taking a flower apart is something you need a reason for.' },
     nameJp: '炒りひまわりの種', reading: 'いりひまわりのたね', nameZh: '炒葵花籽', nameEn: 'Roasted Sunflower Seeds',
     needs: [{ itemId: 'crop_himawari', n: 1 }],
     effects: [
@@ -156,6 +163,55 @@ export const RECIPES: RecipeDef[] = [
     word: { jp: '炒る', reading: 'いる', zh: '干炒', en: 'to roast in a dry pan' }
   }
 ];
+
+// ==========================================================
+// 📖 料理本
+//
+// 菜谱一开始只会三样：味噌汤、沙拉、烤鱼。剩下的要么有人教，
+// 要么自己去买本书。**两条路都通**——不然不走某个人的线，
+// 厨房就永远缺一半。
+//
+// 书放在百均卖。九百日元一本，比一包种子贵得多，
+// 所以前期买书是一个真的要犹豫一下的决定。
+// ==========================================================
+export interface RecipeBook {
+  id: string;
+  emoji: string;
+  nameJp: string; reading: string; nameZh: string; nameEn: string;
+  price: number;
+  descZh: string; descEn: string;
+}
+
+export const RECIPE_BOOKS: RecipeBook[] = [
+  {
+    id: 'book_kansai', emoji: '📕',
+    nameJp: '関西のおかず', reading: 'かんさいのおかず',
+    nameZh: '关西家常菜', nameEn: 'Kansai Home Cooking',
+    price: 900,
+    descZh: '封面上那家人笑得过头了。里面的字很小，图很少，但配方是对的。',
+    descEn: 'The family on the cover are smiling too hard. Small print, few pictures, correct recipes.'
+  },
+  {
+    id: 'book_sakana', emoji: '📘',
+    nameJp: 'さかなの本', reading: 'さかなのほん',
+    nameZh: '鱼的书', nameEn: 'The Fish Book',
+    price: 1400,
+    descZh: '前一半在讲怎么把鱼杀干净，后一半才开始做菜。翻的时候要有心理准备。',
+    descEn: 'The first half is about killing the fish cleanly. The cooking starts halfway through. Brace yourself.'
+  }
+];
+
+export const findBook = (id: string) => RECIPE_BOOKS.find(b => b.id === id);
+
+// 这道菜你会不会做。没写 learn 的一律会。
+export const recipeKnown = (
+  r: RecipeDef, life: LifeState, flags: Record<string, boolean>
+): boolean => {
+  if (!r.learn) return true;
+  if (r.learn.flags?.some(f => flags[f])) return true;
+  if (r.learn.books?.some(b => (life.items[b] || 0) > 0)) return true;
+  return false;
+};
 
 export const findRecipe = (id: string) => RECIPES.find(r => r.id === id);
 

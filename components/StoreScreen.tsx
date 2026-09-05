@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { RECIPE_BOOKS } from '../data/cookData';
 import { Language, LifeState, GameCalendar, StoryFlags, StoryEffect, CharacterId } from '../types';
 import {
   SEEDS, RODS, POT_ITEM, POT_PRICE, MAX_PLOTS, BAIT_ITEM, BAIT_PRICE, BAIT_PER_PACK,
@@ -76,6 +77,15 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
           descEn: `One more pot is one more place to plant. Balcony and rooftop take ${MAX_PLOTS} between them.`,
           owned: life.plots.length, note: `${life.plots.length}/${MAX_PLOTS}`
         },
+        // 📖 料理本。放在种子前面：它是这家店里唯一一件"买了就永久多点东西"的货，
+        // 而不是消耗品。买过的会标"已有"，不会重复卖给你。
+        ...RECIPE_BOOKS.map(b => ({
+          id: b.id, emoji: b.emoji, icon: 'item_book', nameZh: b.nameZh, nameEn: b.nameEn,
+          nameJp: b.nameJp, reading: b.reading, price: b.price,
+          descZh: b.descZh, descEn: b.descEn,
+          owned: life.items[b.id] || 0,
+          note: (life.items[b.id] || 0) > 0 ? (en ? 'owned' : '已有') : undefined
+        })),
         ...SEEDS.map(s => ({
           // 八种种子共用一张纸袋图——袋子长得都一样，没必要为此多切八张
           id: s.id, emoji: s.emoji, icon: 'item_seed', nameZh: s.nameZh, nameEn: s.nameEn,
@@ -135,7 +145,9 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
 
   const canBuy = pick && tab === 'buy' && life.yen >= pick.price
     && !(pick.id === POT_ITEM && life.plots.length >= MAX_PLOTS)
-    && !(kind === 'tackle' && pick.id.startsWith('rod_') && life.rodId === pick.id);
+    && !(kind === 'tackle' && pick.id.startsWith('rod_') && life.rodId === pick.id)
+    // 📖 书买过就不再卖第二本。它不是消耗品，第二本没有任何用处。
+    && !(pick.id.startsWith('book_') && (life.items[pick.id] || 0) > 0);
 
   const doBuy = () => {
     if (!pick || !canBuy) return;

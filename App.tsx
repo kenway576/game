@@ -2539,6 +2539,7 @@ ${wind}`;
         <KitchenScreen
           language={userState.language}
           life={life}
+          storyFlags={storyFlags}
           onClose={() => { setInKitchen(false); setGameMode(GameMode.ROOM); }}
           onCook={cooked}
         />
