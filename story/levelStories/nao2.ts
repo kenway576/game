@@ -305,7 +305,7 @@ export const NAO_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她一直以为自己手上那份是"旧的"。这一刻她发现那不是旧的，是**只有她有的**。',
+            zh: '她一直以为自己手上那份是"旧的"。这一刻她发现那不是旧的，是只有她才拥有的。',
             en: 'She had been treating what she holds as the out-of-date copy. In that moment she discovers it is not out of date. It is the only one.'
           }
         ]

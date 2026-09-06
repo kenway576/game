@@ -66,7 +66,7 @@ const BODY: Record<JukuTier, StoryNode[]> = {
   near: [
     {
       type: 'narration',
-      zh: '人多了一倍。白板上多了一行字：**出題範囲**。下面列着十二项，老师用红笔在其中四项上画了圈。',
+      zh: '人多了一倍。白板上多了一行字：出题范围。下面列着十二项，老师用红笔在其中四项上画了圈。',
       en: 'Twice as many people. There is a new line on the whiteboard: what the exam covers. Twelve items under it, four of them circled in red.'
     },
     {

@@ -343,8 +343,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你问为什么。她想了两秒，说：因为那条路上有樱花。',
-            en: 'You ask why. She thinks for two seconds and says: because that one has the cherry trees.'
+            zh: '你问为什么。她踩着拖鞋在玄关台阶上轻轻顿了顿，抬手指了指坡道尽头：因为那条路上有樱花。',
+            en: 'You ask why. Pausing on the threshold in her slippers, she points toward the slope: because that one has the cherry trees.'
           }
         ]
       },
@@ -437,13 +437,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你走了大概三十米就停了一次——路边有一台自动贩卖机，卖的东西你一半没见过。你看了很久，最后没买。',
-    en: 'Thirty metres on you stop for the first time. There is a vending machine at the kerb and you have not seen half of what is in it. You look for a while and buy nothing.'
+    zh: '刚走出没多远你就停了一次——路边立着一台通体发白的老旧自动贩卖机，排着整整齐齐两排你从没见过的本地饮料。你盯着那罐包装复古的冷萃麦茶看了好一会儿，手插在口袋里捏着那枚硬币，最后还是没投进去。',
+    en: 'A little way down you stop for the first time. An aged white vending machine stands at the kerb, lined with local drinks you have never seen. You study a vintage can of cold barley tea for a while, thumbing a coin in your pocket, but end up walking on.'
   },
   {
     type: 'narration',
-    zh: '又走了五十米，一只三花猫从围墙上跳下来，横穿马路。你站住等它过完，还目送了一段。',
-    en: 'Fifty metres further a calico drops off a wall and crosses the road. You stand and let it, and then watch it go a while longer.'
+    zh: '下到转角处，一只胖得出奇的三花猫踩着青苔围墙一跃而下，迈着慢吞吞的步子横穿窄道。你靠着电线杆站住，等它拖着尾巴钻进对面的木栅栏，还目送了那团白黄相间的毛球好一会儿。',
+    en: 'At the corner, an impossibly plump calico drops off a mossy wall and ambles across the narrow lane. You lean against a utility pole to let it pass, watching that patch of white and ginger vanish under a wooden fence.'
   },
   {
     type: 'narration',
@@ -833,8 +833,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '她愣了半秒。下一秒整个人趴到了桌子上，肩膀一抽一抽的。靠窗那位老师抬起头又低下去。今天第二次了。',
-            en: 'She freezes for half a second. The next one she is face down on the desk with her shoulders going. The teacher by the window looks up and back down. Second time today.'
+            zh: '她手里的圆珠笔啪嗒落在了桌面上。接着她整个人扑倒在表格上，脸埋在臂弯里笑得肩膀乱颤。靠窗那位老师皱着眉推了推眼镜看过来，随即又把视线移回了电脑屏幕。今天第二次了。',
+            en: 'Her ballpoint clicks onto the table. Then she folds down over her form, face buried in her elbow, shoulders trembling with laughter. The teacher by the window pushes up his glasses, glances over with a frown, and returns to his screen. Second time today.'
           },
           {
             type: 'speech',
@@ -1074,7 +1074,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         words: [{ jp: '予言', reading: 'よげん', zh: '预言', en: 'prediction' }],
         hintZh: '说出口就收不回来了',
         hintEn: 'There is no taking this one back.',
-        effects: [{ stat: 'guts', amount: 1, reasonZh: '你对一个刚认识三十秒的人说了实话', reasonEn: 'You told the truth to someone you had known for thirty seconds' }],
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '你对刚在走廊撞到的人说了大实话', reasonEn: 'You told the truth to someone you had just run into in the corridor' }],
         relations: [{ char: CharacterId.ASUKA, familiarity: 14, affection: 4, reasonZh: '她第一次没接上话', reasonEn: 'For once she had no line ready' }],
         setFlags: ['day1_meta_said'],
         then: [
@@ -1179,7 +1179,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '这个拐角是两个人一起撞出来的',
         hintEn: 'It took two people to make that corner happen.',
         effects: [
-          { stat: 'knowledge', amount: 1, reasonZh: '你看清了刚才那三秒里真正发生的事', reasonEn: 'You worked out what had actually happened in those three seconds' },
+          { stat: 'knowledge', amount: 1, reasonZh: '你看清了刚才撞在一起时真正发生的事', reasonEn: 'You worked out what had actually happened when you crashed into each other' },
           { stat: 'guts', amount: 1, reasonZh: '你没有把不属于自己的那一半也认下来', reasonEn: 'You declined to take on the half that was not yours' }
         ],
         relations: [{ char: CharacterId.ASUKA, familiarity: 10, affection: 3, reasonZh: '她被顶回来了，而且没有生气', reasonEn: 'She got pushed back on, and did not mind' }],
@@ -1196,8 +1196,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '空气停了大概两秒。她把手里那叠纸的边缘捏出了一道折痕。',
-            en: 'The air stops for about two seconds. A crease appears along the edge of the stack in her hand.'
+            zh: '走廊里一下子没声了，只有远处操场的哨音隐隐约约飘过来。她低头看着那叠纸，指尖用力得把纸边缘捏出了一道明显的折痕。',
+            en: 'The corridor goes dead quiet, save for a distant whistle from the athletic fields. She stares down at the stack, her thumb indenting a sharp crease into the edge of the paper.'
           },
           {
             type: 'speech',
@@ -1289,8 +1289,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你站在讲台边上。喉咙发紧。昨晚在便利店收银台前的那三秒钟，忽然又回来了。',
-    en: 'You stand at the edge of the platform. Your throat closes. Those three seconds at the convenience store counter last night come back all at once.'
+    zh: '你站在讲台边上，喉咙发紧。昨晚在便利店收银台前那种舌头打结、冷汗往后颈上渗的感觉，毫无征兆地重新涌了上来。',
+    en: 'You stand at the edge of the platform, throat tight. That feeling from the register last night—tongue tied in knots, cold sweat creeping up the nape of your neck—comes surging right back.'
   },
   {
     type: 'narration',
@@ -1328,8 +1328,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '教室静了半秒。然后是笑声，从后排先起来的。有人拍了下桌子。',
-            en: 'Half a second of silence. Then laughing, starting from the back rows. Somebody slaps a desk.'
+            zh: '教室里冷场了一瞬，紧接着是哄堂大笑，从后排最先爆发开来。有人甚至重重拍了下课桌。',
+            en: 'The classroom hangs stunned for a split second, then erupts into laughter starting from the back rows. Someone even slaps their desk in delight.'
           },
           {
             type: 'narration',
@@ -1377,8 +1377,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         labelZh: '开了个头，然后卡住了',
         labelEn: 'Get the opening out, then stall',
         jp: 'はじめまして。……えっと、その、',
-        hintZh: '排练过二十遍的句子，一个字都想不起来',
-        hintEn: 'Twenty rehearsals, and not one word of it is there.',
+        hintZh: '排练过无数遍的句子，一个字都想不起来',
+        hintEn: 'Countless rehearsals, and not a single word comes to mind.',
         effects: [{ stat: 'proficiency', amount: 1, reasonZh: '你在三十几个人面前把慌乱吞了下去', reasonEn: 'You swallowed the panic with thirty people watching' }],
         relations: [
           { char: CharacterId.HIKARI, familiarity: 3, affection: 3, reasonZh: '她是第一个鼓掌的', reasonEn: 'She was the first one to clap' },
@@ -1388,8 +1388,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '三秒。五秒。空气开始变重。',
-            en: 'Three seconds. Five. The air starts to get heavy.'
+            zh: '讲台下原本细碎的翻书声慢慢平息下去。几十道视线齐刷刷落过来，空气沉得像灌了铅。',
+            en: 'The soft rustling of pages below gradually dies away. Scores of eyes fix on you at once, the quiet turning thick as lead.'
           },
           {
             type: 'narration',
@@ -1528,8 +1528,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'narration',
     characterImage: SCHOOL_NPC_SPRITES.kenta,
-    zh: '第一节课下课铃响完的第四秒，你的桌子周围围了六个人。带头的是个晒得很黑的男生，一屁股坐在了你前桌的桌子上。',
-    en: 'Four seconds after the bell ends first period, there are six people around your desk. The one leading them is a very tanned boy, who sits himself down on the desk in front of yours.'
+    zh: '第一节课的下课铃尾音还没散尽，你的课桌边就呼啦一下围了一圈人。带头的是个皮肤晒得黝黑的男生，大咧咧地一屁股反坐在了前桌的椅子上。',
+    en: 'Before the final notes of the first-period bell even fade, a lively cluster forms around your desk. Leading the pack is an athletic, sun-tanned boy who plops himself down backward onto the seat right in front of you.'
   },
   {
     type: 'narration',
@@ -1704,8 +1704,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '人群在四秒之内散干净了。班长这两个字在这间教室里显然是有分量的。',
-    en: 'The crowd is gone in four seconds. The words "class president" evidently carry weight in this room.'
+    zh: '原本乱哄哄围着的一圈人像退潮似的，呼啦一下全缩回了各自的座位上。班长这两个字在这间教室里，威慑力显然是不容置疑的。',
+    en: 'The noisy knot of students disperses like an ebbing tide, scurrying back to their seats. The words "class president" evidently carry undisputed weight in this room.'
   },
   {
     type: 'narration',
@@ -1790,8 +1790,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你走到一楼，看见食堂门口排着大约四十个人的队，以及一台全是汉字的售票机。你在原地站了十秒。',
-            en: 'You get downstairs and find a queue of roughly forty people outside the cafeteria, and a ticket machine covered end to end in kanji. You stand there for ten seconds.'
+            zh: '你走到一楼，食堂门口早已排起了一条拐着弯的长龙，尽头立着一台贴满各种花哨便签的旧式食券机。你站在喧闹的人声外围，手里攥着硬币，一时间有些进退两难。',
+            en: 'Down on the ground floor, a long winding queue already curls out of the cafeteria entrance toward an aged ticket vending machine plastered with handwritten notes. Clutching coins in your pocket, you linger at the edge of the noisy crowd, caught in two minds.'
           },
           {
             type: 'narration',
@@ -1955,8 +1955,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她抬头看你。两秒之后，那道视线落到了你空着的两只手上。',
-    en: 'She looks up at you. Two seconds later her eyes land on your two empty hands.'
+    zh: '她仰起脸看向你，目光稍稍一顿，慢慢落到了你空空如也的双手上。',
+    en: 'She glances up at you, her gaze pausing slightly before drifting down to your completely empty hands.'
   },
   {
     type: 'speech',
@@ -1976,8 +1976,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${HIKARI}school_neutral.webp`,
-    zh: '她「啊」了一声。接下来的三十秒里，她把摆在中间的东西一样一样分成了两堆，中途还调换过一次。',
-    en: 'She says "ah". Over the next thirty seconds she sorts everything laid out between you into two piles, one item at a time, swapping two of them over partway through.'
+    zh: '她「啊」了一声，随即二话不说地把铺在当间的东西一样样分成了两堆。分到炸鸡块时她犹豫着端详片刻，又把装得最满的那份悄悄换到了你这一侧。',
+    en: 'She lets out a soft "Ah," then promptly begins dividing the spread into two neat piles without another word. Pausing briefly over the karaage, she quietly nudges the fuller portion over to your side.'
   },
   {
     type: 'narration',
@@ -2317,8 +2317,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '咳嗽了大概二十秒之后，她指着你，一边喘一边笑。',
-            en: 'After about twenty seconds of coughing, she points at you, laughing and out of breath.'
+            zh: '她捂着胸口咳得满脸通红，好不容易才顺过气来，指着你一边喘一边笑，连眼角都渗出了泪花。',
+            en: 'Clutching her chest and coughing until her face turns pink, she finally catches her breath, pointing at you with tears of laughter gleaming in the corners of her eyes.'
           },
           {
             type: 'speech',
@@ -2331,8 +2331,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你没告诉她，那两句你在心里排了整整三分钟。',
-            en: 'You do not tell her that you spent a full three minutes assembling those two sentences in your head.'
+            zh: '你没告诉她，那两句日语你在心底反复拼凑、调换语序，手心都攥出了汗才敢说出口。',
+            en: 'You do not tell her how frantically you pieced those words together in your head, adjusting the grammar over and over with sweaty palms before daring to speak.'
           }
         ]
       }
@@ -2495,8 +2495,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '「一、听不懂的时候，全班都会安静两秒，那两秒是留给你自己意识到的。」',
-    en: '"One. When you have not understood, the class goes quiet for two seconds. Those two seconds are for you to notice."'
+    zh: '「一、听不懂的时候全班突然安静的那一小会儿，是大家特意留给你自己意识到的尴尬。」',
+    en: '"One. That brief beat of total silence when you fail to follow is everyone politely waiting for you to realize your own predicament."'
   },
   {
     type: 'narration',
@@ -2511,8 +2511,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${ASUKA}neutral.webp`,
-    zh: '你写第三条的时候，斜前方那个人回过头，看了一眼你的本子，什么都没说，然后把自己的笔记本往你桌角推了两厘米。',
-    en: 'As you write the third one, the person diagonally in front turns around, looks at your notebook, says nothing, and pushes her own notes two centimetres onto the corner of your desk.'
+    zh: '你写第三条的时候，斜前方那个人微微侧过身，眼风掠过你的本子。她什么都没说，只是不动声色地将自己的笔记本往你桌角推了推。',
+    en: 'As you write the third one, the girl diagonally ahead shifts slightly, eyes flicking across your page. Without a word, she subtly nudges her own notebook onto the corner of your desk.'
   },
   {
     type: 'narration',
@@ -2522,8 +2522,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${ASUKA}neutral.webp`,
-    zh: '你想说声谢谢。她已经转回去了，背挺得笔直，像是刚才那两厘米跟她没有任何关系。',
-    en: 'You want to say thank you. She has already turned back, sitting very straight, as though those two centimetres had nothing whatsoever to do with her.'
+    zh: '你想说声谢谢。她已经转了回去，脊背挺得笔直，像是刚才那份善意根本不是出自她手。',
+    en: 'You want to say thank you, but she has already turned back forward, sitting bolt upright as though that small kindness had nothing to do with her.'
   },
   {
     type: 'effect',

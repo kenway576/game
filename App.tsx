@@ -54,6 +54,7 @@ import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
 import { promiseDue } from './story/day2Promises';
+import { FARM_TUTORIAL, FISH_TUTORIAL } from './story/tutorials';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
@@ -246,6 +247,10 @@ const App: React.FC = () => {
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
   // 店里的小景演完之后再打开的那家店。null = 演完就回大厅。
   const [pendingStore, setPendingStore] = useState<StoreKind | null>(null);
+  // 🧑‍🏫 教程演完之后再打开的那个玩法。种菜和钓鱼第一次都得有人先教一遍，
+  // 否则玩家点开的是一个没写说明书的仪表盘。
+  const [pendingFishing, setPendingFishing] = useState<MapLocation | null>(null);
+  const [pendingGarden, setPendingGarden] = useState<'balcony' | 'rooftop' | null>(null);
   const [inCafeteria, setInCafeteria] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   // 这一趟碰到的人。剧本播完之后进面对面对话。
@@ -1072,7 +1077,22 @@ const App: React.FC = () => {
       }
       if (loc.id === 'tackle_shop')   { setCurrentScene(loc.id); setActiveStore('tackle');  setGameMode(GameMode.STORE); return; }
       if (loc.id === 'school_terrace') { setCurrentScene(loc.id); setInCafeteria(true); setGameMode(GameMode.CAFETERIA); return; }
-      if (FISHING_SPOTS.includes(loc.id)) { setCurrentScene(loc.id); setActiveFishing(loc); setGameMode(GameMode.FISHING); return; }
+      if (FISHING_SPOTS.includes(loc.id)) {
+        setCurrentScene(loc.id);
+        // 🎣 第一次上堤防，先让源さん把竿、饵、时辰讲一遍，讲完再开钓场。
+        if (!storyFlags['fish_tutorial_done']) {
+          setPendingFishing(loc);
+          setActiveTrip({
+            loc, event: null,
+            script: [
+              { type: 'scene', scene: loc.mapScene || loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+              ...FISH_TUTORIAL
+            ]
+          });
+          return;
+        }
+        setActiveFishing(loc); setGameMode(GameMode.FISHING); return;
+      }
       // 天台只有在真摆了盆的时候才当花园开。一个盆都没有还跳花园界面，
       // 等于把天台原本那段空转旁白也吞掉了，白跑一趟还什么都没看见。
       if (loc.id === 'rooftop_sunset' && life.plots.some(p => p.site === 'rooftop')) {
@@ -1318,21 +1338,28 @@ const App: React.FC = () => {
       setChatInPerson(true);
       setTimeout(() => enterChat(who, ChatMode.FREE_TALK), 0);
     }
-    setActiveFishing(null); setInCafeteria(false);
-    // 🛍️ 刚才那一趟是"进店先演一段戏"。戏演完了，货架该开了——
-    // 时间和体力照常在下面结算，因为这一趟本来就是一次出门。
-    if (pendingStore) {
-      const k = pendingStore;
-      setPendingStore(null);
-      setActiveStore(k);
-      setGameMode(GameMode.STORE);
-    } else {
-      setActiveStore(null);
+    setInCafeteria(false);
+    // 🛍️🎣🌱 刚才那一趟只是"正事之前先演一段戏"：进店前的小景、
+    // 第一次上堤防、第一次开阳台。戏演完了，正事该开场了。
+    //
+    // ⚠️ 这里必须提前 return。时间和体力的结算在下面，而这一趟还没结束——
+    // 玩家关掉店/钓场的时候会再调一次 finishTrip，那次才是真的回来了。
+    // 不提前 return 的话，进店先演戏的那几家会被收两格时间；
+    // 而阳台根本不是出门，收一格更离谱。
+    const handoff = pendingStore || pendingFishing || pendingGarden;
+    if (handoff) {
+      setPendingStore(null); setPendingFishing(null); setPendingGarden(null);
+      if (pendingStore) { setActiveStore(pendingStore); setGameMode(GameMode.STORE); }
+      else if (pendingFishing) { setActiveFishing(pendingFishing); setGameMode(GameMode.FISHING); }
+      else if (pendingGarden) { setActiveGarden(pendingGarden); setGameMode(GameMode.GARDEN); }
+      return;
     }
+    setActiveFishing(null);
+    setActiveStore(null);
     // 出门那一趟的剧本是叠在大厅上播的，所以以前不用管 gameMode。
     // 但店和钓点是自己占一个 gameMode 的，回来必须显式切回大厅——
     // 否则 activeStore 清空之后 gameMode 还停在 STORE，屏幕上什么都不剩。
-    if (!pendingStore) { setGameMode(GameMode.LOBBY); setCurrentScene(DEFAULT_SCENE); }
+    setGameMode(GameMode.LOBBY); setCurrentScene(DEFAULT_SCENE);
     // 这一趟花掉几格，由地点/事件标价决定：便利店 1 格，二郎系拉面和远门 2 格。
     // 花完今天的额度就直接跳到第二天午后——早上是上学时间，不是可以出门的时段。
     const cost = trip ? getTimeCost(trip.loc, trip.event) : 1;
@@ -2895,7 +2922,26 @@ ${wind}`;
           onOpenWordbook={() => setShowWordbook(true)}
           onSleep={advanceToNextDay}
           plotCount={life.plots.filter(p => p.site === 'balcony').length}
-          onOpenBalcony={() => { setActiveGarden('balcony'); setGameMode(GameMode.GARDEN); }}
+          onOpenBalcony={() => {
+            // 🌱 第一次开阳台，楼上那位先隔着栏杆把说明书讲完。
+            if (!storyFlags['farm_tutorial_done']) {
+              setPendingGarden('balcony');
+              // 房间界面在 JSX 里排在剧本后面，不切走的话它会盖住这段戏。
+              setGameMode(GameMode.LOBBY);
+              setActiveTrip({
+                loc: {
+                  id: 'balcony_tutorial', district: 'kitano',
+                  nameJp: 'ベランダ', reading: 'ベランダ',
+                  nameZh: '阳台', nameEn: 'The Balcony',
+                  blurbZh: '', blurbEn: '', timeCost: 0
+                },
+                event: null,
+                script: FARM_TUTORIAL
+              });
+              return;
+            }
+            setActiveGarden('balcony'); setGameMode(GameMode.GARDEN);
+          }}
           onOpenKitchen={() => setInKitchen(true)}
           onOpenKobeMap={() => setShowKobeMap(true)}
         />

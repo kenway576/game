@@ -60,13 +60,13 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '横杆架在大概三米二。你不太懂田径，但你知道三米二是什么概念——那是成年男子的水平，而且是拿真杆子的成年男子。',
-        en: 'The bar is at something like three metres twenty. You do not follow athletics, but you know what three-twenty means: that is an adult mark, and adults use actual poles.'
+        zh: '横杆架得高得离谱。你不太懂田径，但也看得出那个高度已经越过了正常高中生的头顶一大截——那是成年选手的及格线，而且人家手里拿的是能弯成半圆的真杆子。',
+        en: 'The bar is unreasonably high. You do not follow athletics, but you can see that mark sits far above a high schooler\'s head—it is an adult standard, cleared by people with flexible glass poles.'
       },
       {
         type: 'narration',
-        zh: '他的助跑距离大约是六步。',
-        en: 'His run-up is about six paces.'
+        zh: '而他只往后退了没几步。',
+        en: 'His run-up is barely a few paces.'
       },
       {
         type: 'narration', characterImage: E.shirou,
@@ -80,8 +80,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你在垫子边上站了大概五秒钟，脑子里只有一句话在转：那个动作不是这么用的。',
-        en: 'You stand by the mat for about five seconds with a single sentence going round your head: that is not how that works.'
+        zh: '你站在软垫边上，脚底踩着干硬的沙土，脑子里只有一句话在转：那个动作不是这么用的。',
+        en: 'You stand by the mat with dry grit under your soles and a single sentence going round your head: that is not how that works.'
       },
       {
         type: 'narration',
@@ -123,8 +123,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '你说：三米二，六步助跑，竹竿。他说：嗯。',
-                en: 'You say: three-twenty, a six-pace run-up, bamboo. He says: yes.'
+                zh: '你说：高度离谱，助跑没几步，手里拿的还是园艺竹竿。他说：嗯。',
+                en: 'You say: impossible height, barely any run-up, bamboo. He says: yes.'
               },
               {
                 type: 'narration',
@@ -172,8 +172,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '一根两百日元的竹竿。他擦了大概四十秒。',
-                en: 'A two-hundred-yen bamboo pole. He spends about forty seconds on it.'
+                zh: '一根两百日元的竹竿。他用袖口顺着竹节从头揩到尾，慢得像是在擦拭什么传家宝，直到竹皮在落日底下泛起一层温润的旧光。',
+                en: 'A two-hundred-yen bamboo pole. He wipes it down along the joints with his sleeve, methodical as though cleaning an heirloom, until the bamboo skin takes on a dull sheen in the sunset.'
               }
             ]
           },
@@ -187,13 +187,13 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你走出二十米，身后又是一声闷响。隔了大概一秒，横杆才落地。',
-                en: 'Twenty metres on there is another thud behind you. About a second after it, the bar comes down.'
+                zh: '走出没多远，身后又是一声沉闷的震响。横杆在软垫边沿弹跳了一下才停住。',
+                en: 'A little way off, another heavy thud sounds behind you. The bar rattles against the edge of the mat before settling.'
               },
               {
                 type: 'narration',
-                zh: '再走二十米，又是一声。这一次横杆没有响。',
-                en: 'Twenty more, and another thud. This time the bar makes no sound.'
+                zh: '穿过铁丝网拐角时，身后又传来起跑的沙沙声。这一次，没有横杆落地的动静。',
+                en: 'Turning the corner by the chain-link fence, the rasp of running feet comes again. This time the bar does not fall.'
               }
             ]
           }
@@ -236,7 +236,7 @@ export const EASTER_SCENES: StreetScene[] = [
         zh: '你走出操场的时候天已经全黑了。身后还有声音。',
         en: 'It is fully dark by the time you leave the ground. There is still a sound behind you.'
       },
-      seen('三米二、六步助跑、一根竹竿', 'Three-twenty, six paces, and one bamboo pole')
+      seen('那根怎么看都不讲理的园艺竹竿', 'A tomato stake that defied every law of physics')
     ]
   },
 
@@ -273,8 +273,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'choice',
-        promptZh: '微波炉转到第四十秒。他的语气开始变得很紧张。',
-        promptEn: 'The microwave reaches forty seconds. His tone becomes noticeably tense.',
+        promptZh: '微波炉里托盘嗡嗡地转，玻璃窗上蒙着一层热气。他的呼吸忽然屏住了，握着手机的指关节用力得泛白。',
+        promptEn: 'The turntable hums softly inside, glass fogged with steam. His breath catches, knuckles gripping the phone going white.',
         options: [
           {
             id: 'egg_mw_play',
@@ -296,8 +296,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '接下来的四分钟他给你讲了一套东西。你一个字都没听懂，但你注意到那套东西**内部是自洽的**。',
-                en: 'For the next four minutes he explains something to you. You do not understand a word, but you notice that it is internally consistent.'
+                zh: '他语速极快地往外倒了一长串名词，什么世界线收束、因果律扰动，连珠炮似的撞进你耳朵里。你一个字都没听懂，但那套理论在逻辑上竟然完全自洽。',
+                en: 'He unleashes a barrage of rapid-fire jargon about world line convergence and causality divergence. You do not understand a single syllable, yet the whole construct feels unsettlingly consistent.'
               },
               {
                 type: 'narration',
@@ -336,8 +336,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '你说：整根进去会爆。他沉默了三秒，然后非常郑重地说了一句「……そうか」。',
-                en: 'You say: whole, it explodes. Three seconds of silence, and then, with great gravity, he says: I see.'
+                zh: '你说：带皮整根进去，等下准得炸。他搭在按键上的手指僵住了，半晌没有出声，末了才极其严肃地推了推眼镜，吐出一句「……そうか」。',
+                en: 'You say: whole with the skin on, it is going to blow. His fingers freeze over the keypad; several quiet beats pass before he adjusts his glasses and says, with grave dignity: I see.'
               },
               {
                 type: 'narration',
@@ -394,13 +394,13 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '她长得非常显眼。图书馆里大概有二十个人。',
-        en: 'She is extremely conspicuous. There are about twenty people in the library.'
+        zh: '她长得非常显眼。但周遭的气氛却怪异得让人后颈发凉。',
+        en: 'She is strikingly conspicuous. Yet the surrounding air is unsettling enough to chill your spine.'
       },
       {
         type: 'narration',
-        zh: '你花了三分钟确认了一件事：这二十个人里，没有一个人看她。',
-        en: 'It takes you three minutes to establish something: not one of those twenty people looks at her.'
+        zh: '你在书架旁边站了一会儿，慢慢察觉出一丝诡异：阅览室里坐着稀稀落落十几个学生，翻书的翻书，写卷子的写卷子，却没有任何一道视线落在她身上。',
+        en: 'You linger by the shelves for a while, slowly picking up the quiet absurdity: a dozen students reading and writing across the room, yet not a single pair of eyes ever drifts toward her.'
       },
       {
         type: 'narration',
@@ -425,8 +425,8 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration', characterImage: E.mai,
-                zh: '她愣住了。愣了很久——久到你开始怀疑自己是不是认错了人。',
-                en: 'She freezes. Long enough that you start wondering whether you have mistaken her for somebody.'
+                zh: '她翻书的手指猛地收紧，脊背绷得笔直，像是被什么突如其来的声音吓到一样盯住你。那种目光沉得让你手心微微发潮，甚至开始怀疑自己是不是认错了人。',
+                en: 'Her fingers snap tight against the book, posture going rigid like someone startled by a sudden noise. The gaze is intense enough to make your palms prickle with damp heat.'
               },
               {
                 type: 'narration',
@@ -435,8 +435,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '你坐下之后过了大概十分钟，她起身走了。经过你桌子的时候放下了一颗糖。',
-                en: 'About ten minutes after you sit down she gets up and leaves. Passing your table she puts down a sweet.'
+                zh: '你在靠门的位置坐下，刚把参考书翻开没几页，一阵极轻微的脚步声从身侧掠过。等到你抬起头，桌面那道木纹裂痕上方已经多了一颗裹着玻璃纸的透明硬糖。',
+                en: 'You take a seat near the door, barely a few pages into your workbook, when a whisper of footsteps brushes past. Looking up, a cellophane-wrapped drop sweet rests quietly on the timber.'
               },
               {
                 type: 'narration',
@@ -500,8 +500,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '她拦下了从她面前经过的每一个人。你数了一下，十四个人里有十四个人被拦下了。',
-        en: 'She stops everybody who passes. You count: fourteen out of fourteen.'
+        zh: '每一个从坡道走上来的人，无一例外全被她一把截住。她横跨两步挡在路中间的架势，活像是在把守某种军事要道。',
+        en: 'Every single person coming up the slope is stopped dead in their tracks. The way she plants herself across the path looks like guarding a checkpoint.'
       },
       {
         type: 'narration',
@@ -533,8 +533,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '第二天你听说昨天被拦下的那十四个人里，有九个现在是那个社团的成员了。',
-                en: 'The next day you hear that nine of those fourteen are now members of whatever that club is.'
+                zh: '第二天你听说昨天被她堵在门口的人里，大半现在都稀里糊涂地成了那个古怪社团的挂名成员。',
+                en: 'The next day you hear that most of the people cornered at the gate are now bewildered members of whatever that club is.'
               }
             ]
           },
@@ -552,12 +552,12 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration', characterImage: E.haruhi,
-                zh: '她讲了六分钟。中间没有停顿，也没有让你插话的位置。',
-                en: 'She talks for six minutes without a pause or a gap for you to speak into.'
+                zh: '她一口气从宇宙人讲到未来人再到超能力者，语速快得像夏天的暴雨砸在铁皮屋顶上。中间没有任何停顿，也没有留给旁人插话的空隙。',
+                en: 'She barrels from aliens to time travellers to espers, sentences pounding down like summer rain on corrugated iron. No pauses, no daylight to wedge a word in.'
               },
               {
                 type: 'narration',
-                zh: '你到最后也没弄明白那是个什么社团。你只弄明白了一件事：**这个社团在找的东西还没有被找到**，而她非常确信它存在。',
+                zh: '你到最后也没弄明白那是个什么社团。你只弄明白了一件事：这个社团在找的东西还没有被找到，而她非常确信它存在。',
                 en: 'You never do work out what the club is. You work out one thing: whatever it is looking for has not been found, and she is entirely certain it exists.'
               },
               {
@@ -567,8 +567,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration', characterImage: E.yuki_nagato,
-                zh: '桌子那头看书的女生翻了一页。就在你签完名的那一秒。',
-                en: 'The girl at the other end of the table turns a page. In the same second that you finish signing.'
+                zh: '桌子那头一直低头看书的短发女生恰好在这时翻了一页，纸页在微风里发出很轻的刷啦一声。',
+                en: 'The short-haired girl at the end turns a page at that precise second, paper whispering softly in the breeze.'
               },
               {
                 type: 'narration',
@@ -600,8 +600,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '他一动不动地看了大概十分钟。你路过的时候他还在那儿。你逛完一圈回来，他还在那儿。',
-        en: 'He watches without moving for about ten minutes. He is there when you pass. He is still there when you have done a lap.'
+        zh: '他双手插在大衣口袋里，一动不动地面朝着深蓝色的水幕。你从水母馆绕了一圈回来，他连站立重心的脚都没换过。',
+        en: 'Hands shoved in his coat pockets, he stares into the deep blue waterwall without twitching. Even after you circle the entire jellyfish exhibit, he hasn\'t shifted his weight once.'
       },
       {
         type: 'narration',
@@ -634,8 +634,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '接下来的三分钟，他给那个小孩讲了沙丁鱼群为什么会同时转向。讲得非常细，细到旁边围了六个大人。',
-                en: 'For the next three minutes he explains to the child why a sardine school turns as one. In such detail that six adults gather to listen.'
+                zh: '他单膝蹲在玻璃幕墙前，用低沉平稳的嗓音给小孩讲起沙丁鱼侧线的流体感应和集群回转力学。严谨得像是在宣读一篇权威论文，不一会儿旁边就围拢了几个推着婴儿车的游客。',
+                en: 'Kneeling by the acrylic pane, he explains the lateral line hydrodynamic sensing and schooling mechanics in a quiet, deadpan baritone. It sounds like an authoritative paper, drawing several stroller-pushing tourists to listen.'
               },
               {
                 type: 'narration',
@@ -664,8 +664,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '他说他从进馆开始就在数。他说这一缸的数量和牌子上写的对不上，差了四十七条。',
-                en: 'He says he has been counting since he came in. He says the number in this tank does not match the sign. Forty-seven short.'
+                zh: '他说他一直在数。水槽右下角铜牌上标明的鱼群数目，和眼前在水流里游动的数量对不上，少了将近五十条。',
+                en: 'He says he has been counting continuously. The figure stamped on the brass plaque doesn\'t match what is swimming in the current—nearly fifty short.'
               },
               {
                 type: 'narration',
@@ -707,8 +707,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration', characterImage: E.anya,
-        zh: '那个小孩忽然转过头，非常认真地看着你。看了三秒，说：「バナナのほう。」',
-        en: 'The child turns round and looks at you with total seriousness. Three seconds of it. Then: "The banana one."'
+        zh: '那个小孩忽然转过头，一双圆溜溜的大眼睛一瞬不瞬地盯着你。她双手背在身后，奶声奶气却斩钉截铁地来了一句：「バナナのほう。」',
+        en: 'The child turns round and fixes you with wide, unblinking eyes. Hands behind her back, she declares in a squeaky yet absolute tone: "The banana one."'
       },
       {
         type: 'narration',
@@ -774,8 +774,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '五分钟后你才发现草莓那个的酱汁漏了，滴在你的鞋上。',
-                en: 'Five minutes later you notice that the strawberry sauce has leaked onto your shoe.'
+                zh: '直到走到街心天桥底下，你才发觉薄饼底下的草莓甜酱早顺着包装纸缝渗了出来，在帆布鞋面上洇开了一小团红渍。',
+                en: 'Only when you reach the footbridge do you notice that strawberry syrup had seeped through the paper fold, leaving a sticky red stain on your canvas shoe.'
               }
             ]
           }
@@ -812,8 +812,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '过了大概三秒，她又出来了。她站在门口，重新深吸了一口气。',
-        en: 'About three seconds later she comes back out, stands by the door, and takes another breath.'
+        zh: '门上的铜铃刚响过没两声，那道纤细的身影就又退了出来。她两只手死死抱紧怀里的团子玩偶，胸口剧烈起伏着，重新吸了一大口气。',
+        en: 'Barely two chimes after the brass bell rings, the slender figure retreats back outside, clutching the round plush tightly to her chest and taking another desperate breath.'
       },
       {
         type: 'choice',
@@ -827,7 +827,7 @@ export const EASTER_SCENES: StreetScene[] = [
             hintZh: '有些台阶是别人替不了的',
             hintEn: 'Some steps cannot be taken on somebody\'s behalf.',
             effects: [
-              { stat: 'kindness', amount: 3, reasonZh: '你陪一个陌生人在门口站了十分钟', reasonEn: 'You stood outside a door with a stranger for ten minutes' }
+              { stat: 'kindness', amount: 3, reasonZh: '你陪一个陌生人在店门口站了半天', reasonEn: 'You stood outside a door with a stranger for a long time' }
             ],
             setFlags: ['egg_nagisa_waited'],
             then: [
@@ -843,8 +843,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration', characterImage: E.nagisa,
-                zh: '五分钟后她出来了，手里拎着一个纸袋。她冲你鞠了一躬，鞠得很深。',
-                en: 'Five minutes later she emerges with a paper bag and bows to you. Deeply.'
+                zh: '门帘轻晃，她终于抱着用牛皮纸袋装好的大面包走了出来。看见你还在门口，她冲你鞠了一躬，鞠得很深。',
+                en: 'The door curtain sways, and she finally emerges cradling a big loaf in a brown paper bag. Seeing you still by the door, she offers a very deep bow.'
               },
               {
                 type: 'narration',
@@ -907,8 +907,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你从她旁边走过去，走出十几米之后停了下来。',
-        en: 'You walk past her, and stop about fifteen metres on.'
+        zh: '你从她身侧擦肩而过，走出几步之后，脚下无端端地顿住了。',
+        en: 'You walk past her, and stop after just a few paces for no obvious reason.'
       },
       {
         type: 'narration',
@@ -922,8 +922,8 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你想不起来在哪儿见过。你甚至想不起来她刚才是什么样子——而她就在你眼前，十几米远。',
-        en: 'You cannot place where. You cannot even recall what she looked like just now, and she is fifteen metres away in plain sight.'
+        zh: '你想不起来在哪儿见过。你甚至想不起来她刚才的面容轮廓——而她就站在几步开外的坡道边，风把她的裙摆吹得轻轻贴在小腿上。',
+        en: 'You cannot place where. You cannot even recall the contour of her face just now, and she is standing right there by the slope with the breeze pressing her skirt against her shins.'
       },
       {
         type: 'choice',
@@ -1016,18 +1016,18 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration', characterImage: E.nukumizu,
-        zh: '离她大概八米的地方，另一个男生背对着她坐着，手里拿着一张很长的便利店小票在看。',
-        en: 'About eight metres off, a boy sits with his back to her, studying a very long convenience store receipt.'
+        zh: '离她几步远的铁丝网边上，另一个穿制服的男生背对着这边席地而坐，正对着手里一张长得夸张的便利店收据发愁。',
+        en: 'A few paces off by the chain-link fence, another uniformed boy sits with his back turned, fretting over an absurdly long convenience store receipt.'
       },
       {
         type: 'narration',
-        zh: '那张小票长得有点过分。你估计上面至少有二十项。',
-        en: 'The receipt is unreasonably long. You estimate at least twenty items.'
+        zh: '那张白条长得几乎要拖到水泥地上，密密麻麻印着看不清的条目。',
+        en: 'The receipt is so long it nearly touches the concrete, covered in densely printed items.'
       },
       {
         type: 'choice',
-        promptZh: '她吃完了。她看着空掉的便当盒，看了大概十秒钟。',
-        promptEn: 'She finishes. She looks at the empty box for about ten seconds.',
+        promptZh: '她合上铝制饭盒，空空的盒底被刮得干干净净。她盯着盒盖，喉咙轻轻动了一下，像是还在回味刚才咽下去的分量。',
+        promptEn: 'She snaps the aluminium box shut, its bottom scraped clean. Staring at the lid, her throat bobs faintly as if longing for more.',
         options: [
           {
             id: 'egg_anna_offer',
@@ -1042,8 +1042,8 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration', characterImage: E.anna,
-                zh: '她抬头看了你两秒钟。眼睛亮起来和伸手是同一个动作。谢谢是嚼着说的，三口就没了。',
-                en: 'She looks up at you for two seconds. Her eyes lighting up and her hand coming out are the same motion. The thank-you is said around a mouthful. Three bites and it is gone.'
+                zh: '她猛地抬起头。眼神亮起来的瞬间，手已经伸了过来。道谢的话含在嘴里含糊不清，你手里的半个面包转眼就只剩下了空空的包装袋。',
+                en: 'She snaps her head up. The moment her eyes light up, her hands are already reaching out. The thank-you is mumbled through full cheeks; before you know it, only empty plastic wrapper remains.'
               },
               {
                 type: 'narration',
@@ -1052,8 +1052,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration', characterImage: E.nukumizu,
-                zh: '八米之外那个男生的肩膀抖了一下。他没有回头。',
-                en: 'Eight metres away the boy\'s shoulders twitch. He does not turn round.'
+                zh: '铁丝网边上那个男生的脊背无声地僵直了，肩膀微微一沉，却硬是一次都没回头。',
+                en: 'The boy by the fence goes rigid, shoulders dropping slightly, yet stubbornly refuses to turn round.'
               },
               {
                 type: 'narration',
@@ -1066,14 +1066,14 @@ export const EASTER_SCENES: StreetScene[] = [
             id: 'egg_anna_receipt',
             labelZh: '去看那张小票',
             labelEn: 'Go and look at the receipt',
-            hintZh: '二十项。你想知道是哪二十项',
-            hintEn: 'Twenty items. You want to know which twenty.',
+            hintZh: '密密麻麻的一长串。你想知道是买了什么',
+            hintEn: 'A dense list. You want to know what it is.',
             effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你读了一张不属于你的小票', reasonEn: 'You read a receipt that was not yours' }],
             then: [
               {
                 type: 'narration',
-                zh: '你装作路过瞥了一眼。二十三项，全是零食，而且全是同一类：能一个人吃完、包装能不出声打开的那种。',
-                en: 'You glance over as you pass. Twenty-three items, all snacks, and all of the same category: single-portion, and openable without noise.'
+                zh: '你装作路过瞥了一眼。密密麻麻的一长串全是热量炸弹，而且全是同一类：能一个人迅速吞下、包装撕开时尽量不出声的那种。',
+                en: 'Glancing over as you pass, you see a dense scroll of calorie bombs, all of a kind: easy to inhale solo, wrappers designed to open silently.'
               },
               {
                 type: 'narration', characterImage: E.nukumizu,
@@ -1082,14 +1082,14 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '他没有看你。他一直在看八米之外那个方向。',
-                en: 'He does not look at you. He has been looking eight metres in the other direction the whole time.'
+                zh: '他没有看你。他的余光一直牢牢锁在天台另一头那个空饭盒的方向。',
+                en: 'He does not look at you. His side glance stays fixed firmly on the empty lunchbox at the other corner of the roof.'
               }
             ]
           }
         ]
       },
-      seen('一个装工具的便当盒，和一张二十三项的小票', 'A toolbox used as a lunchbox, and a twenty-three item receipt')
+      seen('一个装工具的便当盒，和一张长得过分的小票', 'A toolbox used as a lunchbox, and an unreasonably long receipt')
     ]
   },
 
@@ -1154,8 +1154,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '安静持续了大概八秒。八秒对三个刚一起演完一首曲子的人来说，太长了。',
-                en: 'The silence runs about eight seconds. For three people who have just played something together, eight seconds is a long time.'
+                zh: '余音散去后的空气沉得化不开。对于刚刚合奏完一曲的人来说，这种沉默未免太漫长，也太生硬了。',
+                en: 'The silence hanging in the wake of the notes is thick as lead. For three people who had just shared a song, the stillness is far too drawn-out, far too brittle.'
               },
               {
                 type: 'narration', characterImage: E.haruki,
@@ -1212,142 +1212,152 @@ export const EASTER_SCENES: StreetScene[] = [
     script: [
       {
         type: 'narration',
-        zh: '店员把一只沉甸甸的白瓷盘端到隔壁桌上。盘子里是三块叠在一起的厚舒芙蕾松饼。',
-        en: 'The server sets a heavy white ceramic plate down at the next table. On it sit three stacked thick soufflé pancakes.'
+        zh: '店员端着盘子从你桌旁经过的时候，带起了一股极甜的煎蛋和焦糖味。',
+        en: 'As the server passes your table with the tray, a sweet draft of fried egg and warm caramel drifts past.'
       },
       {
         type: 'narration',
-        zh: '那三块松饼的厚度有点离谱，像三只金黄色的小软垫。端上来的时候还在空气里微微打着颤。',
-        en: 'The thickness of those three pancakes is slightly unreasonable—like three small golden cushions, wobbling gently in the air.'
+        zh: '隔壁桌的松饼搁在桌面上，整张木桌轻微地颤了一下。三块厚得有些过分的舒芙蕾挤在白瓷盘里，顶上那团蜂蜜黄油正在暖气里无声地化开，塌得像某种没有骨气的温顺动物。',
+        en: 'The pancake plate settles onto the next table, sending a soft tremor through the timber. Three unreasonably thick soufflés huddle in the ceramic dish, the honey butter melting silently in the warm air like a pliable little creature.'
       },
       {
         type: 'narration', characterImage: E.kaguya,
-        zh: '靠窗坐着的金发女生一下子坐直了身子，齐刘海下一双红宝石般的大眼睛闪闪发亮，兴高采烈地比起双剪刀手。',
-        en: 'The blonde girl by the window sits up straight in a flash, her ruby-red eyes under straight bangs sparkling as she flashes energetic double peace signs.'
+        zh: '靠窗的金发女生下巴原本搁在手背上，这会儿猛地坐直了。她两只手把袖口往上拽了拽，眼睛直勾勾地盯着盘子，整个人前倾得几乎要栽进去。',
+        en: 'The blonde girl by the window, chin previously resting on the back of her hands, jerks upright. She yanks her sleeves back, eyes locked onto the dish, leaning forward so far she nearly tips in.'
       },
       {
         type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
         characterImage: E.kaguya,
-        zh: '「呜哇——！摇晃指数突破安全临界点了！搭档，你快看！这个热量绝对有八千卡——不，是幸福感有一亿伏特！」',
-        en: '"Waaah! The wobble index has breached safety levels! Look, look! This has got to be eight thousand calories—no, one hundred million volts of sheer happiness!"'
+        zh: '「……搭档，你看见没有。它刚才自己晃了一下。绝对不是风吹的。」',
+        en: '"...Partner. Did you see that? It just wobbled on its own. That was definitely not the wind."'
       },
       {
         type: 'narration', characterImage: E.iroha,
-        zh: '坐在她对面的女生扎着松散的深紫发低发髻，眼角有一颗小小的泪痣。穿着白短袖水手服与天蓝百褶裙，身旁放着挂有粉色玩偶的米白大挎包，手里正摊着一本写满开支的手帐。',
-        en: 'Across from her sits a girl with a loose dark-violet low bun and a delicate beauty mark beneath her eye. Dressed in a white sailor shirt and sky-blue pleated skirt, with an oversized canvas bag adorned by a pink plush charm beside her, she consults an expense planner.'
+        zh: '对面的水手服女生揉了揉被单肩包带压酸的脖子，把一本黑色活页手账按在桌角。她叹了口气，额前有一绺碎发跟着轻轻飘了一下。',
+        en: 'The sailor-suited girl opposite rubs the side of her neck where the heavy strap had bitten in, pinning a black loose-leaf planner to the table. When she sighs, a stray lock of fringe lifts faintly in the breath.'
       },
       {
         type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
         characterImage: E.iroha,
-        zh: '「……上个月租用高配推流主机的电费超标了整整三倍。还有网络专线费用、防喷罩损耗，以及你半夜偷偷点的三次特大份外卖披萨。」',
-        en: '"...Last month\'s power bill for the streaming rig was three times our quota. Not to mention dedicated fiber fees, pop filter wear, and three extra-large midnight delivery pizzas you secretly ordered."'
+        zh: '「我只看见了主机房电费。还有你上星期半夜偷偷加点的特大份披萨。……以及，我们手头的零钱只够结这一单。」',
+        en: '"I only see the rig\'s power bill. And the midnight extra-large pizza you sneaked last week. ...Also, the spare change we have left covers exactly this one order."'
       },
       {
         type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
         characterImage: E.kaguya,
-        zh: '「那些全是为了在虚拟网络里拯救宇宙的必要投资！而且你看，这一盘有整整三块！我吃两块半，剩下半块归大功臣制作人——公平合理吧！」',
-        en: '"Those were essential capital investments to save the universe on the virtual net! Besides, look, there are three whole pieces! I take two and a half, half for our heroic producer—totally fair!"'
+        zh: '「那是为了给大脑散热的必要支出！而且你看，盘子里正好是三块——大功臣吃两块，制作人吃一块，剩下的黄油……」',
+        en: '"That was essential heat dissipation for my brain! Besides, look, there are three pieces—two for the star, one for the producer, and the butter..."'
       },
       {
         type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
         characterImage: E.iroha,
-        zh: '「驳回。第一，虚拟世界不需要靠吃披萨拯救；第二，按出资比例和卡路里计算，一人一块半，精确到克。」',
-        en: '"Vetoed. First, the virtual world does not require pizza to be saved; second, calculated by financial stake and calories, one and a half each. Exact to the gram."'
+        zh: '「少跟我扯什么大功臣。一人一块半，谁也别想多沾边。」',
+        en: '"Don\'t give me that star nonsense. One and a half each. Nobody takes liberties."'
       },
       {
         type: 'choice',
-        promptZh: '金发女生鼓起腮帮子，叉子在松饼顶端那团快要融化的麦卢卡蜂蜜黄油上方犹豫不决。',
-        promptEn: 'The blonde girl puffs her cheeks, hovering her fork indecisively over the melting manuka honey butter atop the pancakes.',
+        promptZh: '金发女生鼓着腮帮子，小银叉悬在融化的黄油上方晃来晃去，一副随时准备下嘴却又怕被没收的模样。',
+        promptEn: 'Cheeks puffed, the blonde girl hovers her little silver fork indecisively over the melting butter, looking poised to strike yet terrified of having it confiscated.',
         options: [
           {
             id: 'egg_kaguya_syrup',
             labelZh: '把桌角未开封的枫糖浆小壶推过去',
             labelEn: 'Slide over the unopened little maple syrup pitcher',
-            hintZh: '舒芙蕾松饼不淋透枫糖浆，是不能发挥全部潜力的',
-            hintEn: 'Soufflé pancakes cannot reach their true potential without being soaked in maple syrup.',
+            hintZh: '这么好的松饼，干放着化掉实在太可惜了',
+            hintEn: 'It feels like a waste to let pancakes this good sit and deflate.',
             effects: [
-              { stat: 'charm', amount: 2, reasonZh: '你在甜品外交上达成了一次跨桌支援', reasonEn: 'You executed a cross-table dessert diplomacy maneuver' }
+              { stat: 'charm', amount: 2, reasonZh: '你在甜品外交上完成了一次沉默的援护', reasonEn: 'You pulled off a silent piece of dessert diplomacy' }
             ],
             setFlags: ['egg_kaguya_syrup_offered'],
             then: [
               {
+                type: 'narration',
+                zh: '你的手指碰到冰凉的小金属壶把手，在桌面上轻轻把它推了过去。陶瓷壶底在木桌上滑出极轻微的擦声。',
+                en: 'Your fingers brush the chilled metal handle as you slide it gently across the table. The ceramic base makes a faint whisper against the polished timber.'
+              },
+              {
                 type: 'narration', characterImage: E.kaguya,
-                zh: '金发女生的眼睛在一瞬间亮了起来，像是刚连上了超高速量子光纤。',
-                en: 'The blonde girl\'s eyes instantly ignite as if connected to ultra-high-speed quantum fiber.'
+                zh: '金发女生原本耷拉着的眼角一下子睁圆了，两只脚在桌子底下雀跃地踢了踢横档。',
+                en: 'The blonde girl\'s drooping eyes snap wide open, her sneakers giving a series of delighted little taps against the chair rail beneath the table.'
               },
               {
                 type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
                 characterImage: E.kaguya,
-                zh: '「看吧！连隔壁桌有品味的大好人都站在正义这边！全浇上去！让糖浆瀑布把整座岛屿淹没！」',
-                en: '"See! Even this tasteful gentleman at the next table stands with justice! Pour it all! Let the syrup waterfall submerge the island!"'
+                zh: '「看到了吧！好心人出现了！浇上去，把整座松饼山全淹掉！」',
+                en: '"See! A benefactor has appeared! Pour it on, submerge the entire mountain!"'
               },
               {
                 type: 'narration', characterImage: E.iroha,
-                zh: '水手服女生愣了一下，随后合上手帐，有些不好意思地向你轻轻欠了欠身。',
-                en: 'The sailor-uniform girl blinks in surprise, then closes her planner and bows slightly in your direction, looking a touch flustered.'
+                zh: '对面的女生愣了愣，赶紧把摊开的账本合上，有些局促地向你欠了欠身。',
+                en: 'The girl across from her blinks, hurriedly snaps her planner shut, and offers you a slightly flustered nod.'
               },
               {
                 type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
                 characterImage: E.iroha,
-                zh: '「……非常感谢您的好意。但请别再纵容这只网瘾……这家伙的糖分摄入了。」',
-                en: '"...Thank you very much for your kindness. But please do not indulge this net addict\'s... I mean, this creature\'s sugar intake."'
+                zh: '「……给您添麻烦了。请别太惯着她，这家伙一吃甜的就没完没了。」',
+                en: '"...I am sorry for the bother. Please don\'t spoil her, she loses all restraint around sugar."'
               },
               {
                 type: 'narration',
-                zh: '虽然嘴上这么说，但她看着对面把整块松饼塞进嘴里、像仓鼠一样眯起眼睛的同伴，嘴角还是悄悄弯了一下。',
-                en: 'Despite her words, watching her companion stuff a cloud-sized bite into puffed cheeks like a contented hamster, the corner of her mouth curls up ever so slightly.'
+                zh: '话虽这么说，但看着同伴嘴里塞满松饼、腮帮子鼓成两团的样子，她顺手抽了张纸巾递过去，嘴角极轻微地松动了一下。',
+                en: 'Even as she says it, watching her companion\'s cheeks puff out round around a massive mouthful of pancake, she passes a napkin over, the corners of her mouth loosening almost imperceptibly.'
               },
               {
                 type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
                 characterImage: E.iroha,
-                zh: '「……不过，今天新歌切片的播放量确实冲进前十了。就这一次哦。」',
-                en: '"...Then again, the new song clip did break the top ten today. Just this once, then."'
+                zh: '「……慢点嚼。没人跟你抢。」',
+                en: '"...Chew properly. Nobody is taking it."'
               }
             ]
           },
           {
             id: 'egg_kaguya_watch',
-            labelZh: '默默看着她们用叉子“精确分割”',
-            labelEn: 'Silently watch them measure with the fork',
-            hintZh: '两个女生在松饼上的领土拉锯战，比高等数学还要严谨',
-            hintEn: 'The territorial border dispute over the pancake is stricter than advanced calculus.',
+            labelZh: '假装低头喝水，在旁边看戏',
+            labelEn: 'Pretend to sip your drink and watch',
+            hintZh: '谁也没有说话，但桌底下的暗流比暴风雨还汹涌',
+            hintEn: 'Neither speaks, but the currents under the table run faster than a storm.',
             effects: [
-              { stat: 'knowledge', amount: 2, reasonZh: '你观摩了一场高精度的甜点领土裁决', reasonEn: 'You observed a high-precision dessert territorial adjudication' }
+              { stat: 'knowledge', amount: 2, reasonZh: '你见识了一场毫无章法却极其默契的分食拉锯战', reasonEn: 'You witnessed a messy yet strangely coordinated tug-of-war over food' }
             ],
             setFlags: ['egg_kaguya_watched'],
             then: [
               {
+                type: 'narration',
+                zh: '你端起自己的冰水杯喝了一口，杯壁上的冷凝水沾在指尖上，凉津津的。',
+                en: 'You lift your glass of ice water and take a sip; the cold condensation clings damp and chilling to your fingertips.'
+              },
+              {
                 type: 'narration', characterImage: E.kaguya,
-                zh: '金发女生神情肃穆，用叉子在松饼表面比划着一条笔直的中线：「一、二、三，看，这道国境线切得无可挑剔吧！」',
-                en: 'The blonde girl assumes a solemn expression, tracing a straight midline over the pancakes with her fork: "One, two, three—behold, an irreproachable border line!"'
+                zh: '金发女生煞有介事地用叉子在两块松饼中间比划了一条线，脸上的神情严肃得像在签停战协定。',
+                en: 'The blonde girl draws an ostentatiously solemn line with her fork between two of the cakes, her expression grave as someone signing an armistice.'
               },
               {
                 type: 'narration',
-                zh: '然而在对面的女生低头核对刻度的零点一秒间，金发女生的叉子如闪电般挑走了顶端最大的一块融化黄油，直接塞进了嘴里。',
-                en: 'Yet in the split-second the sailor-uniform girl glances down to check the mark, the blonde girl\'s fork darts like lightning, snagging the prime chunk of melting butter straight into her mouth.'
+                zh: '然而就在对面的女生低头去翻笔的一瞬间，金发女生的叉子一拐，闪电般把最大的一块融化黄油直接挑进了嘴里。',
+                en: 'Yet the instant the other girl glances down to fish for her pen, the blonde fork swerves, spearing the lion\'s share of melting butter straight into her mouth.'
               },
               {
                 type: 'narration', characterImage: E.iroha,
-                zh: '水手服女生的手停住了。圆珠笔在纸上连点了三下。店里陷入了长达五秒的死寂。',
-                en: 'The sailor-uniform girl\'s hand freezes. Her pen taps the paper three times in rapid succession. A five-second dead silence falls over the table.'
+                zh: '对面的女生手停在半空。圆珠笔在纸角戳出了一个小凹坑。周围忽然安静下来，静得能听见隔壁桌咖啡杯落回托盘的脆响。',
+                en: 'The other girl\'s hand stalls in midair. Her ballpoint dents a tiny crater into the corner of the paper. A sudden hush settles, quiet enough to hear a cup clink onto its saucer nearby.'
               },
               {
                 type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
                 characterImage: E.iroha,
-                zh: '「……明天的推流体能测试，加练两个小时。」',
-                en: '"...Tomorrow\'s endurance drill before streaming: two extra hours."'
+                zh: '「……明天的推流体能训练，加跑三圈。」',
+                en: '"...Tomorrow\'s conditioning run before the stream: three extra laps."'
               },
               {
                 type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
                 characterImage: E.kaguya,
-                zh: '「诶——！？为什么啊！明明黄油会自己挥发掉的！」',
-                en: '"Eeeeh!? Why! Butter naturally evaporates on its own, it\'s science!"'
+                zh: '「唔……咕嘟。凭什么啊！黄油掉在盘子里是会自动挥发的！」',
+                en: '"Mmf... gulp. Why! Butter left on the plate naturally evaporates!"'
               }
             ]
           }
         ]
       },
-      seen('在松饼店里关于虚拟流媒体与赤字账单的拉锯战', 'A high-stakes café tug-of-war over soufflé pancakes, virtual streams, and budget deficits')
+      seen('一场关于松饼黄油与日常开支的荒唐交锋', 'An absurd café skirmish over pancake butter and household accounts')
     ]
   }
 ];

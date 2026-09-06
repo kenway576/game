@@ -89,8 +89,8 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${SORA}shock.webp`,
-            zh: '空看着那个号码，看了整整三秒。她脸上那种"来玩玩嘛"的表情整个撤掉了。',
-            en: 'Sora looks at the number for a full three seconds. The come-on-then look goes off her face entirely.'
+            zh: '空直勾勾地盯着那个号码，指尖转动的篮球不知不觉停了下来。她脸上那种原本带着点挑衅的戏谑笑意，一瞬间收敛得干干净净。',
+            en: 'Sora stares fixedly at the number, the ball spinning on her fingertip coming to an unconscious halt. The playful, provocative smirk on her face vanishes entirely.'
           },
           {
             type: 'speech',
@@ -123,8 +123,8 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${SORA}happy.webp`,
-            zh: '她愣了两秒才反应过来，然后笑得整个人蹲了下去，笑声在空体育馆里绕了一圈才散。',
-            en: 'It takes her two seconds. Then she folds up laughing, and the sound goes right round the empty gym before it fades.'
+            zh: '她先是抱着球僵在那儿，等回过味来，整个人笑得直接蹲了下去，清脆的笑声在空旷高耸的体育馆顶棚下回荡了好几圈。',
+            en: 'She freezes clutching the ball, then collapses into laughter as the punchline lands, her bright laugh echoing round and round the cavernous gym rafters.'
           },
           {
             type: 'speech',
@@ -172,8 +172,8 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${SORA}happy.webp`,
-            zh: '她愣了两秒，然后笑得弯下腰去，一只手撑着膝盖。',
-            en: 'She blanks for two seconds, then doubles over, one hand on her knee.'
+            zh: '她像是没防备会被这么吐槽，眨了眨眼，随即笑得弯下腰去，一只手撑着膝盖直不起身。',
+            en: 'Caught completely off-guard by the comeback, she blinks in surprise before doubling over with laughter, hand propped on her knee.'
           },
           {
             type: 'speech',
@@ -413,8 +413,8 @@ export const DAY1_LIBRARY: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${REI}neutral.webp`,
-            zh: '她终于抬起头。镜片后面那双眼睛看了你整整三秒，没有任何表情。',
-            en: 'She finally looks up. Behind the lenses, her eyes rest on you for a full three seconds, with no expression whatsoever.'
+            zh: '她合上手中的精装书，指节轻轻压在烫金封皮上。镜片后那双深沉的眼眸直视着你，没有任何波澜。',
+            en: 'Closing the hardcover volume, she rests her fingers lightly against the gilded spine. Behind the lenses, her steady gaze fixes upon you without a ripple of emotion.'
           },
           {
             type: 'speech',
@@ -428,8 +428,8 @@ export const DAY1_LIBRARY: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你的后背窜过一阵凉气。三秒之后她补了一句——',
-            en: 'Something cold goes up your back. Three seconds later she adds—'
+            zh: '图书室内日光灯管发出极细微的嗡鸣，你后背不由自主窜过一阵凉意。就在这片凝固的死寂中，她忽然不紧不慢地补了一句——',
+            en: 'The faint hum of fluorescent bulbs fills the library as a chill runs up your spine. In the midst of the frozen silence, she adds with unhurried calm—'
           },
           {
             type: 'speech',
@@ -582,8 +582,8 @@ export const DAY1_LIBRARY: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '「なくなりました」这个词她说得很平。平到你花了两秒才反应过来，她是在说那两栋房子被拆了。',
-            en: 'She says "have gone" completely levelly. Level enough that it takes you two seconds to understand she means they were demolished.'
+            zh: '「なくなりました」这个词她说得很轻很平，像某种自然脱落的花瓣。你怔了一会儿才骤然反应过来，她是在平静地陈述那两栋承载记忆的老洋房已经被拆成瓦砾。',
+            en: 'She says "have gone" softly and evenly, like petals drifting to the ground. It takes a quiet moment for the weight to sink in—she is speaking of heritage homes reduced to rubble.'
           },
           {
             type: 'narration',
@@ -791,8 +791,8 @@ export const DAY1_ARCADE: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${MAKI}punk_pout.webp`,
-            zh: '她别过脸去，耳朵有点红。三秒之后，很小声地：',
-            en: 'She turns away. The tips of her ears are pink. Three seconds later, very quietly:'
+            zh: '她猛地别过脸去，用帆布鞋尖踢了踢水泥缝里的干枯杂草，耳朵微微发烫。过了好一会儿才极其小声地嘟囔：',
+            en: 'She turns away sharply, scuffing the toe of her canvas sneaker against a clump of weeds in the sidewalk crack, ears glowing pink. Only after a heavy pause does she mumble under her breath:'
           },
           {
             type: 'speech',
@@ -844,8 +844,8 @@ export const DAY1_ARCADE: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${MAKI}punk_laugh.webp`,
-            zh: '她盯着你的手指看了两秒，然后笑得蹲了下去。',
-            en: 'She stares at your finger for two seconds and then laughs hard enough to crouch down.'
+            zh: '她顺着你的手指看过去，整个人愣在原地，随即扑哧一声笑得蹲在了马路牙子上。',
+            en: 'Following your finger, she freezes on the spot before bursting out laughing and collapsing onto the curb.'
           },
           {
             type: 'speech',
@@ -892,8 +892,8 @@ export const DAY1_ARCADE: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你指了一个。她朝摊主喊了一句，语速快得像一个词。三十秒后你手里就多了一盒热的。',
-    en: 'You point at one. She fires something at the stall owner, so fast it sounds like a single word. Thirty seconds later there is a hot tray in your hands.'
+    zh: '你指了一个。她熟稔地朝摊主喊了一句，语速快得像串在一起的单音节。铁板上油花滋啦作响、水汽腾起，转眼间一盒滚烫喷香的章鱼烧就已经塞到了你手里。',
+    en: 'You point at one. She fires off a quick order to the owner, syllables flying together like a single word. In an instant, amidst the hiss of sizzling batter and aromatic steam, a piping-hot tray of takoyaki is in your hands.'
   },
   {
     type: 'narration',
@@ -1060,8 +1060,8 @@ const CAMEO_MAKI: StoryNode[] = [
   },
   {
     type: 'narration', characterImage: '',
-    zh: '她倒着走出去七八米，差点撞上门柱，自己蹦开了。整个过程她一次都没回头看路。',
-    en: 'She gets seven or eight metres like that, nearly walks into the gatepost, and hops clear of it. She does not once look where she is going.'
+    zh: '她大步流星地倒退着走，眼看后脑勺就要撞上花岗岩门柱，才敏捷地一侧身轻巧蹦开。整个过程她竟然一次都没回头看路。',
+    en: 'Backpedaling briskly, she narrowly misses the granite gatepost with a nimble sidestep and hop. Through the entire display, she never once glances back to check where she is going.'
   },
   {
     type: 'effect',
@@ -1278,8 +1278,8 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你还没走到跟前就认出她了。隔着二十米、只有一个后脑勺和一个蹲着的姿势，你也认得出来。',
-    en: 'You know who it is before you are anywhere near. Twenty metres off, the back of a head and a crouch, and you know.'
+    zh: '你还没走到跟前就认出她了。哪怕在昏黄的街灯下只隐约看得见一个熟悉的后脑勺和那个毫无防备蹲着的姿势，你也绝不会认错。',
+    en: 'You recognize her before getting anywhere near. Even under the dim yellow streetlights, catching only the familiar curve of her head and that unguarded crouch, there is no mistaking who it is.'
   },
   {
     type: 'narration',
@@ -1566,8 +1566,8 @@ export const DAY1_EVENING: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你看着她。她看着旁边的电线杆。僵持了大概五秒，她从口袋里把那张揉成一团的小票掏了出来，塞进你手里。',
-            en: 'You look at her. She looks at a utility pole. About five seconds of stalemate, then she pulls the crumpled receipt out of her pocket and stuffs it into your hand.'
+            zh: '你定定地看着她。她别开视线死盯着旁边的电线杆，晚风吹乱了额前的碎发。两人僵持了片刻，她终于认输似地叹了口气，从外套口袋里把那张揉成一团的小票扯出来塞进你手里。',
+            en: 'You hold her gaze. She stubbornly fixes her eyes on the utility pole beside you, evening breeze tousling her bangs. After a quiet standoff, she sighs in defeat, tugging a crumpled receipt from her jacket pocket and shoving it into your palm.'
           },
           {
             type: 'speech',
@@ -1620,8 +1620,8 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你问她鸡蛋为什么有两盒。她低头看袋子，看了三秒，「啊」了一声：「……昨天也买了吧。」',
-    en: 'You ask why there are two boxes of eggs. She looks down into the bag for three seconds and says "ah". "...I think I bought some yesterday as well."'
+    zh: '你问她塑料袋里为什么装了整整两盒鸡蛋。她低头对着透明袋子里的红壳蛋发愣，困惑地眨巴着眼，「啊」了一声：「……难道昨天我也买了吗。」',
+    en: 'You ask why there are two whole cartons of eggs in the bag. She looks blankly down at the brown shells through the plastic, blinking in confusion before letting out a quiet "Ah." "...Did I buy some yesterday too?"'
   },
   {
     type: 'narration',
@@ -1631,8 +1631,8 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${NAO}cat_curious.webp`,
-    zh: '她想了很久。坡道又往上走了大概二十米。',
-    en: 'She thinks about it for a long time. The slope goes up another twenty metres.'
+    zh: '她歪着头苦思冥想了半天，两人踩着柏油路上的碎石，并肩慢慢爬上了一大段坡道。',
+    en: 'She tilts her head, racking her brain, as you both trudge up the long incline together, sneakers crunching softly over gravel in the asphalt.'
   },
   {
     type: 'speech',
@@ -1646,8 +1646,8 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你们俩沉默着又走了十几米。',
-    en: 'You both walk another ten metres in silence.'
+    zh: '你们俩谁也没再作声，只是在渐沉的暮色里并排往上走，路旁人家飘出炖肉和煎鱼的温热香气。',
+    en: 'Neither of you says another word. You walk side side through the deepening twilight, savory aromas of simmered stew and grilled fish drifting from kitchen windows along the street.'
   },
   // ---- 她其实什么都看见了 ----
   {
@@ -1713,14 +1713,14 @@ export const DAY1_EVENING: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        zh: '你说吃了，是同学分给你的。她「哦」了一声，点了下头。隔了两秒又点了一下。这一路她再没说话。',
-        en: 'You say you did; a classmate shared with you. She says "oh" and nods. Two seconds later she nods again. She does not say anything else the rest of the way.'
+        zh: '你说吃了，是同桌分给你的。她轻轻「哦」了一声，有些木然地点了下头，过了半晌又下意识地点了一下，仿佛在努力消化这句话。剩下的路她再没吭声。',
+        en: 'You say you did, that your classmate shared hers. She gives a quiet "Oh" and nods somewhat blankly, then nods once more a moment later as if processing the words. She doesn’t say another word the rest of the way.'
       },
       {
         type: 'narration',
         characterImage: `${NAO}cat_neutral.webp`,
-        zh: '接下来的三十米她走得比刚才快了一点。你没有问为什么。',
-        en: 'She walks the next thirty metres slightly faster than before. You do not ask why.'
+        zh: '她的脚步不知不觉比刚才加快了些，靴底在水泥路上带出急促的轻响。你拎着塑料袋默默跟在后头，没有出声问为什么。',
+        en: 'Unconsciously her pace quickens, shoe soles clicking rapidly against the pavement. Carrying the plastic bags, you keep pace behind her in silence without asking why.'
       }
     ]
   },
@@ -2020,13 +2020,13 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她说了两遍。第二遍像是说给自己听的。挥手，转身，下坡。你看着她走，走了大概十米才反应过来：那个方向是错的。',
-    en: 'She says it twice. The second one sounds like it is for herself. A wave, a turn, down the slope. You watch her go about ten metres before it registers that the direction is wrong.'
+    zh: '她说了两遍。第二遍像是说给自己听的。挥手，转身，径直往坡道下方走去。你站在玄关目送她拐过街角才忽然反应过来：那个方向是反的。',
+    en: 'She says it twice. The second one sounds like it is for herself. A wave, a turn, and off she heads down the slope. Standing by the entryway watching her round the corner, you suddenly realize: she went in completely the wrong direction.'
   },
   {
     type: 'narration',
-    zh: '你没有叫住她。她自己会发现的。大概三条街之后。',
-    en: 'You do not call after her. She will work it out. In about three streets.'
+    zh: '你没有出声叫住她。她自己肯定会发现的。大概多绕两个路口之后。',
+    en: 'You do not call after her. She will work it out herself. In about two intersections.'
   },
   {
     type: 'effect',
