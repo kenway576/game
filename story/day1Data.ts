@@ -1151,8 +1151,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你把最后一张纸递过去，什么也没说。',
-            en: 'You hand over the last sheet without saying anything.'
+            zh: '「我要做正义的使者！」——脑海深处仿佛有个中二之魂在激昂呐喊。然而现实很骨感：你只是在开学第一天把全班最不好惹的班长撞得讲义满天飞。你默默把最后一张纸按页码理顺递了过去，什么也没说。',
+            en: '"I want to be an ally of justice!" an inner voice boldly proclaims. Reality, however, is bone-dry: on day one, you merely bowled over the fiercest class president in school. You neatly sort the last page by number and hand it over in total silence.'
           },
           {
             type: 'speech',
@@ -1176,8 +1176,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         labelZh: '先道歉，再指出她也在跑',
         labelEn: 'Apologize first — then point out that she was running too',
         jp: 'ごめん。……でも、そっちも走ってたよね。',
-        hintZh: '这个拐角是两个人一起撞出来的',
-        hintEn: 'It took two people to make that corner happen.',
+        hintZh: '在心底拍桌大喊一声「異議あり！」',
+        hintEn: 'Slam the defense desk and shout "Objection!" in your mind.',
         effects: [
           { stat: 'knowledge', amount: 1, reasonZh: '你看清了刚才撞在一起时真正发生的事', reasonEn: 'You worked out what had actually happened when you crashed into each other' },
           { stat: 'guts', amount: 1, reasonZh: '你没有把不属于自己的那一半也认下来', reasonEn: 'You declined to take on the half that was not yours' }
@@ -1196,8 +1196,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '走廊里一下子没声了，只有远处操场的哨音隐隐约约飘过来。她低头看着那叠纸，指尖用力得把纸边缘捏出了一道明显的折痕。',
-            en: 'The corridor goes dead quiet, save for a distant whistle from the athletic fields. She stares down at the stack, her thumb indenting a sharp crease into the edge of the paper.'
+            zh: '走廊里一下子没声了，只有远处操场的哨音隐隐约约飘过来。她低头看着那叠纸，指尖用力得把纸边缘捏出了一道明显的折痕。你在心底重重拍了一下不存在的辩护席木桌，大喊了一声「異議あり！」——没错，动量守恒是相互的，就算她是班长，拐角冲刺的责任也得各打五十大板。',
+            en: 'The corridor goes dead quiet, save for a distant whistle from the athletic fields. She stares down at the stack, her thumb indenting a sharp crease into the edge of the paper. In your mind, you slam both hands onto an imaginary defense bench and shout "Objection!"—momentum is conserved, after all, and even if she is the class president, this hallway collision cannot be blamed entirely on you.'
           },
           {
             type: 'speech',
@@ -1299,8 +1299,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你数到第四条的时候，发现自己的手不抖了。',
-    en: 'Somewhere around the fourth item you notice your hands have stopped shaking.'
+    zh: '你在心里默默过了一遍清单，悄悄按住发紧的右手手腕——很好，黑炎龙今天很安分，没有在全班三十几双眼睛注视下暴走的迹象。手不抖了。',
+    en: 'Reviewing the checklist in your head, you press your right wrist—good, the black flame dragon is docile today, with no signs of rampaging before thirty-odd classmates. Your hand has stopped shaking.'
   },
   {
     type: 'choice',

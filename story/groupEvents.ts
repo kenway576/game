@@ -167,8 +167,8 @@ const EV_GROUP_RAMEN: MapEventDef = {
           then: [
             {
               type: 'narration',
-              zh: '接下来的四十分钟里，这家八个座位的店变成了一个比赛场地。老板从头到尾一句话没说，但他给她们的面越煮越快。',
-              en: 'For the next forty minutes this eight-seat shop becomes a venue. The master says nothing throughout, but the bowls start coming faster.'
+              zh: '接下来的大半个钟头里，这家只有八个吧台座的小拉面馆俨然变成了决战擂台。老板自始至终一言不发，但他甩干面条、捞起面篓的动作肉眼可见地越来越利落。',
+              en: 'For the next while this eight-seat shop becomes a venue. The master says nothing throughout, but the bowls start coming faster.'
             },
             {
               type: 'speech',
@@ -252,8 +252,8 @@ const EV_GROUP_RAMEN: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '大概过了两分钟，左边的筷子先动了。右边的隔了三秒。数数这件事没有人再提起。',
-              en: 'About two minutes later the chopsticks on the left start up. The ones on the right take another three seconds. Nobody mentions the counting again.'
+              zh: '隔了一阵子，左手边的空先重新动了筷子。右边的真希也默默跟上。数碗数比输赢这件事，谁都没再提起。',
+              en: 'A little later the chopsticks on the left start up again. Maki on the right quietly joins in. Nobody mentions counting bowls or winning again.'
             },
             {
               type: 'speech',
@@ -357,8 +357,8 @@ const EV_GROUP_MERIKEN: MapEventDef = {
     { type: 'scene', scene: 'meriken_park', bgm: 'town', titleZh: '美利坚公园', titleEn: 'Meriken Park', subtitleZh: '周日 下午 3:00', subtitleEn: 'Sunday, 3:00 PM' },
     {
       type: 'narration',
-      zh: '这件事的起因是光在群里发了一句「明天去海边」。没有人回复。她隔了四分钟，自己把时间和地点都发了出来。',
-      en: 'This began with Hikari posting "beach tomorrow" in the group chat. Nobody replied. Four minutes later she posted the time and the place herself.'
+      zh: '这件事的起因是光在群里冷不丁发了一句「明天去海边」。半天没人冒泡回复。过了好一会儿，她自顾自地把集合的时间和地点一口气全发了出来。',
+      en: 'This began with Hikari posting "beach tomorrow" out of the blue. Nobody replied. A while later she posted the time and place herself.'
     },
     {
       type: 'narration',
@@ -497,8 +497,8 @@ const EV_GROUP_MERIKEN: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '光已经把手机架在栏杆上按下了定时。十秒。四个人手忙脚乱地挤进画面。',
-              en: 'Hikari has already propped the phone on the railing and hit the timer. Ten seconds. The four of you scramble into frame.'
+              zh: '光已经把手机架在栏杆上按下了倒计时快门，旋即招手大喊。四个人手忙脚乱地挤进取景框里。',
+              en: 'Hikari has already propped the phone on the railing and hit the timer, waving and shouting. The four of you scramble into frame.'
             },
             {
               type: 'narration',
@@ -517,8 +517,8 @@ const EV_GROUP_MERIKEN: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${ASUKA}shy.webp`,
-              zh: '明日香看了三秒，然后要走了那张照片。',
-              en: 'Asuka looks at it for three seconds and then asks for a copy.'
+              zh: '明日香端详了片刻，然后红着脸把那张合照要了过去。',
+              en: 'Asuka looks at it for a moment and then asks for a copy.'
             }
           ]
         },
@@ -577,8 +577,8 @@ const EV_GROUP_MERIKEN: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '你答不上来。铃看了你两秒，把罐子贴在自己脸颊上。贴着的时候她已经转回去看那个应用了。',
-              en: 'You have no answer. Rei looks at you for two seconds and presses the can against her own cheek. It is still there when she turns back to the app.'
+              zh: '你一时语塞。铃若有所思地瞧了你一眼，顺手把冰凉的易拉罐贴在自己的脸颊上，视线又落回了屏幕上。',
+              en: 'You have no answer. Rei looks at you thoughtfully and presses the cold can against her cheek, her eyes drifting back to the app.'
             },
             {
               type: 'narration',
@@ -729,8 +729,8 @@ const EV_GROUP_MOSAIC: MapEventDef = {
           then: [
             {
               type: 'narration',
-              zh: '包厢里安静了几秒。',
-              en: 'The gondola is quiet for a few seconds.'
+              zh: '包厢里短暂地陷入了一片宁静。',
+              en: 'The gondola falls into a momentary stillness.'
             },
             {
               type: 'speech',

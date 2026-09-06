@@ -172,8 +172,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '一根两百日元的竹竿。他用袖口顺着竹节从头揩到尾，慢得像是在擦拭什么传家宝，直到竹皮在落日底下泛起一层温润的旧光。',
-                en: 'A two-hundred-yen bamboo pole. He wipes it down along the joints with his sleeve, methodical as though cleaning an heirloom, until the bamboo skin takes on a dull sheen in the sunset.'
+                zh: '一根两百日元的竹竿。他用袖口顺着竹节从头揩到尾，慢得像是在擦拭什么传家宝，直到竹皮在落日底下泛起一层温润的旧光。你看着他那双被粗糙磨出厚茧的手，心里忽然冷不丁冒出一句中二台词——『我也想成为正义的伙伴』。……但不知为什么，在这个满头大汗、连跳了十几次不知放弃的红发少年面前，这句原本有些好笑的中二宣言，听起来却格外沉重。',
+                en: 'A two-hundred-yen bamboo pole. He wipes it down along the joints with his sleeve, methodical as though cleaning an heirloom, until the bamboo skin takes on a dull sheen in the sunset. Looking at the calluses on his palms, an old anime line suddenly crosses your mind: "I want to become an ally of justice." Yet standing before this sweat-drenched, relentless red-haired boy, that chuuni catchphrase feels surprisingly solemn.'
               }
             ]
           },
@@ -192,8 +192,8 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '穿过铁丝网拐角时，身后又传来起跑的沙沙声。这一次，没有横杆落地的动静。',
-                en: 'Turning the corner by the chain-link fence, the rasp of running feet comes again. This time the bar does not fall.'
+                zh: '穿过铁丝网拐角时，身后又传来起跑的沙沙声。这一次，没有横杆落地的动静。你回头看了一眼那道在漫天晚霞里倔强跃起的剪影——无论多么不讲道理的墙壁，看来世界上总有笨蛋执意要去做正义的使者啊。',
+                en: 'Turning the corner by the chain-link fence, the rasp of running feet comes again. This time the bar does not fall. Looking back at that silhouette leaping stubbornly against the twilight, you think: no matter how impossible the wall, some fools will always insist on being heroes of justice.'
               }
             ]
           }
@@ -281,8 +281,8 @@ export const EASTER_SCENES: StreetScene[] = [
             labelZh: '配合他，压低声音问一句「実験は？」',
             labelEn: 'Play along. Ask, quietly, how the experiment is going.',
             jp: '……実験、どうっすか。',
-            hintZh: '他等这句已经等很久了',
-            hintEn: 'He has been waiting a long time for somebody to ask.',
+            hintZh: '『这一切都是命运石之门的选择……El Psy Kongroo』',
+            hintEn: 'It is the choice of Steins Gate... El Psy Kongroo.',
             effects: [
               { stat: 'charm', amount: 3, reasonZh: '你接住了一个没人接的梗', reasonEn: 'You caught a bit that nobody else was catching' },
               { stat: 'guts', amount: 1, reasonZh: '你在便利店里跟陌生人演了一场戏', reasonEn: 'You did a scene with a stranger in a convenience store' }
@@ -311,13 +311,13 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '「……今日は、ここまでだ。」他说完就走了，没有拿走那根香蕉。',
-                en: '"That is far enough for today," he says, and leaves without retrieving it.'
+                zh: '「……今日は、ここまでだ。El Psy Kongroo。」他说完就郑重地转身离去，甚至没有拿走那根胶化香蕉。',
+                en: '"That is far enough for today. El Psy Kongroo." He speaks gravely and turns to leave without retrieving the gel-banana.'
               },
               {
                 type: 'narration',
-                zh: '你在原地站了一会儿，然后替他把微波炉擦干净了。店员从头到尾没有抬过头。',
-                en: 'You stand there a moment and then wipe the microwave out for him. The shop assistant never once looks up.'
+                zh: '你在原地站了一会儿，后颈还残留着一股莫名的寒意，然后默默抽了张湿纸巾替他把微波炉擦干净了。店员从头到尾没有抬过头。',
+                en: 'You stand there a moment, a strange shiver lingering at the back of your neck, before quietly pulling out a wet wipe to clean the microwave for him. The shop assistant never once looks up.'
               }
             ]
           },

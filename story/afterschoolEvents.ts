@@ -152,8 +152,8 @@ const EV_RAMEN_SORA: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '你吃完了。用了四十分钟。空全程一句话没说，就坐在旁边看着，像在看一场比赛的最后一分钟。',
-              en: 'You finish it. It takes forty minutes. Sora says nothing the whole time; she just sits and watches, the way you watch the last minute of a game.'
+              zh: '你大口吃完了整整一大碗。空全程一句话没说，就坐在旁边撑着下巴看，像在专心看一场比赛的加时决胜。',
+              en: 'You finish it. Sora says nothing the whole time; she just sits and watches, the way you watch the last minute of a game.'
             }
           ]
         },
@@ -305,8 +305,8 @@ const EV_BOOKSTORE_REI: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '她没有转头。你花了两秒才确认这句是对你说的。',
-      en: 'She does not turn her head. It takes you two seconds to confirm the sentence was aimed at you.'
+      zh: '她没有转头。你愣了愣才确认这句是对你说的。',
+      en: 'She does not turn her head. It takes you a moment to confirm the sentence was aimed at you.'
     },
     {
       type: 'speech',
@@ -403,8 +403,8 @@ const EV_BOOKSTORE_REI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '她没有把那句话说完。但这一次，她笑了一下——很浅，大概只有半秒。',
-              en: 'She does not finish the sentence. But this time she smiles. Very slightly, for perhaps half a second.'
+              zh: '她没有把那句话说完。但这一次，她极轻微地弯了一下嘴角——转瞬即逝。',
+              en: 'She does not finish the sentence. But this time she smiles. Very slightly, gone in an instant.'
             }
           ]
         },
@@ -537,8 +537,8 @@ const EV_ARCADE_MAKI: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '曲子结束。屏幕上跳出评分。她盯着看了三秒，然后一脚踹在机器底座上。',
-      en: 'The song ends. The score comes up. She stares at it for three seconds, then kicks the base of the machine.'
+      zh: '曲子结束。屏幕上跳出惨淡的评分。她死死盯着屏幕，咬了咬牙，然后一脚踹在机器底座上。',
+      en: 'The song ends. The score comes up. She stares at the screen, gritting her teeth, then kicks the base of the machine.'
     },
     {
       type: 'speech',
@@ -551,8 +551,8 @@ const EV_ARCADE_MAKI: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '她转过身，看见你，表情在半秒之内换了一张。',
-      en: 'She turns around, sees you, and changes face inside half a second.'
+      zh: '她气呼呼地转过身，撞上你的视线，脸上的羞恼瞬间收得干干净净，换上一副若无其事的冰冷表情。',
+      en: 'She turns around huffing, catches your eye, and wipes the fluster from her face in an instant, putting on a cool front.'
     },
     {
       type: 'speech',
@@ -1040,8 +1040,8 @@ const EV_SLOPE_NAO: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${NAO}curious.webp`,
-              zh: '她把咖啡杯换了只手拿，用了大概两秒钟组织语言。',
-              en: 'She moves the coffee cup to her other hand, taking roughly two seconds to arrange her words.'
+              zh: '她把咖啡杯换了只手拿，低头沉吟了片刻才组织好语言。',
+              en: 'She moves the coffee cup to her other hand, taking a moment to arrange her words.'
             },
             {
               type: 'speech',
@@ -1077,8 +1077,8 @@ const EV_SLOPE_NAO: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${NAO}happy.webp`,
-              zh: '她愣了半秒，然后把剩下的咖啡一口喝完，站起来拍了拍裙子。',
-              en: 'She blanks for half a second, then finishes the coffee in one go, stands, and brushes off her skirt.'
+              zh: '她微微一怔，随即仰头把剩下的咖啡一饮而尽，站起来拍了拍裙摆上的褶皱。',
+              en: 'She blinks, then finishes the coffee in one go, stands, and brushes off her skirt.'
             },
             {
               type: 'speech',
@@ -1270,8 +1270,8 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '这样过了大概二十分钟。中间她动了两次：一次是把书往自己那边挪了挪，一次是把你的杯子往里推了一点，免得你手肘碰到。',
-              en: 'Twenty minutes pass like this. She moves twice: once to slide the book closer to herself, once to nudge your cup inward so your elbow will not catch it.'
+              zh: '时间在安静的翻书声里悄悄流淌。中间她只动了两次：一次是把摊开的讲义往自己那边挪了挪，一次是伸手把你的马克杯往里推了推，免得被你的手肘碰翻。',
+              en: 'Time passes softly in the quiet rustle of pages. She moves only twice: once to slide the notes closer to herself, once to nudge your mug inward so your elbow will not catch it.'
             },
             {
               type: 'speech',
@@ -1572,8 +1572,8 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${INARI}neutral.webp`,
-              zh: '风停了大概三秒。',
-              en: 'The wind stops for about three seconds.'
+              zh: '掠过耳畔的山风忽然歇了，整座神社陷入一片奇特的寂静。',
+              en: 'The wind whistling through the pines suddenly stills, leaving the shrine in a deep quiet.'
             },
             {
               type: 'speech',
@@ -1911,8 +1911,8 @@ const EV_COURTYARD_ASUKA: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '从中庭到车站要走十二分钟。这十二分钟里她指出了：你伞举得太高、走得太快、鞋带松了、以及「离那么近做什么」。',
-              en: 'It is twelve minutes from the courtyard to the station. In those twelve minutes she points out that you are holding the umbrella too high, walking too fast, that your shoelace is loose, and asks what you think you are doing standing that close.'
+              zh: '从中庭一路走到车站，她嘴上就没闲着，接连挑了你一堆毛病：伞举得太高、步伐走得太快、鞋带散了，以及气鼓鼓的那句「离那么近做什么」。',
+              en: 'From the courtyard to the station, she does not stop pointing out flaws: you hold the umbrella too high, walk too fast, your shoelace is untied, and a flustered "what are you doing standing so close".'
             },
             {
               type: 'narration',
@@ -1951,7 +1951,7 @@ const EV_COURTYARD_ASUKA: MapEventDef = {
           then: [
             {
               type: 'narration',
-              zh: '你把伞收起来，靠在墙边，站到雨棚下面她旁边那半米的位置上。伞尖上的水滴在地上，滴出一小圈深色。',
+              zh: '你把伞收拢立在墙角，退到雨棚阴凉处她身侧不远的位置站定。伞尖滴落的雨水在水泥地面上晕开一圈深暗的水痕。',
               en: 'You close the umbrella, lean it against the wall, and take the half metre of awning next to her. Water runs off the tip and darkens a small circle on the ground.'
             },
             {
@@ -1971,8 +1971,8 @@ const EV_COURTYARD_ASUKA: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '雨没有停。十分钟里你们谁都没有再说话。她的肩膀那一侧慢慢湿了一片，你这一侧也是。',
-              en: 'It does not stop. Neither of you speaks for ten minutes. A patch on her shoulder slowly darkens. So does one on yours.'
+              zh: '雨丝毫没有减弱的意思。两人并肩立在窄窄的雨檐下，谁都没有再开口打破沉默。斜飞的雨丝慢慢浸湿了她半边肩膀，你这一侧的袖管也是。',
+              en: 'The rain shows no sign of easing. Neither of you speaks for a long while. Spray slowly soaks her shoulder, and yours too.'
             },
             {
               type: 'speech',
@@ -2005,8 +2005,8 @@ const EV_COURTYARD_ASUKA: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '雨在二十分钟后停了。她说过的话，只有这一句是对的。',
-              en: 'The rain stops twenty minutes later. Of everything she said, only that part turned out to be true.'
+              zh: '不知过了多久，雨云终于散开。她刚才说了那么多气话，唯独这一句关于天气的预言应验了。',
+              en: 'Before long, the clouds part and the sky clears. Of all the sharp things she muttered, only that weather prediction turned out to be true.'
             }
           ]
         }
@@ -2089,8 +2089,8 @@ const EV_PORTLINER_FIRST: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '你站在站台上想了一会儿。往北四十分钟是有马，再往东三十分钟是甲子园，再往东一小时是大阪。原来都不远。',
-      en: 'You stand on the platform for a while. Forty minutes north is Arima. Thirty more to the east is Koshien. An hour past that is Osaka. None of it is far, it turns out.'
+      zh: '你站在站台上吹着晚风。往北坐电车是有马温泉，往东是甲子园，再往前便是大阪。原来都在咫尺之间。',
+      en: 'You stand on the platform feeling the evening wind. To the north lies Arima, to the east Koshien, and further ahead is Osaka. None of it feels far.'
     },
     {
       type: 'effect',

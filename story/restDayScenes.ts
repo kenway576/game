@@ -114,7 +114,7 @@ const HOME_SUMMER: StoryNode[] = [
         effects: [{ stat: 'guts', amount: 2, reasonZh: '你在下午两点出了门', reasonEn: 'You went outside at two in the afternoon' }],
         then: [
           { type: 'scene', scene: 'convenience_store_exterior' },
-          { type: 'narration', zh: '柏油路面在冒烟。自动门开的那一下，冷气扑到脸上，你在门口站了整整十秒没动。', en: 'The tarmac is smoking. When the automatic door opens the cold hits your face and you stand there for a full ten seconds.' },
+          { type: 'narration', zh: '柏油路面在冒烟。自动门开的那一下，冷气扑到脸上，你在门口站在原地愣了好一会儿没动。', en: 'The tarmac is smoking. When the automatic door opens the cold hits your face and you stand there for a long moment.' },
           { type: 'narration', zh: '你买了冰、一根汽水棒冰，还有一瓶不需要的乌龙茶——因为不想那么快出去。', en: 'You buy ice, a soda lolly, and a bottle of oolong you do not need, because you do not want to leave yet.' }
         ]
       },
@@ -391,7 +391,7 @@ export const CLUB_BASKETBALL: StoryNode[] = [
         relations: [{ char: CharacterId.SORA, familiarity: 6, affection: 4, reasonZh: '她笑了整整一分钟，然后教你手怎么放', reasonEn: 'She laughed for a full minute and then fixed your hands' }],
         then: [
           { type: 'narration', zh: '空气球。球连篮板都没碰到。', en: 'Air ball. It does not touch the backboard.' },
-          { type: 'narration', characterImage: `${SORA}happy.webp`, zh: '她笑了整整一分钟。笑完之后走过来，把你的手指一根一根摆到该在的位置上。', en: 'She laughs for a full minute. Then she comes over and puts your fingers where they are supposed to be, one at a time.' },
+          { type: 'narration', characterImage: `${SORA}happy.webp`, zh: '她笑得直不起腰来，笑够了才走过来，把你僵硬的手指一根一根摆到标准的投篮位置上。', en: 'She laughs until she is out of breath. Then she comes over and puts your fingers where they are supposed to be, one at a time.' },
           { type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}neutral.webp`, jp: '肘。肘が外向いとる。……そう。それ。', zh: '手肘。手肘朝外了。……对。就那样。', en: 'Elbow. Your elbow\'s out. ...There. That.', color: 'bg-orange-500' },
           { type: 'narration', zh: '第十四个进了。她"ナイッシュー"喊得整个体育馆都听得见，而馆里只有你们两个人。', en: 'The fourteenth goes in. Her "nice shot" fills the entire gym, which contains two people.' }
         ]
@@ -444,14 +444,14 @@ export const CLUB_ASTRONOMY: StoryNode[] = [
         effects: [{ stat: 'charm', amount: 2, reasonZh: '你问到了那份通知真正的收件人', reasonEn: 'You asked who the notice was actually addressed to' }],
         relations: [{ char: CharacterId.REI, familiarity: 3, affection: 9, reasonZh: '她承认那份通知只发给了一个人', reasonEn: 'She admitted the notice went to exactly one person' }],
         then: [
-          { type: 'narration', characterImage: `${REI}thinking.webp`, zh: '她沉默了大概八秒。她沉默的时候是在算，算完才说话。', en: 'She is silent for about eight seconds. When she is silent she is calculating, and she speaks when it resolves.' },
+          { type: 'narration', characterImage: `${REI}thinking.webp`, zh: '她垂下眼帘思索了片刻。她沉默的时候总像是在脑海里飞速演算，算完才开口。', en: 'She lowers her gaze and considers for a moment. When she is silent she is calculating, speaking only when it resolves.' },
           { type: 'speech', speakerZh: '铃', speakerEn: 'Rei', characterImage: `${REI}shy.webp`, jp: '……活動日を決めないと、来る口実がない。', zh: '……不定活动日的话，就没有来的借口。', en: '...Without a meeting day there is no pretext for coming.', color: 'bg-indigo-500' },
           { type: 'narration', zh: '「来る」这个词她没有说主语。天文部只有她一个人，而通知只发给了一个人。', en: 'She does not say who would be coming. The club has one member, and the notice went to one person.' }
         ]
       }
     ]
   },
-  { type: 'narration', zh: '你们看到十一点。中间云过来一次，她一句话都没说，等了二十分钟，云走了。', en: 'You stay until eleven. Cloud comes over once; she says nothing and waits twenty minutes and it goes.' },
+  { type: 'narration', zh: '你们一直看到夜色深沉。中间云层遮蔽了一次，她一句话都没说，只是静静并肩守在冷风里，直到云雾散去。', en: 'You stay until late in the night. Cloud comes over once; she says nothing, waiting quietly in the chill until it clears.' },
   { type: 'effect', setFlags: ['restday_club_astronomy'] }
 ];
 
@@ -491,7 +491,7 @@ export const CLUB_COUNCIL: StoryNode[] = [
         then: [
           { type: 'narration', characterImage: `${ASUKA}angry.webp`, zh: '她当然反对。她列举了三条理由，每一条都成立。', en: 'She objects, of course, on three grounds, all of them valid.' },
           { type: 'narration', zh: '你把她的笔收了，把文件扣过来压好。做完这些你站到门口，没有催她。', en: 'You take her pen away and turn the papers face down with something on top. That done, you go and stand by the door without hurrying her.' },
-          { type: 'narration', characterImage: `${ASUKA}shy.webp`, zh: '她坐了大概三十秒，然后站起来，很小声地说了句「……一時間だけよ」。', en: 'She sits there about thirty seconds, then stands, and says very quietly that it is one hour only.' },
+          { type: 'narration', characterImage: `${ASUKA}shy.webp`, zh: '她紧抿着唇挣扎了片刻，终于还是站起身，把碎发撩到耳后，极小声地妥协道：「……一時間だけよ」。', en: 'She bites her lip and hesitates a moment, then finally stands, brushes hair behind her ear, and yields in a low voice: just one hour.' },
           { type: 'narration', zh: '一小时后你们还在元町。三小时后她第一次说了"今天真的挺好的"。', en: 'An hour later you are still in Motomachi. Three hours later she says, for the first time, that today was rather good.' }
         ]
       }
@@ -517,7 +517,7 @@ export const CLUB_MUSIC: StoryNode[] = [
         effects: [{ stat: 'charm', amount: 2, reasonZh: '你在她最不想被看见的时候鼓了掌', reasonEn: 'You applauded at the exact moment she least wanted to be seen' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 5, affection: 8, reasonZh: '她骂了你三分钟，然后又弹了一遍', reasonEn: 'She swore at you for three minutes and then played it again' }],
         then: [
-          { type: 'narration', characterImage: `${MAKI}angry_alt.webp`, zh: '她整张脸红到耳朵，然后开始骂你，骂了大概三分钟，一句重复的都没有。', en: 'She goes red to the ears and swears at you for about three minutes without repeating herself once.' },
+          { type: 'narration', characterImage: `${MAKI}angry_alt.webp`, zh: '她整张脸瞬间涨红到了耳根，羞恼地抓起拨片连珠炮似的痛骂你，不带重样地数落了好一阵子。', en: 'She goes red to the ears, furiously grabs her pick and peppers you with a relentless barrage of scolding.' },
           { type: 'narration', zh: '骂完之后她没赶你走。她背过身去，说了一句「……もっかいだけな」。这一遍她弹得比刚才慢。', en: 'Having told you off she does not throw you out. She turns her back and says, only once more then. This time she plays it slower.' },
           { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '这一遍没错。弹完她没回头，肩膀在等。', en: 'This time it is clean. She does not turn round. Her shoulders are waiting.' }
         ]
@@ -606,7 +606,7 @@ export const OUTING_HANAMI: StoryNode[] = [
 export const OUTING_BEACH: StoryNode[] = [
   { type: 'scene', scene: 'suma_beach', bgm: 'town', titleZh: '須磨、正午', titleEn: 'Suma, Noon', subtitleZh: '夏 · 须磨海岸', subtitleEn: 'Summer · Suma beach' },
   { type: 'narration', zh: '这件事是从空和真希互相说对方不会游泳开始的。', en: 'This began with Sora and Maki each telling the other they could not swim.' },
-  { type: 'narration', characterImage: `${SORA}swim_happy.webp`, zh: '到了海边，两个人在沙滩上站成对峙的样子，中间隔了两米。', en: 'At the beach the two of them square off two metres apart on the sand.' },
+  { type: 'narration', characterImage: `${SORA}swim_happy.webp`, zh: '到了海边，两个人在炽热的细沙上拉开架势对峙着，海风卷起浪花拍打在脚边，火药味十足。', en: 'At the beach the two of them square off on the hot sand, waves breaking around their ankles, brimming with competitive fire.' },
   { type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}swim_happy.webp`, jp: 'あの浮き輪まで。負けたほう、かき氷おごり。', zh: '游到那个浮标。输的请刨冰。', en: 'To that buoy. Loser buys the shaved ice.', color: 'bg-orange-500' },
   { type: 'speech', speakerZh: '真希', speakerEn: 'Maki', characterImage: `${MAKI}swim_neutral.webp`, jp: 'ええけど。ウチ、負けへんで。', zh: '行啊。不过我不会输。', en: 'Fine. I\'m not losing, though.', color: 'bg-pink-500' },
   {
@@ -678,7 +678,7 @@ export const OUTING_AUTUMN: StoryNode[] = [
         relations: [{ char: CharacterId.REI, familiarity: 6, affection: 6, reasonZh: '她讲了整整十分钟花青素', reasonEn: 'She talked about anthocyanins for ten straight minutes' }],
         then: [
           { type: 'narration', characterImage: `${REI}neutral.webp`, zh: '她说：叶子变红不是因为多了红色，是因为绿色撤走了。红色一直都在。', en: 'She says leaves do not turn red by gaining red. The green withdraws. The red was there the whole time.' },
-          { type: 'narration', zh: '她讲了十分钟。深雪醒了一半，听着，没有插话。', en: 'She talks for ten minutes. Miyuki half wakes, listens, and does not interrupt.' },
+          { type: 'narration', zh: '她娓娓道来。深雪在半梦半醒间静静听着，嘴角含着浅浅的弧度，没有插话打扰。', en: 'She speaks softly. Miyuki listens half-asleep, a faint smile on her lips, without interrupting.' },
           { type: 'narration', characterImage: `${REI}shy.webp`, zh: '讲完之后铃很小声地补了一句：「……喋りすぎた」。', en: 'Afterwards Rei says, very quietly, that she talked too much.' },
           { type: 'narration', zh: '深雪没睁眼，说了句「ううん、もっと聞きたい」。铃看了她很久。', en: 'Without opening her eyes Miyuki says no, she would like to hear more. Rei looks at her for a long time.' }
         ]
@@ -691,7 +691,7 @@ export const OUTING_AUTUMN: StoryNode[] = [
         relations: [{ char: CharacterId.MIYUKI, familiarity: 5, affection: 10, reasonZh: '有人替她盖了一次外套', reasonEn: 'Somebody put a coat over her for once' }],
         setFlags: ['restday_miyuki_slept'],
         then: [
-          { type: 'narration', zh: '她睡了整整三十五分钟。醒来的时候第一句话是「あら、私、寝てた？」，第二句是「ごめんなさい」。', en: 'She sleeps thirty-five minutes. Her first words on waking are to ask whether she was asleep. Her second are an apology.' },
+          { type: 'narration', zh: '伴着车厢规律的摇晃，她沉沉睡了一路。醒来的时候第一句话是「あら、私、寝てた？」，第二句便下意识带上了「ごめんなさい」。', en: 'Lulled by the train swaying, she sleeps deeply the whole way. On waking, her first words ask if she was asleep, followed by an immediate apology.' },
           { type: 'narration', characterImage: `${REI}thinking.webp`, zh: '铃在旁边说：「謝る対象が不明」。深雪愣了一下，然后笑得停不下来。', en: 'Rei says the object of the apology is unclear. Miyuki blinks, and then cannot stop laughing.' }
         ]
       }
@@ -712,7 +712,7 @@ export const OUTING_AUTUMN: StoryNode[] = [
 
 export const OUTING_HATSUMODE: StoryNode[] = [
   { type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'night', titleZh: '初詣', titleEn: 'The First Visit', subtitleZh: '冬 · 元旦 · 生田神社', subtitleEn: 'Winter · New Year · Ikuta Shrine' },
-  { type: 'narration', zh: '元旦零点，生田神社的队从鸟居一直排到马路对面。你们排了五十分钟。', en: 'Midnight on New Year\'s Day. The queue at Ikuta runs from the torii to the far side of the road. You are in it fifty minutes.' },
+  { type: 'narration', zh: '元旦零点，生田神社前的人潮从朱红鸟居一直蜿蜒排到了马路对面。寒风夹杂着参拜者的低语，大家搓着手在队列中寸寸挪动。', en: 'Midnight on New Year Day. The queue at Ikuta stretches from the vermilion torii across the street, people rubbing hands in the winter chill.' },
   { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '明日香穿的是私服。你几乎没见过她穿私服，她自己也不太自在，一直在整理围巾。', en: 'Asuka is in her own clothes. You have almost never seen this, and neither has she; she keeps rearranging her scarf.' },
   { type: 'narration', characterImage: `${INARI}neutral.webp`, zh: '稻荷不用排队。你们排到一半的时候她已经站在里面了，靠着一根柱子，手里拿着一杯甜酒。', en: 'Inari does not queue. Halfway up you find her already inside, leaning on a pillar with a cup of amazake.' },
   { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}sly.webp`, jp: '毎年、この日だけは混むのう。年に一度、皆が思い出すのじゃ。', zh: '每年就这一天挤。一年一次，大家会想起来。', en: 'Only on this one day of the year. Once a year, everybody remembers.', color: 'bg-amber-500' },
@@ -813,7 +813,7 @@ export const SKIP_SLEEP: StoryNode[] = [
         setFlags: ['skip_school_excused'],
         then: [
           { type: 'narration', zh: '「体調不良のため本日欠席します」。你写了三遍才写对敬语。', en: 'Absent today due to feeling unwell. It takes you three attempts to get the keigo right.' },
-          { type: 'narration', zh: '发出去两分钟就收到了回复：「お大事に」。你盯着这三个字看了一会儿。', en: 'The reply comes in two minutes: take care of yourself. You look at it for a while.' },
+          { type: 'narration', zh: '发出去没过多久屏幕便亮了起来，收到简短的回复：「お大事に」。你盯着这三个字看了一会儿。', en: 'Before long the screen lights up with a brief reply: take care of yourself. You gaze at the words for a while.' },
           { type: 'narration', zh: '你没有生病。但收到这句之后，你确实觉得好受了一点。', en: 'You are not ill. Having received it, you do feel somewhat better.' }
         ]
       },
@@ -944,7 +944,7 @@ export const TRIP_OSAKA: StoryNode[] = [
         ],
         then: [
           { type: 'narration', zh: '那张表精确到分钟，而且真的走完了。七个地方，一个没落。', en: 'The schedule is accurate to the minute, and it holds. Seven places, none skipped.' },
-          { type: 'narration', characterImage: `${ASUKA}casual_happy.webp`, zh: '最后一站结束的时候明日香看了一眼手表，比预定早了四分钟。她什么都没说，但那一路走得很轻快。', en: 'At the last stop Asuka checks her watch: four minutes ahead. She says nothing, and walks noticeably lighter the rest of the way.' },
+          { type: 'narration', characterImage: `${ASUKA}casual_happy.webp`, zh: '最后一站结束的时候明日香看了一眼腕表，嘴角掠过一丝不易察觉的得意。虽然什么都没说，但那一路走得明显格外轻快。', en: 'At the last stop Asuka glances at her watch, a subtle trace of pride on her lips. She says nothing, but walks noticeably lighter.' },
           { type: 'narration', characterImage: `${MAKI}cardigan_neutral.webp`, zh: '真希在最后一站买了两串炸，一串给了空，一串塞给明日香。「表には無いけどな」。', en: 'At the last stop Maki buys two skewers, gives one to Sora and pushes the other at Asuka. Not on the schedule, she says.' }
         ]
       },
@@ -1038,8 +1038,8 @@ export const TRIP_KYOTO: StoryNode[] = [
         setFlags: ['trip_kyoto_back'],
         then: [
           { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '她在最后面走。她说这样能看见所有人，谁掉队她马上知道。', en: 'She is walking at the back. That way she can see everybody, she says, and knows at once if anyone falls behind.' },
-          { type: 'narration', zh: '你问那谁看着她。她愣了一下。笑出来之前那半秒里，她是真的在想。', en: 'You ask who is watching out for her. She blinks. In the half second before she laughs, she is actually thinking about it.' },
-          { type: 'narration', characterImage: `${MIYUKI}cardigan_shy.webp`, zh: '接下来的四百级台阶你们走在一起。她第一次没有走在最后面。', en: 'You do the next four hundred steps together. For once she is not last.' }
+          { type: 'narration', zh: '你问那谁看着她。她愣了一下。笑出来之前的那一瞬间，她是真的在认真思索。', en: 'You ask who is watching out for her. She blinks. In the brief pause before she laughs, she is genuinely thinking about it.' },
+          { type: 'narration', characterImage: `${MIYUKI}cardigan_shy.webp`, zh: '接下来的长长石阶你们并肩走在一起。她第一次没有走在队伍最后面。', en: 'You do the long stone stairway together. For once she is not walking at the very back.' }
         ]
       },
       {
@@ -1253,9 +1253,9 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
         ],
         setFlags: ['group_eve_slept'],
         then: [
-          { type: 'narration', zh: '四个人趴在拼起来的课桌上。奈绪三分钟就睡着了，而且开始说梦话。', en: 'Four heads on pushed-together desks. Nao is asleep in three minutes and starts talking in her sleep.' },
+          { type: 'narration', zh: '四个人趴在拼起来的课桌上。奈绪几乎是刚闭上眼睛就沉沉睡了过去，嘴里还小声念叨着含糊的梦话。', en: 'Four heads rest on pushed-together desks. Nao is out almost immediately, murmuring soft words in her sleep.' },
           { type: 'narration', characterImage: `${MIYUKI}cardigan_shy.webp`, zh: '深雪是最后一个睡着的。她睡着之前把自己的外套盖到了明日香身上。', en: 'Miyuki is the last to go. Before she does she puts her own coat over Asuka.' },
-          { type: 'narration', zh: '二十分钟变成了五十分钟。没有人定闹钟。', en: 'Twenty minutes becomes fifty. Nobody had set an alarm.' },
+          { type: 'narration', zh: '原本说好的小憩彻底演变成了深沉的安眠。在静谧的教室里，谁也没有特意去定闹钟。', en: 'A brief nap turns into deep, uninterrupted sleep. In the quiet classroom, nobody bothered to set an alarm.' },
           { type: 'narration', zh: '醒来的时候是五点二十。第三层还是塌的。四个人一起笑了很久。', en: 'It is twenty past five when you wake. The third tier is still down. All four of you laugh for a long time.' }
         ]
       }
@@ -1292,7 +1292,7 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
 export const GROUP_HANABI: StoryNode[] = [
   { type: 'scene', scene: 'kobe_harbor', bgm: 'town', titleZh: 'みなと神戸海上花火大会', titleEn: 'The Harbour Fireworks', subtitleZh: '八月 · 傍晚六点', subtitleEn: 'August · Six in the evening' },
   { type: 'narration', zh: '一万发。港口那一带今晚会有二十万人。', en: 'Ten thousand shells. There will be two hundred thousand people around the harbour tonight.' },
-  { type: 'narration', zh: '六个人约在三宫的鸽子雕像前面。到齐花了四十分钟，因为有两个人走错了出口。', en: 'Six of you agree to meet at the pigeon statue in Sannomiya. It takes forty minutes, because two people used the wrong exit.' },
+  { type: 'narration', zh: '六个人约在三宫站的鸽子雕像前碰头。汹涌的人潮差点把队伍冲散，好不容易才在人头攒动中把走错出口的两个人捞了回来。', en: 'Six of you meet at the Sannomiya pigeon statue. The surging crowd nearly scatters everyone, and it takes time to round up the two who took the wrong exit.' },
   { type: 'narration', characterImage: `${NAO}yukata_happy.webp`, zh: '奈绪穿了浴衣。她说她自己系的腰带，说完就开始担心会不会散。', en: 'Nao is in a yukata. She says she tied the obi herself, and immediately starts worrying it will come undone.' },
   { type: 'narration', characterImage: `${ASUKA}yukata_smug.webp`, zh: '明日香也穿了浴衣，而且系得非常标准。她没有说是谁帮她系的。', en: 'Asuka is in a yukata too, immaculately tied. She does not say who tied it.' },
   { type: 'narration', characterImage: `${SORA}kimono_laugh.webp`, zh: '空穿浴衣配了运动鞋。她说木屐跑不动。没有人问她今晚为什么需要跑。', en: 'Sora has paired hers with trainers, on the grounds that you cannot run in geta. Nobody asks why she expects to run tonight.' },
@@ -1313,16 +1313,16 @@ export const GROUP_HANABI: StoryNode[] = [
         hintZh: '二十万人。你要在二十万人里找一个人',
         hintEn: 'Two hundred thousand people. You are going to find one of them.',
         effects: [
-          { stat: 'guts', amount: 3, reasonZh: '你在二十万人里逆着人流走了八百米', reasonEn: 'You walked eight hundred metres against two hundred thousand people' }
+          { stat: 'guts', amount: 3, reasonZh: '你在漫天人海里逆着人流找到了走丢的她', reasonEn: 'You pushed against a sea of people to find her' }
         ],
         relations: [{ char: CharacterId.SORA, familiarity: 6, affection: 12, reasonZh: '有人回去找她了', reasonEn: 'Somebody went back for her' }],
         setFlags: ['group_hanabi_found_sora'],
         then: [
-          { type: 'narration', zh: '你逆着人流往回走。这件事比你想的难得多——八百米走了十二分钟。', en: 'You go back against the crowd. It is much harder than you expected: eight hundred metres in twelve minutes.' },
+          { type: 'narration', zh: '你逆着如织的人流艰难往回挤。每迈出一步都要避开无数摩肩接踵的游人，后背很快就被晚夏的闷热浸透。', en: 'You struggle back through the surging crowd. Every step takes effort against the dense press of people in the late summer heat.' },
           { type: 'narration', zh: '第一发升空的时候你还在路上。整条街的人同时抬头，你在那一瞬间是唯一一个低着头找人的。', en: 'The first shell goes up while you are still walking. The whole street looks up at once, and for that moment you are the only person looking down.' },
           { type: 'narration', characterImage: `${SORA}kimono_shy.webp`, zh: '你在一个卖苹果糖的摊子后面找到了她。她蹲在那儿，正在帮一个走丢的小孩擦眼泪。', en: 'You find her behind a candy-apple stall, crouched down, wiping a lost child’s face.' },
           { type: 'narration', zh: '她抬头看见你，第一句话是：「この子の親、探すの手伝って」。', en: 'She looks up and the first thing she says is: help me find this child’s parents.' },
-          { type: 'narration', zh: '你们花了二十分钟找到了那个孩子的妈妈。花火放到一半了。', en: 'It takes twenty minutes to find the mother. The fireworks are half over.' },
+          { type: 'narration', zh: '在一通焦急的搜寻和广播协助下，终于把泣不成声的孩子送回了母亲怀抱。此时空中的花火已盛放了大半。', en: 'After an anxious search and announcement assistance, the weeping child is returned to their mother. Overhead, the fireworks are half over.' },
           { type: 'narration', characterImage: `${SORA}kimono_love.webp`, zh: '回河堤的路上她一句话都没说。走到一半她忽然说：「ありがと。ほんまに」。', en: 'She says nothing on the way back. Halfway there she says thank you, and that she means it.' }
         ]
       },

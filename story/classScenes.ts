@@ -84,8 +84,8 @@ export const SKETCHES: Sketch[] = [
   },
   {
     subject: 'suugaku',
-    zh: '老师叫了一个人上去解题。那个人在黑板前站了四十秒，然后写出了答案。全班没有人出声。',
-    en: 'Someone is called to the board. They stand there for forty seconds and then write the answer. Nobody makes a sound.',
+    zh: '老师点名叫人上去解题。黑板前的人捏着粉笔僵立了良久，终于唰唰写出了步骤与答案。全班静得落针可闻。',
+    en: 'Someone is called to the board. They hesitate with the chalk for a long time, then write out the working and answer. Nobody makes a sound.',
     midZh: '那段时间里全班都在等，但没有人催，也没有人小声说话。你数了一下自己的心跳，发现比站在黑板前那位还快。你不知道这算是共情还是纯粹的紧张。', midEn: 'For that time the whole room waited, and nobody hurried him and nobody whispered. You checked your own pulse and found it going faster than his probably was. You could not tell whether that was empathy or straightforward nerves.',
     endZh: '他写完回座位，路过你旁边的时候呼了一口气，很长的一口。那口气比刚才那道题告诉你的东西多。', endEn: 'He finished and came back past your desk, letting out a breath on the way, a long one. That breath told you more than the question had.',
     word: { jp: '解く', reading: 'とく', zh: '解（题）', en: 'to solve' }
@@ -150,9 +150,9 @@ export const SKETCHES: Sketch[] = [
   },
   {
     subject: 'nihonshi',
-    zh: '老师讲到一九九五年。他讲得很快，快得像在赶路，但讲完之后停了三秒才翻页。',
-    en: 'The teacher gets to 1995. He goes through it fast, as if hurrying past, and then waits three seconds before turning the page.',
-    midZh: '教室里那三秒非常安静。你环顾了一圈，发现没有人在做笔记，也没有人在看手机。这个班上大概有一半人的父母当时就在这座城市里。', midEn: 'The room was very quiet for those seconds. You looked around and found that nobody was taking notes and nobody was on a phone. Probably half the parents of that class had been in this city at the time.',
+    zh: '老师讲到一九九五年。他语速飞快，快得像在急匆匆赶路，但合上教案前却忽然陷入了长长的沉默。',
+    en: 'The teacher gets to 1995. He goes through it fast, as if hurrying past, and then lapses into a long quiet before closing his notes.',
+    midZh: '教室里那几秒钟非常安静。你环顾了一圈，发现没有人在做笔记，也没有人在看手机。这个班上大概有一半人的父母当时就在这座城市里。', midEn: 'The room was very quiet for those seconds. You looked around and found that nobody was taking notes and nobody was on a phone. Probably half the parents of that class had been in this city at the time.',
     endZh: '翻过页以后他的语速就恢复正常了。整节课他再没有回头提过那一年。', endEn: 'After he turned the page his pace went back to normal. He did not return to that year for the rest of the lesson.',
     word: { jp: '震災', reading: 'しんさい', zh: '震灾', en: 'earthquake disaster' }
   },
@@ -168,8 +168,8 @@ export const SKETCHES: Sketch[] = [
   },
   {
     subject: 'kagaku',
-    zh: '同组的人把烧杯递过来的时候没说话，只是把它往你这边推了两厘米。你接住了。合作有时候不需要语言。',
-    en: 'Your lab partner does not say anything when they pass the beaker, just pushes it two centimetres your way. You take it. Cooperation does not always need words.',
+    zh: '同组的人把盛着试剂的烧杯递过来时没吭声，只是默默把它推到你手边。你顺势稳稳接住。合作有时候不需要多余的言语。',
+    en: 'Your lab partner does not say anything when passing the beaker, just slides it gently to your hand. You take it. Cooperation does not always need words.',
     midZh: '接下来的四十分钟你们就这么干活：他推一下，你接住；你把滴管举起来，他点头。全程说过的话不超过五个词，而且没有一个是必要的。', midEn: 'You worked like that for the rest of it: he pushed something over, you took it; you held the pipette up, he nodded. Between you, you used barely a handful of words, none of which had been necessary.',
     endZh: '实验结果是对的。你们两个看着那个变成淡蓝色的溶液，同时点了一下头，然后各自去洗手了。', endEn: 'The result came out right. The two of you looked at the pale blue solution, nodded at the same moment, and went to wash your hands separately.',
     word: { jp: '器具', reading: 'きぐ', zh: '器材', en: 'equipment' },
@@ -215,8 +215,8 @@ export const SKETCHES: Sketch[] = [
   // ---- 美術 ----
   {
     subject: 'bijutsu',
-    zh: '静物写生。桌子中间摆着一个瓶子和三个柿子。你画了四十分钟，画出来的柿子有点像土豆。',
-    en: 'Still life. A bottle and three persimmons in the middle of the table. Forty minutes later your persimmons look somewhat like potatoes.',
+    zh: '静物写生课。讲桌中央摆着玻璃瓶和三个新鲜柿子。你埋头画了大半节课，素描本上的柿子怎么看都透着一股土豆的质感。',
+    en: 'Still life. A bottle and three persimmons on the desk. You draw for most of the period, but your persimmons look unmistakably like potatoes.',
     midZh: '问题出在你太老实了。你把看见的每一个凹陷都画了上去，画完发现柿子这种东西的美感恰恰在于它没有那么多细节。旁边那位只用了五六笔，反而像。', midEn: 'The trouble was that you had been too honest about it. You put in every dent you could see, and it turned out that the appeal of a persimmon lies precisely in it not having that many details. The person beside you used half a dozen strokes and got closer.',
     endZh: '老师走过来看了看，说了句「よく見てるね」。你不确定这是夸奖还是诊断。', endEn: 'The teacher came past, looked, and said that you were certainly looking carefully. You were not sure whether that was praise or a diagnosis.',
     word: { jp: '柿', reading: 'かき', zh: '柿子', en: 'persimmon' },
@@ -224,8 +224,8 @@ export const SKETCHES: Sketch[] = [
   },
   {
     subject: 'bijutsu',
-    zh: '美术老师从你背后走过，停了两秒，什么也没说就走了。你到现在也不知道那两秒是什么意思。',
-    en: 'The art teacher walks past behind you, stops for two seconds, says nothing and moves on. You still do not know what those two seconds meant.',
+    zh: '美术老师踱着步子从你身后走过，冷不丁停下脚步端详了片刻，什么也没评判便悄然走开了。你到现在也不知道他当时到底看出了什么。',
+    en: 'The art teacher walks past behind you, stops for a moment to study your page, says nothing and moves on. You still do not know what he saw.',
     midZh: '你为此把那张画来回看了好几遍，试图找出他停下来的理由。找了半天什么也没找到，倒是发现自己把瓶子画歪了，歪得挺明显。', midEn: 'You went over the drawing several times trying to work out what had made him stop. You did not find it. What you did find was that the bottle was crooked, noticeably so.',
     endZh: '临下课他又走了一趟，这次没停。你反而更在意了。', endEn: 'He came past once more before the bell and did not stop that time. Somehow that bothered you more.',
     word: { jp: '黙る', reading: 'だまる', zh: '沉默', en: 'to stay silent' },
@@ -276,8 +276,8 @@ export const SKETCHES: Sketch[] = [
   },
   {
     subject: 'eigo',
-    zh: '同桌把作文推过来，指着一处问对不对。你看了三秒，说对的。他不信，去问了老师。老师说对的。',
-    en: 'The person next to you slides an essay over and points at a line. Three seconds and you say it is fine. He does not believe you and asks the teacher. The teacher says it is fine.',
+    zh: '同桌把英语小作文悄悄推过来，指着其中一处语法问对不对。你扫了一眼就笃定地说没问题。他不信邪跑去问了老师，老师给的批复跟你一模一样。',
+    en: 'The person next to you slides an essay over and points at a line. You glance at it and say it is fine. He does not believe you and asks the teacher, who gives the exact same confirmation.',
     midZh: '他回来以后没说什么，只是把笔记本又推近了一点，指了指另一处。这一次他没去问老师。接下来那半节课他一共指了七八个地方。', midEn: 'He came back without saying anything and pushed the notebook a little closer, pointing at another place. That time he did not go and ask. Over the rest of the period he pointed at seven or eight more.',
     endZh: '下课的时候他说了句「ありがと」，说得很快，快得像是不想被别人听见。', endEn: 'At the bell he said thanks, quickly, quickly enough that it sounded like he did not want anybody else to hear.',
     word: { jp: '正しい', reading: 'ただしい', zh: '正确的', en: 'correct' }
@@ -300,8 +300,8 @@ export const SKETCHES: Sketch[] = [
   },
   {
     subject: 'kokugo',
-    zh: '老师念到一个词停下来，问全班有没有人知道意思。没人举手。他自己讲了三分钟，讲得很高兴。',
-    en: 'The teacher stops on a word and asks if anyone knows what it means. No hands. He explains it himself for three minutes, and enjoys it.',
+    zh: '国语老师念到一个古语词忽然停下来，饶有兴致地问全班有没有人知晓出处。底下鸦雀无声。他索性兴致勃勃地一人展开畅谈了半天，眉飞色舞。',
+    en: 'The teacher stops on an archaic word and asks with genuine curiosity if anyone knows its origin. Silence. So he happily takes over and expounds on it himself for a long while.',
     midZh: '他讲的是这个词原本写作什么、后来为什么变了、以及一位江户时代的人怎么用错了它、错得太好以至于大家跟着错到了今天。全班没有人做笔记，但也没有人打断他。', midEn: 'He talked about how the word had originally been written, why it changed, and how somebody in the Edo period had used it wrongly, so well that everybody has been using it wrongly ever since. Nobody took notes. Nobody interrupted him either.',
     endZh: '讲完他愣了一下，说了句「テストには出ません」，然后继续上课。有几个人笑了。', endEn: 'When he finished he paused and said that none of that would be on the test, and carried on. A few people laughed.',
     word: { jp: '意味', reading: 'いみ', zh: '意思', en: 'meaning' }

@@ -103,8 +103,8 @@ export const DAY1_GYM: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你把球捡起来。在指尖上颠了两下，颠第三下的时候手已经抬起来了。三分线外。',
-            en: 'You pick the ball up. Two bounces on your fingertips; on what would have been the third, your hand is already up. From outside the arc.'
+            zh: '你把球捡起来，在指尖上轻巧地转了半圈。看着高挑的篮筐，不知怎么脑子里条件反射般浮现出《直到世界尽头》的前奏，甚至差点脱口而出一句「教练，我想打篮球」……好在理智战胜了中二。你屈膝、起跳，手腕在三分线外稳稳压了下去。',
+            en: 'You pick up the ball and spin it neatly on your fingertip. Looking at the high rim, an iconic basketball anime ballad involuntarily plays in your mind, and you almost blur out "Coach, I want to play basketball..." Fortunately sanity prevails over chuunibyou. You bend your knees, jump, and snap your wrist cleanly from beyond the arc.'
           },
           {
             type: 'narration',
@@ -1682,8 +1682,8 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '一个连自己昨天买没买鸡蛋都记不住的人，记得你十年前撒谎时眼睛往哪边偏。',
-    en: 'A person who cannot remember whether she bought eggs yesterday remembers which way your eyes went when you lied, ten years ago.'
+    zh: '你在心里疯狂拍桌大喊了一百遍「異議あり！」，甚至想掏出证据当庭反驳。但对上她那双洞悉一切的清澈眼睛，你那点虚张声势一秒钟就泄了气——一个连自己昨天买没买鸡蛋都记不住的人，居然记得你十年前撒谎时眼珠往哪边偏。',
+    en: 'In your mind, you slam the defense desk and shout "Objection!" a hundred times, desperately looking for contradictory evidence. But under her piercing, knowing gaze, all your bravado deflates in an instant—a girl who can\'t even remember whether she bought eggs yesterday remembers which way your eyes drifted when you lied ten years ago.'
   },
   {
     type: 'branch',

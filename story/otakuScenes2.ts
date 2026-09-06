@@ -61,8 +61,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '里面安静了一秒。然后门开了一条缝，一个人探出头来，看见走廊上端着两杯茶的你。',
-                en: 'One second of silence. Then the door opens a crack and somebody puts their head out, and finds you in the corridor holding two cups of tea.'
+                zh: '包厢里的音乐忽然一顿，旋即门缝被推开，一个男生探出头来，冷不丁对上走廊里端着两杯乌龙茶的你。',
+                en: 'The music inside pauses. Then the door opens a crack and somebody puts their head out, finding you in the corridor holding two cups of tea.'
               },
               {
                 type: 'narration',
@@ -190,13 +190,13 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '她抬头看了你两秒，然后往旁边挪了一点，把位置让出来。',
-                en: 'She looks up at you for two seconds and shifts over, making room.'
+                zh: '她抬头看了你一眼，默默往旁边挪了挪，把位置腾出来。',
+                en: 'She looks up at you and shifts over, making room.'
               },
               {
                 type: 'narration',
-                zh: '你蹲下去，弄了六分钟。中间链条弹开两次，第二次抽到了你的手指。',
-                en: 'You crouch down and spend six minutes on it. The chain comes off twice more and the second time it catches your finger.'
+                zh: '你挽起袖子蹲下去捣鼓了半晌。链条接连脱扣滑手，冷冰冰的链油蹭得满手都是，还冷不丁被弹回来的链片刮了一下手指。',
+                en: 'You crouch down and spend a while wrestling with it. The chain slips repeatedly, grease gets everywhere, and a sharp snap grazes your knuckle.'
               },
               {
                 type: 'narration',
@@ -223,8 +223,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你走出二十米回头看了一眼。她已经装好了，正在用纸巾擦手。',
-                en: 'Twenty metres on you look back. She has already fixed it and is wiping her hands on a tissue.'
+                zh: '你走出一段路回头看了一眼。她早就三两下把链条归了位，正抽出纸巾擦着手。',
+                en: 'Further down you look back. She has already fixed it and is wiping her hands on a tissue.'
               },
               {
                 type: 'narration',
@@ -275,8 +275,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '第七次的时候，那个男生忽然抬头看了她一眼。她没有抬头，但翻页的手停了半秒。',
-                en: 'On the seventh, the boy suddenly looks up at her. She does not look up. Her hand stops for half a second.'
+                zh: '第七次的时候，那个男生冷不丁抬头看了她一眼。窗边的女生视线分毫未动，但翻页的手分明顿滞了片刻。',
+                en: 'On the seventh, the boy suddenly looks up at her. She does not look up. Her hand pauses briefly.'
               },
               {
                 type: 'narration',
@@ -323,8 +323,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
       },
       {
         type: 'narration', characterImage: E.kurisu,
-        zh: '理科室里面有个女生把门推开一条缝，看了他三秒，把门关上了。',
-        en: 'Inside the science room a girl pushes the door open a crack, looks at him for three seconds, and shuts it again.'
+        zh: '理科室虚掩的门缝悄悄拉开，里面探出半张红发女生的脸，满脸嫌弃地盯着他瞧了片刻，随即面无表情地把门重新带上。',
+        en: 'Inside the science room a girl pushes the door open a crack, stares at him with undisguised contempt for a moment, and shuts it again.'
       },
       {
         type: 'choice',
@@ -333,13 +333,13 @@ export const OTAKU_SCENES_2: StreetScene[] = [
         options: [
           {
             id: 'ot2_lab_play',
-            labelZh: '配合他，压低声音说一句「……了解した」',
-            labelEn: 'Play along. Lower your voice: "...Understood."',
-            jp: '……了解した。',
-            hintZh: '他等的就是有人接', hintEn: 'Somebody taking it is exactly what he is waiting for.',
+            labelZh: '配合他压低嗓门，在胸前比出暗号：「……El Psy Kongroo，一切都是命运石之门的选择。」',
+            labelEn: 'Play along. Whisper: "...El Psy Kongroo, Steins;Gate has chosen."',
+            jp: '……了解した。エル・プサイ・コングルゥ。',
+            hintZh: '他等的就是有人接梗', hintEn: 'Somebody taking it is exactly what he is waiting for.',
             requires: { stat: 'charm', min: 8 },
             effects: [
-              { stat: 'charm', amount: 3, reasonZh: '你接住了一个没有人接的梗', reasonEn: 'You took a bit that nobody takes' },
+              { stat: 'charm', amount: 3, reasonZh: '你接住了跨越世界线的暗号', reasonEn: 'You took a bit that nobody takes' },
               { stat: 'guts', amount: 1, reasonZh: '在走廊上，当着别人的面', reasonEn: 'In a corridor, in front of people' }
             ],
             setFlags: ['ot2_labcoat_played'],
@@ -389,8 +389,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '门里有人在调音。调了大概两分钟。她的手一直搭在门把上。',
-        en: 'Somebody inside is tuning up. It goes on for about two minutes. Her hand stays on the handle.'
+        zh: '门里有人在调音，反复校对的和弦泛音断断续续。粉发女生的指尖一直搭在门把手上，迟迟没有下压。',
+        en: 'Somebody inside is tuning up, repeating chord harmonics intermittently. Her hand stays on the handle.'
       },
       {
         type: 'choice',
@@ -419,8 +419,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '你在走廊上站了两秒才走。你什么也没做，你只是推了一下门。',
-                en: 'You stand in the corridor for two seconds before moving on. You did not do anything. You pushed a door.'
+                zh: '你在走廊的暖光里驻足片刻才迈步离开。你什么特别的事也没做，只是顺手替那个背着厚重琴包的背影推开了虚掩的门。',
+                en: 'You stand in the hallway warm light for a moment before moving on. You did not do anything grand. You simply pushed open a door for her.'
               }
             ]
           },
@@ -433,8 +433,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你站了大概四十秒。她一直没有看你，但呼吸慢慢平下来了。',
-                en: 'You stand there about forty seconds. She never looks at you. Her breathing settles.'
+                zh: '你在她身旁静静伫立。她始终没敢偏过头看你，但紧绷的肩膀一点点松弛，慌乱的呼吸也渐渐平稳了下来。',
+                en: 'You stand quietly beside her. She never looks at you, but her rigid shoulders slowly drop, and her shallow breathing settles.'
               },
               {
                 type: 'narration',
@@ -457,13 +457,13 @@ export const OTAKU_SCENES_2: StreetScene[] = [
     script: [
       {
         type: 'narration',
-        zh: '南京町的蒸笼一掀，白气整个糊了过来，两米之内什么都看不见。',
-        en: 'The lid comes off a steamer in Nankinmachi and the white cloud swallows everything within two metres.'
+        zh: '南京町街角的大竹蒸笼猛然一揭，腾腾白汽呼啸着涌出，视线所及顷刻间白茫茫一片。',
+        en: 'The lid comes off a huge bamboo steamer in Nankinmachi and the dense white cloud swallows everything in sight.'
       },
       {
         type: 'narration',
-        zh: '你在那团白气里站了两秒，脑子里冒出来一句非常不合时宜的台词。',
-        en: 'You stand in it for two seconds and an extremely inappropriate line surfaces in your head.'
+        zh: '你置身在滚烫的面香与蒸雾之中，脑海里冷不丁冒出一句极其脱线的中二台词。',
+        en: 'Standing in that warm cloud of bun steam, an absurdly inappropriate line surfaces in your head.'
       },
       {
         type: 'choice',
@@ -472,10 +472,10 @@ export const OTAKU_SCENES_2: StreetScene[] = [
         options: [
           {
             id: 'ot2_steam_say',
-            labelZh: '（在心里）「……面对疾风吧。」',
-            labelEn: '(internally) "...Face the gale."',
-            hintZh: '这是蒸汽不是疾风', hintEn: 'It is steam, not a gale.',
-            effects: [{ stat: 'charm', amount: 2, reasonZh: '你在一团肉包的热气里想起了一句台词', reasonEn: 'A line came to you inside a cloud of pork-bun steam' }],
+            labelZh: '在心里极其入戏地大喝：「秘技·雾隐之术！——不对，是面对疾风吧！」',
+            labelEn: '(internally) "Secret Jutsu: Hidden Mist! —Wait no, face the gale!"',
+            hintZh: '这是蒸汽不是忍术', hintEn: 'It is steam, not ninjutsu.',
+            effects: [{ stat: 'charm', amount: 2, reasonZh: '你在包子铺的热气里完成了中二变身', reasonEn: 'A line came to you inside a cloud of pork-bun steam' }],
             setFlags: ['ot2_steam_line'],
             then: [
               {
@@ -518,8 +518,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: E.yuki_nagato,
-        zh: '你在书架间找一本书，找了十五分钟。转身的时候差点撞上一个人——她站在那儿不知道多久了，手里也拿着一本书。',
-        en: 'Fifteen minutes looking for one book between the shelves. Turning round you nearly walk into somebody who has been standing there for an unknown length of time, also holding a book.'
+        zh: '你在密密麻麻的书架间转悠着找一本书，找得毫无头绪。转身时险些撞上一个人——戴着无框眼镜的娇小女生静静立在书架阴影里，手中也端着一本厚厚的精装书。',
+        en: 'You are wandering through the stacks looking for a book, completely lost. Turning round you nearly walk into a petite girl with rimless glasses standing quietly in the shadows, holding a heavy volume.'
       },
       {
         type: 'narration',
@@ -645,8 +645,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你走出十米回头看了一眼。她已经撑着自己的伞往反方向去了。',
-                en: 'Ten metres on you look back. She is already going the other way under her own umbrella.'
+                zh: '你撑着伞走出去一段路回头看了一眼。她早就撑着自己的折叠伞，步伐轻快地往反方向的街角去了。',
+                en: 'Ten metres on you look back. She is already going the other way briskly under her own folding umbrella.'
               }
             ]
           }
@@ -664,8 +664,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: S.kenta,
-        zh: '健太在天台上打开便当盒，看了三秒，然后把盒子转了一百八十度，又看了三秒。',
-        en: 'Kenta opens his lunch on the roof, looks at it for three seconds, rotates the box a hundred and eighty degrees and looks again.'
+        zh: '健太在天台的长椅上揭开便当盖，盯着里面的配菜发愣，接着把便当盒颠来倒去转了一整圈，表情愈发费解。',
+        en: 'Kenta opens his lunch on the roof, stares blankly at the sides, rotates the box all the way around, looking utterly baffled.'
       },
       {
         type: 'narration',
@@ -801,8 +801,8 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '三分钟后有人过去了。是健太。他一屁股坐在前排的椅子上，转过来就开始说话。',
-                en: 'Three minutes later somebody does. It is Kenta. He drops into the chair in front and turns round already talking.'
+                zh: '没过多久，一道大咧咧的身影晃了过去。是健太。他一屁股倒跨在前排的木椅上，反手搭着椅背，张嘴就熟络地聊了起来。',
+                en: 'Before long, somebody does. It is Kenta. He drops into the chair in front backwards and turns round already chatting.'
               },
               {
                 type: 'narration',

@@ -36,35 +36,35 @@ export const OTAKU_SCENES: StreetScene[] = [
     script: [
       {
         type: 'narration',
-        zh: '红灯。你旁边停着一辆摩托，骑手一身黑皮衣，头盔是全罩的，复眼那个位置反着一整条街的灯。',
+        zh: '红灯。旁边停下一辆摩托：黑皮衣、全盔，整条街的霓虹和车灯全都倒映在面罩原本该是眼睛的位置。',
         en: 'Red light. There is a motorcycle beside you: black leathers, full-face helmet, and the whole street reflected in the part of the visor where the eyes would be.'
       },
       {
         type: 'narration',
-        zh: '腰上那条带子不是普通的腰带。它中间有一个圆的东西，而且它在转。',
+        zh: '腰上那条带子绝非普通的皮带。正中央嵌着一枚金属圆轮，里面的装置还在高速旋转。',
         en: 'The belt is not an ordinary belt. There is a round thing in the middle of it, and it is turning.'
       },
       {
         type: 'choice',
-        promptZh: '绿灯还有十二秒。',
-        promptEn: 'Twelve seconds of red left.',
+        promptZh: '斑马线对面的行人倒计时还在闪动。',
+        promptEn: 'The pedestrian countdown across the street is ticking.',
         options: [
           {
             id: 'ot_rider_name',
-            labelZh: '在心里报一遍他的名字',
-            labelEn: 'Say his name, internally',
-            hintZh: '你知道这个造型是哪一部的', hintEn: 'You know which one that silhouette is from.',
-            effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你连年份都想起来了', reasonEn: 'You even remembered the year' }],
+            labelZh: '在心里默默摆出姿势：「我只是个路过的假面骑士罢了一一」',
+            labelEn: 'Strike a pose in your mind: "Just a passing-through Kamen Rider—"',
+            hintZh: '「通りすがりの仮面ライダーだ、覚えておけ」', hintEn: 'You know which silhouette this is.',
+            effects: [{ stat: 'knowledge', amount: 2, reasonZh: '中二之魂狠狠共鸣了', reasonEn: 'You even remembered the year' }],
             setFlags: ['ot_rider_named'],
             then: [
               {
                 type: 'narration',
-                zh: '你想起来了，而且顺便想起了那一部的插入曲、片头的第一句歌词，以及你当年为了看它熬到几点。',
+                zh: '你想起来了，顺带连变身腰带的转动音效、当年的专属插入曲和剧场版名场面都一股脑涌了上来。',
                 en: 'You get it, and along with it the insert song, the first line of the opening, and what time you used to stay up to watch it.'
               },
               {
                 type: 'narration',
-                zh: '绿灯。他走了，排气声一点也不夸张。你站在原地，忽然很想跟谁说一句话，但这条街上没有人能接。',
+                zh: '信号灯转绿。排气管吐出一串低沉干净的轰鸣，骑手绝尘而去。你站在原地，心里忽然一阵发痒，很想找同好大聊三百回合，可惜这条街上的路人步伐匆匆，没人能接住这个梗。',
                 en: 'Green. He goes, and the exhaust note is not in the least dramatic. You stand there wanting very much to say something to somebody, and there is nobody on this street who could take it.'
               }
             ]
@@ -80,18 +80,18 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你说出口了。声音不大，但骑手的头转过来了十五度。',
+                zh: '你说出口了。虽然只是自言自语的小声嘟囔，但前面骑手的头盔微微侧转，镜片折射过一道刺眼的霞光。',
                 en: 'You say it. Not loudly. The helmet rotates fifteen degrees.'
               },
               {
                 type: 'narration',
-                zh: '他抬起一只手，朝斜后方指了指——那个方向是駿河屋。然后绿灯亮了。',
+                zh: '他单手扶把，另一只手极其帅气地朝斜后方比了个手势——那个方向是三宫的駿河屋。紧接着绿灯放行。',
                 en: 'He raises one hand and points back over his shoulder. That direction is Surugaya. Then the light goes green.'
               },
               {
                 type: 'narration',
-                zh: '你站在原地想了三秒，决定明天就去。',
-                en: 'You think about it for three seconds and decide to go tomorrow.'
+                zh: '你站在原地愣了一瞬，暗下决心明天放学就去店里掘地三尺。',
+                en: 'You think about it for a moment and decide to go tomorrow.'
               }
             ]
           },
@@ -104,13 +104,13 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你过了马路。走出二十米之后你回头看了一眼。',
-                en: 'You cross. Twenty metres on, you look back.'
+                zh: '你混在人流里快步穿过了马路。踏上对面步道时，到底还是没忍住回头瞄了一眼。',
+                en: 'You cross. Once on the other side, you look back.'
               },
               {
                 type: 'narration',
-                zh: '摩托已经不在了。你在心里承认：刚才那三秒你是想跑过去的。',
-                en: 'The bike has gone. You concede, privately, that for three seconds there you had wanted to run over.'
+                zh: '摩托车早就汇入街角车海不见踪影。你在心里暗自承认：刚才在斑马线前，你心里其实蠢蠢欲动地想冲上去问他借腰带把玩一下。',
+                en: 'The bike has gone. You concede, privately, that you had wanted to run over.'
               }
             ]
           }
@@ -134,8 +134,8 @@ export const OTAKU_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '旁边站着他的朋友，手里拿着两罐咖啡，一罐已经开了，另一罐还捏在手里，捏了大概有五分钟。',
-        en: 'His friend is standing there with two cans of coffee. One is open. The other has been in his fist for about five minutes.'
+        zh: '旁边站着他的同伴，手里攥着两罐热咖啡，一罐已经开了，另一罐在掌心里攥了许久，铝罐都被捏得有些凹陷。',
+        en: 'His friend is standing there with two cans of coffee. One is open. The other has been in his fist for a long while.'
       },
       {
         type: 'choice',
@@ -157,7 +157,7 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '天台安静了两秒。哭的那个抬起头，脸上一塌糊涂，眼睛却睁大了。',
+                zh: '天台的风声仿佛忽然停滞了一瞬。哭着的男生吸了吸鼻子抬起头，脸上一塌糊涂，眼睛却因为震惊而瞪得滚圆。',
                 en: 'Two seconds of nothing. The crying one looks up, face a complete mess, eyes wide.'
               },
               {
@@ -220,20 +220,20 @@ export const OTAKU_SCENES: StreetScene[] = [
         options: [
           {
             id: 'ot_obvious_meme',
-            labelZh: '（在心里）「人是会死的。」',
-            labelEn: '(internally) "People die if they are killed."',
-            hintZh: '同一种句式。你控制不住', hintEn: 'The same shape of sentence. You cannot help it.',
-            effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你在一句废话里认出了另一句废话', reasonEn: 'You recognised one tautology inside another' }],
+            labelZh: '在心里默默反驳：「異議あり！难道不是人被杀就会死吗！」',
+            labelEn: '(internally) "Objection! People die if they are killed!"',
+            hintZh: '同一种哲学句式。同一种中二直觉', hintEn: 'The same tautological gravity. You cannot help it.',
+            effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你用士郎名言化解了邻桌的逻辑循环', reasonEn: 'You countered tautology with anime tautology' }],
             setFlags: ['ot_obvious_line'],
             then: [
               {
                 type: 'narration',
-                zh: '你没有说出来。但你笑得太明显了，隔壁桌两个人同时转过来看你。',
+                zh: '你死死咬住嘴唇没念出声。但你憋笑的肩膀抖动得太夸张，隔壁桌两个人同时一脸莫名其妙地转过来看你。',
                 en: 'You do not say it. You do, however, laugh visibly enough that both of them turn round.'
               },
               {
                 type: 'narration',
-                zh: '你只好说「なんでもない」，然后低头继续做题。你做错了那一整页。',
+                zh: '你赶紧清了清嗓子摆手说「なんでもない」，接着埋头死磕课本。那一整页的课后习题你全做串行了。',
                 en: 'You have to say it is nothing and go back to your work. You get that entire page wrong.'
               }
             ]
@@ -255,7 +255,7 @@ export const OTAKU_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '他们把椅子挪了过来。接下来四十分钟你们三个人在一张桌子上做题，谁也没自我介绍。',
+                zh: '他们索性把椅子扯了过来。接下来大半节自习，三个人挤在一张课桌前轮流推演公式，连正经的自我介绍都给忘到九霄云外了。',
                 en: 'They pull their chairs across. For the next forty minutes the three of you work at one table, and nobody introduces themselves.'
               }
             ]
@@ -274,8 +274,8 @@ export const OTAKU_SCENES: StreetScene[] = [
     script: [
       {
         type: 'narration',
-        zh: '末班车前二十分钟的站台。有个穿西装的人站在黄线外面，一动不动地看着轨道，看了很久。',
-        en: 'The platform twenty minutes before the last train. Somebody in a suit is standing beyond the yellow line, looking at the track, and has been for a while.'
+        zh: '夜色已深，接近末班车时段的站台。有个穿西装的上班族静静立在黄线边缘，一动不动地凝视着空荡荡的钢轨。',
+        en: 'The platform not long before the last train. Somebody in a suit is standing beyond the yellow line, looking at the track, and has been for a while.'
       },
       {
         type: 'narration',
@@ -289,7 +289,7 @@ export const OTAKU_SCENES: StreetScene[] = [
         options: [
           {
             id: 'ot_runaway_meme',
-            labelZh: '（在心里）「逃げちゃダメだ、逃げちゃダメだ……」',
+            labelZh: '（在心里）「不能逃避、不能逃避……」',
             labelEn: '(internally) "I mustn\'t run away, I mustn\'t run away..."',
             hintZh: '这句话你念了三遍，念的是自己', hintEn: 'You say it three times, and you are saying it to yourself.',
             effects: [{ stat: 'guts', amount: 3, reasonZh: '你念这句话的时候想的不是他', reasonEn: 'You were not thinking about him while you said it' }],
@@ -297,7 +297,7 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你在心里念了三遍。念到第三遍的时候你意识到，这句话你不是替他念的。',
+                zh: '你在心里默默念了三遍。念到第三遍的时候你意识到，这句话你不是替他念的。',
                 en: 'You say it three times in your head. On the third it occurs to you that you are not saying it on his behalf.'
               },
               {
@@ -316,8 +316,8 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你走过去，站在他左边一米。他没有看你，但退回了黄线里面。',
-                en: 'You go and stand a metre to his left. He does not look at you. He does step back inside the yellow line.'
+                zh: '你默默走过去，在离他不远的地方一同等车。他没有侧头看你，但靴子悄无声息地向后退回了安全线以内。',
+                en: 'You go and stand near him. He does not look at you. He does step back inside the yellow line.'
               },
               {
                 type: 'narration',
@@ -340,8 +340,8 @@ export const OTAKU_SCENES: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: '/images/characters/clerk_surugaya.webp',
-        zh: '你在中古区蹲了二十分钟，从最下面那一排一个一个往上翻。店员从你背后过去了两次，第三次停住了。',
-        en: 'Twenty minutes crouched in the second-hand section, working up from the bottom row. The clerk goes past behind you twice. On the third she stops.'
+        zh: '你在中古手办区蹲着挑了半天，从最底层的特价箱一个一个往上翻。店员搬着货箱从你背后走了几个来回，第三次终于忍不住停下了脚步。',
+        en: 'A long time crouched in the second-hand section, working up from the bottom row. The clerk goes past behind you several times. On the third she stops.'
       },
       {
         type: 'narration',
@@ -386,8 +386,8 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '她笑了一下就走了。你在原地又蹲了五分钟，最后还是把那个盒子拿到了收银台。',
-                en: 'She laughs and moves on. You crouch there another five minutes and take the box to the till anyway.'
+                zh: '她笑了一下就走了。你在原地又踌躇了片刻，最后还是咬牙把那个盒子抱到了收银台。',
+                en: 'She laughs and moves on. You crouch there a moment longer and take the box to the till anyway.'
               },
               {
                 type: 'narration',
@@ -502,8 +502,8 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '他结完账走到门口，站定，才按了下去。你在他身后三米，也停下了。',
-                en: 'He pays, walks to the door, plants his feet, and only then presses it. You stop too, three metres behind him.'
+                zh: '他结完账走到店门口的大理石立柱旁，深吸一口气，郑重按了下去。你站在几步开外的货架旁，也下意识屏住了呼吸。',
+                en: 'He pays, walks to the pillar by the door, plants his feet, and only then presses it. You stop too, a few steps behind him, holding your breath.'
               },
               {
                 type: 'narration',
@@ -545,8 +545,8 @@ export const OTAKU_SCENES: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: P.idol_otaku,
-        zh: '排队那个人今天戴着耳机，音量大到隔一米你都听得见。',
-        en: 'The man from the queue has headphones on today, at a volume you can hear from a metre away.'
+        zh: '排队那老兄今天戴着复古大耳麦，漏音的音量隔着老远都能清晰入耳。',
+        en: 'The man from the queue has big vintage headphones on today, at a volume you can hear clearly from steps away.'
       },
       {
         type: 'narration',
@@ -570,13 +570,13 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration', characterImage: P.idol_otaku,
-                zh: '他摘下一边耳机，看了你两秒，然后把那一边递了过来。',
-                en: 'He takes one side off, looks at you for two seconds, and holds that side out.'
+                zh: '他愣愣地摘下一边耳罩，转头打量了你两眼，然后顺势把那半边耳机朝你递了过来。',
+                en: 'He takes one side off, looks at you, and holds that side out.'
               },
               {
                 type: 'narration',
-                zh: '你戴上了。副歌那一段你们两个都没说话。一分二十六秒之后歌结束了，他把耳机收回去，说了句「ええやろ」。',
-                en: 'You put it on. Neither of you says anything through the chorus. One minute twenty-six later it ends, he takes the headphone back, and says: good, isn\'t it.'
+                zh: '你顺手接过来贴在耳边。热血激昂的副歌响彻耳膜，你们俩谁都没吭声，只是默默踩着鼓点。直到整首播完，他才收回耳机，咧嘴问了句「ええやろ」。',
+                en: 'You put it on. Neither of you says anything through the chorus. When it ends, he takes the headphone back, and says: good, isn\'t it.'
               },
               {
                 type: 'narration',
@@ -589,7 +589,7 @@ export const OTAKU_SCENES: StreetScene[] = [
             id: 'ot_hp_quiet',
             labelZh: '什么也不做，站在旁边听完',
             labelEn: 'Do nothing, and stay until it finishes',
-            hintZh: '隔着一米也听得见', hintEn: 'You can hear it from a metre away.',
+            hintZh: '站在旁边也能听得一清二楚', hintEn: 'You can hear it clearly from right beside him.',
             effects: [{ stat: 'kindness', amount: 2, reasonZh: '有些歌不需要两个人一起听才成立', reasonEn: 'Some songs do not require two people to work' }],
             then: [
               {
@@ -623,21 +623,21 @@ export const OTAKU_SCENES: StreetScene[] = [
       },
       {
         type: 'choice',
-        promptZh: '你们两个都刹住了，隔着一米互相看。',
-        promptEn: 'You both stop, a metre apart, looking at each other.',
+        promptZh: '你们两个都刹住了，在巷口大眼瞪小眼。',
+        promptEn: 'You both stop, looking at each other.',
         options: [
           {
             id: 'ot_toast_disappoint',
-            labelZh: '（在心里）「……不是啊。」',
-            labelEn: '(internally) "...Not it, then."',
+            labelZh: '（在心里）「……等等，叼着烤吐司撞上来的美少女呢？！」',
+            labelEn: '(internally) "...Wait, where is the girl with toast in her mouth?!"',
             hintZh: '你在期待什么，你自己清楚', hintEn: 'You know perfectly well what you were expecting.',
             effects: [{ stat: 'guts', amount: 2, reasonZh: '你承认了自己刚才在期待什么', reasonEn: 'You admitted to yourself what you had been expecting' }],
             setFlags: ['ot_corner_admitted'],
             then: [
               {
                 type: 'narration',
-                zh: '爷爷说了句「あぶないで」就骑走了。你站在拐角站了三秒。',
-                en: 'He says to watch out and cycles off. You stand at the corner for three seconds.'
+                zh: '大爷咕哝了一句「あぶないで」，蹬着脚踏车摇摇晃晃骑远了。你在死角处的斜坡前迎风凌乱。',
+                en: 'He says to watch out and cycles off. You stand at the corner shaking your head at yourself.'
               },
               {
                 type: 'narration',
@@ -655,8 +655,8 @@ export const OTAKU_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '你把两根葱放回车筐。他说了三遍谢谢，第三遍的时候已经骑出去五米了。',
-                en: 'You put them back in the basket. He thanks you three times, the third from five metres down the road.'
+                zh: '你把两根颠出来的大葱拾起来递回车筐。大爷连声道谢，尾音还没飘散，车把已经拐向了窄巷深处。',
+                en: 'You put them back in the basket. He thanks you repeatedly as he cycles into the alley.'
               },
               {
                 type: 'narration',
