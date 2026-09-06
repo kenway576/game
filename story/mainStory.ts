@@ -460,8 +460,8 @@ const CH4: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她转过来看着你，看了大概五秒。你从来没有被她这么看过。',
-            en: 'She turns and looks at you for about five seconds. She has never looked at you like that.'
+            zh: '她缓缓转过头静静注视着你。那双洞察世事的眼睛里倒映着你的身影，你从来没有被她用这样的眼神凝视过。',
+            en: 'She turns her head slowly, gazing at you in silence. Her worldly eyes reflect your silhouette; she has never looked at you with such depth before.'
           },
           {
             type: 'speech',
@@ -488,8 +488,8 @@ const CH4: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你低头看了看自己：书包放在脚边，手账在膝盖上，你已经在这儿坐了四十分钟，一句愿望也没许。',
-    en: 'You look down at yourself: bag by your feet, journal on your knees, forty minutes sat here and not one wish asked for.'
+    zh: '你低头看了看自己：书包静静倚在脚边，手账摊在膝盖上，你已经在这石阶前默坐了许久，心如止水，一句愿望也没有许过。',
+    en: 'You look down at yourself: schoolbag quiet by your feet, journal spread on your lap. You have sat in stillness on these stone steps, without once making a wish.'
   },
   {
     type: 'narration',
@@ -521,8 +521,8 @@ const CH5: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '一月十七日。今天早上第一节课，历史老师讲到一九九五年，讲得很快，讲完停了三秒才翻页。',
-    en: 'The seventeenth of January. In first period this morning the history teacher reached 1995, went through it fast, and waited three seconds before turning the page.'
+    zh: '一月十七日。今天早上的第一节课，历史老师讲到一九九五年时语速罕见地加快了，讲完后在讲台上长久地停顿默哀，才轻轻翻过那一页教案。',
+    en: 'The seventeenth of January. In first period this morning, the history teacher spoke unusually fast when reaching 1995, pausing in long, heavy silence before gently turning the lesson page.'
   },
   {
     type: 'narration',
@@ -604,13 +604,13 @@ const CH5: StoryNode[] = [
         labelZh: '什么也不说，站着不走',
         labelEn: 'Say nothing and do not leave',
         hintZh: '有些时候话是多余的', hintEn: 'Sometimes words are the surplus part.',
-        effects: [{ stat: 'guts', amount: 3, reasonZh: '沉默着站四十分钟比说一句难得多', reasonEn: 'Standing silent for forty minutes is harder than saying something' }],
+        effects: [{ stat: 'guts', amount: 3, reasonZh: '自始至终沉默相伴比任何苍白的言语都难得多', reasonEn: 'Standing quietly in silent solidarity is harder than hollow words' }],
         setFlags: ['main5_stayed'],
         then: [
           {
             type: 'narration',
-            zh: '你在那儿站了四十分钟。天完全黑下来的时候，她开口了。',
-            en: 'You stand there for forty minutes. When it is fully dark, she speaks.'
+            zh: '你在清冷的夜风中静静陪她伫立了良久。直到暮色沉沉吞没最后一丝晚霞，天光彻底暗了下来，她才终于开了口。',
+            en: 'You stand quietly beside her in the chill night breeze for a long time. Only when twilight swallows the last ember of dusk does she finally speak.'
           },
           {
             type: 'speech',

@@ -291,8 +291,8 @@ export const MIYUKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '门关上了。你在走廊上站了两秒才走。',
-    en: 'The door closes. You stand in the corridor for two seconds before you go.'
+    zh: '玄关的门轻轻合拢了。你在走廊暖黄的声控灯下驻足了片刻，才迈步离开。',
+    en: 'The entrance door clicks softly shut. Under the warm hallway light, you pause for a lingering moment before turning to leave.'
   },
   {
     type: 'narration',

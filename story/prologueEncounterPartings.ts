@@ -97,8 +97,8 @@ const CAMEO_MAKI: StoryNode[] = [
   {
     type: 'narration',
     characterImage: '',
-    zh: '她从你面前横穿而过，视线扫到你身上停了半秒——像是把你归了个类——然后就笑着跑掉了。你一个字都没听懂。',
-    en: 'She cuts right across your path, her eyes catching on you for half a second — as if filing you under something — and then she is gone, laughing. You did not catch a single word of it.',
+    zh: '她从你面前如小旋风般横穿而过，视线扫过你身上时忽地微微一凝——像是在心里利落地把你归了个类——随即冲同伴笑闹着跑远了。你连一个字都没听懂。',
+    en: 'She darts across your path like a whirlwind. Her gaze catches on you for a split second — filed away cleanly in her mind — before she laughs and runs off with her friends. You did not understand a word.',
     words: [
       { jp: '早口', reading: 'はやくち', zh: '语速快', en: 'fast talking' }
     ]
@@ -316,8 +316,8 @@ export const HIKARI_PARTING: StoryNode[] = [
       {
         type: 'narration',
         characterImage: `${HIK}casual_happy.webp`,
-        zh: '她朝你挥挥手就跑了。跑出十几米，忽然停住，转身冲你喊了一句。',
-        en: 'She waves and takes off. Ten metres on she stops dead, spins round, and shouts something back at you.'
+        zh: '她朝你用力挥了挥手便快步跑开。跑出一段距离后，她忽然猛地收住脚步，双手拢在嘴边转身冲你大喊了一句。',
+        en: 'She waves vigorously and takes off running. A short way ahead, she stops dead in her tracks, turns with hands cupped to her mouth, and shouts back at you.'
       },
       {
         type: 'speech',
@@ -399,8 +399,8 @@ export const MAKI_PARTING: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '她说完转身就走。走出三四米，忽然又倒退着挪回来一点，歪着头补了一句。',
-        en: 'She turns to go. Three or four metres on she suddenly reverse-walks a little way back, head tilted, and adds one more thing.'
+        zh: '她转身走出没几步，忽然又倒退着溜达回来，歪着脑袋别扭地补了一句。',
+        en: 'She turns and takes a few strides, then suddenly backs up towards you, tilting her head with an awkward air to add one more thing.'
       },
       {
         type: 'speech',
@@ -436,8 +436,8 @@ export const MAKI_PARTING: StoryNode[] = [
       {
         type: 'narration',
         characterImage: `${MAK}punk_pout.webp`,
-        zh: '走出十几米，你没忍住回头。她正把签子丢进垃圾桶，视线不偏不倚地撞上你的。',
-        en: 'Ten metres on you cannot help looking back. She is dropping her skewer in the bin, and her eyes land squarely on yours.'
+        zh: '往前迈出一段路，你终于没忍住回头看了一眼。她正把竹签丢进垃圾桶，视线不偏不倚地撞上你的。',
+        en: 'A few paces further, you cannot resist looking back. She is dropping her skewer in the bin, eyes landing squarely on yours.'
       },
       {
         type: 'speech',

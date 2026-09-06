@@ -48,14 +48,14 @@ export const INARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你约好在第三个石灯笼那儿等。她迟到了四十分钟。',
-    en: 'You agreed to meet at the third stone lantern. She is forty minutes late.'
+    zh: '你们约好在第三个石灯笼边碰头。你在祭典喧嚣的人声与太鼓声中等得额头微汗，她却依然迟迟不见踪影。',
+    en: 'You agreed to meet at the third stone lantern. In the heat of the drums and festival crowd you wait with brow beaded in sweat, yet she is still nowhere in sight.'
   },
   {
     type: 'narration',
     characterImage: `${I}summer_neutral.webp`,
-    zh: '她来的时候不是从参道来的。她是从人群里出现的——你前一秒看那个方向，那儿没有人。',
-    en: 'She does not arrive up the approach. She appears out of the crowd; a second earlier you were looking that way and there was nobody.'
+    zh: '当她终于现身时，却完全不是从参道走来的。仿佛是从熙攘人潮与暖黄灯影中凭空化出一般——前一刻那处空无一物，下一刻她便已笑意盈盈地立在那里。',
+    en: 'When she finally appears, she does not walk up the approach. It is as if she condensed from the warm lantern glow and bustle — one moment empty, the next standing with a faint smile.'
   },
   {
     type: 'speech',
@@ -120,8 +120,8 @@ export const INARI_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${I}summer_curious.webp`,
-            zh: '她愣住了。真的愣住了——不是那种装出来的「哦呀」，是一秒钟里什么都没准备好的那种。',
-            en: 'She freezes. Genuinely freezes; not the performed "oh my", but a full second with nothing prepared.'
+            zh: '她整个人彻底愣住了。是真的猝不及防——完全不是平时装模作样的调侃轻笑，而是货真价实、大脑一片空白的手足无措。',
+            en: 'She completely freezes. Truly caught off guard — not her usual feigned teasing, but genuine, wide-eyed bewilderment.'
           },
           {
             type: 'speech',

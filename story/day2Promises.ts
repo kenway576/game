@@ -64,8 +64,8 @@ const NAO_STATION: StoryNode[] = [
   },
   {
     type: 'narration', characterImage: `${N}knit_neutral.webp`,
-    zh: '她在你后面大概两米，抱着胳膊，已经站了不知道多久。',
-    en: 'She is about two metres behind you with her arms folded, and has been for an unknown length of time.'
+    zh: '你猛一回头，她正双手抱胸站在你身后几步远的地方，半眯着眼，不知已经好整以暇地盯了你多久。',
+    en: 'You spin around; she is standing a few paces behind with arms folded, half-squinting, looking as though she has watched you for ages.'
   },
   {
     type: 'speech',
@@ -83,8 +83,8 @@ const NAO_STATION: StoryNode[] = [
   },
   {
     type: 'choice',
-    promptZh: '她走了大概五米才回头。',
-    promptEn: 'She gets about five metres before looking back.',
+    promptZh: '她踩着小皮鞋径直走出了几步，才慢悠悠回过头来。',
+    promptEn: 'She clicks forward a few steps in her leather shoes before casually glancing back.',
     options: [
       {
         id: 'p_nao_follow',
@@ -95,8 +95,8 @@ const NAO_STATION: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '走了十分钟，是一家超市。她拿了一个购物篮塞给你，说「持って」。',
-            en: 'Ten minutes later it is a supermarket. She takes a basket and pushes it at you. "Hold this."'
+            zh: '穿过两条商业街的小巷，眼前出现了一家日常超市。她熟练地抽出一只塑料购物篮往你怀里一塞，理所当然地说了句「持って」。',
+            en: 'Through two commercial alleyways, a local supermarket appears. She pulls out a shopping basket and shoves it into your arms, naturally remarking: "Hold this."'
           },
         ]
       },
@@ -168,8 +168,8 @@ const NAO_STATION: StoryNode[] = [
 
   {
     type: 'narration',
-    zh: '鱼柜前面，一个穿围裙的阿姨正在发试吃。竹签插着一小块炸鱼。奈绪拿了一块，两秒之后又拿了一块，然后把第二块塞给你。',
-    en: 'At the fish counter a woman in an apron is handing out samples: a small piece of fried fish on a cocktail stick. Nao takes one, takes a second one two seconds later, and puts the second one in your hand.'
+    zh: '生鲜鱼柜前面，系着围裙的促销阿姨正笑脸盈盈地分发试吃。竹签上插着金黄酥脆的炸鱼块。奈绪眼疾手快地拿了一串，紧接着又顺理成章地顺走第二串，塞到了你的手里。',
+    en: 'At the fresh fish counter, a promotional clerk in an apron is cheerily offering samples: golden crispy fried fish on cocktail sticks. Nao nimbly takes one, smoothly swiping a second right after to thrust into your hand.'
   },
   {
     type: 'narration',

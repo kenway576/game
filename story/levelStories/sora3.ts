@@ -426,8 +426,8 @@ export const SORA_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '你拿着那张纸跑下三层楼。办公室的门在你手指碰到门把的同一秒被从里面拉开了——藤原老师正要下班。',
-        en: 'You run down three flights. The office door opens from the inside at the exact second your hand reaches the handle: Ms Fujiwara is on her way home.'
+        zh: '你拿着那张纸飞奔下三层楼。在你手指碰到门把的刹那，门被从里面猛地拉开了——藤原老师正好拎着包准备下班。',
+        en: 'You sprint down three flights with the paper in hand. Just as your fingers graze the handle, the door is pulled open from within — Ms. Fujiwara is right about to head home.'
       },
       {
         type: 'narration',

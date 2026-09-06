@@ -171,12 +171,12 @@ export const SORA_STORY_2: StoryNode[] = [
         hintEn: 'Announce yourself without having to say anything.',
         requires: { stat: 'charm', min: 5 },
         effects: [{ stat: 'charm', amount: 3, reasonZh: '你替她省掉了被撞见那一下', reasonEn: 'You spared her the moment of being caught' }],
-        relations: [{ char: CharacterId.SORA, familiarity: 4, affection: 13, reasonZh: '她有两秒钟可以把表情装回去', reasonEn: 'She had two seconds to put her face back on' }],
+        relations: [{ char: CharacterId.SORA, familiarity: 4, affection: 13, reasonZh: '你给了她足够的时间整理好脆弱的防线', reasonEn: 'You gave her enough time to pull her defenses back together' }],
         then: [
           {
             type: 'narration',
-            zh: '灯灭了两秒，又亮了。',
-            en: 'The lights go out for two seconds and come back.'
+            zh: '体育馆的灯光闪烁熄灭，旋即又重新亮起。',
+            en: 'The gym lights flicker out for a beat and click back on.'
           },
           {
             type: 'narration',
@@ -211,8 +211,8 @@ export const SORA_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她开头是这么说的。然后她讲了十分钟。',
-    en: 'That is how she starts. Then she talks for ten minutes.'
+    zh: '她嘴硬地以此作为开头，随即便在空旷的球馆里滔滔不绝地讲了很久。',
+    en: 'She leads with that stubborn defense, and then talks at length in the cavernous, quiet gym.'
   },
   {
     type: 'narration',

@@ -37,8 +37,8 @@ export const MAKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '高架下这一排店，每隔九十秒会被头顶上过去的电车盖住一次。你已经习惯了在那九十秒里说话。',
-    en: 'Every ninety seconds a train goes over the arcade and puts the lid on everything. You have learned to time your sentences.'
+    zh: '高架下这一排游戏机厅，头顶上轰鸣驶过的阪急电车总会定时将所有嘈杂盖过去。你已经渐渐习惯在列车呼啸的间隙里跟人说话。',
+    en: 'In the arcade under the viaduct, the rumble of the Hankyu line overhead regularly drowns out the noise. You have learned to speak in the gaps between trains.'
   },
   {
     type: 'narration',
@@ -58,8 +58,8 @@ export const MAKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你们没有约过。你把这句话咽了回去。',
-    en: 'You never arranged anything. You swallow that.'
+    zh: '——谁跟你约好了啊！你在心里疯狂拍桌，差点脱口而出一句「異議あり！」。但看着她那副得意洋洋的表情，你还是把话咽了回去。',
+    en: '—Who even made plans with you?! You slam your mental desk shouting "Hold it!" internally, but seeing her smug grin, you swallow the words.'
   },
 
   // ---- 选择 1 ----
@@ -94,8 +94,8 @@ export const MAKI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她意识到了。她甚至记着分钟数。',
-            en: 'She had registered it. She is keeping it to the minute.'
+            zh: '她不仅意识到了，甚至连你每次踏进店门的时间都记得一清二楚。',
+            en: 'She not only noticed, but remembered the exact time you walked through the doors each day.'
           }
         ]
       },
@@ -154,13 +154,13 @@ export const MAKI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她说这句话的时候，屏幕上她那局的分数已经打到第四关了。第四关要打二十分钟。',
-            en: 'As she says it, her run on the screen is on stage four. Stage four takes twenty minutes to reach.'
+            zh: '她说这句硬气话的时候，屏幕上街机单人闯关已经打到了第四关的大BOSS——想单币打到那一关，起码得聚精会神地连续奋战大半个小时。',
+            en: 'As she says it, her single-credit run is already on the stage-four boss — reaching that point takes over half an hour of unbroken concentration.'
           },
           {
             type: 'narration',
-            zh: '她顺着你的视线看过去，然后飞快地按了退出。',
-            en: 'She follows where you are looking, and hits quit very fast.'
+            zh: '她顺着你的视线看过去，耳尖顿时一红，飞快地按了投降退出。',
+            en: 'Following your gaze, her ears flare red and she hurriedly taps forfeit.'
           }
         ]
       }
@@ -224,8 +224,8 @@ export const MAKI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '整整九十秒，头顶上过去一列电车。这九十秒里她一个字都没说。',
-            en: 'For a full ninety seconds a train goes over. In those ninety seconds she says nothing at all.'
+            zh: '高架铁轨上电车呼啸轰鸣而过，车厢与铁轨撞击的震动顺着梁柱传到指尖。在这漫长的震颤轰鸣中，她始终低着头，一个字都没说。',
+            en: 'The train roars overhead along the viaduct, vibration traveling down the pillars into your fingertips. In the long rumble, she keeps her head bowed and says nothing.'
           },
           {
             type: 'speech',

@@ -36,8 +36,8 @@ export const YEAR_END: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '校长讲了十一分钟。你听懂了大概九成——这件事你自己愣了一下才反应过来。',
-    en: 'The principal speaks for eleven minutes. You follow about ninety per cent of it, and it takes you a moment to notice that you did.'
+    zh: '校长在讲台上语重心长地致辞。不知不觉中，你竟然听懂了绝大部分的内容——直到周围响起热烈的掌声，你才猛然意识到这一点。',
+    en: 'The principal gives a heartfelt address from the podium. Without realizing it, you follow almost the entire speech — catching yourself in gentle surprise only as applause erupts around you.'
   },
   {
     type: 'narration',
@@ -165,8 +165,8 @@ export const YEAR_END: StoryNode[] = [
           { type: 'scene', scene: 'rooftop_sunset' },
           {
             type: 'narration',
-            zh: '最后你上了天台。风还是冷的，但和四月那天不一样了——四月你冷得站不住，今天你站了二十分钟。',
-            en: 'You finish on the roof. The wind is still cold, but not the way it was in April; in April you could not stand it, and today you stand there twenty minutes.'
+            zh: '最后你信步走上了天台。初春的风依旧带着微凉，却与四月初来乍到的那天截然不同——四月时你孤身一人瑟瑟发抖，而今天，你迎着晚风伫立良久，心潮温热。',
+            en: 'Finally you wander up to the rooftop. The early spring breeze is still crisp, yet worlds apart from that lonely April day — back then you shivered by yourself, but today you stand long in the sunset breeze with a warm heart.'
           }
         ]
       }

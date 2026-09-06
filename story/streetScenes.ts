@@ -273,8 +273,8 @@ export const STREET_SCENES: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: CITY_NPC_SPRITES.munakata,
-        zh: '老板在吧台后面弄那个虹吸壶。整个过程十二分钟，他一句话都没说，你也不敢说。',
-        en: 'The master works the siphon behind the counter. The whole thing takes twelve minutes, in which he says nothing and you do not dare to either.'
+        zh: '老板在吧台后全神贯注地摆弄着古典虹吸壶。蓝色的火焰在壶底静静跃动，升腾的水汽间他自始至终一言不发，神情专注得让人不敢出声打扰。',
+        en: 'The master works the classical siphon behind the counter in rapt focus. Blue flame flickers beneath the glass; amid rising steam he says not a single word, absorbed enough to keep you in awe-struck silence.'
       },
       {
         type: 'narration',
@@ -416,8 +416,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '中间有一次没响。他停了半秒，把那一件翻过来重扫。第二下响了，节拍就接上了。',
-        en: 'One of them does not beep. He stops for half a second, turns it over and runs it again. The second pass beeps, and the rhythm picks back up.'
+        zh: '中间有一次红光划过没有响起提示音。他动作微顿，指尖利落地把商品翻了个面重新划过。第二声清脆的哔声响起，机械般的节拍再次流畅地接了上去。',
+        en: 'Once, the red light glides across without a beep. Pausing for a split-second, his fingers briskly flip the item around. The crisp beep sounds, and the clockwork rhythm seamlessly resumes.'
       },
       seen('你在一个便利店里看见了一种奇怪的完美', 'You saw a strange kind of perfection in a convenience store')
     ]
@@ -634,8 +634,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '冰棒最后掉在了沙子上。两个人蹲下来看了它三秒钟，然后一起笑了。',
-        en: 'The lolly ends up in the sand. They crouch and look at it for three seconds, and then both laugh.'
+        zh: '冰棒最终啪嗒一声掉在了金黄的沙滩上。两个人齐齐蹲下身盯着融化的冰棒面面相觑，随即没心没肺地同时前仰后合笑作一团。',
+        en: 'The popsicle lands with a plop on the golden sand. The two crouch down, staring at the melting sweet before bursting into infectious, breathless laughter together.'
       },
       {
         type: 'narration',
@@ -829,8 +829,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你莫名其妙地往旁边让了半步，虽然他离你还有三米远。',
-        en: 'For no reason you can identify you take half a step aside, although he is still three metres away.'
+        zh: '一股莫名的恶寒让你下意识往旁边让了半步，浑身汗毛竖立——虽说他离你甚至还有三米远。身体的直觉在疯狂尖叫：绝对不要招惹这个男人。',
+        en: 'A sudden chill makes you instinctively step aside, goosebumps prickling across your skin—even though he is still three metres away. Every instinct screams: do not cross this man.'
       },
       {
         type: 'narration',
@@ -1105,8 +1105,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '她走了以后你还站在原地。刚才那件事一共花了四秒，而你打算记很久。',
-        en: 'You are still standing there after she has gone. The whole thing took four seconds and you intend to keep it for a while.'
+        zh: '待那一抹白色的裙摆消失在坡道拐角，你依然有些出神地伫立在原地。刚才那不过是转瞬即逝的短短几秒，而你却打算将这份惊艳记上很久。',
+        en: 'As that flash of white skirt disappears around the bend of the slope, you remain standing in a daze. The moment lasted only a fleeting few seconds, yet you intend to remember that grace for a very long time.'
       },
       seen('你在坂道上经历了一次宿命般的回眸', 'You experienced a fateful glance back along a sloping road')
     ]

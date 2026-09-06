@@ -57,8 +57,8 @@ export const REI_STORY_1: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${R}neutral.webp`,
-    zh: '路上她一句话都没说。走到第八分钟的时候，她忽然放慢了半步，让你跟上来，然后继续保持那个速度。',
-    en: 'She says nothing on the way. At the eighth minute she drops half a pace so you can catch up, and then holds that speed.'
+    zh: '路上她一言不发，步履精确得像钟摆。行至中途，她忽然极其自然地放慢了半步，待你并肩跟上后，才重新维持着匀速向前。',
+    en: 'She walks in silence, footsteps measured like a pendulum. Midway, she naturally drops half a step so you can catch up, then resumes her steady cadence.'
   },
   {
     type: 'narration',
@@ -108,8 +108,8 @@ export const REI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她说这句话的语气跟报年份一模一样。你花了两秒才反应过来 1995 年是什么。',
-            en: 'She says it in exactly the tone she used for the dates. It takes you two seconds to work out what 1995 was.'
+            zh: '她说这句话的语气跟报年份一模一样平静。你怔了片刻才猛然反应过来——1995年，是阪神大地震。',
+            en: 'She says it with the same quiet composure as reading dates. It takes you a stunned moment to realize — 1995 was the Great Hanshin Earthquake.'
           },
           {
             type: 'speech',
@@ -135,8 +135,8 @@ export const REI_STORY_1: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${R}neutral.webp`,
-            zh: '她看着你翻开本子，看了三秒，然后把自己的笔记本转了九十度，让你能看清格式。',
-            en: 'She watches you open it, for three seconds, then rotates her own notebook ninety degrees so you can see the format.'
+            zh: '她静静注视着你翻开本子的举动，随后不声不响地将自己的笔记本平移转过来，好让你能清晰看到表格的行距和标注。',
+            en: 'She silently observes you opening your notebook, then quietly slides her own over so you can clearly see the layout and annotations.'
           },
           {
             type: 'speech',
@@ -377,13 +377,13 @@ export const REI_STORY_1: StoryNode[] = [
   // ---- 收 ----
   {
     type: 'narration',
-    zh: '回去的路上她还是不说话。走到第八分钟，她又放慢了半步。',
-    en: 'She is silent on the way back too. At the eighth minute she drops half a pace again.'
+    zh: '返程的路上她依旧沉默。行经原处时，她的步子再次悄然放缓了半步。',
+    en: 'She remains quiet on the return. Passing the same spot, her pace quietly slows by half a step again.'
   },
   {
     type: 'narration',
-    zh: '你这次注意到了：她不是走得慢，她是每次都在同一个位置慢下来。那个位置是路口。',
-    en: 'This time you notice: she is not walking slowly, she slows at the same spot every time. The spot is a junction.'
+    zh: '你这次终于敏锐地注意到了：她不是漫无目的地走慢，她是每次都在同一个视线死角的路口慢下来等你。',
+    en: 'This time you catch it: she does not slow at random, but slows deliberately at the blind corner to wait for you.'
   },
   {
     type: 'narration',

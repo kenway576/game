@@ -139,8 +139,8 @@ export const INARI_STORY_1: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${I}smug.webp`,
-            zh: '你坐下了。她盯着你看了三秒，然后笑了。',
-            en: 'You sit. She watches you for three seconds, and then smiles.'
+            zh: '你在落叶边坐了下来。她那双狐狸般狡黠深邃的眼眸静静凝视着你，随即弯起唇角，露出一抹了然的微笑。',
+            en: 'You sit among the fallen leaves. Her fox-like, deep gaze watches you quietly before her lips curve into an understanding smile.'
           },
           {
             type: 'speech',
@@ -282,8 +282,8 @@ export const INARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她说这句话的时候还是那个轻的语气。轻到你花了几秒才觉得冷。',
-            en: 'The tone is still light. Light enough that it takes a few seconds to go cold.'
+            zh: '她说这句话的时候依旧是那副漫不经心的调调。轻巧到话音落地片刻后，丝丝凉意才后知后觉地爬上脊梁骨。',
+            en: 'She speaks in that same nonchalant register. So light that it takes moments after the words settle for a chill to crawl up your spine.'
           },
           {
             type: 'speech',
@@ -323,13 +323,13 @@ export const INARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她说完侧过头看你，看了两秒。转回去看那棵树的时候，尾巴扫过了地上的落叶。',
-            en: 'She says it and turns her head to look at you for two seconds. Turning back to the tree, one of the tails drags through the leaf litter.'
+            zh: '她说完侧过头，似笑非笑地凝视着你，目光深邃得仿佛能穿透千百年的岁月。待她悠悠转回头望向那棵古树时，毛茸茸的尾巴轻轻扫过了地上的沙沙枯叶。',
+            en: 'She turns her head with an enigmatic half-smile, her eyes deep enough to peer through centuries. As she turns back to the ancient tree, her fluffy tail sweeps softly through the dry leaves.'
           },
           {
             type: 'narration',
-            zh: '你后来想起这两秒，才明白那两秒是在说什么。',
-            en: 'You think about those two seconds afterwards, and only then work out what they were saying.'
+            zh: '你很久之后再次回想起这片刻的凝视，才隐约参透了那双眼睛里倒映着的究竟是什么。',
+            en: 'Only long afterwards, when you recall that brief gaze, do you faintly understand what those eyes were reflecting.'
           }
         ]
       },

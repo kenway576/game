@@ -238,13 +238,13 @@ export const HIKARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '查了三分钟，她把手机转过来给你看。屏幕还没收回去，另一只手已经指出去了。',
-            en: 'Three minutes of looking, then she turns the phone round to show you. Her other hand is already pointing before the screen goes back.'
+            zh: '手指在屏幕上飞快滑动查找了一阵，她一把将手机屏幕转向你，另一只手早就迫不及待地指向远方海平面。',
+            en: 'After quickly searching on her phone, she turns the screen toward you, her other hand pointing eager and straight at the sea horizon.'
           },
           {
             type: 'narration',
-            zh: '跟她刚才指的方向差了大概二十度。',
-            en: 'About twenty degrees off from the direction she pointed before.'
+            zh: '虽说跟她刚才随手胡乱指的方向偏了老大一截。',
+            en: 'Never mind that it is noticeably off from the random direction she pointed earlier.'
           },
           {
             type: 'speech',
@@ -257,8 +257,8 @@ export const HIKARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '隔着一整片海和两千公里。她说挺近的。',
-            en: 'Across an entire sea and two thousand kilometres. She says that is basically next door.'
+            zh: '隔着一整片海和遥遥两千公里。她却笑盈盈地说挺近的。',
+            en: 'Across an entire sea and two thousand long kilometres. Yet she smiles and says it is practically next door.'
           }
         ]
       }

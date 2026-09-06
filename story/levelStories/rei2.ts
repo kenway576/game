@@ -231,14 +231,14 @@ export const REI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '两根手指压在你手腕上，秒表按下去。十五秒。她一直看着秒表，没有看你。',
-            en: 'Two fingers on your wrist, the stopwatch down. Fifteen seconds. She watches the watch the entire time and not you.'
+            zh: '微凉的指尖轻触在你手腕内侧的脉搏上，秒表的滴答声按下去。整整十五秒，她的呼吸清浅地拂过手背，目光专注地锁定在表盘上，自始至终不敢抬头看你。',
+            en: 'Cool fingertips press against your inner wrist pulse as the stopwatch starts. For fifteen seconds, her faint breath brushes your skin, eyes intently on the dial, never once meeting yours.'
           },
           {
             type: 'narration',
             characterImage: `${R}shy.webp`,
-            zh: '秒表停了。她没有说数字。',
-            en: 'The watch stops. She does not say the number.'
+            zh: '秒表咔哒停下。她半晌没有报出数字。',
+            en: 'The stopwatch clicks stop. For a long pause she does not speak the number.'
           },
           {
             type: 'speech',
@@ -445,8 +445,8 @@ export const REI_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${R}shy.webp`,
-            zh: '她看了你三秒，然后——你几乎可以确定——笑了一下。幅度非常小，小到你后来一直怀疑自己看错了。',
-            en: 'She looks at you for three seconds and then - you are almost certain - smiles. Very slightly. Slightly enough that you spend a while afterwards doubting you saw it.'
+            zh: '她怔怔地看了你片刻，然后——你几乎可以笃定——她的嘴角极轻微地上扬了一下。那抹笑意转瞬即逝，微小到你甚至怀疑是自己眼花的幻觉。',
+            en: 'She gazes at you in quiet surprise, and then — you are almost certain — the corners of her lips curve upward slightly. It vanishes so quickly you wonder if it was an illusion.'
           },
           {
             type: 'speech',

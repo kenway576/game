@@ -122,13 +122,13 @@ export const MAKI_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${K}punk_neutral.webp`,
-            zh: '她整个人僵了三秒，然后开始说话——说得非常快，全是关于游戏厅哪台机器坏了。',
-            en: 'She locks up for three seconds and then starts talking, very fast, entirely about which machine at the arcade is broken.'
+            zh: '她整个人触电般僵住了片刻，随即像是要掩饰动摇似的飞快开口——语速极快地扯起游戏厅哪台街机摇杆坏了的琐事。',
+            en: 'She goes rigid for a moment, then chatters rapidly as if covering her agitation — speaking at breakneck speed about broken sticks at the arcade.'
           },
           {
             type: 'narration',
-            zh: '她讲了大概四分钟。中间一次都没有问你为什么坐下。',
-            en: 'She goes on for about four minutes. She does not once ask why you sat down.'
+            zh: '她滔滔不绝地讲了好一阵子，假装专心致志地看着脚尖，中间却一次都没有问你为什么坐过来。',
+            en: 'She talks on and on, pretending to study her shoes, never once asking why you sat down beside her.'
           }
         ]
       },
@@ -266,8 +266,8 @@ export const MAKI_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${K}punk_neutral.webp`,
-            zh: '她低下头，很久没说话。头顶又过去一列电车，九十秒。',
-            en: 'She looks down and says nothing. Another train goes over. Ninety seconds.'
+            zh: '她低下头，很久没有说话。头顶又是一列电车轰鸣碾过铁轨，车轮与铁轨撞击的震动久久不息。',
+            en: 'She bows her head and stays silent for a long time. Overhead another train rumbles along the rails, the vibrations lingering.'
           },
           {
             type: 'speech',

@@ -152,8 +152,8 @@ export const DAY1_GYM: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '接下来的四十分钟里，她一次都没有再让你。你输了，输得很服气。',
-            en: 'For the next forty minutes she does not let you have a single one. You lose, and you have no complaints about it.'
+            zh: '随后的对决中，她彻底展现了主力选手的实力，一次都没有再手下留情。在接连不断的扣球轰鸣声中，你输得心服口服。',
+            en: 'In the rallies that follow she shows the full weight of a varsity starter, giving you no quarter. Between the thundering spikes, you lose with zero excuses.'
           }
         ]
       },
@@ -1010,8 +1010,8 @@ const CAMEO_SORA: StoryNode[] = [
   },
   {
     type: 'narration', characterImage: '',
-    zh: '你站了几秒钟就走了。她没有发现你。',
-    en: 'You watch for a few seconds and move on. She does not notice you.'
+    zh: '你默默在门边看了一会儿便悄然离开，没有惊扰到那份专注。',
+    en: 'You watch from the doorway for a quiet moment and step away without disturbing her focus.'
   },
   {
     type: 'effect',
@@ -1035,13 +1035,13 @@ const CAMEO_REI: StoryNode[] = [
   {
     type: 'narration',
     characterImage: '',
-    zh: '你走出十几米才反应过来：刚才那半分钟里，她一次都没有动过。',
-    en: 'Ten metres on it registers: in that half minute she did not move once.'
+    zh: '你走过走廊转角才后知后觉地意识到：刚才驻足注视的那段时间里，她竟然连指尖都未曾微动过分毫。',
+    en: 'Only when you reach the corridor corner do you realize: in all the time you stood watching, she had not moved so much as a fingertip.'
   },
   {
     type: 'effect',
     setFlags: ['day1_met_rei'],
-    relations: [{ char: CharacterId.REI, familiarity: 4, reasonZh: '你在图书馆门口停了半分钟', reasonEn: 'You paused half a minute at the library door' }]
+    relations: [{ char: CharacterId.REI, familiarity: 4, reasonZh: '你在图书馆门口悄然驻足注视', reasonEn: 'You paused quietly at the library door' }]
   }
 ];
 

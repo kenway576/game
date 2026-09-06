@@ -61,8 +61,8 @@ export const NPC_ARCS: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你走出十米才发现：这是你来日本以后，第一次有人默认你听得懂。',
-        en: 'Ten metres on you realise: that is the first time since you arrived that somebody has assumed, by default, that you would understand.'
+        zh: '走出一段路你才后知后觉地意识到：这是你来日本以后，第一次有人毫不迟疑地默认你能听懂，没有放慢语速，也没有探询的眼神。',
+        en: 'A short way down the path you suddenly realize: for the first time since arriving in Japan, someone simply took for granted that you would understand, with no slowed cadence or probing looks.'
       },
       seen('班上有个人不把你当外国人', 'Somebody in your class does not treat you as a foreigner')
     ]
@@ -137,8 +137,8 @@ export const NPC_ARCS: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: S.kenta,
-        zh: '选拔名单贴出来了。健太站在公告栏前面，手插在口袋里，看了大概两分钟。',
-        en: 'The squad list has gone up. Kenta is standing in front of the noticeboard with his hands in his pockets, for about two minutes.'
+        zh: '校际选拔名单正式张贴了出来。健太独自站在喧闹的公告栏前，双手插在校服口袋里，凝视着泛白的纸面久久未动。',
+        en: 'The squad roster is posted on the board. Kenta stands alone amid the commotion with hands in his pockets, gazing motionlessly at the pale paper for a long time.'
       },
       {
         type: 'narration',
@@ -234,13 +234,13 @@ export const NPC_ARCS: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: S.hiroki,
-        zh: '图书室最里面那张桌子，广树在做题。他做题的姿势很奇怪：脸离本子只有二十厘米。',
-        en: 'Hiroki is working at the furthest table in the library. His posture is odd: his face is twenty centimetres from the page.'
+        zh: '图书室最深处那张背光的书桌前，广树正埋头解题。他握着笔的姿势紧绷，脸几乎快要贴到了摊开的习题册上。',
+        en: 'At the back table in the quiet library, Hiroki is buried in study problems. His posture is rigid, face pressed extraordinarily close to the open workbook.'
       },
       {
         type: 'narration',
-        zh: '你路过的时候他抬起头，看了你两秒才认出来，然后点了下头。',
-        en: 'He looks up as you pass, takes two seconds to place you, and nods.'
+        zh: '你轻步路过时他若有所感地抬起头，眯起深度近视的双眼辨认了片刻，才有些迟疑地点头致意。',
+        en: 'Passing by quietly, he looks up sensing your presence, squinting his short-sighted eyes for a brief moment before offering a hesitant nod.'
       },
       seen('班上第一排那个人，眼睛离本子很近', 'The one in the front row holds the page very close')
     ]
@@ -504,8 +504,8 @@ export const NPC_ARCS: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '他走出柜台，到门口去整理了一下伞架，整理了大概一分钟。那个人走了。',
-                en: 'He comes out from behind the counter and tidies the umbrella stand by the door for about a minute. The man leaves.'
+                zh: '他从收银柜台后面绕出来，假装若无其事地在便利店门口慢条斯理地整理伞架。在店员的注视下，徘徊的可疑男人终于默默走开了。',
+                en: 'He steps out from behind the counter, casually taking his time arranging the umbrella stand by the door. Under the clerk’s steady gaze, the suspicious lingering man finally walks away.'
               },
               {
                 type: 'narration',
@@ -544,8 +544,8 @@ export const NPC_ARCS: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '他站在那儿，离她三米，一次都没有往前走。整整一年他从来没有走近过。',
-        en: 'He stands there, three metres from her, and does not close any of it. He has not, in a whole year, ever come closer.'
+        zh: '他就站在队伍的最前面，隔着一段礼貌而克制的距离静静守望着，自始至终没有冒失地往前迈出一步。整整一年，他从来没有越过这条界线。',
+        en: 'He stands at the head of the line, keeping a polite, restrained distance as he watches over her, never taking an impetuous step forward. In an entire year, he has never crossed that line.'
       },
       {
         type: 'choice',
@@ -565,8 +565,8 @@ export const NPC_ARCS: StreetScene[] = [
             then: [
               {
                 type: 'narration',
-                zh: '场子里三十七个人。她唱了六首，第四首唱到一半的时候她停了两秒，然后接了下去。',
-                en: 'Thirty-seven people inside. She sings six songs. Halfway through the fourth she stops for two seconds and then carries on.'
+                zh: '地下场子里只有零星的三十多个人。她拼尽全力唱了六首歌，第四首副歌唱到一半时她喉头微哽、停顿了一瞬，随后扬起笑脸用力接了下去。',
+                en: 'In the underground hall there are barely thirty people. She sings six songs with everything she has; halfway through the fourth chorus her throat catches, pausing for an instant before forcing a radiant smile and carrying on.'
               },
               {
                 type: 'narration',

@@ -107,8 +107,8 @@ export const MIYUKI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '又过了大概两分钟，她自己说话了——这是你认识她以来第一次。',
-            en: 'After about two more minutes she speaks first, which she has never done since you met her.'
+            zh: '夜风吹拂着阳台的薄纱窗帘，良久的静谧中，她终于主动开了口——这是你认识她以来极罕见的一次。',
+            en: 'The evening breeze stirs the thin curtains. In the quiet calm she speaks first — something she has rarely ever done since you met.'
           },
           {
             type: 'speech',
@@ -392,8 +392,8 @@ export const MIYUKI_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${M}cardigan_shy.webp`,
-            zh: '她的手停在半空，停了三秒，然后放下了。',
-            en: 'Her hand stops in mid-air for three seconds, and then comes down.'
+            zh: '她的指尖微颤着僵在半空中，指节泛着微白，几番迟疑，终于温顺地垂了下去。',
+            en: 'Her fingertips tremble slightly in mid-air, pale at the knuckles, before she gently lets her hand drop in acceptance.'
           },
           {
             type: 'speech',

@@ -71,8 +71,8 @@ const DAY1: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '两小时二十分钟。你靠窗，右手边一路是海。',
-    en: 'Two hours twenty. You have the window, and it is sea the entire way.'
+    zh: '飞行耗时两个多小时。你靠窗而坐，机翼穿行在层层白云间，舷窗右侧一路都是浩瀚无垠的蔚蓝大海。',
+    en: 'The flight takes a little over two hours. Sitting by the window, the wing cuts through tiers of white cloud, the entire view to the right an endless expanse of blue ocean.'
   },
   {
     type: 'narration',
@@ -197,13 +197,13 @@ const DAY2: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '水是温的。十一月的水是温的，这件事你花了一分钟才接受。',
-    en: 'The water is warm. It takes you a minute to accept that the water is warm in November.'
+    zh: '海水竟然是温热的。即便已经步入十一月，冲绳的海水依旧泛着宜人的暖意，这种奇妙的南方气候让你花了片刻才慢慢适应。',
+    en: 'The water is surprisingly warm. Even in November, Okinawa’s sea carries a gentle warmth, a subtropical contrast that takes a moment to sink in.'
   },
   {
     type: 'narration',
-    zh: '往外走三十米，水还只到膝盖。低头能看见自己的脚，和脚边一条不怕人的小鱼。',
-    en: 'Thirty metres out and it is still only knee-deep. You can see your own feet, and beside them a small fish that is not afraid of you.'
+    zh: '踩着细软白沙往浅海深处淌去，清澈的海水依然只漫过膝盖。低头便能清晰看见水底的脚趾，以及绕着脚踝打转、毫不怕生的小热带鱼。',
+    en: 'Wading outward over soft white sand, the clear water still reaches only knee-height. Looking down, you see your toes clearly and a fearless little tropical fish circling your ankles.'
   },
   {
     type: 'choice',
@@ -240,8 +240,8 @@ const DAY2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你趟回去，三十米走了很久，裤子湿到大腿。走到的时候那个人正低头看手机，抬头看见你才想起来自己喊过。',
-            en: 'You wade back in. Thirty metres takes a while and your trousers are wet to the thigh. When you get there the person is looking at their phone, and only remembers having called when they look up.'
+            zh: '你哗啦哗啦涉水淌回沙滩，浸湿的裤腿紧贴在大腿上沉甸甸的。走到跟前时，那个人正低头摆弄着手机，抬头见到你才猛地想起来刚才是自己喊的。',
+            en: 'You splash your way back to the beach, wet trousers clinging heavy to your legs. By the time you arrive, the caller is on their phone and only remembers calling when looking up.'
           },
           {
             type: 'narration',
@@ -296,8 +296,8 @@ const DAY3: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '房间安静了两秒。不是尴尬的那种安静，是七个人同时意识到自己一直知道这件事、但从来没说出来过的那种安静。',
-    en: 'Two seconds of quiet. Not the awkward kind. The kind where seven people realise at once that they have known this all along and have never said it.'
+    zh: '房间里骤然陷入了难言的沉寂。不是尴尬的那种冷场，而是七个人在同一瞬间被现实击中、意识到彼此其实心知肚明却谁也不愿先点破的那种沉重静默。',
+    en: 'The room suddenly falls into a profound quiet. Not an awkward lull, but that heavy silence when seven people are struck at once by reality, knowing full well yet loath to voice it.'
   },
   {
     type: 'choice',

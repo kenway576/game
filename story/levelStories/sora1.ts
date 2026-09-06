@@ -169,8 +169,8 @@ export const SORA_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她自己把椅子扶起来又坐回去了。你没有说话。她学了二十分钟。',
-            en: 'She picks the chair back up and sits down on it herself. You say nothing. She studies for twenty minutes.'
+            zh: '她自己把歪倒的椅子扶正重新坐好。你识趣地没有拆穿，她居然真就耐着性子埋头苦读了好一会儿。',
+            en: 'She rights the tipped chair and sits down again. You wisely say nothing, and she surprisingly buckles down to study for quite some time.'
           }
         ]
       }
@@ -180,8 +180,8 @@ export const SORA_STORY_1: StoryNode[] = [
   // ---- 交换的另一半 ----
   {
     type: 'narration',
-    zh: '三十分钟到了。她把书一扔，站起来的时候整个人都不一样了。',
-    en: 'Thirty minutes are up. The book goes flying and she stands, and everything about her changes.'
+    zh: '约好的时间一到，她啪地一声把单词书一甩，猛地跳起来时整个人眼里都有了光，方才的蔫头耷脑瞬间一扫而空。',
+    en: 'The second the timer finishes, she snaps the vocab book shut and tosses it aside, bouncing up with fire in her eyes, all drowsiness instantly evaporated.'
   },
   {
     type: 'narration',

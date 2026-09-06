@@ -74,8 +74,8 @@ export const STREET_PEOPLE: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你在十米外站了一会儿就走了。第二天再路过的时候，桌上多了一盒新的纸巾。',
-        en: 'You stand ten metres off for a moment and move on. Passing again the next day, there is a fresh box on the table.'
+        zh: '你在不远处的街角驻足凝望了片刻便悄然离开。第二天再次路过时，桌上已换了一盒未开封的新纸巾。',
+        en: 'You watch quietly from the corner for a moment before slipping away. Passing again the next day, a fresh unopened tissue box sits on the table.'
       },
       {
         type: 'narration', characterImage: P.uranai,
@@ -101,8 +101,8 @@ export const STREET_PEOPLE: StreetScene[] = [
       },
       {
         type: 'narration', characterImage: P.uranai,
-        zh: '「船な。」她看了两秒，把牌收回去了。「意味は言わへん。言うたら、あんたそれに合わせてまうやろ。」',
-        en: '"A ship." She looks at it for two seconds and takes it back. "I am not telling you what it means. If I did, you would go and live up to it."'
+        zh: '「船な。」她端详着牌面沉吟片刻，随即干脆地把牌收了回去。「意味は言わへん。言うたら、あんたそれに合わせてまうやろ。」',
+        en: '"A ship." She studies the card, pondering for a moment, then crisply takes it back. "I am not telling you what it means. If I did, you would go and live up to it."'
       },
       {
         type: 'narration',
@@ -211,8 +211,8 @@ export const STREET_PEOPLE: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '他吃得很快，八分钟见底。放下碗之后他没走，坐在那儿把汤喝完了，一口一口地喝。',
-        en: 'He eats fast: eight minutes to the bottom. He does not leave when he puts the bowl down. He sits and finishes the broth, mouthful by mouthful.'
+        zh: '他吃得极快，风卷残云般迅速见底。放下筷子后他却并没有急着离开，而是双手捧着碗，一口一口、沉静而缓慢地将浓汤喝得干干净净。',
+        en: 'He eats with voracious speed, finishing the noodles in no time. Yet he does not rush off; instead he cradles the bowl in both hands, slowly and reverently sipping every last drop of broth.'
       },
       seen('有一种人的碗是不用点的', 'There is a kind of customer whose bowl does not need ordering')
     ]
@@ -395,8 +395,8 @@ export const STREET_PEOPLE: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: P.koban,
-        zh: '交番门口那个警察正在给一对游客指路，指了大概三分钟，最后把自己那张地图撕下来给了他们。',
-        en: 'The officer outside the koban is giving directions to a couple of tourists. It takes about three minutes and ends with him tearing his own map off the pad and handing it over.'
+        zh: '交番门口的巡警正耐心地给一对外国游客指路，比划解说了好半天，最后干脆把自己随身的那张巡逻地图撕下来递给了他们。',
+        en: 'The officer outside the koban is patiently giving directions to foreign tourists, gesturing and explaining before simply tearing his own patrol map off to hand over.'
       },
       {
         type: 'narration',

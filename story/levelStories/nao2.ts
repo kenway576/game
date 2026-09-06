@@ -104,8 +104,8 @@ export const NAO_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${N}cat_neutral.webp`,
-            zh: '笑得很正常。正常到你花了两秒才发现，那是被讲解之后补上去的笑。',
-            en: 'It is a perfectly normal laugh. Normal enough that it takes you two seconds to notice it is the kind that gets added after an explanation.'
+            zh: '笑得挑不出一点毛病。然而正因太过无懈可击，你才后知后觉地意识到，那是听了讲解之后礼节性补上的笑容。',
+            en: 'It is a flawless smile. Yet because it is so seamless, you only realize in hindsight that it was a polite laugh pasted on after an explanation.'
           },
           {
             type: 'speech',
@@ -140,8 +140,8 @@ export const NAO_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${N}cat_neutral.webp`,
-            zh: '接下来五分钟你们谁都没说话。这五分钟里她一直在很小口地吃那块唐揚げ。',
-            en: 'Neither of you speaks for five minutes. She spends them eating that piece of karaage in very small bites.'
+            zh: '餐桌上随后陷入了微妙的沉默。她一直微垂着眼，极小口、极慢吞吞地咬着那块炸鸡块，筷尖在饭盒边缘轻轻碰出声响。',
+            en: 'A delicate silence descends over the table. With eyes lowered, she takes tiny, deliberate nibbles of her fried chicken, chopsticks clicking faintly against the bento edge.'
           }
         ]
       },
@@ -182,8 +182,8 @@ export const NAO_STORY_2: StoryNode[] = [
   // ---- 中段：她把话说出来 ----
   {
     type: 'narration',
-    zh: '午休还剩十分钟。食堂已经空了一半。',
-    en: 'Ten minutes of lunch left. Half the hall has emptied.'
+    zh: '午休的时间在不知不觉中悄然流逝，喧闹的食堂渐渐空荡下来。',
+    en: 'Lunchtime slips away unnoticed, and the bustling dining hall steadily empties out.'
   },
   {
     type: 'speech',

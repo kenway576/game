@@ -40,8 +40,8 @@ export const NAO_STORY_1: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${N}knit_neutral.webp`,
-    zh: '她蹲在那儿弄了大概二十秒，然后站起来，没有看你。',
-    en: 'She crouches over them for about twenty seconds, stands up, and does not look at you.'
+    zh: '她蹲在青石阶上慢吞吞地摆弄着鞋带，好一会儿才拍拍手站起身，眼神却故意避开你的视线。',
+    en: 'She squats on the stone steps dawdling over her laces, brushing her hands and standing only after a long moment, purposely avoiding your eyes.'
   },
   {
     type: 'speech',

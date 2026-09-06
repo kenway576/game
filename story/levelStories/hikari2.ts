@@ -48,8 +48,8 @@ export const HIKARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '起因是一件小事。今天你在国际交流室帮一个刚来的马来西亚学生填了表——那孩子日语一个字都不会，你也才学了两个月，两个人比划了四十分钟。',
-    en: 'It started with something small. Today you helped a newly arrived Malaysian student fill in a form in the international office. He has no Japanese at all, you have two months of it, and it took the pair of you forty minutes of gesturing.'
+    zh: '起因是一件小事。今天你在国际交流室帮一个刚来的留学生填表——对方一句日语都不会，你也才刚来神户没多久，两个人鸡同鸭讲地比划了大半天。',
+    en: 'It began with a trifle. Today you helped a newly arrived foreign student fill in paperwork. He had no Japanese, you were still new to Kobe, and the two of you spent ages waving hands.'
   },
   {
     type: 'narration',
@@ -64,8 +64,8 @@ export const HIKARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '马赛克的摩天轮，一圈十五分钟。上去了就下不来，这一点等一下会变得很要紧。',
-    en: 'The Mosaic wheel takes fifteen minutes to go round. Once you are on, you are on, a fact that becomes relevant shortly.'
+    zh: '马赛克的巨型摩天轮，一圈正好慢悠悠转上十五分钟。悬空之后便再无退路，这一点很快就会变得无比真切。',
+    en: 'The Mosaic wheel takes a leisurely fifteen minutes per rotation. Once suspended in midair there is no turning back, a truth that soon becomes tangible.'
   },
 
   // ---- 上升：她还在演 ----
@@ -237,8 +237,8 @@ export const HIKARI_STORY_2: StoryNode[] = [
   // ---- 那条规矩 ----
   {
     type: 'narration',
-    zh: '轿厢开始往下走。剩下大概六分钟。',
-    en: 'The car starts down. Six minutes or so left.'
+    zh: '轿厢掠过最高点开始缓缓下行。窗外的港湾夜景如深海中的星河，静得只听得见两人的呼吸声。',
+    en: 'Passing the apex, the gondola glides downward. The harbour lights outside glisten like a starry deep sea, quiet enough to hear both of your breaths.'
   },
   {
     type: 'speech',
@@ -401,14 +401,14 @@ export const HIKARI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '轿厢里就你们两个，隔着一米。你举起手，慢慢地挥了一下。',
-            en: 'There are two of you in the car, a metre apart. You raise your hand and wave, slowly.'
+            zh: '逼仄的轿厢里只有你们两个，相对而坐。你迎着她的目光，缓缓举起手，在半空中轻柔地向她挥了挥。',
+            en: 'Inside the narrow carriage it is just the two of you, sitting face to face. Meeting her gaze, you gently raise your hand and wave softly in the air.'
           },
           {
             type: 'narration',
             characterImage: `${H}casual_surprised.webp`,
-            zh: '她看着那只手，看了三秒。',
-            en: 'She looks at the hand for three seconds.'
+            zh: '她呆呆注视着你的手掌，眼眶里的泪水终于失控地打转。',
+            en: 'She stares blankly at your hand, tears welling uncontrollably in her eyes.'
           },
           {
             type: 'narration',

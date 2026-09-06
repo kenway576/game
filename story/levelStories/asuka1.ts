@@ -82,8 +82,8 @@ export const ASUKA_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '有二十分钟，房间里只有纸张摩擦的声音。你偷偷看了她两次。她一次都没看你。',
-    en: 'For twenty minutes there is nothing in the room but the sound of paper. You look over at her twice. She does not look over once.'
+    zh: '夕阳斜斜铺满长桌，房间里长久地只剩下纸张翻动的窸窣摩擦声。你偷偷打量了她两次，她却始终低垂着睫毛，一次都没朝你这边看。',
+    en: 'Sunset coats the long table, the room filled only with the soft rustle of papers. You glance at her twice; she keeps her eyes down, never looking your way once.'
   },
 
   // ---- 选择 1：要不要主动开口 ----
@@ -100,7 +100,7 @@ export const ASUKA_STORY_1: StoryNode[] = [
         hintZh: '班上三十几个人，她偏偏在门口截住了你',
         hintEn: 'Thirty-odd people in that class, and she waited at the door for you.',
         effects: [{ stat: 'guts', amount: 1, reasonZh: '你问了一个她大概不想回答的问题', reasonEn: 'You asked something she would rather not answer' }],
-        relations: [{ char: CharacterId.ASUKA, familiarity: 4, affection: 2, reasonZh: '她被问住了一秒', reasonEn: 'It stopped her for a second' }],
+        relations: [{ char: CharacterId.ASUKA, familiarity: 4, affection: 2, reasonZh: '她被直球问得微微一噎', reasonEn: 'The direct question caught her off guard' }],
         then: [
           {
             type: 'speech',
@@ -130,8 +130,8 @@ export const ASUKA_STORY_1: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${A}neutral.webp`,
-            zh: '又过了十分钟。她忽然开口了，声音比刚才小。',
-            en: 'Another ten minutes. Then she speaks, more quietly than before.'
+            zh: '光线渐渐被拉得愈发昏黄。她忽然打破了室内的沉默，声音比刚才轻柔了许多。',
+            en: 'The amber light deepens. She breaks the silence, her voice much softer than before.'
           },
           {
             type: 'speech',
@@ -344,8 +344,8 @@ export const ASUKA_STORY_1: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${A}neutral.webp`,
-            zh: '她愣了半秒，然后整个人放松下来，像是终于回到了一个她知道该怎么做的位置。',
-            en: 'Half a second of blankness, then she settles, like someone returned to a job she knows how to do.'
+            zh: '她微微一怔，紧绷的下颌线终于柔和下来，像是如释重负般回到了一个她最得心应手、最擅长应对的角色里。',
+            en: 'She blinks, her rigid posture finally softening, visibly relieved to return to a role she knows how to handle.'
           },
           {
             type: 'speech',

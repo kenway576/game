@@ -42,8 +42,8 @@ export const MAKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '周三。最里面那台机器。你比约定的时间早到了十分钟。',
-    en: 'Wednesday. The machine at the very back. You get there ten minutes early.'
+    zh: '周三。最里面的街机台前。你比约定的时间早到了不少，她却早就已经在了。仿佛每次你来，她都在这里。',
+    en: 'Wednesday. The cabinet at the very back. You arrive well ahead of time, but she is already there. It feels as though she is always waiting here whenever you come.'
   },
   {
     type: 'narration',

@@ -115,8 +115,8 @@ export const ASUKA_STORY_2: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${A}sad.webp`,
-    zh: '几秒钟之后，她自己先泄了气。手垂下来，那张纸露出一个角。',
-    en: 'A few seconds later it is she who deflates first. Her hand drops. A corner of the paper shows.'
+    zh: '对峙在漫天的淅沥雨声中凝滞。不知过了多久，她自己先泄了气，紧绷的肩膀垮了下来，手垂在身侧，被攥皱的成绩单露出一角。',
+    en: 'The standoff hangs in the drumming rain. Before long she deflates first, shoulders sagging, the crumpled report card showing a corner.'
   },
   {
     type: 'speech',
@@ -211,8 +211,8 @@ export const ASUKA_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${A}angry.webp`,
-            zh: '她的表情在半秒之内塌下去，然后重新绷紧——比刚才还紧。',
-            en: 'Her face collapses for half a second, then pulls tight again — tighter than before.'
+            zh: '她的神情在一瞬间失守塌陷，但转眼间又迅速重新绷紧，如同竖起刺的幼兽，甚至比刚才更加防备。',
+            en: 'Her expression fractures for an instant, then snaps tight again like a cornered beast, even more defensive than before.'
           },
           {
             type: 'speech',
@@ -340,8 +340,8 @@ export const ASUKA_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${A}surprised.webp`,
-            zh: '她瞪着你。雨檐上的水一滴一滴落下来，落了大概有五秒。',
-            en: 'She stares at you. Water drips off the eaves, one drop at a time, for about five seconds.'
+            zh: '她睁大眼睛瞪着你。屋檐边水珠断断续续地砸在青石板上，在雨幕的清脆回音中，两人视线一动不动地僵持着。',
+            en: 'She stares wide-eyed at you. Water drips steadily off the eaves onto stone, holding both of you in unbroken silence.'
           },
           {
             type: 'narration',

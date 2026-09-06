@@ -363,8 +363,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${MIYUKI}neutral.webp`,
-            zh: '她愣了一下。那半秒钟里，她的表情不是感激，更像是在确认自己有没有听错。',
-            en: 'She blanks for half a second. In that half second her face is not gratitude; it is closer to checking whether she heard you correctly.'
+            zh: '她愣了一下，眼神里掠过一丝短暂的迟疑，比起感激，更像是在确认自己是不是听错了。',
+            en: 'She hesitates, a flicker of disbelief crossing her eyes—not quite gratitude yet, more like wondering if she misheard you.'
           },
           {
             type: 'speech',
@@ -671,8 +671,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
       {
         type: 'narration',
         characterImage: `${HIKARI}school_surprised.webp`,
-        zh: '她愣了半秒，眉头皱起来，像是在翻一本很乱的相册。',
-        en: 'She stops for half a second, frowning, like someone flipping through a badly sorted photo album.'
+        zh: '她微微一愣，眉头微蹙，眼神在你的脸上来回打量，像是在脑海里翻找一本凌乱的相册。',
+        en: 'She stops, frowning slightly as she studies your face, like someone frantically searching through a disorganized photo album.'
       },
       {
         type: 'speech',
@@ -1617,8 +1617,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '六个人愣了半秒，然后同时开始用一种极其缓慢、每个音都断开的语速重新说了一遍。',
-            en: 'The six of them blank for half a second, then all begin again at once, at an extremely slow speed with every syllable detached.'
+            zh: '六个人面面相觑地愣了一下，随即极为默契地同时放慢语速，一字一顿、像是在给初学者慢速念广播剧一样重新说了一遍。',
+            en: 'The six of them exchange blank looks for a beat, then in remarkable harmony all begin again, enunciating each syllable at glacial speed like a slow-motion radio play.'
           },
           {
             type: 'narration',
@@ -2749,8 +2749,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '第一次铺成这个样子花了十二分钟。你站着看了一会儿，觉得还行。',
-    en: 'Getting it to look like that takes twelve minutes. You stand and look at it for a bit and decide it will do.'
+    zh: '第一次铺成这个样子折腾得满头大汗。你退后两步打量了一会儿，觉得勉强还算过得去。',
+    en: 'It takes quite some fiddling to get it looking presentable. You step back, take a look, and decide it will do.'
   },
   {
     type: 'narration',

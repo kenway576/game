@@ -603,8 +603,8 @@ export const REI_STORY_3: StoryNode[] = [
       {
         type: 'narration',
         characterImage: `${R}winter_thinking.webp`,
-        zh: '下山的巴士上她睡着了，抱着那个装十九本书的包。到站的时候她自己醒了，一秒都没有迟。',
-        en: 'She falls asleep on the bus down, holding the bag with the nineteen volumes. She wakes by herself at the stop, not one second late.'
+        zh: '下山的巴士摇摇晃晃，她抱着沉甸甸装满十九本书的帆布包沉沉睡去。到站刹车的瞬间，她却宛如生物钟鸣响般准时睁开双眼，分毫不差。',
+        en: 'The bus sways gently down the mountain road as she falls into deep sleep hugging the heavy canvas bag of nineteen books. The instant the brakes hiss at the stop, she wakes with clockwork precision.'
       },
       {
         type: 'speech',
