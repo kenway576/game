@@ -55,6 +55,8 @@ import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
 import { promiseDue } from './story/day2Promises';
 import GiftScreen from './components/GiftScreen';
+import KonbiniShiftModal, { ShiftResult } from './components/KonbiniShiftModal';
+import { PART_TIME } from './story/restDayScenes';
 import { GiftVerdict } from './data/giftData';
 import { FARM_TUTORIAL, FISH_TUTORIAL } from './story/tutorials';
 import { beenFlag } from './story/kobeMap';
@@ -253,6 +255,8 @@ const App: React.FC = () => {
   // 存的是那个地点本身：玩家点"去"，就拿它接着走原来的流程。
   const [askSkipAfternoon, setAskSkipAfternoon] = useState<MapLocation | null>(null);
   const [showGift, setShowGift] = useState(false);
+  // 🏪 便利店那一天班：先站六个客人，再演剧本。
+  const [shiftRunning, setShiftRunning] = useState(false);
   // 🧑‍🏫 教程演完之后再打开的那个玩法。种菜和钓鱼第一次都得有人先教一遍，
   // 否则玩家点开的是一个没写说明书的仪表盘。
   const [pendingFishing, setPendingFishing] = useState<MapLocation | null>(null);
@@ -701,6 +705,13 @@ const App: React.FC = () => {
       return;
     }
     audioManager.playSfx('confirm');
+    // 🏪 打工不该只是"点一下，拿到八千四百日元"。这一天里真正发生的事
+    // 是站在收银台前听懂一句话然后说对一句话，所以让玩家自己站六个客人，
+    // 站完了再接原来那段剧本——剧本里那罐咖啡，得是挣来的。
+    if (plan.id === 'part_time') {
+      setShiftRunning(true);
+      return;
+    }
     setActiveTrip({
       // 这一段不属于地图上任何一个地点，所以造一个只用来结算时间的假地点。
       // timeCost 就是这个安排的代价：一整天的（在家、郊游、图书馆、打工）
@@ -714,6 +725,51 @@ const App: React.FC = () => {
       event: null,
       // 结尾补一个 effect 把"演过了"记下来，这样同一段不会一年演两次。
       script: done ? [...script, { type: 'effect', setFlags: [done] }] : script
+    });
+    setGameMode(GameMode.LOBBY);
+  };
+
+  // 下班。工钱进钱包，收银台上学到的词进单词本，剧本接着演。
+  const finishShift = (r: ShiftResult) => {
+    setShiftRunning(false);
+    setLife(l => ({
+      ...l,
+      yen: l.yen + r.pay,
+      stamina: Math.max(0, (l.stamina ?? STAMINA_MAX) - 45)
+    }));
+    if (r.words.length) collectStoryWords(r.words);
+    applyStoryEffects(
+      r.grade === 'ace'
+        ? [
+            { stat: 'proficiency', amount: 3, reasonZh: '一天下来没有一个人需要把话说第二遍', reasonEn: 'A whole day and nobody had to repeat themselves' },
+            { stat: 'charm', amount: 2, reasonZh: '敬语第一次说得不像背的', reasonEn: 'Your keigo stopped sounding recited' }
+          ]
+        : r.grade === 'fine'
+          ? [
+              { stat: 'proficiency', amount: 2, reasonZh: '两百多遍下来，手比脑子先学会', reasonEn: 'Two hundred repetitions in, your hands learned before your head' },
+              { stat: 'guts', amount: 1, reasonZh: '午高峰是你一个人扛的', reasonEn: 'You took the lunch rush yourself' }
+            ]
+          : [
+              { stat: 'guts', amount: 2, reasonZh: '慢了一整天，但你一次都没有躲到后面去', reasonEn: 'Half a sentence behind all day, and you never once went to hide in the back' }
+            ]
+    );
+    setStoryFlags(prev => ({
+      ...prev,
+      restday_parttime_done: true,
+      [`shift_${r.grade}`]: true
+    }));
+    setLifeToast(userState.language === 'en'
+      ? `Shift done. ¥${r.pay.toLocaleString('ja-JP')}`
+      : `一天班结束。到手 ¥${r.pay.toLocaleString('ja-JP')}`);
+    // 时间照旧按"一整天"结算
+    setActiveTrip({
+      loc: {
+        id: 'restplan_part_time', district: 'sannomiya',
+        nameJp: '', reading: '', nameZh: '去便利店顶一天班', nameEn: 'A shift at the convenience store',
+        blurbZh: '', blurbEn: '', timeCost: 3
+      },
+      event: null,
+      script: PART_TIME
     });
     setGameMode(GameMode.LOBBY);
   };
@@ -3071,6 +3127,14 @@ ${wind}`;
             </div>
           </div>
         </div>
+      )}
+
+      {shiftRunning && (
+        <KonbiniShiftModal
+          language={userState.language}
+          onFinish={finishShift}
+          onCancel={() => setShiftRunning(false)}
+        />
       )}
 
       {showGift && (
