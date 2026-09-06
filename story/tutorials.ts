@@ -266,7 +266,21 @@ export const FISH_TUTORIAL: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '他把那根备用竿留给了你，说下次记得自己带一根来。海上的风是从右边来的，浮标一直在往左边飘。',
-    en: 'He leaves you the spare rod and tells you to bring your own next time. The wind is off the water from the right, and the float keeps drifting left.'
+    characterImage: GEN,
+    // ⚠️ 这里以前写的是"他把备用竿留给了你"，可下一个画面钓场会说
+    // "你没有鱼竿"。剧本许下的东西游戏不给，是最伤人的一种谎。
+    // 所以他把竿收回去了——他本来就是开渔具店的，这更像他。
+    zh: '走的时候他把那根备用竿捡了回去，插进自己那捆里。「竿はうちで売っとる。」他说，港边那家「みなと釣具」是他的店，最便宜那根一千八，桶里插着的就是。',
+    en: 'On his way off he picks the spare rod back up and slides it in with his own. He says rods are sold at his place: the tackle shop along the harbour is his, the cheapest one is eighteen hundred, and it is one of the ones standing in the bucket.'
+  },
+  {
+    type: 'narration',
+    zh: '你说好。他「ん」了一声，走了两步又回过头，说饵也在那儿卖，说这句的时候语气比刚才软了一点——大概是想起来你连饵都没有。',
+    en: 'You say you will. He makes his short noise, walks two paces and turns back to say that the bait is there as well. His tone is a little softer on that one, probably because it has occurred to him that you do not have any of that either.'
+  },
+  {
+    type: 'narration',
+    zh: '海上的风是从右边来的，浮标一直在往左边飘。整条堤上没有人说话。',
+    en: 'The wind is off the water from the right and the floats keep drifting left. Nobody along the whole breakwater is talking.'
   }
 ];

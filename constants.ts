@@ -180,7 +180,7 @@ export const SCENE_MAP: Record<string, string> = {
   'drugstore_exterior':            '/images/backgrounds/bg_drugstore_exterior.webp',
   'drugstore_interior':            '/images/backgrounds/bg_drugstore_interior.webp',
   'drugstore':                     '/images/backgrounds/bg_drugstore_interior.webp',
-  // 🛍️ 三宫商店街名店（Book Off、骏河屋、优衣库）
+  // 🛍️ 三宫商店街名店（Book Off、駿河屋、优衣库）
   'bookoff_exterior':              '/images/backgrounds/bg_bookoff_exterior.webp',
   'bookoff_interior':              '/images/backgrounds/bg_bookoff_interior.webp',
   'bookoff':                       '/images/backgrounds/bg_bookoff_interior.webp',

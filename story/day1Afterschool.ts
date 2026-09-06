@@ -1935,24 +1935,55 @@ export const DAY1_EVENING: StoryNode[] = [
     en: 'The spring onion goes in and the flame goes off. The whole flat smells of it. Until yesterday this room had been standing empty. Now it smells like somewhere somebody lives.'
   },
   {
+    type: 'narration',
+    zh: '然后她靠在水槽边上，开始讲规矩。她讲规矩的时候会掰手指，这个习惯是小学的时候就有的。',
+    en: 'Then she leans back against the sink and lays out the rules. She counts them off on her fingers, which is a habit she has had since primary school.'
+  },
+  {
+    type: 'narration',
+    zh: '**第一，材料。** 你能用的东西只有两种来路：阳台上自己种的，和海边自己钓的。买来的东西不是不能吃，但那种东西吃完就没了，做不成一道菜。',
+    en: '**One: ingredients.** There are exactly two places yours can come from — what you grow on that balcony, and what you catch off the sea. Bought food is not inedible, it simply goes and leaves nothing behind. It does not become a dish.'
+  },
+  {
+    type: 'narration',
+    zh: '**第二，做出来的东西不卖钱。** 你做的菜没有人收，只能自己吃掉。吃掉之后长的不是钱，是本事——耐心、手艺、对别人多一点周到，这一类的东西。',
+    en: '**Two: what you cook is not for sale.** Nobody will buy it and you eat it yourself. What it turns into is not money but capacity: patience, skill, being a bit more thoughtful about other people. That sort of thing.'
+  },
+  {
+    type: 'narration',
+    zh: '**第三，有的菜不是天生就会的。** 味噌汤这种谁都能学会，可再往上的东西得有人教你，或者你自己去买本菜谱。神户的书店里那两本关西家常菜和鱼的书就是干这个用的。',
+    en: '**Three: not every dish is one you simply know.** Miso soup anybody can be taught. Past that, somebody has to show you, or you buy the book yourself. Those two on the shelf in town — Kansai home cooking, and the one about fish — exist for exactly that.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}knit_neutral.webp`,
+    zh: '**第四，在哪儿做。** 她伸手拍了拍这块台面。「就这儿。你自己房间里，从这个灶开始。」',
+    en: '**Four: where.** She pats the counter. "Here. In your own room, starting at this ring."'
+  },
+  {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}knit_neutral.webp`,
-    jp: 'ええか、材料は買うんやのうて、自分で採ってきたやつのほうが断然ええで。ベランダ、あんな広いのに何も置いてへんやん。',
+    characterImage: `${NAO}knit_happy.webp`,
+    jp: 'ベランダ、あんな広いのに何も置いてへんやん。もったいな。',
     words: [{ jp: '材料', reading: 'ざいりょう', zh: '材料、食材', en: 'ingredients' }],
-    zh: '听着，食材这东西，买的不如自己弄来的。你阳台那么大，什么都没放欸。',
-    en: 'Listen. Ingredients you bought are never as good as ingredients you got yourself. Your balcony is huge and there is nothing on it.',
+    zh: '你阳台那么大，什么都没放欸。浪费。',
+    en: 'Your balcony is huge and there is nothing on it. Waste of a balcony.',
     color: 'bg-rose-500'
   },
   {
     type: 'narration',
-    zh: '她说阳台上种得活葱，种得活紫苏，种得活萝卜；说海边那些防波堤上一年到头都有人在钓鱼；说做出来的东西不用拿去卖，吃掉就好——吃掉了会变成别的东西留在你身上。',
-    en: 'She says spring onion will grow on that balcony, and shiso, and radishes. She says there are people fishing off the breakwaters all year round. She says you do not sell what you make. You eat it, and what you ate turns into something else and stays with you.'
+    zh: '她说葱最好养，紫苏和萝卜也活得下来；说海边那些防波堤上一年到头都有人在钓鱼，只要你肯站过去。',
+    en: 'She says spring onion is the easiest, and that shiso and radish will manage too. She says there are people on those breakwaters all year round, and all it takes is standing among them.'
   },
   {
     type: 'narration',
-    zh: '你没太听懂最后那句。她也没解释。',
-    en: 'You do not entirely follow the last part. She does not explain it.'
+    zh: '「反正呢，」她最后说，「你自己弄来的东西，做出来吃掉，那顿饭是会留在你身上的。买的不会。」',
+    en: '"Anyway," she finishes, "something you got yourself, cooked and ate — that meal stays in you. A bought one does not."'
+  },
+  {
+    type: 'narration',
+    zh: '你没太听懂最后那句。她也没解释。你后来自己弄明白了，但那是很久以后的事了。',
+    en: 'You do not entirely follow the last part. She does not explain it. You work it out for yourself eventually, a long time later.'
   },
   {
     type: 'narration',

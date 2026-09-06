@@ -493,7 +493,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
   {
     id: 'surugaya_sannomiya', district: 'sannomiya',
     nameJp: '駿河屋 神戸三宮店', reading: 'するがや こうべさんのみやてん',
-    nameZh: '骏河屋 神户三宫店（Center Plaza）', nameEn: 'Surugaya Kobe Sannomiya',
+    nameZh: '駿河屋 神户三宫店（Center Plaza）', nameEn: 'Surugaya Kobe Sannomiya',
     blurbZh: '三宫 Center Plaza 里的中古二次元圣地。一整排扭蛋机、玻璃手办柜与满墙挂满的吧唧盲盒。',
     blurbEn: 'The otaku treasure hub inside Sannomiya Center Plaza. Endless gachapon machines, glass figure display cases, and walls of anime badges.',
     mapScene: 'surugaya_exterior',

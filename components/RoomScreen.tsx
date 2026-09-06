@@ -109,12 +109,16 @@ const RoomScreen: React.FC<Props> = ({
           >
             <span className="block transform skew-x-12">🍳 {en ? 'Kitchen' : '厨房'}</span>
           </button>
-          {plotCount > 0 && (
+          {/* 一个盆都没有的时候原来是不显示这个按钮的，理由是"点开也没东西"。
+              但这样一来，没人告诉过你阳台能种菜，你也就永远不会去买盆——
+              入口自己把自己锁上了。所以还没人教过你的时候也让它露出来：
+              第一次点开，楼上那位会隔着栏杆把说明书讲完，顺手给你一个盆。 */}
+          {(plotCount > 0 || !storyFlags['farm_tutorial_done']) && (
             <button
               onClick={() => { audioManager.playSfx('click'); onOpenBalcony(); }}
               className="bg-black/70 hover:bg-emerald-400 hover:text-black text-emerald-300 border border-emerald-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
             >
-              <span className="block transform skew-x-12">🏺 {en ? 'Balcony' : '阳台'} {plotCount}</span>
+              <span className="block transform skew-x-12">🏺 {en ? 'Balcony' : '阳台'} {plotCount > 0 ? plotCount : ''}</span>
             </button>
           )}
           <button

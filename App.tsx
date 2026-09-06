@@ -60,7 +60,7 @@ import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData
 import { pickStreetScene } from './story/streetScenes';
 import { npcsAt } from './data/npcData';
 import { npcTalkNodes, npcOnDutyAt } from './data/npcTalk';
-import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM } from './data/lifeData';
+import { INITIAL_LIFE_STATE, dayIndex, plantStage, findSeed, FISHING_SPOTS, MAX_FISH_PER_DAY, BAIT_ITEM, POT_ITEM, MAX_PLOTS } from './data/lifeData';
 import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
 import type { MapLocation, MapEventDef } from './types';
@@ -751,12 +751,26 @@ const App: React.FC = () => {
     if (gifts.length) {
       setLife(l => {
         const items = { ...l.items };
+        let plots = l.plots;
         for (const g of gifts) {
           const [, itemId, nRaw] = g.split(':');
           const n = Number(nRaw) || 1;
-          if (itemId) items[itemId] = (items[itemId] || 0) + n;
+          if (!itemId) continue;
+          // 🏺 花盆在这个游戏里从来不进背包——买一个就直接在阳台上多一个坑。
+          // 送盆也必须走同一条路，否则送出去的是一个躺在包里、
+          // 谁也用不了的图标。
+          if (itemId === POT_ITEM) {
+            for (let i = 0; i < n && plots.length < MAX_PLOTS; i++) {
+              plots = [...plots, {
+                id: 'plot_' + Date.now().toString(36) + '_' + i,
+                site: 'balcony', seedId: null, plantedOn: null, watered: 0, lastWaterOn: null
+              }];
+            }
+            continue;
+          }
+          items[itemId] = (items[itemId] || 0) + n;
         }
-        return { ...l, items };
+        return { ...l, items, plots };
       });
     }
     if (!flags.length) return;
