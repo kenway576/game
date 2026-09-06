@@ -24,28 +24,28 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '出隧道的那一下，整节车厢忽然亮了起来，亮得毫无预告，像是有人在外面一把拉开了窗帘。你眯起眼睛，花了大概三秒钟才重新看清东西。',
-    en: 'Coming out of the tunnel the whole carriage lit up at once, without any warning, as though somebody outside had pulled a curtain back in one movement. You screwed your eyes shut and it took about three seconds before things resolved again.'
+    zh: '出隧道的那一下，整节车厢忽然就亮了，亮得毫无预告，像是有人在外面一把拉开了窗帘。你眯着眼睛缓了一会儿才重新看清东西，等看清的时候，窗外已经换了一个世界。',
+    en: 'Coming out of the tunnel the carriage lit up all at once, with no warning whatsoever, as though somebody outside had yanked a curtain back. You sat there squinting for a while, and by the time you could see properly again the world outside the window had been replaced.'
   },
   {
     type: 'narration',
-    zh: '左边是山，右边是海，中间夹着一条铁轨和坐在铁轨上的你。地理课本上写过神户是这个样子，但课本没提这两样东西离得有多近。',
-    en: 'Mountains on the left, sea on the right, and between them one railway line with you sitting on it. A textbook had told you Kobe was arranged this way. The textbook had not mentioned how close together the two of them were.'
+    zh: '左边是山，右边是海，中间夹着一条铁轨，铁轨上坐着你。地理书上写过神户就是这么个形状，但书上没写这两样东西挨得有多紧——紧到你会觉得这座城市是被硬塞进去的。',
+    en: 'Mountains on the left, sea on the right, one railway line between them, and you sitting on the railway line. A geography book had told you Kobe was shaped like this. It had not mentioned how tightly the two of them press in, tightly enough that the city feels wedged in there.'
   },
   {
     type: 'narration',
-    zh: '……真的很近。目测五十米，也许更少。你认真地想了一下涨潮的时候会不会漫上来，想完又觉得这个担心大概是多余的——毕竟这条线已经开了一百多年，如果会漫早就漫了。',
-    en: '...Genuinely close. Fifty metres by eye, possibly less. You gave some serious thought to whether it came over the track at high tide, and then decided the worry was probably unnecessary, given that the line had been running for over a century and would have flooded by now if it were going to.'
+    zh: '……是真的近，近得有点不讲道理。你甚至认真地担心了一下涨潮的时候会不会漫上来，担心完又觉得自己这个念头挺蠢的：这条线开了那么多年，要漫早漫了，轮不到你来操心。',
+    en: '...Genuinely close. Unreasonably close. You went so far as to worry about whether it came over the rails at high tide, and then felt fairly silly about it, since the line had been running for the better part of forever and had not needed your concern so far.'
   },
   {
     type: 'narration',
-    zh: '为了今天，你背了三千多个日语单词。三个月，每天四十个，最后一个月还加了量。而此刻浮在你脑子里的只有「近い」这两个音。三千多个词，用掉了一个。',
-    en: 'For today you had memorised over three thousand Japanese words. Three months of it, forty a day, and more than that in the last month. What was floating in your head at this moment was the two syllables for close. Three thousand words, and you had spent one.'
+    zh: '你为这一天背了大半年的单词。每天早上背，睡前再过一遍，背到后来看见汉字会先蹦出假名。而此刻真正浮上来的只有「近い」——就这一个。你觉得有点好笑，也有点想跟谁抱怨一下，但车厢里没有你认识的人。',
+    en: 'You had spent the better part of a year on vocabulary for this day. Mornings, and again before sleep, until kanji started arriving with their readings attached. What actually surfaced now was one word: close. You found that funny, and also wanted to complain about it to somebody, and there was nobody in the carriage you knew.'
   },
   {
     type: 'narration',
-    zh: '行李箱立在腿边，车厢每晃一下，轮子就磕你脚踝一下，磕得很有规律，像节拍器。你没有把它挪开。有那么一会儿你甚至开始跟着那个节奏数数，数到三十七，然后忘了自己为什么在数。',
-    en: 'The suitcase stood against your leg, and every time the carriage swayed the wheel knocked against your ankle, regularly, like a metronome. You did not move it. For a while you even counted along with it, got to thirty-seven, and then forgot why you had started.'
+    zh: '行李箱立在腿边，车厢一晃，轮子就磕一下你的脚踝，磕得非常规律，像有人在旁边打拍子。你没挪开它。说不上为什么，那点小小的疼反而让人踏实——起码有个东西在提醒你，你确实是坐在一列正在往前开的车上。',
+    en: 'The suitcase leaned against your leg and the wheel knocked your ankle every time the carriage swayed, at very regular intervals, as though somebody were keeping time beside you. You did not move it. For no reason you could name, the small repeated ache was a comfort: at least something was reminding you that you were on a train, and that it was going somewhere.'
   },
   {
     type: 'choice',
@@ -63,8 +63,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '车窗玻璃凉得恰到好处，是那种一整个上午都没人碰过的凉法。你把额头贴上去，就那么贴着，一直贴到眉骨开始发麻才想起来该挪开了。',
-            en: 'The window glass was cool in exactly the right way, the particular coolness of something nobody has touched all morning. You put your forehead against it and left it there, and only when your brow started to go numb did it occur to you to move.'
+            zh: '车窗玻璃凉得恰到好处，是那种一整个上午没人碰过的凉法。你把额头贴上去，就那么贴着，贴到眉骨发麻才想起来该挪开。挪开之后玻璃上留了一小片雾，慢慢又消掉了。',
+            en: 'The window glass was cool in just the right way, the particular coolness of something nobody has touched all morning. You put your forehead against it and left it there, and only when your brow went numb did it occur to you to move. A small patch of mist stayed behind on the glass and then slowly went.'
           },
           {
             type: 'narration',
@@ -73,8 +73,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你举起手机想拍一张。取景框里是自己的倒影、玻璃上的一枚手印，以及非常勉强的、大概占画面五分之一的海。你看了两秒，把手机收了回去。有些东西大概本来就不该带走。',
-            en: 'You lifted your phone to take a picture. What was in the frame was your own reflection, one handprint on the glass, and, at a stretch, about a fifth of a frame of sea. You looked at it for two seconds and put the phone away. Some things are probably not meant to be taken with you.'
+            zh: '你举起手机想拍一张。取景框里全是自己的脸，还有玻璃上不知道谁按的一个手印，海反而只剩下角落里那么一点。你看了一会儿，把手机收了回去。算了。这种东西大概本来就带不走。',
+            en: 'You lifted your phone to take a picture. What filled the frame was your own face, plus a handprint on the glass left by who knows whom, and the sea had been pushed into one corner of it. You looked at that for a moment and put the phone away. Never mind. This is probably not the sort of thing you can take with you anyway.'
           }
         ]
       },
@@ -89,8 +89,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '你翻开那本卷了边的单词本。「引っ越す」「手続き」「近所」——搬家、手续、邻里。这一页你昨天在飞机上背了四遍，第四遍的时候旁边那位老先生已经睡着了，睡得很沉。',
-            en: 'You opened the dog-eared vocabulary book. To move house. Paperwork. The neighbourhood. You had been through this page four times on the plane yesterday, and by the fourth the old gentleman next to you had gone to sleep, deeply.'
+            zh: '你翻开那本卷了边的单词本。「引っ越す」「手続き」「近所」——搬家、手续、邻里。这一页你昨天在飞机上翻来覆去背了好几遍，背到旁边那位老先生都睡着了，睡得很沉，中途还打过一次呼。',
+            en: 'You opened the dog-eared vocabulary book. To move house. Paperwork. The neighbourhood. You had been over this page again and again on the plane yesterday, long enough for the old gentleman beside you to fall asleep, deeply, and snore once on the way.'
           },
           {
             type: 'narration',
@@ -227,8 +227,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '整件事从头到尾用掉的日语不超过五个音节，其中三个还是卡住的。但你走进检票口的时候发现自己的耳朵有点热，而且走得比刚才快。',
-            en: 'The whole exchange had used up fewer than five syllables of Japanese, three of which had jammed. But going through the gate you noticed your ears were warm, and that you were walking faster than before.'
+            zh: '整件事你其实一句完整的话都没说出来，卡在半路的那半句还留在嘴里。但走过检票口的时候你发现自己耳朵是热的，脚步也比刚才快。说不清高兴什么，反正是高兴的。',
+            en: 'You had not actually managed one complete sentence, and the half of one that jammed was still in your mouth. But going through the gate you noticed your ears were hot and that you were walking faster than before. You could not have said what you were pleased about. You were pleased.'
           }
         ]
       },

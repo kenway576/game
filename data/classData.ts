@@ -71,12 +71,29 @@ const dayHash = (cal: GameCalendar, salt: number) => {
   return (h % 10000) / 10000;
 };
 
-// 今天演第几节（0-3）。由日期决定，读档刷新都一样。
-export const periodToday = (cal: GameCalendar): number =>
-  Math.floor(dayHash(cal, 7) * 4) % 4;
+// 一天四节课，上午两节、下午两节。
+//
+// 以前一天只演一节，那一节还是按日期随机抽的——于是同一门课
+// 可能连着两天出现，玩家会觉得"我明明听完日本史了怎么还是日本史"。
+// 现在整张课表都会走完，顺序就是课表的顺序，不随机。
+export const MORNING_PERIODS = [0, 1];
+export const AFTERNOON_PERIODS = [2, 3];
+
+export const periodsFor = (slot: string): number[] =>
+  slot === 'morning' ? MORNING_PERIODS : AFTERNOON_PERIODS;
+
+// 这一格该上的那几门课
+export const subjectsIn = (cal: GameCalendar, slot: string): SubjectDef[] => {
+  const t = timetableFor(cal);
+  if (!t.length) return [];
+  return periodsFor(slot).map(i => findSubject(t[i] || t[0]));
+};
+
+// 兼容旧调用：给"今天早上第一节"
+export const periodToday = (cal: GameCalendar): number => 0;
 
 export const subjectToday = (cal: GameCalendar): SubjectDef | null => {
   const t = timetableFor(cal);
   if (!t.length) return null;
-  return findSubject(t[periodToday(cal)] || t[0]);
+  return findSubject(t[0]);
 };

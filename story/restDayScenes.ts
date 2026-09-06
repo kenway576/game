@@ -1018,7 +1018,7 @@ export const TRIP_KYOTO: StoryNode[] = [
   { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '稻荷是自己来的。她在伏见稻荷的第一座鸟居底下等你们，一句"哦呀"都没有说。', en: 'Inari came separately. She is waiting under the first torii at Fushimi and does not say her usual "oh my".' },
   { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '她今天很安静。她一直在看那些鸟居上刻的名字。', en: 'She is quiet today. She keeps reading the names carved on the gates.' },
   { type: 'narration', characterImage: `${REI}casual_neutral.webp`, zh: '铃在数鸟居。她说资料上写一万座，她要验证一下。', en: 'Rei is counting torii. The literature says ten thousand and she intends to verify it.' },
-  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪在给所有人分饭团。她做了十二个，说这样每人两个还有富余。', en: 'Nao is handing out onigiri. She made twelve, on the theory that two each leaves a margin.' },
+  { type: 'narration', characterImage: `${NAO}cat_happy.webp`, zh: '奈绪在给所有人分饭团。她做了十二个，说这样每人两个还有富余。', en: 'Nao is handing out onigiri. She made twelve, on the theory that two each leaves a margin.' },
   { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '深雪拿着五个人的车票、五瓶水、和一盒创可贴。她一整天都没有让任何人看见她累。', en: 'Miyuki is holding five tickets, five bottles of water and a box of plasters. All day, she lets nobody see her tired.' },
   {
     type: 'choice',
@@ -1075,7 +1075,7 @@ export const TRIP_KYOTO: StoryNode[] = [
         then: [
           { type: 'narration', characterImage: `${REI}casual_neutral.webp`, zh: '她数到八百一十七。她说她知道数不完，也知道"一万"是个约数。', en: 'She is at eight hundred and seventeen. She knows she will not finish, and knows that ten thousand is an approximation.' },
           { type: 'narration', zh: '你问那为什么还数。她说：因为有人问起来的时候，我想有一个自己数出来的数字。', en: 'You ask why she is counting then. Because if somebody asks, she says, she would like to have a number she arrived at herself.' },
-          { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪听完之后开始帮她数，两个人数得对不上，从八百一十七吵到八百四十。', en: 'Nao starts counting too. Their numbers disagree, and they argue about it from eight hundred and seventeen to eight hundred and forty.' }
+          { type: 'narration', characterImage: `${NAO}cat_happy.webp`, zh: '奈绪听完之后开始帮她数，两个人数得对不上，从八百一十七吵到八百四十。', en: 'Nao starts counting too. Their numbers disagree, and they argue about it from eight hundred and seventeen to eight hundred and forty.' }
         ]
       }
     ]
@@ -1085,7 +1085,7 @@ export const TRIP_KYOTO: StoryNode[] = [
   { type: 'narration', zh: '没有人说为什么要小声。竹子那么高，人自然就会。', en: 'Nobody says why. The bamboo is that tall, and people simply do.' },
   { type: 'scene', scene: 'kyoto_kamogawa_delta' },
   { type: 'narration', zh: '傍晚在鸭川的河滩上坐下。五个人自然而然地排成了等距的一排——京都人管这个叫「鴨川等間隔の法則」。', en: 'They sit on the bank of the Kamo in the evening and naturally form an evenly spaced row. Kyoto people have a name for this.' },
-  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪最后两个饭团在这儿分掉了。一个给了深雪，一个掰成四份。', en: 'Nao’s last two onigiri go here: one to Miyuki, the other broken into four.' },
+  { type: 'narration', characterImage: `${NAO}cat_happy.webp`, zh: '奈绪最后两个饭团在这儿分掉了。一个给了深雪，一个掰成四份。', en: 'Nao’s last two onigiri go here: one to Miyuki, the other broken into four.' },
   { type: 'narration', characterImage: `${INARI}casual_neutral.webp`, zh: '稻荷说她上一次坐在这条河边是很久以前。她说"很久"的时候，没有人再追问是多久。', en: 'Inari says the last time she sat by this river was a long time ago. When she says "a long time", nobody asks how long.' },
   { type: 'narration', zh: '天黑之前你们赶上了回神户的电车。五个人，一个都没丢。', en: 'You make the train back to Kobe before dark. Five people, none lost.' },
   {
@@ -1208,7 +1208,7 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
   { type: 'narration', zh: '明天开幕。今晚要把三十六个纸箱糊成一条商店街。', en: 'It opens tomorrow. Tonight, thirty-six cardboard boxes have to become a shopping street.' },
   { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '明日香贴了一张进度表在黑板上。表上把今晚切成了十五分钟一格。', en: 'Asuka has taped a schedule to the blackboard. It divides the night into fifteen-minute blocks.' },
   { type: 'narration', characterImage: `${REI}neutral.webp`, zh: '铃在算承重。她说按现在的糊法，第三层会塌。她算了两遍。', en: 'Rei is calculating load. She says the third tier will collapse as currently glued. She has checked twice.' },
-  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪带了四个人的夜宵，装在一个比她还宽的袋子里。', en: 'Nao has brought supper for four in a bag wider than she is.' },
+  { type: 'narration', characterImage: `${NAO}cat_happy.webp`, zh: '奈绪带了四个人的夜宵，装在一个比她还宽的袋子里。', en: 'Nao has brought supper for four in a bag wider than she is.' },
   { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '深雪是被叫来当"成年人监护"的。她说她只坐着，然后马上开始糊纸箱。', en: 'Miyuki is here as the responsible adult. She says she will only sit, and immediately starts gluing boxes.' },
   { type: 'narration', zh: '十点，进度表落后一格。十二点，落后三格。两点，明日香把表撕了。', en: 'At ten they are one block behind. At midnight, three. At two, Asuka takes the schedule down.' },
   {
@@ -1263,7 +1263,7 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
   },
   { type: 'scene', scene: 'kaisei_classroom_morning' },
   { type: 'narration', zh: '早上七点，开幕前一小时。那条商店街立在教室中间，有点歪，但立着。', en: 'Seven in the morning, an hour before opening. The shopping street stands in the middle of the classroom, slightly crooked, and standing.' },
-  { type: 'narration', characterImage: `${NAO}casual_happy.webp`, zh: '奈绪把最后一个纸箱贴上去的时候，四个人一起鼓了掌。楼下的班级探头进来看了一眼，什么都没问。', en: 'When Nao tapes the last box on, all four of you applaud. The class from downstairs looks in and asks nothing.' },
+  { type: 'narration', characterImage: `${NAO}cat_happy.webp`, zh: '奈绪把最后一个纸箱贴上去的时候，四个人一起鼓了掌。楼下的班级探头进来看了一眼，什么都没问。', en: 'When Nao tapes the last box on, all four of you applaud. The class from downstairs looks in and asks nothing.' },
   {
     type: 'effect', setFlags: ['restday_group_festival_eve'],
     effects: [

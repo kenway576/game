@@ -1080,16 +1080,28 @@ const CAMEO_MAKI: StoryNode[] = [
 //
 // 深度线还是只能选一条（那是选择的重量所在），
 // 但"路过时瞥了一眼"这种程度的照面，没有理由三缺一。
-// ⚠️ 这三组里以前都带着 DAY1_LEAVING（从教室起身、走廊、往校门口走）。
-// 但它们是接在深度线**之后**的——于是玩家选了"往三宫走，钻进商店街"，
-// 逛完商店街之后画面一转，他又回到了教室在推椅子。
+// ⚠️ 这三组以前接在深度线**之后**，于是玩家选了"往三宫走"，
+// 逛完商店街之后画面一转，他又回到了教室推椅子。
+// 上一版把 DAY1_LEAVING 挪到了选项前面，但客串照面留在了原地——
+// 而这几段写的就是"出教室往校门走的路上"（经过体育馆侧门、再往前是图书馆），
+// 它们本来就属于离校那一段。
 //
-// 离校这件事应该发生在选择**之前**：先出校门，再决定去哪儿。
-// 所以 DAY1_LEAVING 从这三组里拿掉了，改由 day1Data 在选项前面播。
-// 体育馆和图书室是校内的，但那两条线自己会写清楚"你还没走"。
-export const DAY1_CAMEO_AFTER_GYM: StoryNode[] = [...CAMEO_REI, ...CAMEO_MAKI];
-export const DAY1_CAMEO_AFTER_LIB: StoryNode[] = [...CAMEO_SORA, ...CAMEO_MAKI];
-export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [...CAMEO_SORA, ...CAMEO_REI];
+// 所以整个顺序现在是：
+//   出教室 → 路上瞥见另外两个人 → 站在校门口 → 选今天下午去哪儿 → 那条深度线
+//
+// 三个照面**全部在离校路上演完**，然后才让玩家选。
+// 以前是选完再补另外两个，那等于告诉玩家"你刚才那个选择让你错过了什么"——
+// 但玩家做选择的时候还没看见过她们，这个"错过"是无从谈起的。
+// 现在顺序是：先在走廊上分别瞥见三个人，然后站在校门口选去找谁。
+// 选择的重量来自"三个都见过"，而不是来自事后被告知。
+export const DAY1_LEAVING_ALL: StoryNode[] = [
+  ...DAY1_LEAVING, ...CAMEO_SORA, ...CAMEO_REI, ...CAMEO_MAKI
+];
+
+// 深度线之后不再补照面
+export const DAY1_CAMEO_AFTER_GYM: StoryNode[] = [];
+export const DAY1_CAMEO_AFTER_LIB: StoryNode[] = [];
+export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [];
 
 // ==========================================================
 // 傍晚：稻荷 → 奈绪（两个都必遇，让 8 个人在一周目里全部露面）
@@ -1281,7 +1293,7 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     zh: '你走近的时候她抬起头，脸上先是「啊」，然后是「终于」，最后是一种非常复杂的、看起来快哭了但其实是在生气的表情。',
     en: 'She looks up as you get closer. Her face does "ah", then "finally", and then settles into something extremely complicated that looks like crying but is in fact annoyance.'
   },
@@ -1293,7 +1305,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_angry.webp`,
+    characterImage: `${NAO}knit_angry.webp`,
     jp: 'おっそーい！！わたし、四時半からここおるんやけど！',
     zh: '好——慢——！！我从四点半就在这儿了欸！',
     en: 'You are SO late! I have been here since half four!',
@@ -1306,14 +1318,14 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${NAO}casual_curious.webp`,
+    characterImage: `${NAO}knit_curious.webp`,
     zh: '她张了张嘴，然后开始数手指。数到第三根的时候停住了。',
     en: 'Her mouth opens. She starts counting on her fingers. She stops at the third one.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_shy.webp`,
+    characterImage: `${NAO}knit_shy.webp`,
     jp: '……あ。ほんまや。……えっ、じゃあわたし、なんで四時半に来たん？',
     zh: '……啊。真的欸。……诶，那我为什么四点半就来了？',
     en: '...Oh. So it does. ...Wait, then why did I get here at half four?',
@@ -1333,7 +1345,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     jp: 'ていうかさ、この坂ちゃう坂で三十分待っとってん。あっちの、似たようなやつ。',
     words: [{ jp: '坂', reading: 'さか', zh: '坡道', en: 'a slope / hill' }],
     zh: '话说回来，我先在另一条坡道那儿等了三十分钟。那边那条，长得差不多的。',
@@ -1348,7 +1360,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_happy.webp`,
+    characterImage: `${NAO}knit_happy.webp`,
     jp: 'でも途中で気づいてん！えらいやろ？',
     zh: '不过我半路就发现了！很厉害吧？',
     en: 'But I noticed halfway! Impressive, right?',
@@ -1362,7 +1374,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     jp: '……で、どうやった。初日。',
     zh: '……那，怎么样。第一天。',
     en: '...So. How was it. Day one.',
@@ -1376,7 +1388,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_cold.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     jp: 'ふーん。……一日で、ずいぶん増えたね。',
     zh: '哦——。……一天就认识这么多了啊。',
     en: 'Huh. ...That is quite a lot, for one day.',
@@ -1389,7 +1401,7 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${NAO}casual_curious.webp`,
+    characterImage: `${NAO}knit_curious.webp`,
     zh: '「……あれ、今わたし、なんか感じ悪かった？」她认真地问你。她是真的在问。',
     en: '"...Wait. Did that come out mean just now?" She asks it seriously. She genuinely wants to know.'
   },
@@ -1401,7 +1413,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     jp: '……はい、これ。米と、卵と、あと味噌。あんた絶対買ってないでしょ。',
     words: [{ jp: '味噌', reading: 'みそ', zh: '味噌', en: 'miso' }],
     zh: '……给，这个。米、鸡蛋，还有味噌。你肯定没买吧。',
@@ -1427,14 +1439,14 @@ export const DAY1_EVENING: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${NAO}casual_angry.webp`,
+            characterImage: `${NAO}knit_angry.webp`,
             zh: '她一巴掌拍在你胳膊上，力道相当实在。',
             en: 'She smacks your arm. There is genuine force in it.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${NAO}casual_angry.webp`,
+            characterImage: `${NAO}knit_angry.webp`,
             jp: 'うるさいっ！……知ってるわよ、そんなの。',
             zh: '吵死了！……那种事我知道啦。',
             en: 'Shut up! ...I know that, obviously.',
@@ -1448,7 +1460,7 @@ export const DAY1_EVENING: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${NAO}casual_cold.webp`,
+            characterImage: `${NAO}knit_neutral.webp`,
             jp: '幼馴染は負けるって、相場が決まってんでしょ。',
             words: [{ jp: '相場', reading: 'そうば', zh: '行情、通例', en: 'the going rate / how it usually goes' }],
             zh: '幼驯染是会输的，这不是老规矩了吗。',
@@ -1463,7 +1475,7 @@ export const DAY1_EVENING: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${NAO}casual_happy.webp`,
+            characterImage: `${NAO}knit_happy.webp`,
             jp: '——なーんてね。ほら、米重いんだから早く歩く。',
             zh: '——开玩笑的啦。快走，米很重欸。',
             en: '—Kidding. Come on, that rice is heavy, walk faster.',
@@ -1489,14 +1501,14 @@ export const DAY1_EVENING: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${NAO}casual_shy.webp`,
+            characterImage: `${NAO}knit_shy.webp`,
             zh: '她愣了一下，然后飞快地转过身往坡上走。',
             en: 'She freezes, then turns and starts up the slope very quickly.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${NAO}casual_shy.webp`,
+            characterImage: `${NAO}knit_shy.webp`,
             jp: '……べつに。ついでだし。',
             zh: '……没什么。顺路而已。',
             en: '...It is nothing. It was on my way.',
@@ -1539,14 +1551,14 @@ export const DAY1_EVENING: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${NAO}casual_angry.webp`,
+            characterImage: `${NAO}knit_angry.webp`,
             zh: '她把手往口袋里一插，往后退了半步。',
             en: 'She shoves her hand into her pocket and takes half a step back.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${NAO}casual_angry.webp`,
+            characterImage: `${NAO}knit_angry.webp`,
             jp: '……捨てた。',
             zh: '……扔了。',
             en: '...Threw it away.',
@@ -1560,7 +1572,7 @@ export const DAY1_EVENING: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${NAO}casual_shy.webp`,
+            characterImage: `${NAO}knit_shy.webp`,
             jp: '……ほんと、こういうとこだけ大人になったよね、あんた。',
             words: [{ jp: '大人', reading: 'おとな', zh: '大人、成年人', en: 'adult' }],
             zh: '……真是的，就这种地方长大了啊，你。',
@@ -1588,7 +1600,7 @@ export const DAY1_EVENING: StoryNode[] = [
   { type: 'scene', scene: 'kitano_slope_foot_dusk', bgm: 'night' },
   {
     type: 'narration',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}cat_neutral.webp`,
     zh: '两个人一起往上走。她走在你左边，隔半步，这个距离十年没变过。',
     en: 'You start up the slope together. She walks on your left, half a step ahead. That distance has not changed in ten years.'
   },
@@ -1600,7 +1612,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_happy.webp`,
+    characterImage: `${NAO}cat_happy.webp`,
     jp: 'あ、それ？なんか安かったから。',
     zh: '啊，那个？因为好像挺便宜的。',
     en: 'Oh, that? It seemed cheap.',
@@ -1618,14 +1630,14 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${NAO}casual_curious.webp`,
+    characterImage: `${NAO}cat_curious.webp`,
     zh: '她想了很久。坡道又往上走了大概二十米。',
     en: 'She thinks about it for a long time. The slope goes up another twenty metres.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_shy.webp`,
+    characterImage: `${NAO}cat_shy.webp`,
     jp: '……電車に置いてきたかも。',
     words: [{ jp: '置いてくる', reading: 'おいてくる', zh: '落下、忘在某处', en: 'to leave something behind' }],
     zh: '……可能落在电车上了。',
@@ -1640,14 +1652,14 @@ export const DAY1_EVENING: StoryNode[] = [
   // ---- 她其实什么都看见了 ----
   {
     type: 'narration',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}cat_neutral.webp`,
     zh: '走到一半的时候，她忽然停下来，转过身，非常仔细地看了看你的脸。',
     en: 'Halfway up she stops, turns around, and looks at your face very carefully.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_curious.webp`,
+    characterImage: `${NAO}cat_curious.webp`,
     jp: '……あんた、今日ちゃんとご飯食べた？',
     zh: '……你今天，好好吃饭了吗？',
     en: '...Did you actually eat today?',
@@ -1661,7 +1673,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_angry.webp`,
+    characterImage: `${NAO}cat_angry.webp`,
     jp: '嘘。あんた嘘つくとき、ちょっとだけ右見んねん。昔から。',
     words: [{ jp: '嘘', reading: 'うそ', zh: '谎话', en: 'a lie' }],
     zh: '骗人。你说谎的时候会稍微往右看一下。从小就是。',
@@ -1706,7 +1718,7 @@ export const DAY1_EVENING: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${NAO}casual_cold.webp`,
+        characterImage: `${NAO}cat_neutral.webp`,
         zh: '接下来的三十米她走得比刚才快了一点。你没有问为什么。',
         en: 'She walks the next thirty metres slightly faster than before. You do not ask why.'
       }
@@ -1716,14 +1728,14 @@ export const DAY1_EVENING: StoryNode[] = [
   { type: 'scene', scene: 'umikaze_exterior', bgm: 'night' },
   {
     type: 'narration',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     zh: '海风庄门口。她把袋子放在台阶上，直起腰捶了两下。',
     en: 'The entrance of Umikaze-so. She sets the bags down on the step and stretches, thumping her own back twice.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_happy.webp`,
+    characterImage: `${NAO}knit_happy.webp`,
     jp: 'ほな、また明日な。……あ、明日は坂の下ちゃうくて、駅で待っとくわ。そのほうが確実やろ。',
     zh: '那，明天见啦。……啊，明天不在坡道下面，我在车站等你。那样比较保险吧。',
     en: 'Right, see you tomorrow. ...Oh — not the bottom of the slope tomorrow, I will wait at the station. That is safer, right?',
@@ -1736,14 +1748,14 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${NAO}casual_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     zh: '她走了两步，又回过头。',
     en: 'She takes two steps, then turns back.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_shy.webp`,
+    characterImage: `${NAO}knit_shy.webp`,
     jp: '……あのさ。今日、いっぱい名前おぼえたやろ。',
     zh: '……那个啊。今天，记住了好多名字吧。',
     en: '...Hey. You learned a lot of names today, right.',
@@ -1757,7 +1769,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}casual_happy.webp`,
+    characterImage: `${NAO}knit_happy.webp`,
     jp: 'ええことやん。……うん。ええことや。',
     zh: '这是好事啊。……嗯。是好事。',
     en: 'That is a good thing. ...Yeah. It is a good thing.',

@@ -1,6 +1,6 @@
 import { CharacterId, GameCalendar, StoryFlags, StoryNode, FamiliarityMap } from '../types';
 import { SKETCHES, QUIZZES, CLASS_EVENTS, Quiz, ClassEventDef } from './classScenes';
-import { findSubject, subjectToday, timetableFor } from '../data/classData';
+import { findSubject, subjectToday, subjectsIn, timetableFor } from '../data/classData';
 import { getInitialFamiliarity } from '../constants';
 
 // ==========================================================
@@ -122,10 +122,10 @@ const buildQuiz = (q: Quiz, cal: GameCalendar, subjectScene: string): StoryNode[
 };
 
 // ---- 课堂速写 → 节点表 ----
-const buildSketch = (cal: GameCalendar, subjectId: string, subjectScene: string): StoryNode[] => {
+const buildSketch = (cal: GameCalendar, subjectId: string, subjectScene: string, salt = 0): StoryNode[] => {
   const pool = SKETCHES.filter(s => s.subject === subjectId);
   if (!pool.length) return [];
-  const s = pool[Math.floor(dayHash(cal, 23) * pool.length) % pool.length];
+  const s = pool[Math.floor(dayHash(cal, 23 + salt * 101) * pool.length) % pool.length];
   const subj = findSubject(subjectId);
   return [
     {
@@ -151,33 +151,59 @@ const sceneForSubject = (subjectId: string): string =>
     : subjectId === 'bijutsu' ? 'art_room'
     : 'classroom_morning';
 
-// 今天早上到底演什么。
-export const buildClassMorning = (cal: GameCalendar, ctx: ClassCtx): StoryNode[] => {
-  const subj = subjectToday(cal);
-  if (!subj) return [];
-  const scene = sceneForSubject(subj.id);
+// 一格里的两节课。
+//
+// 以前一天只演一节，而且是随机抽的，于是"我明明上过日本史了怎么还是日本史"。
+// 现在按课表顺序走：上午第一二节，下午第三四节，一天四节全上完。
+// 教室事件和小测只挂在其中一节上，另一节是速写——
+// 两节都是大事的话，这一天就太满了。
+export const buildClassSlot = (cal: GameCalendar, ctx: ClassCtx, slot: string): StoryNode[] => {
+  const subs = subjectsIn(cal, slot);
+  if (!subs.length) return [];
 
-  // 1. 教室事件（约五天一次）
-  if (dayHash(cal, 3) < 0.2) {
-    const open = CLASS_EVENTS.filter(e => eventOpen(e, cal, ctx));
-    if (open.length) {
-      const ev = open[Math.floor(dayHash(cal, 5) * open.length) % open.length];
-      return buildEvent(ev, scene);
+  // 这一格里，哪一节上有事
+  const special = dayHash(cal, 3) < 0.22 ? 0 : dayHash(cal, 17) < 0.22 ? 1 : -1;
+  const nodes: StoryNode[] = [];
+
+  subs.forEach((subj, i) => {
+    const scene = sceneForSubject(subj.id);
+    if (i === special) {
+      const open = CLASS_EVENTS.filter(e => eventOpen(e, cal, ctx));
+      if (open.length) {
+        nodes.push(...buildEvent(open[Math.floor(dayHash(cal, 5) * open.length) % open.length], scene));
+        return;
+      }
+      const pool = QUIZZES.filter(q => q.subject === subj.id);
+      if (pool.length) {
+        nodes.push(...buildQuiz(pool[Math.floor(dayHash(cal, 13) * pool.length) % pool.length], cal, scene));
+        return;
+      }
     }
-  }
+    nodes.push(...buildSketch(cal, subj.id, scene, i));
+  });
 
-  // 2. 小测（约七天一次，而且得是今天这门课）
-  if (dayHash(cal, 11) < 0.14) {
-    const pool = QUIZZES.filter(q => q.subject === subj.id);
-    if (pool.length) {
-      const q = pool[Math.floor(dayHash(cal, 13) * pool.length) % pool.length];
-      return buildQuiz(q, cal, scene);
-    }
+  // 两节之间的下课。没有这一下，两节课会黏成一段读不出分界的东西。
+  if (nodes.length && subs.length > 1) {
+    const mid = nodes.findIndex((n, k) => k > 0 && n.type === 'scene');
+    if (mid > 0) nodes.splice(mid, 0, BREAK_NODE(slot));
   }
-
-  // 3. 速写
-  return buildSketch(cal, subj.id, scene);
+  return nodes;
 };
+
+// 下课十分钟。写成一句，是为了让两节课之间有个呼吸。
+const BREAK_NODE = (slot: string): StoryNode => ({
+  type: 'narration',
+  zh: slot === 'morning'
+    ? '下课铃响的时候，全班像被谁按了开关一样同时松了口气。有人趴下，有人冲出去，有人开始翻下一节课的书。十分钟，够干的事其实不多。'
+    : '下午这个点最难熬。铃一响，前排那位直接把额头搁在了桌上，搁得很响。老师看了一眼，什么也没说就走了。',
+  en: slot === 'morning'
+    ? 'When the bell goes the whole class exhales at once, as though somebody had thrown a switch. Some put their heads down, some bolt for the door, some start getting the next book out. Ten minutes is not really enough for any of it.'
+    : 'This is the worst hour of the afternoon. The bell goes and the boy in front puts his forehead straight down on the desk, audibly. The teacher looks over and leaves without saying anything.'
+});
+
+// 兼容旧调用
+export const buildClassMorning = (cal: GameCalendar, ctx: ClassCtx): StoryNode[] =>
+  buildClassSlot(cal, ctx, 'morning');
 
 // 大厅上那一行"今天上什么"。不剧透有没有小测——
 // 剧透了玩家就会挑日子上学。

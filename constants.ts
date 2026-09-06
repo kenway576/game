@@ -1141,7 +1141,11 @@ export const WARDROBE: Record<string, string[]> = {
   [CharacterId.INARI]:  ['casual', 'school', 'swim', 'home', 'knit', 'gown', 'summer', 'miko', 'goddess'],
   [CharacterId.MIYUKI]: ['summer', 'school', 'cardigan', 'sundress', 'gown', 'apron', 'kimono'],
   [CharacterId.SORA]:   ['school', 'summer', 'autumn', 'swim', 'maid', 'kimono', 'gown'],
-  [CharacterId.NAO]:    ['casual', 'sleep', 'kimono', 'swim', 'maid', 'gown', 'yukata'],
+  // ⚠️ 奈绪原来的 'casual' 下面混了三套完全不同的衣服：米色开衫、绿夹克、
+  // 猫图案毛衣。衣柜以为它们是一套，于是 AI 一换表情就顺带换了衣服，
+  // 看上去像她在对话中途回家换了一趟。现在按实际拆开：
+  //   knit 米色开衫 / cat 猫毛衣 / jacket 绿夹克（只有一张，不进衣柜）
+  [CharacterId.NAO]:    ['knit', 'cat', 'sleep', 'kimono', 'swim', 'maid', 'gown', 'yukata'],
   [CharacterId.MAKI]:   ['school', 'cardigan', 'punk', 'kimono', 'gown', 'swim']
 };
 

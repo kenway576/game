@@ -2,7 +2,7 @@ import { SCHOOL_NPC_SPRITES } from '../constants';
 import { StoryNode, CharacterId } from '../types';
 import {
   DAY1_GYM, DAY1_LIBRARY, DAY1_ARCADE, DAY1_EVENING,
-  DAY1_CAMEO_AFTER_GYM, DAY1_CAMEO_AFTER_LIB, DAY1_CAMEO_AFTER_ARC, DAY1_LEAVING
+  DAY1_LEAVING_ALL
 } from './day1Afterschool';
 
 // ---------------------------------------------------------
@@ -2496,9 +2496,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
     zh: '值日的同学在擦黑板。窗外的天还很亮。第一天结束了——但今天还没有结束。',
     en: 'Someone on cleaning duty is wiping the board. It is still bright outside. The first day is over. The day is not.'
   },
-  // 先出校门，再决定去哪儿。这一段以前在深度线之后，
-  // 于是选了商店街的玩家逛完街会莫名其妙回到教室推椅子。
-  ...DAY1_LEAVING,
+  // 出教室 → 走廊上瞥见三个人 → 站在校门口 → 再决定去找谁。
+  ...DAY1_LEAVING_ALL,
   {
     type: 'choice',
     promptZh: '你站在校门口。回家之前，你还有一下午。',
@@ -2511,7 +2510,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '整个下午，节奏一直没乱过',
         hintEn: 'All afternoon, and the rhythm has not slipped once.',
         setFlags: ['day1_route_gym'],
-        then: [...DAY1_GYM, ...DAY1_CAMEO_AFTER_GYM]
+        then: [...DAY1_GYM]
       },
       {
         id: 'day1_go_library',
@@ -2520,7 +2519,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '手账上有几个地名，你在现在的地图上找不到',
         hintEn: 'A few of the names in the journal are not on any map you can find.',
         setFlags: ['day1_route_library'],
-        then: [...DAY1_LIBRARY, ...DAY1_CAMEO_AFTER_LIB]
+        then: [...DAY1_LIBRARY]
       },
       {
         id: 'day1_go_arcade',
@@ -2529,7 +2528,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         hintZh: '冰箱还是空的，而且你想听人正常说话',
         hintEn: 'The fridge is still empty, and you want to hear people talk at normal speed.',
         setFlags: ['day1_route_arcade'],
-        then: [...DAY1_ARCADE, ...DAY1_CAMEO_AFTER_ARC]
+        then: [...DAY1_ARCADE]
       }
     ]
   },

@@ -115,19 +115,20 @@ export const REST_PLANS: RestPlan[] = [
 
   // ---- 翘课。只有上学日才有。 ----
   {
-    id: 'skip_sleep', icon: '🛏️', kinds: SCHOOL, wholeDay: true,
-    titleZh: '今天不去了，睡一天', titleEn: 'Not today. Sleep through it.',
-    descZh: '闹钟响两次，你两次都按掉了。学识会掉——课是真的没上。',
-    descEn: 'Two alarms, both dismissed. Knowledge will drop; the lessons really did happen without you.',
+    // 半天。睡到中午还能赶下午那两节——"不去"不等于"一整天都不去"。
+    id: 'skip_sleep', icon: '🛏️', kinds: SCHOOL, wholeDay: false,
+    titleZh: '上午不去了，接着睡', titleEn: 'Not this morning. Go back to sleep.',
+    descZh: '闹钟响两次，你两次都按掉了。上午的课是真的没上。下午想去还来得及。',
+    descEn: 'Two alarms, both dismissed. You genuinely miss the morning. The afternoon is still there if you want it.',
     script: () => SKIP_SLEEP,
     available: ctx => !!ctx.flags['day1_done'],
     doneFlag: () => 'skip_school_slept'
   },
   {
-    id: 'skip_wander', icon: '🚃', kinds: SCHOOL, wholeDay: true,
-    titleZh: '翘课，坐反方向的电车', titleEn: 'Skip. Take the train the other way.',
-    descZh: '穿着制服在工作日的白天到处走。学识会掉，别的东西会涨。',
-    descEn: 'A school uniform out in the city on a weekday. Knowledge drops. Other things do not.',
+    id: 'skip_wander', icon: '🚃', kinds: SCHOOL, wholeDay: false,
+    titleZh: '翘半天，坐反方向的电车', titleEn: 'Skip half of it. Take the train the other way.',
+    descZh: '穿着制服在工作日的白天到处走。学识会掉，别的东西会涨。赶得上下午的话也可以再回去。',
+    descEn: 'A school uniform out in the city on a weekday. Knowledge drops, other things do not. You can still go back for the afternoon if you make it.',
     script: () => SKIP_WANDER,
     available: ctx => !!ctx.flags['day1_done'],
     doneFlag: () => 'skip_school_wandered'

@@ -14,6 +14,9 @@ interface Props {
 // 休息日早上弹一次。一天只弹一次，选完就不再打扰。
 const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, onPick, onSkip }) => {
   const en = language === 'en';
+  // 醒来那一下先给两句话，再摊开选项。
+  // 以前是睁眼直接看见六个按钮，像被人塞了一张表格让你填。
+  const [woke, setWoke] = React.useState(calendar.timeSlot !== 'morning');
   const kind = dayKindOf(calendar);
   const label = dayLabel(calendar, language);
 
@@ -30,6 +33,30 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, onPick, onSk
         ? 'There are lessons today. Nothing is stopping you from not going, except what it costs.'
         : '今天有课。没有人拦着你不去，只有代价。')
     : dayMood(calendar, language);
+
+  // 早上那两句。点一下翻过去。
+  if (!woke) {
+    const L1 = en
+      ? 'You wake up before the alarm again, and lie there for a while looking at the grain in the ceiling.'
+      : '又比闹钟早醒了。你在床上躺了一会儿，看着天花板上的木纹，那几道纹路你现在已经很熟了。';
+    const L2 = en
+      ? 'Right. Another day. The question is what to do with it.'
+      : '好吧。又是新的一天。问题是今天要怎么过呢。';
+    return (
+      <div
+        className="fixed inset-0 z-[200] flex items-end justify-center bg-black/55 backdrop-blur-[2px] p-4 pb-16 cursor-pointer"
+        onClick={() => setWoke(true)}
+      >
+        <div className="w-full max-w-3xl bg-slate-900/85 border border-white/15 rounded-sm px-6 py-5 shadow-2xl">
+          <p className="text-base md:text-lg text-white/90 leading-relaxed">{L1}</p>
+          <p className="mt-3 text-base md:text-lg text-white/90 leading-relaxed">{L2}</p>
+          <p className="mt-4 text-[10px] tracking-widest text-white/30 text-right uppercase">
+            {en ? 'tap' : '点一下'} ▼
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">

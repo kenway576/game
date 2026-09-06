@@ -63,14 +63,14 @@ const NAO_STATION: StoryNode[] = [
     en: 'Before you have finished typing, a second one arrives: "behind you".'
   },
   {
-    type: 'narration', characterImage: `${N}casual_neutral.webp`,
+    type: 'narration', characterImage: `${N}knit_neutral.webp`,
     zh: '她在你后面大概两米，抱着胳膊，已经站了不知道多久。',
     en: 'She is about two metres behind you with her arms folded, and has been for an unknown length of time.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_angry.webp`,
+    characterImage: `${N}knit_angry.webp`,
     jp: '六個ある言うたやん。……言うてへんかったっけ。',
     zh: '我说了有六个出口吧。……我没说吗。',
     en: 'I did say there were six. ...Did I not say that.',
@@ -119,7 +119,7 @@ const NAO_STATION: StoryNode[] = [
         relations: [{ char: CharacterId.NAO, familiarity: 5, affection: 6, reasonZh: '她被问住了，因为她根本没想过要说', reasonEn: 'The question stopped her, because it had not occurred to her to say' }],
         then: [
           {
-            type: 'narration', characterImage: `${N}casual_curious.webp`,
+            type: 'narration', characterImage: `${N}knit_curious.webp`,
             zh: '她停住了。「……スーパー。」她说的时候有点不确定，像是刚刚才想起来自己没说过。',
             en: 'She stops. "...Supermarket." She says it slightly uncertainly, as if only now remembering she had not mentioned it.'
           },
@@ -138,7 +138,7 @@ const NAO_STATION: StoryNode[] = [
     ]
   },
   {
-    type: 'narration', characterImage: `${N}casual_neutral.webp`,
+    type: 'narration', characterImage: `${N}knit_neutral.webp`,
     zh: '回坡道口的时候两只手都拎着袋子。她把其中一袋换到自己那边，理由是"你拿得不对，会勒手"。',
     en: 'You go back to the foot of the slope with a bag in each hand. She moves one of them to her side, on the grounds that you are carrying it wrong and it will cut into your fingers.'
   },

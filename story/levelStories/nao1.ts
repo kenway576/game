@@ -39,14 +39,14 @@ export const NAO_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     zh: '她蹲在那儿弄了大概二十秒，然后站起来，没有看你。',
     en: 'She crouches over them for about twenty seconds, stands up, and does not look at you.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     jp: 'ねえ。今日、廊下で誰かに呼ばれてたでしょ。',
     zh: '喂。你今天在走廊上，被谁叫住了吧。',
     en: 'Hey. Someone called out to you in the corridor today, did they not.',
@@ -60,7 +60,7 @@ export const NAO_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     jp: '……あの呼び方、なに。',
     zh: '……那个叫法，是什么。',
     en: '...What was that, the way they said it.',
@@ -100,14 +100,14 @@ export const NAO_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}casual_curious.webp`,
+            characterImage: `${N}knit_curious.webp`,
             zh: '她听得很认真。认真到你察觉出不对——她不是在听故事，她是在记。',
             en: 'She listens carefully. Carefully enough that you notice something off: she is not following a story, she is memorising.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_neutral.webp`,
+            characterImage: `${N}knit_neutral.webp`,
             jp: '……三人とも、私、知らない。',
             zh: '……三个人，我都不认识。',
             en: '...All three of them. I do not know any of them.',
@@ -128,14 +128,14 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}casual_cold.webp`,
+            characterImage: `${N}knit_neutral.webp`,
             zh: '她停下来了。这次是真的停下来。',
             en: 'She stops. This time she actually stops.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_cold.webp`,
+            characterImage: `${N}knit_neutral.webp`,
             jp: '……いい。私は、十年前の呼び方でいい。',
             words: [{ jp: '呼び方', reading: 'よびかた', zh: '叫法、称呼', en: 'the way of calling someone' }],
             zh: '……不用。我用十年前那个叫法就行。',
@@ -163,14 +163,14 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}casual_angry.webp`,
+            characterImage: `${N}knit_angry.webp`,
             zh: '她转过身来，脸上的表情你只见过两次，两次都是小学的时候。',
             en: 'She turns round. You have seen that expression twice before, both times in primary school.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_angry.webp`,
+            characterImage: `${N}knit_angry.webp`,
             jp: 'ずるい。そういうの、すぐ分かっちゃうの、ずるい。',
             zh: '赖皮。这种事你一下就看出来，太赖皮了。',
             en: 'That is not fair. You always work it out straight away. It is not fair.',
@@ -195,7 +195,7 @@ export const NAO_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     jp: 'ちょっと確認させて。',
     words: [{ jp: '確認', reading: 'かくにん', zh: '确认、核对', en: 'to check / to confirm' }],
     zh: '让我确认一下。',
@@ -214,14 +214,14 @@ export const NAO_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     zh: '报到第十几条的时候，她的声音开始有点不稳。她还在报。',
     en: 'Somewhere past the tenth her voice starts to go. She keeps listing.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     jp: '……ぜんぶ合ってる。合ってるのに。',
     zh: '……全都对。明明全都对。',
     en: '...All of it is right. All of it is right, and.',
@@ -230,7 +230,7 @@ export const NAO_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_cold.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     jp: 'ぜんぶ、十年前のことなの。',
     zh: '全都是十年前的事。',
     en: 'All of it is from ten years ago.',
@@ -265,7 +265,7 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}casual_curious.webp`,
+            characterImage: `${N}knit_curious.webp`,
             zh: '她愣住了。',
             en: 'She goes still.'
           },
@@ -277,7 +277,7 @@ export const NAO_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             jp: '……毎日？',
             zh: '……每天？',
             en: '...Every day?',
@@ -291,7 +291,7 @@ export const NAO_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             jp: '……じゃあ、今日の分は。',
             zh: '……那，今天这一条呢。',
             en: '...Then what is today’s.',
@@ -304,7 +304,7 @@ export const NAO_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}casual_happy.webp`,
+            characterImage: `${N}knit_happy.webp`,
             zh: '她笑出了声，一边笑一边说这条不算，因为这条她也知道。',
             en: 'She laughs out loud, and says through it that this one does not count, because she knew that one too.'
           },
@@ -327,14 +327,14 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             zh: '她低头看自己晃着的脚。',
             en: 'She looks down at her swinging feet.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             jp: '……香菜、今も食べない？',
             zh: '……香菜，现在也不吃？',
             en: '...You still will not eat coriander?',
@@ -361,14 +361,14 @@ export const NAO_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}casual_curious.webp`,
+            characterImage: `${N}knit_curious.webp`,
             zh: '她张嘴要答，然后发现自己答不上来——不是不知道，是从来没整理过。',
             en: 'She opens her mouth to answer, and finds she cannot. Not because she does not know, but because she has never sorted it.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_neutral.webp`,
+            characterImage: `${N}knit_neutral.webp`,
             jp: '……考えたことなかった。ずっと、こっちが確認する側だったから。',
             zh: '……没想过。一直都是我在确认那一边。',
             en: '...I never thought about it. I have always been the one doing the checking.',
@@ -382,7 +382,7 @@ export const NAO_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             jp: '……これ、誰にも言ったことない。',
             zh: '……这个，我没跟任何人说过。',
             en: '...I have never told anyone that.',
@@ -406,14 +406,14 @@ export const NAO_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     zh: '她从墙上跳下来，落地的时候踉跄了半步，你伸手扶了一下。她没有甩开，也没有说谢谢。',
     en: 'She drops down off the wall, stumbles half a step on landing, and you catch her arm. She does not shake you off, and she does not say thank you.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     jp: 'ねえ。私、心配してたわけじゃないから。',
     zh: '喂。我不是在担心你啊。',
     en: 'Hey. It is not that I was worried about you.',
@@ -427,7 +427,7 @@ export const NAO_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_shy.webp`,
+    characterImage: `${N}knit_shy.webp`,
     jp: '……こっちで、ちゃんとやってるんだなって、それだけ。',
     zh: '……只是觉得，你在这边过得挺好的。就这样。',
     en: '...Just that you seem to be doing all right over here. That is all.',

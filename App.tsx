@@ -49,7 +49,7 @@ import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
 import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
 import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE, canGoOutAtAll, tiredLine } from './data/staminaData';
-import { buildClassMorning, classHeadline } from './story/classMorning';
+import { buildClassSlot, classHeadline } from './story/classMorning';
 import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
@@ -853,15 +853,27 @@ const App: React.FC = () => {
   //
   // 判定只看三件事：是上课日、现在是早上、今天这节还没上过。
   // 上过了记一个 flag，不然从大厅进出一次就能重上一遍。
-  const classDoneFlag = (cal: GameCalendar) =>
-    `class_${cal.year ?? 1}_${cal.month}_${cal.day}`;
+  // 一天分上午和下午两格课，各自记一个 flag。
+  // 以前只有一个 flag，于是"上午上过了"会把下午也一起吃掉——
+  // 第一天午休之后直接跳到三宫站，就是这么来的。
+  const classDoneFlag = (cal: GameCalendar, slot?: string) =>
+    `class_${cal.year ?? 1}_${cal.month}_${cal.day}_${slot ?? cal.timeSlot}`;
 
+  // 现在这一格是不是上课时间
+  const classSlotNow = (): 'morning' | 'afternoon' | null => {
+    if (gameCalendar.timeSlot === 'morning') return 'morning';
+    if (gameCalendar.timeSlot === 'lunch') return 'afternoon';   // 午休之后是下午的课
+    return null;
+  };
+
+  // 🎒 上午和下午都能去上课。选了做早饭、或者上午出门逛了一趟，
+  // 回来照样能赶下午那两节——这才是"半天不去"的意思。
   const classPending = day1Done
     && !playingDay1
     && tripDayOn(gameCalendar.month, gameCalendar.day) === 0
-    && gameCalendar.timeSlot === 'morning'
+    && classSlotNow() !== null
     && dayKindOf(gameCalendar) === 'school'
-    && !storyFlags[classDoneFlag(gameCalendar)]
+    && !storyFlags[classDoneFlag(gameCalendar, classSlotNow()!)]
     && !isSchoolYearOver(gameCalendar);
 
   // 📕 现在能不能演主线。放学后和夜里都行，早上不行——
@@ -902,9 +914,11 @@ const App: React.FC = () => {
   };
 
   const goToClass = () => {
-    const script = buildClassMorning(gameCalendar, {
+    const slot = classSlotNow();
+    if (!slot) return;
+    const script = buildClassSlot(gameCalendar, {
       flags: storyFlags, familiarity: familiarityMap, met: metChars
-    });
+    }, slot);
     if (!script.length) { finishClass({}); return; }
     audioManager.playSfx('confirm');
     setActiveClass(script);
@@ -913,10 +927,12 @@ const App: React.FC = () => {
   // 下课：记 flag、扣一点体力、推到午休。
   // 上学不占放学后那两格——它占的是早上，而早上本来就不能出门。
   const finishClass = (flags: StoryFlags) => {
-    setStoryFlags(prev => ({ ...prev, ...flags, [classDoneFlag(gameCalendar)]: true }));
+    const slot = classSlotNow() ?? 'morning';
+    setStoryFlags(prev => ({ ...prev, ...flags, [classDoneFlag(gameCalendar, slot)]: true }));
     setActiveClass(null);
     setLife(l => ({ ...l, stamina: Math.max(0, (l.stamina ?? STAMINA_MAX) - 12) }));
-    setGameCalendar(prev => ({ ...prev, timeSlot: 'lunch' }));
+    // 上午的课上完是午休；下午的课上完就放学了。
+    setGameCalendar(prev => ({ ...prev, timeSlot: slot === 'morning' ? 'lunch' : 'afternoon' }));
     setGameMode(GameMode.LOBBY);
   };
 
@@ -1335,7 +1351,7 @@ const App: React.FC = () => {
         // 🏫 上课日的早上出门，就是翘课。明日香会知道。
         if (classPending) {
           setStoryFlags(prev => ({
-            ...prev, skipped_school: true, [classDoneFlag(gameCalendar)]: true
+            ...prev, skipped_school: true, [classDoneFlag(gameCalendar, classSlotNow() ?? 'morning')]: true
           }));
         }
         const drain = staminaCostOf(trip.loc, trip.event, gameCalendar);

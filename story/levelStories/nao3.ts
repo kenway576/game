@@ -43,7 +43,7 @@ export const NAO_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${N}casual_neutral.webp`,
+    characterImage: `${N}knit_neutral.webp`,
     zh: '她在树底下等你。手里拿着一本笔记本，不是她平时上课那本。',
     en: 'She is waiting under it with a notebook, and not the one she takes to class.'
   },
@@ -55,7 +55,7 @@ export const NAO_STORY_3: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_shy.webp`,
+    characterImage: `${N}knit_shy.webp`,
     jp: '……これ、見せたら笑う？',
     zh: '……给你看的话，你会笑吗？',
     en: '...Will you laugh if I show you this?',
@@ -100,14 +100,14 @@ export const NAO_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${N}casual_shy.webp`,
+    characterImage: `${N}knit_shy.webp`,
     zh: '你翻到最后一页。这本比你以为的厚得多。',
     en: 'You turn to the last page. It is much thicker than you expected.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${N}casual_shy.webp`,
+    characterImage: `${N}knit_shy.webp`,
     jp: '……びっくりしてん。こっちのほうが、増えるの速かった。',
     words: [{ jp: '増える', reading: 'ふえる', zh: '增加', en: 'to increase' }],
     zh: '……我自己也吓了一跳。这本，长得比那本快。',
@@ -143,7 +143,7 @@ export const NAO_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}casual_curious.webp`,
+            characterImage: `${N}knit_curious.webp`,
             zh: '她愣住了。',
             en: 'She stops.'
           },
@@ -159,14 +159,14 @@ export const NAO_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             zh: '她把笔记本抢了回去，抱在胸前，转过身，肩膀在抖。',
             en: 'She takes the notebook back, holds it against her chest, turns round, and her shoulders go.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             jp: '……ずるいって、何回言わせんの。',
             zh: '……你要我说多少次"赖皮"啊。',
             en: '...How many times are you going to make me say that is unfair.',
@@ -207,14 +207,14 @@ export const NAO_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}casual_curious.webp`,
+            characterImage: `${N}knit_curious.webp`,
             zh: '她读完之后很长时间没有说话。然后她笑了，笑得很难看。',
             en: 'She reads it and says nothing for a long time. Then she laughs, and it is not a pretty laugh.'
           },
           {
             type: 'speech',
             speakerZh: '奈绪', speakerEn: 'Nao',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             jp: '……なんで言わへんの、そういうの。',
             zh: '……这种事，你为什么不说啊。',
             en: '...Why would you not say something like that.',
@@ -240,7 +240,7 @@ export const NAO_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${N}casual_curious.webp`,
+            characterImage: `${N}knit_curious.webp`,
             zh: '她瞪大了眼睛：「え、それ、どういう意味」。',
             en: 'Her eyes go wide. What is that supposed to mean.'
           },
@@ -251,7 +251,7 @@ export const NAO_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${N}casual_shy.webp`,
+            characterImage: `${N}knit_shy.webp`,
             zh: '她张嘴要说什么，说了一半停住了，然后非常小声地"嗯"了一声。',
             en: 'She starts to say something, stops halfway, and produces a very small yes.'
           }
@@ -279,14 +279,14 @@ export const NAO_STORY_3: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        characterImage: `${N}casual_shy.webp`,
+        characterImage: `${N}knit_shy.webp`,
         zh: '她把笔记本翻到最后一页，撕下来一张，折了两折，递给你。',
         en: 'She turns to the last page, tears one out, folds it twice, and holds it out.'
       },
       {
         type: 'speech',
         speakerZh: '奈绪', speakerEn: 'Nao',
-        characterImage: `${N}casual_shy.webp`,
+        characterImage: `${N}knit_shy.webp`,
         jp: '今日の分。……今読まんといて。',
         zh: '今天那一条。……现在别看。',
         en: 'Today’s entry. ...Do not read it now.',
@@ -299,7 +299,7 @@ export const NAO_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${N}casual_angry.webp`,
+        characterImage: `${N}knit_angry.webp`,
         zh: '她扑过来要抢，没抢到。',
         en: 'She lunges for it and does not get there.'
       },
@@ -329,7 +329,7 @@ export const NAO_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '奈绪', speakerEn: 'Nao',
-        characterImage: `${N}casual_love.webp`,
+        characterImage: `${N}knit_love.webp`,
         jp: '……で、そっちの手帳には、いつ書いてくれんの。',
         zh: '……那，你那本手账上，什么时候写？',
         en: '...So. When does it go in yours.',
@@ -362,14 +362,14 @@ export const NAO_STORY_3: StoryNode[] = [
     otherwise: [
       {
         type: 'narration',
-        characterImage: `${N}casual_neutral.webp`,
+        characterImage: `${N}knit_neutral.webp`,
         zh: '她把笔记本收回去，塞进包里，动作利落。',
         en: 'She puts the notebook away in her bag, briskly.'
       },
       {
         type: 'speech',
         speakerZh: '奈绪', speakerEn: 'Nao',
-        characterImage: `${N}casual_neutral.webp`,
+        characterImage: `${N}knit_neutral.webp`,
         jp: '一個、決めてん。',
         zh: '我决定了一件事。',
         en: 'I have decided something.',
@@ -383,7 +383,7 @@ export const NAO_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '奈绪', speakerEn: 'Nao',
-        characterImage: `${N}casual_happy.webp`,
+        characterImage: `${N}knit_happy.webp`,
         jp: '古いほう、捨てへん。でも、もう見返さへん。',
         words: [{ jp: '見返す', reading: 'みかえす', zh: '重看、翻回去看', en: 'to look back over' }],
         zh: '旧的那本，不扔。但不再翻了。',
@@ -398,7 +398,7 @@ export const NAO_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '奈绪', speakerEn: 'Nao',
-        characterImage: `${N}casual_neutral.webp`,
+        characterImage: `${N}knit_neutral.webp`,
         jp: 'あんたが変わるんやったら、こっちも書き足していくだけやん。',
         zh: '你要是会变，那我就一直往下写不就行了。',
         en: 'If you are going to change, then I just keep writing. That is all.',
@@ -411,7 +411,7 @@ export const NAO_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${N}casual_happy.webp`,
+        characterImage: `${N}knit_happy.webp`,
         zh: '走出校门的时候她走在里侧，跟十年前一样。区别是这次她走得比你快半步。',
         en: 'Going out of the gate she takes the inside, the way she always did. The difference is that this time she is half a step ahead.'
       },
