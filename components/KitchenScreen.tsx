@@ -19,7 +19,8 @@ interface Props {
   life: LifeState;
   storyFlags: StoryFlags;
   onClose: () => void;
-  onCook: (recipe: RecipeDef, firstTime: boolean, result: CookingResult) => void;
+  // pack = 没有当场吃掉，而是装进盒子进了背包
+  onCook: (recipe: RecipeDef, firstTime: boolean, result: CookingResult, pack?: boolean) => void;
 }
 
 const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, onCook }) => {
@@ -88,9 +89,9 @@ const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, o
     setCookingTarget(sel);
   };
 
-  const handleQTEFinish = (result: CookingResult) => {
+  const handleQTEFinish = (result: CookingResult, pack?: boolean) => {
     if (cookingTarget) {
-      onCook(cookingTarget, !dex[cookingTarget.id], result);
+      onCook(cookingTarget, !dex[cookingTarget.id], result, pack);
     }
     setCookingTarget(null);
   };

@@ -17,7 +17,8 @@ interface Props {
   recipe: RecipeDef;
   language: Language;
   firstTime: boolean;
-  onFinish: (result: CookingResult) => void;
+  // pack = 装进盒子带走，不当场吃掉。做成功了才给这条路。
+  onFinish: (result: CookingResult, pack?: boolean) => void;
   onCancel: () => void;
 }
 
@@ -894,16 +895,30 @@ export const CookingQTEModal: React.FC<Props> = ({
                 )}
               </div>
 
-              {/* 确认完成按键 */}
-              <button
-                onClick={() => {
-                  audioManager.playSfx('confirm');
-                  onFinish(finalResult);
-                }}
-                className="px-10 py-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black font-black text-sm uppercase tracking-widest rounded-xl shadow-[0_0_30px_rgba(245,158,11,0.5)] transform active:scale-95 transition-all"
-              >
-                {finalResult === 'failed' ? (en ? 'Toss it out' : '收拾灶台') : (en ? 'Bon Appétit / Eat' : '趁热品尝！')}
-              </button>
+              {/* 确认完成按键。做成了的话有两条路：现在吃，或者装起来带走。
+                  只有"趁热吃"一条的时候，一份亲手做的东西唯一的去处是自己的胃。 */}
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  onClick={() => {
+                    audioManager.playSfx('confirm');
+                    onFinish(finalResult);
+                  }}
+                  className="px-10 py-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black font-black text-sm uppercase tracking-widest rounded-xl shadow-[0_0_30px_rgba(245,158,11,0.5)] transform active:scale-95 transition-all"
+                >
+                  {finalResult === 'failed' ? (en ? 'Toss it out' : '收拾灶台') : (en ? 'Bon Appétit / Eat' : '趁热品尝！')}
+                </button>
+                {finalResult !== 'failed' && (
+                  <button
+                    onClick={() => {
+                      audioManager.playSfx('confirm');
+                      onFinish(finalResult, true);
+                    }}
+                    className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/25 text-white/85 font-black text-sm uppercase tracking-widest rounded-xl transform active:scale-95 transition-all"
+                  >
+                    🍱 {en ? 'Pack it in a box' : '装进盒子带走'}
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -107,6 +107,7 @@ const CH2: StoryNode[] = [
         labelEn: '"How do you know this was my grandfather\'s."',
         jp: 'なんで、俺の祖父のだって分かるんだ。',
         hintZh: '这是唯一要紧的问题', hintEn: 'It is the only question that matters.',
+        relations: [{ char: CharacterId.INARI, familiarity: 6, affection: 2, reasonZh: '你没有绕开那个问题，她欣赏这一点', reasonEn: 'You went at the question directly, which she rated' }],
         effects: [{ stat: 'guts', amount: 2, reasonZh: '你没有先假装自己听错了', reasonEn: 'You did not start by pretending you had misheard' }],
         setFlags: ['main2_asked_how'],
         then: [
@@ -133,6 +134,7 @@ const CH2: StoryNode[] = [
         labelEn: '"Why three times?"',
         jp: 'なんで三回も？',
         hintZh: '你更在意那三条线', hintEn: 'The three lines are what you actually care about.',
+        relations: [{ char: CharacterId.INARI, familiarity: 4, affection: 4, reasonZh: '你先心疼的是那张纸', reasonEn: 'The thing you cared about first was the paper' }],
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你先问的是那张纸，不是那个人', reasonEn: 'You asked about the paper before you asked about the person' }],
         setFlags: ['main2_asked_three'],
         then: [
@@ -273,6 +275,7 @@ const CH3: StoryNode[] = [
         labelEn: '"How many times did he come?"',
         jp: '何回、来たんだ。',
         hintZh: '你想要一个数字', hintEn: 'You want a number.',
+        relations: [{ char: CharacterId.INARI, familiarity: 6, affection: 2, reasonZh: '你在数别人来过多少次', reasonEn: 'You were counting how often somebody else had come' }],
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你问的是能被记录的那部分', reasonEn: 'You asked for the part that can be written down' }],
         setFlags: ['main3_asked_count'],
         then: [
@@ -298,6 +301,7 @@ const CH3: StoryNode[] = [
         labelEn: '"What did he come for?"',
         jp: '何しに来てたんだ。',
         hintZh: '你想要一个理由', hintEn: 'You want a reason.',
+        relations: [{ char: CharacterId.INARI, familiarity: 4, affection: 4, reasonZh: '你想知道的是他为什么来，不是他来过几次', reasonEn: 'What you wanted was the reason, not the tally' }],
         effects: [{ stat: 'kindness', amount: 2, reasonZh: '你先想的是他，不是那本册子', reasonEn: 'What you thought about first was him, not the book' }],
         setFlags: ['main3_asked_why'],
         then: [
@@ -412,6 +416,7 @@ const CH4: StoryNode[] = [
         labelEn: '"He came every day. Was he waiting for someone?"',
         jp: '毎日来てたのって、誰か待ってたのか？',
         hintZh: '这是最容易想到的解释', hintEn: 'It is the easiest explanation to reach for.',
+        relations: [{ char: CharacterId.INARI, familiarity: 5, affection: 5, reasonZh: '你猜到那是在等人，而且没有说破是等谁', reasonEn: 'You worked out that he was waiting, and left the name unsaid' }],
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你把一个人的两年当成一件有目的的事', reasonEn: 'You assumed two years of a man\'s life had a purpose in it' }],
         setFlags: ['main4_asked_waiting'],
         then: [
@@ -446,6 +451,7 @@ const CH4: StoryNode[] = [
         labelEn: '"Was he... actually not doing anything at all?"',
         jp: 'あの人、実は何もしてなかったんじゃないか？',
         hintZh: '手账里全是价钱和天气', hintEn: 'The journal is all prices and weather.',
+        relations: [{ char: CharacterId.INARI, familiarity: 3, affection: 7, reasonZh: '有些事就是没有理由的，你先替他说了这句', reasonEn: 'Some things have no reason. You said it for him first' }],
         effects: [{ stat: 'kindness', amount: 3, reasonZh: '你没有硬要给他安一个理由', reasonEn: 'You did not insist on giving him a reason' }],
         setFlags: ['main4_asked_nothing'],
         then: [
@@ -585,6 +591,7 @@ const CH5: StoryNode[] = [
         labelEn: '"That day. Were you here on your own?"',
         jp: 'あの日……一人でここに居たのか。',
         hintZh: '你问了一个你其实已经知道答案的问题', hintEn: 'You already know the answer.',
+        relations: [{ char: CharacterId.INARI, familiarity: 4, affection: 8, reasonZh: '一千八百年里，问过她这句话的人不多', reasonEn: 'In eighteen centuries not many have asked her that' }],
         effects: [{ stat: 'kindness', amount: 3, reasonZh: '你问的是她，不是那场灾难', reasonEn: 'You asked about her, not about the disaster' }],
         setFlags: ['main5_asked_alone'],
         then: [
@@ -604,6 +611,7 @@ const CH5: StoryNode[] = [
         labelZh: '什么也不说，站着不走',
         labelEn: 'Say nothing and do not leave',
         hintZh: '有些时候话是多余的', hintEn: 'Sometimes words are the surplus part.',
+        relations: [{ char: CharacterId.INARI, familiarity: 6, affection: 8, reasonZh: '你什么都没说，但你没有走', reasonEn: 'You said nothing and you did not leave' }],
         effects: [{ stat: 'guts', amount: 3, reasonZh: '自始至终沉默相伴比任何苍白的言语都难得多', reasonEn: 'Standing quietly in silent solidarity is harder than hollow words' }],
         setFlags: ['main5_stayed'],
         then: [
@@ -712,6 +720,7 @@ const CH6: StoryNode[] = [
         labelEn: 'Write your name, and leave the journal here',
         jp: 'これ、置いていく。',
         hintZh: '它在这条坡上待过两年，现在待了两年半', hintEn: 'It spent two years on this hill. Now two and a half.',
+        relations: [{ char: CharacterId.INARI, familiarity: 8, affection: 10, reasonZh: '那本手账留在了她这儿', reasonEn: 'The journal stayed with her' }],
         effects: [
           { stat: 'kindness', amount: 5, reasonZh: '你把一样属于你的东西留给了一个没有人陪的人', reasonEn: 'You left something of yours with someone who has nobody' }
         ],
@@ -750,6 +759,7 @@ const CH6: StoryNode[] = [
         labelEn: 'Write your name, and put the journal back in your bag',
         jp: 'これは、持って帰る。',
         hintZh: '它本来就是要带回去的', hintEn: 'It was always going back.',
+        relations: [{ char: CharacterId.INARI, familiarity: 10, affection: 6, reasonZh: '你把它带走了，因为它还要接着写', reasonEn: 'You took it with you, because it is not finished' }],
         effects: [
           { stat: 'guts', amount: 5, reasonZh: '你没有为了让场面好看而送出一样不该送的东西', reasonEn: 'You did not give away something you should not, just to make the moment land' }
         ],

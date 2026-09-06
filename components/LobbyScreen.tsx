@@ -26,6 +26,7 @@ interface Props {
   onOpenMap: () => void;
   onOpenCalendar: () => void;
   onOpenInventory: () => void;
+  onOpenGift: () => void;
   onOpenPhone: () => void;
   // 「今天怎么过」。休息日会自己弹，但上学日也得有个入口——
   // 不想上学这件事，恰恰只在有课的日子才成立。
@@ -50,7 +51,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenGift, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, background
 }) => {
   // 连最轻的一趟都撑不住 = 今天出不去了
   const spent = !canGoOutAtAll(stamina, calendar);
@@ -167,7 +168,10 @@ const LobbyScreen: React.FC<Props> = ({
             zh: spent ? '走不动了' : '出门', en: spent ? 'Too tired' : 'Go out',
             primary: !spent },
           { key: 'phone', on: onOpenPhone, icon: '📱', zh: '手机',   en: 'Phone', badge: phoneUnread },
-          { key: 'day',   on: onOpenDayPlan, icon: '📅', zh: '今天',   en: 'Today' }
+          { key: 'day',   on: onOpenDayPlan, icon: '📅', zh: '今天',   en: 'Today' },
+          // 🎁 把包里的东西递给谁。放在大厅这一排，因为送东西和
+          // 回房间、出门一样，是"用身体做的一件事"，不是菜单里的设置项。
+          { key: 'gift',  on: onOpenGift,   icon: '🎁', zh: '送东西', en: 'Give' }
         ] as { key: string; on: () => void; icon: string; zh: string; en: string; primary?: boolean; badge?: number }[]).map(b => (
           <button
             key={b.key}

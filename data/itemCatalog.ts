@@ -1,5 +1,5 @@
 import { StoryWord, StoryFlags, LifeState } from '../types';
-import { findBook } from './cookData';
+import { findBook, findRecipe } from './cookData';
 import { shopGood } from './shopData';
 import { SEEDS, FISH, RODS, POT_ITEM, BAIT_ITEM, fishValue } from './lifeData';
 
@@ -119,6 +119,22 @@ export const resolveItem = (key: string): ResolvedItem | null => {
       key, kind: 'gear', iconId: key, emoji: g.emoji,
       nameZh: g.nameZh, nameEn: g.nameEn, nameJp: g.nameJp, reading: g.reading,
       descZh: g.descZh, descEn: g.descEn
+    };
+  }
+
+  // 🍱 装进盒子带走的那一份菜：dish|<菜的 id>
+  //
+  // 以前做完只有"趁热吃掉"一条路。可一份亲手做的东西最有用的去处
+  // 从来不是自己吃——是明天带到学校，递给某个人。
+  if (key.startsWith('dish|')) {
+    const r = findRecipe(key.split('|')[1]);
+    if (!r) return null;
+    return {
+      key, kind: 'crop', emoji: r.emoji,
+      nameZh: r.nameZh, nameEn: r.nameEn, nameJp: r.nameJp, reading: r.reading,
+      descZh: r.descZh, descEn: r.descEn,
+      subZh: '装在盒子里', subEn: 'packed in a box',
+      word: r.word
     };
   }
 

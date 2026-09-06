@@ -54,6 +54,8 @@ import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
 import { promiseDue } from './story/day2Promises';
+import GiftScreen from './components/GiftScreen';
+import { GiftVerdict } from './data/giftData';
 import { FARM_TUTORIAL, FISH_TUTORIAL } from './story/tutorials';
 import { beenFlag } from './story/kobeMap';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
@@ -250,6 +252,7 @@ const App: React.FC = () => {
   // 🏫 午休选了校外的地方，而下午还有课。走之前问一句要不要翘。
   // 存的是那个地点本身：玩家点"去"，就拿它接着走原来的流程。
   const [askSkipAfternoon, setAskSkipAfternoon] = useState<MapLocation | null>(null);
+  const [showGift, setShowGift] = useState(false);
   // 🧑‍🏫 教程演完之后再打开的那个玩法。种菜和钓鱼第一次都得有人先教一遍，
   // 否则玩家点开的是一个没写说明书的仪表盘。
   const [pendingFishing, setPendingFishing] = useState<MapLocation | null>(null);
@@ -785,6 +788,27 @@ const App: React.FC = () => {
     });
   };
 
+  // 一天给同一个人只能送一次。不设这条的话，会做菜之后
+  // 好感度就变成了一个可以站在厨房里刷出来的数字，
+  // 而这个游戏里所有别的好感度都得靠时间和场合去挣。
+  const giftFlag = (char: CharacterId, cal: GameCalendar) =>
+    `gift_${char}_${cal.year ?? 1}_${cal.month}_${cal.day}`;
+
+  // 🎁 递出去一样东西。物品扣掉，关系涨一点，理由写的是这件东西本身。
+  const giveGift = (key: string, char: CharacterId, v: GiftVerdict) => {
+    setStoryFlags(prev => ({ ...prev, [giftFlag(char, gameCalendar)]: true }));
+    setLife(l => {
+      const items = { ...l.items };
+      items[key] = (items[key] || 0) - 1;
+      if (items[key] <= 0) delete items[key];
+      return { ...l, items };
+    });
+    applyStoryRelations([{
+      char, familiarity: v.familiarity, affection: v.affection,
+      reasonZh: v.reasonZh, reasonEn: v.reasonEn
+    }]);
+  };
+
   const collectStoryWords = (words: StoryWord[]) => {
     if (!words.length) return;
     const now = Date.now();
@@ -1256,7 +1280,7 @@ const App: React.FC = () => {
   };
 
   // 做菜：QTE 触发成功结算美味属性（完美烹饪额外获得灵巧+1，初次获得知识+1）；失败烧焦扣除食材且不给料理属性
-  const cooked = (r: RecipeDef, firstTime: boolean, result: 'perfect' | 'success' | 'failed' = 'success') => {
+  const cooked = (r: RecipeDef, firstTime: boolean, result: 'perfect' | 'success' | 'failed' = 'success', pack?: boolean) => {
     if (result === 'failed') {
       setLife(l => consumeFor(r, l));
       applyStoryEffects([
@@ -1273,6 +1297,17 @@ const App: React.FC = () => {
 
     setLife(l => {
       const next = consumeFor(r, l);
+      // 🍱 装起来带走：菜进背包，不当场吃，所以也不回体力。
+      // 它的用处在别处——明天递给谁。
+      if (pack) {
+        const items = { ...next.items };
+        const k = `dish|${r.id}`;
+        items[k] = (items[k] || 0) + 1;
+        return {
+          ...next, items,
+          cookedDex: { ...(l.cookedDex || {}), [r.id]: ((l.cookedDex || {})[r.id] || 0) + 1 }
+        };
+      }
       return {
         ...next,
         cookedDex: { ...(l.cookedDex || {}), [r.id]: ((l.cookedDex || {})[r.id] || 0) + 1 },
@@ -1302,13 +1337,16 @@ const App: React.FC = () => {
       });
     }
 
-    applyStoryEffects([
-      ...r.effects,
-      ...extraEffects
-    ]);
+    // 菜的属性是吃下去才长的。装进盒子带走的那一份还没进嘴，
+    // 所以这一次只算"你会做了"和"火候漂亮"，正餐的收益留到它被吃掉的时候。
+    applyStoryEffects(pack ? extraEffects : [...r.effects, ...extraEffects]);
 
     if (r.word) collectStoryWords([r.word]);
-    if (result === 'perfect') {
+    if (pack) {
+      flashLife(userState.language === 'en'
+        ? `🍱 ${r.nameEn} packed. It is in your bag.`
+        : `🍱 ${r.nameZh}装好了，在包里。`);
+    } else if (result === 'perfect') {
       flashLife(userState.language === 'en' ? `★ Masterpiece! Cooked superb ${r.nameEn}` : `★ 大成功！做出了绝品${r.nameZh}！`);
     } else {
       flashLife(userState.language === 'en' ? `☆ Cooked delicious ${r.nameEn}` : `☆ 烹饪成功！做出了${r.nameZh}`);
@@ -2470,6 +2508,7 @@ ${wind}`;
           }}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenInventory={() => setShowInventory(true)}
+          onOpenGift={() => setShowGift(true)}
           onOpenPhone={() => setShowPhone(true)}
           onOpenDayPlan={() => setShowRestPlan(true)}
           mainStoryPending={prologueDone && !day1Done && !playingDay1}
@@ -3032,6 +3071,18 @@ ${wind}`;
             </div>
           </div>
         </div>
+      )}
+
+      {showGift && (
+        <GiftScreen
+          language={userState.language}
+          life={life}
+          storyFlags={storyFlags}
+          metChars={metChars}
+          givenToday={metChars.filter(c => storyFlags[giftFlag(c, gameCalendar)])}
+          onClose={() => setShowGift(false)}
+          onGive={giveGift}
+        />
       )}
 
       {showConsentGate && (
