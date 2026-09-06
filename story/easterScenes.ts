@@ -1199,9 +1199,9 @@ export const EASTER_SCENES: StreetScene[] = [
   // 🥞 舒芙蕾与赤字手帐
   //
   // 幸せのパンケーキ店里的两个女生。
-  // 一个像刚从网线那头掉出来的银发少女，套着大两号的黑T恤，
-  // 叉子已经举到了耳朵边；另一个穿着深蓝校服外套，手里捏着
-  // 一本写满收支明细和服务器账单的手帐，表情凝重得像在开内阁会议。
+  // 一个金发齐刘海、套着大两号黑色连帽大T恤与粉色短裤，
+  // 活泼地比起双剪刀手、两眼盯着松饼放光；另一个留着低发髻、
+  // 穿着白色短袖水手服与天蓝百褶裙，挎着大帆布包翻着收支手帐。
   // ---------------------------------------------------------
   {
     id: 'st_egg_cho_kaguya_pancake',
@@ -1222,42 +1222,42 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration', characterImage: E.kaguya,
-        zh: '坐在靠窗位置的银发女生立刻把手里的银叉举了起来。头顶那一撮显眼的翘呆毛跟着晃了两晃。',
-        en: 'The silver-haired girl by the window raises her small silver fork at once. The prominent ahoge on top of her head sways twice in unison.'
+        zh: '靠窗坐着的金发女生一下子坐直了身子，齐刘海下一双红宝石般的大眼睛闪闪发亮，兴高采烈地比起双剪刀手。',
+        en: 'The blonde girl by the window sits up straight in a flash, her ruby-red eyes under straight bangs sparkling as she flashes energetic double peace signs.'
       },
       {
-        type: 'speech', speakerZh: '银发女生', speakerEn: 'Silver-haired Girl',
+        type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
         characterImage: E.kaguya,
         zh: '「呜哇——！摇晃指数突破安全临界点了！搭档，你快看！这个热量绝对有八千卡——不，是幸福感有一亿伏特！」',
         en: '"Waaah! The wobble index has breached safety levels! Look, look! This has got to be eight thousand calories—no, one hundred million volts of sheer happiness!"'
       },
       {
         type: 'narration', characterImage: E.iroha,
-        zh: '坐在她对面的黑发女生穿着整整齐齐的深蓝制服外套，手里摊着一本写得密密麻麻的活页手帐。',
-        en: 'Across from her sits a dark-haired girl in a neat navy blazer, a dense loose-leaf planner open in her hands.'
+        zh: '坐在她对面的女生扎着松散的深紫发低发髻，眼角有一颗小小的泪痣。穿着白短袖水手服与天蓝百褶裙，身旁放着挂有粉色玩偶的米白大挎包，手里正摊着一本写满开支的手帐。',
+        en: 'Across from her sits a girl with a loose dark-violet low bun and a delicate beauty mark beneath her eye. Dressed in a white sailor shirt and sky-blue pleated skirt, with an oversized canvas bag adorned by a pink plush charm beside her, she consults an expense planner.'
       },
       {
-        type: 'speech', speakerZh: '深蓝制服女生', speakerEn: 'Navy Blazer Girl',
+        type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
         characterImage: E.iroha,
         zh: '「……上个月租用高配推流主机的电费超标了整整三倍。还有网络专线费用、防喷罩损耗，以及你半夜偷偷点的三次特大份外卖披萨。」',
         en: '"...Last month\'s power bill for the streaming rig was three times our quota. Not to mention dedicated fiber fees, pop filter wear, and three extra-large midnight delivery pizzas you secretly ordered."'
       },
       {
-        type: 'speech', speakerZh: '银发女生', speakerEn: 'Silver-haired Girl',
+        type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
         characterImage: E.kaguya,
         zh: '「那些全是为了在虚拟网络里拯救宇宙的必要投资！而且你看，这一盘有整整三块！我吃两块半，剩下半块归大功臣制作人——公平合理吧！」',
         en: '"Those were essential capital investments to save the universe on the virtual net! Besides, look, there are three whole pieces! I take two and a half, half for our heroic producer—totally fair!"'
       },
       {
-        type: 'speech', speakerZh: '深蓝制服女生', speakerEn: 'Navy Blazer Girl',
+        type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
         characterImage: E.iroha,
         zh: '「驳回。第一，虚拟世界不需要靠吃披萨拯救；第二，按出资比例和卡路里计算，一人一块半，精确到克。」',
         en: '"Vetoed. First, the virtual world does not require pizza to be saved; second, calculated by financial stake and calories, one and a half each. Exact to the gram."'
       },
       {
         type: 'choice',
-        promptZh: '银发女生鼓起腮帮子，叉子在松饼顶端那团快要融化的麦卢卡蜂蜜黄油上方犹豫不决。',
-        promptEn: 'The silver-haired girl puffs her cheeks, hovering her fork indecisively over the melting manuka honey butter atop the pancakes.',
+        promptZh: '金发女生鼓起腮帮子，叉子在松饼顶端那团快要融化的麦卢卡蜂蜜黄油上方犹豫不决。',
+        promptEn: 'The blonde girl puffs her cheeks, hovering her fork indecisively over the melting manuka honey butter atop the pancakes.',
         options: [
           {
             id: 'egg_kaguya_syrup',
@@ -1272,22 +1272,22 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration', characterImage: E.kaguya,
-                zh: '银发女生的眼睛在一瞬间亮了起来，像是刚连上了超高速量子光纤。',
-                en: 'The silver-haired girl\'s eyes instantly ignite as if connected to ultra-high-speed quantum fiber.'
+                zh: '金发女生的眼睛在一瞬间亮了起来，像是刚连上了超高速量子光纤。',
+                en: 'The blonde girl\'s eyes instantly ignite as if connected to ultra-high-speed quantum fiber.'
               },
               {
-                type: 'speech', speakerZh: '银发女生', speakerEn: 'Silver-haired Girl',
+                type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
                 characterImage: E.kaguya,
                 zh: '「看吧！连隔壁桌有品味的大好人都站在正义这边！全浇上去！让糖浆瀑布把整座岛屿淹没！」',
                 en: '"See! Even this tasteful gentleman at the next table stands with justice! Pour it all! Let the syrup waterfall submerge the island!"'
               },
               {
                 type: 'narration', characterImage: E.iroha,
-                zh: '黑发女生愣了一下，随后合上手帐，有些不好意思地向你轻轻欠了欠身。',
-                en: 'The dark-haired girl blinks in surprise, then closes her planner and bows slightly in your direction, looking a touch flustered.'
+                zh: '水手服女生愣了一下，随后合上手帐，有些不好意思地向你轻轻欠了欠身。',
+                en: 'The sailor-uniform girl blinks in surprise, then closes her planner and bows slightly in your direction, looking a touch flustered.'
               },
               {
-                type: 'speech', speakerZh: '深蓝制服女生', speakerEn: 'Navy Blazer Girl',
+                type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
                 characterImage: E.iroha,
                 zh: '「……非常感谢您的好意。但请别再纵容这只网瘾……这家伙的糖分摄入了。」',
                 en: '"...Thank you very much for your kindness. But please do not indulge this net addict\'s... I mean, this creature\'s sugar intake."'
@@ -1298,7 +1298,7 @@ export const EASTER_SCENES: StreetScene[] = [
                 en: 'Despite her words, watching her companion stuff a cloud-sized bite into puffed cheeks like a contented hamster, the corner of her mouth curls up ever so slightly.'
               },
               {
-                type: 'speech', speakerZh: '深蓝制服女生', speakerEn: 'Navy Blazer Girl',
+                type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
                 characterImage: E.iroha,
                 zh: '「……不过，今天新歌切片的播放量确实冲进前十了。就这一次哦。」',
                 en: '"...Then again, the new song clip did break the top ten today. Just this once, then."'
@@ -1318,27 +1318,27 @@ export const EASTER_SCENES: StreetScene[] = [
             then: [
               {
                 type: 'narration', characterImage: E.kaguya,
-                zh: '银发女生神情肃穆，用叉子在松饼表面比划着一条笔直的中线：「一、二、三，看，这道国境线切得无可挑剔吧！」',
-                en: 'The silver-haired girl assumes a solemn expression, tracing a straight midline over the pancakes with her fork: "One, two, three—behold, an irreproachable border line!"'
+                zh: '金发女生神情肃穆，用叉子在松饼表面比划着一条笔直的中线：「一、二、三，看，这道国境线切得无可挑剔吧！」',
+                en: 'The blonde girl assumes a solemn expression, tracing a straight midline over the pancakes with her fork: "One, two, three—behold, an irreproachable border line!"'
               },
               {
                 type: 'narration',
-                zh: '然而在对面的女生低头核对刻度的零点一秒间，银发女生的叉子如闪电般挑走了顶端最大的一块融化黄油，直接塞进了嘴里。',
-                en: 'Yet in the split-second the blazer girl glances down to check the mark, the silver-haired girl\'s fork darts like lightning, snagging the prime chunk of melting butter straight into her mouth.'
+                zh: '然而在对面的女生低头核对刻度的零点一秒间，金发女生的叉子如闪电般挑走了顶端最大的一块融化黄油，直接塞进了嘴里。',
+                en: 'Yet in the split-second the sailor-uniform girl glances down to check the mark, the blonde girl\'s fork darts like lightning, snagging the prime chunk of melting butter straight into her mouth.'
               },
               {
                 type: 'narration', characterImage: E.iroha,
-                zh: '黑发女生的手停住了。圆珠笔在纸上连点了三下。店里陷入了长达五秒的死寂。',
-                en: 'The dark-haired girl\'s hand freezes. Her pen taps the paper three times in rapid succession. A five-second dead silence falls over the table.'
+                zh: '水手服女生的手停住了。圆珠笔在纸上连点了三下。店里陷入了长达五秒的死寂。',
+                en: 'The sailor-uniform girl\'s hand freezes. Her pen taps the paper three times in rapid succession. A five-second dead silence falls over the table.'
               },
               {
-                type: 'speech', speakerZh: '深蓝制服女生', speakerEn: 'Navy Blazer Girl',
+                type: 'speech', speakerZh: '水手服女生', speakerEn: 'Sailor Uniform Girl',
                 characterImage: E.iroha,
                 zh: '「……明天的推流体能测试，加练两个小时。」',
                 en: '"...Tomorrow\'s endurance drill before streaming: two extra hours."'
               },
               {
-                type: 'speech', speakerZh: '银发女生', speakerEn: 'Silver-haired Girl',
+                type: 'speech', speakerZh: '金发女生', speakerEn: 'Blonde Girl',
                 characterImage: E.kaguya,
                 zh: '「诶——！？为什么啊！明明黄油会自己挥发掉的！」',
                 en: '"Eeeeh!? Why! Butter naturally evaporates on its own, it\'s science!"'

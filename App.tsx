@@ -733,12 +733,32 @@ const App: React.FC = () => {
   // 剧情中途置上的 flag 立刻并进全局。
   // 以前要等一整章播完才交出来，于是剧情里刚拿到手的东西，
   // 打开背包／地图／手机全都还看不见——最直观的就是刚领的学生证不在持ち物里。
+  // 「give:物品id:个数」不是 flag，是往背包里放东西。
+  //
+  // 剧本里一直没办法给玩家一件实物——奈绪教完做饭把两把葱留在台面上，
+  // 那两把葱在剧本里说了，在厨房里却不存在。给节点类型加字段要改八处
+  // StoryScreen 的接线，而 flag 这条路本来就已经通到每一个剧本了，
+  // 所以借它走一趟：带前缀的不进 flag 表，直接落到 life.items。
   const applyStoryFlags = (list: string[]) => {
     if (!list?.length) return;
+    const gifts = list.filter(f => f.startsWith('give:'));
+    const flags = list.filter(f => !f.startsWith('give:'));
+    if (gifts.length) {
+      setLife(l => {
+        const items = { ...l.items };
+        for (const g of gifts) {
+          const [, itemId, nRaw] = g.split(':');
+          const n = Number(nRaw) || 1;
+          if (itemId) items[itemId] = (items[itemId] || 0) + n;
+        }
+        return { ...l, items };
+      });
+    }
+    if (!flags.length) return;
     setStoryFlags(prev => {
       const next = { ...prev };
       let changed = false;
-      for (const f of list) if (!next[f]) { next[f] = true; changed = true; }
+      for (const f of flags) if (!next[f]) { next[f] = true; changed = true; }
       return changed ? next : prev;
     });
   };

@@ -22,6 +22,13 @@ import { findFish } from './lifeData';
 export const RECIPES: RecipeDef[] = [
   {
     id: 'dish_misoshiru',
+    // 第一天晚上有人站在你厨房里教过你这一样。day1_done 是给老存档留的门：
+    // 那些人已经过完第一天了，只是当时还没有这段剧情。
+    learn: {
+      flags: ['cook_tutorial_done', 'day1_done'],
+      hintZh: '有人得先站在你的厨房里，把味噌化开给你看一次。',
+      hintEn: 'Somebody has to stand in your kitchen and show you how the miso goes in.'
+    },
     nameJp: '味噌汁', reading: 'みそしる', nameZh: '味噌汤', nameEn: 'Miso Soup',
     needs: [{ itemId: 'crop_negi', n: 1 }],
     effects: [{ stat: 'kindness', amount: 2, reasonZh: '锅里冒起来的那点热气', reasonEn: 'The steam coming off the pot' }],

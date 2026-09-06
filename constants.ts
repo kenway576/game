@@ -475,8 +475,8 @@ export const EASTER_EGG_SPRITES = {
   // 《中华小当家》
   mao:         '/images/characters/easter_mao.webp',         // 刘昴星（特级厨师发光黄金料理）
   // 《超辉夜姬！》
-  iroha:       '/images/characters/easter_iroha.webp',       // 酒寄彩叶（手握学生手帐认真高校生）
-  kaguya:      '/images/characters/easter_kaguya.webp',      // 辉夜（松弛oversized黑T叉子吃货美少女）
+  iroha:       '/images/characters/easter_iroha.webp',       // 酒寄彩叶（白短袖水手服天蓝百褶裙斜挎包高校生）
+  kaguya:      '/images/characters/easter_kaguya.webp',      // 辉夜（金色齐刘海长发宽松黑T双剪刀手）
 } as const;
 
 export const CHARACTERS: Record<CharacterId, Character> = {

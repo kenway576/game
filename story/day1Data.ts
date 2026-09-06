@@ -2383,41 +2383,111 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // 【Scene 9】放学后 · 决定性分叉
   // ==========================================================
   // ---- 下午的四节课 ----
+  // 这一段以前是六句旁白，用过去式把四节课总结完了，
+  // 读起来像是有人在事后跟你转述那个下午，而不是你自己坐在那儿。
+  // 现在四节课一节一节地上，中间有课间，最后才轮到手账。
   {
     type: 'scene',
     scene: 'classroom_morning',
-    bgm: 'lobby'
+    bgm: 'lobby',
+    titleZh: '下午的第一节',
+    titleEn: 'Fifth Period',
+    subtitleZh: '下午 1:20',
+    subtitleEn: '1:20 PM'
   },
   {
     type: 'narration',
-    zh: '下午四节课。现代文、数学、日本史、古典。',
-    en: 'Four periods in the afternoon. Modern Japanese, maths, Japanese history, classical Japanese.'
+    zh: '现代文。老师念一篇散文，念得很慢，念到某一句的时候全班一起点了头。你也点了。你点头的依据完全是他的语调。',
+    en: 'Modern Japanese. The teacher reads an essay aloud, slowly, and at a certain sentence the whole room nods together. You nod too. You are nodding entirely on the strength of his intonation.'
   },
   {
     type: 'narration',
-    zh: '客观地说，你听懂了其中的数学。',
-    en: 'Objectively speaking, you understood the maths.'
+    zh: '整篇文章你只抓住了一个词：「懐かしい」。它出现了三次，每次出现的时候，念的人都会稍微停一下。你不知道那篇散文在讲什么，但你知道它在讲一件回不去的事。',
+    en: 'Out of the whole thing you catch one word. It comes up three times, and each time the man reading it pauses slightly. You have no idea what the essay is about. You do know it is about something that cannot be gone back to.',
+    words: [{ jp: '懐かしい', reading: 'なつかしい', zh: '怀念的、令人想起从前的', en: 'nostalgic; making you miss something' }]
   },
   {
     type: 'narration',
-    zh: '因为数字长得都一样。',
-    en: 'Because the numbers look the same in every language.'
+    zh: '下课的时候你把那几个字抄在了本子边上。抄完看了一会儿，觉得这大概是今天唯一一件你听懂了却说不清的事。',
+    en: 'When the bell goes you copy the word into the margin. You look at it for a moment and decide it is probably the only thing today that you understood and cannot explain.'
+  },
+
+  {
+    type: 'narration',
+    zh: '课间。走廊上有人在跑，被值周的老师喊了一声，跑的人立刻改成了那种走得飞快但严格来说不算跑的姿势。这个姿势你在哪个国家都见过。',
+    en: 'Between periods. Somebody runs in the corridor, a teacher on duty shouts at them, and the runner instantly converts into that walk which is extremely fast but not technically running. You have seen that walk in every country you have been to.'
+  },
+
+  {
+    type: 'narration',
+    zh: '数学。老师在黑板上写下一个式子，写完转过身，问了一句什么。没有人举手。',
+    en: 'Maths. The teacher writes an expression on the board, turns round and asks something. No hands go up.'
   },
   {
     type: 'narration',
-    zh: '现代文那节课，老师念了一篇散文，全班都在点头。你也在点头。你点头的依据是老师的语调。',
-    en: 'In modern Japanese the teacher read out an essay and the whole class nodded along. You nodded too. You were nodding based on the teacher’s intonation.'
+    zh: '你看懂了那个式子——数字在哪国都长一个样，这大概是今天唯一一件对你有利的事——于是你举了手。举到一半你才想起来自己听不懂他刚才问的是什么。',
+    en: 'You can read the expression. Numbers look the same everywhere, which is possibly the only thing working in your favour today, and so your hand goes up. Halfway up you remember that you did not understand the question.'
   },
   {
     type: 'narration',
-    zh: '日本史更糟：黑板上全是人名，每个人名后面跟着一个年份，年份后面跟着一个你不认识的动词。',
-    en: 'History was worse. The board filled up with names, each name followed by a year, each year followed by a verb you did not know.'
+    zh: '你还是站起来了，走到黑板前，把答案写了出来。写的时候教室后面很安静，安静得你能听见自己粉笔的声音。',
+    en: 'You stand up anyway, walk to the board and write the answer. The back of the room is quiet while you do it, quiet enough that you can hear your own chalk.'
   },
   {
     type: 'narration',
-    zh: '最后一节是古典。古典课上讲的是古代日语。你的现代日语才刚够点一碗拉面。',
-    en: 'The last period was classical Japanese. Classical Japanese is a form of the language from a thousand years ago. Your modern Japanese is just about adequate for ordering ramen.'
+    zh: '老师看了看，说了句「正解」。回座位的路上有人小声说了句什么，你没听清，但那个语气不是在笑你。',
+    en: 'The teacher looks at it and says that it is correct. On the way back to your seat somebody says something under their breath. You do not catch it. The tone was not the kind that laughs at you.'
   },
+  {
+    type: 'narration',
+    zh: '坐下之后你手心全是汗。你为今天准备了大半年的日语，结果第一次在这个班里被人认可，靠的是一个不需要语言的东西。',
+    en: 'You sit down with damp palms. You spent the better part of a year preparing your Japanese for today, and the first time anybody in this room approves of you, it is for something that did not require any.'
+  },
+
+  {
+    type: 'scene',
+    scene: 'classroom_sunset',
+    bgm: 'lobby',
+    subtitleZh: '下午 3:05',
+    subtitleEn: '3:05 PM'
+  },
+  {
+    type: 'narration',
+    zh: '日本史更糟。黑板上全是人名，每个人名后面跟着一个年份，年份后面跟着一个你不认识的动词。',
+    en: 'History is worse. The board fills with names, each name followed by a year, each year followed by a verb you do not know.'
+  },
+  {
+    type: 'narration',
+    zh: '写到后来你放弃了理解，改成把那些动词当图形抄。抄着抄着你发现其中一个反复出现，出现在很多不同的人名后面。你猜它的意思是「死了」。',
+    en: 'Eventually you give up on understanding and start copying the verbs as shapes. Somewhere in the middle you notice that one of them keeps coming back, after a great many different names. You guess it means died.'
+  },
+  {
+    type: 'narration',
+    zh: '你猜对了。这件事你是下课查了词典才知道的，知道的时候心情有点复杂——你在一节完全听不懂的课上，唯一自学会的词是这个。',
+    en: 'You are right. You find that out with a dictionary after the bell, and the discovery leaves you in a slightly complicated mood. In a lesson you understood none of, the one word you taught yourself was that one.'
+  },
+
+  {
+    type: 'narration',
+    zh: '最后一节是古典。古典课上讲的是一千年前的日语。你的现代日语才刚够点一碗拉面。',
+    en: 'Last period is classical Japanese, which is the language as it was a thousand years ago. Your modern Japanese is just about adequate for ordering a bowl of ramen.'
+  },
+  {
+    type: 'narration',
+    zh: '老师念了一段原文。念的方式和平时说话完全不一样，音是拉长的，句尾会往上飘一点。听着不像在读课文，像是在很小声地唱歌。',
+    en: 'The teacher reads a passage in the original. The way he reads it has nothing to do with the way people talk. The vowels stretch out and the ends of the lines drift upwards. It does not sound like reading. It sounds like somebody singing very quietly.'
+  },
+  {
+    type: 'narration',
+    zh: '你一个字都没听懂，但你没走神。窗外的光在这一节课里从白色变成了橘色，教室后墙上那块被晒到的地方一点一点往上爬。',
+    en: 'You do not follow a single word of it and you do not drift off either. Over the course of that period the light outside turns from white to orange, and the patch of sun on the back wall of the room climbs slowly upwards.'
+  },
+  {
+    type: 'narration',
+    zh: '你想起外公手账里有一页整页都是这种拉长的假名，你一直以为那是他抄错了。现在你不那么确定了。',
+    en: 'You remember a page in the journal filled edge to edge with these stretched-out kana. You had always assumed he had copied them down wrong. You are less sure of that now.'
+  },
+
   {
     type: 'narration',
     zh: '你在手账最后一页写下了今天真正学到的东西：',
@@ -2448,6 +2518,12 @@ export const DAY1_SCRIPT: StoryNode[] = [
     type: 'narration',
     zh: '古典课那一页，重点全部用红笔框了出来。框线画得非常直。',
     en: 'On the page for classical Japanese, every key point has been boxed in red pen. The lines are extremely straight.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${ASUKA}neutral.webp`,
+    zh: '你想说声谢谢。她已经转回去了，背挺得笔直，像是刚才那两厘米跟她没有任何关系。',
+    en: 'You want to say thank you. She has already turned back, sitting very straight, as though those two centimetres had nothing whatsoever to do with her.'
   },
   {
     type: 'effect',
@@ -2720,6 +2796,35 @@ export const DAY1_SCRIPT: StoryNode[] = [
     type: 'narration',
     zh: '你决定明天问问奈绪。她在这儿住了一年，应该分得出来。',
     en: 'You decide to ask Nao tomorrow. She has lived here a year. She will be able to tell.'
+  },
+  // ---- 睡前那几条 ----
+  // 一天的最后一件事不该是旁白替你收尾，该是手机亮一下。
+  {
+    type: 'narration',
+    zh: '手机在枕头边亮了一下。你本来不打算看的。',
+    en: 'The phone lights up next to the pillow. You had not been going to look at it.'
+  },
+  {
+    type: 'phone',
+    savedAsZh: 'なおちゃん', savedAsEn: 'Nao-chan',
+    avatar: '/images/avatars/nao.webp',
+    lines: [
+      { jp: '生きてる？', zh: '还活着吗？', en: 'Alive?', time: '23:31' },
+      { jp: '味噌汁、明日の朝もう一回作り', zh: '味噌汤，明天早上再做一次', en: 'Make the miso soup again tomorrow morning' },
+      { jp: '一回だけやと忘れるから', zh: '只做一次的话会忘掉的', en: 'You forget things you only did once' },
+      { jp: '……生きてる', zh: '……还活着', en: '...Alive', fromMe: true },
+      { jp: 'よし', zh: '好', en: 'Good' },
+      { jp: 'ほな寝る。おやすみ', zh: '那我睡了。晚安', en: 'Sleeping then. Night' },
+      { jp: 'あ、ちがう', zh: '啊，不对', en: 'Ah, wrong' },
+      { jp: 'おかえり', zh: '欢迎回来', en: 'Welcome home', time: '23:36' }
+    ],
+    afterZh: '最后那三个字她单独发了一条。你盯着看了一会儿，然后把手机扣在榻榻米上。',
+    afterEn: 'She sent the last one on its own. You look at it for a while, then put the phone face down on the tatami.'
+  },
+  {
+    type: 'narration',
+    zh: '你想回一句什么，想了半天没想出来，最后回了一个「おやすみ」。发完觉得太少了，但也没有再补。',
+    en: 'You want to answer something. Nothing comes, and in the end you send goodnight. It seems too little once it has gone. You do not add anything to it.'
   },
   {
     type: 'narration',

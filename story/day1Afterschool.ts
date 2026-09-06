@@ -1732,6 +1732,249 @@ export const DAY1_EVENING: StoryNode[] = [
     zh: '海风庄门口。她把袋子放在台阶上，直起腰捶了两下。',
     en: 'The entrance of Umikaze-so. She sets the bags down on the step and stretches, thumping her own back twice.'
   },
+  // ---- 料理教程 · 她跟着上来了 ----
+  // 玩法教学放在这里而不是放在菜单里，理由很简单：
+  // 一个人不会因为看见"料理"这个按钮就去做饭，
+  // 但会因为有人站在他厨房里、把葱塞进他手里而做。
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_curious.webp`,
+    jp: '……ちょお待って。あんた、米の炊き方は？',
+    words: [{ jp: '炊く', reading: 'たく', zh: '煮（饭）', en: 'to cook (rice)' }],
+    zh: '……等一下。你，米怎么煮，知道吗？',
+    en: '...Hang on. Do you actually know how to cook rice?',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '你说知道。你确实知道——理论上。你在网上看过。看的是一个三分钟的视频，而且是倍速看的。',
+    en: 'You say you do. And you do, in theory. You watched a video about it. It was three minutes long and you watched it at double speed.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}knit_angry.webp`,
+    zh: '她盯着你看了一会儿。你努力没有往右边看。',
+    en: 'She looks at you for a while. You make a considerable effort not to glance to the right.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_angry.webp`,
+    jp: '……上がる。三十分だけ。',
+    zh: '……我上去。就三十分钟。',
+    en: '...I am coming up. Thirty minutes.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '她已经拎起袋子上楼了。铁楼梯在她脚下响得非常理直气壮。',
+    en: 'She has already picked up the bags and started up the stairs. The iron staircase rings under her with total confidence.'
+  },
+
+  {
+    type: 'scene', scene: 'umikaze_room_kitchen', bgm: 'night',
+    titleZh: '海风庄 201 · 厨房', titleEn: 'Umikaze-so 201 · The Kitchen',
+    subtitleZh: '傍晚 6:55', subtitleEn: '6:55 PM'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}knit_neutral.webp`,
+    zh: '所谓厨房，是一个单口的煤气灶、一个不锈钢水槽，和一块勉强能放下砧板的台面。她站进去之后，这个空间就没有别人的位置了。',
+    en: 'The kitchen is one gas ring, a steel sink, and just enough counter to take a chopping board. Once she is standing in it there is no room in it for anybody else.'
+  },
+  {
+    type: 'narration',
+    zh: '她把袋子里的东西一样一样掏出来排在台面上，排得很整齐，整齐得跟她本人完全不像。',
+    en: 'She takes everything out of the bags and lines it up on the counter, very neatly, in a way that does not resemble her at all.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_neutral.webp`,
+    jp: 'ええか。今日は一個だけ覚えて帰る。味噌汁。',
+    words: [{ jp: '味噌汁', reading: 'みそしる', zh: '味噌汤', en: 'miso soup' }],
+    zh: '听好了。今天只学一样。味噌汤。',
+    en: 'Right. One thing today, that is all. Miso soup.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '她说这句话的语气，和体育课上教你怎么发球的人是同一种。',
+    en: 'She says it in the tone of somebody teaching you how to serve in a PE lesson.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_happy.webp`,
+    jp: 'なんでかっていうとな。これ作れたら、あとは何にでも足せんねん。',
+    zh: '为什么呢。因为这个会了，剩下的什么都能往上加。',
+    en: 'Reason being: once you can make this, you can put anything else into it.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '水开。她把火关小，从袋子里拿出味噌，用勺子背面在漏勺里把它一点一点化开。',
+    en: 'The water boils. She turns the flame down, gets the miso out of the bag, and works it through a small strainer with the back of a spoon, a little at a time.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_neutral.webp`,
+    jp: 'ここ、絶対沸かしたらあかん。味噌入れてから沸かしたら、香り全部飛ぶ。',
+    words: [{ jp: '沸かす', reading: 'わかす', zh: '烧开', en: 'to bring to the boil' }],
+    zh: '这一步，绝对不能再烧开。味噌下去之后一开锅，香味全跑了。',
+    en: 'This part must never boil. Once the miso is in, if it boils, the smell all leaves.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '你问为什么。她张嘴，停住，想了一会儿。',
+    en: 'You ask why. She opens her mouth, stops, and thinks about it.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_shy.webp`,
+    jp: '……知らん。ばあちゃんがそう言うててん。',
+    zh: '……不知道。我奶奶就是这么说的。',
+    en: '...No idea. My grandmother said so.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '这是一个完全站不住脚的理由，而你决定这辈子都照着做。',
+    en: 'It is an entirely unsupportable reason, and you decide you will do it that way for the rest of your life.'
+  },
+  {
+    type: 'choice',
+    promptZh: '锅里的东西开始有味道了。她把葱和菜刀往你这边推。',
+    promptEn: 'The pot starts to smell of something. She pushes the spring onion and the knife across at you.',
+    options: [
+      {
+        id: 'cook_tut_meme',
+        labelZh: '「等一下。这个展开我认识——是不是切到手然后你给我包创可贴？」',
+        labelEn: '"Hold on. I know this scene. Do I cut myself and then you produce a plaster?"',
+        jp: 'ちょお待って。この展開知ってんねん。ここで指切って、絆創膏出てくるやつやろ。',
+        words: [{ jp: '絆創膏', reading: 'ばんそうこう', zh: '创可贴', en: 'a plaster / band-aid' }],
+        hintZh: '你看过的番里，这一集都是这么演的',
+        hintEn: 'In every show you have ever watched, this episode goes exactly like that.',
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '你把她逗笑了，虽然是靠贬低自己', reasonEn: 'You made her laugh, at your own expense' }],
+        relations: [{ char: CharacterId.NAO, familiarity: 6, affection: 5, reasonZh: '她笑得差点把汤搅洒了', reasonEn: 'She laughed hard enough to nearly slop the soup' }],
+        setFlags: ['day1_cook_meme'],
+        then: [
+          {
+            type: 'narration',
+            characterImage: `${NAO}knit_happy.webp`,
+            zh: '她笑得肩膀抖，赶紧把汤勺举高免得洒出来。',
+            en: 'Her shoulders shake and she lifts the ladle clear so as not to spill it.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${NAO}knit_happy.webp`,
+            jp: 'あんたなあ……ほんまにそういうの好きやな。',
+            zh: '你这人啊……真的很喜欢这种东西欸。',
+            en: 'You are unbelievable. ...You really do love that stuff.',
+            color: 'bg-rose-500'
+          },
+          {
+            type: 'narration',
+            zh: '然后她从口袋里掏出一个创可贴，放在台面上，就放在你手边。',
+            en: 'Then she takes a plaster out of her pocket and puts it on the counter, right by your hand.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${NAO}knit_happy.webp`,
+            jp: '……はい。あるけど。',
+            zh: '……喏。我有啊。',
+            en: '...There. I do have one.',
+            color: 'bg-rose-500'
+          },
+          {
+            type: 'narration',
+            zh: '你看着那个创可贴看了很久。她一直带着这个东西，而她随身带它的理由，你不太敢往下想。',
+            en: 'You look at the plaster for a long moment. She carries these around. You are not entirely sure you want to follow the reason for that any further.'
+          }
+        ]
+      },
+      {
+        id: 'cook_tut_serious',
+        labelZh: '接过刀，按她刚才切的样子切',
+        labelEn: 'Take the knife and copy the way she was cutting',
+        hintZh: '她的手指是弯着的，指节顶在刀面上',
+        hintEn: 'Her fingers were curled, knuckles against the flat of the blade.',
+        effects: [{ stat: 'proficiency', amount: 2, reasonZh: '你第一次注意到别人的手是怎么摆的', reasonEn: 'For the first time you paid attention to where somebody else put their hands' }],
+        relations: [{ char: CharacterId.NAO, familiarity: 8, affection: 3, reasonZh: '你在看她怎么做，而不是等她做完', reasonEn: 'You were watching how she did it instead of waiting for her to finish' }],
+        setFlags: ['day1_cook_copy'],
+        then: [
+          {
+            type: 'narration',
+            zh: '你把指节顶在刀面上，慢慢往后退。切出来的葱花厚薄不匀，但没有切到自己。',
+            en: 'You put your knuckles against the flat of the blade and back your fingers away as you go. The rings come out uneven. None of them are your finger.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${NAO}knit_neutral.webp`,
+            zh: '她在旁边看着，没有纠正你。看完了才说了一句「まあ、ええんちゃう」。',
+            en: 'She watches without correcting you. When you have finished she says that it will probably do.'
+          },
+          {
+            type: 'narration',
+            zh: '你后来才想明白：她其实全程都站在你右边——刀在你右手上。',
+            en: 'It occurs to you later that she stood on your right the whole time. The knife was in your right hand.'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'narration',
+    zh: '葱撒下去，火关掉。整个屋子里都是那个味道。这间屋子从昨天起就一直空着，现在它闻起来像有人住。',
+    en: 'The spring onion goes in and the flame goes off. The whole flat smells of it. Until yesterday this room had been standing empty. Now it smells like somewhere somebody lives.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_neutral.webp`,
+    jp: 'ええか、材料は買うんやのうて、自分で採ってきたやつのほうが断然ええで。ベランダ、あんな広いのに何も置いてへんやん。',
+    words: [{ jp: '材料', reading: 'ざいりょう', zh: '材料、食材', en: 'ingredients' }],
+    zh: '听着，食材这东西，买的不如自己弄来的。你阳台那么大，什么都没放欸。',
+    en: 'Listen. Ingredients you bought are never as good as ingredients you got yourself. Your balcony is huge and there is nothing on it.',
+    color: 'bg-rose-500'
+  },
+  {
+    type: 'narration',
+    zh: '她说阳台上种得活葱，种得活紫苏，种得活萝卜；说海边那些防波堤上一年到头都有人在钓鱼；说做出来的东西不用拿去卖，吃掉就好——吃掉了会变成别的东西留在你身上。',
+    en: 'She says spring onion will grow on that balcony, and shiso, and radishes. She says there are people fishing off the breakwaters all year round. She says you do not sell what you make. You eat it, and what you ate turns into something else and stays with you.'
+  },
+  {
+    type: 'narration',
+    zh: '你没太听懂最后那句。她也没解释。',
+    en: 'You do not entirely follow the last part. She does not explain it.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${NAO}knit_happy.webp`,
+    zh: '她把剩下的两把葱留在了台面上，说是"押金"，说她哪天想喝汤会自己上来喝。',
+    en: 'She leaves the two remaining bunches of spring onion on the counter. She calls it a deposit, and says that if she ever wants soup she will come up and have some.'
+  },
+  {
+    type: 'effect',
+    setFlags: ['cook_tutorial_done', 'day1_cook_taught', 'give:crop_negi:2'],
+    effects: [
+      { stat: 'proficiency', amount: 2, reasonZh: '你会做一样东西了，而且是从头到尾', reasonEn: 'You can now make one thing, start to finish' },
+      { stat: 'kindness', amount: 1, reasonZh: '有人在你的厨房里站了半小时', reasonEn: 'Somebody stood in your kitchen for half an hour' }
+    ],
+    relations: [{ char: CharacterId.NAO, familiarity: 10, affection: 4, reasonZh: '她教会你的第一样东西', reasonEn: 'The first thing she ever taught you' }]
+  },
+  {
+    type: 'narration',
+    zh: '她洗了手，看了一眼手机，说了句「うわ、もうこんな時間」。',
+    en: 'She washes her hands, looks at her phone, and says that she had not realised it had got so late.'
+  },
+  { type: 'scene', scene: 'umikaze_exterior', bgm: 'night' },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
