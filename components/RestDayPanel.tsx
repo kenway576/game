@@ -25,14 +25,23 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, onPick, onSk
     : { weekend: '周末', holiday: '祝日', vacation: '长假', school: '上学日' }[kind];
 
   // 上学日问的不是"今天怎么过"，是"今天还去不去"。
-  const heading = kind === 'school'
-    ? (en ? 'Are you going in today?' : '今天还去学校吗？')
-    : (en ? 'What are you doing today?' : '今天要怎么过？');
-  const mood = kind === 'school'
-    ? (en
-        ? 'There are lessons today. Nothing is stopping you from not going, except what it costs.'
-        : '今天有课。没有人拦着你不去，只有代价。')
-    : dayMood(calendar, language);
+  // 午休那一格问的又不一样：上午已经过完了，现在定的是下午——
+  // 这时候还写"今天还去学校吗"，玩家会以为自己一早上什么都没干。
+  const atLunch = calendar.timeSlot === 'lunch';
+  const heading = kind !== 'school'
+    ? (en ? 'What are you doing today?' : '今天要怎么过？')
+    : atLunch
+      ? (en ? 'Going back for the afternoon?' : '下午还回去上课吗？')
+      : (en ? 'Are you going in today?' : '今天还去学校吗？');
+  const mood = kind !== 'school'
+    ? dayMood(calendar, language)
+    : atLunch
+      ? (en
+          ? 'Two more periods after lunch. Walking off the school grounds now means missing both of them.'
+          : '午休之后还有两节。这会儿走出校门，那两节就没了。')
+      : (en
+          ? 'There are lessons today. Nothing is stopping you from not going, except what it costs.'
+          : '今天有课。没有人拦着你不去，只有代价。');
 
   // 早上那两句。点一下翻过去。
   if (!woke) {

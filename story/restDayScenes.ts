@@ -45,7 +45,10 @@ const INARI = '/images/characters/inari/';
 
 const HOME_SPRING: StoryNode[] = [
   { type: 'scene', scene: 'apartment_balcony', bgm: 'lobby', titleZh: '什么都不干的一天', titleEn: 'A Day of Nothing', subtitleZh: '春 · 海风庄 202', subtitleEn: 'Spring · Umikaze-so 202' },
-  { type: 'narration', zh: '你九点半醒的。没有闹钟，是外面晾衣杆被风吹得当当响把你吵醒的。', en: 'You wake at half nine. No alarm; the washing pole clanging outside did it.' },
+  // ⚠️ 这里以前写死了"九点半醒的"。可玩家很可能是上午翘掉课接着睡、
+  // 睡到下午才起，然后才选的"一整天什么都不做"——两段文本一对上就打架了。
+  // 醒的时间交给玩家自己的选择，这儿只写那根晾衣杆。
+  { type: 'narration', zh: '把你吵醒的是外面那根晾衣杆，风一来就当当地响。没有闹钟，今天不需要闹钟。', en: 'What wakes you is the washing pole outside, clanging whenever the wind gets at it. No alarm. Today does not need one.' },
   { type: 'narration', zh: '阳台朝东。这个时间太阳正好翻过对面那栋楼，把整个房间照成一片很旧的黄色。', en: 'The balcony faces east. At this hour the sun clears the block opposite and turns the whole room an old shade of yellow.' },
   { type: 'narration', zh: '你把被子搬出去晒。这是你来神户之后学会的第一件家务，深雪教的：不是搭上去，是要拍。', en: 'You take the futon out. It was the first bit of housekeeping you learned here — Miyuki taught you that you do not just drape it, you beat it.' },
   {
@@ -148,7 +151,7 @@ const HOME_SUMMER: StoryNode[] = [
 
 const HOME_AUTUMN: StoryNode[] = [
   { type: 'scene', scene: 'apartment_room', bgm: 'lobby', titleZh: '换季', titleEn: 'Changing Over', subtitleZh: '秋 · 海风庄 202', subtitleEn: 'Autumn · Umikaze-so 202' },
-  { type: 'narration', zh: '早上你是被冷醒的。这是今年第一次。', en: 'You wake up cold. First time this year.' },
+  { type: 'narration', zh: '你是被冷醒的。这是今年第一次。', en: 'You wake up cold. First time this year.' },
   { type: 'narration', zh: '衣柜最上面那格里有一床更厚的被子，你搬来的时候没动过。今天该动了。', en: 'There is a heavier futon on the top shelf of the wardrobe that you have not touched since you moved in. Today is the day.' },
   {
     type: 'choice',

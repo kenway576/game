@@ -2727,7 +2727,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // 写法上刻意不总结、不抒情、不下结论——全是手上的动作和听见的声音。
   // 兴奋不用"我很兴奋"来写，用"翻了第七次身"来写。
   {
-    type: 'scene', scene: 'room', bgm: 'night',
+    type: 'scene', scene: 'apartment_room_night', bgm: 'night',
     titleZh: '第一夜', titleEn: 'The First Night',
     subtitleZh: '海风庄 202 · 十一点二十',
     subtitleEn: 'Umikaze-so 202 · Twenty past eleven'

@@ -153,7 +153,9 @@ export const NPCS: Npc[] = [
     nameJp: '高橋くん', nameZh: '高桥', nameEn: 'Takahashi',
     roleZh: '百元店的店员。扫码枪拿在手里像拿着一把枪。',
     roleEn: 'Hundred-yen shop staff. Holds the barcode scanner the way you would hold a pistol.',
-    home: ['hyakkin_store', 'convenience_store']
+    // 他是百元店的收银。挂上便利店的结果是玩家在便利店里
+    // 碰到一个自我介绍「百元店的店员」的人。
+    home: ['hyakkin_store', 'sannomiya_arcade']
   },
   {
     id: 'watanabe', sprite: CITY_NPC_SPRITES.watanabe,

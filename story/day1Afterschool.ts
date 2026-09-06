@@ -1600,7 +1600,7 @@ export const DAY1_EVENING: StoryNode[] = [
   { type: 'scene', scene: 'kitano_slope_foot_dusk', bgm: 'night' },
   {
     type: 'narration',
-    characterImage: `${NAO}cat_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     zh: '两个人一起往上走。她走在你左边，隔半步，这个距离十年没变过。',
     en: 'You start up the slope together. She walks on your left, half a step ahead. That distance has not changed in ten years.'
   },
@@ -1612,7 +1612,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}cat_happy.webp`,
+    characterImage: `${NAO}knit_happy.webp`,
     jp: 'あ、それ？なんか安かったから。',
     zh: '啊，那个？因为好像挺便宜的。',
     en: 'Oh, that? It seemed cheap.',
@@ -1630,14 +1630,14 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${NAO}cat_curious.webp`,
+    characterImage: `${NAO}knit_curious.webp`,
     zh: '她歪着头苦思冥想了半天，两人踩着柏油路上的碎石，并肩慢慢爬上了一大段坡道。',
     en: 'She tilts her head, racking her brain, as you both trudge up the long incline together, sneakers crunching softly over gravel in the asphalt.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}cat_shy.webp`,
+    characterImage: `${NAO}knit_shy.webp`,
     jp: '……電車に置いてきたかも。',
     words: [{ jp: '置いてくる', reading: 'おいてくる', zh: '落下、忘在某处', en: 'to leave something behind' }],
     zh: '……可能落在电车上了。',
@@ -1652,14 +1652,14 @@ export const DAY1_EVENING: StoryNode[] = [
   // ---- 她其实什么都看见了 ----
   {
     type: 'narration',
-    characterImage: `${NAO}cat_neutral.webp`,
+    characterImage: `${NAO}knit_neutral.webp`,
     zh: '走到一半的时候，她忽然停下来，转过身，非常仔细地看了看你的脸。',
     en: 'Halfway up she stops, turns around, and looks at your face very carefully.'
   },
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}cat_curious.webp`,
+    characterImage: `${NAO}knit_curious.webp`,
     jp: '……あんた、今日ちゃんとご飯食べた？',
     zh: '……你今天，好好吃饭了吗？',
     en: '...Did you actually eat today?',
@@ -1673,7 +1673,7 @@ export const DAY1_EVENING: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',
-    characterImage: `${NAO}cat_angry.webp`,
+    characterImage: `${NAO}knit_angry.webp`,
     jp: '嘘。あんた嘘つくとき、ちょっとだけ右見んねん。昔から。',
     words: [{ jp: '嘘', reading: 'うそ', zh: '谎话', en: 'a lie' }],
     zh: '骗人。你说谎的时候会稍微往右看一下。从小就是。',
@@ -1718,7 +1718,7 @@ export const DAY1_EVENING: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${NAO}cat_neutral.webp`,
+        characterImage: `${NAO}knit_neutral.webp`,
         zh: '她的脚步不知不觉比刚才加快了些，靴底在水泥路上带出急促的轻响。你拎着塑料袋默默跟在后头，没有出声问为什么。',
         en: 'Unconsciously her pace quickens, shoe soles clicking rapidly against the pavement. Carrying the plastic bags, you keep pace behind her in silence without asking why.'
       }
@@ -1941,24 +1941,24 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '**第一，材料。** 你能用的东西只有两种来路：阳台上自己种的，和海边自己钓的。买来的东西不是不能吃，但那种东西吃完就没了，做不成一道菜。',
-    en: '**One: ingredients.** There are exactly two places yours can come from — what you grow on that balcony, and what you catch off the sea. Bought food is not inedible, it simply goes and leaves nothing behind. It does not become a dish.'
+    zh: '第一，材料。你能用的东西只有两种来路：阳台上自己种的，和海边自己钓的。买来的东西不是不能吃，但那种东西吃完就没了，做不成一道菜。',
+    en: 'One: ingredients. There are exactly two places yours can come from — what you grow on that balcony, and what you catch off the sea. Bought food is not inedible, it simply goes and leaves nothing behind. It does not become a dish.'
   },
   {
     type: 'narration',
-    zh: '**第二，做出来的东西不卖钱。** 你做的菜没有人收，只能自己吃掉。吃掉之后长的不是钱，是本事——耐心、手艺、对别人多一点周到，这一类的东西。',
-    en: '**Two: what you cook is not for sale.** Nobody will buy it and you eat it yourself. What it turns into is not money but capacity: patience, skill, being a bit more thoughtful about other people. That sort of thing.'
+    zh: '第二，做出来的东西不卖钱。你做的菜没有人收，只能自己吃掉。吃掉之后长的不是钱，是本事——耐心、手艺、对别人多一点周到，这一类的东西。',
+    en: 'Two: what you cook is not for sale. Nobody will buy it and you eat it yourself. What it turns into is not money but capacity: patience, skill, being a bit more thoughtful about other people. That sort of thing.'
   },
   {
     type: 'narration',
-    zh: '**第三，有的菜不是天生就会的。** 味噌汤这种谁都能学会，可再往上的东西得有人教你，或者你自己去买本菜谱。神户的书店里那两本关西家常菜和鱼的书就是干这个用的。',
-    en: '**Three: not every dish is one you simply know.** Miso soup anybody can be taught. Past that, somebody has to show you, or you buy the book yourself. Those two on the shelf in town — Kansai home cooking, and the one about fish — exist for exactly that.'
+    zh: '第三，有的菜不是天生就会的。味噌汤这种谁都能学会，可再往上的东西得有人教你，或者你自己去买本菜谱。神户的书店里那两本关西家常菜和鱼的书就是干这个用的。',
+    en: 'Three: not every dish is one you simply know. Miso soup anybody can be taught. Past that, somebody has to show you, or you buy the book yourself. Those two on the shelf in town — Kansai home cooking, and the one about fish — exist for exactly that.'
   },
   {
     type: 'narration',
     characterImage: `${NAO}knit_neutral.webp`,
-    zh: '**第四，在哪儿做。** 她伸手拍了拍这块台面。「就这儿。你自己房间里，从这个灶开始。」',
-    en: '**Four: where.** She pats the counter. "Here. In your own room, starting at this ring."'
+    zh: '第四，在哪儿做。她伸手拍了拍这块台面。「就这儿。你自己房间里，从这个灶开始。」',
+    en: 'Four: where. She pats the counter. "Here. In your own room, starting at this ring."'
   },
   {
     type: 'speech',

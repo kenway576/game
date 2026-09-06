@@ -247,6 +247,9 @@ const App: React.FC = () => {
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
   // 店里的小景演完之后再打开的那家店。null = 演完就回大厅。
   const [pendingStore, setPendingStore] = useState<StoreKind | null>(null);
+  // 🏫 午休选了校外的地方，而下午还有课。走之前问一句要不要翘。
+  // 存的是那个地点本身：玩家点"去"，就拿它接着走原来的流程。
+  const [askSkipAfternoon, setAskSkipAfternoon] = useState<MapLocation | null>(null);
   // 🧑‍🏫 教程演完之后再打开的那个玩法。种菜和钓鱼第一次都得有人先教一遍，
   // 否则玩家点开的是一个没写说明书的仪表盘。
   const [pendingFishing, setPendingFishing] = useState<MapLocation | null>(null);
@@ -1039,7 +1042,17 @@ const App: React.FC = () => {
   // 店和钓点是例外：它们本身就是一个界面，不该被"今天这儿没事发生"的空转旁白挡住。
   // 但第一次去仍然让剧情事件先播（比如第一次走到三宫站那段），所以顺序是
   // "有事件先演事件，没事件才直接开门"。
-  const startTrip = (loc: MapLocation) => {
+  const startTrip = (loc: MapLocation, confirmedSkip = false) => {
+    // 🏫 午休 + 下午还有课 + 要去的地方在校外 = 这一趟等于翘掉下午。
+    // 以前是不问自取：玩家午休去趟商店街，回来发现已经放学了，
+    // 下午两节课凭空消失。校内的地方（图书室、天台、体育馆）不算，
+    // 那本来就是午休该去的地方，回来照样上课。
+    if (!confirmedSkip && gameCalendar.timeSlot === 'lunch' && classPending
+        && loc.district !== 'school') {
+      audioManager.playSfx('click');
+      setAskSkipAfternoon(loc);
+      return;
+    }
     // 到过就记一笔。写在最前面是因为下面店、钓点、花园各自 return 走了，
     // 记在后面的话这三种地方永远上不了外公那张地图。
     setStoryFlags(prev => (prev[beenFlag(loc.id)] ? prev : { ...prev, [beenFlag(loc.id)]: true }));
@@ -1390,27 +1403,34 @@ const App: React.FC = () => {
     const rollsOver = nextSlot >= AFTERSCHOOL_SLOTS.length;
 
     if (rollsOver) {
-      // 时间用光会直接滚到第二天。这条路径以前不补体力，
-      // 于是"熬到天亮"的第二天是带着昨天的疲劳开始的。
-      const rolled = advanceCalendarDay(gameCalendar);
-      const weathers: GameCalendar['weather'][] = ['sunny', 'sunny', 'cloudy', 'rainy', 'sunset'];
-      setLife(l => ({
-        ...l, stamina: STAMINA_MAX, staminaOn: dayIndex(rolled),
-        wentOutOn: dayIndex(gameCalendar), stayInDays: 0
-      }));
-      setGameCalendar({
-        ...rolled,
-        timeSlot: 'lunch',
-        weather: weathers[Math.floor(Math.random() * weathers.length)]
-      });
-    } else {
+      // 🛏 时间用完不再自己翻篇。
+      //
+      // 直接跳到第二天，等于把一天的结尾整个删掉：主角没有回过家，
+      // 没有机会看手机、翻手账、跟人回条消息，画面一黑就是明天早上。
+      // 现在停在夜里、人回到房间，睡不睡由玩家自己按。
+      setLife(l => ({ ...l, wentOutOn: dayIndex(gameCalendar), stayInDays: 0 }));
+      setGameCalendar(prev => ({ ...prev, timeSlot: 'night' }));
+      setCurrentScene('apartment_room');
+      setGameMode(GameMode.ROOM);
+      setLifeToast(userState.language === 'en'
+        ? 'That is the day gone. Anything else can wait until tomorrow.'
+        : '今天就到这儿了。剩下的明天再说吧。');
+      return;
+    }
+    {
       // 🔋 这一趟有多累。轻的一趟十几点，打工和部活是它的两倍多——
       // 所以"还剩两格时间"和"还干得动两件事"不是一回事。
       if (trip) {
         // 🚪 今天出过门了。窝在家的计数靠这个。
         setLife(l => ({ ...l, wentOutOn: dayIndex(gameCalendar), stayInDays: 0 }));
-        // 🏫 上课日的早上出门，就是翘课。明日香会知道。
-        if (classPending) {
+        // 🏫 出门算不算翘课，要看去了哪儿。
+        //
+        // 以前一律算：午休时候在学校里走一趟（图书室、天台、体育馆），
+        // 回来下午的课就被标成"上过了"，于是下午两节永远播不到——
+        // 玩家的体感是"午休一结束直接放学了"。
+        // 校内的地方本来就是午休该去的地方，回来还得回教室。
+        const onCampus = trip.loc.district === 'school';
+        if (classPending && !onCampus) {
           setStoryFlags(prev => ({
             ...prev, skipped_school: true, [classDoneFlag(gameCalendar, classSlotNow() ?? 'morning')]: true
           }));
@@ -1419,7 +1439,11 @@ const App: React.FC = () => {
         // 温泉和保健室的 drain 是负的，所以两头都要夹
         setLife(l => ({ ...l, stamina: Math.max(0, Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) - drain)) }));
       }
-      setGameCalendar(prev => ({ ...prev, timeSlot: AFTERSCHOOL_SLOTS[nextSlot] }));
+      // 午休在校内活动完，时段不动——下一件事是回教室上下午的课，
+      // 不是放学。推进时段的话，下午那两节就没地方放了。
+      const stayLunch = !!trip && trip.loc.district === 'school'
+        && gameCalendar.timeSlot === 'lunch' && classPending;
+      if (!stayLunch) setGameCalendar(prev => ({ ...prev, timeSlot: AFTERSCHOOL_SLOTS[nextSlot] }));
     }
   };
 
@@ -2434,6 +2458,14 @@ ${wind}`;
               flashLife(tiredLine(gameCalendar, userState.language === 'en'));
               return;
             }
+            // 🌅 早上不是直接推门出去的时段。
+            // 一天怎么开头，是在"今天"那张面板上定的：去上学、做个便当、
+            // 或者干脆不去。绕过它直接开地图，等于把每天早上那个选择删掉。
+            if (gameCalendar.timeSlot === 'morning' && !storyFlags[plannedFlag(gameCalendar)]) {
+              audioManager.playSfx('click');
+              setShowRestPlan(true);
+              return;
+            }
             setGameMode(GameMode.MAP);
           }}
           onOpenCalendar={() => setShowCalendar(true)}
@@ -2959,6 +2991,47 @@ ${wind}`;
           onOpenKitchen={() => setInKitchen(true)}
           onOpenKobeMap={() => setShowKobeMap(true)}
         />
+      )}
+
+      {/* 🏫 午休要出校门，而下午还有课 */}
+      {askSkipAfternoon && (
+        <div className="fixed inset-0 z-[95] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6"
+             onClick={() => setAskSkipAfternoon(null)}>
+          <div className="max-w-md w-full bg-neutral-950 border border-yellow-500/40 p-6 space-y-4"
+               onClick={e => e.stopPropagation()}>
+            <div className="text-yellow-400 text-[11px] font-black tracking-widest">
+              {userState.language === 'en' ? 'LUNCH BREAK' : '午休'}
+            </div>
+            <h3 className="text-white text-xl font-black">
+              {userState.language === 'en'
+                ? 'Cut the afternoon and go wandering?'
+                : '下午翘掉，出去溜达？'}
+            </h3>
+            <p className="text-white/60 text-sm leading-relaxed">
+              {userState.language === 'en'
+                ? `${askSkipAfternoon.nameEn} is off school grounds. Once you are out there you are not coming back for fifth period, and somebody will notice the empty desk.`
+                : `${askSkipAfternoon.nameZh}在校外。走出这个校门，下午那两节就别想了，而且空着的座位是有人会看见的。`}
+            </p>
+            <div className="flex gap-3 pt-1">
+              <button
+                onClick={() => { const loc = askSkipAfternoon; setAskSkipAfternoon(null); if (loc) startTrip(loc, true); }}
+                className="flex-1 bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2.5 text-xs font-black tracking-widest transform -skew-x-12"
+              >
+                <span className="block transform skew-x-12">
+                  {userState.language === 'en' ? 'Go anyway' : '去'}
+                </span>
+              </button>
+              <button
+                onClick={() => setAskSkipAfternoon(null)}
+                className="flex-1 bg-white/5 hover:bg-white/10 text-white/70 border border-white/20 px-4 py-2.5 text-xs font-black tracking-widest transform -skew-x-12"
+              >
+                <span className="block transform skew-x-12">
+                  {userState.language === 'en' ? 'Back to class' : '算了，回教室'}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {showConsentGate && (

@@ -124,7 +124,11 @@ const LobbyScreen: React.FC<Props> = ({
           // 只能等它过去。一周有五个这样的早晨。
           <button onClick={onGoToClass} className="-skew-x-12 text-left group">
             <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-yellow-400 group-hover:text-yellow-300">
-              {userState.language === 'en' ? 'GO TO SCHOOL ▶' : '去上学 ▶'}
+              {/* 午休那一格点进去上的是下午的课，不是"去上学"——
+                  第一次玩的人看见"去上学"会以为自己还没出过门。 */}
+              {calendar.timeSlot === 'lunch'
+                ? (userState.language === 'en' ? 'BACK FOR AFTERNOON CLASS ▶' : '回教室上下午的课 ▶')
+                : (userState.language === 'en' ? 'GO TO SCHOOL ▶' : '去上学 ▶')}
             </h2>
             <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest truncate max-w-[62vw] md:max-w-none">
               {classLine}

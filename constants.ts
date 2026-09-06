@@ -126,6 +126,11 @@ export const SCENE_MAP: Record<string, string> = {
   'sannomiya_hankyu_crossing':   '/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',
   'umikaze_exterior':    '/images/backgrounds/bg_umikaze_apartment_exterior.webp',
   'apartment_room':      '/images/backgrounds/bg_umikaze_room_201.webp',
+  // 夜里的 201。剧本里的夜戏以前用的是白天那张，于是"第一夜"那一整段
+  // 是在正午的阳光里演完的。日历走到夜里时 getRoomBackground 会自己换图，
+  // 但固定剧本不看日历，所以给它一个能直接点名的键。
+  'apartment_room_night': '/images/backgrounds/bg_umikaze_room_201_night.webp',
+  'room_night':           '/images/backgrounds/bg_umikaze_room_201_night.webp',
   'apartment_balcony':   '/images/backgrounds/bg_umikaze_balcony_harbor.webp',
   'sannomiya_arcade':            '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
   'supermarket':                 '/images/backgrounds/bg_supermarket_interior.webp',
