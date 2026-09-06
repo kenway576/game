@@ -128,6 +128,7 @@ export const SCENE_MAP: Record<string, string> = {
   'apartment_room':      '/images/backgrounds/bg_umikaze_room_201.webp',
   'apartment_balcony':   '/images/backgrounds/bg_umikaze_balcony_harbor.webp',
   'sannomiya_arcade':            '/images/backgrounds/bg_sannomiya_shopping_arcade.webp',
+  'supermarket':                 '/images/backgrounds/bg_supermarket_interior.webp',
   'convenience_store':           '/images/backgrounds/bg_convenience_store_interior.webp',
   'convenience_store_exterior':  '/images/backgrounds/bg_convenience_store_night.webp',
   'convenience_store_night':     '/images/backgrounds/bg_convenience_store_night.webp',
@@ -1434,7 +1435,7 @@ export const getFamiliarityStage = (charId: CharacterId, familiarity: number): s
 // 各**親密度**等级解锁的场景（对全角色通用；键须存在于 SCENE_MAP）
 export const SCENE_UNLOCKS_BY_LEVEL: Record<number, string[]> = {
   1: ['classroom', 'hallway', 'library', 'rooftop', 'gym', 'street', 'park', 'school_entrance_lockers', 'kaisei_classroom_morning', 'school_bicycle_parking', 'kaisei_intl_salon'],
-  2: ['cafe', 'kitchen', 'room', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior', 'sannomiya_junkudo_bookstore', 'portliner_sannomiya_gate', 'portliner_sannomiya_platform', 'sannomiya_pia_kobe_arcade', 'hundred_yen_shop_interior', 'retro_kissaten_interior', 'ramen_rekishi_bowl', 'umikaze_room_kitchen', 'cooking_counter_bento', 'school_gym_storage', 'kaisei_cafeteria_sunlight', 'school_infirmary'],
+  2: ['cafe', 'kitchen', 'room', 'supermarket', 'convenience_store_exterior', 'convenience_store', 'convenience_store_interior', 'sannomiya_junkudo_bookstore', 'portliner_sannomiya_gate', 'portliner_sannomiya_platform', 'sannomiya_pia_kobe_arcade', 'hundred_yen_shop_interior', 'retro_kissaten_interior', 'ramen_rekishi_bowl', 'umikaze_room_kitchen', 'cooking_counter_bento', 'school_gym_storage', 'kaisei_cafeteria_sunlight', 'school_infirmary'],
   3: ['beach', 'shrine', 'lab', 'kobe_harbor', 'kitano_slope', 'coastal_platform', 'ikuta_shrine_gate', 'ikuta_shrine_forest', 'former_settlement_15_exterior', 'former_settlement_15_salon', 'suma_beach_coast', 'suma_fishing_pier', 'seaside_railroad_crossing', 'nada_onsen_interior', 'oji_zoo_entrance', 'oji_zoo_ferris_wheel', 'kitano_kazamidori_square'],
   4: ['festival', 'night', 'jazz_livehouse', 'mosaic_night', 'rokko_night', 'ikuta_shrine', 'nankinmachi', 'kitano_tenman_shrine_lookout', 'portliner_sannomiya_sunset', 'arima_onsen_kin_no_yu', 'arima_onsen_street_slope', 'grill_ippei_motomachi'],
   5: ['castle', 'luminarie', 'arima_onsen', 'dotonbori', 'kiyomizu_stage', 'rokko_kikuseidai_night_view', 'kobe_beef_teppanyaki']

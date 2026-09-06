@@ -98,16 +98,6 @@ const NAO_STATION: StoryNode[] = [
             zh: '走了十分钟，是一家超市。她拿了一个购物篮塞给你，说「持って」。',
             en: 'Ten minutes later it is a supermarket. She takes a basket and pushes it at you. "Hold this."'
           },
-          {
-            type: 'narration',
-            zh: '接下来四十分钟她在货架之间来回，往篮子里放东西，一样都没问过你要不要。',
-            en: 'For the next forty minutes she goes up and down the aisles putting things in the basket, without once asking whether you want any of it.'
-          },
-          {
-            type: 'narration',
-            zh: '结账的时候你才发现，篮子里一半是你家里没有的东西。她一直知道你冰箱是空的。',
-            en: 'At the till you notice that half of it is things you do not have. She has known all along that your fridge is empty.'
-          }
         ]
       },
       {
@@ -136,6 +126,180 @@ const NAO_STATION: StoryNode[] = [
         ]
       }
     ]
+  },
+  // ---------------------------------------------------------
+  // 🛒 超市
+  //
+  // 这一段以前是三句旁白，四十分钟压成一行「她在货架之间来回」。
+  // 但这是这两个人第一次单独待够长的时间，逛超市恰好是那种
+  // 什么都没发生、却什么都露出来了的场合。
+  // ---------------------------------------------------------
+  { type: 'scene', scene: 'supermarket', bgm: 'store', titleZh: '业务超市 · 三宫店', titleEn: 'The Supermarket' },
+  {
+    type: 'narration',
+    zh: '进门是蔬菜。她推着车直接拐进去，动作熟得像在自己家。你跟在后面，第一次发现原来白萝卜可以论"半根"卖。',
+    en: 'Vegetables are just inside the door. She turns straight in with the trolley, moving like somebody in her own house. You follow, and discover for the first time that daikon can be sold by the half.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: 'あんた、今日から一人で作んねんで。まず、これ。',
+    zh: '你从今天起要一个人做饭的欸。首先，这个。',
+    en: 'You are cooking for yourself from now on. First: this.',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '「这个」是一袋豆芽。四十九日元。她把它放进篮子的样子，像是在传授某种秘技。',
+    en: '"This" is a bag of bean sprouts. Forty-nine yen. The way she puts it in the basket suggests the transmission of a secret technique.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_happy.webp`,
+    zh: '「豆芽是这样的，」她说，「什么都能加，加了就有量，而且它便宜到你不会心疼。人生的底线就是这个。」',
+    en: '"Bean sprouts work like this," she says. "They go in anything, they make it look like more, and they are cheap enough that you never regret them. That is the floor of a human life."'
+  },
+  {
+    type: 'narration',
+    zh: '你说这话听起来像是某种武道流派的第一课。她非常认真地点了点头，说「せやで」。',
+    en: 'You say that sounds like the first lesson of some martial school. She nods gravely and agrees that it is.'
+  },
+
+  {
+    type: 'narration',
+    zh: '鱼柜前面，一个穿围裙的阿姨正在发试吃。竹签插着一小块炸鱼。奈绪拿了一块，两秒之后又拿了一块，然后把第二块塞给你。',
+    en: 'At the fish counter a woman in an apron is handing out samples: a small piece of fried fish on a cocktail stick. Nao takes one, takes a second one two seconds later, and puts the second one in your hand.'
+  },
+  {
+    type: 'narration',
+    zh: '阿姨看着她。她非常自然地说了句「弟です」，然后推着车就走了。',
+    en: 'The woman looks at her. Nao says, entirely naturally, that you are her little brother, and pushes the trolley onwards.'
+  },
+  {
+    type: 'choice',
+    promptZh: '你跟上去，嘴里还含着那块试吃。',
+    promptEn: 'You catch up with the sample still in your mouth.',
+    options: [
+      {
+        id: 'mkt_brother',
+        labelZh: '「你比我小三个月。」',
+        labelEn: '"You are three months younger than me."',
+        jp: '……三ヶ月下やろ、あんた。',
+        hintZh: '这件事你记了十年',
+        hintEn: 'You have been keeping this fact for ten years.',
+        relations: [{ char: CharacterId.NAO, familiarity: 6, affection: 4, reasonZh: '她被抓到了，而且是被十年前的证据抓到的', reasonEn: 'She was caught out, on ten-year-old evidence' }],
+        then: [
+          {
+            type: 'narration',
+            characterImage: `${N}knit_angry.webp`,
+            zh: '「うるさい。」她说。「試食もろてる時は、下や。」',
+            en: '"Shut up," she says. "When there are free samples involved, you are the younger one."'
+          },
+          {
+            type: 'narration',
+            zh: '这个规则你以前没听说过。但你回头看了一眼，阿姨又给了她一块。',
+            en: 'This is a rule you had not previously encountered. You do look back, though, and the woman has given her another piece.'
+          }
+        ]
+      },
+      {
+        id: 'mkt_jojo',
+        labelZh: '「……你刚才那个撒谎的速度，是替身能力吧。」',
+        labelEn: '"...The speed of that lie. That is a Stand ability."',
+        jp: '今の嘘、スピードがおかしい。スタンド使いやろ。',
+        hintZh: '零点二秒，面不改色',
+        hintEn: 'Two tenths of a second, and not a flicker.',
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '你说了一句只有你们俩听得懂的话', reasonEn: 'You said something only the two of you would understand' }],
+        relations: [{ char: CharacterId.NAO, familiarity: 4, affection: 7, reasonZh: '她接住了，而且接得比你还快', reasonEn: 'She caught it, and caught it faster than you threw it' }],
+        setFlags: ['nao_stand_joke'],
+        then: [
+          {
+            type: 'narration',
+            characterImage: `${N}knit_happy.webp`,
+            zh: '她连头都没回。「近距離パワー型やで。射程、五メートル。」',
+            en: 'She does not even turn round. "Close-range power type. Range: five metres."'
+          },
+          {
+            type: 'narration',
+            zh: '你笑出了声，笑到旁边挑鱼的大叔看了你一眼。你们两个人上一次这样是在小学的走廊上，那时候讲的还是同一部动画。',
+            en: 'You laugh out loud, loudly enough that a man choosing fish looks over. The last time the two of you did this was in a primary school corridor, and it was the same show then too.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${N}knit_shy.webp`,
+            zh: '「……あんた、まだ覚えてたんや。」她这句说得比刚才小声很多。',
+            en: '"...You still remember that." She says this one considerably more quietly.'
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    type: 'narration',
+    zh: '调味料那一排她站了很久。酱油有整整一面墙，从两百日元到两千日元都有。你伸手要拿最便宜的那瓶，被她拍了一下。',
+    en: 'She stands a long time at the seasonings. There is an entire wall of soy sauce, from two hundred yen up to two thousand. You reach for the cheapest bottle and she smacks your hand.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: '醤油はケチったらあかん。これは毎日使うやつやから。',
+    words: [{ jp: '醤油', reading: 'しょうゆ', zh: '酱油', en: 'soy sauce' }],
+    zh: '酱油不能省。这是每天都要用的东西。',
+    en: 'You do not economise on soy sauce. This is something you use every single day.',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '她拿的是中间那一瓶。不是最贵的，也不是第二贵的，是从右边数第四瓶。你问她为什么是这瓶。',
+    en: 'She takes one from the middle. Not the most expensive, not the second most expensive: the fourth from the right. You ask why that one.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_shy.webp`,
+    zh: '「……うちがずっとこれやから。」她说完把它放进篮子，动作有点快。',
+    en: '"...Because it is the one we always had." She puts it in the basket rather quickly after saying it.'
+  },
+
+  {
+    type: 'narration',
+    zh: '鸡蛋区。她伸手，停住了，把手收了回来。',
+    en: 'The eggs. She reaches out, stops, and takes her hand back.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_curious.webp`,
+    zh: '「……昨日、買うたっけ。」她问的是自己。她想了很久，久到旁边有人要拿鸡蛋，绕过她走了。',
+    en: '"...Did I buy eggs yesterday." The question is for herself. She thinks about it long enough that somebody else who wants eggs goes around her.'
+  },
+  {
+    type: 'narration',
+    zh: '最后她还是拿了一盒。「二個あっても死なへんし。」这句话你觉得可以印在她的墓碑上，当然是很多年以后的事。',
+    en: 'In the end she takes a box anyway. Nobody ever died of having two. You privately decide that this could go on her headstone, a great many years from now.'
+  },
+
+  {
+    type: 'narration',
+    zh: '结账队伍很长。她一边排一边把篮子里的东西重新码了一遍，把软的放上面，鸡蛋放最上面。这一整套动作她做得毫不犹豫，像是做过几千次。',
+    en: 'The queue is long. While you wait she repacks the basket, soft things on top, eggs on the very top. She does all of it without hesitating, as though she has done it a few thousand times.'
+  },
+  {
+    type: 'narration',
+    zh: '你忽然想到：她比你早回来一年。这一年里，这些事都是她一个人做的。没有人教她怎么码篮子。',
+    en: 'It occurs to you that she came back a year before you did. For that year she did all of this on her own. Nobody taught her how to pack a basket.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_neutral.webp`,
+    zh: '收银台上，账单一半是你的东西。你伸手要掏钱包，她已经把卡按在读卡器上了，按得又快又准，像是早就想好了要抢在你前面。',
+    en: 'At the till, half the bill is yours. You reach for your wallet. Her card is already flat against the reader, fast and accurate, in a way that had clearly been planned some time in advance.'
+  },
+  {
+    type: 'narration',
+    zh: '「小票给我。」你说。她说扔了。她当然没扔——她这次是攥在手里的，攥了一路。',
+    en: 'You ask for the receipt. She says she threw it away. She has not: this time it is in her fist, and it stays there the whole way out.'
   },
   {
     type: 'narration', characterImage: `${N}knit_neutral.webp`,

@@ -157,7 +157,10 @@ const StoryScreen: React.FC<Props> = ({
   const applyFlags = (list?: string[]) => {
     if (!list?.length) return;
     const next = { ...flagsRef.current };
-    list.forEach(f => { next[f] = true; });
+    // 「give:物品id:个数」是发东西，不是留痕。它照样交给上层（那边负责往
+    // 背包里放），但不能进 flag 表——进了就会跟着存档一路传下去，
+    // 变成一个永远为真、谁也不查的假 flag。
+    list.forEach(f => { if (!f.startsWith('give:')) next[f] = true; });
     flagsRef.current = next;
     onFlags?.(list);
   };
