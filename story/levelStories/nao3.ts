@@ -63,8 +63,8 @@ export const NAO_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你说不会。她还是犹豫了很久才递过来。',
-    en: 'You say no. She still hesitates for a long time before she hands it over.'
+    zh: '你认真地摇了摇头。她那双水润的眼眸微垂，微卷的长发散在耳边，手指攥着笔记本犹豫迟疑了许久，才小心翼翼地递了过来。',
+    en: 'You shake your head with genuine seriousness. With dark lashes lowered and soft curls framing her cheeks, she hesitates for a long while before cautiously handing it across.',
   },
 
   // ---- 那本新的 ----
@@ -208,8 +208,8 @@ export const NAO_STORY_3: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${N}knit_curious.webp`,
-            zh: '她读完之后很长时间没有说话。然后她笑了，笑得很难看。',
-            en: 'She reads it and says nothing for a long time. Then she laughs, and it is not a pretty laugh.'
+            zh: '她读完那几行字后久久不发一语，眼眶微微泛红，嘴角扯起一抹混杂着释怀与感动的酸涩笑容。',
+            en: 'She finishes those lines and stays silent for a long moment, the rims of her eyes slightly reddening as a tender, wistful smile breaks through.'
           },
           {
             type: 'speech',

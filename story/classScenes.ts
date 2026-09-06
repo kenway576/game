@@ -515,8 +515,8 @@ export const QUIZZES: Quiz[] = [
       { zh: '√3/2', en: '√3/2' },
       { zh: '√2/2', en: '√2/2' }
     ],
-    afterZh: '你两秒写完，然后花了剩下的十分钟看窗外。',
-    afterEn: 'You write it in two seconds and spend the remaining ten minutes looking out of the window.',
+    afterZh: '你扫了一眼题目唰唰写下答案，随后便撑着侧脸陷入沉思，望向窗外的流云发呆。',
+    afterEn: 'You glance at the problem, jot down the answer in a flash, and spend the rest of the period propping your chin, daydreaming at the clouds.',
     word: { jp: '角度', reading: 'かくど', zh: '角度', en: 'angle' }
   },
   {
@@ -623,8 +623,8 @@ export const CLASS_EVENTS: ClassEventDef[] = [
         familiarity: 5, affection: 2,
         reasonZh: '她醒过来的第一件事是把课本翻到正确的那一页——她知道是谁叫的她',
         reasonEn: 'The first thing she did on waking was turn to the right page. She knew who had woken her',
-        thenZh: '她弹起来的动作太大，椅子响了一声。老师停下，看了她两秒，继续往前走了。下课以后她回过头，只说了一句「借りといて」。',
-        thenEn: 'She comes up so fast the chair scrapes. The teacher stops, looks at her for two seconds, and walks on. After class she turns round and says only that she owes you one.',
+        thenZh: '她猛地弹起来的动作太大，椅子腿在地面上刺耳地响了一声。老师脚步一顿，严厉的视线在她身上来回扫视了片刻，才摇摇头继续往前走。下课后她心虚地回过头，压低声音说了一句「借りといて」。',
+        thenEn: 'She bolts upright with such sudden force that the chair leg squeals against the floor. The teacher pauses, sweeping a stern gaze over her for a tense beat before shaking his head and walking on. After class she turns round sheepishly, whispering that she owes you one.',
         word: { jp: '借り', reading: 'かり', zh: '欠的人情', en: 'a debt owed' }
       },
       {
@@ -635,8 +635,8 @@ export const CLASS_EVENTS: ClassEventDef[] = [
         familiarity: 3, affection: 4,
         reasonZh: '她醒来的时候先看见的是那本立着的书',
         reasonEn: 'The first thing she saw when she woke was that upright book',
-        thenZh: '她睡了十一分钟。醒来之后看了看那本立着的课本，又看了看你，然后什么也没问，把书轻轻放平了。',
-        thenEn: 'She sleeps for eleven minutes. When she wakes she looks at the standing textbook, then at you, asks nothing, and lays it flat again.'
+        thenZh: '她就这么沉沉睡了大半节课。醒来之后先是怔怔地看着那本立起来替她掩护的课本，又侧头看了看你，心照不宣地什么也没问，只是抿着嘴悄悄把书放平了。',
+        thenEn: 'She sleeps soundly through most of the period. On waking, she blinks at the upright book shielding her from view, then glances over at you, asking nothing and quietly laying it flat with a small, knowing smile.'
       }
     ]
   },
@@ -661,8 +661,8 @@ export const CLASS_EVENTS: ClassEventDef[] = [
         familiarity: 6, affection: 2,
         reasonZh: '很少有人问她在写什么',
         reasonEn: 'Not many people ask her what she is writing',
-        thenZh: '「……年号が。」她说，声音低到只有你听得见。「一年、ずれてる。」然后她把课本往你这边推了两厘米，让你看清那一行。',
-        thenEn: 'The date, she says, low enough that only you can hear. It is off by a year. Then she pushes the textbook two centimetres your way so you can see the line.',
+        thenZh: '「……年号が。」她说，声音低到只有你听得见。「一年、ずれてる。」然后她把课本往你这边推了些许，让你看清那一行纠错批注。',
+        thenEn: 'The date, she whispers, barely audible. It is off by a year. Then she pushes the textbook slightly your way so you can see the correction.',
         word: { jp: 'ずれる', zh: '错位、偏了', en: 'to be off / misaligned' }
       },
       {
@@ -693,12 +693,12 @@ export const CLASS_EVENTS: ClassEventDef[] = [
         id: 'cough',
         labelZh: '咳嗽一声，正好压过去',
         labelEn: 'Cough, exactly loud enough to cover it',
-        hintZh: '时机只有半秒', hintEn: 'The window is about half a second.',
+        hintZh: '胜负只在电光石火的一瞬', hintEn: 'The window is a fraction of a heartbeat.',
         familiarity: 6, affection: 3,
         reasonZh: '她欠了你一次，而且她讨厌欠人情',
         reasonEn: 'She owes you one now, and she hates owing people',
-        thenZh: '老师低头继续讲。三十秒后你的手机震了一下：「バレたら道連れやからな」。',
-        thenEn: 'The teacher goes back to the board. Thirty seconds later your phone buzzes: if I go down, you go down with me.',
+        thenZh: '老师低头继续讲课。片刻后你的手机在课桌肚里轻震了一下，弹出一条消息：「バレたら道連れやからな（要是被发现了就拉你一起陪葬）」。',
+        thenEn: 'The teacher goes back to the board. Moments later your phone buzzes under the desk with a message: If I go down, I am taking you with me.',
         word: { jp: '道連れ', reading: 'みちづれ', zh: '拖下水的同伴', en: 'someone dragged down with you' }
       },
       {
@@ -771,8 +771,8 @@ export const CLASS_EVENTS: ClassEventDef[] = [
         familiarity: 5, affection: 5,
         reasonZh: '她最讨厌的是被问「要不要帮忙」',
         reasonEn: 'The thing she hates most is being asked whether she needs help',
-        thenZh: '她停了半秒，然后继续擦下面那半块，一个字也没说。走出教室的时候她说：「明日も同じ時間。」',
-        thenEn: 'She pauses for half a second, then carries on with the lower half without a word. On the way out she says: same time tomorrow.',
+        thenZh: '她的板擦在黑板上顿了一瞬，随即若无其事地继续擦拭下面那半块，自始至终没有多说一个字。走出教室时她才背对着你轻飘飘扔下一句：「明日も同じ時間。」',
+        thenEn: 'Her eraser pauses for a heartbeat, then carries on wiping the lower half as if nothing happened. Only as she leaves the room does she drop a quiet line over her shoulder: same time tomorrow.',
         word: { jp: '日直', reading: 'にっちょく', zh: '值日', en: 'daily duty' }
       },
       {

@@ -76,13 +76,13 @@ const EV_RAMEN_SORA: MapEventDef = {
     },
     {
       type: 'choice',
-      promptZh: '老板已经把水杯放到了你面前，没问你要不要坐。',
-      promptEn: 'The master has already put a glass of water in front of you. He did not ask whether you were staying.',
+      promptZh: '老板已经把冰水杯砰的一声撂在面前。你暗自抹了把冷汗：四个空碗……这家伙莫非是传说中觉醒的赛亚人？',
+      promptEn: 'The master sets a glass of iced water down with a solid clunk. You wipe a bead of sweat: four empty bowls... could she be an awakened Super Saiyan in disguise?',
       options: [
         {
           id: 'ramen_sora_count',
-          labelZh: '「三个碗。你这是在练什么？」',
-          labelEn: '"Three bowls. What exactly are you training for?"',
+          labelZh: '「四个碗……你这是在进行哪门子的超级特训？」',
+          labelEn: '"Four bowls... what kind of intense shonen training is this?"',
           jp: '丼が三つ。……何の修行？',
           words: [{ jp: '修行', reading: 'しゅぎょう', zh: '修行、苦练', en: 'training / discipline' }],
           hintZh: '正常人的第一反应',
@@ -565,6 +565,11 @@ const EV_ARCADE_MAKI: MapEventDef = {
     },
     {
       type: 'narration',
+      zh: '（‘杂、杂鱼？！’你在心里捂胸倒退半步，这扑面而来的雌小鬼压迫感是怎么回事！不行，身为正义的伙伴，绝不能在这里被后辈看扁！）',
+      en: '(\'W-weakling?!\' In your mind you clutch your chest and stumble back half a step. What is this overwhelming mesugaki aura?! No—as an ally of justice, you cannot let an underclassman look down on you here!)'
+    },
+    {
+      type: 'narration',
       zh: '你看了眼屏幕。排行榜上第一名和第二名是同一个 ID：MAKI。',
       en: 'You glance at the screen. First and second on the leaderboard are the same ID: MAKI.'
     },
@@ -645,8 +650,8 @@ const EV_ARCADE_MAKI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '你被打了个稀烂。一百二十个音符，你接住了三十一个。',
-              en: 'You are destroyed. A hundred and twenty notes; you hit thirty-one.'
+              zh: '屏幕上的判定线仿佛下了一场疾风骤雨。你一顿手忙脚乱的鬼畜操作，在连击中断的暴击音效里被打得溃不成军——一百二十个音符，你拼尽全力也只勉强接住了三十一个。',
+              en: 'The notes rain down like a sudden tempest. Between your panicked flailing and the stinging chime of dropped combos, you are thoroughly dismantled—of a hundred and twenty notes, you manage to hit thirty-one.'
             },
             {
               type: 'narration',
@@ -837,8 +842,8 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              zh: '两个小时里你们吃了九样东西。她给每一样打分，标准非常严格，而且完全没有逻辑。',
-              en: 'In two hours you eat nine things. She scores every one of them by criteria that are extremely strict and entirely without logic.'
+              zh: '从街头吃到街尾，你们足足扫荡了九样风味小吃。她神情严肃地给每样东西逐一打分，评判标准极其严苛，而且完全没有任何科学逻辑。',
+              en: 'From one end of the street to the other, you devour nine kinds of street food. She grades every single item with intense seriousness, her criteria ruthlessly strict and entirely devoid of scientific logic.'
             },
             {
               type: 'speech',
@@ -939,8 +944,8 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '两个小时后，那一页写满了。九样东西，五个维度，一个你完全看不懂的加权公式，以及她在最下面画的一只很丑的猪。',
-              en: 'Two hours later the page is full. Nine items, five dimensions, a weighting formula you cannot follow at all, and a very badly drawn pig at the bottom.'
+              zh: '不知不觉间，那一页备忘录被密密麻麻地填满了。九样小吃、五个主观维度、一个你完全看不懂的玄学加权公式，以及她在最底下即兴涂鸦的一只表情极其魔性的猪。',
+              en: 'Before you know it, the memo page is packed solid. Nine items, five subjective metrics, a mystical weighting formula you cannot decipher, and an aggressively expressive pig doodled at the very bottom.'
             },
             {
               type: 'speech',
@@ -1297,8 +1302,8 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${MIYUKI}thinking.webp`,
-              zh: '她的手指在封面上停了一下。',
-              en: 'Her finger pauses on the cover.'
+              zh: '她的指尖在微旧的书脊上轻轻摩挲了一瞬。',
+              en: 'Her fingertips linger on the slightly worn spine for a fleeting instant.'
             },
             {
               type: 'speech',
@@ -1338,8 +1343,8 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${MIYUKI}thinking.webp`,
-              zh: '新的那杯放到她面前时，她抬起头，愣了一下。',
-              en: 'When the fresh cup is set in front of her, she looks up and pauses.'
+              zh: '热气腾腾的新咖啡悄然搁在她面前时，她有些诧异地抬起头，眼中闪过一丝不设防的怔忪。',
+              en: 'When the steaming fresh cup is quietly placed before her, she looks up in slight surprise, an unguarded hesitation flitting through her eyes.'
             },
             {
               type: 'speech',
@@ -1758,8 +1763,8 @@ const EV_SHRINE_INARI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '你的脚停了下来。你没有告诉过她外公画过地图。你确定。',
-              en: 'Your feet stop. You have never told her your grandfather drew maps. You are certain of that.'
+              zh: '你的脚步骤然顿在石阶边缘，脊背漫上一阵真实的寒意。你从来没有向任何人提起过外公曾走遍神户绘制地图的事——你百分之百确定。',
+              en: 'Your boots halt dead on the edge of the stone step, a real chill climbing up your spine. You have never mentioned to a living soul that your grandfather walked all of Kobe mapping its streets—you are one hundred percent certain.'
             },
             {
               type: 'narration',
@@ -2046,8 +2051,8 @@ const EV_SANNOMIYA_FIRST: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '你外公那张手绘地图上，三宫以南是空白的。他没画。或者说，他画到这里就停了。',
-      en: 'On your grandfather’s hand-drawn map, everything south of Sannomiya is blank. He did not draw it. Or rather, this is where he stopped drawing.'
+      zh: '你外公那张泛黄的手绘地图上，三宫以南延展向大海的整片街区皆是空白。他没有画下去——或者说，他的笔尖在定格于这里的那一刻，便永远停了下来。',
+      en: 'On your grandfather’s yellowed, hand-drawn map, the entire block extending south from Sannomiya to the sea is blank. He did not continue—or rather, the moment his pen came to rest here, it stopped for good.'
     },
     {
       type: 'effect',

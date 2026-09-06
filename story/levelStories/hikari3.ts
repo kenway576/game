@@ -366,8 +366,8 @@ export const HIKARI_STORY_3: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${H}casual_sad.webp`,
-            zh: '她愣住了。',
-            en: 'She stops.'
+            zh: '她像被看穿了最隐秘的伤口一般猝然僵住，嘴唇微微颤抖着，眼底强撑的笑意顷刻瓦解。',
+            en: 'She freezes as if an unguarded scar has been laid bare, her lips parting slightly as the brittle smile crumbles from her eyes.'
           },
           {
             type: 'speech',

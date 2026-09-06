@@ -98,8 +98,8 @@ const BODY: Record<JukuTier, StoryNode[]> = {
     },
     {
       type: 'narration',
-      zh: '两个小时里老师只做一件事：把去年、前年、大前年的卷子摊开，指出同一道题换了三种问法。',
-      en: 'For two hours the teacher does one thing: he lays out last year’s paper, and the one before, and the one before that, and shows you the same question asked three different ways.'
+      zh: '整堂冲刺课上老师只做一件事：把近三年的真题试卷并排摊开，冷酷地指出同一道考点是如何换了三种马甲卷土重来。',
+      en: 'For the entire sprint lecture the teacher does one thing: laying out three years of past papers side by side, coldly revealing how the exact same exam point was repackaged three different ways.'
     },
     {
       type: 'narration',
@@ -108,8 +108,8 @@ const BODY: Record<JukuTier, StoryNode[]> = {
     },
     {
       type: 'narration',
-      zh: '你走出去的时候是九点四十。三宫的雨已经停了，地面还亮着。',
-      en: 'You get out at twenty to ten. The rain over Sannomiya has stopped and the ground is still shining.'
+      zh: '踏出补习班大楼时已是夜深。三宫的夜雨不知何时已悄然停歇，湿漉漉的沥青路面在街灯倒影下泛着冷冽的青光。',
+      en: 'It is late when you step out of the prep school. The rain over Sannomiya has ceased unannounced, the dark asphalt glistening beneath the streetlights.'
     },
     {
       type: 'effect',
@@ -127,8 +127,8 @@ const BODY: Record<JukuTier, StoryNode[]> = {
     },
     {
       type: 'narration',
-      zh: '里面有六个人，没有一个抬头。你坐了两个小时，什么也没问，也没有人问你。',
-      en: 'Six people inside, none of them looking up. You sit for two hours. You ask nothing and nobody asks you anything.'
+      zh: '自习室里零散坐着六个人，笔尖沙沙作响，没有一个人抬头。在这座寂静的知识修罗场里，你沉下心刷完了整套试卷，彼此心照不宣。',
+      en: 'Six people are scattered about the study room, pens scratching in unison, nobody looking up. In this silent academic colosseum, you bury your head and finish the entire test set, united in tacit concentration.'
     },
     {
       type: 'effect',

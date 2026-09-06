@@ -75,8 +75,8 @@ export const ASUKA_STORY_3: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${A}neutral.webp`,
-    zh: '她面前摊着那张成绩单。已经摊了不知道多久了。',
-    en: 'The results sheet is open in front of her, and has been for some unknown length of time.'
+    zh: '她面前平铺着那张字迹端正的成绩单，纸张边缘被手指反复摩挲得微微卷翘，不知在夕照下这样静止了多久。',
+    en: 'The crisp results sheet lies spread out before her, its edges curled slightly from repeated thumbing, sitting motionless in the late sun.'
   },
   {
     type: 'speech',
@@ -237,8 +237,8 @@ export const ASUKA_STORY_3: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${A}surprised.webp`,
-            zh: '她愣住了。',
-            en: 'She stops.'
+            zh: '她猝不及防地抬起头，平日里锐利自信的双眸泛起一层水汽，眼神在那一刻彻底失守。',
+            en: 'She looks up completely caught off guard, a sudden mist rising in those usually sharp and confident eyes.'
           },
           {
             type: 'speech',

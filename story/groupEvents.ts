@@ -821,8 +821,8 @@ const EV_GROUP_MOSAIC: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${NAO}curious.webp`,
-              zh: '奈绪愣了一下，然后很快地把手收了回去，好像刚才那个动作忽然变得有点危险。',
-              en: 'Nao freezes, then pulls her hand back rather quickly, as though the gesture has suddenly become dangerous.'
+              zh: '指尖若有似无的触碰让奈绪触电般微微一颤，飞快地将手缩了回去，双颊微红，仿佛刚才那个随意的并排指向忽然变得格外令人心悸。',
+              en: 'A fleeting touch of fingertips makes Nao flinch as if jolted by a soft current; she swiftly retracts her hand, cheeks dusting pink, as though pointing side by side had suddenly turned breathtakingly dangerous.'
             },
             {
               type: 'speech',

@@ -41,8 +41,8 @@ export const MIYUKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '下了两天雨，今天早上停了。整栋楼的走廊都在滴水。',
-    en: 'It rained for two days and stopped this morning. The whole corridor is dripping.'
+    zh: '连绵阴雨下了两日，清晨终于放晴。海风庄老旧公寓的外廊屋檐下，雨滴正清脆而缓慢地嗒嗒坠落。',
+    en: 'After two days of relentless rain, the morning sky finally breaks open. Off the eaves of Umikaze-so’s weathered outer corridor, raindrops fall in slow, clean drips.'
   },
   {
     type: 'narration',
@@ -168,8 +168,8 @@ export const MIYUKI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她停了很久。久到你以为自己做错了。',
-            en: 'She stops for long enough that you think you have made a mistake.'
+            zh: '她捧着茶杯陷入了极长的沉寂，眼神微微游离，空气安静得让你甚至以为自己是不是唐突失礼了。',
+            en: 'She cradles the teacup in profound stillness, her gaze drifting slightly, the silence stretching until you wonder if you were terribly presumptuous.'
           },
           {
             type: 'speech',

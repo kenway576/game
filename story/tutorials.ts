@@ -160,8 +160,8 @@ export const FARM_TUTORIAL: StoryNode[] = [
 export const FISH_TUTORIAL: StoryNode[] = [
   {
     type: 'narration',
-    zh: '堤上一排人，每隔几米一个，谁也不跟谁说话。你站在最边上，手里什么都没有，看起来像是走错了地方——因为你确实是走错了地方。',
-    en: 'A row of people along the breakwater, one every few metres, none of them talking to each other. You stand at the end of it with nothing in your hands, looking like somebody who has come to the wrong place, which you have.'
+    zh: '防波堤上一字排开数位垂钓者，彼此相隔丈许，各自沉浸在海浪与浮漂的呼吸中。你两手空空立在堤岸最外侧，浑身散发着走错片场的突兀感——事实上你确实是误打误撞闯进来的。',
+    en: 'A row of solitary figures line the breakwater, each lost in the rhythmic rise and fall of float and tide. Standing at the far edge empty-handed, you emanate the unmistakable aura of someone who has wandered onto the wrong set—which, in fact, you entirely have.',
   },
   {
     type: 'narration',
@@ -215,8 +215,8 @@ export const FISH_TUTORIAL: StoryNode[] = [
           {
             type: 'narration',
             characterImage: GEN,
-            zh: '「売ってもええ。」他说，「でもな、」然后停了一下，像是在决定要不要跟一个刚认识的人说这个。',
-            en: '"You can sell them," he says. "But." Then he stops, as though deciding whether to say the rest of it to somebody he has just met.'
+            zh: '「卖给你倒也无妨。」他吐出一口烟圈，「不过嘛……」老头浑浊的目光在你脸上驻留片刻，似乎在掂量该不该跟一个初来乍到的生面孔交底。',
+            en: '"You can sell them," he says, exhaling a plume of smoke. "Though mind you..." The old man’s weathered gaze lingers on your face for a beat, weighing whether to confide in a newcomer.'
           },
           {
             type: 'narration',

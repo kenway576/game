@@ -264,8 +264,8 @@ export const INARI_STORY_3: StoryNode[] = [
 
   {
     type: 'narration',
-    zh: '雪停了。太阳从写字楼中间那条缝里下来，整片参道亮了一下。',
-    en: 'The snow stops. The sun comes down the gap between the office blocks and the whole approach lights up at once.'
+    zh: '漫天初雪渐渐止歇。熹微的朝阳穿透写字楼群的高耸夹缝倾泻而下，将积雪覆满的整片红色参道映照得莹白耀眼。',
+    en: 'The first snow slowly abates. Morning sun pours through the narrow gorge between towering office blocks, setting the snow-clad vermilion approach dazzlingly alight.'
   },
 
   // ---- 双结局 ----
