@@ -480,7 +480,7 @@ export const STREET_SCENES: StreetScene[] = [
     script: [
       {
         type: 'narration',
-        zh: '元町拱廊街的老茶铺门前摆着一台巨大的焙茶机，铁筒缓缓转动，烘焙绿茶的醇厚焦香弥漫了整整半条街。',
+        zh: '元町拱廊街的老茶铺门前摆着一台巨大的焙茶机，铁筒缓缓转动，远远便能闻到焙茶四溢的醇厚焦香，勾得过路行人纷纷驻足。',
         en: 'Outside the vintage tea merchant in Motomachi stands a large roasting drum, revolving slowly, filling half the arcade with the warm aroma of hojicha.'
       },
       {
@@ -801,7 +801,7 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '你也试着看了一分钟。一分钟之后你发现那条鱼一直在同一条路线上游，一圈都没有偏过。',
+        zh: '你也顺着他的视线端详了片刻，这才愕然察觉到水槽里那条鱼的游动轨迹精细得如同经过精密测算，一圈一圈分毫不差。',
         en: 'You try it for a minute. After a minute you notice that the fish has been swimming the same line the whole time, and has not once deviated.'
       },
       {
@@ -809,7 +809,7 @@ export const STREET_SCENES: StreetScene[] = [
         zh: '他"やれやれ"了一声，翻过一页，继续写。',
         en: 'He makes a short weary noise, turns the page, and goes on writing.'
       },
-      seen('你学会了看一样东西超过一分钟', 'You learned to look at one thing for longer than a minute')
+      seen('你学会了静下心来仔细观察一样事物', 'You learned to look at one thing closely')
     ]
   },
   {
@@ -829,7 +829,7 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '一股莫名的恶寒让你下意识往旁边让了半步，浑身汗毛竖立——虽说他离你甚至还有三米远。身体的直觉在疯狂尖叫：绝对不要招惹这个男人。',
+        zh: '一股难以言喻的寒意让你下意识侧身退让，浑身汗毛倒竖——明明两人之间还隔着好几个身位，身体的直觉却在疯狂尖叫：绝对不要招惹这个男人。',
         en: 'A sudden chill makes you instinctively step aside, goosebumps prickling across your skin—even though he is still three metres away. Every instinct screams: do not cross this man.'
       },
       {
@@ -936,7 +936,7 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '他慢吞吞地拉开拉环喝了一小口，眼神空洞地看着路过的成双成对的学生，嘴角挂着一丝冷笑。',
+        zh: '他慢吞吞地拉开拉环喝了一小口，死鱼眼满是倦怠地斜睨着路过成双成对的现充学生，神情里满是对青春狂欢的鄙夷。',
         en: 'He pulls the tab at a crawl, takes a sip, and gazes blankly at pairs of passing students with a faint sneer.'
       },
       {
@@ -1046,8 +1046,8 @@ export const STREET_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '虽然是三个人的乐声，不知为何空气中却弥漫着一丝让人心头微紧的寒意。',
-        en: 'Though three people share the music, the air carries a chill that tugs inexplicably at the heart.'
+        zh: '“明明是我先来的……吹拉弹唱也好，喜欢那个人也好……”你脑海中莫名其妙蹦出一句白学名台词，连自己都被这股突如其来的胃痛寒意冻得打了个哆嗦。',
+        en: '"I was the first one there... singing, playing, falling in love..." A line of legendary winter angst echoes in your mind, the sudden phantom stomach ache making you shiver in spite of yourself.'
       },
       seen('你听到了一段无法传达的冬日序曲', 'You heard a winter prelude that seemed unable to reach its destination')
     ]

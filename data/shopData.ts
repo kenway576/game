@@ -63,8 +63,8 @@ export const NEW_SHOPS: ShopDef[] = [
         id: 'drug_energy', emoji: '🧪',
         nameJp: '栄養ドリンク', reading: 'えいようドリンク',
         nameZh: '营养饮料', nameEn: 'Energy Tonic', price: 198,
-        descZh: '五十毫升的小棕瓶。味道像药，喝完二十分钟内你会觉得自己是对的。',
-        descEn: 'Fifty millilitres in a small brown bottle. Tastes medicinal. For twenty minutes afterwards you feel you were right about everything.',
+        descZh: '五十毫升的深色玻璃小药瓶。入口微苦带酸，灌下去片刻便感觉整个人又原地满血复活。',
+        descEn: 'Fifty millilitres in a dark brown vial. Slightly bitter and tangy; chug it down and feel your batteries instantly recharge.',
         stamina: 30
       },
       {

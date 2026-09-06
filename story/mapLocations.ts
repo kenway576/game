@@ -168,7 +168,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     blurbZh: '铁皮顶棚下面塞了两百多辆车。放学那阵子这儿最堵，也最容易撞见人。',
     blurbEn: 'Two hundred-odd bicycles under a tin roof. At home time it is the most congested place in the school, and therefore the easiest place to run into somebody.',
     timeSlots: ['morning', 'lunch', 'afternoon'],
-    ambientZh: ['你的车被两辆车夹住了。你花了三分钟才把它抽出来。'],
+    ambientZh: ['你的自行车被两辆车卡得死死的，费了九牛二虎之力才小心翼翼把它拔出来。'],
     ambientEn: ['Your bike is wedged between two others. It takes three minutes to work it free.']
   },
 
@@ -224,7 +224,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     blurbZh: '坡底那家。二十四小时亮着，是这条坡上唯一不会睡的东西。',
     blurbEn: 'The one at the foot of the slope. Lit twenty-four hours, and the only thing on this hill that never sleeps.',
     timeSlots: ['morning', 'afternoon', 'night'],
-    ambientZh: ['关东煮的锅还开着。你在货架前站了三分钟，最后什么也没买就出来了。'],
+    ambientZh: ['便利店关东煮的锅里热气袅袅。你在面包货架前纠结徘徊了半晌，最后两手空空走了出来。'],
     ambientEn: ['The oden pot is still on. You stand at the shelves for three minutes and leave without buying anything.']
   },
   {
@@ -278,7 +278,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
     timeSlots: ['morning', 'afternoon'],
-    ambientZh: ['老板娘按了半分钟的虹吸壶，整间屋子都是那个声音。咖啡端上来是苦的，你没加糖。'],
+    ambientZh: ['虹吸壶咕嘟咕嘟地抽滤翻滚着，整间屋子都是咖啡萃取的醇厚香气。咖啡端上来不加糖，苦涩中泛着微酸的回甘。'],
     ambientEn: ['The owner works the siphon for half a minute and the whole room fills with the sound of it. The coffee arrives bitter. You do not add sugar.']
   },
 
@@ -566,7 +566,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     lockedHintZh: '你还没往海那边走过。',
     lockedHintEn: 'You have not gone toward the water yet.',
     timeSlots: ['morning', 'afternoon'],
-    ambientZh: ['老板正在修一个卷线器。你站着看了十分钟，他一句话也没说，但也没赶你走。'],
+    ambientZh: ['渔具店老板正全神贯注修理卷线器。你默默在旁观摩良久，他头也不抬一语不发，却也默许了你的驻足。'],
     ambientEn: ['The owner is repairing a reel. You watch for ten minutes; he says nothing, and does not move you along either.']
   },
   {
@@ -888,7 +888,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     lockedHintZh: '要出这一带，你得先习惯这里的电车。',
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
     timeSlots: ['afternoon'],
-    ambientZh: ['你泡了脚汤。旁边的老人问你从哪儿来，然后花了十分钟说明自己也不是本地人。'],
+    ambientZh: ['你脱了鞋袜把脚浸在温热的足汤里。旁座的大爷攀谈起来问你从何而来，随后便滔滔不绝讲起他当年背井离乡的故事。'],
     ambientEn: ['You use the public foot bath. An old man asks where you are from, then spends ten minutes explaining that he is not local either.']
   },
   {
@@ -902,7 +902,7 @@ export const MAP_LOCATIONS: MapLocation[] = [
     lockedHintEn: 'To get out of this district you first have to get used to the trains here.',
     timeSlots: ['afternoon', 'night'],
     regulars: [CharacterId.SORA],
-    ambientZh: ['没有比赛的日子，球场安静得不像话。你隔着铁网看了很久那片土。'],
+    ambientZh: ['没有比赛的日子，球场安静得不像话。你隔着铁丝网凝望着内野那片深褐色的泥土，耳边隐约回荡起甲子园盛夏的呐喊。'],
     ambientEn: ['On a day with no game the stadium is unreasonably quiet. You look at the dirt through the mesh for a long time.']
   },
   {

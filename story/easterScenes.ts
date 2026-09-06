@@ -263,7 +263,7 @@ export const EASTER_SCENES: StreetScene[] = [
       },
       {
         type: 'narration',
-        zh: '他按了一分钟。手机贴到耳朵上的时候另一只手还按着，他开始跟电话那头汇报进度。',
+        zh: '他熟练地在微波炉面板上设定好加热时间。把关了机的翻盖手机紧贴在耳边，另一只手按着炉门，煞有介事地向电话那头的空气汇报着机密进度。',
         en: 'He presses for a minute. The phone goes to his ear with the other hand still pressing, and he starts giving somebody a progress report.'
       },
       {
@@ -1288,7 +1288,7 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration', characterImage: E.iroha,
-                zh: '对面的女生愣了愣，赶紧把摊开的账本合上，有些局促地向你欠了欠身。',
+                zh: '对面的女生猝不及防，有些慌乱地赶紧把摊开的账本合拢收起，略带歉意地向你欠了欠身。',
                 en: 'The girl across from her blinks, hurriedly snaps her planner shut, and offers you a slightly flustered nod.'
               },
               {
@@ -1299,7 +1299,7 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '话虽这么说，但看着同伴嘴里塞满松饼、腮帮子鼓成两团的样子，她顺手抽了张纸巾递过去，嘴角极轻微地松动了一下。',
+                zh: '话虽这么说，但看着同伴嘴里塞满松饼、腮帮子鼓成两团仓鼠般的模样，她顺手抽了张纸巾递过去，眉宇间的清冷终究没绷住，神色也不由得柔和了下来。',
                 en: 'Even as she says it, watching her companion\'s cheeks puff out round around a massive mouthful of pancake, she passes a napkin over, the corners of her mouth loosening almost imperceptibly.'
               },
               {

@@ -426,7 +426,7 @@ const CH4: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '她停了很久。久到那三盏灯里有一盏闪了一下。',
+            zh: '她陷入了长久的沉默。久到远处那三盏路灯里有一盏忽明忽暗地闪了一下。',
             en: 'She stops for a long time. Long enough that one of the three lights flickers.'
           },
           {

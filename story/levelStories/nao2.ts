@@ -276,7 +276,7 @@ export const NAO_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${N}cat_curious.webp`,
-            zh: '她愣了很久。',
+            zh: '她出神地呆住了，整个人像断线了一样定在原地。',
             en: 'It takes her a long time.'
           },
           {

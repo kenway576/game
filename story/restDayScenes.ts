@@ -217,8 +217,8 @@ const HOME_WINTER: StoryNode[] = [
         effects: [{ stat: 'kindness', amount: 3, reasonZh: '你主动打了那个电话', reasonEn: 'You made that call without being asked' }],
         setFlags: ['restday_called_home'],
         then: [
-          { type: 'narration', zh: '接通用了很久。那边是早上，很吵。', en: 'It takes a long time to connect. It is morning over there, and loud.' },
-          { type: 'narration', zh: '你说了二十分钟自己的近况，然后花了四十分钟听他们说他们的。', en: 'You give twenty minutes of your news and then spend forty listening to theirs.' },
+          { type: 'narration', zh: '接通花了些许时间。大洋彼岸是熙攘忙碌的早晨，夹杂着熟悉的家乡话与煎锅声。', en: 'It takes a moment to connect. Across the ocean it is a busy morning, filled with familiar dialect and frying sounds.' },
+          { type: 'narration', zh: '你挑挑拣拣汇报了这边的近况报喜不报忧，剩下的时间便全程举着听筒，静静听着电话那头熟悉的家长里短与叮嘱。', en: 'You share your news, keeping things bright and smoothing over the rough patches, then simply hold the receiver, listening quietly to the familiar family chatter from back home.' },
           { type: 'narration', zh: '挂掉之后房间显得比刚才更安静。这种安静不难受，但确实是安静。', en: 'The room is quieter afterwards than it was before. Not a bad quiet. Still a quiet.' }
         ]
       },
@@ -678,9 +678,9 @@ export const OUTING_AUTUMN: StoryNode[] = [
         relations: [{ char: CharacterId.REI, familiarity: 6, affection: 6, reasonZh: '她讲了整整十分钟花青素', reasonEn: 'She talked about anthocyanins for ten straight minutes' }],
         then: [
           { type: 'narration', characterImage: `${REI}neutral.webp`, zh: '她说：叶子变红不是因为多了红色，是因为绿色撤走了。红色一直都在。', en: 'She says leaves do not turn red by gaining red. The green withdraws. The red was there the whole time.' },
-          { type: 'narration', zh: '她娓娓道来。深雪在半梦半醒间静静听着，嘴角含着浅浅的弧度，没有插话打扰。', en: 'She speaks softly. Miyuki listens half-asleep, a faint smile on her lips, without interrupting.' },
+          { type: 'narration', zh: '她娓娓道来。深雪在半梦半醒间静静听着，神情格外恬淡安宁，没有插话打扰。', en: 'She speaks softly. Miyuki listens half-asleep, a faint smile on her lips, without interrupting.' },
           { type: 'narration', characterImage: `${REI}shy.webp`, zh: '讲完之后铃很小声地补了一句：「……喋りすぎた」。', en: 'Afterwards Rei says, very quietly, that she talked too much.' },
-          { type: 'narration', zh: '深雪没睁眼，说了句「ううん、もっと聞きたい」。铃看了她很久。', en: 'Without opening her eyes Miyuki says no, she would like to hear more. Rei looks at her for a long time.' }
+          { type: 'narration', zh: '深雪没睁眼，说了句「ううん、もっと聞きたい」。铃默默注视着她恬静的睡颜，良久没有挪开视线。', en: 'Without opening her eyes Miyuki says no, she would like to hear more. Rei looks at her for a long time.' }
         ]
       },
       {
@@ -944,7 +944,7 @@ export const TRIP_OSAKA: StoryNode[] = [
         ],
         then: [
           { type: 'narration', zh: '那张表精确到分钟，而且真的走完了。七个地方，一个没落。', en: 'The schedule is accurate to the minute, and it holds. Seven places, none skipped.' },
-          { type: 'narration', characterImage: `${ASUKA}casual_happy.webp`, zh: '最后一站结束的时候明日香看了一眼腕表，嘴角掠过一丝不易察觉的得意。虽然什么都没说，但那一路走得明显格外轻快。', en: 'At the last stop Asuka glances at her watch, a subtle trace of pride on her lips. She says nothing, but walks noticeably lighter.' },
+          { type: 'narration', characterImage: `${ASUKA}casual_happy.webp`, zh: '最后一站结束的时候明日香看了一眼腕表，眉梢微扬，虽然嘴上依然矜持端着，但踏出店门时的脚步明显轻快得快要哼起歌来。', en: 'At the last stop Asuka glances at her watch, a subtle trace of pride on her lips. She says nothing, but walks noticeably lighter.' },
           { type: 'narration', characterImage: `${MAKI}cardigan_neutral.webp`, zh: '真希在最后一站买了两串炸，一串给了空，一串塞给明日香。「表には無いけどな」。', en: 'At the last stop Maki buys two skewers, gives one to Sora and pushes the other at Asuka. Not on the schedule, she says.' }
         ]
       },
@@ -969,7 +969,7 @@ export const TRIP_OSAKA: StoryNode[] = [
           { type: 'scene', scene: 'osaka_dotonbori_canal' },
           { type: 'narration', zh: '六点，道顿堀的河边。四个人从四个方向到齐，没有一个人迟到。', en: 'Six o’clock, the canal at Dotonbori. Four people arrive from four directions and nobody is late.' },
           { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空拎着一整袋章鱼烧。真希手里是同一个袋子的另一半。', en: 'Sora is carrying a whole bag of takoyaki. Maki has the other half of the same bag.' },
-          { type: 'narration', characterImage: `${ASUKA}casual_neutral.webp`, zh: '明日香的表提前完成了。她把剩下的一小时用来陪光在一家二手书店里翻了六十分钟。', en: 'Asuka finished the schedule early and spent the spare hour standing in a secondhand bookshop with Hikari.' },
+          { type: 'narration', characterImage: `${ASUKA}casual_neutral.webp`, zh: '明日香的表提前完成了。她把剩下的时间用来安安静静地陪光在旧书店的书堆里翻翻找找，泡满了一整个黄昏。', en: 'Asuka finished the schedule early and spent the spare hour standing in a secondhand bookshop with Hikari.' },
           { type: 'narration', zh: '她们四个人各过各的一天，然后回到同一个地方。这件事比全程走在一起要难得多。', en: 'The four of them each had their own day and came back to the same place. That is much harder than staying in a line.' }
         ]
       },
@@ -1339,14 +1339,14 @@ export const GROUP_HANABI: StoryNode[] = [
         ],
         then: [
           { type: 'narration', characterImage: `${MIYUKI}kimono_shy.webp`, zh: '深雪去了。她走之前把水递给你，说"ここ、お願いね"。', en: 'Miyuki goes. Before she does she hands you the water and asks you to hold it.' },
-          { type: 'narration', zh: '接下来二十分钟你一个人守着一块能坐六个人的河堤。旁边来了三拨人问能不能挤一挤。', en: 'For twenty minutes you hold a stretch of embankment big enough for six. Three separate groups ask whether they can squeeze in.' },
+          { type: 'narration', zh: '深雪走后，你独自坚守着这片足以容纳六人的河堤野餐垫。周围人潮如织，接连有三拨游客上前询问能不能借个空位挤一挤。', en: 'For twenty minutes you hold a stretch of embankment big enough for six. Three separate groups ask whether they can squeeze in.' },
           { type: 'narration', zh: '你三次都说了"すみません、連れが来ます"。第三次你说得很流利，自己都吓了一跳。', en: 'Three times you say you are keeping it for people. The third time it comes out fluently, and startles you.' },
           { type: 'narration', characterImage: `${SORA}kimono_laugh.webp`, zh: '她们回来的时候花火放到一半了。空手里牵着一个小孩，那个小孩的妈妈跟在后面一路道谢。', en: 'They come back halfway through. Sora is holding a child’s hand, and the child’s mother follows, thanking everybody.' }
         ]
       }
     ]
   },
-  { type: 'narration', zh: '最后十分钟是连发。整片天亮得像白天，河堤上二十万人一起不说话。', en: 'The last ten minutes are continuous. The sky goes as bright as day and two hundred thousand people go quiet together.' },
+  { type: 'narration', zh: '尾声的连环高潮烟火照亮天际，漫天绚烂的火树银花倾泻而下，夜空亮如白昼，河堤上数十万人齐齐屏息仰望。', en: 'The last ten minutes are continuous. The sky goes as bright as day and two hundred thousand people go quiet together.' },
   { type: 'narration', zh: '你又数了一遍人头。六个。', en: 'You count heads again. Six.' },
   { type: 'narration', characterImage: `${MIYUKI}kimono_shy.webp`, zh: '深雪也在数。你们俩对上眼的时候，她笑了一下，比了个"六"。', en: 'Miyuki is counting too. When your eyes meet she smiles and holds up six fingers.' },
   { type: 'narration', zh: '散场花了一个半小时。六个人挤在同一节电车里，没有一个人有位子坐。', en: 'It takes ninety minutes to get out. Six people in one carriage, none of them sitting.' },

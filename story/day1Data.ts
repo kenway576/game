@@ -363,7 +363,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${MIYUKI}neutral.webp`,
-            zh: '她愣了一下，眼神里掠过一丝短暂的迟疑，比起感激，更像是在确认自己是不是听错了。',
+            zh: '她有些意外地眨了眨眼，那副小心翼翼的表情比起感激，更像是在反复确认自己是不是听错了。',
             en: 'She hesitates, a flicker of disbelief crossing her eyes—not quite gratitude yet, more like wondering if she misheard you.'
           },
           {
@@ -2696,7 +2696,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你拧开笔帽，停了很久，最后只写下一行：',
+    zh: '你拧开笔帽，笔尖悬在空白的横线纸页上方，迟迟难以落笔，最后只写下一行：',
     en: 'You uncap the pen, sit there for a long time, and in the end write only one line:'
   },
   {
@@ -2711,7 +2711,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '写完你看了很久。这句话作为一整天的总结，怎么看都太小了。',
+    zh: '合上笔盖，你默默端详着本子上的那行字。这句话作为一整天的总结，怎么看都太单薄了。',
     en: 'You look at it for a while. As a summary of an entire day it is, by any measure, far too small.'
   },
   {
@@ -2841,7 +2841,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     setFlags: ['day1_done', 'day1_first_night'],
     effects: [
       { stat: 'knowledge', amount: 1, reasonZh: '第一天在这座城市里活下来了', reasonEn: 'You got through the first day in this city' },
-      { stat: 'proficiency', amount: 1, reasonZh: '你自己把床铺好了，用了十二分钟', reasonEn: 'You made the bed yourself. It took twelve minutes.' }
+      { stat: 'proficiency', amount: 1, reasonZh: '你折腾得满头大汗，终于第一次自己把被褥铺平整了', reasonEn: 'You made the bed yourself. It took twelve minutes.' }
     ]
   }
 ];

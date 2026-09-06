@@ -445,7 +445,7 @@ export const REI_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${R}shy.webp`,
-            zh: '她怔怔地看了你片刻，然后——你几乎可以笃定——她的嘴角极轻微地上扬了一下。那抹笑意转瞬即逝，微小到你甚至怀疑是自己眼花的幻觉。',
+            zh: '她怔怔地端详了你片刻，然后——你几乎可以笃定——她的眉眼极其轻微地柔和舒展了一下。那抹笑意转瞬即逝，微小到你甚至怀疑是自己眼花的幻觉。',
             en: 'She gazes at you in quiet surprise, and then — you are almost certain — the corners of her lips curve upward slightly. It vanishes so quickly you wonder if it was an illusion.'
           },
           {

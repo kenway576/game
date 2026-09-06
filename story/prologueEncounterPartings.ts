@@ -304,7 +304,7 @@ export const HIKARI_PARTING: StoryNode[] = [
       {
         type: 'narration',
         characterImage: '',
-        zh: '她挥挥手跑了，黄色的卫衣很快被人流吞没。海风还在吹。你发现自己嘴角是翘着的。',
+        zh: '她挥挥手一溜烟跑了，明黄色的卫衣很快隐没在人流之中。清爽的海风迎面拂来，你发现自己脸上不知不觉也带着一抹轻松的笑意。',
         en: 'She waves and takes off, the yellow hoodie swallowed by the crowd within seconds. The sea wind keeps coming. You notice the corners of your mouth are up.'
       }
     ]

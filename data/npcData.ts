@@ -123,8 +123,8 @@ export const NPCS: Npc[] = [
   {
     id: 'munakata', sprite: CITY_NPC_SPRITES.munakata,
     nameJp: '宗方さん', nameZh: '宗方老板', nameEn: 'Munakata',
-    roleZh: '纯喫茶的老板。虹吸壶，手冲，一杯十二分钟，一句话不说。',
-    roleEn: 'The kissaten master. Siphon, hand-poured, twelve minutes a cup, not one word.',
+    roleZh: '纯喫茶的老板。恪守虹吸与手冲的老派匠人，慢工出细活，举止间惜字如金。',
+    roleEn: 'The kissaten master. An old-school craftsman devoted to siphon and pour-over, patient with his craft, sparing with his words.',
     home: ['retro_kissaten']
   },
   {

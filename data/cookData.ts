@@ -46,8 +46,8 @@ export const RECIPES: RecipeDef[] = [
       { stat: 'charm', amount: 1, reasonZh: '摆盘这件事你居然认真了', reasonEn: 'You found yourself caring how it looked on the plate' }
     ],
     emoji: '🥗',
-    descZh: '樱桃萝卜切薄片会透光，罗勒撕碎了撒上去。整个过程不到五分钟。',
-    descEn: 'Sliced thin, the radish goes translucent. Tear the basil over it. The whole thing takes under five minutes.',
+    descZh: '樱桃萝卜切薄片几近透光，新鲜罗勒撕碎撒上，点缀橄榄油与黑胡椒。清爽快手，三两下便大功告成。',
+    descEn: 'Thin-sliced radish that lets the light through, torn basil tossed over. Done in moments, crisp and bright.',
     word: { jp: '薄い', reading: 'うすい', zh: '薄的', en: 'thin' }
   },
   {
@@ -87,8 +87,8 @@ export const RECIPES: RecipeDef[] = [
       { stat: 'guts', amount: 1, reasonZh: '你自己处理了那条鱼', reasonEn: 'You gutted it yourself' }
     ],
     emoji: '🐠',
-    descZh: '撒盐，放着二十分钟，擦干，烤。日本料理里最简单也最难藏拙的一道。',
-    descEn: 'Salt it, leave it twenty minutes, pat it dry, grill. The simplest thing in Japanese cooking and the hardest to hide behind.',
+    descZh: '粗盐腌制逼出多余水分，轻拭吸干，慢火烤至表皮焦脆泛起金黄。看似质朴无华，实则是日本料理中最考究火候的试金石。',
+    descEn: 'Coarse salt draws out excess moisture, patted dry, then grilled slow until the skin blisters crisp and golden. Deceptively humble, yet the ultimate test of patience in Japanese cuisine.',
     word: { jp: '塩', reading: 'しお', zh: '盐', en: 'salt' }
   },
   {

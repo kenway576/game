@@ -305,7 +305,7 @@ const EV_BOOKSTORE_REI: MapEventDef = {
     },
     {
       type: 'narration',
-      zh: '她没有转头。你愣了愣才确认这句是对你说的。',
+      zh: '她没有转头。你迟疑了一下才意识到这句是对你说的。',
       en: 'She does not turn her head. It takes you a moment to confirm the sentence was aimed at you.'
     },
     {
@@ -403,7 +403,7 @@ const EV_BOOKSTORE_REI: MapEventDef = {
             },
             {
               type: 'narration',
-              zh: '她没有把那句话说完。但这一次，她极轻微地弯了一下嘴角——转瞬即逝。',
+              zh: '她没有把那句话说完。但这一次，那向来清冷的眉眼间泛起了一丝若有若无的笑意——转瞬即逝。',
               en: 'She does not finish the sentence. But this time she smiles. Very slightly, gone in an instant.'
             }
           ]
@@ -1343,7 +1343,7 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             {
               type: 'narration',
               characterImage: `${MIYUKI}thinking.webp`,
-              zh: '热气腾腾的新咖啡悄然搁在她面前时，她有些诧异地抬起头，眼中闪过一丝不设防的怔忪。',
+              zh: '热气腾腾的新咖啡悄然搁在她面前时，她有些诧异地抬起头，神情里流露出难得卸下防备的恍惚。',
               en: 'When the steaming fresh cup is quietly placed before her, she looks up in slight surprise, an unguarded hesitation flitting through her eyes.'
             },
             {

@@ -321,7 +321,7 @@ export const HIKARI_STORY_2: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${H}casual_surprised.webp`,
-            zh: '她愣了很久。久到轿厢又下降了一段。',
+            zh: '她怔怔地凝视着你，长久没有说出话来，任由轿厢在夜色中缓缓下沉。',
             en: 'It takes her a long time. Long enough for the car to drop further.'
           },
           {
@@ -429,7 +429,7 @@ export const HIKARI_STORY_2: StoryNode[] = [
   // ---- 落地：墙立起来 ----
   {
     type: 'narration',
-    zh: '轿厢快到底了。她抬起头，很快地擦了一下脸。笑是从嘴角先回来的，眼睛慢了半拍。你全程都在看。',
+    zh: '轿厢快到底了。她抬起头，很快地擦了一下脸。微笑先勉强挂上了唇边，眼神却慢了半拍才跟上。你全程都看在眼里。',
     en: 'The car is nearly down. She lifts her head and wipes her face quickly. The smile comes back at the mouth first; the eyes are half a beat behind. You watch the whole of it.'
   },
   {

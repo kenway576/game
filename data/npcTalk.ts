@@ -108,7 +108,7 @@ export const NPC_TOPICS: Record<string, NpcTopic[]> = {
       lines: [
         { zh: '他把球扔过来，扔得比你预期的重。你接住了，手有点麻。', en: 'He throws the ball harder than you expected. You catch it. Your hands sting.' },
         { jp: 'おっ、ちゃんと捕れるやん', zh: '哦，接得住嘛。', en: 'Hey, you can actually catch.' },
-        { zh: '你们投了大概十分钟。他一次都没有问你从哪儿来。', en: 'You shoot for about ten minutes. He does not once ask where you are from.' }
+        { zh: '你们在球场边一来一回地投篮传球，汗水浸湿了衣领。自始至终，他一次都没有追问过你到底是从哪儿来的。', en: 'You pass and shoot back and forth on the edge of the court, sweat dampening your collar. Through it all, he never once asks where you came from.' }
       ],
       effects: [{ stat: 'guts', amount: 1, reasonZh: '有人没把你当外国人', reasonEn: 'Somebody did not treat you as a foreigner' }]
     }
@@ -118,7 +118,7 @@ export const NPC_TOPICS: Record<string, NpcTopic[]> = {
       id: 'hiroki_math', labelZh: '问他那道题', labelEn: 'Ask him about that question',
       jp: 'ここ、どうやって解くん。',
       lines: [
-        { zh: '他讲了四十秒，讲完你还是不懂。', en: 'He explains for forty seconds. You still do not understand.' },
+        { zh: '他语速极快地推导了一通，讲完你依然一脸茫然。', en: 'He rattles through the derivation at high speed; when he finishes, you are still utterly lost.' },
         { zh: '他看了你一眼，把纸转过来，重新讲了一遍——这次没有用任何一个你不认识的词。',
           en: 'He looks at you, turns the paper round, and explains again, this time without one word you do not know.' },
         { jp: '……日本語のほう、難しかったんやんな', zh: '……难的是日语那一半吧。', en: '...It was the Japanese half that was hard, was it not.' }
@@ -165,10 +165,10 @@ export const NPC_TOPICS: Record<string, NpcTopic[]> = {
       jp: '……ちょっとだけ、いいですか。',
       lines: [
         { zh: '她指了指最里面那张床，然后继续写她的记录。', en: 'She points at the bed at the back and goes back to her notes.' },
-        { zh: '你躺了二十分钟。醒来的时候桌上多了一杯水，她已经不在了。',
-          en: 'You sleep for twenty minutes. When you wake there is a glass of water on the table and she has gone.' }
+        { zh: '你在安静的医务室里沉沉小憩了片刻。醒来时床头柜上多了一杯温水，保健老师已经悄悄离开了。',
+          en: 'You nap quietly in the tranquil infirmary. When you wake, a glass of warm water sits on the side table, and the nurse has stepped out.' }
       ],
-      effects: [{ stat: 'kindness', amount: 1, reasonZh: '你睡了二十分钟，醒来时有一杯水', reasonEn: 'Twenty minutes, and a glass of water when you woke' }]
+      effects: [{ stat: 'kindness', amount: 1, reasonZh: '你在医务室小憩片刻，醒来时有一杯温水', reasonEn: 'A restful nap, and a glass of warm water when you woke' }]
     }
   ],
   sakamoto: [
@@ -188,11 +188,11 @@ export const NPC_TOPICS: Record<string, NpcTopic[]> = {
       id: 'kanzaki_burn', labelZh: '问刚才烧的是什么', labelEn: 'Ask what that was burning',
       jp: 'さっきの、なんですか。',
       lines: [
-        { zh: '他非常高兴地讲了三分钟。你听懂了大概四个词，其中两个是"温度"和"危ない"。',
-          en: 'He explains delightedly for three minutes. You catch roughly four words, two of which are "temperature" and "dangerous".' },
+        { zh: '神崎老师顿时两眼放光，兴致勃勃地手舞足蹈解说了半天。你连蒙带猜听懂了大概四个词，其中两个是“温度”和“危险”。',
+          en: 'Kanzaki’s eyes light up as he launches into an animated explanation. Between guesswork and context, you manage to catch about four words—two being "temperature" and "dangerous".' },
         { zh: '讲完他补了一句：「今のは覚えんでええ」。', en: 'At the end he adds that you do not need to remember any of that.' }
       ],
-      effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你听了三分钟听不懂的话，撑住了', reasonEn: 'Three minutes of not understanding, and you stayed' }]
+      effects: [{ stat: 'knowledge', amount: 1, reasonZh: '面对物理老师的狂热解说，你硬是撑着听完了', reasonEn: 'You held your ground through a feverish physics monologue' }]
     }
   ],
 
@@ -280,10 +280,10 @@ export const NPC_TOPICS: Record<string, NpcTopic[]> = {
       lines: [
         { zh: '她笑得眼睛都没了，然后指了指浴池。', en: 'She laughs until her eyes disappear, and points at the bath.' },
         { jp: '急いで入るもんちゃうやろ、あれは', zh: '那个东西，不是拿来赶时间的吧。', en: 'That is not a thing you do in a hurry, is it.' },
-        { zh: '你在里面泡了四十分钟。这是你来日本之后第一次四十分钟什么都没做。',
-          en: 'You stay in for forty minutes. It is the first forty minutes you have spent doing nothing since you arrived.' }
+        { zh: '热气蒸腾的药汤彻底驱散了骨髓深处的寒气与疲惫。这是你来到神户之后，第一次如此奢侈地放空自己，什么都不去想。',
+          en: 'The steaming mineral bath dissolves the chill and fatigue deep in your bones. For the first time since arriving in Kobe, you let yourself drift in absolute, unhurried peace.' }
       ],
-      effects: [{ stat: 'kindness', amount: 2, reasonZh: '你四十分钟什么都没做', reasonEn: 'Forty minutes in which you did nothing' }]
+      effects: [{ stat: 'kindness', amount: 2, reasonZh: '你彻底放空自己，享受了一场毫无杂念的热汤', reasonEn: 'You gave yourself over completely to the quiet warmth of the bath' }]
     }
   ],
   watanabe: [
@@ -317,13 +317,12 @@ export const NPC_TOPICS: Record<string, NpcTopic[]> = {
       jp: '……たぶん、こっちです。',
       lines: [
         { zh: '她把地图转过来给你看，指着一个地方问怎么走。', en: 'She turns the map round and asks how to get to a place on it.' },
-        { zh: '你认得那条路。你上周走过三次。', en: 'You know that road. You walked it three times last week.' },
-        { zh: '你给她指完，她道了谢走了。你站在原地愣了一会儿——刚才那件事，是本地人做的事。',
-          en: 'You point the way; she thanks you and goes. You stand there a moment. What you just did is a thing that locals do.' }
+        { zh: '你熟门熟路地给她指明了捷径，她连声道谢后快步离开。你站在原地回味良久——刚才脱口而出的熟稔，俨然已经是真正的本地人了。',
+          en: 'You point out the shortcut with easy familiarity; she thanks you warmly and heads off. You stand there for a quiet moment—the instinctive fluency was that of an actual local.' }
       ],
       effects: [
         { stat: 'knowledge', amount: 1, reasonZh: '你给别人指了一次路', reasonEn: 'You gave somebody directions' },
-        { stat: 'charm', amount: 1, reasonZh: '有那么一秒钟，你是这儿的人', reasonEn: 'For one second you were from here' }
+        { stat: 'charm', amount: 1, reasonZh: '在那个瞬间，你像个真正的神户本地人一样自然', reasonEn: 'For that moment you were indistinguishable from a Kobe local' }
       ],
       setFlags: ['npc_yuki_directions']
     }

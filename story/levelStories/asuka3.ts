@@ -75,7 +75,7 @@ export const ASUKA_STORY_3: StoryNode[] = [
   {
     type: 'narration',
     characterImage: `${A}neutral.webp`,
-    zh: '她面前平铺着那张字迹端正的成绩单，纸张边缘被手指反复摩挲得微微卷翘，不知在夕照下这样静止了多久。',
+    zh: '她面前平铺着那张字迹端正的成绩单，纸张边缘被手指反复摩挲得微微卷翘，不知在斜照的余晖里独自出神了多久。',
     en: 'The crisp results sheet lies spread out before her, its edges curled slightly from repeated thumbing, sitting motionless in the late sun.'
   },
   {

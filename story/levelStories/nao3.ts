@@ -208,7 +208,7 @@ export const NAO_STORY_3: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${N}knit_curious.webp`,
-            zh: '她读完那几行字后久久不发一语，眼眶微微泛红，嘴角扯起一抹混杂着释怀与感动的酸涩笑容。',
+            zh: '她读完那几行字后久久不发一语，眼眶微微泛红，露出一抹混杂着释怀与感动的酸涩浅笑。',
             en: 'She finishes those lines and stays silent for a long moment, the rims of her eyes slightly reddening as a tender, wistful smile breaks through.'
           },
           {
