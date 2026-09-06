@@ -52,3 +52,7 @@ _git-backup-*.bundle
 *.njsproj
 *.sln
 *.sw?
+
+# 临时脚本
+.chk.py
+.v.py
