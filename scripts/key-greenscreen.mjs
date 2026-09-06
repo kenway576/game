@@ -128,7 +128,45 @@ for (const file of files) {
       const cap = Math.max(data[i], data[i + 2]);
       if (data[i + 1] > cap) {
         data[i + 1] = Math.round(data[i + 1] + (cap - data[i + 1]) * DESPILL);
-        despilled++;
+      }
+    }
+  }
+
+  // ---- 3.5) 清理角落与画布边缘的微小孤岛噪点 ----
+  const label = new Int32Array(W * H);
+  const sizes = [0];
+  let nextLabel = 1;
+  for (let start = 0; start < W * H; start++) {
+    if (label[start] !== 0 || data[start * 4 + 3] <= 8) continue;
+    const cur = nextLabel++;
+    sizes.push(0);
+    label[start] = cur;
+    const cstack = [start];
+    while (cstack.length) {
+      const p = cstack.pop();
+      sizes[cur]++;
+      const x = p % W, y = (p - x) / W;
+      const neighbors = [
+        x > 0 ? p - 1 : -1,
+        x < W - 1 ? p + 1 : -1,
+        y > 0 ? p - W : -1,
+        y < H - 1 ? p + W : -1,
+      ];
+      for (const n of neighbors) {
+        if (n >= 0 && label[n] === 0 && data[n * 4 + 3] > 8) {
+          label[n] = cur;
+          cstack.push(n);
+        }
+      }
+    }
+  }
+  if (nextLabel > 2) {
+    let main = 1;
+    for (let c = 2; c < nextLabel; c++) if (sizes[c] > sizes[main]) main = c;
+    for (let p = 0; p < W * H; p++) {
+      const l = label[p];
+      if (l > 0 && l !== main && sizes[l] < sizes[main] * 0.01) {
+        data[p * 4 + 3] = 0;
       }
     }
   }

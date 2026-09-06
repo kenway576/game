@@ -289,7 +289,12 @@ export const SCENE_MAP: Record<string, string> = {
   'akashi_kaikyo_bridge':          '/images/backgrounds/bg_akashi_kaikyo_bridge.webp',
   'awaji_island':                  '/images/backgrounds/bg_awaji_hanasajiki_hill.webp',
   'awaji_hanasajiki':              '/images/backgrounds/bg_awaji_hanasajiki_hill.webp',
-  'awaji_flower_hill':             '/images/backgrounds/bg_awaji_hanasajiki_hill.webp'
+  'awaji_flower_hill':             '/images/backgrounds/bg_awaji_hanasajiki_hill.webp',
+  // 🥞 幸せのパンケーキ（神户三宫店）
+  'pancake_shop_exterior':         '/images/backgrounds/bg_pancake_exterior.webp',
+  'pancake_shop_interior':         '/images/backgrounds/bg_pancake_interior.webp',
+  'pancake_shop':                  '/images/backgrounds/bg_pancake_interior.webp',
+  'shiawase_no_pancake':           '/images/backgrounds/bg_pancake_interior.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
@@ -469,6 +474,9 @@ export const EASTER_EGG_SPRITES = {
   sakamoto:    '/images/characters/easter_sakamoto.webp',    // 坂本（推眼镜优雅装逼值日生）
   // 《中华小当家》
   mao:         '/images/characters/easter_mao.webp',         // 刘昴星（特级厨师发光黄金料理）
+  // 《超辉夜姬！》
+  iroha:       '/images/characters/easter_iroha.webp',       // 酒寄彩叶（手握学生手帐认真高校生）
+  kaguya:      '/images/characters/easter_kaguya.webp',      // 辉夜（松弛oversized黑T叉子吃货美少女）
 } as const;
 
 export const CHARACTERS: Record<CharacterId, Character> = {

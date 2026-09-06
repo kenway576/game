@@ -535,6 +535,28 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ]
   },
   {
+    id: 'pancake_shop', district: 'sannomiya',
+    nameJp: '幸せのパンケーキ 神戸三宮店', reading: 'しあわせのパンケーキ こうべさんのみやてん',
+    nameZh: '幸福松饼 神户三宫店', nameEn: 'A Happy Pancake Kobe Sannomiya',
+    blurbZh: '三宫生田神社旁安静小巷里的高人气甜品咖啡馆。招牌是现点现烤、蓬松摇晃的舒芙蕾厚松饼。',
+    blurbEn: 'A beloved soufflé pancake cafe tucked near Ikuta Shrine, renowned for cloud-soft, freshly-baked thick pancakes with manuka honey whip.',
+    mapScene: 'pancake_shop_exterior',
+    extraScenes: ['pancake_shop_interior'],
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你才刚到这座城市，还没往山下走过。',
+    lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
+    timeSlots: ['morning', 'afternoon'],
+    regulars: [CharacterId.HIKARI, CharacterId.INARI],
+    ambientZh: [
+      '暖黄的木质吊灯下，开放式烘焙台里飘出浓郁的鸡蛋与焦糖香气，瓷盘上的舒芙蕾松饼端出来时微微颤动。',
+      '靠窗的位置坐着一对边聊边拍照的女高生，枫糖浆顺着蓬松金黄的松饼顶端缓缓流淌下来。'
+    ],
+    ambientEn: [
+      'Warm lights glow above the open kitchen as sweet custard and caramel aromas drift past; pancakes wobble gently on porcelain plates.',
+      'Two high schoolers laugh and snap photos by the window as dark amber maple syrup cascades down golden soufflé layers.'
+    ]
+  },
+  {
     id: 'tackle_shop', district: 'harbor',
     nameJp: 'みなと釣具', reading: 'みなとつりぐ',
     nameZh: '港口渔具店', nameEn: 'Minato Tackle',

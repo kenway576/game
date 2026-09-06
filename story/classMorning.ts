@@ -133,7 +133,14 @@ const buildSketch = (cal: GameCalendar, subjectId: string, subjectScene: string,
       titleZh: `${subj.emoji} ${subj.nameZh}`, titleEn: `${subj.emoji} ${subj.nameEn}`,
       subtitleZh: subj.nameJp, subtitleEn: subj.reading
     },
-    { type: 'narration', zh: s.zh, en: s.en, words: s.word ? [s.word] : undefined },
+    // 生词挂在中间那一拍上——那是这节课里他真正听懂的那个词。
+    // 没有中间拍的（旧条目）就挂回第一句。
+    { type: 'narration', zh: s.zh, en: s.en, words: s.midZh ? undefined : (s.word ? [s.word] : undefined) },
+    ...(s.midZh ? [{
+      type: 'narration' as const, zh: s.midZh, en: s.midEn || '',
+      words: s.word ? [s.word] : undefined
+    }] : []),
+    ...(s.endZh ? [{ type: 'narration' as const, zh: s.endZh, en: s.endEn || '' }] : []),
     {
       type: 'effect',
       effects: [{
