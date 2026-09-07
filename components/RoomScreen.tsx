@@ -257,7 +257,7 @@ const RoomScreen: React.FC<Props> = ({
                       onClick={() => { audioManager.playSfx('page'); setSpot(v); }}
                       className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-white/15 hover:border-amber-200/70 transition-all duration-300 shadow-lg"
                     >
-                      <img src={v.image} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <img src={(calendar.timeSlot === 'night' && v.imageNight) || v.image} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                       <span className="absolute bottom-0 left-0 right-0 p-2 text-left">
                         <span className="block text-[11px] md:text-sm font-bold text-white leading-tight">{v.nameJp}</span>
@@ -269,7 +269,7 @@ const RoomScreen: React.FC<Props> = ({
             ) : (
               <div className="animate-in fade-in slide-in-from-bottom-3 duration-300">
                 <div className="relative aspect-[16/9] rounded-lg overflow-hidden border border-white/15 shadow-2xl">
-                  <img src={spot.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                  <img src={(calendar.timeSlot === 'night' && spot.imageNight) || spot.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
                   <span className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                   <div className="absolute bottom-0 left-0 p-4 md:p-5">
                     <p className="text-xl md:text-3xl font-black text-white">{spot.nameJp}</p>

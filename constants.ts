@@ -2263,6 +2263,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     nameJp: '北野異人館街', reading: 'きたのいじんかんがい',
     nameZh: '北野异人馆街', nameEn: 'Kitano Foreign Residences',
     image: '/images/backgrounds/bg_kitano_sakura_slope.webp',
+    imageNight: '/images/backgrounds/bg_kitano_slope_night.webp',
     descZh: '你就住在这条坡道上。开港之后外国商人在山手盖起的洋馆，一百多年过去，屋顶的风见鸡还在原处。外公那张手绘地图上，画得最密的就是这一带。',
     descEn: 'You live on this slope. Western merchants built these houses on the hillside after the port opened; a century on, the weathercocks are still where they were. This is the densest part of your grandfather\'s hand-drawn map.',
     word: { jp: '坂', reading: 'さか', zh: '坡道', en: 'slope / hill' }
@@ -2272,6 +2273,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     nameJp: '神戸港', reading: 'こうべこう',
     nameZh: '神户港', nameEn: 'Kobe Port',
     image: '/images/backgrounds/bg_kobe_harbor_dusk.webp',
+    imageNight: '/images/backgrounds/bg_kobe_harbor_night.webp',
     descZh: '正对着阳台的那片水。1868 年开港，这座城市的一切几乎都是从那年开始的——包括为什么山腰上会有一整条街的洋馆。',
     descEn: 'The stretch of water straight off the balcony. The port opened in 1868, and very nearly everything about this city starts from that year - including why there is a whole street of Western houses up the hill.',
     word: { jp: '港', reading: 'みなと', zh: '港口', en: 'harbour / port' }
@@ -2280,7 +2282,8 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     id: 'mosaic',
     nameJp: 'モザイク大観覧車', reading: 'モザイクだいかんらんしゃ',
     nameZh: '马赛克摩天轮', nameEn: 'Mosaic Ferris Wheel',
-    image: '/images/backgrounds/bg_kobe_mosaic_ferris_night.webp',
+    image: '/images/backgrounds/bg_kobe_mosaic_ferris_day.webp',
+    imageNight: '/images/backgrounds/bg_kobe_mosaic_ferris_night.webp',
     descZh: '入夜之后最好认的那一个。灯是会变色的，从阳台上看过去像一枚慢慢转的表盘——你搬来第一晚就是靠它认方向的。',
     descEn: 'The easiest thing to find once it is dark. The lights change colour, and from the balcony it turns like a slow clock face. It was how you got your bearings on the first night.',
     word: { jp: '観覧車', reading: 'かんらんしゃ', zh: '摩天轮', en: 'ferris wheel' }
@@ -2290,6 +2293,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     nameJp: 'メリケンパーク', reading: 'メリケンパーク',
     nameZh: '美利坚公园', nameEn: 'Meriken Park',
     image: '/images/backgrounds/bg_kobe_meriken_park.webp',
+    imageNight: '/images/backgrounds/bg_kobe_meriken_park_night.webp',
     descZh: '港塔脚下那片开阔地。名字里的「メリケン」是明治时期日本人听「American」听成的音，就这么一路叫到了今天。',
     descEn: 'The open ground at the foot of the Port Tower. "Meriken" is how Meiji-era ears heard "American", and the name simply stuck.',
     word: { jp: '公園', reading: 'こうえん', zh: '公园', en: 'park' }
@@ -2298,7 +2302,8 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     id: 'rokko',
     nameJp: '六甲山', reading: 'ろっこうさん',
     nameZh: '六甲山', nameEn: 'Mount Rokko',
-    image: '/images/backgrounds/bg_rokko_night_view.webp',
+    image: '/images/backgrounds/bg_rokko_day_view.webp',
+    imageNight: '/images/backgrounds/bg_rokko_night_view.webp',
     descZh: '背后那道山脊。神户被夹在山和海之间，最窄的地方从山脚走到海边不到三公里——所以这座城市是长条形的，而且到处都是坡。',
     descEn: 'The ridge at your back. Kobe is pinned between the mountains and the sea; at its narrowest it is under three kilometres from hillside to water. That is why the city is a long strip, and why everything here is a slope.',
     word: { jp: '山', reading: 'やま', zh: '山', en: 'mountain' }
@@ -2308,6 +2313,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     nameJp: '三宮', reading: 'さんのみや',
     nameZh: '三宫', nameEn: 'Sannomiya',
     image: '/images/backgrounds/bg_sannomiya_skybridge_crossing.webp',
+    imageNight: '/images/backgrounds/bg_sannomiya_skybridge_night.webp',
     descZh: '山脚下灯最密的那一片。神户真正的市中心——车站、商店街、百货店全挤在这里。你昨天就是从那儿走上来的。',
     descEn: 'The densest patch of light at the foot of the hill. Kobe\'s actual centre: the station, the arcades and the department stores all packed together. You walked up from there yesterday.',
     word: { jp: '駅', reading: 'えき', zh: '车站', en: 'station' }
@@ -2317,6 +2323,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     nameJp: '南京町', reading: 'なんきんまち',
     nameZh: '南京町（中华街）', nameEn: 'Nankinmachi Chinatown',
     image: '/images/backgrounds/bg_nankinmachi_chinatown.webp',
+    imageNight: '/images/backgrounds/bg_nankinmachi_chinatown_night.webp',
     descZh: '三宫再往西南，红灯笼那一片。日本三大中华街之一。开港之后没能住进居留地的华商在旁边聚了起来，就成了这条街。',
     descEn: 'South-west of Sannomiya, the patch of red lanterns. One of Japan\'s three great Chinatowns: Chinese merchants who could not live inside the foreign settlement gathered alongside it, and the street grew from that.',
     word: { jp: '町', reading: 'まち', zh: '街区、城镇', en: 'town / district' }
@@ -2326,6 +2333,7 @@ export const WINDOW_VIEW_SPOTS: ViewSpot[] = [
     nameJp: '生田神社', reading: 'いくたじんじゃ',
     nameZh: '生田神社', nameEn: 'Ikuta Shrine',
     image: '/images/backgrounds/bg_ikuta_shrine_forest.webp',
+    imageNight: '/images/backgrounds/bg_inari_torii_night.webp',
     descZh: '街灯之间那一小片黑绿色。传说建于三世纪，比这座港口老了一千五百年。「神戸」这个地名，本来就是指侍奉这座神社的人家。',
     descEn: 'That small patch of dark green in among the streetlights. Said to date from the third century - fifteen hundred years older than the port. The name "Kobe" originally meant the households that served this shrine.',
     word: { jp: '神社', reading: 'じんじゃ', zh: '神社', en: 'shrine' },

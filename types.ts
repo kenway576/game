@@ -182,6 +182,9 @@ export interface ViewSpot {
   nameEn: string;
   // 复用现有背景图，不为此生成新图
   image: string;
+  // 夜里的同一处。窗外这块面板白天黑夜共用一套图的话，
+  // 十点钟站在窗前会看见一片大太阳。没有夜景图的地方退回 image。
+  imageNight?: string;
   descZh: string;
   descEn: string;
   word?: StoryWord;
