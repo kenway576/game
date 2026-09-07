@@ -803,7 +803,10 @@ const App: React.FC = () => {
       restday_parttime_done: true,
       [`shift_${r.grade}`]: true
     }));
-    setLifeToast(userState.language === 'en'
+    // ⚠️ 用 flashLife，别用 setLifeToast。后者只负责把字放上去，
+    // 没有人负责把它拿下来——那条绿色的小牌子会一直挂在对话框上，
+    // 跟着你进第二天的教室。
+    flashLife(userState.language === 'en'
       ? `Shift done. ¥${r.pay.toLocaleString('ja-JP')}`
       : `一天班结束。到手 ¥${r.pay.toLocaleString('ja-JP')}`);
     // 时间照旧按"一整天"结算
@@ -1551,7 +1554,7 @@ const App: React.FC = () => {
       setGameCalendar(prev => ({ ...prev, timeSlot: 'night' }));
       setCurrentScene('apartment_room');
       setGameMode(GameMode.ROOM);
-      setLifeToast(userState.language === 'en'
+      flashLife(userState.language === 'en'
         ? 'That is the day gone. Anything else can wait until tomorrow.'
         : '今天就到这儿了。剩下的明天再说吧。');
       return;
