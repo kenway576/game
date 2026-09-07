@@ -1224,18 +1224,13 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '这就是那个便利店。你在屏幕上看过大概两百次的那个便利店。玻璃门、关东煮的锅、货架上那排一模一样的饭团。',
-    en: 'So this is the convenience store. The one you have seen on a screen roughly two hundred times. The glass door, the oden pot, the row of identical rice balls on the shelf.'
+    zh: '这就是那个便利店——在无数部动漫里见过的、深夜亮着暖白色灯光的便利店。玻璃门、关东煮的锅、货架上整齐的便当。你深吸一口气，推开了自动门。',
+    en: 'So this is the convenience store — the one you have seen countless times in anime, glowing with warm white fluorescent lights in the night. The glass door, the oden pot, neat rows of bento. You take a breath and push through the automatic door.'
   },
   {
     type: 'narration',
-    zh: '按你看过的那些东西的规矩，推开这扇门，出来的时候应该已经在异世界了。',
-    en: 'By the rules of the things you have watched, you push this door open and when you come out you are in another world.'
-  },
-  {
-    type: 'narration',
-    zh: '你推了门。自动门「ピンポーン」响了一声。你还在神户。',
-    en: 'You push the door. It goes ping-pong. You are still in Kobe.'
+    zh: '自动门「ピンポーン」响了一声，迎面扑来关东煮温暖诱人的香气。',
+    en: 'The door chimes a cheerful ping-pong, greeting you with the warm, savory aroma of oden broth.'
   },
   {
     type: 'scene',
@@ -1766,8 +1761,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             characterImage: '/images/characters/miyuki/happy.webp',
-            speakerZh: '银发的女子',
-            speakerEn: 'Silver-haired Woman',
+            speakerZh: '深雪',
+            speakerEn: 'Miyuki',
             jp: 'あら。じゃあ、お隣さんね。二〇二号室です。……ふふ、そんなに緊張しなくても大丈夫よ。',
             words: [
                   { jp: "お隣さん", reading: "おとなりさん", zh: "邻居", en: "neighbour" },
@@ -1789,8 +1784,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               {
                 type: 'speech',
                 characterImage: '/images/characters/miyuki/happy_alt.webp',
-                speakerZh: '银发的女子',
-                speakerEn: 'Silver-haired Woman',
+                speakerZh: '深雪',
+                speakerEn: 'Miyuki',
                 jp: '初日から神戸プリン？……ふふ、いい趣味してるわ。',
                 zh: '第一天就吃神户布丁？……呵呵，品味不错嘛。',
                 en: 'Kobe pudding on your very first day? ...Hmhm. Good taste.',
@@ -1800,20 +1795,30 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'scene',
-            scene: 'kitano_slope',
+            scene: 'convenience_store_exterior',
+            bgm: 'night'
+          },
+          {
+            type: 'narration',
+            zh: '走出便利店时，你脑海里冷不丁冒出动漫里的异世界展开，下意识地闭眼再睁开——没有异世界，眼前只有一辆疾驰的大卡车呼啸而过，卷起带风的尾气。你有些自嘲地揉了揉鼻尖。',
+            en: 'Walking out of the convenience store, the isekai trope suddenly pops into your head. You blink your eyes open—no fantasy realm, only a speeding truck roaring past in the night. You rub your nose in faint self-mockery.'
+          },
+          {
+            type: 'scene',
+            scene: 'kitano_slope_night',
             bgm: 'night'
           },
           {
             type: 'narration',
             characterImage: '/images/characters/miyuki/neutral.webp',
-            zh: '你们并肩走出便利店，一起沿着坡道往上走。她的步子放得很慢，刚好是你能跟得上的速度。',
-            en: 'You walk out of the store side by side and start up the slope together. She keeps her pace slow — exactly slow enough for you to stay beside her.'
+            zh: '夜色下的北野坡道两旁，复古的煤气路灯亮着温暖的昏黄光晕，照亮了古朴的洋馆与石板路。深雪的步子放得很慢，刚好是你能跟得上的速度。',
+            en: 'Along the nighttime Kitano slope, vintage gas-style streetlights glow with warm amber halos, illuminating the historic Western houses and cobblestones. Miyuki keeps her pace slow — exactly slow enough for you to stay beside her.'
           },
           {
             type: 'speech',
             characterImage: '/images/characters/miyuki/neutral.webp',
-            speakerZh: '银发的女子',
-            speakerEn: 'Silver-haired Woman',
+            speakerZh: '深雪',
+            speakerEn: 'Miyuki',
             jp: 'この坂、慣れるまでは大変よ。……何か困ったことがあったら、いつでも隣をノックしてね。',
             words: [
                   { jp: "慣れる", reading: "なれる", zh: "习惯、适应", en: "to get used to" },
@@ -1854,8 +1859,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'speech',
-                    speakerZh: '银发的女子',
-                    speakerEn: 'Silver-haired Woman',
+                    speakerZh: '深雪',
+                    speakerEn: 'Miyuki',
                     characterImage: '/images/characters/miyuki/happy.webp',
                     jp: 'あら……いいの？じゃあ、こっちだけ。卵のほう、割らないでね。',
                     words: [
@@ -1914,8 +1919,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'speech',
-                    speakerZh: '银发的女子',
-                    speakerEn: 'Silver-haired Woman',
+                    speakerZh: '深雪',
+                    speakerEn: 'Miyuki',
                     characterImage: '/images/characters/miyuki/happy.webp',
                     jp: '坂を下りて右に三分。あそこ、夜八時からお惣菜が半額になるの。……あと、火曜日は卵が特売。',
                     words: [
@@ -2003,8 +2008,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'speech',
-                    speakerZh: '银发的女子',
-                    speakerEn: 'Silver-haired Woman',
+                    speakerZh: '深雪',
+                    speakerEn: 'Miyuki',
                     characterImage: '/images/characters/miyuki/happy.webp',
                     jp: '……深雪。二〇二号室の、深雪です。',
                     zh: '……深雪。202 室的，深雪。',
@@ -2063,8 +2068,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'speech',
-                    speakerZh: '银发的女子',
-                    speakerEn: 'Silver-haired Woman',
+                    speakerZh: '深雪',
+                    speakerEn: 'Miyuki',
                     characterImage: '/images/characters/miyuki/happy.webp',
                     jp: 'そんな、たいしたことしてないのに。……でも、ありがとう。ちゃんと言える子で、安心したわ。',
                     words: [
@@ -2275,13 +2280,33 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'scene',
-            scene: 'kitano_slope',
+            scene: 'convenience_store_exterior',
             bgm: 'night'
           },
           {
             type: 'narration',
-            zh: '走出便利店时，坡道上已经没有她的影子了。你一个人往上爬，风比刚才凉。',
-            en: 'By the time you step outside, there is no sign of her on the slope. You climb alone. The wind is colder than it was.'
+            zh: '你拎着装了晚饭的塑料袋，走到便利店门口。按你看过的那些动漫的规矩，买完东西推开便利店大门的那一刻，出来时就应该已经被召唤到异世界了。',
+            en: 'Carrying the plastic bag with dinner, you step toward the convenience store door. By the rules of the anime you watched, pushing this door open after shopping should deposit you in another world.'
+          },
+          {
+            type: 'narration',
+            zh: '你装作十分凝重地推开了门，深吸一口气，闭上双眼再猛地睁开——',
+            en: 'With great solemnity, you push the door open, take a breath, close your eyes tight, and snap them open—'
+          },
+          {
+            type: 'narration',
+            zh: '伴随着刺耳的鸣笛声，只有一辆疾驰的大卡车从眼前的马路上呼啸而过，卷起一阵微凉的夜风。你揉了揉眼睛，坡道、路灯、居民楼……很好，你也并没有到什么异世界，依然老老实实地站在神户。',
+            en: 'With a blaring horn, only a speeding truck roars past along the road, kicking up a gust of cool night air. You rub your eyes. The slope, the streetlights, residential houses... right, you did not go to any other world. You are still standing right here in Kobe.'
+          },
+          {
+            type: 'scene',
+            scene: 'kitano_slope_night',
+            bgm: 'night'
+          },
+          {
+            type: 'narration',
+            zh: '走出便利店时，坡道上已经没有那位银发女子的影子了。两旁的洋馆与复古路灯在夜色中静静伫立，你一个人沿着微斜的石板坡道往上爬，风比刚才凉了些。',
+            en: 'By the time you step outside, there is no sign of the silver-haired woman on the slope. The Western houses and vintage streetlights stand quietly in the night. You climb the sloping cobblestones alone, the wind cooler than before.'
           },
           {
             type: 'scene',
@@ -2303,7 +2328,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'apartment_room',
+    scene: 'apartment_room_night',
     bgm: 'night',
     titleZh: '海风庄 201 室 · 夜',
     titleEn: 'Umikaze-so, Room 201 · Night',
@@ -2334,8 +2359,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
       {
         type: 'narration',
         characterImage: '/images/characters/miyuki/neutral.webp',
-        zh: '门外站着的是刚才那位银发的邻居。她换了家居服，手里拿着一个夹着纸的木板夹。',
-        en: 'The silver-haired neighbour from earlier is standing outside, changed into house clothes, holding a wooden clipboard with papers wedged into it.'
+        zh: '门外站着的是隔壁的深雪。她换了家居服，手里拿着一个夹着纸的木板夹。',
+        en: 'Miyuki from next door is standing outside, changed into house clothes, holding a wooden clipboard with papers wedged into it.'
       }
     ]
   },
@@ -2353,8 +2378,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '银发的女子',
-    speakerEn: 'Silver-haired Woman',
+    speakerZh: '深雪',
+    speakerEn: 'Miyuki',
     characterImage: '/images/characters/miyuki/neutral.webp',
     jp: '夜遅くにごめんなさい。回覧板、回しに来ました。',
     words: [
@@ -2371,8 +2396,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '银发的女子',
-    speakerEn: 'Silver-haired Woman',
+    speakerZh: '深雪',
+    speakerEn: 'Miyuki',
     characterImage: '/images/characters/miyuki/happy.webp',
     jp: 'ここ、まだ空白なんです。……お名前、伺ってもいいですか？',
     words: [
@@ -2407,8 +2432,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '银发的女子',
-    speakerEn: 'Silver-haired Woman',
+    speakerZh: '深雪',
+    speakerEn: 'Miyuki',
     characterImage: '/images/characters/miyuki/happy_alt.webp',
     jp: '{name}さん、ですね。……覚えました。',
     zh: '{name}先生。……我记住了。',

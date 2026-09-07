@@ -55,6 +55,7 @@ export const SCENE_MAP: Record<string, string> = {
   // 🌸 关西核心实景与约会地点 (Google 官方 Gemini 2.5 Flash Image 新海诚超清画风)
   'kobe_harbor':       '/images/backgrounds/bg_kobe_harbor_dusk.webp',
   'kitano_slope':      '/images/backgrounds/bg_kitano_sakura_slope.webp',
+  'kitano_slope_night': '/images/backgrounds/bg_kitano_slope_night.webp',
   'kyoto_torii':       '/images/backgrounds/bg_kyoto_inari_torii.webp',
   // 伏见稻荷那一套：白天的千本鸟居、夜里的千本鸟居、参道上那条挤满狐狸的商店街。
   // 三张图一直躺在文件夹里没人引用——现在挂到 kyoto_torii 的 nightScene / extraScenes 上。

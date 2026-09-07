@@ -89,16 +89,21 @@ const CAMEO_HIKARI: StoryNode[] = [
 
 const CAMEO_MAKI: StoryNode[] = [
   {
+    type: 'scene',
+    scene: 'sannomiya_arcade',
+    bgm: 'town'
+  },
+  {
     type: 'narration',
     characterImage: `${MAK}punk_laugh.webp`,
-    zh: '便利店门口，一个粉头发的女生正倒着走路，一边冲身后的朋友大声说着什么，语速快得像在念绕口令。',
-    en: 'Outside the convenience store a pink-haired girl is walking backwards, hollering something over her shoulder at a friend, the words coming out fast enough to be a tongue-twister.'
+    zh: '顺路经过三宫商店街街口时，一个粉头发的女生正倒着走路，手里还晃着一把游戏机厅的兑换币，一边冲身后的朋友大声说着什么，语速快得像在念绕口令。',
+    en: 'Passing by the Sannomiya shopping arcade, a pink-haired girl is walking backwards, jingling a handful of arcade tokens, hollering something over her shoulder at a friend fast enough to be a tongue-twister.'
   },
   {
     type: 'narration',
     characterImage: '',
-    zh: '她从你面前如小旋风般横穿而过，视线扫过你身上时忽地微微一凝——像是在心里利落地把你归了个类——随即冲同伴笑闹着跑远了。你连一个字都没听懂。',
-    en: 'She darts across your path like a whirlwind. Her gaze catches on you for a split second — filed away cleanly in her mind — before she laughs and runs off with her friends. You did not understand a word.',
+    zh: '她从你面前如小旋风般横穿而过，视线扫过你身上时忽地微微一凝——像是在心里利落地把你归了个类——随即冲同伴笑闹着跑进游戏机厅里去了。你连一个字都没听懂。',
+    en: 'She darts across your path like a whirlwind. Her gaze catches on you for a split second — filed away cleanly in her mind — before she laughs and runs into the game center with her friends. You did not understand a word.',
     words: [
       { jp: '早口', reading: 'はやくち', zh: '语速快', en: 'fast talking' }
     ]

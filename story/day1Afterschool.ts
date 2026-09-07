@@ -1594,10 +1594,7 @@ export const DAY1_EVENING: StoryNode[] = [
     ]
   },
   // ---- 一起上坡 ----
-  // 原来这里切到 kitano_slope，而那张图是**白天**的樱花坡——
-  // 一整段都在傍晚六点四十，画面却跳回了白天。
-  // 坡道口那张黄昏图一路用到底。
-  { type: 'scene', scene: 'kitano_slope_foot_dusk', bgm: 'night' },
+  { type: 'scene', scene: 'kitano_slope_night', bgm: 'night' },
   {
     type: 'narration',
     characterImage: `${NAO}knit_neutral.webp`,

@@ -291,13 +291,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${MIYUKI}neutral.webp`,
-            zh: '一位银发的女子拎着垃圾袋走出来，看见你，愣了一下。',
-            en: 'A silver-haired woman comes out with a rubbish bag, sees you, and stops.'
+            zh: '深雪拎着垃圾袋走出来，看见你，愣了一下。',
+            en: 'Miyuki comes out with a rubbish bag, sees you, and pauses.'
           },
           {
             type: 'speech',
-            speakerZh: '银发的女子',
-            speakerEn: 'Silver-haired Woman',
+            speakerZh: '深雪',
+            speakerEn: 'Miyuki',
             characterImage: `${MIYUKI}happy.webp`,
             jp: 'あら。……もしかして、二〇一号室の方？',
             zh: '哎呀。……难不成，是 201 室的那位？',
@@ -488,17 +488,17 @@ export const DAY1_SCRIPT: StoryNode[] = [
       },
       {
         id: 'day1_run',
-        labelZh: '7 时 43 分。拂掉花瓣，冲上坡道',
-        labelEn: '7:43. Brush it off and run',
+        labelZh: '7 时 43 分。拂掉花瓣，一路下坡小跑去学校',
+        labelEn: '7:43. Brush it off and jog downhill to school',
         hintZh: '第一天迟到可不太妙',
         hintEn: 'Being late on day one would not be ideal.',
-        effects: [{ stat: 'guts', amount: 1, reasonZh: '一口气冲完了整条坡道', reasonEn: 'You took the whole slope in one go' }],
+        effects: [{ stat: 'guts', amount: 1, reasonZh: '一口气顺着坡道冲了下去', reasonEn: 'You took the downhill slope in one go' }],
         setFlags: ['day1_ran'],
         then: [
           {
             type: 'narration',
-            zh: '坡道比昨天拖着行李箱走的时候短得多。你到校门口的时候只喘了三口气。',
-            en: 'The slope is far shorter than it was yesterday with a suitcase. You reach the gate three breaths short of fine.'
+            zh: '顺着下坡走比昨天拖着沉重大箱子爬坡时轻松得多。你一路小跑到校门口的时候只喘了三口气。',
+            en: 'Going downhill is far easier than hauling that heavy suitcase up yesterday. You jog right to the gate, only three breaths short of fine.'
           }
         ]
       },
@@ -516,8 +516,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '吐司是昨晚的，已经有点硬了。你叼着它冲上坡道，认认真真地在每个拐角减速——万一呢。',
-            en: 'The toast is a night old and going stiff. You bite down and charge the slope, slowing conscientiously at every corner. Just in case.'
+            zh: '吐司是昨晚的，已经有点硬了。你叼着它一路小跑冲下坡道，认认真真地在每个拐角减速——万一呢。',
+            en: 'The toast is a night old and going stiff. You bite down and jog downhill, slowing conscientiously at every corner. Just in case.'
           },
           {
             type: 'narration',
@@ -536,8 +536,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
 
   {
     type: 'narration',
-    zh: '第三条：满坡的樱花、迎面的山风、上学要爬的坡。',
-    en: 'Third entry: a slope full of blossom, a headwind off the hill, a climb to get to school.'
+    zh: '第三条：满坡的樱花、迎面的海风、下坡上学的林荫道。',
+    en: 'Third entry: a slope full of blossom, a breeze off the bay, a downhill path to school.'
   },
   {
     type: 'narration',
@@ -546,8 +546,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你笑了一声，继续往上走。',
-    en: 'You snort, and keep climbing.'
+    zh: '你笑了一声，迎着海湾的方向继续顺着坡道往下跑去。',
+    en: 'You snort, and keep jogging downhill toward the bay.'
   },
 
   // ==========================================================
