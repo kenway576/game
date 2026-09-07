@@ -124,8 +124,13 @@ export const giftVerdict = (
   const loved = !!like?.loves.includes(taste);
   const homemade = key.startsWith('dish|') || key.startsWith('crop_') || key.startsWith('catch|');
 
-  const affection = Math.max(1, Math.round(base * (loved ? 1.0 : 0.55)));
-  const familiarity = Math.max(1, Math.round(base * 0.4));
+  // ⚖️ 送礼是**每天都能做**的动作，剧情选项是一次性的。
+  // 第一版按剧情选项的量给（自己做的菜 +14），而剧本里单次好感的中位数是 6、
+  // 九成落在 16 以下——也就是说递一盒味噌汤，抵得上一场戏的高光选项，
+  // 而且第二天还能再来一次。八个人一起算，一天能刷出一百多点。
+  // 所以整体压到剧情的三分之一上下：送对东西大约 +5，随手买的 +2。
+  const affection = Math.max(1, Math.round(base * (loved ? 0.36 : 0.18)));
+  const familiarity = Math.max(1, Math.round(base * 0.16));
   const band: GiftVerdict['band'] = loved && homemade ? 'perfect' : loved ? 'good' : 'ok';
 
   const name = item?.nameZh ?? '东西';
