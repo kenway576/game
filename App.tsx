@@ -184,40 +184,89 @@ const App: React.FC = () => {
   // 🏁 序章结算屏：序章播完先停在这一屏，让玩家看见自己的选择被记住了
   const [prologueResult, setPrologueResult] = useState<PrologueResult | null>(null);
 
+  // ---------------------------------------------------------
+  // 📈 属性的递减曲线
+  //
+  // 属性的大头不是剧本，是**每天重复的东西**：上课、塾、做饭、打工。
+  // 照原样线性加下去，五样都会在半路撞满，然后三百多天里再没有意义。
+  //
+  // 真实的情况本来也不是线性的：第一次听懂一句敬语和第五百次听懂，
+  // 长的东西不一样。所以越高的地方，同一件事给得越少。
+  //
+  // 【为什么要留小数】
+  // 只做整数打折的话，高位上的 +1 会被抹成 0——一节普通的课对一个
+  // 已经很懂的人**完全**没用，那就成了一堵墙，比原来的问题更糟。
+  // 留一个看不见的小数尾巴：0.3 也在攒，攒够一整点就跳一次。
+  // 慢，但不会停。
+  //
+  // 爬到顶需要的原始点数：0→30 要 30，30→50 要 40，50→65 要 50，
+  // 65→80 要 83，80→90 要 100，90→100 要 200。合计约五百点。
+  const STAT_TAPER: { at: number; k: number }[] = [
+    { at: 0, k: 1 }, { at: 30, k: 0.5 }, { at: 50, k: 0.3 },
+    { at: 65, k: 0.18 }, { at: 80, k: 0.1 }, { at: 90, k: 0.05 }
+  ];
+  const taperK = (current: number): number => {
+    let k = 1;
+    for (const t of STAT_TAPER) if (current >= t.at) k = t.k;
+    return k;
+  };
+  // 攒不满一整点的零头。不进存档：跨存档结转带来的复杂度，
+  // 远大于"读档丢掉半点属性"这件事的影响。
+  const statFracRef = useRef<Record<string, number>>({});
+  const takeGain = (stat: StatKey, current: number, amount: number): number => {
+    if (amount <= 0) return amount;            // 扣分不打折
+    const pool = (statFracRef.current[stat] || 0) + amount * taperK(current);
+    const whole = Math.floor(pool);
+    statFracRef.current[stat] = pool - whole;
+    return whole;
+  };
+
   const gainStat = (stat: StatKey, amount: number, reasonZh: string, reasonEn: string) => {
-    setProtagonistStats(prev => ({
-      ...prev,
-      [stat]: Math.min(100, Math.max(0, (prev[stat] || 0) + amount))
-    }));
-    setStatGainEvent({
-      stat,
-      amount,
-      reasonZh,
-      reasonEn,
-      timestamp: Date.now()
+    let shown = amount;
+    setProtagonistStats(prev => {
+      const cur = prev[stat] || 0;
+      const g = takeGain(stat, cur, amount);
+      shown = g;
+      return { ...prev, [stat]: Math.min(100, Math.max(0, cur + g)) };
     });
+    // 打折之后是 0 就别弹提示了——弹一个「+0」比什么都不弹更糟。
+    setTimeout(() => {
+      if (shown === 0) return;
+      setStatGainEvent({ stat, amount: shown, reasonZh, reasonEn, timestamp: Date.now() });
+    }, 0);
   };
 
   // 剧本节点一次抛回来的一组增益：数值立刻结算，提示进队列依次弹出
   const applyStoryEffects = (effects: StoryEffect[]) => {
     if (!effects.length) return;
+    // 打完折之后每一项实际加了多少，提示里报的就是这个数——
+    // 界面上说 +3、背地里只给 1，那是骗人。
+    const applied: { stat: StatKey; amount: number; reasonZh: string; reasonEn: string }[] = [];
     setProtagonistStats(prev => {
       const next = { ...prev };
+      applied.length = 0;
       effects.forEach(e => {
-        next[e.stat] = Math.min(100, Math.max(0, (next[e.stat] || 0) + e.amount));
+        const cur = next[e.stat] || 0;
+        const g = takeGain(e.stat, cur, e.amount);
+        next[e.stat] = Math.min(100, Math.max(0, cur + g));
+        applied.push({ stat: e.stat, amount: g, reasonZh: e.reasonZh, reasonEn: e.reasonEn });
       });
       return next;
     });
-    setStatGainQueue(prev => [
-      ...prev,
-      ...effects.map((e, i) => ({
-        stat: e.stat,
-        amount: e.amount,
-        reasonZh: e.reasonZh,
-        reasonEn: e.reasonEn,
-        timestamp: Date.now() + i
-      }))
-    ]);
+    setTimeout(() => {
+      const shown = applied.filter(a => a.amount !== 0);
+      if (!shown.length) return;
+      setStatGainQueue(prev => [
+        ...prev,
+        ...shown.map((e, i) => ({
+          stat: e.stat,
+          amount: e.amount,
+          reasonZh: e.reasonZh,
+          reasonEn: e.reasonEn,
+          timestamp: Date.now() + i
+        }))
+      ]);
+    }, 0);
   };
 
   // 队列泵：当前没有提示在显示时，取下一个顶上

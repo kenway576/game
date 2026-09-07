@@ -331,7 +331,7 @@ export const REI_STORY_1: StoryNode[] = [
         labelEn: 'Give no answer. Ask what she wants to write.',
         hintZh: '她大概从来没被人问过这个',
         hintEn: 'Nobody has likely ever asked her that.',
-        requires: { stat: 'kindness', min: 5 },
+        requires: { stat: 'kindness', min: 16 },
         effects: [{ stat: 'kindness', amount: 3, reasonZh: '你没有替她决定', reasonEn: 'You did not decide it for her' }],
         relations: [{ char: CharacterId.REI, familiarity: 6, affection: 10, reasonZh: '她被问了一个只有主观答案的问题', reasonEn: 'She was asked a question that only has a subjective answer' }],
         then: [

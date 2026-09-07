@@ -205,7 +205,7 @@ export const HIKARI_STORY_3: StoryNode[] = [
         jp: '光は、どう書いてほしい。',
         hintZh: '这个问题她一定会躲。看她躲到哪儿去',
         hintEn: 'She will dodge this one. Watch where she goes.',
-        requires: { stat: 'guts', min: 6 },
+        requires: { stat: 'guts', min: 20 },
         effects: [{ stat: 'guts', amount: 3, reasonZh: '你把选择权递到了一个从来不敢要东西的人手上', reasonEn: 'You handed the choice to someone who never asks for anything' }],
         relations: [{ char: CharacterId.HIKARI, familiarity: 3, affection: 15, reasonZh: '没有人问过她想要什么', reasonEn: 'Nobody has ever asked her what she wants' }],
         setFlags: ['hikari_story_asked_her_want'],

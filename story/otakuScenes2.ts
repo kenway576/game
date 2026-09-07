@@ -337,7 +337,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             labelEn: 'Play along. Whisper: "...El Psy Kongroo, Steins;Gate has chosen."',
             jp: '……了解した。エル・プサイ・コングルゥ。',
             hintZh: '他等的就是有人接梗', hintEn: 'Somebody taking it is exactly what he is waiting for.',
-            requires: { stat: 'charm', min: 8 },
+            requires: { stat: 'charm', min: 28 },
             effects: [
               { stat: 'charm', amount: 3, reasonZh: '你接住了跨越世界线的暗号', reasonEn: 'You took a bit that nobody takes' },
               { stat: 'guts', amount: 1, reasonZh: '在走廊上，当着别人的面', reasonEn: 'In a corridor, in front of people' }
@@ -609,7 +609,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
             labelEn: '"As far as the station, if you like."',
             jp: '駅まで、入りますか。',
             hintZh: '说出口比想象中难', hintEn: 'Saying it is harder than imagining it.',
-            requires: { stat: 'guts', min: 10 },
+            requires: { stat: 'guts', min: 36 },
             effects: [
               { stat: 'guts', amount: 4, reasonZh: '你在四个陌生人面前说了这句话', reasonEn: 'You said it in front of four strangers' }
             ],

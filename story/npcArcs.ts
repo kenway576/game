@@ -343,7 +343,7 @@ export const NPC_ARCS: StreetScene[] = [
             labelZh: '写上自己的名字，申请跟他换',
             labelEn: 'Put your own name on it and ask to swap with him',
             hintZh: '你坐在第二排。你不需要坐第二排', hintEn: 'You sit in the second row. You do not need to.',
-            requires: { stat: 'kindness', min: 10 },
+            requires: { stat: 'kindness', min: 36 },
             effects: [
               { stat: 'kindness', amount: 5, reasonZh: '你没有替他说，你只是换了个位子', reasonEn: 'You did not speak for him. You changed seats' },
               { stat: 'guts', amount: 2, reasonZh: '你也没跟他商量', reasonEn: 'And you did not consult him about it either' }

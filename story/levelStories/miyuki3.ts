@@ -228,7 +228,7 @@ export const MIYUKI_STORY_3: StoryNode[] = [
         jp: 'どう呼ばれたいですか。',
         hintZh: '她这辈子大概没被问过这个',
         hintEn: 'Nobody has likely asked her that in her life.',
-        requires: { stat: 'kindness', min: 6 },
+        requires: { stat: 'kindness', min: 20 },
         effects: [{ stat: 'kindness', amount: 3, reasonZh: '你把选择权交了出去', reasonEn: 'You handed over the choice' }],
         relations: [{ char: CharacterId.MIYUKI, familiarity: 5, affection: 19, reasonZh: '她第一次被问自己想要什么', reasonEn: 'For the first time she was asked what she wanted' }],
         setFlags: ['miyuki_story_asked_name'],

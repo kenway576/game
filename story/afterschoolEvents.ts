@@ -123,7 +123,7 @@ const EV_RAMEN_SORA: MapEventDef = {
           words: [{ jp: '大盛り', reading: 'おおもり', zh: '大份', en: 'large portion' }],
           hintZh: '你不知道自己在答应什么',
           hintEn: 'You do not know what you are agreeing to.',
-          requires: { stat: 'guts', min: 2 },
+          requires: { stat: 'guts', min: 8 },
           effects: [{ stat: 'guts', amount: 2, reasonZh: '你把自己交给了这家店', reasonEn: 'You surrendered yourself to this establishment' }],
           relations: [{ char: CharacterId.SORA, familiarity: 20, affection: 6, reasonZh: '她整晚都在看着你吃', reasonEn: 'She watched you eat all evening' }],
           then: [
@@ -564,9 +564,21 @@ const EV_ARCADE_MAKI: MapEventDef = {
       color: 'bg-pink-600'
     },
     {
-      type: 'narration',
-      zh: '（‘杂、杂鱼？！’你在心里捂胸倒退半步，这扑面而来的雌小鬼压迫感是怎么回事！不行，身为正义的伙伴，绝不能在这里被后辈看扁！）',
-      en: '(\'W-weakling?!\' In your mind you clutch your chest and stumble back half a step. What is this overwhelming mesugaki aura?! No—as an ally of justice, you cannot let an underclassman look down on you here!)'
+      type: 'speech',
+      speakerZh: '你', speakerEn: 'You',
+      jp: '杂、杂鱼？！身为正义的伙伴，绝不能在这里被后辈看扁！',
+      zh: '杂、杂鱼？！身为正义的伙伴，绝不能在这里被后辈看扁！',
+      en: 'W-weakling?! As an ally of justice, I refuse to be looked down on by an underclassman!',
+      color: 'bg-yellow-500'
+    },
+    {
+      type: 'speech',
+      speakerZh: '真纪', speakerEn: 'Maki',
+      characterImage: `${MAKI}smug.webp`,
+      jp: '……センパイ、また意味わからんこと言うてるし。ざぁこ♡',
+      zh: '……前辈又在说什么听不懂的话了。杂鱼♡',
+      en: '...Senpai is saying weird stuff again. Weakling.',
+      color: 'bg-pink-600'
     },
     {
       type: 'narration',
@@ -1896,7 +1908,7 @@ const EV_COURTYARD_ASUKA: MapEventDef = {
           words: [{ jp: '送る', reading: 'おくる', zh: '送（人）', en: 'to see someone off' }],
           hintZh: '一把伞，两个人，很挤',
           hintEn: 'One umbrella. Two people. Tight.',
-          requires: { stat: 'guts', min: 3 },
+          requires: { stat: 'guts', min: 10 },
           effects: [{ stat: 'guts', amount: 2, reasonZh: '你知道她会说什么，还是说了', reasonEn: 'You knew what she would say and said it anyway' }],
           relations: [{ char: CharacterId.ASUKA, familiarity: 16, affection: 12, reasonZh: '她走了一路都在挑刺，一次也没走开', reasonEn: 'She complained the entire way and never once stepped away' }],
           then: [

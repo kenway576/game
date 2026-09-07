@@ -169,7 +169,7 @@ export const SORA_STORY_2: StoryNode[] = [
         labelEn: 'Hit the switch. Lights off, then on again.',
         hintZh: '让她知道有人来了，但不用你说话',
         hintEn: 'Announce yourself without having to say anything.',
-        requires: { stat: 'charm', min: 5 },
+        requires: { stat: 'charm', min: 16 },
         effects: [{ stat: 'charm', amount: 3, reasonZh: '你替她省掉了被撞见那一下', reasonEn: 'You spared her the moment of being caught' }],
         relations: [{ char: CharacterId.SORA, familiarity: 4, affection: 13, reasonZh: '你给了她足够的时间整理好脆弱的防线', reasonEn: 'You gave her enough time to pull her defenses back together' }],
         then: [
@@ -352,7 +352,7 @@ export const SORA_STORY_2: StoryNode[] = [
         jp: 'その五センチ、誰が測ってん。',
         hintZh: '一个精确的数字，一定有个来源',
         hintEn: 'A number that precise came from somewhere.',
-        requires: { stat: 'knowledge', min: 5 },
+        requires: { stat: 'knowledge', min: 16 },
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你追问了那个数字是谁给的', reasonEn: 'You asked where the number came from' }],
         relations: [{ char: CharacterId.SORA, familiarity: 6, affection: 12, reasonZh: '她第一次意识到那个标准是别人定的', reasonEn: 'She realised for the first time that somebody else set that bar' }],
         then: [

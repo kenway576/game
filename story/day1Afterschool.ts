@@ -1681,9 +1681,26 @@ export const DAY1_EVENING: StoryNode[] = [
     color: 'bg-rose-500'
   },
   {
+    type: 'speech',
+    speakerZh: '你', speakerEn: 'You',
+    jp: '異議あり！証拠は！？証拠を出せ！',
+    zh: '異議あり！证据呢！？拿出证据来！',
+    en: 'Objection! Where is the evidence?! Show me the evidence!',
+    color: 'bg-yellow-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${NAO}knit_angry.webp`,
+    jp: '……あんた、また意味分からんこと言うてるやろ。',
+    zh: '……你又在说那些听不懂的话了。',
+    en: '...There you go saying things nobody understands again.',
+    color: 'bg-rose-500'
+  },
+  {
     type: 'narration',
-    zh: '你在心里疯狂拍桌大喊了一百遍「異議あり！」，甚至想掏出证据当庭反驳。但对上她那双洞悉一切的清澈眼睛，你那点虚张声势一秒钟就泄了气——一个连自己昨天买没买鸡蛋都记不住的人，居然记得你十年前撒谎时眼珠往哪边偏。',
-    en: 'In your mind, you slam the defense desk and shout "Objection!" a hundred times, desperately looking for contradictory evidence. But under her piercing, knowing gaze, all your bravado deflates in an instant—a girl who can\'t even remember whether she bought eggs yesterday remembers which way your eyes drifted when you lied ten years ago.'
+    zh: '但对上她那双洞悉一切的清澈眼睛，你那点虚张声势一秒钟就泄了气——一个连自己昨天买没买鸡蛋都记不住的人，居然记得你十年前撒谎时眼珠往哪边偏。',
+    en: 'Under her piercing, knowing gaze, all your bravado deflates in an instant—a girl who can\'t even remember whether she bought eggs yesterday remembers which way your eyes drifted when you lied ten years ago.'
   },
   {
     type: 'branch',

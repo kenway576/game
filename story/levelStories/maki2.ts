@@ -139,7 +139,7 @@ export const MAKI_STORY_2: StoryNode[] = [
         jp: '今、何時？',
         hintZh: '她会看手机。她会知道你为什么问',
         hintEn: 'She will check. She will understand why you asked.',
-        requires: { stat: 'charm', min: 6 },
+        requires: { stat: 'charm', min: 20 },
         effects: [{ stat: 'charm', amount: 3, reasonZh: '你用一个问题问了另一个问题', reasonEn: 'You asked one question in order to ask another' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 2, affection: 15, reasonZh: '她自己念出了那个时间', reasonEn: 'She read the time out herself' }],
         setFlags: ['maki2_asked_time'],

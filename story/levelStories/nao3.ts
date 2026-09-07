@@ -180,7 +180,7 @@ export const NAO_STORY_3: StoryNode[] = [
         labelEn: "Take out your grandfather's journal, and open it to the pages about her",
         hintZh: '第①段你问过她这十年，然后你也开始记了',
         hintEn: 'You asked about her ten years on that slope, and then you started one too.',
-        requires: { stat: 'kindness', min: 6 },
+        requires: { stat: 'kindness', min: 20 },
         effects: [{ stat: 'kindness', amount: 3, reasonZh: '你也记了，而且一直没说', reasonEn: 'You had been keeping one too, and had not mentioned it' }],
         relations: [{ char: CharacterId.NAO, affection: 22, familiarity: 4, reasonZh: '原来是两个人都在记', reasonEn: 'It turns out both of them had been recording' }],
         setFlags: ['nao_story_both_lists'],
@@ -234,7 +234,7 @@ export const NAO_STORY_3: StoryNode[] = [
         jp: '帰るとき、奈緒も一緒に来て。',
         hintZh: '她怕的是"回去的那个人她不认识"。那就让她在场',
         hintEn: 'She is afraid of not knowing the one who goes back. So have her there.',
-        requires: { stat: 'guts', min: 6 },
+        requires: { stat: 'guts', min: 20 },
         effects: [{ stat: 'guts', amount: 3, reasonZh: '你把一年以后的事说了出来', reasonEn: 'You said out loud a thing about a year from now' }],
         relations: [{ char: CharacterId.NAO, affection: 18, familiarity: 5, reasonZh: '她第一次被写进以后的安排里', reasonEn: 'For the first time she was written into a plan about later' }],
         then: [

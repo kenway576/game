@@ -295,7 +295,7 @@ export const SORA_STORY_1: StoryNode[] = [
         jp: 'さっきの二本目、フォーム変わってたやろ。',
         hintZh: '你不确定该不该问。你还是问了',
         hintEn: 'You are not sure you should ask. You ask.',
-        requires: { stat: 'proficiency', min: 5 },
+        requires: { stat: 'proficiency', min: 16 },
         effects: [{ stat: 'proficiency', amount: 2, reasonZh: '两百个球看下来，你看出了一件她没说的事', reasonEn: 'Two hundred shots in, you saw something she had not said' }],
         relations: [{ char: CharacterId.SORA, familiarity: 4, affection: 9, reasonZh: '除了教练，没有人看出来过', reasonEn: 'Nobody but her coach has ever spotted it' }],
         setFlags: ['sora_story_saw_shoulder'],

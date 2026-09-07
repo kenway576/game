@@ -213,7 +213,7 @@ export const REI_STORY_3: StoryNode[] = [
         jp: '……こっちも、記録することにする。',
         hintZh: '她记了这座城市六年。没有人记过她',
         hintEn: 'She has recorded this city for six years. Nobody has recorded her.',
-        requires: { stat: 'kindness', min: 6 },
+        requires: { stat: 'kindness', min: 20 },
         effects: [
           { stat: 'kindness', amount: 3, reasonZh: '你开始记录一个只记录别人的人', reasonEn: 'You began recording the person who only ever records' },
           { stat: 'charm', amount: 1, reasonZh: '你用她的方式做了一件她没想到的事', reasonEn: 'You used her method to do something she had not anticipated' }
@@ -394,7 +394,7 @@ export const REI_STORY_3: StoryNode[] = [
         jp: '今日のあの項目、いくつ。',
         hintZh: '她一定量了。她每次都量',
         hintEn: 'She has certainly taken it. She takes it every time.',
-        requires: { stat: 'proficiency', min: 6 },
+        requires: { stat: 'proficiency', min: 20 },
         effects: [{ stat: 'proficiency', amount: 2, reasonZh: '你现在知道该问她哪一栏', reasonEn: 'You now know which column to ask about' }],
         relations: [{ char: CharacterId.REI, familiarity: 3, affection: 16, reasonZh: '她被问了那个数字，而且答了', reasonEn: 'She was asked for the number, and she gave it' }],
         setFlags: ['rei_story_asked_number'],

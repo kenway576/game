@@ -157,7 +157,7 @@ export const ASUKA_STORY_1: StoryNode[] = [
         words: [{ jp: '委員長', reading: 'いいんちょう', zh: '班长、委员长', en: 'class president' }],
         hintZh: '你用了敬语，而且故意用了那个头衔',
         hintEn: 'You used polite form, and you used the title on purpose.',
-        requires: { stat: 'charm', min: 3 },
+        requires: { stat: 'charm', min: 10 },
         effects: [{ stat: 'charm', amount: 2, reasonZh: '你成功地惹到了她一下', reasonEn: 'You successfully got under her skin, once' }],
         relations: [{ char: CharacterId.ASUKA, familiarity: 3, affection: 4, reasonZh: '她瞪了你一眼，但没有反驳', reasonEn: 'She glared, but did not argue' }],
         then: [
@@ -375,7 +375,7 @@ export const ASUKA_STORY_1: StoryNode[] = [
         labelEn: 'Say nothing. Just look at her.',
         hintZh: '有些事一旦说破，她就再也不会做第二次了',
         hintEn: 'Some things, once said out loud, she will never do again.',
-        requires: { stat: 'kindness', min: 4 },
+        requires: { stat: 'kindness', min: 12 },
         effects: [{ stat: 'kindness', amount: 2, reasonZh: '你选择让这件事继续是"顺便"', reasonEn: 'You let it go on being nothing in particular' }],
         relations: [{ char: CharacterId.ASUKA, familiarity: 6, affection: 8, reasonZh: '她需要这件事不被戳破', reasonEn: 'She needed this one to stay unspoken' }],
         setFlags: ['asuka_story_kept_quiet'],

@@ -57,9 +57,21 @@ export const MAKI_STORY_1: StoryNode[] = [
     color: 'bg-pink-500'
   },
   {
-    type: 'narration',
-    zh: '——谁跟你约好了啊！你在心里疯狂拍桌，差点脱口而出一句「異議あり！」。但看着她那副得意洋洋的表情，你还是把话咽了回去。',
-    en: '—Who even made plans with you?! You slam your mental desk shouting "Hold it!" internally, but seeing her smug grin, you swallow the words.'
+    type: 'speech',
+    speakerZh: '你', speakerEn: 'You',
+    jp: '異議あり！約束してへんやろ！',
+    zh: '異議あり！谁跟你约好了啊！',
+    en: 'Objection! Who even made plans with you?!',
+    color: 'bg-yellow-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '真纪', speakerEn: 'Maki',
+    characterImage: '/images/characters/maki/punk_smug.webp',
+    jp: '……はぁ？センパイ、またワケ分からんこと言うてるん？',
+    zh: '……哈？前辈你又在说什么听不懂的话了？',
+    en: '...Huh? Senpai, are you saying weird stuff again?',
+    color: 'bg-pink-500'
   },
 
   // ---- 选择 1 ----
@@ -132,7 +144,7 @@ export const MAKI_STORY_1: StoryNode[] = [
         jp: 'どんくらい待っててん。',
         hintZh: '她知道你迟了五分钟，说明她在数',
         hintEn: 'She knows you are five minutes late, which means she was counting.',
-        requires: { stat: 'proficiency', min: 4 },
+        requires: { stat: 'proficiency', min: 12 },
         effects: [{ stat: 'proficiency', amount: 2, reasonZh: '你从一句挑衅里算出了一个时长', reasonEn: 'You extracted a duration out of a taunt' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 3, affection: 8, reasonZh: '她第一次被问住', reasonEn: 'It was the first time she had nothing ready' }],
         setFlags: ['maki_story_asked_waiting'],
@@ -291,7 +303,7 @@ export const MAKI_STORY_1: StoryNode[] = [
         jp: 'あんた、勝ち負けどうでもええんちゃう？',
         hintZh: '一个只想赢的人，赢完就走了',
         hintEn: 'Someone who only wants to win leaves once they have won.',
-        requires: { stat: 'charm', min: 6 },
+        requires: { stat: 'charm', min: 20 },
         effects: [{ stat: 'charm', amount: 2, reasonZh: '你把她那套挑衅的用途说破了', reasonEn: 'You named what the taunting is for' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 4, affection: 12, reasonZh: '她被拆穿了，然后没有反驳', reasonEn: 'She was called on it, and did not argue' }],
         setFlags: ['maki_story_called_out'],

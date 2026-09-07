@@ -260,7 +260,7 @@ export const SORA_STORY_3: StoryNode[] = [
         jp: '出しや。ウチ、全部見に行くから。',
         hintZh: '两年里她一场比赛都没有观众',
         hintEn: 'For two years there has been nobody in the stands.',
-        requires: { stat: 'guts', min: 6 },
+        requires: { stat: 'guts', min: 20 },
         effects: [{ stat: 'guts', amount: 3, reasonZh: '你承诺了一件要一直做下去的事', reasonEn: 'You promised something that has to keep being done' }],
         relations: [{ char: CharacterId.SORA, familiarity: 5, affection: 18, reasonZh: '第一次有人说要来看', reasonEn: 'For the first time somebody said they would come' }],
         setFlags: ['sora_story_will_watch'],

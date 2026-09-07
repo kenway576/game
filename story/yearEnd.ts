@@ -144,7 +144,7 @@ export const YEAR_END: StoryNode[] = [
         labelEn: 'Walk the whole school once',
         hintZh: '体育馆、图书室、天台、音乐室、食堂',
         hintEn: 'Gym, library, roof, music room, canteen.',
-        requires: { stat: 'guts', min: 10 },
+        requires: { stat: 'guts', min: 36 },
         effects: [
           { stat: 'guts', amount: 2, reasonZh: '你把每个房间都又看了一次', reasonEn: 'You looked into every room one more time' },
           { stat: 'charm', amount: 2, reasonZh: '你记住了它们空着的样子', reasonEn: 'You memorised what they look like empty' }

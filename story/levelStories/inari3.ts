@@ -222,7 +222,7 @@ export const INARI_STORY_3: StoryNode[] = [
         labelEn: 'Rub out the blank rule',
         hintZh: '那条线是她给自己划的期限',
         hintEn: 'That line is a deadline she drew on herself.',
-        requires: { stat: 'guts', min: 10 },
+        requires: { stat: 'guts', min: 36 },
         effects: [{ stat: 'guts', amount: 3, reasonZh: '你动了一本一千年的册子', reasonEn: 'You touched a thousand-year-old book' }],
         relations: [{ char: CharacterId.INARI, familiarity: 4, affection: 20, reasonZh: '她没有拦你', reasonEn: 'She did not stop you' }],
         setFlags: ['inari_story_erased_line'],

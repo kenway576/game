@@ -61,20 +61,20 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         effects: [{ stat: 'charm', amount: 1, reasonZh: '把海的颜色记在了心里', reasonEn: 'You took the color of the sea to heart' }],
         setFlags: ['prologue_train_sea'],
         then: [
-          {
+           {
             type: 'narration',
-            zh: '车窗玻璃凉得恰到好处，是那种一整个上午没人碰过的凉法。你把额头贴上去，就那么贴着，贴到眉骨发麻才想起来该挪开。挪开之后玻璃上留了一小片雾，慢慢又消掉了。',
+            zh: '车窗外突然闪过一片蔚蓝——是海！沿着铁轨奔驰的电车与浩瀚的大海并肩前行，阳光在海面上碎成满地金子。以前只有在动漫里才能看到的海边电车，居然真的出现在了眼前！',
             en: 'The window glass was cool in just the right way, the particular coolness of something nobody has touched all morning. You put your forehead against it and left it there, and only when your brow went numb did it occur to you to move. A small patch of mist stayed behind on the glass and then slowly went.'
           },
           {
             type: 'narration',
-            zh: '海一直在那儿。防波堤把它挡掉过一次，又一次；一排灰白色的高大沿海仓库把它整个遮挡了个严实。但每一次，就在你以为它不见了的时候，它又从下一个空隙里回来了，像是有人在跟你确认什么事情。',
-            en: 'The sea stayed where it was. A breakwater took it away once, and then again; a stretch of pale coastal warehouses completely obscured it. And every time, just as you had accepted it was gone, it came back through the next gap, as though somebody were confirming something with you.'
+            zh: '你疯狂地掏出手机狂拍窗外的风景——从前只有在动漫里才能看到的海边电车，终于在现实里也见到了，实在是太漂亮了！可是你激动了半天，脑子里却只能蹦出来一句「秋水共长天一色，落霞与孤鹜齐飞」。',
+            en: 'You lift your phone and take photos like crazy. The seaside train you had only ever seen in anime was finally right before your eyes in reality, breathtakingly beautiful! Yet with your mind racing, the only line that surfaces is the classic poem: "Autumn waters blend with the vast sky into a single hue; evening glow and solitary duck fly side by side."'
           },
           {
             type: 'narration',
-            zh: '你举起手机想拍一张。取景框里全是自己的脸，还有玻璃上不知道谁按的一个手印，海反而只剩下角落里那么一点。你看了一会儿，把手机收了回去。算了。这种东西大概本来就带不走。',
-            en: 'You lifted your phone to take a picture. What filled the frame was your own face, plus a handprint on the glass left by who knows whom, and the sea had been pushed into one corner of it. You looked at that for a moment and put the phone away. Never mind. This is probably not the sort of thing you can take with you anyway.'
+            zh: '……用在这儿好像也不太对。但管它呢，先拍了再说。',
+            en: '...It does not quite fit here either. But never mind — take the photo first.'
           }
         ]
       },
@@ -164,7 +164,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '车门滑开的时候，最先到的是风，然后才是味道。风是咸的，味道里有一半是烤面包——不知道哪儿在烤，但确实在烤，而且烤了有一会儿了。你拉起那个二十三公斤的箱子跨出车厢，落地的那一下比想象中响。',
+    zh: '车门滑开的时候，最先到的是风，然后才是味道。风是咸的，味道里有一半是烤面包——不知道哪儿在烤，但确实在烤，而且烤了有一会儿了。你带了满满一箱子生活用品的行李，艰难地拖了起来跨出车厢，落地的那一下比想象中响。',
     en: 'When the doors slid open the wind arrived first and the smell a moment after. The wind was salt, and half the smell was baking bread; you could not tell from where, but somebody was baking and had been for a while. You hauled the twenty-three-kilo case out after you, and it landed more loudly than you had expected.'
   },
   {
@@ -1019,13 +1019,13 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你听见店主冲着熟客喊「まいど！」，听见两个高中生用你完全跟不上的语速斗嘴，尾音一律往上挑。',
-            en: 'A shopkeeper barks "Maido!" at a regular. Two high schoolers bicker at a speed you cannot follow at all, every sentence flicking upward at the end.'
+            zh: '两旁全是各式各样的店铺：文具杂货、扭蛋机、飘着奶油香气的可丽饼店、橱窗里琳琅满目的手办周边……你的脑袋像雷达一样左转右转，哪个都想进去逛逛，目不暇接。看到这个也想买，看到那个也想进去试试——钱包在口袋里隐隐发出惨叫。',
+            en: 'Shops line both sides: stationery, capsule machines, a crêpe stand wafting cream, display windows full of figurines... Your head swivels like a radar dish, wanting to go into every single one. You want to buy this, try that — your wallet whimpers quietly in your pocket.'
           },
           {
             type: 'narration',
-            zh: '教科书里从来没有这种声音。你放慢脚步，跟着人流走了整整一条街。',
-            en: 'No textbook has ever made this sound. You slow your pace and let the current carry you the whole length of the street.'
+            zh: '你听见店主冲着熟客喊「まいど！」，听见两个高中生用你完全跟不上的语速斗嘴，尾音一律往上挑。教科书里从来没有这种声音。你放慢脚步，跟着人流走了整整一条街。',
+            en: 'A shopkeeper barks "Maido!" at a regular. Two high schoolers bicker at a speed you cannot follow at all, every sentence flicking upward at the end. No textbook has ever made this sound. You slow your pace and let the current carry you the whole length of the street.'
           },
           // ---- 偶遇 · 章鱼烧摊子前的粉色头发 ----
           {
@@ -1129,7 +1129,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 jp: 'ちゃうで。',
                 hintZh: '整条商店街都在教你这个尾音',
                 hintEn: 'The whole arcade has been teaching you that ending.',
-                requires: { stat: 'guts', min: 1 },
+                requires: { stat: 'guts', min: 6 },
                 effects: [
                   { stat: 'charm', amount: 1, reasonZh: '来的第一天就敢学舌关西腔', reasonEn: 'Day one, and already mimicking the local accent' },
                   { stat: 'guts', amount: 1, reasonZh: '拿一句现学的方言去冒险', reasonEn: 'You gambled on a dialect you learned ten minutes ago' }
@@ -2312,8 +2312,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你把明天要穿的制服熨了两遍。校徽别在领口，别歪了一次，拆下来重别。兵库县立港见高等学校，高二 B 班。',
-    en: 'You iron tomorrow’s uniform twice. The crest goes on the collar, crooked the first time, so you unpin it and do it again. Hyogo Prefectural Minatomi Senior High School. Second year, Class B.'
+    zh: '你把明天要穿的制服反反复复熨了好几遍，又把校徽小心翼翼地别在领口——歪了，拆下来重别。兵库县立港见高等学校，高二 B 班。明天会遇到什么样的同学呢？会不会有动漫里那样的高冷学姐，或者可爱的学妹？光想想就好期待啊。',
+    en: 'You iron tomorrow\'s uniform over and over. The crest goes on the collar, crooked at first, so you unpin it and do it again. Hyogo Prefectural Minatomi Senior High School. Second year, Class B. What kind of classmates will you meet tomorrow? Could there be a cool, aloof senpai like in anime, or maybe a cute kouhai? Just thinking about it is exciting.'
   },
   // ==========================================================
   // 【回覧板】深雪敲门 —— 玩家的名字在这里第一次被人问起
@@ -2323,7 +2323,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'narration',
-    zh: '正要把制服挂上去，门被敋响了。不重，三下，很有分寸。',
+    zh: '正要把制服挂上去，门被敲响了。不重，三下，很有分寸。',
     en: 'You are just hanging the uniform up when there is a knock. Light, three times, carefully measured.'
   },
   {

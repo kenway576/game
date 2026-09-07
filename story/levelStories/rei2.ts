@@ -215,7 +215,7 @@ export const REI_STORY_2: StoryNode[] = [
         jp: 'こっちも測って。',
         hintZh: '她要数据。给她数据',
         hintEn: 'She wants data. Give her data.',
-        requires: { stat: 'charm', min: 5 },
+        requires: { stat: 'charm', min: 16 },
         effects: [
           { stat: 'charm', amount: 3, reasonZh: '你用她唯一相信的东西回答了她', reasonEn: 'You answered her with the only thing she trusts' },
           { stat: 'guts', amount: 1, reasonZh: '你把自己的读数交了出去', reasonEn: 'You handed over your own reading' }
@@ -417,7 +417,7 @@ export const REI_STORY_2: StoryNode[] = [
         jp: 'ほな、勝手に来る。記録は好きにしたらええ。',
         hintZh: '不跟她辩。直接让那个变量赖着不走',
         hintEn: 'Do not argue with her. Just refuse to be removed.',
-        requires: { stat: 'guts', min: 5 },
+        requires: { stat: 'guts', min: 16 },
         effects: [{ stat: 'guts', amount: 3, reasonZh: '你拒绝当一个可以被去掉的变量', reasonEn: 'You declined to be a removable variable' }],
         relations: [{ char: CharacterId.REI, familiarity: 7, affection: 14, reasonZh: '她的实验设计被一个人赖掉了', reasonEn: 'Her experimental design was defeated by somebody simply not leaving' }],
         setFlags: ['rei_story_refused_removal'],

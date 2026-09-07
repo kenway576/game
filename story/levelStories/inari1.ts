@@ -340,7 +340,7 @@ export const INARI_STORY_1: StoryNode[] = [
         jp: '四本目は、誰が植えるん。',
         hintZh: '她讲的是两次重种。她没讲第三次',
         hintEn: 'She told you about two replantings. She did not mention a third.',
-        requires: { stat: 'knowledge', min: 6 },
+        requires: { stat: 'knowledge', min: 20 },
         effects: [
           { stat: 'knowledge', amount: 2, reasonZh: '你听出了她那句话是往前看的', reasonEn: 'You heard that her sentence was facing forward' }
         ],

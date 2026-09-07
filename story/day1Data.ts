@@ -403,8 +403,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '下楼的时候你在手账边上添了第二条：隔壁，年长，一个人住，做饭的量总是不对。',
-    en: 'On the way down you add a second item in the margin: next door, older, lives alone, never gets the quantities right.'
+    zh: '下楼的时候你在手账边上添了第二条：隔壁，年长，一个人住，好像很会照顾人。',
+    en: 'On the way down you add a second item in the margin: next door, older, lives alone, seems like someone who looks after people.'
   },
   {
     type: 'narration',
@@ -1151,18 +1151,30 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            zh: '「我要做正义的使者！」——脑海深处仿佛有个中二之魂在激昂呐喊。然而现实很骨感：你只是在开学第一天把全班最不好惹的班长撞得讲义满天飞。你默默把最后一张纸按页码理顺递了过去，什么也没说。',
-            en: '"I want to be an ally of justice!" an inner voice boldly proclaims. Reality, however, is bone-dry: on day one, you merely bowled over the fiercest class president in school. You neatly sort the last page by number and hand it over in total silence.'
+            zh: '你默默把最后一张纸按页码理顺递了过去。不知怎的，嘴里小声嘟囔出了一句：',
+            en: 'You neatly sort the last page by number and hand it over. For some reason, you mutter under your breath:'
+          },
+          {
+            type: 'speech',
+            speakerZh: '你', speakerEn: 'You',
+            jp: '正義の味方、参上……',
+            zh: '正义的使者，参上……',
+            en: 'The ally of justice... has arrived...',
+            color: 'bg-yellow-500'
           },
           {
             type: 'speech',
             speakerZh: '明日香', speakerEn: 'Asuka',
-            characterImage: `${ASUKA}neutral.webp`,
-            jp: 'ありがとう。……次からは前見て歩きなさいよ。',
-            words: [{ jp: '前', reading: 'まえ', zh: '前面', en: 'ahead / in front' }],
-            zh: '谢谢。……下次记得看着前面走。',
-            en: 'Thank you. ...Watch where you are going next time.',
+            characterImage: `${ASUKA}surprised.webp`,
+            jp: '……は？今なんて言ったの？',
+            zh: '……啊？你刚才说什么？',
+            en: '...Huh? What did you just say?',
             color: 'bg-red-600'
+          },
+          {
+            type: 'narration',
+            zh: '你假装什么也没说，但明日香看你的眼神里多了一层「这个人是不是有点奇怪」的意味。',
+            en: 'You pretend you said nothing, but Asuka\'s expression now carries a distinct hint of "is this person a bit odd."'
           },
           {
             type: 'narration',
@@ -1176,8 +1188,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         labelZh: '先道歉，再指出她也在跑',
         labelEn: 'Apologize first — then point out that she was running too',
         jp: 'ごめん。……でも、そっちも走ってたよね。',
-        hintZh: '在心底拍桌大喊一声「異議あり！」',
-        hintEn: 'Slam the defense desk and shout "Objection!" in your mind.',
+        hintZh: '拍桌大喊一声「異議あり！」',
+        hintEn: 'Slam the desk and shout "Objection!"',
         effects: [
           { stat: 'knowledge', amount: 1, reasonZh: '你看清了刚才撞在一起时真正发生的事', reasonEn: 'You worked out what had actually happened when you crashed into each other' },
           { stat: 'guts', amount: 1, reasonZh: '你没有把不属于自己的那一半也认下来', reasonEn: 'You declined to take on the half that was not yours' }
@@ -1196,8 +1208,22 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '走廊里一下子没声了，只有远处操场的哨音隐隐约约飘过来。她低头看着那叠纸，指尖用力得把纸边缘捏出了一道明显的折痕。你在心底重重拍了一下不存在的辩护席木桌，大喊了一声「異議あり！」——没错，动量守恒是相互的，就算她是班长，拐角冲刺的责任也得各打五十大板。',
-            en: 'The corridor goes dead quiet, save for a distant whistle from the athletic fields. She stares down at the stack, her thumb indenting a sharp crease into the edge of the paper. In your mind, you slam both hands onto an imaginary defense bench and shout "Objection!"—momentum is conserved, after all, and even if she is the class president, this hallway collision cannot be blamed entirely on you.'
+            zh: '走廊里一下子没声了，只有远处操场的哨音隐隐约约飘过来。她低头看着那叠纸，指尖用力得把纸边缘捏出了一道明显的折痕。',
+            en: 'The corridor goes dead quiet, save for a distant whistle from the athletic fields. She stares down at the stack, her thumb indenting a sharp crease into the edge of the paper.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '你',
+            speakerEn: 'You',
+            jp: '異議あり！動量保存は相互作用なんで、角の衝突は五分五分ですよ。',
+            zh: '異議あり！动量守恒是相互的，拐角冲刺的责任也得各打五十大板！',
+            en: 'Objection! Conservation of momentum is mutual — responsibility for this hallway collision has to be split fifty-fifty!',
+            color: 'bg-yellow-500'
+          },
+          {
+            type: 'narration',
+            zh: '你说完之后自己也愣了一下。明日香抬起头来用一种「这个人在说什么鬼话」的表情看着你。',
+            en: 'You freeze for a moment after saying it. Asuka lifts her head and looks at you with an expression that clearly says "what on earth is this person talking about."'
           },
           {
             type: 'speech',
@@ -1299,8 +1325,13 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '你在心里默默过了一遍清单，悄悄按住发紧的右手手腕——很好，黑炎龙今天很安分，没有在全班三十几双眼睛注视下暴走的迹象。手不抖了。',
-    en: 'Reviewing the checklist in your head, you press your right wrist—good, the black flame dragon is docile today, with no signs of rampaging before thirty-odd classmates. Your hand has stopped shaking.'
+    zh: '你在心里默默过了一遍清单，悄悄按住发紧的右手手腕，小声嘟囔了句：「很好，黑炎龙今天很安分……」',
+    en: 'Reviewing the checklist in your head, you press your right wrist and murmur: "Good, the black flame dragon is docile today..."'
+  },
+  {
+    type: 'narration',
+    zh: '前排靠过道的男生回过头，用一种关爱的眼神看了你一眼，然后默默把头转了回去。手不抖了。',
+    en: 'The boy in the front row by the aisle turns his head, gives you one pitying look, and quietly faces forward again. Your hand has stopped shaking.'
   },
   {
     type: 'choice',
@@ -1740,10 +1771,10 @@ export const DAY1_SCRIPT: StoryNode[] = [
   // ==========================================================
   {
     type: 'scene',
-    scene: 'rooftop',
+    scene: 'classroom',
     bgm: 'lobby',
-    titleZh: '屋顶',
-    titleEn: 'The Roof',
+    titleZh: '教室',
+    titleEn: 'Classroom',
     subtitleZh: '午休 · 12:40',
     subtitleEn: 'Lunch break · 12:40'
   },
@@ -1920,6 +1951,15 @@ export const DAY1_SCRIPT: StoryNode[] = [
     zh: '屋顶啦。这里最好了。因为看得见海。',
     en: 'The roof. Best spot in the school. You can see the sea from here.',
     color: 'bg-amber-400'
+  },
+  {
+    type: 'scene',
+    scene: 'rooftop',
+    bgm: 'lobby',
+    titleZh: '屋顶',
+    titleEn: 'The Roof',
+    subtitleZh: '午休',
+    subtitleEn: 'Lunch break'
   },
   // 「昨天你站过的那段栏杆」只有走过海边那条路的人才站过。
   // 序章选了商店街或北野坡的人，昨天根本没到过海边。

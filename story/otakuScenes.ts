@@ -148,7 +148,7 @@ export const OTAKU_SCENES: StreetScene[] = [
             labelEn: '"...Will those tears of yours protect the earth."',
             jp: '……その涙で、地球守れるんか。',
             hintZh: '你知道这句话出自哪儿。你也知道现在说不合适', hintEn: 'You know where the line is from. You also know this is not the moment.',
-            requires: { stat: 'guts', min: 8 },
+            requires: { stat: 'guts', min: 28 },
             effects: [
               { stat: 'guts', amount: 3, reasonZh: '你在一个绝对不该说的时机说了一句绝对不该说的话', reasonEn: 'You said an extremely wrong thing at an extremely wrong moment' },
               { stat: 'charm', amount: 2, reasonZh: '而它奇迹般地成功了', reasonEn: 'And it miraculously worked' }
@@ -220,21 +220,29 @@ export const OTAKU_SCENES: StreetScene[] = [
         options: [
           {
             id: 'ot_obvious_meme',
-            labelZh: '在心里默默反驳：「異議あり！难道不是人被杀就会死吗！」',
-            labelEn: '(internally) "Objection! People die if they are killed!"',
+            labelZh: '忍不住脱口而出：「異議あり！难道不是人被杀就会死吗！」',
+            labelEn: '"Objection! People die if they are killed!"',
             hintZh: '同一种哲学句式。同一种中二直觉', hintEn: 'The same tautological gravity. You cannot help it.',
             effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你用士郎名言化解了邻桌的逻辑循环', reasonEn: 'You countered tautology with anime tautology' }],
             setFlags: ['ot_obvious_line'],
             then: [
               {
-                type: 'narration',
-                zh: '你死死咬住嘴唇没念出声。但你憋笑的肩膀抖动得太夸张，隔壁桌两个人同时一脸莫名其妙地转过来看你。',
-                en: 'You do not say it. You do, however, laugh visibly enough that both of them turn round.'
+                type: 'speech',
+                speakerZh: '你', speakerEn: 'You',
+                jp: '異議あり！人は殺されたら死ぬんだよ！',
+                zh: '異議あり！难道不是人被杀就会死吗！',
+                en: 'Objection! People die if they are killed!',
+                color: 'bg-yellow-500'
               },
               {
                 type: 'narration',
-                zh: '你赶紧清了清嗓子摆手说「なんでもない」，接着埋头死磕课本。那一整页的课后习题你全做串行了。',
-                en: 'You have to say it is nothing and go back to your work. You get that entire page wrong.'
+                zh: '隔壁桌两个人同时一脸莫名其妙地转过来看你。',
+                en: 'Both of them turn round, looking utterly bewildered.'
+              },
+              {
+                type: 'narration',
+                zh: '「……这个人又在说什么听不懂的话了。」你分明从他们的表情里读出了这句话。你赶紧清了清嗓子摆手说「なんでもない」，接着埋头死磕课本。那一整页的课后习题你全做串行了。',
+                en: '"...There he goes again, saying things nobody understands." You can clearly read that on their faces. You have to say it is nothing and go back to your work. You get that entire page wrong.'
               }
             ]
           },

@@ -205,20 +205,23 @@ const NAO_STATION: StoryNode[] = [
       },
       {
         id: 'mkt_jojo',
-        labelZh: '「……你刚才那个撒谎的速度，是替身能力吧。」',
-        labelEn: '"...The speed of that lie. That is a Stand ability."',
-        jp: '今の嘘、スピードがおかしい。スタンド使いやろ。',
-        hintZh: '零点二秒，面不改色',
-        hintEn: 'Two tenths of a second, and not a flicker.',
+        labelZh: '「……这个味道，是说谎的味道呢。」',
+        labelEn: '"...This taste is the taste of a liar."',
+        jp: 'この味は……嘘をついてる味やな。',
+        hintZh: '布加拉提附体',
+        hintEn: 'Channeling Bucciarati.',
         effects: [{ stat: 'charm', amount: 1, reasonZh: '你说了一句只有你们俩听得懂的话', reasonEn: 'You said something only the two of you would understand' }],
-        relations: [{ char: CharacterId.NAO, familiarity: 4, affection: 7, reasonZh: '她接住了，而且接得比你还快', reasonEn: 'She caught it, and caught it faster than you threw it' }],
+        relations: [{ char: CharacterId.NAO, familiarity: 6, affection: 6, reasonZh: '她接住了，而且拿姐姐的身份压你', reasonEn: 'She caught it, and pulled sister rank on you' }],
         setFlags: ['nao_stand_joke'],
         then: [
           {
-            type: 'narration',
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
             characterImage: `${N}knit_happy.webp`,
-            zh: '她连头都没回。「近距離パワー型やで。射程、五メートル。」',
-            en: 'She does not even turn round. "Close-range power type. Range: five metres."'
+            jp: '何よ。今のウチ、お姉さんっぽくなかった？……あんた、またアニメのセリフ言うて。',
+            zh: '怎么，现在我难道不像你姐姐吗？……你这家伙，又在说那些听不懂的动漫台词了。',
+            en: 'What? Don\'t I look like your big sister now? ...There you go quoting anime again.',
+            color: 'bg-emerald-500'
           },
           {
             type: 'narration',

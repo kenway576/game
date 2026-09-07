@@ -323,7 +323,7 @@ export const ASUKA_STORY_2: StoryNode[] = [
         labelEn: '"Then whose fault is it that my Japanese is this bad?"',
         hintZh: '她不需要人扶。她需要有人站着跟她说话',
         hintEn: 'She does not want to be helped up. She wants someone still standing.',
-        requires: { stat: 'guts', min: 3 },
+        requires: { stat: 'guts', min: 10 },
         effects: [
           { stat: 'guts', amount: 2, reasonZh: '对着这个状态的她顶回去，需要点胆子', reasonEn: 'Talking back to her in that state took something' }
         ],

@@ -241,7 +241,7 @@ export const MAKI_STORY_3: StoryNode[] = [
         jp: '真希、名字なんて言うん。',
         hintZh: '你手机里存的是「後輩（ゲーセン）」',
         hintEn: 'She is saved in your phone as "kouhai (arcade)".',
-        requires: { stat: 'charm', min: 6 },
+        requires: { stat: 'charm', min: 20 },
         effects: [{ stat: 'charm', amount: 3, reasonZh: '你指出了一件她一直在回避的小事', reasonEn: 'You named a small thing she had been avoiding' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 6, affection: 18, reasonZh: '她终于把姓给了你', reasonEn: 'She finally gave you the surname' }],
         setFlags: ['maki_story_surname'],

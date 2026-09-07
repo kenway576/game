@@ -152,7 +152,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
         jp: '次は俺が作ります。食べに来てください。',
         hintZh: '她从来没坐在过被照顾的那一边',
         hintEn: 'She has never once sat on the receiving side.',
-        requires: { stat: 'guts', min: 4 },
+        requires: { stat: 'guts', min: 12 },
         effects: [{ stat: 'guts', amount: 2, reasonZh: '你把这张桌子的方向调了个头', reasonEn: 'You turned the table around' }],
         relations: [{ char: CharacterId.MIYUKI, familiarity: 6, affection: 11, reasonZh: '没有人对她说过这句话', reasonEn: 'Nobody has said that to her' }],
         setFlags: ['miyuki_story_offered_to_cook'],

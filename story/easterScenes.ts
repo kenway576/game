@@ -192,8 +192,21 @@ export const EASTER_SCENES: StreetScene[] = [
               },
               {
                 type: 'narration',
-                zh: '穿过铁丝网拐角时，身后又传来起跑的沙沙声。这一次，没有横杆落地的动静。你回头看了一眼那道在漫天晚霞里倔强跃起的剪影——无论多么不讲道理的墙壁，看来世界上总有笨蛋执意要去做正义的使者啊。',
-                en: 'Turning the corner by the chain-link fence, the rasp of running feet comes again. This time the bar does not fall. Looking back at that silhouette leaping stubbornly against the twilight, you think: no matter how impossible the wall, some fools will always insist on being heroes of justice.'
+                zh: '穿过铁丝网拐角时，身后又传来起跑的沙沙声。这一次，没有横杆落地的动静。你回头看了一眼那道在漫天晚霞里倔强跃起的剪影，不由自主地小声说了一句：',
+                en: 'Turning the corner by the chain-link fence, the rasp of running feet comes again. This time the bar does not fall. Looking back at that silhouette leaping stubbornly against the twilight, you murmur under your breath:'
+              },
+              {
+                type: 'speech',
+                speakerZh: '你', speakerEn: 'You',
+                jp: '正義の味方って、ああいうのを言うんやろな……',
+                zh: '正义的使者……大概就是说这样的家伙吧……',
+                en: 'An ally of justice... that is probably what they mean by that...',
+                color: 'bg-yellow-500'
+              },
+              {
+                type: 'narration',
+                zh: '说完自己笑了一下，幸好周围没人听到。',
+                en: 'You laugh to yourself. Fortunately nobody is around to hear.'
               }
             ]
           }

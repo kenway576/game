@@ -487,7 +487,7 @@ export const CLUB_COUNCIL: StoryNode[] = [
         jp: '今日はこれ、なし。行くで。',
         hintZh: '她需要有人替她做这个决定',
         hintEn: 'She needs somebody else to make this decision for her.',
-        requires: { stat: 'guts', min: 8 },
+        requires: { stat: 'guts', min: 28 },
         effects: [{ stat: 'guts', amount: 3, reasonZh: '你把一份没做完的文件从她手里拿走了', reasonEn: 'You took unfinished paperwork out of her hands' }],
         relations: [{ char: CharacterId.ASUKA, familiarity: 4, affection: 12, reasonZh: '她被人从桌子边拽走，而且没有反抗到底', reasonEn: 'She was pulled away from a desk and did not fight all the way' }],
         setFlags: ['restday_dragged_asuka_out'],
@@ -1051,7 +1051,7 @@ export const TRIP_KYOTO: StoryNode[] = [
         labelEn: 'Go and find Inari',
         hintZh: '她已经落下很久了，而且不是因为累',
         hintEn: 'She has been behind for a while, and not because she is tired.',
-        requires: { stat: 'knowledge', min: 10 },
+        requires: { stat: 'knowledge', min: 36 },
         effects: [{ stat: 'knowledge', amount: 3, reasonZh: '你看懂了她为什么安静', reasonEn: 'You understood why she was quiet' }],
         relations: [
           { char: CharacterId.INARI, familiarity: 4, affection: 14, reasonZh: '有人在一万座鸟居里找到了她', reasonEn: 'Somebody found her among ten thousand gates' }

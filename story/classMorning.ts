@@ -122,7 +122,7 @@ const buildQuiz = (q: Quiz, cal: GameCalendar, subjectScene: string): StoryNode[
 };
 
 // ---- 课堂速写 → 节点表 ----
-const buildSketch = (cal: GameCalendar, subjectId: string, subjectScene: string, salt = 0): StoryNode[] => {
+const buildSketch = (cal: GameCalendar, subjectId: string, subjectScene: string, salt = 0, first = false): StoryNode[] => {
   const pool = SKETCHES.filter(s => s.subject === subjectId);
   if (!pool.length) return [];
   const s = pool[Math.floor(dayHash(cal, 23 + salt * 101) * pool.length) % pool.length];
@@ -141,14 +141,18 @@ const buildSketch = (cal: GameCalendar, subjectId: string, subjectScene: string,
       words: s.word ? [s.word] : undefined
     }] : []),
     ...(s.endZh ? [{ type: 'narration' as const, zh: s.endZh, en: s.endEn || '' }] : []),
-    {
-      type: 'effect',
+    // ⚠️ 这一格以前每节课都给，一天四节就是 +4，一年两百个上课日 = 八百点。
+    // 光靠坐在教室里就能把一样属性顶满，还剩三百天没处使。
+    // 现在只有**上午第一节和下午第一节**给——一天两点。
+    // 说法上也更站得住：一天四节课下来真正记住的东西，本来就没有四份。
+    ...(first ? [{
+      type: 'effect' as const,
       effects: [{
         stat: subj.stat, amount: 1,
         reasonZh: `${subj.nameZh}课听下来的那一点`,
         reasonEn: `What one period of ${subj.nameEn.toLowerCase()} leaves you with`
       }]
-    }
+    }] : [])
   ];
 };
 

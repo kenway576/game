@@ -152,7 +152,7 @@ export const NAO_STORY_2: StoryNode[] = [
         jp: '今の顔、なに。',
         hintZh: '你认识这张脸十年了。你知道那不是随便一个表情',
         hintEn: 'You have known this face for ten years. That was not just any expression.',
-        requires: { stat: 'proficiency', min: 5 },
+        requires: { stat: 'proficiency', min: 16 },
         effects: [{ stat: 'proficiency', amount: 2, reasonZh: '十年的相处让你读得出半秒钟', reasonEn: 'Ten years lets you read half a second' }],
         relations: [{ char: CharacterId.NAO, affection: 9, familiarity: 3, reasonZh: '她躲不掉了', reasonEn: 'There was nowhere for her to put it' }],
         setFlags: ['nao_story_called_the_face'],
@@ -354,7 +354,7 @@ export const NAO_STORY_2: StoryNode[] = [
         jp: 'ほな、奈緒もこっち来たらええやん。',
         hintZh: '她说的是"追不上"。那就不要让她追，让她并排',
         hintEn: 'She said she cannot keep up. So do not make her follow. Put her alongside.',
-        requires: { stat: 'guts', min: 5 },
+        requires: { stat: 'guts', min: 16 },
         effects: [{ stat: 'guts', amount: 2, reasonZh: '你邀请她进你这一年', reasonEn: 'You invited her into the year you are having' }],
         relations: [{ char: CharacterId.NAO, affection: 13, familiarity: 6, reasonZh: '她一直以为自己只能在外面等', reasonEn: 'She had assumed her only option was to wait outside' }],
         then: [

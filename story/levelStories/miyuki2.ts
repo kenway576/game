@@ -128,7 +128,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
         jp: 'それ、誰の分ですか。',
         hintZh: '她做饭永远做两人份。这个碗一直没盛东西',
         hintEn: 'She always cooks for two. That bowl has never had anything in it.',
-        requires: { stat: 'proficiency', min: 5 },
+        requires: { stat: 'proficiency', min: 16 },
         effects: [{ stat: 'proficiency', amount: 2, reasonZh: '你把成对的那件事追到了底', reasonEn: 'You followed the pairs all the way down' }],
         relations: [{ char: CharacterId.MIYUKI, familiarity: 3, affection: 16, reasonZh: '有人问出了那个问题', reasonEn: 'Somebody asked the question' }],
         setFlags: ['miyuki_story_asked_bowl'],

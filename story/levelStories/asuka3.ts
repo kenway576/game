@@ -273,7 +273,7 @@ export const ASUKA_STORY_3: StoryNode[] = [
         jp: 'じゃあ、一番やめてみたら。',
         hintZh: '很冒险。她可能会翻脸',
         hintEn: 'A risk. She may well turn on you.',
-        requires: { stat: 'guts', min: 6 },
+        requires: { stat: 'guts', min: 20 },
         effects: [
           { stat: 'guts', amount: 3, reasonZh: '你对着一个把命挂在名次上的人说了这句话', reasonEn: 'You said that to someone whose life hangs off a ranking' }
         ],
