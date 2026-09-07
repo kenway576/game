@@ -208,7 +208,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '深雪',
         speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}happy.webp`,
+        characterImage: `${MIYUKI}school_happy.webp`,
         jp: 'あら、{name}さん。おはようございます。……制服、よくお似合いですよ。',
         words: [{ jp: '似合う', reading: 'にあう', zh: '合适、相称', en: 'to suit / to look good on' }],
         zh: '哎呀，{name}。早上好。……制服很合身呢。',
@@ -231,7 +231,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '深雪',
         speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}neutral.webp`,
+        characterImage: `${MIYUKI}school_neutral.webp`,
         jp: '……おはようございます。{name}さん、でしたね。',
         zh: '……早上好。是叫{name}，对吧。',
         en: '...Good morning. It was {name}, was it not.',
@@ -251,7 +251,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        characterImage: `${MIYUKI}neutral.webp`,
+        characterImage: `${MIYUKI}school_neutral.webp`,
         zh: '她看见你了。开门的手停在半路。停完，她还是点了下头，很轻。',
         en: 'She sees you. Her hand stops halfway on the door. When it has stopped, she gives a small nod anyway.'
       },
@@ -259,7 +259,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '深雪',
         speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}neutral.webp`,
+        characterImage: `${MIYUKI}school_neutral.webp`,
         jp: '……おはようございます。行ってらっしゃい。',
         words: [{ jp: '行ってらっしゃい', zh: '路上小心（送人出门）', en: 'said to someone leaving' }],
         zh: '……早上好。路上小心。',
@@ -290,7 +290,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${MIYUKI}neutral.webp`,
+            characterImage: `${MIYUKI}school_neutral.webp`,
             zh: '深雪拎着垃圾袋走出来，看见你，愣了一下。',
             en: 'Miyuki comes out with a rubbish bag, sees you, and pauses.'
           },
@@ -298,7 +298,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'speech',
             speakerZh: '深雪',
             speakerEn: 'Miyuki',
-            characterImage: `${MIYUKI}happy.webp`,
+            characterImage: `${MIYUKI}school_happy.webp`,
             jp: 'あら。……もしかして、二〇一号室の方？',
             zh: '哎呀。……难不成，是 201 室的那位？',
             en: 'Oh. ...Are you the one who moved into 201?',
@@ -334,7 +334,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${MIYUKI}happy.webp`,
+            characterImage: `${MIYUKI}school_happy.webp`,
             jp: '坂をまっすぐ下りて、二つ目の角を左。……でも、遠回りのほうをおすすめします。',
             words: [{ jp: '遠回り', reading: 'とおまわり', zh: '绕远路', en: 'the long way round' }],
             zh: '顺着坡一直下去，第二个路口左转。……不过，我更推荐绕远的那条。',
@@ -362,14 +362,14 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${MIYUKI}neutral.webp`,
+            characterImage: `${MIYUKI}school_neutral.webp`,
             zh: '她有些意外地眨了眨眼，那副小心翼翼的表情比起感激，更像是在反复确认自己是不是听错了。',
             en: 'She hesitates, a flicker of disbelief crossing her eyes—not quite gratitude yet, more like wondering if she misheard you.'
           },
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${MIYUKI}happy.webp`,
+            characterImage: `${MIYUKI}school_happy.webp`,
             jp: '……ありがとう。じゃあ、お言葉に甘えて。',
             words: [{ jp: '甘える', reading: 'あまえる', zh: '领受好意、不客气了', en: 'to accept an offer / to lean on someone' }],
             zh: '……谢谢。那，我就不客气了。',

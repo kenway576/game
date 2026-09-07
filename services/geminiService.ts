@@ -68,7 +68,7 @@ const getEmotionVocab = (character: Character): string[] => {
   return [...set];
 };
 
-const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, affection: number = 0, memory: string = '', unlockedOutfits?: string[], unlockedScenes?: string[], familiarity: number = 0, encounterOverride?: EncounterOverride) => {
+const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, affection: number = 0, memory: string = '', unlockedOutfits?: string[], unlockedScenes?: string[], familiarity: number = 0, encounterOverride?: EncounterOverride, situation?: ChatSituation) => {
   const personaBase = character.systemPrompt;
   const pedagogicalLang = lang === 'en' ? 'English' : 'Chinese (Simplified)';
   // 服装/场景按关系等级解锁；未传入时退化为全部可用
@@ -91,6 +91,31 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     These are things you genuinely remember about the player from previous conversations:
     ${memory.trim()}
     Treat them as real shared history. Reference them naturally when relevant (names, promises, past events). NEVER say you were told this — you simply remember it.` : '';
+
+  // 🕐 现在几点、在哪儿、隔着什么。
+  // 不给这一块的话，模型每一轮都会自己重新想象一个场合，
+  // 于是午休的走廊上她开始聊昨晚的晚饭，手机短信里她替你理领带。
+  const situationBlock = situation ? `
+    [RIGHT NOW - THE HARD FACTS OF THIS CONVERSATION]
+    - Date: ${situation.dateLabel}${situation.schoolDay ? ' (a school day)' : ' (no school today)'}
+    - Time of day: ${situation.slotLabel}
+    - Weather: ${situation.weather}
+    - Where you are: ${situation.sceneLabel}
+    - Channel: ${situation.inPerson ? 'FACE TO FACE — you are standing/sitting in front of each other right now.' : 'BY PHONE — you are NOT in the same place. You are typing.'}
+
+    RULES ABOUT THIS (violating these breaks the game):
+    1. NEVER contradict the time of day. Do not say good morning in the evening, do not talk about "after school today" once school is already over, do not describe sunlight at night.
+    2. NEVER contradict the weather or the place. If it is raining you do not describe a clear sky. If you are in a classroom you are not on a train.
+    3. Do NOT move the two of you somewhere else on your own, and do NOT jump forward or backward in time. No "later that evening", no "the next morning". This conversation happens HERE and NOW, in one continuous moment.
+    ${situation.inPerson
+      ? '4. Because you are face to face, physical narration is allowed — gestures, distance, where you are looking.'
+      : '4. Because this is a phone conversation you CANNOT see, touch, hand over, or physically react to the player. No narration of your face being seen by them, no touching, no handing objects over. You may describe what you are doing on your end, but they are not there.'}
+    5. Do not invent events that have not happened in this save: no festivals you two never went to, no promises never made, no shared memories that are not in your long-term memory block.
+    ${situation.storyNotes && situation.storyNotes.length ? `
+    [WHAT HAS ACTUALLY HAPPENED SO FAR]
+    ${situation.storyNotes.map(n => '    - ' + n).join(String.fromCharCode(10))}
+    - Anything NOT on this list has not happened yet. Do not refer to it.` : ''}
+  ` : '';
 
   // 🔥 终极防崩溃与防出戏测验指令
   const quizInstruction = mode === ChatMode.STUDY 
@@ -117,6 +142,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
       : `You already know the player. ${encounter}
     - This history is real and you may reference it naturally. But it is exactly as deep as described above and no deeper — do not upgrade it into something more intimate than it is.`}
     ${memoryBlock}
+    ${situationBlock}
     ${quizInstruction}
 
     [RELATIONSHIP - TWO INDEPENDENT TRACKS (CRITICAL)]
@@ -407,6 +433,21 @@ export interface EncounterOverride {
   encounter: string;
 }
 
+// 这场对话是什么时候、在哪儿、隔着什么发生的。
+// 没有这一块，模型只知道"你们两个在说话"，于是它会自己编一个时间地点：
+// 明明是午休的走廊，她张口就是"今天放学后要不要一起去海边"；
+// 明明是手机上的消息，她伸手把你的领带扶正。
+export interface ChatSituation {
+  dateLabel: string;       // 5 月 20 日 · 土曜
+  slotLabel: string;       // 午休 / 放学后 / 夜里
+  weather: string;         // 晴 / 雨 / 阴
+  sceneLabel: string;      // 教室 / 三宫中心街
+  schoolDay: boolean;
+  inPerson: boolean;       // 面对面，还是隔着手机
+  // 剧情走到哪儿了：已经发生过的关键节点，用来挡住"还没发生的事"
+  storyNotes?: string[];
+}
+
 export interface StartChatOptions {
   apiKey?: string;
   encounterOverride?: EncounterOverride;
@@ -420,15 +461,16 @@ export interface StartChatOptions {
   unlockedOutfits?: string[];
   unlockedScenes?: string[];
   openingBrief?: string;
+  situation?: ChatSituation;
   onPage?: PageCallback;
 }
 
 export const startChat = async (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, options: StartChatOptions = {}) => {
-    const { apiKey, modelName = 'deepseek-v4-flash', history = [], affection = 0, familiarity = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, openingBrief = '', onPage, encounterOverride } = options;
+    const { apiKey, modelName = 'deepseek-v4-flash', history = [], affection = 0, familiarity = 0, baseUrl, memory = '', resume = false, unlockedOutfits, unlockedScenes, openingBrief = '', onPage, encounterOverride, situation } = options;
     currentModelName = modelName;
     currentCharacterName = character.name;
     currentApiKey = apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
-    const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang, affection, memory, unlockedOutfits, unlockedScenes, familiarity, encounterOverride);
+    const sysPrompt = getSystemInstruction(character, mode, goal, topic, lang, affection, memory, unlockedOutfits, unlockedScenes, familiarity, encounterOverride, situation);
     const startTrigger = START_TRIGGER + openingBrief;
 
     if (isOpenAICompatible(modelName, baseUrl)) {

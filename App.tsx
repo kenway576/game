@@ -61,6 +61,7 @@ import { PART_TIME } from './story/restDayScenes';
 import { GiftVerdict } from './data/giftData';
 import { FARM_TUTORIAL, FISH_TUTORIAL } from './story/tutorials';
 import { beenFlag } from './story/kobeMap';
+import { findLocation } from './story/mapLocations';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
 import { npcsAt } from './data/npcData';
@@ -2113,6 +2114,43 @@ const App: React.FC = () => {
     if (matchedKey) setCurrentScene(matchedKey);
   };
 
+  // 🕐 交给自由对话模型的"现在"。
+  //
+  // 以前它什么都不知道：不知道今天几号、现在几点、人在哪儿、是当面还是隔着手机，
+  // 也不知道剧情走到了哪一步。于是它自己编——午休的走廊上聊起昨晚的晚饭，
+  // 手机短信里伸手替你理领带，还没去过的祭典被说成"上次我们一起去的时候"。
+  const buildSituation = (inPerson: boolean) => {
+    const en = userState.language === 'en';
+    const school = dayKindOf(gameCalendar) === 'school';
+    const slot = en
+      ? ({ morning: 'morning, before class', lunch: school ? 'lunch break' : 'midday', afternoon: school ? 'after school' : 'afternoon', night: 'night' } as Record<string, string>)[gameCalendar.timeSlot]
+      : ({ morning: '早晨，上课之前', lunch: school ? '午休' : '白天', afternoon: school ? '放学后' : '下午', night: '夜里' } as Record<string, string>)[gameCalendar.timeSlot];
+    const weather = en
+      ? ({ sunny: 'clear', rainy: 'raining', cloudy: 'overcast', sunset: 'sunset' } as Record<string, string>)[gameCalendar.weather] || 'clear'
+      : ({ sunny: '晴', rainy: '下雨', cloudy: '阴', sunset: '傍晚的天色' } as Record<string, string>)[gameCalendar.weather] || '晴';
+    const loc = findLocation(currentScene);
+    const sceneLabel = loc ? (en ? loc.nameEn : loc.nameZh) : (en ? 'somewhere in Kobe' : '神户的某处');
+    // 剧情走到哪儿了。只挑"发生过就不能再当成没发生"的那几件。
+    const notes: string[] = [];
+    if (storyFlags['day1_done']) notes.push(en ? 'The first day of term is over.' : '开学第一天已经过完了。');
+    if (storyFlags['day1_met_inari']) notes.push(en ? 'You two have met at the shrine torii.' : '你们在神社的鸟居下见过面了。');
+    if (storyFlags['cook_tutorial_done']) notes.push(en ? 'Nao taught the player to make miso soup in his kitchen.' : '奈绪在主角的厨房里教过他做味噌汤。');
+    if (storyFlags['farm_tutorial_done']) notes.push(en ? 'There is a plant pot on the player balcony now.' : '主角的阳台上已经有一个花盆了。');
+    if (storyFlags['fish_tutorial_done']) notes.push(en ? 'The player has been shown how to fish off the breakwater.' : '主角在防波堤上被人教过怎么钓鱼。');
+    if (storyFlags['skipped_school']) notes.push(en ? 'The player has skipped school at least once.' : '主角翘过课。');
+    return {
+      dateLabel: en
+        ? `${gameCalendar.month}/${gameCalendar.day} ${gameCalendar.dayOfWeek}`
+        : `${gameCalendar.month} 月 ${gameCalendar.day} 日 · ${gameCalendar.dayOfWeek}`,
+      slotLabel: slot || '',
+      weather,
+      sceneLabel,
+      schoolDay: school,
+      inPerson,
+      storyNotes: notes
+    };
+  };
+
   const enterChat = async (charId: CharacterId, mode: ChatMode) => {
     if (isCustomApi && (!customBaseUrl.trim() || !customModelName.trim())) {
       alert(userState.language === 'en'
@@ -2220,6 +2258,7 @@ const App: React.FC = () => {
           unlockedScenes: getUnlockedScenes(familiarityValue),
           openingBrief,
           encounterOverride,
+          situation: buildSituation(chatInPerson),
           onPage: stream.onPage
         }
       );

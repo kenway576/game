@@ -46,14 +46,14 @@ const EV_RAMEN_SORA: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${SORA}happy.webp`,
+      characterImage: `${SORA}school_happy.webp`,
       zh: '那个人回头，嘴里还咬着面。',
       en: 'The person turns around with noodles still in their mouth.'
     },
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}happy.webp`,
+      characterImage: `${SORA}school_happy.webp`,
       jp: 'あ。……ん、んぐ。……よぉ。',
       zh: '啊。……唔，咕。……哟。',
       en: 'Ah. ...Mm. Gulp. ...Yo.',
@@ -67,7 +67,7 @@ const EV_RAMEN_SORA: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}neutral.webp`,
+      characterImage: `${SORA}school_neutral.webp`,
       jp: '座り。ここ、替え玉が五十円やで。神戸で一番安い。',
       words: [{ jp: '替え玉', reading: 'かえだま', zh: '加面（吃完面后再加一份）', en: 'extra noodles (added to leftover broth)' }],
       zh: '坐啊。这儿加面五十日元。全神户最便宜。',
@@ -93,7 +93,7 @@ const EV_RAMEN_SORA: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}neutral.webp`,
+              characterImage: `${SORA}school_neutral.webp`,
               jp: '練習？練習ちゃうわ。……いや、練習か。うん、練習やな。',
               zh: '练习？才不是练习。……不对，是练习。嗯，是练习。',
               en: 'Training? This is not training. ...No. It is training. Yeah. It is training.',
@@ -102,7 +102,7 @@ const EV_RAMEN_SORA: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}happy.webp`,
+              characterImage: `${SORA}school_happy.webp`,
               jp: '夏の大会、フルで走ったら二時間や。二時間動くんに、あんた朝ごはん一杯で足りると思う？',
               zh: '夏天的比赛，全场跑下来两个小时。动两个小时，你觉得早饭吃一碗够吗？',
               en: 'The summer tournament runs two hours end to end. Two hours of moving. You think one bowl at breakfast covers that?',
@@ -130,7 +130,7 @@ const EV_RAMEN_SORA: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}happy.webp`,
+              characterImage: `${SORA}school_happy.webp`,
               jp: 'おっ。ええやん。大将、こっちにも替え玉！',
               zh: '哦。可以嘛。老板，这边也加面！',
               en: 'Oh. Not bad. Master, extra noodles over here too!',
@@ -144,7 +144,7 @@ const EV_RAMEN_SORA: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}happy.webp`,
+              characterImage: `${SORA}school_happy.webp`,
               jp: 'あははは！ええねん、食え！残したら大将が悲しむで！',
               zh: '啊哈哈哈！没事，吃！剩下的话老板会伤心的！',
               en: 'Ahahaha! It is fine, eat! The master gets sad if you leave any!',
@@ -182,7 +182,7 @@ const EV_RAMEN_SORA: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}neutral.webp`,
+              characterImage: `${SORA}school_neutral.webp`,
               jp: '……あ、それ聞いた？',
               zh: '……啊，你问了？',
               en: '...Ah. You asked, did you.',
@@ -196,7 +196,7 @@ const EV_RAMEN_SORA: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}neutral.webp`,
+              characterImage: `${SORA}school_neutral.webp`,
               jp: 'ここ、大将がバスケ部のOBやねん。「食え」って言われたら、食うしかないやろ。',
               words: [{ jp: '食う', reading: 'くう', zh: '吃（较随便的说法）', en: 'to eat (blunt / casual)' }],
               zh: '这儿的老板是篮球部的学长。被他说「吃」，那就只能吃啊。',
@@ -211,7 +211,7 @@ const EV_RAMEN_SORA: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}happy.webp`,
+              characterImage: `${SORA}school_happy.webp`,
               jp: '……で？何が言いたいん。奢ってくれるとか、そういうやつ？',
               zh: '……所以呢？想说什么。要请我之类的？',
               en: '...So? What is it you want to say. Something about buying me dinner?',
@@ -239,7 +239,7 @@ const EV_RAMEN_SORA: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}neutral.webp`,
+      characterImage: `${SORA}school_neutral.webp`,
       jp: '……うちな、ここ来るん、勝った日と負けた日だけって決めてんねん。',
       zh: '……我啊，来这儿是有规矩的。只在赢了的那天和输了的那天来。',
       en: '...I have a rule about this place, you know. I only come on days I won and days I lost.',
@@ -253,7 +253,7 @@ const EV_RAMEN_SORA: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}happy.webp`,
+      characterImage: `${SORA}school_happy.webp`,
       jp: 'ま、今日はどっちでもええわ。人おったし。',
       zh: '算了，今天哪种都行。反正有人在。',
       en: 'Ah well. Today can be either. There was someone here.',
@@ -531,7 +531,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${MAKI}neutral.webp`,
+      characterImage: `${MAKI}school_neutral.webp`,
       zh: '打机的人个子不高，站在踏板上，节奏快得看不清手。',
       en: 'The person playing is not tall. She stands on the footplate and her hands move too fast to follow.'
     },
@@ -543,7 +543,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}angry.webp`,
+      characterImage: `${MAKI}school_angry.webp`,
       jp: 'あーもう！なんでそこで切れんねん！',
       zh: '啊——真是的！为什么偏偏在那儿断了啊！',
       en: 'Argh! Why does it break right there, every time!',
@@ -557,7 +557,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}smug.webp`,
+      characterImage: `${MAKI}school_smug.webp`,
       jp: 'あ〜、せんぱいやん。何？ うちのプレイ見に来たん？ ざぁこ♡',
       zh: '啊——是前辈嘛。干嘛？来看我打机的？杂鱼♡',
       en: 'Oh, it is Senpai. What, come to watch me play? Weakling.',
@@ -574,7 +574,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真纪', speakerEn: 'Maki',
-      characterImage: `${MAKI}smug.webp`,
+      characterImage: `${MAKI}school_smug.webp`,
       jp: '……センパイ、また意味わからんこと言うてるし。ざぁこ♡',
       zh: '……前辈又在说什么听不懂的话了。杂鱼♡',
       en: '...Senpai is saying weird stuff again. Weakling.',
@@ -603,14 +603,14 @@ const EV_ARCADE_MAKI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${MAKI}shy.webp`,
+              characterImage: `${MAKI}school_shy.webp`,
               zh: '她张了张嘴，没出声。手上的动作停在半空，然后很快地把手插回口袋。',
               en: 'Her mouth opens. Nothing comes out. Her hand stops mid-air and then goes very quickly into her pocket.'
             },
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}pout.webp`,
+              characterImage: `${MAKI}school_pout.webp`,
               jp: '……せんぱい、そういうとこあるよな。人が隠しとるとこばっかり見んねん。',
               zh: '……前辈你就是有这毛病。专门看人藏起来的地方。',
               en: '...Senpai, you have got a real habit, you know. You only ever look at the parts people are hiding.',
@@ -619,7 +619,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}neutral.webp`,
+              characterImage: `${MAKI}school_neutral.webp`,
               jp: 'そらな、二位はうちや。一位もうちや。ほんならな——',
               zh: '是啊，第二名是我。第一名也是我。那就是说——',
               en: 'Yeah. Second is me. First is me too. Which means—',
@@ -628,7 +628,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}neutral.webp`,
+              characterImage: `${MAKI}school_neutral.webp`,
               jp: 'うちに勝てるやつ、この街におらんねん。三ヶ月ずっと。',
               zh: '这条街上没人赢得了我。整整三个月。',
               en: 'Nobody in this street can beat me. Three months straight.',
@@ -667,14 +667,14 @@ const EV_ARCADE_MAKI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${MAKI}neutral.webp`,
+              characterImage: `${MAKI}school_neutral.webp`,
               zh: '但她从头到尾站在你旁边，一句一句地喊拍子。「ここ！」「はよ！」「今！」——喊到最后声音都哑了。',
               en: 'But she stands beside you the entire time, calling the beat. Here. Faster. Now. By the end her voice has gone hoarse.'
             },
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}smug.webp`,
+              characterImage: `${MAKI}school_smug.webp`,
               jp: '……三十一かぁ。初見にしては、まあ、ざぁこの中では上のほうやな。',
               zh: '……三十一啊。第一次打的话，嘛，在杂鱼里算上等的了。',
               en: '...Thirty-one, huh. For a first attempt — well. That is upper-tier, for a weakling.',
@@ -699,14 +699,14 @@ const EV_ARCADE_MAKI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${MAKI}neutral.webp`,
+              characterImage: `${MAKI}school_neutral.webp`,
               zh: '她瞥了一眼屏幕，又瞥了一眼你。',
               en: 'She glances at the screen. Then at you.'
             },
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}neutral.webp`,
+              characterImage: `${MAKI}school_neutral.webp`,
               jp: '……四文字までしか入らんねん、この機械。',
               words: [{ jp: '文字', reading: 'もじ', zh: '字符、文字', en: 'character (letter)' }],
               zh: '……这机器只能输四个字符。',
@@ -721,7 +721,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}shy.webp`,
+              characterImage: `${MAKI}school_shy.webp`,
               jp: 'ほんまはな、下の名前でええねん。でもフルで入れたら、誰のことか分かるやろ。',
               zh: '其实呢，名字就够了。但要是全写上去，别人就知道是谁了吧。',
               en: 'Honestly, the given name would do. But if I put the whole thing in, people would know who it was.',
@@ -735,7 +735,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}pout.webp`,
+              characterImage: `${MAKI}school_pout.webp`,
               jp: '……なんも言わんのな、せんぱい。',
               zh: '……什么都不说啊，前辈。',
               en: '...You are not saying anything, senpai.',
@@ -748,7 +748,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${MAKI}shy.webp`,
+              characterImage: `${MAKI}school_shy.webp`,
               zh: '她「哦」了一声，转过身去投币。你看见她按下开始键之前，先把 ID 那一栏又输了一遍。',
               en: 'She says "oh", turns away and feeds in a coin. Before she hits start, you see her type the ID in one more time.'
             }
@@ -764,7 +764,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}neutral.webp`,
+      characterImage: `${MAKI}school_neutral.webp`,
       jp: 'ここ、電車の音でうるさいやろ。うち、それが好きやねん。',
       zh: '这儿电车吵吧。我喜欢这个。',
       en: 'It is loud here, with the trains. I like that.',
@@ -773,7 +773,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '真希', speakerEn: 'Maki',
-      characterImage: `${MAKI}shy.webp`,
+      characterImage: `${MAKI}school_shy.webp`,
       jp: '……家、静かすぎんねん。',
       zh: '……家里太安静了。',
       en: '...It is too quiet at my house.',
@@ -810,14 +810,14 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${HIKARI}happy.webp`,
+      characterImage: `${HIKARI}school_happy.webp`,
       zh: '有人在你背后大喊你的名字。整条街回头了一半。',
       en: 'Someone shouts your name behind you. Half the street turns around.'
     },
     {
       type: 'speech',
       speakerZh: '光', speakerEn: 'Hikari',
-      characterImage: `${HIKARI}happy.webp`,
+      characterImage: `${HIKARI}school_happy.webp`,
       jp: '{name}！ちょうどよかった！両手ふさがってんねん、これ持って！',
       zh: '{name}！来得正好！我两只手都满了，帮我拿着这个！',
       en: '{name}! Perfect timing! Both my hands are full — hold this!',
@@ -831,7 +831,7 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '光', speakerEn: 'Hikari',
-      characterImage: `${HIKARI}happy.webp`,
+      characterImage: `${HIKARI}school_happy.webp`,
       jp: '豚まん、小籠包、あと胡麻団子。今から食べ比べすんねん。付き合って。',
       words: [{ jp: '食べ比べ', reading: 'たべくらべ', zh: '对比着吃、试吃比较', en: 'eating several of a thing to compare them' }],
       zh: '猪肉包、小笼包，还有芝麻团子。我现在要开始试吃对比了。陪我。',
@@ -860,7 +860,7 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}smug.webp`,
+              characterImage: `${HIKARI}school_smug.webp`,
               jp: 'ここの豚まんは八十五点。皮が厚い。でも今日は寒いから、加点で九十点。',
               zh: '这家的猪肉包八十五分。皮太厚。不过今天冷，加分，九十分。',
               en: 'These pork buns are eighty-five. The skin is too thick. But it is cold today, so with the bonus, ninety.',
@@ -880,14 +880,14 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${HIKARI}surprised.webp`,
+              characterImage: `${HIKARI}school_surprised.webp`,
               zh: '她的语速第一次慢了下来。',
               en: 'For the first time, her pace drops.'
             },
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}neutral.webp`,
+              characterImage: `${HIKARI}school_neutral.webp`,
               jp: '……ここな、みんな大きい声で喋んねん。日本語ちゃう言葉でも、誰も見んねん。',
               zh: '……这儿啊，大家都很大声地说话。就算不是日语，也没人会看你。',
               en: '...Everyone talks loudly here. Even in a language that is not Japanese, nobody looks at you.',
@@ -896,7 +896,7 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}shy.webp`,
+              characterImage: `${HIKARI}school_shy.webp`,
               jp: 'うち、声でかいってよう言われるから。……ここやと、普通やねん。',
               zh: '我总被说嗓门大。……在这儿的话，就很普通。',
               en: 'People are always telling me I am loud. ...Here, that is just normal.',
@@ -926,14 +926,14 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${HIKARI}surprised.webp`,
+              characterImage: `${HIKARI}school_surprised.webp`,
               zh: '她刹住脚，转过身来，表情像是听见了什么了不得的提案。',
               en: 'She stops dead, turns around, and looks like someone who has just heard a genuinely serious proposal.'
             },
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}happy.webp`,
+              characterImage: `${HIKARI}school_happy.webp`,
               jp: '……基準？基準ってなに？点数つけるだけちゃうん？',
               words: [{ jp: '基準', reading: 'きじゅん', zh: '标准、基准', en: 'criterion / standard' }],
               zh: '……标准？什么标准？不就是打个分吗？',
@@ -948,7 +948,7 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}smug.webp`,
+              characterImage: `${HIKARI}school_smug.webp`,
               jp: '足りん！「一口目の幸せ度」と「三口目に飽きるかどうか」も要る！',
               zh: '不够！还得加「第一口的幸福度」和「第三口会不会腻」！',
               en: 'Not enough! You need "happiness of the first bite" and "have you got bored by the third".',
@@ -962,7 +962,7 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}happy.webp`,
+              characterImage: `${HIKARI}school_happy.webp`,
               jp: 'これ、来月もやろ。データは多いほうがええやろ？',
               words: [{ jp: 'データ', zh: '数据', en: 'data' }],
               zh: '这个，下个月也做吧。数据越多越好对吧？',
@@ -986,7 +986,7 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '光', speakerEn: 'Hikari',
-      characterImage: `${HIKARI}happy.webp`,
+      characterImage: `${HIKARI}school_happy.webp`,
       jp: 'なあ、{name}。またここ来よな。次は餃子の店、開拓すんねん。',
       zh: '喂，{name}。下次还来这儿吧。下次去开发饺子店。',
       en: 'Hey, {name}. Let us come again. Next time we conquer the dumpling places.',
@@ -1248,14 +1248,14 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${MIYUKI}neutral.webp`,
+      characterImage: `${MIYUKI}school_neutral.webp`,
       zh: '深雪坐在最里面，面前摊着一本书和一杯已经凉了的咖啡。她没有在看书。',
       en: 'Miyuki is in the deepest seat with a book open in front of her and a coffee that has gone cold. She is not reading.'
     },
     {
       type: 'speech',
       speakerZh: '深雪', speakerEn: 'Miyuki',
-      characterImage: `${MIYUKI}happy.webp`,
+      characterImage: `${MIYUKI}school_happy.webp`,
       jp: 'あら。……見つかっちゃった。',
       zh: '哎呀。……被找到了。',
       en: 'Oh my. ...You found me.',
@@ -1293,7 +1293,7 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '深雪', speakerEn: 'Miyuki',
-              characterImage: `${MIYUKI}neutral.webp`,
+              characterImage: `${MIYUKI}school_neutral.webp`,
               jp: '……ありがとう。何も聞かないでいてくれて。',
               zh: '……谢谢。谢谢你什么都不问。',
               en: '...Thank you. For not asking anything.',
@@ -1320,7 +1320,7 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '深雪', speakerEn: 'Miyuki',
-              characterImage: `${MIYUKI}happy.webp`,
+              characterImage: `${MIYUKI}school_happy.webp`,
               jp: 'ふふ。……いつか、ね。',
               zh: '呵呵。……以后吧。',
               en: 'Mm. ...Someday.',
@@ -1374,14 +1374,14 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${MIYUKI}neutral.webp`,
+              characterImage: `${MIYUKI}school_neutral.webp`,
               zh: '她低头看了看新的那杯，又看了看自己那本合着的书，然后把书往旁边挪开了一点，给杯子腾出位置。',
               en: 'She looks at the new cup, then at her closed book, and then moves the book aside a little to make room for it.'
             },
             {
               type: 'speech',
               speakerZh: '深雪', speakerEn: 'Miyuki',
-              characterImage: `${MIYUKI}happy.webp`,
+              characterImage: `${MIYUKI}school_happy.webp`,
               jp: '……ずるいわ、そういうの。聞かないで、ぜんぶ分かってるみたいな顔して。',
               words: [{ jp: 'ずるい', zh: '狡猾、不公平（口语里常带撒娇意味）', en: 'unfair / sly (often affectionate)' }],
               zh: '……真狡猾啊，这样。什么都不问，一副全都看穿了的样子。',
@@ -1405,7 +1405,7 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '深雪', speakerEn: 'Miyuki',
-      characterImage: `${MIYUKI}happy.webp`,
+      characterImage: `${MIYUKI}school_happy.webp`,
       jp: '大家さんの特権よ。……二杯目からは自分で払ってね。',
       words: [{ jp: '大家', reading: 'おおや', zh: '房东', en: 'landlord / landlady' }],
       zh: '这是房东的特权哦。……第二杯开始你自己付。',
@@ -1443,7 +1443,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${INARI}neutral.webp`,
+      characterImage: `${INARI}school_neutral.webp`,
       zh: '本殿旁边的树下站着一个人。你走近了才发现，她脚下的碎石一点声音都没有。',
       en: 'Someone is standing under the tree beside the main hall. Only when you get closer do you realise the gravel under her feet makes no sound at all.'
     },
@@ -1464,7 +1464,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}neutral.webp`,
+      characterImage: `${INARI}school_neutral.webp`,
       jp: 'この社はな、この街よりずっと古い。港ができたのは、つい最近のことじゃ。',
       zh: '这座神社啊，比这座城市老得多。港口是最近才有的东西。',
       en: 'This shrine is far older than this city. The port is a very recent development.',
@@ -1502,7 +1502,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               jp: 'この木を植えたときのことは覚えておる。ずいぶんと細かった。',
               zh: '种下这棵树时候的事我还记得。当时细得很。',
               en: 'I remember when this tree was planted. It was very thin.',
@@ -1535,7 +1535,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               jp: '……飽きはせぬ。ただ、な。',
               zh: '……不会腻。只是啊。',
               en: '...I do not tire of it. Only.',
@@ -1588,14 +1588,14 @@ const EV_SHRINE_INARI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               zh: '掠过耳畔的山风忽然歇了，整座神社陷入一片奇特的寂静。',
               en: 'The wind whistling through the pines suddenly stills, leaving the shrine in a deep quiet.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               jp: '……そうか。育ったか。',
               words: [{ jp: '育つ', reading: 'そだつ', zh: '成长、长大', en: 'to grow up' }],
               zh: '……是吗。长大了啊。',
@@ -1610,7 +1610,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}happy.webp`,
+              characterImage: `${INARI}school_happy.webp`,
               jp: 'ふふ。……汝、面白い触り方をする。神ではなく、木のほうに触れるとはな。',
               zh: '呵呵。……你摸东西的方式挺有意思。不去碰神，倒去碰树。',
               en: 'Hmhm. ...You touch things in an interesting way. Not the god — the tree.',
@@ -1628,7 +1628,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}neutral.webp`,
+      characterImage: `${INARI}school_neutral.webp`,
       jp: '前にここで人の子と話したのも、四月であった。',
       zh: '上一次在这儿和人类说话，也是四月。',
       en: 'The last time I spoke with a human child here was also April.',
@@ -1717,7 +1717,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               jp: '六十年ほど前じゃ。ここに座って、その鳥居を三度なぞっておった。……よう似ておる、目のあたりが。',
               words: [{ jp: 'なぞる', zh: '描摹、沿着描', en: 'to trace over' }],
               zh: '大概六十年前。他坐在这儿，把那座鸟居描了三遍。……眼睛那一带，很像。',
@@ -1767,7 +1767,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               jp: '六十年ほど前じゃ。地図を描いておった人の子でな。……よう似ておるぞ、目のあたりが。',
               zh: '大概六十年前。是个在画地图的人类。……很像啊，眼睛那一带。',
               en: 'Some sixty years ago. A human child who was drawing a map. ...You look very alike, around the eyes.',
@@ -1795,7 +1795,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}neutral.webp`,
+      characterImage: `${INARI}school_neutral.webp`,
       jp: 'また来やれ。……今度は、来るであろう？',
       zh: '再来吧。……这次，会来的吧？',
       en: 'Come again. ...This time you will, will you not?',
