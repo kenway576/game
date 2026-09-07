@@ -212,28 +212,35 @@ const App: React.FC = () => {
   };
   // 攒不满一整点的零头。不进存档：跨存档结转带来的复杂度，
   // 远大于"读档丢掉半点属性"这件事的影响。
+  // 攒不满一整点的零头。不进存档：跨存档结转带来的复杂度，
+  // 远大于"读档丢掉半点属性"这件事的影响。
   const statFracRef = useRef<Record<string, number>>({});
-  const takeGain = (stat: StatKey, current: number, amount: number): number => {
-    if (amount <= 0) return amount;            // 扣分不打折
-    const pool = (statFracRef.current[stat] || 0) + amount * taperK(current);
+  // ⚠️ 打折必须在 setState 的 updater **外面**算。
+  // updater 在 StrictMode 下会被跑两遍，而这里要改 ref（零头池）——
+  // 跑两遍就等于零头攒了两次，属性会以两倍速往上走。
+  // 所以拿一份当前值的镜像，算完再一次性交给 setState。
+  const statsRef = useRef<ProtagonistStats>(INITIAL_PROTAGONIST_STATS);
+  useEffect(() => { statsRef.current = protagonistStats; }, [protagonistStats]);
+
+  const takeGain = (stat: StatKey, amount: number): number => {
+    const cur = statsRef.current[stat] || 0;
+    if (amount <= 0) {                          // 扣分不打折
+      statsRef.current = { ...statsRef.current, [stat]: Math.max(0, cur + amount) };
+      return amount;
+    }
+    const pool = (statFracRef.current[stat] || 0) + amount * taperK(cur);
     const whole = Math.floor(pool);
     statFracRef.current[stat] = pool - whole;
+    statsRef.current = { ...statsRef.current, [stat]: Math.min(100, cur + whole) };
     return whole;
   };
 
   const gainStat = (stat: StatKey, amount: number, reasonZh: string, reasonEn: string) => {
-    let shown = amount;
-    setProtagonistStats(prev => {
-      const cur = prev[stat] || 0;
-      const g = takeGain(stat, cur, amount);
-      shown = g;
-      return { ...prev, [stat]: Math.min(100, Math.max(0, cur + g)) };
-    });
+    const g = takeGain(stat, amount);
+    setProtagonistStats(statsRef.current);
     // 打折之后是 0 就别弹提示了——弹一个「+0」比什么都不弹更糟。
-    setTimeout(() => {
-      if (shown === 0) return;
-      setStatGainEvent({ stat, amount: shown, reasonZh, reasonEn, timestamp: Date.now() });
-    }, 0);
+    if (g === 0) return;
+    setStatGainEvent({ stat, amount: g, reasonZh, reasonEn, timestamp: Date.now() });
   };
 
   // 剧本节点一次抛回来的一组增益：数值立刻结算，提示进队列依次弹出
@@ -241,32 +248,21 @@ const App: React.FC = () => {
     if (!effects.length) return;
     // 打完折之后每一项实际加了多少，提示里报的就是这个数——
     // 界面上说 +3、背地里只给 1，那是骗人。
-    const applied: { stat: StatKey; amount: number; reasonZh: string; reasonEn: string }[] = [];
-    setProtagonistStats(prev => {
-      const next = { ...prev };
-      applied.length = 0;
-      effects.forEach(e => {
-        const cur = next[e.stat] || 0;
-        const g = takeGain(e.stat, cur, e.amount);
-        next[e.stat] = Math.min(100, Math.max(0, cur + g));
-        applied.push({ stat: e.stat, amount: g, reasonZh: e.reasonZh, reasonEn: e.reasonEn });
-      });
-      return next;
-    });
-    setTimeout(() => {
-      const shown = applied.filter(a => a.amount !== 0);
-      if (!shown.length) return;
-      setStatGainQueue(prev => [
-        ...prev,
-        ...shown.map((e, i) => ({
-          stat: e.stat,
-          amount: e.amount,
-          reasonZh: e.reasonZh,
-          reasonEn: e.reasonEn,
-          timestamp: Date.now() + i
-        }))
-      ]);
-    }, 0);
+    const shown = effects
+      .map(e => ({ stat: e.stat, amount: takeGain(e.stat, e.amount), reasonZh: e.reasonZh, reasonEn: e.reasonEn }))
+      .filter(a => a.amount !== 0);
+    setProtagonistStats(statsRef.current);
+    if (!shown.length) return;
+    setStatGainQueue(prev => [
+      ...prev,
+      ...shown.map((e, i) => ({
+        stat: e.stat,
+        amount: e.amount,
+        reasonZh: e.reasonZh,
+        reasonEn: e.reasonEn,
+        timestamp: Date.now() + i
+      }))
+    ]);
   };
 
   // 队列泵：当前没有提示在显示时，取下一个顶上

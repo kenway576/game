@@ -190,7 +190,7 @@ export const buildClassSlot = (cal: GameCalendar, ctx: ClassCtx, slot: string): 
         return;
       }
     }
-    nodes.push(...buildSketch(cal, subj.id, scene, i));
+    nodes.push(...buildSketch(cal, subj.id, scene, i, i === 0));
   });
 
   // 两节之间的下课。没有这一下，两节课会黏成一段读不出分界的东西。
