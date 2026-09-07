@@ -843,14 +843,14 @@ export const DAY1_ARCADE: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${MAKI}punk_laugh.webp`,
+            characterImage: `${MAKI}school_laugh.webp`,
             zh: '她顺着你的手指看过去，整个人愣在原地，随即扑哧一声笑得蹲在了马路牙子上。',
             en: 'Following your finger, she freezes on the spot before bursting out laughing and collapsing onto the curb.'
           },
           {
             type: 'speech',
             speakerZh: '粉发的女生', speakerEn: 'Pink-haired Girl',
-            characterImage: `${MAKI}punk_laugh.webp`,
+            characterImage: `${MAKI}school_laugh.webp`,
             jp: 'それ店の名前や！メニューちゃう！……いや、ええけどな、ここたこ焼しか売ってへんし。',
             words: [{ jp: '店', reading: 'みせ', zh: '店、店铺', en: 'shop' }],
             zh: '那是店名啦！不是菜单！……不过，也行吧，反正这家只卖章鱼烧。',
@@ -883,7 +883,7 @@ export const DAY1_ARCADE: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '粉发的女生', speakerEn: 'Pink-haired Girl',
-    characterImage: `${MAKI}punk_laugh.webp`,
+    characterImage: `${MAKI}school_laugh.webp`,
     jp: 'ソース、しょうゆ、ねぎポン。どれ？',
     words: [{ jp: '読む', reading: 'よむ', zh: '读、念', en: 'to read' }],
     zh: '酱汁、酱油、葱柚子醋。要哪个？',
@@ -917,7 +917,7 @@ export const DAY1_ARCADE: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '粉发的女生', speakerEn: 'Pink-haired Girl',
-    characterImage: `${MAKI}punk_laugh.webp`,
+    characterImage: `${MAKI}school_laugh.webp`,
     jp: 'ウチ一年。あんた二年やろ？　顔に書いてあるわ、「なんもわからん」って。',
     words: [{ jp: '一年', reading: 'いちねん', zh: '一年级', en: 'first year' }],
     zh: '我一年级。你二年级吧？脸上写着呢——「什么都搞不懂」。',
@@ -946,7 +946,7 @@ export const DAY1_ARCADE: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${MAKI}punk_laugh.webp`,
+    characterImage: `${MAKI}school_laugh.webp`,
     zh: '走出七八步，她回过头喊了一句「センパイ、ソースついてる」，指了指自己的嘴角。你伸手一抹，什么都没有。',
     en: 'Seven or eight steps on she turns and shouts that senpai has sauce on his face, pointing at the corner of her own mouth. You wipe. There is nothing there.'
   },
@@ -1054,7 +1054,7 @@ const CAMEO_MAKI: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${MAKI}punk_laugh.webp`,
+    characterImage: `${MAKI}school_laugh.webp`,
     zh: '有个粉头发的女生正倒着走路，一边冲身后的人大声说着什么。她胸前的领结颜色和你们班不一样——低一届的。',
     en: 'A pink-haired girl is walking backwards, hollering something at somebody behind her. Her ribbon is a different colour from your class. A year below.'
   },

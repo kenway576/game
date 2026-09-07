@@ -654,7 +654,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '真希', speakerEn: 'Maki',
-              characterImage: `${MAKI}laugh.webp`,
+              characterImage: `${MAKI}school_laugh.webp`,
               jp: 'はぁ？ せんぱいが？ ぷっ、あははは！ええで、やってみ！',
               zh: '哈？前辈你？噗，啊哈哈哈！行啊，来试试！',
               en: 'Huh? You? Pfft — ahahaha! Fine, go on then!',
@@ -1313,7 +1313,7 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${MIYUKI}thinking.webp`,
+              characterImage: `${MIYUKI}school_thinking.webp`,
               zh: '她的指尖在微旧的书脊上轻轻摩挲了一瞬。',
               en: 'Her fingertips linger on the slightly worn spine for a fleeting instant.'
             },
@@ -1354,14 +1354,14 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${MIYUKI}thinking.webp`,
+              characterImage: `${MIYUKI}school_thinking.webp`,
               zh: '热气腾腾的新咖啡悄然搁在她面前时，她有些诧异地抬起头，神情里流露出难得卸下防备的恍惚。',
               en: 'When the steaming fresh cup is quietly placed before her, she looks up in slight surprise, an unguarded hesitation flitting through her eyes.'
             },
             {
               type: 'speech',
               speakerZh: '深雪', speakerEn: 'Miyuki',
-              characterImage: `${MIYUKI}thinking.webp`,
+              characterImage: `${MIYUKI}school_thinking.webp`,
               jp: 'あら。……頼んでないわよ。',
               zh: '哎呀。……我没有点哦。',
               en: 'Oh. ...I did not order this.',
@@ -1450,7 +1450,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}sly.webp`,
+      characterImage: `${INARI}school_sly.webp`,
       jp: 'おや。人の子ではないか。……ここへは、初めてか？',
       zh: '哎呀。这不是人类的孩子吗。……第一次来这儿？',
       en: 'Oh. If it is not the human child. ...First time here?',
@@ -1488,7 +1488,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}smug.webp`,
+              characterImage: `${INARI}school_smug.webp`,
               jp: 'うむ。最近じゃ。',
               zh: '嗯。最近。',
               en: 'Mm. Recent.',
@@ -1528,7 +1528,7 @@ const EV_SHRINE_INARI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${INARI}surprised.webp`,
+              characterImage: `${INARI}school_surprised.webp`,
               zh: '她的耳朵动了一下。',
               en: 'Her ears twitch.'
             },
@@ -1544,7 +1544,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}sad.webp`,
+              characterImage: `${INARI}school_sad.webp`,
               jp: '「また来る」と言うた者は、たいてい来ぬ。悪気があるわけではない。ただ、寿命がな。',
               zh: '说「我还会来」的人，大多不会再来。倒不是有什么恶意。只是寿命这东西。',
               en: 'Those who say they will come again mostly do not. Not out of ill will. It is simply a question of lifespan.',
@@ -1577,7 +1577,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${INARI}surprised.webp`,
+              characterImage: `${INARI}school_surprised.webp`,
               zh: '她没有说话。你回过头，她正看着你的手。',
               en: 'She says nothing. When you look back, she is looking at your hand.'
             },
@@ -1652,7 +1652,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}smug.webp`,
+              characterImage: `${INARI}school_smug.webp`,
               jp: 'ふむ。……六十年ほど前かの。',
               zh: '唔。……大概六十年前吧。',
               en: 'Hm. ...About sixty years ago, I think.',
@@ -1666,7 +1666,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}sly.webp`,
+              characterImage: `${INARI}school_sly.webp`,
               jp: 'その者は、そなたの祖父ではないかのう。地図を描いておった。よう似ておる、目のあたりが。',
               zh: '那个人，该不会就是你外公吧。当时在画地图。眼睛那一带，很像。',
               en: 'That one might have been your grandfather. He was drawing a map. Around the eyes, you look very alike.',
@@ -1701,14 +1701,14 @@ const EV_SHRINE_INARI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${INARI}surprised.webp`,
+              characterImage: `${INARI}school_surprised.webp`,
               zh: '她第一次露出了那种表情——不是神的表情，是被抢了话的人的表情。',
               en: 'For the first time she wears an expression that is not a god’s. It is the expression of someone who has just been beaten to the punch.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}surprised.webp`,
+              characterImage: `${INARI}school_surprised.webp`,
               jp: '……ほう。妾より先に言うか。',
               zh: '……哦。竟然抢在我前面说了。',
               en: '...Oh. You said it before I could.',
@@ -1746,14 +1746,14 @@ const EV_SHRINE_INARI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${INARI}smug.webp`,
+              characterImage: `${INARI}school_smug.webp`,
               zh: '她挑了挑眉，像是听见了一个很新鲜的回答。',
               en: 'Her eyebrows go up, as though that were a genuinely novel answer.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}smug.webp`,
+              characterImage: `${INARI}school_smug.webp`,
               jp: '知りとうないと申すか。……ふふ、ならば余計に言うてやろう。',
               zh: '说是不想知道啊。……呵呵，那我就偏要说了。',
               en: 'You say you do not want to know. ...Hmhm. Then I shall tell you precisely because of that.',
