@@ -3026,5 +3026,16 @@ export const STORY_CGS: StoryCgDef[] = [
     quote: '「誰かのために走る背中を、ずっと見つめていた。」',
     chapterZh: '圣地巡礼 · 穗群原学园操场',
     chapterEn: 'Sacred Pilgrimage · Homurahara Grounds'
+  },
+  {
+    id: 'cg_nao_shopping_dusk',
+    titleZh: '黄昏街头的百元店向导',
+    titleEn: 'The 100-Yen Guide at Dusk',
+    descZh: '在暮色渐浓的三宫商店街，她拎着装满食材的塑料袋，神气活现地举着百元店的海绵向你传授独居秘籍。那一刻，她比任何人都更像一位可靠的领路人。',
+    descEn: 'On the dusk-lit Sannomiya shopping arcade, grocery bag in hand, she proudly brandishes a 100-yen sponge and imparts the sacred arts of living alone. In that moment, she looked more reliable than anyone else.',
+    cgUrl: '/images/cg/cg_nao_shopping_dusk.webp',
+    quote: '「聴きや、一人暮らしの第一歩は『百均』を制することやで！」',
+    chapterZh: '第 1 章 · 三宫街头日常',
+    chapterEn: 'Chapter 1 · Sannomiya Street Life'
   }
 ];

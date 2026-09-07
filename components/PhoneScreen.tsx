@@ -66,13 +66,19 @@ const PhoneScreen: React.FC<Props> = ({
   // 也躺在你的通讯录里 —— 谁都知道现实里不是这样。
   // 现在要処到「面熟」以上（親密度 40）才拿得到号码；
   // 奈绪例外，她的号码你十年前就有了。
+  // ⚠️ 光有親密度不够。八个人的初始親密度里有四个开局就过了 40
+  // （奈绪 215、深雪 130、真希 100、光 95），于是开学第二天你的通讯录里
+  // 就躺着几个一句话没说过的人。号码是**说过话之后**才会有的东西，
+  // 所以再加一条：得真的开口聊过一次。
+  // 奈绪例外——她的号码你十年前就存着了。
   const contacts = useMemo(
     () => PHONE_CONTACTS.filter(c => {
       if (!metChars.includes(c.id)) return false;
       if (c.id === CharacterId.NAO) return true;
+      if (!storyFlags[`talked_${c.id}`]) return false;
       return (familiarity[c.id] ?? 0) >= CONTACT_MIN_FAMILIARITY;
     }),
-    [metChars, familiarity]
+    [metChars, familiarity, storyFlags]
   );
   const unread = useMemo(() => totalUnread(ctx), [ctx]);
 

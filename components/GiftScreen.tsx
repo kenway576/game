@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { CharacterId, Language, LifeState, StoryFlags, StoryRelationEffect } from '../types';
+import { CharacterId, Language, LifeState, StoryFlags, FamiliarityMap } from '../types';
 import { CHARACTERS } from '../constants';
 import { giftableRows, giftVerdict, GiftVerdict } from '../data/giftData';
 import { audioManager } from '../services/audioManager';
@@ -22,20 +22,30 @@ interface Props {
   life: LifeState;
   storyFlags: StoryFlags;
   metChars: CharacterId[];
+  familiarity: FamiliarityMap;
   // 今天已经收过你东西的人。一天一次，免得好感度变成可以刷的数字。
   givenToday: CharacterId[];
   onClose: () => void;
   onGive: (key: string, char: CharacterId, v: GiftVerdict) => void;
 }
 
-const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, givenToday, onClose, onGive }) => {
+const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, familiarity, givenToday, onClose, onGive }) => {
   const en = language === 'en';
   const rows = useMemo(() => giftableRows(life, storyFlags), [life, storyFlags]);
   const [itemKey, setItemKey] = useState<string | null>(null);
   const [who, setWho] = useState<CharacterId | null>(null);
   const [given, setGiven] = useState<GiftVerdict | null>(null);
 
-  const people = metChars.map(id => CHARACTERS[id]).filter(Boolean);
+  // 🎁 送东西比发消息更进一步：号码可以是顺手换的，
+  // 但把一样东西塞到别人手里，得是已经算朋友的关系。
+  //   · 真的开口聊过（talked_）
+  //   · 親密度到「朋友」（90）
+  // 奈绪例外，她从小学起就替你拎过米。
+  const GIFT_MIN_FAMILIARITY = 90;
+  const closeEnough = (id: CharacterId) =>
+    id === CharacterId.NAO
+    || (!!storyFlags[`talked_${id}`] && (familiarity[id] ?? 0) >= GIFT_MIN_FAMILIARITY);
+  const people = metChars.map(id => CHARACTERS[id]).filter(Boolean).filter(c => closeEnough(c.id));
   const verdict = itemKey && who ? giftVerdict(itemKey, who, life) : null;
   const target = who ? CHARACTERS[who] : null;
 
@@ -125,6 +135,13 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, giv
             {en ? 'TO' : '送给'}
           </div>
           <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-2 pr-1 content-start">
+            {people.length === 0 && (
+              <p className="col-span-2 text-white/35 text-sm leading-relaxed">
+                {en
+                  ? 'Nobody yet. Handing somebody a thing is not a first move — talk to them, spend some time, and this fills up.'
+                  : '还没有人。把东西塞到别人手里不是第一步——先跟人说上话、处熟一点，这儿自然会有人。'}
+              </p>
+            )}
             {people.map(c => {
               const done = givenToday.includes(c.id);
               return (

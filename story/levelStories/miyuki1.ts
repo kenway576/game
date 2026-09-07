@@ -159,7 +159,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${M}neutral_alt.webp`,
+            characterImage: `${M}school_neutral.webp`,
             zh: '她抬起头，这一次没有马上笑。',
             en: 'She looks up, and for once the smile does not arrive first.'
           },

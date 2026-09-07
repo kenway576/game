@@ -38,14 +38,14 @@ export const DAY1_GYM: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${SORA}happy.webp`,
+    characterImage: `${SORA}school_happy.webp`,
     zh: '一个短发女生正在罚球线上练投篮。她投进第七个的时候看见了你，球在指尖上停住。',
     en: 'A short-haired girl is shooting free throws. She sinks the seventh, spots you, and the ball stops dead on her fingertips.'
   },
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${SORA}happy.webp`,
+    characterImage: `${SORA}school_happy.webp`,
     jp: 'お、転校生じゃん。見学？それとも——やる？',
     words: [{ jp: '見学', reading: 'けんがく', zh: '参观、旁观', en: 'to watch / observe' }],
     zh: '哦，转学生。来参观？还是说——要来一局？',
@@ -88,14 +88,14 @@ export const DAY1_GYM: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${SORA}shock.webp`,
+            characterImage: `${SORA}school_shock.webp`,
             zh: '空直勾勾地盯着那个号码，指尖转动的篮球不知不觉停了下来。她脸上那种原本带着点挑衅的戏谑笑意，一瞬间收敛得干干净净。',
             en: 'Sora stares fixedly at the number, the ball spinning on her fingertip coming to an unconscious halt. The playful, provocative smirk on her face vanishes entirely.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${SORA}shock.webp`,
+            characterImage: `${SORA}school_shock.webp`,
             jp: '……二十四番。あんた、それ分かって着てんの？',
             zh: '……24 号。你知道自己穿的是什么才穿的吧？',
             en: '...Number twenty-four. You do know what you are wearing, right?',
@@ -122,14 +122,14 @@ export const DAY1_GYM: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${SORA}happy.webp`,
+            characterImage: `${SORA}school_happy.webp`,
             zh: '她先是抱着球僵在那儿，等回过味来，整个人笑得直接蹲了下去，清脆的笑声在空旷高耸的体育馆顶棚下回荡了好几圈。',
             en: 'She freezes clutching the ball, then collapses into laughter as the punchline lands, her bright laugh echoing round and round the cavernous gym rafters.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${SORA}happy.webp`,
+            characterImage: `${SORA}school_happy.webp`,
             jp: 'あかん、それずるい！神戸でそれ着られたら誰も文句言われへんやん！',
             words: [{ jp: 'ずるい', reading: 'ずるい', zh: '狡猾、耍赖', en: 'unfair / sly' }],
             zh: '不行，这太赖皮了！在神户穿这个谁还敢说你啊！',
@@ -144,7 +144,7 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${SORA}neutral.webp`,
+            characterImage: `${SORA}school_neutral.webp`,
             jp: '……もう一本。今度は本気でいくで。',
             zh: '……再来一个。这次我认真了。',
             en: '...One more. I am not going easy this time.',
@@ -171,14 +171,14 @@ export const DAY1_GYM: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${SORA}happy.webp`,
+            characterImage: `${SORA}school_happy.webp`,
             zh: '她像是没防备会被这么吐槽，眨了眨眼，随即笑得弯下腰去，一只手撑着膝盖直不起身。',
             en: 'Caught completely off-guard by the comeback, she blinks in surprise before doubling over with laughter, hand propped on her knee.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${SORA}happy.webp`,
+            characterImage: `${SORA}school_happy.webp`,
             jp: 'あはははっ！なんやそれ！……ほな次は、夕陽が差し込んでこなあかんな。',
             zh: '啊哈哈哈！什么啊那是！……那下一步，得有夕阳照进来才行吧。',
             en: 'Ahahaha! What is that! ...Right, so next the sunset has to come through the window, yeah?',
@@ -228,14 +228,14 @@ export const DAY1_GYM: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${SORA}happy.webp`,
+            characterImage: `${SORA}school_happy.webp`,
             zh: '她的表情亮了一下，像是听见了什么久违的好消息。',
             en: 'Her face lights up, as if she has heard some good news she had stopped expecting.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${SORA}happy.webp`,
+            characterImage: `${SORA}school_happy.webp`,
             jp: 'それでええねん！できひんのは別に恥ずかしいことちゃうで。やらんのが恥ずかしいねん。',
             words: [{ jp: '恥ずかしい', reading: 'はずかしい', zh: '丢脸、难为情', en: 'embarrassing / shameful' }],
             zh: '这就对了！不会又不丢人。不做才丢人。',
@@ -250,7 +250,7 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${SORA}happy.webp`,
+            characterImage: `${SORA}school_happy.webp`,
             jp: '肘、内側。目はリングの手前のフチ。……ほい、投げてみ。',
             words: [{ jp: '肘', reading: 'ひじ', zh: '手肘', en: 'elbow' }],
             zh: '手肘，往里。眼睛看篮筐靠近你这一侧的边。……来，投。',
@@ -274,7 +274,7 @@ export const DAY1_GYM: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${SORA}happy.webp`,
+    characterImage: `${SORA}school_happy.webp`,
     jp: 'よし、交換な。ウチが体育教えたるから、そっちは——',
     words: [{ jp: '交換', reading: 'こうかん', zh: '交换', en: 'exchange / swap' }],
     zh: '好，那就交换。我教你运动，你教我——',
@@ -289,7 +289,7 @@ export const DAY1_GYM: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${SORA}shock.webp`,
+    characterImage: `${SORA}school_shock.webp`,
     jp: '……英語。英語な。ウチ、赤点二回とってんねん。',
     words: [{ jp: '赤点', reading: 'あかてん', zh: '不及格分数', en: 'a failing grade' }],
     zh: '……英语。就英语。我英语挂过两次。',
@@ -304,7 +304,7 @@ export const DAY1_GYM: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${SORA}shy.webp`,
+    characterImage: `${SORA}school_shy.webp`,
     jp: 'ええやろ別に。走んのは速いんやから。',
     zh: '有什么关系嘛。反正我跑得快。',
     en: 'So what. I am fast.',
@@ -318,7 +318,7 @@ export const DAY1_GYM: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${SORA}neutral.webp`,
+    characterImage: `${SORA}school_neutral.webp`,
     jp: '……明日も来る？体育館、四時からずっと空いとるで。',
     words: [{ jp: '空く', reading: 'あく', zh: '空着、有空', en: 'to be free / vacant' }],
     zh: '……明天也来吗？体育馆从四点开始一直空着。',

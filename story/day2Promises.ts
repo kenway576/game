@@ -305,16 +305,422 @@ const NAO_STATION: StoryNode[] = [
     en: 'You ask for the receipt. She says she threw it away. She has not: this time it is in her fist, and it stays there the whole way out.'
   },
   {
-    type: 'narration', characterImage: `${N}knit_neutral.webp`,
-    zh: '回坡道口的时候两只手都拎着袋子。她把其中一袋换到自己那边，理由是"你拿得不对，会勒手"。',
-    en: 'You go back to the foot of the slope with a bag in each hand. She moves one of them to her side, on the grounds that you are carrying it wrong and it will cut into your fingers.'
+    type: 'narration',
+    characterImage: `${N}knit_neutral.webp`,
+    zh: '出了业务超市的推拉门，三宫的晚风扑面而来。你手里拎着装满白萝卜、豆芽、鸡蛋和特价乌冬面的大塑料袋，手腕被勒得微微发沉。',
+    en: 'Stepping through the automatic sliding doors of the Gyomu Supermarket, the evening breeze of Sannomiya greets you. In your hand hangs a heavy plastic bag laden with daikon, bean sprouts, eggs, and discount udon noodles.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_curious.webp`,
+    zh: '奈绪走在前面两步，忽然像想起了什么极重要的事似的猛然刹住脚，回过身把你从头到脚扫视了一遍。',
+    en: 'Nao takes two paces ahead, then abruptly skids to a stop as though remembering something critically important, spinning around to inspect you head to toe.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_curious.webp`,
+    jp: '……あんた、まさかと思うけど。部屋にフライパン洗うスポンジとか、食器用洗剤とか、あるん？',
+    words: [
+      { jp: 'スポンジ', reading: 'スポンジ', zh: '海绵、清洁海绵', en: 'sponge' },
+      { jp: '洗剤', reading: 'せんざい', zh: '洗涤剂、清洁剂', en: 'detergent / dish soap' }
+    ],
+    zh: '……你这家伙，该不会连洗锅的海绵和洗洁精都还没买吧？',
+    en: '...Don\'t tell me. Do you even have a sponge for your frying pan or dish soap in your room?',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '你回想了一下 201 室。除了房东奶奶借给你的老式电水壶、一个地铺单人被褥和空空荡荡的榻榻米，几乎连个喝水的杯子都没有。你诚实地摇了摇头。',
+    en: 'You mentally scan Room 201. Aside from the vintage electric kettle lent by the landlady, a futon on the floor, and bare tatami mats, you do not even possess a water glass. You shake your head honestly.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_angry.webp`,
+    jp: 'やっぱり！あんた、生活力ゼロやん！食材だけ買うても、洗うもんも干すもんもなかったら一食で詰むで！',
+    words: [
+      { jp: '生活力', reading: 'せいかつりょく', zh: '独立生活能力', en: 'life skills / ability to live independently' }
+    ],
+    zh: '果然！你这家伙的自理能力根本就是零蛋吧！光买了菜有什么用，没东西洗、没东西挂，吃完第一顿就全线瘫痪了啊！',
+    en: 'I knew it! Your independent living skill is literally zero! What use are groceries if you cannot wash up or hang anything? You\'d be completely paralyzed after one meal!',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_happy.webp`,
+    zh: '她单手叉腰，像极了电视剧里训斥笨蛋弟弟的精明长姐，嘴角却抑制不住地泛起一股"果然没我不行吧"的得意之色。',
+    en: 'She rests one hand on her hip, looking every bit like the shrewd older sister lecturing an incompetent younger brother in a TV drama, though a smug "you\'d be hopeless without me" grin slips onto her lips.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_happy.webp`,
+    jp: 'しゃあないな……うちが三宮の『百均』で、一人暮らしのサバイバル術教えたる！ついてき！',
+    words: [
+      { jp: '百均', reading: 'ひゃっきん', zh: '百元店（百円均一的略称）', en: '100-yen shop (hyakkin)' },
+      { jp: 'サバイバル', reading: 'サバイバル', zh: '生存、求生', en: 'survival' }
+    ],
+    zh: '真拿你没办法……就由本小姐带你去三宫的「百元店」，手把手教你独居生存的终极奥义！跟紧了！',
+    en: 'Hopeless case, honestly... I\'ll take you to the Sannomiya "100-yen shop" and teach you the ultimate survival arts of living alone! Keep up!',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'scene', scene: 'sannomiya_arcade', bgm: 'town',
+    titleZh: '三宫商业街', titleEn: 'Sannomiya Shopping Arcade',
+    subtitleZh: '傍晚 5:00', subtitleEn: '5:00 PM'
+  },
+  {
+    type: 'narration',
+    zh: '夕阳的余晖透过商业街挑高的拱形玻璃顶棚斜斜落下来。两旁的炸肉饼店、老旧喫茶店和二手唱片行飘出令人放松的香气与杂音。',
+    en: 'Slanted golden twilight filters through the vaulted glass archway of the covered arcade. The aromas of croquette stalls, vintage kissaten cafes, and secondhand record shops mingle into a comforting hum.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_neutral.webp`,
+    zh: '奈绪一边在人流中轻巧地穿梭，一边像通关向导一样竖起一根食指，开始传授她的独居生存第一定理。',
+    en: 'Nao nimbly weaves through the crowd, raising an index finger like an in-game tutorial guide as she delivers her first theorem of independent living.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: '聴きや。日本の一人暮らしはな、『百均』を使いこなせるかどうかで初期費用が三倍変わんねん。',
+    words: [
+      { jp: '初期費用', reading: 'しょきひよう', zh: '初期安家成本、初期费用', en: 'initial costs' }
+    ],
+    zh: '听好了。在日本一个人生活，能不能把「百元店」玩明白，初期安家费用能差出整整三倍。',
+    en: 'Listen up. Living alone in Japan, whether you master the "100-yen shop" changes your initial set-up costs by threefold.',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: '鉄則その一：消耗品と小物は全部百均！水切りネット、メラミンスポンジ、コロコロ、S字フック。これらは高いの買うたら負けや。',
+    words: [
+      { jp: '鉄則', reading: 'てっそく', zh: '铁则、死规矩', en: 'iron rule' },
+      { jp: '水切りネット', reading: 'みずきりネット', zh: '水槽沥水网袋', en: 'sink drain mesh' },
+      { jp: '消耗品', reading: 'しょうもうひん', zh: '消耗品', en: 'consumables' }
+    ],
+    zh: '铁则第一条：消耗品和小工具一律买百元店！水槽滤网、魔术海绵、除尘粘毛滚轮、S形挂钩……这些东西买贵的你就输了。',
+    en: 'Iron Rule #1: All consumables and small widgets come from the 100-yen shop! Sink drain meshes, melamine sponges, lint rollers, S-hooks... buy expensive ones and you lose.',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_angry.webp`,
+    jp: 'でもな！包丁とフライパンだけは絶対に百均で買うたらあかんで！切れへん包丁は怪我するし、安いフライパンは二回で焦げ付くからな！',
+    words: [
+      { jp: '包丁', reading: 'ほうちょう', zh: '菜刀', en: 'kitchen knife' },
+      { jp: 'フライパン', reading: 'フライパン', zh: '平底锅', en: 'frying pan' }
+    ],
+    zh: '但是！唯独菜刀和平底锅，绝对不能在百元店买！钝刀最容易滑手切伤自己，便宜平底锅的涂层用两次就全烧焦剥落了！',
+    en: 'However! Never, ever buy your kitchen knife or frying pan at a 100-yen shop! A blunt knife will slip and slice your fingers, and a cheap pan coat peels after twice!',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '你说这番话听着简直字字泣血，她当年是不是吃过大亏。奈绪别开脸轻咳了一声，假装没听见。',
+    en: 'You remark that this advice sounds soaked in blood and tears, asking if she learned it the hard way. Nao looks away with a slight cough, pretending not to hear.'
+  },
+  {
+    type: 'scene', scene: 'hundred_yen_shop_interior', bgm: 'store',
+    titleZh: '百元店 · Can★Do', titleEn: '100-Yen Shop · Can★Do',
+    subtitleZh: '傍晚 5:15', subtitleEn: '5:15 PM'
+  },
+  {
+    type: 'narration',
+    zh: '店里冷白色的日光灯明晃晃的，货架密密麻麻，整齐得令人叹为观止。从收纳盒到文具，从卫浴用品到园艺工具，所有的价签几乎都只写着「100円（税込110円）」。',
+    en: 'The cool white fluorescent lamps illuminate dense, breathtakingly organized aisles. From storage tubs to stationery, bathware to gardening tools, almost every tag reads "100 Yen (110 Yen with tax)".'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_curious.webp`,
+    zh: '奈绪熟练地抽出一只粉红色的塑料小购物筐挂在手肘上，径直将你拽到了日用品区。',
+    en: 'Nao smoothly loops a small pink plastic basket over her elbow, marching you straight into the daily goods aisle.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: 'まずこれ！洗濯ネット！海風荘の洗濯機、コインランドリー式やろ？ネット使わんと、あんたの服一瞬でヨレヨレになるで。',
+    words: [
+      { jp: '洗濯ネット', reading: 'せんたくネット', zh: '洗衣网、洗衣袋', en: 'laundry net' },
+      { jp: 'ヨレヨレ', reading: 'ヨレヨレ', zh: '皱皱巴巴、变形松垮', en: 'worn out / stretched out' }
+    ],
+    zh: '首先是这个！洗衣袋！海风庄楼下的洗衣机是老式投币式的吧？不套洗衣袋的话，你那些体恤衫洗一次领口就全松成荷叶边了。',
+    en: 'First, this! Laundry net! The machine downstairs at Umikaze-so is coin-op, right? Wash without a net and your t-shirt collars will stretch into frills instantly.',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '她不由分说地把两个细网眼的洗衣袋丢进篮子里，接着带你停在了一整面摆满清洁海绵的货架前。',
+    en: 'She tosses two fine-mesh laundry bags into the basket without debate, then leads you to halt before an entire wall of cleaning sponges.'
+  },
+  {
+    type: 'choice',
+    promptZh: '货架上有琳琅满目的清洁海绵，奈绪转头看向你。',
+    promptEn: 'The shelves display a dizzying array of cleaning sponges. Nao turns to face you.',
+    options: [
+      {
+        id: 'hyakkin_practical_sponge',
+        labelZh: '「选最划算的五只装多色双面海绵」',
+        labelEn: '"Pick the value 5-pack of colorful dual-sided sponges"',
+        jp: '一番コスパ良さそうな、この五個入りにしとく。',
+        hintZh: '实用主义的王道选择', hintEn: 'The pragmatic king of choices.',
+        effects: [{ stat: 'proficiency', amount: 1, reasonZh: '展现出了扎实的独居实用眼光', reasonEn: 'Demonstrated solid pragmatic intuition for living alone' }],
+        relations: [{ char: CharacterId.NAO, familiarity: 6, affection: 4, reasonZh: '她对你的领悟速度感到非常满意', reasonEn: 'She was thoroughly pleased with your quick grasp' }],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${N}knit_happy.webp`,
+            jp: 'せや！硬い面でフライパンの焦げ落として、柔らかい面でコップ洗うんや。消耗品はコスパこそ正義！よぉ分かっとるやん。',
+            zh: '这就对了！粗糙的那面用来刮锅底，柔软的那面洗杯子。消耗品当然是性价比至上！悟性不错嘛。',
+            en: 'Exactly! Scour the pans with the rough side, wash glasses with the soft side. Cost performance is justice for consumables! Quick study, aren\'t you.',
+            color: 'bg-emerald-500'
+          }
+        ]
+      },
+      {
+        id: 'hyakkin_cat_sponge',
+        labelZh: '「伸手拿起旁边那块可爱的黑猫造型魔术擦」',
+        labelEn: '"Reach for the cute black cat-shaped melamine sponge"',
+        jp: '……この猫の形のやつ、めっちゃ可愛くない？',
+        hintZh: '被可爱击中', hintEn: 'Smitten by cuteness.',
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '发现了生活里的微小趣味', reasonEn: 'Found small joys in everyday items' }],
+        relations: [{ char: CharacterId.NAO, familiarity: 5, affection: 7, reasonZh: '她嘴上嫌弃，其实自己也很想要', reasonEn: 'She feigned annoyance, but secretly wanted it too' }],
+        setFlags: ['nao_bought_cat_sponge'],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${N}knit_shy.webp`,
+            jp: '……アホ！実用性で選べ言うた直後やろ！……まあ、メラミンスポンジは水だけでシンクの水垢落ちるし……べ、別に可愛いから買うわけちゃうで！',
+            zh: '……笨蛋！我才刚说了要看实用性吧！……不过，三聚氰胺魔术擦只用清水就能擦掉水槽水垢……我、我可不是因为长得像猫才放进去的啊！',
+            en: '...Idiot! Right after I told you to look at utility! ...Well, melamine sponges do wipe sink scale with just water... I-it\'s not like I\'m adding it because it looks like a cat!',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '她嘴上数落着，却动作极其利落地把那块黑猫海绵塞进了篮子里，耳朵尖微微泛红。',
+            en: 'Though scolding you, she briskly tucked that black cat sponge into the basket, the tips of her ears glowing slightly pink.'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_neutral.webp`,
+    zh: '接着，她像清点行囊的参谋官一样，领着你把衣架、小垃圾桶、封口夹、甚至洗碗手套一一挑齐。',
+    en: 'Next, like a quartermaster checking provisions, she guided you to round up coat hangers, a mini trash bin, bag sealing clips, and rubber dishwashing gloves.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_curious.webp`,
+    zh: '在收银台附近的货架前，奈绪的神情忽然变得格外庄重，从挂钩上取下一包印有绿色字样的透明塑料袋。',
+    en: 'Near the cash register racks, Nao\'s expression abruptly turned solemn as she retrieved a pack of clear plastic bags printed with green typography.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: 'これ！一番大事なやつ！神戸市指定のゴミ袋！',
+    words: [
+      { jp: '分別', reading: 'ぶんべつ', zh: '垃圾分类', en: 'waste sorting / separation' },
+      { jp: '指定ごみ袋', reading: 'していごみぶくろ', zh: '指定垃圾袋', en: 'designated garbage bag' }
+    ],
+    zh: '这个！最关键、最要命的东西！神户市的指定垃圾袋！',
+    en: 'This! The most critical, life-and-death item! Kobe City\'s designated garbage bags!',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: '燃えるゴミはこれに入れんと絶対に回収してくれへん。あと、ペットボトル！ラベル剥がして、キャップ外して、洗って潰す！ここまでやって初めて捨てられんねん。',
+    words: [
+      { jp: 'ラベル', reading: 'ラベル', zh: '标签、包装膜', en: 'label / wrapper' },
+      { jp: 'キャップ', reading: 'キャップ', zh: '瓶盖', en: 'bottle cap' }
+    ],
+    zh: '可燃垃圾不装进这个专用袋子里，环卫车看都不会看一眼。还有，喝完的塑料瓶！必须撕掉塑料标签，拧下瓶盖，洗干净踩扁！做到这步才能扔！',
+    en: 'If combustible trash is not in this specific bag, the sanitation truck will not even look at it. And plastic bottles! Strip the plastic label, unscrew the cap, rinse and crush it! Only then can you throw it out!',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_angry.webp`,
+    jp: '海風荘のゴミステーションな、毎朝大家のおばあちゃんが見回ってんねんで？分別ミスったら黄色い警告シール貼られて部屋番号晒されるから覚悟しぃや！',
+    words: [
+      { jp: '見回る', reading: 'みまわる', zh: '巡视、巡查', en: 'patrol / inspect' },
+      { jp: '晒す', reading: 'さらす', zh: '曝光、公示', en: 'expose / publicly display' }
+    ],
+    zh: '海风庄楼下的垃圾投放处，房东奶奶每天早晨都会戴着白手套巡视的！要是分类错了，袋子上会被贴黄色警告贴纸，还会被当众退回，你可给我警惕点！',
+    en: 'The garbage station beneath Umikaze-so is inspected every morning by the landlady with white gloves! If you mess up sorting, a yellow warning sticker gets slapped on it, so you better stay alert!',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '你脑海中瞬间浮现出房东奶奶冷酷撕开垃圾袋检查瓶盖的威严画面，后背不由得冒出一层冷汗，连连点头把每一条规矩刻进脑子里。',
+    en: 'An intimidating mental image of the landlady sternly tearing open a bag to check for bottle caps sends a prickle of cold sweat down your neck. You nod repeatedly, etching every rule into memory.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_happy.webp`,
+    jp: 'あと最後に……百円玉！あんたの財布に常に何枚か入れとき。海風荘の乾燥機も、坂道の自販機も、全部百円玉やからな。万札なんか夜の坂道ではただの紙切れやで。',
+    zh: '最后一条……百元硬币！钱包里永远多留几枚。海风庄的烘干机、坡道半当中的自动售货机，全认百元硬币。到了半夜口渴，一万日元大钞在自动贩卖机前就是废纸一张。',
+    en: 'And one last thing... 100-yen coins! Always keep a few in your wallet. The dryers at Umikaze-so, the vending machines on the slope — they only take 100-yen coins. Come midnight thirst, a 10,000-yen bill is just scrap paper in front of a machine.',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '结完账出来，天色已经完全浸入了温暖而深邃的薄暮。',
+    en: 'By the time you finish checking out and step outside, dusk has deepened into a warm, rich amber twilight.'
+  },
+  {
+    type: 'narration',
+    zh: '三宫商店街两旁的灯笼与霓虹招牌次第亮起，下班的白领与放学的学生络绎不绝。空气中满是居酒屋烤串的焦香与微凉的春末海风。',
+    en: 'Lanterns and neon signs across Sannomiya arcade illuminate one by one, with returning commuters and schoolkids bustling past. The crisp late-spring sea breeze blends with the savory aroma of yakitori skewers.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_happy.webp`,
+    zh: '奈绪一只手提着业务超市沉甸甸的菜袋，另一只手高高举起那包刚刚买到的多色厨房海绵，迎着黄昏商业街温暖的灯光回过头来。',
+    en: 'Nao clutches the heavy grocery bag from Gyomu in one hand, while high in the other she proudly brandishes the colorful pack of kitchen sponges, turning back beneath the arcade\'s warm lanterns.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_happy.webp`,
+    jp: '聴きや、一人暮らしの第一歩は『百均』を制することやで！……どう？ウチ、めっちゃ頼れるお姉ちゃんやろ！',
+    zh: '听好了，在这座城市一个人生活，第一步就是把百元店征服！……怎么样？本小姐今天是不是超级可靠、超级像你姐姐！',
+    en: 'Listen up, living alone in this city begins with conquering the 100-yen shop! ...Well? Am I not the most reliable big sister ever today!',
+    color: 'bg-emerald-500'
+  },
+  {
+    // 🎨 专属剧情 CG：黄昏街头的百元店向导
+    type: 'cg',
+    cgId: 'cg_nao_shopping_dusk',
+    imageUrl: '/images/cg/cg_nao_shopping_dusk.webp',
+    titleZh: '黄昏街头的百元店向导',
+    titleEn: 'The 100-Yen Guide at Dusk',
+    captionZh: '「听好了，在这座城市一个人生活，第一步就是把百元店征服！」在暮色渐浓的三宫街头，她拎着装满食材的塑料袋，神气活现地举着海绵向你传授独居秘籍。那一刻，她比任何人都更像一位可靠的领路人。',
+    captionEn: '"Listen up, living alone in this city begins with conquering the 100-yen shop!" On the dusk-lit Sannomiya street, grocery bag in hand, she proudly brandishes a kitchen sponge. In that moment, she looked more reliable than anyone else.'
+  },
+  {
+    type: 'choice',
+    promptZh: '看着黄昏光晕里神采飞扬的奈绪，你……',
+    promptEn: 'Looking at Nao radiant in the dusk light, you...',
+    options: [
+      {
+        id: 'nao_respect_mentor',
+        labelZh: '一本正经地向她鞠躬：「受教了，奈绪老师。」',
+        labelEn: 'Bow formally: "I have learned much, Master Nao."',
+        jp: '大変勉強になりました、奈緒先生。',
+        hintZh: '配合她的表演', hintEn: 'Play along with her act.',
+        relations: [{ char: CharacterId.NAO, familiarity: 8, affection: 6, reasonZh: '你的恭敬让她尾巴翘到了天上', reasonEn: 'Your respect sent her pride soaring to the heavens' }],
+        effects: [{ stat: 'charm', amount: 1, reasonZh: '展现了恰到好处的幽默感', reasonEn: 'Showed tasteful humor' }],
+        then: [
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${N}knit_happy.webp`,
+            jp: '先生言うな！……ふふん、まあええわ。その素直さに免じて、次もいろいろ教えてあげんこともないで！',
+            zh: '别叫老师啦！……哼哼，不过看在你态度这么诚恳的份上，下次本小姐勉为其难再带带你也不是不行！',
+            en: 'Don\'t call me Master! ...Heh, fine then. In light of your honest submission, I suppose I wouldn\'t mind teaching you a few more tricks next time!',
+            color: 'bg-emerald-500'
+          }
+        ]
+      },
+      {
+        id: 'nao_praise_year',
+        labelZh: '看着她的眼睛，认真地说：「这一年里，你一个人很不容易吧。」',
+        labelEn: 'Look into her eyes and say softly: "It couldn\'t have been easy on your own this whole year."',
+        jp: '……この一年、一人でよう頑張ったな、奈緒。',
+        hintZh: '触碰到她坚强外表下的柔软', hintEn: 'Touch the softness beneath her brave front.',
+        relations: [{ char: CharacterId.NAO, familiarity: 10, affection: 12, reasonZh: '你真正看见了她独自走过的路', reasonEn: 'You truly saw the solitary road she had walked' }],
+        effects: [{ stat: 'kindness', amount: 2, reasonZh: '温柔地抚平了童年玩伴藏在心底的孤单', reasonEn: 'Gently soothed the loneliness tucked away inside your childhood friend' }],
+        then: [
+          {
+            type: 'narration',
+            characterImage: `${N}knit_curious.webp`,
+            zh: '奈绪举着海绵的手僵了一下。她睁大眼睛看着你，似乎完全没料到你会在这种时候说出这句话。',
+            en: 'Nao\'s hand holding the sponge freezes midair. Her eyes widen as she gazes at you, clearly having never anticipated those words right now.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${N}knit_shy.webp`,
+            jp: '……何よ、急に。……最初はな、ゴミの分別も知らんくて、警告シール貼られてアパートの階段で泣きそうになったりしたわ。',
+            zh: '……干嘛啦，突然没头没脑地说这个。……刚来那会儿啊，我确实连分类都搞不明白，第一次被贴警告贴纸的时候，蹲在公寓楼梯上差点哭出来呢。',
+            en: '...What\'s this, all of a sudden? ...At first, yeah, I didn\'t know waste sorting either. The first time a yellow sticker got slapped on my bag, I almost cried on the apartment stairs.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'speech',
+            speakerZh: '奈绪', speakerEn: 'Nao',
+            characterImage: `${N}knit_shy.webp`,
+            jp: '……でも、もう平気やし。それに……今は、あんたもおるしな。',
+            zh: '……不过，现在早就习惯了。而且……现在，你不是也来了嘛。',
+            en: '...But I\'m totally fine now. Besides... now, you\'re here too.',
+            color: 'bg-emerald-500'
+          },
+          {
+            type: 'narration',
+            zh: '最后那半句话她说得极轻，轻得几乎被商业街广播里的爵士萨克斯旋律盖了过去。但她的耳朵彻底红透了，飞快地扭过头去。',
+            en: 'That last half-sentence was murmured so softly it was almost swallowed by the jazz saxophone playing over the arcade speakers. But her ears had turned completely crimson as she hastily looked away.'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'scene', scene: 'kitano_slope_night', bgm: 'night',
+    titleZh: '北野坂 · 夜幕', titleEn: 'Kitano Slope · Nightfall',
+    subtitleZh: '晚 6:00', subtitleEn: '6:00 PM'
+  },
+  {
+    type: 'narration',
+    zh: '沿着北野坂往上爬的时候，街边的复古煤气路灯已经全部亮起，泛着温润的橘黄光晕。神户港的夜景在身后的坡道尽头一点点展开，波光粼粼。',
+    en: 'As you climb Kitano-zaka, the vintage gas street lamps have illuminated into soft amber halos. Kobe harbour\'s night view unrolls in sparkling ripples behind you at the foot of the hill.'
+  },
+  {
+    type: 'narration',
+    characterImage: `${N}knit_neutral.webp`,
+    zh: '奈绪走在你身边，忽然伸手把装着大葱和调料的那只较重的袋子拽到了自己手里。',
+    en: 'Walking beside you, Nao suddenly reaches out and tugs the heavier bag carrying green onions and soy sauce over to her side.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '奈绪', speakerEn: 'Nao',
+    characterImage: `${N}knit_neutral.webp`,
+    jp: '言うたやろ、あんたの持ち方は手ぇ痛めるって。一人で全部持とうとすんな、分担や。',
+    zh: '我说了吧，你那么拎袋子手指会被勒坏的。别总想着一个人逞强全扛着，分摊才是正确的做法。',
+    en: 'I told you, gripping like that will wreck your fingers. Don\'t always try to play tough and carry everything alone. Sharing the load is the right way.',
+    color: 'bg-emerald-500'
+  },
+  {
+    type: 'narration',
+    zh: '夜风吹动着塑料袋发出沙沙的声响，里面装着今晚的食材，还有印着「Can★Do」的全新百元生活用品。',
+    en: 'The evening breeze rustles the plastic bags softly, filled with tonight\'s fresh ingredients and brand-new 100-yen essentials stamped with "Can★Do".'
+  },
+  {
+    type: 'narration',
+    zh: '坡道依然很长，但手里的重量却并不沉重。在这个举目无亲的陌生海港城市里，回到海风庄的路，忽然有了让人心安的温度。',
+    en: 'The uphill climb remains long, yet the weight in your hands feels far from heavy. In this unfamiliar port town far from home, the road back to Umikaze-so suddenly feels warm and welcoming.'
   },
   {
     type: 'effect',
     effects: [
-      { stat: 'kindness', amount: 2, reasonZh: '有人替你想过冰箱里有什么', reasonEn: 'Somebody has thought about what is in your fridge' }
+      { stat: 'kindness', amount: 3, reasonZh: '有人手把手教你如何在这座城市扎根', reasonEn: 'Somebody taught you by hand how to plant your roots in this city' },
+      { stat: 'proficiency', amount: 2, reasonZh: '掌握了日本独居生活与百元店的实用生存常识', reasonEn: 'Mastered practical survival knowledge of Japanese living and 100-yen shops' }
     ],
-    setFlags: ['day2_nao_done']
+    setFlags: ['day2_nao_done', 'nao_hyakkin_guide_done']
   }
 ];
 

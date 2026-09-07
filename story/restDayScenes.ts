@@ -506,7 +506,7 @@ export const CLUB_COUNCIL: StoryNode[] = [
 export const CLUB_MUSIC: StoryNode[] = [
   { type: 'scene', scene: 'music_room', bgm: 'town', titleZh: '軽音部（仮）', titleEn: 'Light Music Club (Provisional)', subtitleZh: '休息日 · 音乐室', subtitleEn: 'Day off · The music room' },
   { type: 'narration', zh: '音乐室的门半开着，里面在放很吵的东西。走近了才听出来是有人在弹，不是在放。', en: 'The music room door is ajar and something very loud is coming out. Up close you realise somebody is playing it, not playing it back.' },
-  { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '真希。她背对着门，插着电，音量开得比这个房间应该承受的大。', en: 'Maki, with her back to the door, plugged in, at a volume this room was not designed for.' },
+  { type: 'narration', characterImage: `${MAKI}school_neutral.webp`, zh: '真希。她背对着门，插着电，音量开得比这个房间应该承受的大。', en: 'Maki, with her back to the door, plugged in, at a volume this room was not designed for.' },
   { type: 'narration', zh: '她弹错了一个地方，停下来，骂了一句，从头再来。你在门口站了六遍。', en: 'She fluffs something, stops, swears, and starts again. You stand in the doorway through six of these.' },
   {
     type: 'choice',
@@ -520,9 +520,9 @@ export const CLUB_MUSIC: StoryNode[] = [
         effects: [{ stat: 'charm', amount: 2, reasonZh: '你在她最不想被看见的时候鼓了掌', reasonEn: 'You applauded at the exact moment she least wanted to be seen' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 5, affection: 8, reasonZh: '她骂了你三分钟，然后又弹了一遍', reasonEn: 'She swore at you for three minutes and then played it again' }],
         then: [
-          { type: 'narration', characterImage: `${MAKI}angry_alt.webp`, zh: '她整张脸瞬间涨红到了耳根，羞恼地抓起拨片连珠炮似的痛骂你，不带重样地数落了好一阵子。', en: 'She goes red to the ears, furiously grabs her pick and peppers you with a relentless barrage of scolding.' },
+          { type: 'narration', characterImage: `${MAKI}school_angry.webp`, zh: '她整张脸瞬间涨红到了耳根，羞恼地抓起拨片连珠炮似的痛骂你，不带重样地数落了好一阵子。', en: 'She goes red to the ears, furiously grabs her pick and peppers you with a relentless barrage of scolding.' },
           { type: 'narration', zh: '骂完之后她没赶你走。她背过身去，说了一句「……もっかいだけな」。这一遍她弹得比刚才慢。', en: 'Having told you off she does not throw you out. She turns her back and says, only once more then. This time she plays it slower.' },
-          { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '这一遍没错。弹完她没回头，肩膀在等。', en: 'This time it is clean. She does not turn round. Her shoulders are waiting.' }
+          { type: 'narration', characterImage: `${MAKI}school_neutral.webp`, zh: '这一遍没错。弹完她没回头，肩膀在等。', en: 'This time it is clean. She does not turn round. Her shoulders are waiting.' }
         ]
       },
       {
@@ -533,9 +533,9 @@ export const CLUB_MUSIC: StoryNode[] = [
         effects: [{ stat: 'knowledge', amount: 2, reasonZh: '你数了椅子', reasonEn: 'You counted the chairs' }],
         relations: [{ char: CharacterId.MAKI, familiarity: 7, affection: 5, reasonZh: '她说了实话，而且说得很快', reasonEn: 'She told the truth, very fast' }],
         then: [
-          { type: 'narration', characterImage: `${MAKI}pout.webp`, zh: '「三人」，她说。然后停了一下，「……届出上は」。', en: 'Three, she says. Then a pause. On the paperwork.' },
+          { type: 'narration', characterImage: `${MAKI}school_pout.webp`, zh: '「三人」，她说。然后停了一下，「……届出上は」。', en: 'Three, she says. Then a pause. On the paperwork.' },
           { type: 'narration', zh: '实际上是一个。另外两个是她拿章鱼烧买通的一年级，从来没来过。', en: 'Actually one. The other two are first-years she bought with takoyaki and who have never once turned up.' },
-          { type: 'narration', characterImage: `${MAKI}smug.webp`, zh: '她说这个的时候一点都不难过。她说：房间大，一个人用刚好。', en: 'She is not remotely sad about it. She says the room is big and one person is about right.' }
+          { type: 'narration', characterImage: `${MAKI}school_smug.webp`, zh: '她说这个的时候一点都不难过。她说：房间大，一个人用刚好。', en: 'She is not remotely sad about it. She says the room is big and one person is about right.' }
         ]
       }
     ]
@@ -1211,8 +1211,8 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
   { type: 'narration', zh: '明天开幕。今晚要把三十六个纸箱糊成一条商店街。', en: 'It opens tomorrow. Tonight, thirty-six cardboard boxes have to become a shopping street.' },
   { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '明日香贴了一张进度表在黑板上。表上把今晚切成了十五分钟一格。', en: 'Asuka has taped a schedule to the blackboard. It divides the night into fifteen-minute blocks.' },
   { type: 'narration', characterImage: `${REI}neutral.webp`, zh: '铃在算承重。她说按现在的糊法，第三层会塌。她算了两遍。', en: 'Rei is calculating load. She says the third tier will collapse as currently glued. She has checked twice.' },
-  { type: 'narration', characterImage: `${NAO}cat_happy.webp`, zh: '奈绪带了四个人的夜宵，装在一个比她还宽的袋子里。', en: 'Nao has brought supper for four in a bag wider than she is.' },
-  { type: 'narration', characterImage: `${MIYUKI}cardigan_neutral.webp`, zh: '深雪是被叫来当"成年人监护"的。她说她只坐着，然后马上开始糊纸箱。', en: 'Miyuki is here as the responsible adult. She says she will only sit, and immediately starts gluing boxes.' },
+  { type: 'narration', characterImage: `${NAO}happy.webp`, zh: '奈绪带了四个人的夜宵，装在一个比她还宽的袋子里。', en: 'Nao has brought supper for four in a bag wider than she is.' },
+  { type: 'narration', characterImage: `${MIYUKI}school_neutral.webp`, zh: '深雪是被叫来当"成年人监护"的。她说她只坐着，然后马上开始糊纸箱。', en: 'Miyuki is here as the responsible adult. She says she will only sit, and immediately starts gluing boxes.' },
   { type: 'narration', zh: '十点，进度表落后一格。十二点，落后三格。两点，明日香把表撕了。', en: 'At ten they are one block behind. At midnight, three. At two, Asuka takes the schedule down.' },
   {
     type: 'choice',
@@ -1257,7 +1257,7 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
         setFlags: ['group_eve_slept'],
         then: [
           { type: 'narration', zh: '四个人趴在拼起来的课桌上。奈绪几乎是刚闭上眼睛就沉沉睡了过去，嘴里还小声念叨着含糊的梦话。', en: 'Four heads rest on pushed-together desks. Nao is out almost immediately, murmuring soft words in her sleep.' },
-          { type: 'narration', characterImage: `${MIYUKI}cardigan_shy.webp`, zh: '深雪是最后一个睡着的。她睡着之前把自己的外套盖到了明日香身上。', en: 'Miyuki is the last to go. Before she does she puts her own coat over Asuka.' },
+          { type: 'narration', characterImage: `${MIYUKI}school_shy.webp`, zh: '深雪是最后一个睡着的。她睡着之前把自己的外套盖到了明日香身上。', en: 'Miyuki is the last to go. Before she does she puts her own coat over Asuka.' },
           { type: 'narration', zh: '原本说好的小憩彻底演变成了深沉的安眠。在静谧的教室里，谁也没有特意去定闹钟。', en: 'A brief nap turns into deep, uninterrupted sleep. In the quiet classroom, nobody bothered to set an alarm.' },
           { type: 'narration', zh: '醒来的时候是五点二十。第三层还是塌的。四个人一起笑了很久。', en: 'It is twenty past five when you wake. The third tier is still down. All four of you laugh for a long time.' }
         ]
@@ -1266,7 +1266,7 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
   },
   { type: 'scene', scene: 'kaisei_classroom_morning' },
   { type: 'narration', zh: '早上七点，开幕前一小时。那条商店街立在教室中间，有点歪，但立着。', en: 'Seven in the morning, an hour before opening. The shopping street stands in the middle of the classroom, slightly crooked, and standing.' },
-  { type: 'narration', characterImage: `${NAO}cat_happy.webp`, zh: '奈绪把最后一个纸箱贴上去的时候，四个人一起鼓了掌。楼下的班级探头进来看了一眼，什么都没问。', en: 'When Nao tapes the last box on, all four of you applaud. The class from downstairs looks in and asks nothing.' },
+  { type: 'narration', characterImage: `${NAO}happy.webp`, zh: '奈绪把最后一个纸箱贴上去的时候，四个人一起鼓了掌。楼下的班级探头进来看了一眼，什么都没问。', en: 'When Nao tapes the last box on, all four of you applaud. The class from downstairs looks in and asks nothing.' },
   {
     type: 'effect', setFlags: ['restday_group_festival_eve'],
     effects: [

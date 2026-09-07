@@ -55,6 +55,7 @@ import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
 import { promiseDue } from './story/day2Promises';
 import GiftScreen from './components/GiftScreen';
+import SlotCard from './components/SlotCard';
 import KonbiniShiftModal, { ShiftResult } from './components/KonbiniShiftModal';
 import { PART_TIME } from './story/restDayScenes';
 import { GiftVerdict } from './data/giftData';
@@ -300,6 +301,9 @@ const App: React.FC = () => {
   // 存的是那个地点本身：玩家点"去"，就拿它接着走原来的流程。
   const [askSkipAfternoon, setAskSkipAfternoon] = useState<MapLocation | null>(null);
   const [showGift, setShowGift] = useState(false);
+  // 🕐 时段翻页的提示。记住上一次显示的是哪一格，换了才弹。
+  const [slotCardFor, setSlotCardFor] = useState<string | null>(null);
+  const lastSlotRef = useRef<string>('');
   // 🏪 便利店那一天班：先站六个客人，再演剧本。
   const [shiftRunning, setShiftRunning] = useState(false);
   // 🧑‍🏫 教程演完之后再打开的那个玩法。种菜和钓鱼第一次都得有人先教一遍，
@@ -716,6 +720,23 @@ const App: React.FC = () => {
     if (gameCalendar.timeSlot === 'morning') setCurrentScene('apartment_room');
     setShowRestPlan(true);
   }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, day1Done, showYearEnd]);
+
+  // 一天里最要紧的两个转折是"上午的课上完了"和"今天的课全上完了"。
+  // 大厅角落那行小字一直在写，可它是状态不是通知——第一次玩的人
+  // 不会注意到它变了，只会觉得自己好像错过了什么。
+  useEffect(() => {
+    const key = `${gameCalendar.month}/${gameCalendar.day}/${gameCalendar.timeSlot}`;
+    if (lastSlotRef.current === key) return;
+    const first = lastSlotRef.current === '';
+    lastSlotRef.current = key;
+    // 刚读档／刚进游戏不弹：那不是"时间过去了"，那是"你回来了"。
+    if (first) return;
+    // 早晨有自己的醒来过渡，再弹一张就重了。
+    if (gameCalendar.timeSlot === 'morning') return;
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || showPhone) return;
+    setSlotCardFor(key);
+  }, [gameCalendar, gameMode, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, showPhone]);
 
   const restPlanCtx = {
     calendar: gameCalendar, flags: storyFlags,
@@ -2099,6 +2120,12 @@ const App: React.FC = () => {
         : '当前选择了自定义 API：请先回到登记页面填写接口地址 (Base URL) 和模型名称 (Model ID)。');
       return;
     }
+    // 🤝 真正开口说过一次话，才算"认识"。
+    //
+    // 光有 metChars 不够：第一章结束时它被一次性灌满了八个人（为了不让
+    // 跳过章节的人永久丢内容），于是第二天你就能给一个只在走廊上照过面、
+    // 一句话没说过的人发消息、送东西。
+    setStoryFlags(prev => (prev[`talked_${charId}`] ? prev : { ...prev, [`talked_${charId}`]: true }));
     // 🧊 还在生气 → 根本进不去。给的是一条"已读不回"，不是一个禁用按钮。
     const rift = riftFor(social, charId, gameCalendar);
     if (rift) {
@@ -3185,12 +3212,21 @@ ${wind}`;
         />
       )}
 
+      {slotCardFor && (
+        <SlotCard
+          calendar={gameCalendar}
+          language={userState.language}
+          onDone={() => setSlotCardFor(null)}
+        />
+      )}
+
       {showGift && (
         <GiftScreen
           language={userState.language}
           life={life}
           storyFlags={storyFlags}
           metChars={metChars}
+          familiarity={familiarityMap}
           givenToday={metChars.filter(c => storyFlags[giftFlag(c, gameCalendar)])}
           onClose={() => setShowGift(false)}
           onGive={giveGift}
