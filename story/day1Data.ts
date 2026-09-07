@@ -208,7 +208,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '深雪',
         speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}school_happy.webp`,
+        characterImage: `${MIYUKI}happy.webp`,
         jp: 'あら、{name}さん。おはようございます。……制服、よくお似合いですよ。',
         words: [{ jp: '似合う', reading: 'にあう', zh: '合适、相称', en: 'to suit / to look good on' }],
         zh: '哎呀，{name}。早上好。……制服很合身呢。',
@@ -231,7 +231,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '深雪',
         speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}school_neutral.webp`,
+        characterImage: `${MIYUKI}neutral.webp`,
         jp: '……おはようございます。{name}さん、でしたね。',
         zh: '……早上好。是叫{name}，对吧。',
         en: '...Good morning. It was {name}, was it not.',
@@ -251,7 +251,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        characterImage: `${MIYUKI}school_neutral.webp`,
+        characterImage: `${MIYUKI}neutral.webp`,
         zh: '她看见你了。开门的手停在半路。停完，她还是点了下头，很轻。',
         en: 'She sees you. Her hand stops halfway on the door. When it has stopped, she gives a small nod anyway.'
       },
@@ -259,7 +259,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '深雪',
         speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}school_neutral.webp`,
+        characterImage: `${MIYUKI}neutral.webp`,
         jp: '……おはようございます。行ってらっしゃい。',
         words: [{ jp: '行ってらっしゃい', zh: '路上小心（送人出门）', en: 'said to someone leaving' }],
         zh: '……早上好。路上小心。',
@@ -290,7 +290,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${MIYUKI}school_neutral.webp`,
+            characterImage: `${MIYUKI}neutral.webp`,
             zh: '深雪拎着垃圾袋走出来，看见你，愣了一下。',
             en: 'Miyuki comes out with a rubbish bag, sees you, and pauses.'
           },
@@ -298,7 +298,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'speech',
             speakerZh: '深雪',
             speakerEn: 'Miyuki',
-            characterImage: `${MIYUKI}school_happy.webp`,
+            characterImage: `${MIYUKI}happy.webp`,
             jp: 'あら。……もしかして、二〇一号室の方？',
             zh: '哎呀。……难不成，是 201 室的那位？',
             en: 'Oh. ...Are you the one who moved into 201?',
@@ -334,7 +334,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${MIYUKI}school_happy.webp`,
+            characterImage: `${MIYUKI}happy.webp`,
             jp: '坂をまっすぐ下りて、二つ目の角を左。……でも、遠回りのほうをおすすめします。',
             words: [{ jp: '遠回り', reading: 'とおまわり', zh: '绕远路', en: 'the long way round' }],
             zh: '顺着坡一直下去，第二个路口左转。……不过，我更推荐绕远的那条。',
@@ -362,14 +362,14 @@ export const DAY1_SCRIPT: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${MIYUKI}school_neutral.webp`,
+            characterImage: `${MIYUKI}neutral.webp`,
             zh: '她有些意外地眨了眨眼，那副小心翼翼的表情比起感激，更像是在反复确认自己是不是听错了。',
             en: 'She hesitates, a flicker of disbelief crossing her eyes—not quite gratitude yet, more like wondering if she misheard you.'
           },
           {
             type: 'speech',
             speakerZh: '深雪', speakerEn: 'Miyuki',
-            characterImage: `${MIYUKI}school_happy.webp`,
+            characterImage: `${MIYUKI}happy.webp`,
             jp: '……ありがとう。じゃあ、お言葉に甘えて。',
             words: [{ jp: '甘える', reading: 'あまえる', zh: '领受好意、不客气了', en: 'to accept an offer / to lean on someone' }],
             zh: '……谢谢。那，我就不客气了。',
@@ -610,31 +610,30 @@ export const DAY1_SCRIPT: StoryNode[] = [
     en: 'The first form goes fine. The top field of the second one stops your pen: "relationship to guarantor". You know both characters. Together they mean nothing to you.'
   },
   {
-    type: 'narration',
-    characterImage: `${HIKARI}school_angry.webp`,
-    zh: '正当你盯着那一栏发愣，斜对面「啪」的一声，一个金发女生把笔重重拍在了桌上。',
-    en: 'While you are staring at it, a pen slams down on the table across from you. A blonde girl.'
-  },
-  {
-    type: 'speech',
-    speakerZh: '光',
-    speakerEn: 'Hikari',
-    characterImage: `${HIKARI}school_angry.webp`,
-    jp: 'うわあああ、これ絶対おかしいって！「続柄」って何！？漢字は読めるのに意味が全然わかんない！',
-    zh: '哇啊啊，这个绝对有问题吧！「続柄」是什么啦！？汉字明明认得，意思完全搞不懂！',
-    en: 'Ugh, this cannot be right! What even is "tsuzukigara"? I can read the characters and I have no idea what they mean!',
-    color: 'bg-amber-400'
-  },
-  {
-    type: 'narration',
-    zh: '她猛地抬头，琥珀色的眼睛正对上你的视线。',
-    en: 'Her head comes up, and her amber eyes land squarely on yours.'
-  },
-  // — 序章港边正式认识过
-  {
     type: 'branch',
     ifFlag: 'prologue_met_hikari',
     then: [
+      {
+        type: 'narration',
+        characterImage: `${HIKARI}school_angry.webp`,
+        zh: '正当你盯着那一栏发愣，斜对面「啪」的一声，金发扎成利落马尾的少女把笔重重拍在了桌上——是昨天在神户港认识的光！',
+        en: 'While you are staring at it, a pen slams down on the table across from you—it is Hikari, whom you met yesterday at Kobe Port!'
+      },
+      {
+        type: 'speech',
+        speakerZh: '光',
+        speakerEn: 'Hikari',
+        characterImage: `${HIKARI}school_angry.webp`,
+        jp: 'うわあああ、これ絶対おかしいって！「続柄」って何！？漢字は読めるのに意味が全然わかんない！',
+        zh: '哇啊啊，这个绝对有问题吧！「続柄」是什么啦！？汉字明明认得，意思完全搞不懂！',
+        en: 'Ugh, this cannot be right! What even is "tsuzukigara"? I can read the characters and I have no idea what they mean!',
+        color: 'bg-amber-400'
+      },
+      {
+        type: 'narration',
+        zh: '她猛地抬头，琥珀色的眼睛正对上你的视线。',
+        en: 'Her head comes up, and her amber eyes land squarely on yours.'
+      },
       {
         type: 'speech',
         speakerZh: '光',
@@ -660,49 +659,88 @@ export const DAY1_SCRIPT: StoryNode[] = [
         en: 'We met yesterday and now this? That is fate, that is. ...Ah — sorry, sensei.',
         color: 'bg-amber-400'
       },
-      { type: 'effect', relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 3, reasonZh: '第二天就在同一间办公室里重逢', reasonEn: 'You turned up in the same room the very next day' }] }
-    ]
-  },
-  // — 序章只擦肩而过
-  {
-    type: 'branch',
-    ifFlag: 'prologue_glimpsed_hikari',
-    then: [
       {
         type: 'narration',
-        characterImage: `${HIKARI}school_surprised.webp`,
-        zh: '她微微一愣，眉头微蹙，眼神在你的脸上来回打量，像是在脑海里翻找一本凌乱的相册。',
-        en: 'She stops, frowning slightly as she studies your face, like someone frantically searching through a disorganized photo album.'
+        zh: '你有些惊讶地看着她手里的留学生资料卡。',
+        en: 'You look at the exchange student card in her hand in surprise.'
+      },
+      {
+        type: 'speech',
+        speakerZh: '主角',
+        speakerEn: 'You',
+        characterImage: `${HIKARI}school_happy.webp`,
+        jp: '好巧！光也是今天转进来的交换生吗？',
+        zh: '好巧！光也是今天转进来的交换生吗？',
+        en: 'What a coincidence! Hikari, are you an exchange student transferring in today too?',
+        color: 'bg-slate-700'
       },
       {
         type: 'speech',
         speakerZh: '光',
         speakerEn: 'Hikari',
-        characterImage: `${HIKARI}school_surprised.webp`,
-        jp: '……あれ。あんた、どっかで……坂で、ぶつかりそうになった？',
-        zh: '……欸。你，我是不是在哪儿……坡道上，差点撞上的那个？',
-        en: '...Huh. Have I — did I nearly flatten you on a hill somewhere?',
+        characterImage: `${HIKARI}school_happy.webp`,
+        jp: 'ちゃうちゃう！うち、半年先輩やって言うたやろ？ビザと住所の更新手続き！……なのに、この書類日本語難しすぎて全然進まへんねん……',
+        zh: '才不是呢！我都说了我是早半年的前辈吧？是签证和住址的更新手续啦！……可是这表格日语太难了，我完全搞不懂……',
+        en: 'No way! Didn\'t I tell you I\'m a senior by half a year? It\'s for renewing my visa and address! ...And yet the Japanese on this form is way too hard, I\'m completely stuck...',
         color: 'bg-amber-400'
       },
       {
         type: 'narration',
-        zh: '她想起来了。你也是。昨天傍晚，坡道口，一句「ごめんっ！」和一件黄色卫衣。',
-        en: 'She has it. So do you. Yesterday evening, the foot of the slope, one shouted apology and a yellow hoodie.'
+        zh: '你看了看她桌上那张和你一模一样的表格，上面的「続柄」一栏被她用铅笔画了好几个大大的问号。',
+        en: 'You look at the form on her desk, identical to yours, where the "relationship" column is covered in big pencil question marks.'
       },
-      { type: 'effect', relations: [{ char: CharacterId.HIKARI, familiarity: 6, affection: 1, reasonZh: '她想起了坡道口那一下', reasonEn: 'She placed you from the near-miss on the slope' }] }
-    ]
-  },
-  // — 完全没见过：原版初遇
-  {
-    type: 'branch',
-    ifFlag: 'prologue_met_hikari',
-    not: true,
-    then: [
+      { type: 'effect', relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 3, reasonZh: '第二天就在同一间办公室里重逢', reasonEn: 'You turned up in the same room the very next day' }] }
+    ],
+    otherwise: [
+      {
+        type: 'narration',
+        characterImage: `${HIKARI}school_angry.webp`,
+        zh: '正当你盯着那一栏发愣，斜对面「啪」的一声，一个金发女生把笔重重拍在了桌上。',
+        en: 'While you are staring at it, a pen slams down on the table across from you. A blonde girl.'
+      },
+      {
+        type: 'speech',
+        speakerZh: '金发的女生',
+        speakerEn: 'Blonde Girl',
+        characterImage: `${HIKARI}school_angry.webp`,
+        jp: 'うわあああ、これ絶対おかしいって！「続柄」って何！？漢字は読めるのに意味が全然わかんない！',
+        zh: '哇啊啊，这个绝对有问题吧！「続柄」是什么啦！？汉字明明认得，意思完全搞不懂！',
+        en: 'Ugh, this cannot be right! What even is "tsuzukigara"? I can read the characters and I have no idea what they mean!',
+        color: 'bg-amber-400'
+      },
+      {
+        type: 'narration',
+        zh: '她猛地抬头，琥珀色的眼睛正对上你的视线。',
+        en: 'Her head comes up, and her amber eyes land squarely on yours.'
+      },
       {
         type: 'branch',
         ifFlag: 'prologue_glimpsed_hikari',
-        not: true,
         then: [
+          {
+            type: 'narration',
+            characterImage: `${HIKARI}school_surprised.webp`,
+            zh: '她微微一愣，眉头微蹙，眼神在你的脸上来回打量，像是在脑海里翻找一本凌乱的相册。',
+            en: 'She stops, frowning slightly as she studies your face, like someone frantically searching through a disorganized photo album.'
+          },
+          {
+            type: 'speech',
+            speakerZh: '金发的女生',
+            speakerEn: 'Blonde Girl',
+            characterImage: `${HIKARI}school_surprised.webp`,
+            jp: '……あれ。あんた、どっかで……坂で、ぶつかりそうになった？',
+            zh: '……欸。你，我是不是在哪儿……坡道上，差点撞上的那个？',
+            en: '...Huh. Have I — did I nearly flatten you on a hill somewhere?',
+            color: 'bg-amber-400'
+          },
+          {
+            type: 'narration',
+            zh: '她想起来了。你也是。昨天傍晚，坡道口，一句「ごめんっ！」和一件黄色卫衣。',
+            en: 'She has it. So do you. Yesterday evening, the foot of the slope, one shouted apology and a yellow hoodie.'
+          },
+          { type: 'effect', relations: [{ char: CharacterId.HIKARI, familiarity: 6, affection: 1, reasonZh: '她想起了坡道口那一下', reasonEn: 'She placed you from the near-miss on the slope' }] }
+        ],
+        otherwise: [
           {
             type: 'speech',
             speakerZh: '金发的女生',
@@ -750,115 +788,229 @@ export const DAY1_SCRIPT: StoryNode[] = [
     color: 'bg-amber-400'
   },
   {
-    type: 'choice',
-    promptZh: '她把表格叠好，忽然想起什么似的转过来。',
-    promptEn: 'She folds her form and turns round as though something has just occurred to her.',
-    options: [
+    type: 'branch',
+    ifFlag: 'prologue_met_hikari',
+    then: [
       {
-        id: 'day1_hikari_name',
-        labelZh: '「同一条船的话，总得知道船上的人叫什么吧。」',
-        labelEn: '"If we are in the same boat, I should probably know who else is in it."',
-        jp: '同じ船に乗ってるなら、名前ぐらい知っておきたいです。',
-        hintZh: '你先问了名字',
-        hintEn: 'You ask her name first.',
-        effects: [{ stat: 'charm', amount: 1, reasonZh: '你把一句客套接成了一次自我介绍', reasonEn: 'You turned a pleasantry into an introduction' }],
-        relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 5, reasonZh: '她报名字的时候声音特别大', reasonEn: 'She said her name much too loudly' }],
-        then: [
+        type: 'choice',
+        promptZh: '她把表格叠好，转过身来笑嘻嘻地看着你。',
+        promptEn: 'She folds her form, turning round to look at you with a grin.',
+        options: [
           {
-            type: 'speech',
-            speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}school_happy.webp`,
-            jp: 'あ、そうやん！光！ひかりって書いて、光。覚えやすいやろ？',
-            words: [{ jp: '光', reading: 'ひかり', zh: '光', en: 'light' }],
-            zh: '啊，对哦！光！写作「光」，念ひかり。好记吧？',
-            en: 'Oh, right! Hikari! Written with the character for light. Easy, right?',
-            color: 'bg-amber-400'
+            id: 'day1_hikari_senior_tease',
+            labelZh: '「有早来半年的『大前辈』在同一条船上，我可放心多了。」',
+            labelEn: '"With a grand senior who arrived half a year earlier on board, I feel much safer."',
+            jp: '半年の大先輩が同じ船にいてくれるなら、心強いですね。',
+            words: [{ jp: '心強い', reading: 'こころづよい', zh: '心里有底、感到踏实', en: 'reassuring / heartening' }],
+            hintZh: '你调侃了她自称的「半年先輩」',
+            hintEn: 'You tease her about her self-proclaimed seniority.',
+            effects: [{ stat: 'charm', amount: 1, reasonZh: '你借着昨天的约定打趣了她', reasonEn: 'You playfully teased her about yesterday\'s conversation' }],
+            relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 6, reasonZh: '她被你戳中痛处，又不好意思地笑了', reasonEn: 'You poked her pride, and she laughed self-consciously' }],
+            then: [
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_smug.webp`,
+                jp: 'ふふん、せやろ！任せとき！……って、さっき表格卡住的事就当没发生过啊！',
+                zh: '哼哼，那是当然！交给本前辈吧！……等等，刚才表格卡住的事就当没发生过啊！',
+                en: 'Hmph, obviously! Leave it to me! ...Hey, pretend you never saw me stuck on the paperwork, got it?!',
+                color: 'bg-amber-400'
+              },
+              {
+                type: 'narration',
+                zh: '她有些不好意思地吐了吐舌头，把那张满是问号的草稿纸迅速塞进书包最深处。',
+                en: 'She pokes her tongue out self-consciously and quickly shoves the scrap paper covered in question marks deep into her bag.'
+              }
+            ]
           },
           {
-            type: 'narration',
-            zh: '国际交流室很安静。她这一嗓子之后，靠窗那位老师抬头看了一眼，又低下去了。',
-            en: 'The exchange room is quiet. After that, the teacher by the window looks up once and goes back to her papers.'
+            id: 'day1_hikari_ask_guide',
+            labelZh: '「既然是同伴，以后在神户遇到不懂的，可全来问你咯？」',
+            labelEn: '"Since we\'re crewmates, can I come ask you whenever I get stuck in Kobe?"',
+            jp: '仲間なら、これから神戸のことで困ったら、全部ヒカリに聞きに来ますよ？',
+            words: [{ jp: '頼る', reading: 'たよる', zh: '依靠、仰仗', en: 'to rely on' }],
+            hintZh: '既然是伙伴，以后就多依靠她',
+            hintEn: 'Treat her as a dependable friend.',
+            effects: [{ stat: 'knowledge', amount: 1, reasonZh: '在异国他乡找到了可靠的引路人', reasonEn: 'You found a reliable guide in an unfamiliar city' }],
+            relations: [{ char: CharacterId.HIKARI, familiarity: 11, affection: 7, reasonZh: '她拍着胸脯答应罩着你', reasonEn: 'She puffed her chest and promised to look after you' }],
+            then: [
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_happy.webp`,
+                jp: 'ええよ！道案内でも美味い店でも、なんでも聞いて！うち、この半年で三宮は庭みたいなもんやし！',
+                zh: '好啊！不管是认路还是好吃的店，尽管问！这半年来三宫就像我的后花园一样呢！',
+                en: 'Anytime! Need directions? Good food spots? Just ask! Over the past half year, Sannomiya has basically become my backyard!',
+                color: 'bg-amber-400'
+              },
+              {
+                type: 'narration',
+                zh: '她神采飞扬地比划着，眼里的光彩像是在神户街头已经探险了成千上万次一样。',
+                en: 'She gestures with animated excitement, eyes shining as if she had already explored every corner of Kobe countless times.'
+              }
+            ]
+          },
+          {
+            id: 'day1_hikari_boat',
+            labelZh: '「这条船……有救生圈吗？」',
+            labelEn: '"This boat... does it come with life jackets?"',
+            jp: 'その船に……浮き輪はありますか。',
+            words: [{ jp: '浮き輪', reading: 'うきわ', zh: '救生圈', en: 'life ring' }],
+            hintZh: '她起了个比喻，你顺着往下接',
+            hintEn: 'She started the metaphor. You might as well run with it.',
+            effects: [
+              { stat: 'charm', amount: 1, reasonZh: '你接住了别人抛过来的那个比喻', reasonEn: 'You caught the metaphor somebody threw at you' },
+              { stat: 'guts', amount: 1, reasonZh: '第二次见面就敢开玩笑', reasonEn: 'You cracked a joke with someone you just met' }
+            ],
+            relations: [{ char: CharacterId.HIKARI, familiarity: 11, affection: 7, reasonZh: '她笑到被老师看了一眼', reasonEn: 'She laughed hard enough to get looked at' }],
+            then: [
+              {
+                type: 'narration',
+                zh: '她手里的圆珠笔啪嗒落在了桌面上。接着她整个人扑倒在表格上，脸埋在臂弯里笑得肩膀乱颤。靠窗那位老师皱着眉推了推眼镜看过来，随即又把视线移回了电脑屏幕。今天第二次了。',
+                en: 'Her ballpoint clicks onto the table. Then she folds down over her form, face buried in her elbow, shoulders trembling with laughter. The teacher by the window pushes up his glasses, glances over with a frown, and returns to his screen. Second time today.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_smug.webp`,
+                jp: 'ないない！沈むときは一緒に沈むやつや！',
+                words: [{ jp: '沈む', reading: 'しずむ', zh: '沉没、下沉', en: 'to sink' }],
+                zh: '没有没有！这是要沉一起沉的那种船！',
+                en: 'Nope! This is the kind where we go down together!',
+                color: 'bg-amber-400'
+              },
+              {
+                type: 'narration',
+                zh: '她自己又笑了一阵。笑完忽然就没声了。她低头把表格的边角捏了又捏，捏得很平。',
+                en: 'She laughs at her own line for a while longer. Then the sound just stops. She looks down and works the corner of her form flat between her fingers.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_shy.webp`,
+                jp: '……ええな、そういうん返してくれる人。半年で初めてやわ。',
+                zh: '……不错嘛，会这样接话的人。来了半年，你是第一个。',
+                en: '...That is nice, actually. Someone who throws it back. Six months here and you are the first.',
+                color: 'bg-amber-400'
+              }
+            ]
           }
         ]
-      },
+      }
+    ],
+    otherwise: [
       {
-        id: 'day1_hikari_howlong',
-        labelZh: '「你也是留学生？来多久了？」',
-        labelEn: '"You are an exchange student too? How long have you been here?"',
-        jp: '君も留学生？　こっちに来て、どれくらい？',
-        words: [{ jp: '留学生', reading: 'りゅうがくせい', zh: '留学生', en: 'exchange student' }],
-        hintZh: '她刚才说「私だけバカなのかと」',
-        hintEn: 'She just said she thought she was the only idiot here.',
-        effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你问了一个能问出东西的问题', reasonEn: 'You asked a question that actually goes somewhere' }],
-        relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 6, reasonZh: '她答得比你问的多', reasonEn: 'She answered rather more than you asked' }],
-        then: [
+        type: 'choice',
+        promptZh: '她把表格叠好，忽然想起什么似的转过来。',
+        promptEn: 'She folds her form and turns round as though something has just occurred to her.',
+        options: [
           {
-            type: 'speech',
-            speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}school_neutral.webp`,
-            jp: '半年。……半年おってもな、こういう紙は毎回わからんねん。',
-            zh: '半年。……住了半年也一样啊，这种纸每次都还是看不懂。',
-            en: 'Six months. ...Six months in, and I still cannot read a form like this.',
-            color: 'bg-amber-400'
+            id: 'day1_hikari_name',
+            labelZh: '「同一条船的话，总得知道船上的人叫什么吧。」',
+            labelEn: '"If we are in the same boat, I should probably know who else is in it."',
+            jp: '同じ船に乗ってるなら、名前ぐらい知っておきたいです。',
+            hintZh: '你先问了名字',
+            hintEn: 'You ask her name first.',
+            effects: [{ stat: 'charm', amount: 1, reasonZh: '你把一句客套接成了一次自我介绍', reasonEn: 'You turned a pleasantry into an introduction' }],
+            relations: [{ char: CharacterId.HIKARI, familiarity: 12, affection: 5, reasonZh: '她报名字的时候声音特别大', reasonEn: 'She said her name much too loudly' }],
+            then: [
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_happy.webp`,
+                jp: 'あ、そうやん！光！ひかりって書いて、光。覚えやすいやろ？',
+                words: [{ jp: '光', reading: 'ひかり', zh: '光', en: 'light' }],
+                zh: '啊，对哦！光！写作「光」，念ひかり。好记吧？',
+                en: 'Oh, right! Hikari! Written with the character for light. Easy, right?',
+                color: 'bg-amber-400'
+              },
+              {
+                type: 'narration',
+                zh: '国际交流室很安静。她这一嗓子之后，靠窗那位老师抬头看了一眼，又低下去了。',
+                en: 'The exchange room is quiet. After that, the teacher by the window looks up once and goes back to her papers.'
+              }
+            ]
           },
           {
-            type: 'narration',
-            zh: '她说这句的时候笑着，但语速比刚才慢了半拍。',
-            en: 'She is smiling when she says it, but half a beat slower than everything before.'
+            id: 'day1_hikari_howlong',
+            labelZh: '「你也是留学生？来多久了？」',
+            labelEn: '"You are an exchange student too? How long have you been here?"',
+            jp: '君も留学生？　こっちに来て、どれくらい？',
+            words: [{ jp: '留学生', reading: 'りゅうがくせい', zh: '留学生', en: 'exchange student' }],
+            hintZh: '她刚才说「私だけバカなのかと」',
+            hintEn: 'She just said she thought she was the only idiot here.',
+            effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你问了一个能问出东西的问题', reasonEn: 'You asked a question that actually goes somewhere' }],
+            relations: [{ char: CharacterId.HIKARI, familiarity: 10, affection: 6, reasonZh: '她答得比你问的多', reasonEn: 'She answered rather more than you asked' }],
+            then: [
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_neutral.webp`,
+                jp: '半年。……半年おってもな、こういう紙は毎回わからんねん。',
+                zh: '半年。……住了半年也一样啊，这种纸每次都还是看不懂。',
+                en: 'Six months. ...Six months in, and I still cannot read a form like this.',
+                color: 'bg-amber-400'
+              },
+              {
+                type: 'narration',
+                zh: '她说这句的时候笑着，但语速比刚才慢了半拍。',
+                en: 'She is smiling when she says it, but half a beat slower than everything before.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_happy.webp`,
+                jp: 'せやから、二人おったら二倍わかるようになるやろ！たぶん！',
+                zh: '所以说嘛，两个人的话就能懂两倍了吧！大概！',
+                en: 'Which is why two of us should understand twice as much! Probably!',
+                color: 'bg-amber-400'
+              }
+            ]
           },
           {
-            type: 'speech',
-            speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}school_happy.webp`,
-            jp: 'せやから、二人おったら二倍わかるようになるやろ！たぶん！',
-            zh: '所以说嘛，两个人的话就能懂两倍了吧！大概！',
-            en: 'Which is why two of us should understand twice as much! Probably!',
-            color: 'bg-amber-400'
-          }
-        ]
-      },
-      {
-        id: 'day1_hikari_boat',
-        labelZh: '「这条船……有救生圈吗？」',
-        labelEn: '"This boat... does it come with life jackets?"',
-        jp: 'その船に……浮き輪はありますか。',
-        words: [{ jp: '浮き輪', reading: 'うきわ', zh: '救生圈', en: 'life ring' }],
-        hintZh: '她起了个比喻，你顺着往下接',
-        hintEn: 'She started the metaphor. You might as well run with it.',
-        effects: [
-          { stat: 'charm', amount: 1, reasonZh: '你接住了别人抛过来的那个比喻', reasonEn: 'You caught the metaphor somebody threw at you' },
-          { stat: 'guts', amount: 1, reasonZh: '第一次见面就敢开玩笑', reasonEn: 'You cracked a joke the first time you met someone' }
-        ],
-        relations: [{ char: CharacterId.HIKARI, familiarity: 11, affection: 7, reasonZh: '她笑到被老师看了一眼', reasonEn: 'She laughed hard enough to get looked at' }],
-        then: [
-          {
-            type: 'narration',
-            zh: '她手里的圆珠笔啪嗒落在了桌面上。接着她整个人扑倒在表格上，脸埋在臂弯里笑得肩膀乱颤。靠窗那位老师皱着眉推了推眼镜看过来，随即又把视线移回了电脑屏幕。今天第二次了。',
-            en: 'Her ballpoint clicks onto the table. Then she folds down over her form, face buried in her elbow, shoulders trembling with laughter. The teacher by the window pushes up his glasses, glances over with a frown, and returns to his screen. Second time today.'
-          },
-          {
-            type: 'speech',
-            speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}school_smug.webp`,
-            jp: 'ないない！沈むときは一緒に沈むやつや！',
-            words: [{ jp: '沈む', reading: 'しずむ', zh: '沉没、下沉', en: 'to sink' }],
-            zh: '没有没有！这是要沉一起沉的那种船！',
-            en: 'Nope! This is the kind where we go down together!',
-            color: 'bg-amber-400'
-          },
-          {
-            type: 'narration',
-            zh: '她自己又笑了一阵。笑完忽然就没声了。她低头把表格的边角捏了又捏，捏得很平。',
-            en: 'She laughs at her own line for a while longer. Then the sound just stops. She looks down and works the corner of her form flat between her fingers.'
-          },
-          {
-            type: 'speech',
-            speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${HIKARI}school_shy.webp`,
-            jp: '……ええな、そういうん返してくれる人。半年で初めてやわ。',
-            zh: '……不错嘛，会这样接话的人。来了半年，你是第一个。',
-            en: '...That is nice, actually. Someone who throws it back. Six months here and you are the first.',
-            color: 'bg-amber-400'
+            id: 'day1_hikari_boat_stranger',
+            labelZh: '「这条船……有救生圈吗？」',
+            labelEn: '"This boat... does it come with life jackets?"',
+            jp: 'その船に……浮き輪はありますか。',
+            words: [{ jp: '浮き輪', reading: 'うきわ', zh: '救生圈', en: 'life ring' }],
+            hintZh: '她起了个比喻，你顺着往下接',
+            hintEn: 'She started the metaphor. You might as well run with it.',
+            effects: [
+              { stat: 'charm', amount: 1, reasonZh: '你接住了别人抛过来的那个比喻', reasonEn: 'You caught the metaphor somebody threw at you' },
+              { stat: 'guts', amount: 1, reasonZh: '第一次见面就敢开玩笑', reasonEn: 'You cracked a joke the first time you met someone' }
+            ],
+            relations: [{ char: CharacterId.HIKARI, familiarity: 11, affection: 7, reasonZh: '她笑到被老师看了一眼', reasonEn: 'She laughed hard enough to get looked at' }],
+            then: [
+              {
+                type: 'narration',
+                zh: '她手里的圆珠笔啪嗒落在了桌面上。接着她整个人扑倒在表格上，脸埋在臂弯里笑得肩膀乱颤。靠窗那位老师皱着眉推了推眼镜看过来，随即又把视线移回了电脑屏幕。今天第二次了。',
+                en: 'Her ballpoint clicks onto the table. Then she folds down over her form, face buried in her elbow, shoulders trembling with laughter. The teacher by the window pushes up his glasses, glances over with a frown, and returns to his screen. Second time today.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_smug.webp`,
+                jp: 'ないない！沈むときは一緒に沈むやつや！',
+                words: [{ jp: '沈む', reading: 'しずむ', zh: '沉没、下沉', en: 'to sink' }],
+                zh: '没有没有！这是要沉一起沉的那种船！',
+                en: 'Nope! This is the kind where we go down together!',
+                color: 'bg-amber-400'
+              },
+              {
+                type: 'narration',
+                zh: '她自己又笑了一阵。笑完忽然就没声了。她低头把表格的边角捏了又捏，捏得很平。',
+                en: 'She laughs at her own line for a while longer. Then the sound just stops. She looks down and works the corner of her form flat between her fingers.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '光', speakerEn: 'Hikari',
+                characterImage: `${HIKARI}school_shy.webp`,
+                jp: '……ええな、そういうん返してくれる人。半年で初めてやわ。',
+                zh: '……不错嘛，会这样接话的人。来了半年，你是第一个。',
+                en: '...That is nice, actually. Someone who throws it back. Six months here and you are the first.',
+                color: 'bg-amber-400'
+              }
+            ]
           }
         ]
       }
@@ -1188,8 +1340,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
         labelZh: '先道歉，再指出她也在跑',
         labelEn: 'Apologize first — then point out that she was running too',
         jp: 'ごめん。……でも、そっちも走ってたよね。',
-        hintZh: '拍桌大喊一声「異議あり！」',
-        hintEn: 'Slam the desk and shout "Objection!"',
+        hintZh: '责任各半，没必要把不属于自己的责任全揽下来',
+        hintEn: 'Shared responsibility. No need to shoulder blame that isn\'t yours.',
         effects: [
           { stat: 'knowledge', amount: 1, reasonZh: '你看清了刚才撞在一起时真正发生的事', reasonEn: 'You worked out what had actually happened when you crashed into each other' },
           { stat: 'guts', amount: 1, reasonZh: '你没有把不属于自己的那一半也认下来', reasonEn: 'You declined to take on the half that was not yours' }
@@ -1215,15 +1367,16 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'speech',
             speakerZh: '你',
             speakerEn: 'You',
-            jp: '異議あり！動量保存は相互作用なんで、角の衝突は五分五分ですよ。',
-            zh: '異議あり！动量守恒是相互的，拐角冲刺的责任也得各打五十大板！',
-            en: 'Objection! Conservation of momentum is mutual — responsibility for this hallway collision has to be split fifty-fifty!',
+            jp: '角を曲がる時は、お互い気をつけないと。半分、私のせいで……半分、そっちのせいです。',
+            words: [{ jp: 'お互い', reading: 'おたがい', zh: '互相、双方', en: 'each other / mutual' }],
+            zh: '在转角的时候，彼此都该注意点的。一半是我的错……另一半也是你的错。',
+            en: 'Turning corners, we both need to watch out. Half is my fault... but the other half is yours.',
             color: 'bg-yellow-500'
           },
           {
             type: 'narration',
-            zh: '你说完之后自己也愣了一下。明日香抬起头来用一种「这个人在说什么鬼话」的表情看着你。',
-            en: 'You freeze for a moment after saying it. Asuka lifts her head and looks at you with an expression that clearly says "what on earth is this person talking about."'
+            zh: '虽然日语词汇量还很有限，句式也简单得像初级课文，但你的语气很平静，丝毫没有打算平白无故背黑锅的意思。明日香抬起头来，审视般地瞪着你。',
+            en: 'Though your Japanese vocabulary is still limited and the phrasing is simple, your tone remains calm, with zero intention of taking an unfair fall. Asuka lifts her head, glaring at you with an appraising eye.'
           },
           {
             type: 'speech',

@@ -2728,8 +2728,8 @@ export const PROLOGUE_ENCOUNTERS: Record<string, PrologueEncounter> = {
   prologue_met_hikari: {
     char: CharacterId.HIKARI,
     origin: 'acquainted',
-    encounter: "You met the player exactly once: the evening before term started, at the harbour railing in Meriken Park, where you were photographing the Port Tower and spotted them instantly as a fellow foreigner. You are an exchange student who arrived one week ahead of them, and that single week of seniority is the entire basis of your relationship. You demanded their name before running off and gave them yours — that is the only thing you actually exchanged. You also told them the first month is the hardest and that they would definitely get used to it, and you meant that for yourself as much as for them. You do not know their school, their family, or their story; you only know they had just landed, and that they took a deep breath facing the sea the same way you once did.",
-    seedMemory: '学期が始まる前の晩、メリケンパークの柵のところで一度だけ会った留学生。私より一週間だけ後に着いたばかりらしい。別れ際に名前だけ先に聞いて、こっちの名前も教えた。……海に向かって深呼吸してるところ、一週間前の自分とそっくりだった。',
+    encounter: "You met the player exactly once: the evening before term started, at the harbour railing in Meriken Park, where you were photographing the Port Tower and spotted them instantly as a fellow foreigner. You are an exchange student who arrived half a year ahead of them, and that seniority is the foundation of your relationship. You demanded their name before running off and gave them yours — that is the only thing you actually exchanged. You also told them the first month is the hardest and that they would definitely get used to it, and you meant that for yourself as much as for them. You do not know their school, their family, or their story; you only know they had just landed, and that they took a deep breath facing the sea the same way you once did.",
+    seedMemory: '学期が始まる前の晩、メリケンパークの柵のところで一度だけ会った留学生。私より半年後に着いたばかりらしい。別れ際に名前だけ先に聞いて、こっちの名前も教えた。……海に向かって深呼吸してるところ、半年前の自分とそっくりだった。',
     labelZh: '在神户港的栏杆边被她一眼认出',
     labelEn: 'She spotted you at the harbour railing on sight'
   },

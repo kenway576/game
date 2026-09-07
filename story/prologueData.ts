@@ -893,8 +893,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'narration',
-                    zh: '她说她比你早来一周，前六天全都用在了迷路上。她说这话的时候一点都不难过，反而像在炫耀。',
-                    en: 'She got here a week ahead of you, she says, and spent six of those days lost. She does not sound sorry about it. She sounds like she is bragging.'
+                    zh: '她说她比你早来半年，最开始那会儿整天都在迷路。她说这话的时候一点都不难过，反而像在炫耀。',
+                    en: 'She got here half a year ahead of you, she says, and spent her whole first while hopelessly lost. She does not sound sorry about it. She sounds like she is bragging.',
                   },
                   {
                     type: 'speech',

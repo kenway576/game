@@ -24,6 +24,10 @@ interface Props {
   // 读档进来的那一份进度：直接静默恢复，不再弹"要不要接着看"
   // （玩家在存档界面已经做过一次选择了，不该再问一遍）
   initialProgress?: StoryProgress | null;
+  // 外部传入的历史 flag（例如序章做过的选择、前置章节留下的痕迹）
+  initialFlags?: StoryFlags;
+  // 选项出现时触发自动存档（写进自动存档位 0）
+  onAutoSave?: () => void;
   // 打开系统菜单（存档 / 读档 / 单词本 / 音量）。序章期间也要能存盘。
   onOpenSystemMenu: () => void;
   // 章节名，用在续玩/跳过弹窗里。不给就说"这一章"——
@@ -92,7 +96,7 @@ interface BacklogEntry { speaker: string; main: string; sub: string; }
 
 const StoryScreen: React.FC<Props> = ({
   script, scriptVersion, progressKey, language, stats, background,
-  initialProgress, onOpenSystemMenu, playerName, onSetPlayerName,
+  initialProgress, initialFlags, onAutoSave, onOpenSystemMenu, playerName, onSetPlayerName,
   storyAffection = 0, storyFamiliarity = 0,
   chapterNameZh, chapterNameEn, allowSkip,
   onEffects, onRelations, onFlags, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
@@ -104,7 +108,7 @@ const StoryScreen: React.FC<Props> = ({
   const [nodes, setNodes] = useState<StoryNode[]>(script);
   const [idx, setIdx] = useState(0);
   // flags 用 ref 保存：branch 节点在同一次渲染里就要读到最新值，state 会慢一拍
-  const flagsRef = useRef<StoryFlags>({});
+  const flagsRef = useRef<StoryFlags>({ ...(initialFlags || {}) });
   const [titleCard, setTitleCard] = useState<{ title: string; subtitle: string } | null>(null);
   const [confirmSkip, setConfirmSkip] = useState(false);
 
@@ -173,7 +177,7 @@ const StoryScreen: React.FC<Props> = ({
 
   // 一份进度落到界面上：续玩弹窗和读档静默恢复共用同一段逻辑
   const applyProgress = (p: StoryProgress) => {
-    flagsRef.current = p.flags || {};
+    flagsRef.current = { ...(initialFlags || {}), ...(p.flags || {}) };
     wordsRef.current = p.words || [];
     relationsRef.current = p.relations || [];
     cgsRef.current = p.unlockedCgs || [];
@@ -269,6 +273,33 @@ const StoryScreen: React.FC<Props> = ({
       // 容量不够就不存中途进度，不影响继续玩
     }
   }, [idx, nodes, restoreChecked, restoreOffer, progressKey, scriptVersion]);
+
+  // ---------- 选项出现前自动存档（保证每个选择肢都有底，写入自动存档位0） ----------
+  const autoSavedChoiceIdxRef = useRef<Set<number>>(new Set());
+  useEffect(() => {
+    if (!restoreChecked || restoreOffer || finishedRef.current) return;
+    if (node?.type === 'choice' && !autoSavedChoiceIdxRef.current.has(idx)) {
+      autoSavedChoiceIdxRef.current.add(idx);
+      // 先把当前进度确凿写入 localStorage，确保上层的 buildSaveData 抓取到的就是这个选择点
+      const progress: StoryProgress = {
+        version: scriptVersion,
+        idx,
+        nodes,
+        flags: flagsRef.current,
+        stats: statsRef.current,
+        words: wordsRef.current,
+        relations: relationsRef.current,
+        unlockedCgs: cgsRef.current,
+        savedAt: Date.now()
+      };
+      try {
+        localStorage.setItem(progressKey, JSON.stringify(progress));
+      } catch {
+        // 容量不足不影响继续游戏
+      }
+      onAutoSave?.();
+    }
+  }, [node, idx, nodes, restoreChecked, restoreOffer, progressKey, scriptVersion, onAutoSave]);
 
   const clearProgress = () => {
     try { localStorage.removeItem(progressKey); } catch { /* ignore */ }

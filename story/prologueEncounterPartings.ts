@@ -259,12 +259,12 @@ export const HIKARI_PARTING: StoryNode[] = [
         speakerZh: '金发的女生',
         speakerEn: 'Blonde Girl',
         characterImage: `${HIK}casual_happy.webp`,
-        jp: '名前！先輩の特権で先に聞いとく。私、ヒカリ。一週間だけ先輩やで。',
+        jp: '名前！先輩の特権で先に聞いとく。私、ヒカリ。半年だけ先輩やで。',
         words: [
           { jp: '先輩', reading: 'せんぱい', zh: '前辈', en: 'senior / one who came before' }
         ],
-        zh: '名字！我用前辈的特权先问。我叫光。只早你一个星期的前辈。',
-        en: 'Name! Senior privilege, I get to ask first. I am Hikari. Senior by exactly one week.',
+        zh: '名字！我用前辈的特权先问。我叫光。早来半年的前辈哦。',
+        en: 'Name! Senior privilege, I get to ask first. I am Hikari. Senior by half a year.',
         color: 'bg-amber-400'
       },
       {

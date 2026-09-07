@@ -1115,14 +1115,14 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${INARI}school_neutral.webp`,
+    characterImage: `${INARI}casual_neutral.webp`,
     zh: '鸟居底下坐着一个人。橘红色的长发一直垂到石阶上。她头顶有两只耳朵，身后铺开的那一团东西你数了两遍，两遍都是九条。',
     en: 'Someone is sitting under the torii, vermilion hair spilling all the way onto the step. There are two ears on top of her head, and the mass spread out behind her comes to nine when you count it. It also comes to nine when you count it again.'
   },
   {
     type: 'speech',
     speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
-    characterImage: `${INARI}school_happy.webp`,
+    characterImage: `${INARI}casual_happy.webp`,
     jp: 'ふぅん。……その地図、ずいぶん古いのう。',
     words: [{ jp: '古い', reading: 'ふるい', zh: '旧的、古老的', en: 'old' }],
     zh: '唔嗯。……你那张地图，可真够旧的呀。',
@@ -1152,14 +1152,14 @@ export const DAY1_EVENING: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${INARI}school_happy.webp`,
+            characterImage: `${INARI}casual_happy.webp`,
             zh: '她笑了。不是礼貌性的那种——是真的被逗到了，笑得肩膀直抖，笑了很久。',
             en: 'She laughs. Not politely: genuinely, shoulders shaking, and she keeps going for a while.'
           },
           {
             type: 'speech',
             speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
-            characterImage: `${INARI}school_happy.webp`,
+            characterImage: `${INARI}casual_happy.webp`,
             jp: 'くくく……そういう言い方をした人の子は、そなたで四人目じゃ。',
             words: [{ jp: '人の子', reading: 'ひとのこ', zh: '人类（神明对人的称呼）', en: 'child of man' }],
             zh: '呵呵呵……用这种说法的人类，你是第四个。',
@@ -1187,7 +1187,7 @@ export const DAY1_EVENING: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
-            characterImage: `${INARI}school_neutral.webp`,
+            characterImage: `${INARI}casual_neutral.webp`,
             jp: '典故なぞ、いくらでもあるわ。……千八百年ぶんもな。',
             zh: '典故嘛，要多少有多少。……足足一千八百年份的。',
             en: 'History? There is as much of it as you like. ...Eighteen centuries of it.',
@@ -1214,14 +1214,14 @@ export const DAY1_EVENING: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${INARI}school_neutral.webp`,
+            characterImage: `${INARI}casual_neutral.webp`,
             zh: '她没有接。但她也没有像刚才那样，把话说得像是从很远的地方传来的。',
             en: 'She does not take it. But she also stops sounding like someone speaking from a long way off.'
           },
           {
             type: 'speech',
             speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
-            characterImage: `${INARI}school_neutral.webp`,
+            characterImage: `${INARI}casual_neutral.webp`,
             jp: '……妾に、寒かろうと申すか。',
             words: [{ jp: '寒い', reading: 'さむい', zh: '冷', en: 'cold' }],
             zh: '……你是在说，我会冷吗。',
@@ -1236,7 +1236,7 @@ export const DAY1_EVENING: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '狐耳的女子', speakerEn: 'Woman with Fox Ears',
-            characterImage: `${INARI}school_happy.webp`,
+            characterImage: `${INARI}casual_happy.webp`,
             jp: 'ふふ。……ここに座る者は多いが、そう言うたのは、汝で四人目じゃ。',
             words: [{ jp: '座る', reading: 'すわる', zh: '坐', en: 'to sit' }],
             zh: '呵呵。……在这儿坐着的人多得很，可这么说的，你是第四个。',
@@ -1259,7 +1259,7 @@ export const DAY1_EVENING: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${INARI}school_happy.webp`,
+    characterImage: `${INARI}casual_happy.webp`,
     zh: '你低头想把手账拿出来。再抬头时，鸟居底下已经没有人了——木屐还在原地，整整齐齐地摆着。',
     en: 'You look down to get the journal out. When you look up, there is no one under the torii. The geta are still there, set down neatly, side by side.'
   },

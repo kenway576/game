@@ -1035,6 +1035,8 @@ const App: React.FC = () => {
   // 第一章 = 4 月 11 日，开学。日历要跟着走，不然大厅显示的日期和剧情对不上。
   const startDay1 = () => {
     setGameCalendar({ month: 4, day: 11, dayOfWeek: '火 (Tue)', timeSlot: 'morning', weather: 'sunny' });
+    setPendingDay1Progress(null);
+    setDay1SessionKey(k => k + 1);
     setPlayingDay1(true);
   };
 
@@ -1825,6 +1827,10 @@ const App: React.FC = () => {
   // 只会换掉背景，正文还停在原来那一句上。
   const [prologueSessionKey, setPrologueSessionKey] = useState(0);
 
+  // 读档进第 1 章时交给 StoryScreen 的那一份（静默恢复）
+  const [pendingDay1Progress, setPendingDay1Progress] = useState<StoryProgress | null>(null);
+  const [day1SessionKey, setDay1SessionKey] = useState(0);
+
   // 存档只保留最近的对话（更早内容已在长期记忆摘要里），防止 localStorage 爆仓
   const buildSaveData = (isAutoSave: boolean, hard = false) => {
     const msgLimit = hard ? SAVE_MESSAGES_LIMIT_HARD : SAVE_MESSAGES_LIMIT;
@@ -1841,11 +1847,13 @@ const App: React.FC = () => {
         charId: selectedCharId,
         previewText: messages.length > 0
           ? messages[messages.length - 1].text.substring(0, 30) + '...'
-          : prologueDone
-            ? (userState.language === 'en' ? 'Prologue cleared' : '序章已通关')
-            : gameMode === GameMode.PROLOGUE
-              ? (userState.language === 'en' ? 'Prologue in progress' : '序章进行中')
-              : 'No messages',
+          : playingDay1
+            ? (userState.language === 'en' ? 'Chapter 1 in progress' : '第 1 章进行中')
+            : prologueDone
+              ? (userState.language === 'en' ? 'Prologue cleared' : '序章已通关')
+              : gameMode === GameMode.PROLOGUE
+                ? (userState.language === 'en' ? 'Prologue in progress' : '序章进行中')
+                : 'No messages',
         isAutoSave
       },
       data: {
@@ -1891,9 +1899,7 @@ const App: React.FC = () => {
   };
 
   const triggerAutoSave = () => {
-    // 序章期间/刚打完时还没选过角色，但这份进度必须存下来——
-    // 否则玩家关掉页面后「继续游戏」是灰的，序章得从头再看一遍。
-    if (!selectedCharId && !prologueDone && gameMode !== GameMode.PROLOGUE) return;
+    // 序章、第一章、专属剧情或大厅游玩，都写入自动存档槽位0
     if (writeSave(`${SAVE_SLOT_PREFIX}0`, true)) {
       checkForSaves();
       setShowAutoSave(true);
@@ -1974,7 +1980,11 @@ const App: React.FC = () => {
       const day1Slot = isUsableProgress(data.day1Progress, DAY1_VERSION) ? data.day1Progress : null;
       const resumeDay1 = !!data.playingDay1 && !(data.day1Done ?? false);
       if (resumeDay1 && day1Slot) {
+        setPendingDay1Progress(day1Slot);
+        setDay1SessionKey(k => k + 1);
         try { localStorage.setItem(DAY1_PROGRESS_KEY, JSON.stringify(day1Slot)); } catch { /* 存不下就用共享那份 */ }
+      } else {
+        setPendingDay1Progress(null);
       }
       setPlayingDay1(resumeDay1);
 
@@ -2616,6 +2626,8 @@ ${wind}`;
           chapterNameZh="序章"
           chapterNameEn="the prologue"
           initialProgress={pendingPrologueProgress}
+          initialFlags={storyFlags}
+          onAutoSave={triggerAutoSave}
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           playerName={userState.playerName}
           onSetPlayerName={(name) => setUserState(prev => ({ ...prev, playerName: name }))}
@@ -2682,7 +2694,11 @@ ${wind}`;
           onOpenPhone={() => setShowPhone(true)}
           onOpenDayPlan={() => setShowRestPlan(true)}
           mainStoryPending={prologueDone && !day1Done && !playingDay1}
-          onResumeMainStory={() => setPlayingDay1(true)}
+          onResumeMainStory={() => {
+            setPendingDay1Progress(readDay1Progress());
+            setDay1SessionKey(k => k + 1);
+            setPlayingDay1(true);
+          }}
           classPending={classPending}
           classLine={classHeadline(gameCalendar, userState.language === 'en')}
           onGoToClass={goToClass}
@@ -2921,12 +2937,15 @@ ${wind}`;
       {playingDay1 && (
         <div className="fixed inset-0 z-[130] overflow-hidden">
         <StoryScreen
-          key="day1"
+          key={`day1-${day1SessionKey}`}
           script={DAY1_SCRIPT}
           scriptVersion={DAY1_VERSION}
           progressKey={DAY1_PROGRESS_KEY}
           chapterNameZh="第 1 章"
           chapterNameEn="Chapter 1"
+          initialProgress={pendingDay1Progress}
+          initialFlags={storyFlags}
+          onAutoSave={triggerAutoSave}
           language={userState.language}
           stats={protagonistStats}
           background={background}
@@ -2956,6 +2975,8 @@ ${wind}`;
           storyFamiliarity={familiarityMap[activeLevelStory.charId] ?? getInitialFamiliarity(activeLevelStory.charId)}
           scriptVersion={`${activeLevelStory.def.id}-v1`}
           progressKey={`kobe_study_story_${activeLevelStory.def.id}`}
+          initialFlags={storyFlags}
+          onAutoSave={triggerAutoSave}
           language={userState.language}
           stats={protagonistStats}
           background={background}
@@ -3001,6 +3022,8 @@ ${wind}`;
           progressKey={`kobe_study_trip_${activeTrip.event?.id || activeTrip.loc.id}`}
           chapterNameZh={activeTrip.event ? activeTrip.event.titleZh : activeTrip.loc.nameZh}
           chapterNameEn={activeTrip.event ? activeTrip.event.titleEn : activeTrip.loc.nameEn}
+          initialFlags={storyFlags}
+          onAutoSave={triggerAutoSave}
           storyAffection={
             activeTrip.event && activeTrip.event.chars.length === 1
               ? (affectionMap[activeTrip.event.chars[0]] || 0)
@@ -3039,6 +3062,8 @@ ${wind}`;
           progressKey={`kobe_study_main_${activeMain.id}`}
           chapterNameZh={`第 ${activeMain.n} 章`}
           chapterNameEn={`Chapter ${activeMain.n}`}
+          initialFlags={storyFlags}
+          onAutoSave={triggerAutoSave}
           language={userState.language}
           stats={protagonistStats}
           background={background}
@@ -3067,6 +3092,8 @@ ${wind}`;
           progressKey={`kobe_study_class_${gameCalendar.month}_${gameCalendar.day}`}
           chapterNameZh="今天的课"
           chapterNameEn="Today's Lesson"
+          initialFlags={storyFlags}
+          onAutoSave={triggerAutoSave}
           language={userState.language}
           stats={protagonistStats}
           background={background}

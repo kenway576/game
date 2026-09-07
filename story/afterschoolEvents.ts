@@ -1443,14 +1443,14 @@ const EV_SHRINE_INARI: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${INARI}school_neutral.webp`,
+      characterImage: `${INARI}casual_neutral.webp`,
       zh: '本殿旁边的树下站着一个人。你走近了才发现，她脚下的碎石一点声音都没有。',
       en: 'Someone is standing under the tree beside the main hall. Only when you get closer do you realise the gravel under her feet makes no sound at all.'
     },
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}school_sly.webp`,
+      characterImage: `${INARI}casual_happy.webp`,
       jp: 'おや。人の子ではないか。……ここへは、初めてか？',
       zh: '哎呀。这不是人类的孩子吗。……第一次来这儿？',
       en: 'Oh. If it is not the human child. ...First time here?',
@@ -1464,7 +1464,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}school_neutral.webp`,
+      characterImage: `${INARI}casual_neutral.webp`,
       jp: 'この社はな、この街よりずっと古い。港ができたのは、つい最近のことじゃ。',
       zh: '这座神社啊，比这座城市老得多。港口是最近才有的东西。',
       en: 'This shrine is far older than this city. The port is a very recent development.',
@@ -1488,7 +1488,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_smug.webp`,
+              characterImage: `${INARI}casual_happy.webp`,
               jp: 'うむ。最近じゃ。',
               zh: '嗯。最近。',
               en: 'Mm. Recent.',
@@ -1502,7 +1502,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_neutral.webp`,
+              characterImage: `${INARI}casual_neutral.webp`,
               jp: 'この木を植えたときのことは覚えておる。ずいぶんと細かった。',
               zh: '种下这棵树时候的事我还记得。当时细得很。',
               en: 'I remember when this tree was planted. It was very thin.',
@@ -1528,14 +1528,14 @@ const EV_SHRINE_INARI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${INARI}school_surprised.webp`,
+              characterImage: `${INARI}casual_surprised.webp`,
               zh: '她的耳朵动了一下。',
               en: 'Her ears twitch.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_neutral.webp`,
+              characterImage: `${INARI}casual_neutral.webp`,
               jp: '……飽きはせぬ。ただ、な。',
               zh: '……不会腻。只是啊。',
               en: '...I do not tire of it. Only.',
@@ -1544,7 +1544,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_sad.webp`,
+              characterImage: `${INARI}casual_sad.webp`,
               jp: '「また来る」と言うた者は、たいてい来ぬ。悪気があるわけではない。ただ、寿命がな。',
               zh: '说「我还会来」的人，大多不会再来。倒不是有什么恶意。只是寿命这东西。',
               en: 'Those who say they will come again mostly do not. Not out of ill will. It is simply a question of lifespan.',
@@ -1577,7 +1577,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${INARI}school_surprised.webp`,
+              characterImage: `${INARI}casual_surprised.webp`,
               zh: '她没有说话。你回过头，她正看着你的手。',
               en: 'She says nothing. When you look back, she is looking at your hand.'
             },
@@ -1588,14 +1588,14 @@ const EV_SHRINE_INARI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${INARI}school_neutral.webp`,
+              characterImage: `${INARI}casual_neutral.webp`,
               zh: '掠过耳畔的山风忽然歇了，整座神社陷入一片奇特的寂静。',
               en: 'The wind whistling through the pines suddenly stills, leaving the shrine in a deep quiet.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_neutral.webp`,
+              characterImage: `${INARI}casual_neutral.webp`,
               jp: '……そうか。育ったか。',
               words: [{ jp: '育つ', reading: 'そだつ', zh: '成长、长大', en: 'to grow up' }],
               zh: '……是吗。长大了啊。',
@@ -1610,7 +1610,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_happy.webp`,
+              characterImage: `${INARI}casual_happy.webp`,
               jp: 'ふふ。……汝、面白い触り方をする。神ではなく、木のほうに触れるとはな。',
               zh: '呵呵。……你摸东西的方式挺有意思。不去碰神，倒去碰树。',
               en: 'Hmhm. ...You touch things in an interesting way. Not the god — the tree.',
@@ -1628,7 +1628,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}school_neutral.webp`,
+      characterImage: `${INARI}casual_neutral.webp`,
       jp: '前にここで人の子と話したのも、四月であった。',
       zh: '上一次在这儿和人类说话，也是四月。',
       en: 'The last time I spoke with a human child here was also April.',
@@ -1652,7 +1652,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_smug.webp`,
+              characterImage: `${INARI}casual_happy.webp`,
               jp: 'ふむ。……六十年ほど前かの。',
               zh: '唔。……大概六十年前吧。',
               en: 'Hm. ...About sixty years ago, I think.',
@@ -1666,7 +1666,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_sly.webp`,
+              characterImage: `${INARI}casual_happy.webp`,
               jp: 'その者は、そなたの祖父ではないかのう。地図を描いておった。よう似ておる、目のあたりが。',
               zh: '那个人，该不会就是你外公吧。当时在画地图。眼睛那一带，很像。',
               en: 'That one might have been your grandfather. He was drawing a map. Around the eyes, you look very alike.',
@@ -1701,14 +1701,14 @@ const EV_SHRINE_INARI: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${INARI}school_surprised.webp`,
+              characterImage: `${INARI}casual_surprised.webp`,
               zh: '她第一次露出了那种表情——不是神的表情，是被抢了话的人的表情。',
               en: 'For the first time she wears an expression that is not a god’s. It is the expression of someone who has just been beaten to the punch.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_surprised.webp`,
+              characterImage: `${INARI}casual_surprised.webp`,
               jp: '……ほう。妾より先に言うか。',
               zh: '……哦。竟然抢在我前面说了。',
               en: '...Oh. You said it before I could.',
@@ -1717,7 +1717,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_neutral.webp`,
+              characterImage: `${INARI}casual_neutral.webp`,
               jp: '六十年ほど前じゃ。ここに座って、その鳥居を三度なぞっておった。……よう似ておる、目のあたりが。',
               words: [{ jp: 'なぞる', zh: '描摹、沿着描', en: 'to trace over' }],
               zh: '大概六十年前。他坐在这儿，把那座鸟居描了三遍。……眼睛那一带，很像。',
@@ -1746,14 +1746,14 @@ const EV_SHRINE_INARI: MapEventDef = {
           then: [
             {
               type: 'narration',
-              characterImage: `${INARI}school_smug.webp`,
+              characterImage: `${INARI}casual_happy.webp`,
               zh: '她挑了挑眉，像是听见了一个很新鲜的回答。',
               en: 'Her eyebrows go up, as though that were a genuinely novel answer.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_smug.webp`,
+              characterImage: `${INARI}casual_happy.webp`,
               jp: '知りとうないと申すか。……ふふ、ならば余計に言うてやろう。',
               zh: '说是不想知道啊。……呵呵，那我就偏要说了。',
               en: 'You say you do not want to know. ...Hmhm. Then I shall tell you precisely because of that.',
@@ -1767,7 +1767,7 @@ const EV_SHRINE_INARI: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}school_neutral.webp`,
+              characterImage: `${INARI}casual_neutral.webp`,
               jp: '六十年ほど前じゃ。地図を描いておった人の子でな。……よう似ておるぞ、目のあたりが。',
               zh: '大概六十年前。是个在画地图的人类。……很像啊，眼睛那一带。',
               en: 'Some sixty years ago. A human child who was drawing a map. ...You look very alike, around the eyes.',
@@ -1795,7 +1795,7 @@ const EV_SHRINE_INARI: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}school_neutral.webp`,
+      characterImage: `${INARI}casual_neutral.webp`,
       jp: 'また来やれ。……今度は、来るであろう？',
       zh: '再来吧。……这次，会来的吧？',
       en: 'Come again. ...This time you will, will you not?',
