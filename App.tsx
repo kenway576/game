@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode } from './types';
-import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver } from './constants';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver, levelStorySlots } from './constants';
 import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
@@ -853,7 +853,10 @@ const App: React.FC = () => {
     if (!pendingLevelUps.length) return;
     const eligible = (e: { charId: CharacterId; axis: RelationshipAxis; level: number }) => {
       const d = findLevelStory(e.charId, e.axis, e.level);
-      return !!d?.script?.length && isLevelStoryReady(d, storyFlags);
+      if (!d?.script?.length || !isLevelStoryReady(d, storyFlags)) return false;
+      // 🕐 时段对不上就先不播，留在队列里等对的时候。
+      // 不加这一条的话，夜里会蹦出一场副标题写着「下午 4:20」的体育馆戏。
+      return levelStorySlots(d).includes(gameCalendar.timeSlot);
     };
     const idx = pendingLevelUps.findIndex(eligible);
     if (idx < 0) return;
@@ -861,7 +864,7 @@ const App: React.FC = () => {
     const def = findLevelStory(entry.charId, entry.axis, entry.level)!;
     setPendingLevelUps(q => q.filter((_, i) => i !== idx));
     setActiveLevelStory({ charId: entry.charId, def });
-  }, [gameMode, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, pendingLevelUps, storyFlags]);
+  }, [gameMode, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, pendingLevelUps, storyFlags, gameCalendar]);
 
   // 剧本台词里的生词进单词本。
   // 去重键走同步的 ref：StrictMode 会把 effect 跑两遍，
@@ -1225,7 +1228,12 @@ const App: React.FC = () => {
       met: metChars
     });
     if (!ev) {
-      if (loc.id === 'hyakkin_store') { setCurrentScene(loc.id); setActiveStore('hyakkin'); setGameMode(GameMode.STORE); return; }
+      // 🏪 到店门口先看见的是店门口。
+      // 以前这里直接把场景切成店内（或者压根没切，背景还留着上一趟的商店街），
+      // 于是"刚到百元店"这一刻，画面上是别的地方。
+      if (loc.id === 'hyakkin_store') {
+        setCurrentScene(loc.mapScene || loc.id); setActiveStore('hyakkin'); setGameMode(GameMode.STORE); return;
+      }
       // 🛍️ 三宫中心街那四家。地点 id → 店铺 id 的对照表就这四行，
       // 不值得为它另起一个字段。
       const SHOP_AT: Record<string, StoreKind> = {
@@ -1252,9 +1260,10 @@ const App: React.FC = () => {
           });
           return;
         }
+        setCurrentScene(loc.mapScene || loc.id);
         setActiveStore(SHOP_AT[loc.id]); setGameMode(GameMode.STORE); return;
       }
-      if (loc.id === 'tackle_shop')   { setCurrentScene(loc.id); setActiveStore('tackle');  setGameMode(GameMode.STORE); return; }
+      if (loc.id === 'tackle_shop')   { setCurrentScene(loc.mapScene || loc.id); setActiveStore('tackle');  setGameMode(GameMode.STORE); return; }
       if (loc.id === 'school_terrace') { setCurrentScene(loc.id); setInCafeteria(true); setGameMode(GameMode.CAFETERIA); return; }
       if (FISHING_SPOTS.includes(loc.id)) {
         setCurrentScene(loc.id);

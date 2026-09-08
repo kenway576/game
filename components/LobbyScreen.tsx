@@ -55,6 +55,8 @@ const LobbyScreen: React.FC<Props> = ({
 }) => {
   // 连最轻的一趟都撑不住 = 今天出不去了
   const spent = !canGoOutAtAll(stamina, calendar);
+  // 午休 + 上学日 = 能去的只有校内那几处
+  const lunchOnCampus = calendar.timeSlot === 'lunch' && isSchoolDay(calendar);
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
   // 卡片上显示关系"名称"而不是数字——「朋友 · 无意」比「♥ 130」更说明现在处在哪一步
@@ -164,11 +166,18 @@ const LobbyScreen: React.FC<Props> = ({
           { key: 'room',  on: onOpenRoom,  icon: '🏠', zh: '回房间', en: 'My room' },
           // 🚪 走不动的时候「出门」不再是那个亮黄色的主按钮。
           // 它还点得动（点了会说一句话），但它得先看上去不像今天该做的事。
-          { key: 'map',   on: onOpenMap,   icon: spent ? '🛏' : '🗺',
-            zh: spent ? '走不动了' : '出门', en: spent ? 'Too tired' : 'Go out',
+          // 🏫 午休那一格，校门外的地方全是灰的（走出去就等于翘掉下午）。
+          // 按钮还写着「出门」，玩家点开一张全灰的地图，只会以为游戏坏了。
+          // 午休时它说的是它实际能做的事：在学校里逛逛。
+          { key: 'map',   on: onOpenMap,
+            icon: spent ? '🛏' : (lunchOnCampus ? '🏫' : '🗺'),
+            zh: spent ? '走不动了' : (lunchOnCampus ? '在学校里逛逛' : '出门'),
+            en: spent ? 'Too tired' : (lunchOnCampus ? 'Around school' : 'Go out'),
             primary: !spent },
           { key: 'phone', on: onOpenPhone, icon: '📱', zh: '手机',   en: 'Phone', badge: phoneUnread },
-          { key: 'day',   on: onOpenDayPlan, icon: '📅', zh: '今天',   en: 'Today' },
+          // 「今天」听起来像日历，可它其实是"这半天怎么过"的选单。
+          { key: 'day',   on: onOpenDayPlan, icon: '📅',
+            zh: '今天的行动', en: 'Today’s plan' },
           // 🎁 把包里的东西递给谁。放在大厅这一排，因为送东西和
           // 回房间、出门一样，是"用身体做的一件事"，不是菜单里的设置项。
           { key: 'gift',  on: onOpenGift,   icon: '🎁', zh: '送东西', en: 'Give' }

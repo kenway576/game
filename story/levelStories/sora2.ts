@@ -52,7 +52,7 @@ export const SORA_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     zh: '她一个人在场上。没有换球衣，制服外套扔在地上。她在投篮。',
     en: 'She is alone on the court. She has not changed; her blazer is on the floor. She is shooting.'
   },
@@ -180,7 +180,7 @@ export const SORA_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${S}school_neutral.webp`,
+            characterImage: `${S}neutral.webp`,
             zh: '等你走到场边的时候，她已经笑起来了，球在指尖上转着。表情装得很好。',
             en: 'By the time you reach the sideline she is already grinning, the ball spinning on a fingertip. It is a good job.'
           },
@@ -203,7 +203,7 @@ export const SORA_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     jp: '別に、大したことちゃうねん。',
     zh: '也没什么大不了的。',
     en: 'It is not a big deal or anything.',
@@ -222,7 +222,7 @@ export const SORA_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     jp: 'そのまま最後までやった。勝ったで。',
     zh: '就那么打完了。赢了哦。',
     en: 'Played it out. We won, you know.',
@@ -245,7 +245,7 @@ export const SORA_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     jp: '痛ないよ。もう治っとる。',
     words: [{ jp: '治る', reading: 'なおる', zh: '痊愈', en: 'to heal' }],
     zh: '不疼。早就好了。',
@@ -365,7 +365,7 @@ export const SORA_STORY_2: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_neutral.webp`,
+            characterImage: `${S}neutral.webp`,
             jp: '「県で戦うなら、あと五センチ」って',
             zh: '「要在县里打，就还差五公分」，他是这么说的。',
             en: 'He said: if you want to compete at prefecture level, five centimetres more.',
@@ -395,7 +395,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}school_happy.webp`,
+            characterImage: `${S}happy.webp`,
             zh: '她马上就笑了：「おう、せやな」。',
             en: 'The grin arrives at once. Right, yeah.'
           },
@@ -427,14 +427,14 @@ export const SORA_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     zh: '她把球放回球架，捡起地上的外套，动作快得像什么都没发生过。',
     en: 'She puts the ball back on the rack and picks her blazer off the floor, fast enough that nothing happened.'
   },
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     jp: '今日のこと、誰にも言わんといて。',
     zh: '今天的事，别跟任何人说。',
     en: 'Do not tell anyone about tonight.',
@@ -447,14 +447,14 @@ export const SORA_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${S}school_shy.webp`,
+    characterImage: `${S}shy.webp`,
     zh: '走到门口她停了一下，背对着你补了一句。',
     en: 'At the door she stops, with her back to you, and adds one more thing.'
   },
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_shy.webp`,
+    characterImage: `${S}shy.webp`,
     jp: '……英語、来週も見てくれる？',
     zh: '……英语，下周也帮我看吗？',
     en: '...English. Will you look at it next week too?',

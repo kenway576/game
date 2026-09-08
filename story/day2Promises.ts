@@ -739,7 +739,7 @@ const SORA_GYM: StoryNode[] = [
     en: 'What she said was that it is free from four. At twenty past, there is one person in there, exactly as there was yesterday.'
   },
   {
-    type: 'narration', characterImage: `${S}school_neutral.webp`,
+    type: 'narration', characterImage: `${S}neutral.webp`,
     zh: '她没有回头。「来た。」她说，球没停。',
     en: 'She does not turn round. "You came." The ball does not stop.'
   },
@@ -767,7 +767,7 @@ const SORA_GYM: StoryNode[] = [
             en: 'Nothing but net. You are as surprised as anybody.'
           },
           {
-            type: 'narration', characterImage: `${S}school_happy.webp`,
+            type: 'narration', characterImage: `${S}happy.webp`,
             zh: '她笑得非常大声，整个体育馆都在回音。「昨日のあれ、まぐれやなかったんか。」',
             en: 'She laughs loudly enough that the whole gym echoes. "So yesterday was not a fluke after all."'
           },
@@ -796,7 +796,7 @@ const SORA_GYM: StoryNode[] = [
             en: 'It goes back and forth about twenty times and neither of you says anything. Her breathing settles.'
           },
           {
-            type: 'narration', characterImage: `${S}school_neutral.webp`,
+            type: 'narration', characterImage: `${S}neutral.webp`,
             zh: '「……昨日、誰も来おへんと思っててん。」她说这句话的时候在看地板上的线。',
             en: '"...I thought nobody would come." She is looking at the lines on the floor when she says it.'
           }

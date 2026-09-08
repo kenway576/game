@@ -40,14 +40,14 @@ export const SORA_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     zh: '她看见你，把球夹在腰上，另一只手从包里掏出一本英语单词书，往你那边一扔。',
     en: 'She sees you, tucks the ball against her hip, digs an English vocabulary book out of her bag, and lobs it at you.'
   },
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_happy.webp`,
+    characterImage: `${S}happy.webp`,
     jp: '来た。ほな、先に勉強な。三十分だけ。',
     words: [{ jp: '勉強', reading: 'べんきょう', zh: '学习', en: 'study' }],
     zh: '来了。那先学习。就三十分钟。',
@@ -67,7 +67,7 @@ export const SORA_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_shy.webp`,
+    characterImage: `${S}shy.webp`,
     jp: 'そこ見んといて。',
     zh: '别看那儿。',
     en: 'Do not look at that bit.',
@@ -99,7 +99,7 @@ export const SORA_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_shock.webp`,
+            characterImage: `${S}shock.webp`,
             jp: 'えっ。……一ページ目からちゃうん？',
             zh: '诶。……不是从第一页开始吗？',
             en: 'Huh. ...Not from page one?',
@@ -125,7 +125,7 @@ export const SORA_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_happy.webp`,
+            characterImage: `${S}happy.webp`,
             jp: 'せやろ！　ウチもずっとそう思っててん！',
             zh: '就是吧！我一直也这么觉得！',
             en: 'Right?! I have been saying that this whole time!',
@@ -154,14 +154,14 @@ export const SORA_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}school_happy.webp`,
+            characterImage: `${S}happy.webp`,
             zh: '她跳起来的速度快得撞翻了椅子。',
             en: 'She gets up fast enough to knock the chair over.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_happy.webp`,
+            characterImage: `${S}happy.webp`,
             jp: 'それでこそや！　……いや、待って、それやったら交換になってへん。',
             zh: '这才对嘛！……不对，等等，这样就不算交换了。',
             en: 'Now you are talking! ...No, wait, that stops it being a trade.',
@@ -185,7 +185,7 @@ export const SORA_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     zh: '「投篮。手肘在下面，手腕最后弹一下。」她示范了一次，球进了。',
     en: '"Shooting. Elbow under it, flick at the wrist last." She demonstrates once. It goes in.'
   },
@@ -227,14 +227,14 @@ export const SORA_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}school_shock.webp`,
+            characterImage: `${S}shock.webp`,
             zh: '她低头看那一页，看了很久。',
             en: 'She looks down at the page for a long time.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_neutral.webp`,
+            characterImage: `${S}neutral.webp`,
             jp: '……三年、ここで止まっててん。',
             zh: '……三年，一直卡在这儿。',
             en: '...Three years I have been stuck on this.',
@@ -248,7 +248,7 @@ export const SORA_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_shy.webp`,
+            characterImage: `${S}shy.webp`,
             jp: '……ウチでも、できるようになるかもしれへんな。',
             words: [{ jp: 'かもしれない', reading: 'かもしれない', zh: '也许、说不定', en: 'might / perhaps' }],
             zh: '……说不定，连我也能学会呢。',
@@ -275,7 +275,7 @@ export const SORA_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_happy.webp`,
+            characterImage: `${S}happy.webp`,
             jp: 'ええで。……あんた、しつこいって言われへん？',
             zh: '可以啊。……你没被人说过很烦吗？',
             en: 'Sure. ...Does nobody tell you that you are persistent?',
@@ -302,14 +302,14 @@ export const SORA_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}school_shock.webp`,
+            characterImage: `${S}shock.webp`,
             zh: '她转过头来看你，笑还挂在脸上，但眼睛不一样了。',
             en: 'She turns to look at you. The grin is still there. The eyes are not the same.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_neutral.webp`,
+            characterImage: `${S}neutral.webp`,
             jp: '……よう見てんな。',
             zh: '……看得挺仔细啊。',
             en: '...You watch closely.',
@@ -323,7 +323,7 @@ export const SORA_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_neutral.webp`,
+            characterImage: `${S}neutral.webp`,
             jp: 'その話は、また今度な。',
             zh: '那件事，改天再说。',
             en: 'That one is for another day.',
@@ -348,7 +348,7 @@ export const SORA_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_neutral.webp`,
+    characterImage: `${S}neutral.webp`,
     jp: 'なあ。交換って、ええな。',
     zh: '喂。交换这个事，挺好的。',
     en: 'Hey. Trading. It is good.',
@@ -362,7 +362,7 @@ export const SORA_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_shy.webp`,
+    characterImage: `${S}shy.webp`,
     jp: '……教えてもらうだけやったら、ウチ、来られへんかったと思う。',
     words: [{ jp: '教える', reading: 'おしえる', zh: '教', en: 'to teach' }],
     zh: '……要是只有你教我，我大概来不了。',

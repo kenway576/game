@@ -22,7 +22,7 @@ import { INARI_STORY_2 } from './story/levelStories/inari2';
 import { INARI_STORY_3 } from './story/levelStories/inari3';
 import { ASUKA_STORY_2 } from './story/levelStories/asuka';
 import { ASUKA_STORY_3 } from './story/levelStories/asuka3';
-import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode, ViewSpot } from './types';
+import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode, ViewSpot, TimeSlot } from './types';
 
 // ---------------------------------------------------------
 // 🌍 1. 场景地图 (SCENE_MAP)
@@ -1479,6 +1479,9 @@ export interface LevelStoryDef {
   // 用途：第③段（结局那一段）必须排在第②段之后，
   //       而两段挂的是不同的轴，光靠等级排不出先后。
   requiresFlags?: string[];
+  // 只在这些时段演。不写的话按剧本自己的第一张场景图推——
+  // 体育馆是上课时段，带 night 的是夜里。见 levelStorySlots。
+  timeSlots?: TimeSlot[];
 }
 
 // 每个角色的专属剧情表。写好一个填一个——没填的角色照旧走 AI 即兴，
@@ -1722,6 +1725,28 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
 };
 
 // 前置 flag 齐了吗。没写 requiresFlags 的一律就绪。
+// 🕐 这一段该在什么时段演。
+//
+// 【为什么要有这个】
+// 等级剧情原来是"一回大厅就播"，完全不看几点。于是跟奈绪逛完超市、
+// 时间推到夜里，紧接着蹦出空在体育馆的那一场，副标题写着「下午 4:20」——
+// 玩家的体感是时间倒着走了。
+//
+// 【为什么不给每一段手写一个字段】
+// 三十来段，手写一遍容易漏，漏掉的那几段照样出 bug。
+// 场景图本身已经把时间写在脸上了：体育馆和教室是上课时段的地方，
+// 名字里带 sunset 的是黄昏，带 night 的是夜里。直接从第一个 scene 节点读。
+const SCHOOL_HOURS_SCENES = /classroom|hallway|library|gym|courtyard|music_room|art_room|school_terrace|kaisei_|infirmary|lockers|bicycle_parking/;
+export const levelStorySlots = (def: LevelStoryDef): TimeSlot[] => {
+  if (def.timeSlots?.length) return def.timeSlots;
+  const first = def.script?.find(n => n.type === 'scene') as { scene?: string } | undefined;
+  const scene = first?.scene || '';
+  if (/night/.test(scene)) return ['night'];
+  if (/sunset|dusk/.test(scene)) return ['afternoon'];
+  if (SCHOOL_HOURS_SCENES.test(scene)) return ['lunch', 'afternoon'];
+  return ['afternoon', 'night'];
+};
+
 export const isLevelStoryReady = (def: LevelStoryDef, flags: StoryFlags): boolean =>
   (def.requiresFlags || []).every(f => !!flags[f]);
 
