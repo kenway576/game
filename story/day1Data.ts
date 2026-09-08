@@ -199,7 +199,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
     zh: '锁门的时候，隔壁 202 的门也开了。',
     en: 'As you lock your door, the door of 202 opens as well.'
   },
-  // — 搭过话
+  // — 序章主动搭过话（已知晓彼此姓名）
   {
     type: 'branch',
     ifFlag: 'prologue_greeted_miyuki',
@@ -217,102 +217,120 @@ export const DAY1_SCRIPT: StoryNode[] = [
       },
       {
         type: 'narration',
-        zh: '她记得你的名字。昨晚写在回覧板上那一次，她真的记住了。',
-        en: 'She remembered your name. From the resident list last night — she actually kept it.'
+        zh: '她记得你的名字。昨晚在便利店相遇并一起走上坡道时，你们就已经互相认识了。',
+        en: 'She remembered your name. From when you met outside the store last night and walked up the hill together.'
       }
-    ]
-  },
-  // — 只鞠过躬
-  {
-    type: 'branch',
-    ifFlag: 'prologue_nodded_miyuki',
-    then: [
+    ],
+    otherwise: [
       {
-        type: 'speech',
-        speakerZh: '深雪',
-        speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}neutral.webp`,
-        jp: '……おはようございます。{name}さん、でしたね。',
-        zh: '……早上好。是叫{name}，对吧。',
-        en: '...Good morning. It was {name}, was it not.',
-        color: 'bg-sky-500'
-      },
-      {
-        type: 'narration',
-        zh: '她说名字的时候顿了半拍，像是在确认自己没记错。昨晚你们之间只有一个鞠躬，和写在纸上的三个字。',
-        en: 'She pauses half a beat on the name, checking it against her memory. Last night the two of you exchanged one bow, and a name written on a page.'
-      }
-    ]
-  },
-  // — 别过脸
-  {
-    type: 'branch',
-    ifFlag: 'prologue_avoided_miyuki',
-    then: [
-      {
-        type: 'narration',
-        characterImage: `${MIYUKI}neutral.webp`,
-        zh: '她看见你了。开门的手停在半路。停完，她还是点了下头，很轻。',
-        en: 'She sees you. Her hand stops halfway on the door. When it has stopped, she gives a small nod anyway.'
-      },
-      {
-        type: 'speech',
-        speakerZh: '深雪',
-        speakerEn: 'Miyuki',
-        characterImage: `${MIYUKI}neutral.webp`,
-        jp: '……おはようございます。行ってらっしゃい。',
-        words: [{ jp: '行ってらっしゃい', zh: '路上小心（送人出门）', en: 'said to someone leaving' }],
-        zh: '……早上好。路上小心。',
-        en: '...Good morning. Have a good day.',
-        color: 'bg-sky-500'
-      },
-      {
-        type: 'narration',
-        zh: '昨晚你在便利店移开了视线。她显然记得。但她还是说了这句话。',
-        en: 'You looked away from her in the shop last night. She clearly remembers that. She said it anyway.'
-      }
-    ]
-  },
-  // 兜底：跳过序章的人三个 flag 一个都没有，
-  // 不补这一条的话走廊这场会整个空掉——门开了，然后什么都没发生。
-  {
-    type: 'branch',
-    ifFlag: 'prologue_greeted_miyuki',
-    not: true,
-    then: [{
-      type: 'branch',
-      ifFlag: 'prologue_nodded_miyuki',
-      not: true,
-      then: [{
         type: 'branch',
-        ifFlag: 'prologue_avoided_miyuki',
-        not: true,
+        ifFlag: 'prologue_nodded_miyuki',
         then: [
           {
             type: 'narration',
             characterImage: `${MIYUKI}neutral.webp`,
-            zh: '深雪拎着垃圾袋走出来，看见你，愣了一下。',
-            en: 'Miyuki comes out with a rubbish bag, sees you, and pauses.'
+            zh: '隔壁 202 室走出来的银发女子拎着垃圾袋，看见你，眼中闪过一丝辨认的神情。',
+            en: 'The silver-haired young woman stepping out of Room 202 with a rubbish bag pauses, a look of recognition in her eyes.'
           },
           {
             type: 'speech',
-            speakerZh: '深雪',
-            speakerEn: 'Miyuki',
-            characterImage: `${MIYUKI}happy.webp`,
-            jp: 'あら。……もしかして、二〇一号室の方？',
-            zh: '哎呀。……难不成，是 201 室的那位？',
-            en: 'Oh. ...Are you the one who moved into 201?',
+            speakerZh: '银发的女子',
+            speakerEn: 'Silver-haired Woman',
+            characterImage: `${MIYUKI}neutral.webp`,
+            jp: '……おはようございます。昨夜、コンビニの前で軽く会釈を交わした……二〇一号室の方ですね。',
+            zh: '……早上好。昨晚在便利店前稍微点头致意过的……是 201 室的那位吧。',
+            en: '...Good morning. You are the one from Room 201... we exchanged a nod outside the convenience store last night.',
             color: 'bg-sky-500'
-          },
+          }
+        ],
+        otherwise: [
           {
-            type: 'narration',
-            zh: '你点头。她笑了一下，说了句「これからよろしくね」，就拎着袋子下楼了。',
-            en: 'You nod. She smiles, says something about looking forward to having you around, and carries the bag downstairs.'
-          },
-          { type: 'effect', relations: [{ char: CharacterId.MIYUKI, familiarity: 8, reasonZh: '在走廊上打了个照面', reasonEn: 'You crossed paths in the corridor' }] }
+            type: 'branch',
+            ifFlag: 'prologue_avoided_miyuki',
+            then: [
+              {
+                type: 'narration',
+                characterImage: `${MIYUKI}neutral.webp`,
+                zh: '隔壁 202 室走出来的银发女子看见你，开门的手停在半路，随后温和地点了点头。昨晚在便利店你移开了视线，她显然也有些印象。',
+                en: 'The silver-haired woman stepping out of 202 pauses at the door, then gives a gentle nod. You looked away in the shop last night, and she seems to recall that.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '银发的女子',
+                speakerEn: 'Silver-haired Woman',
+                characterImage: `${MIYUKI}neutral.webp`,
+                jp: '……おはようございます。お隣の、二〇一号室の方……ですよね。',
+                zh: '……早上好。是隔壁 201 室的那位……对吧。',
+                en: '...Good morning. You are the one who moved into 201 next door... right?',
+                color: 'bg-sky-500'
+              }
+            ],
+            otherwise: [
+              {
+                type: 'narration',
+                characterImage: `${MIYUKI}neutral.webp`,
+                zh: '隔壁 202 室的门开了，一位留着银白色长发、气质温婉的年轻女子拎着垃圾袋走出来，看见你，微微一愣。',
+                en: 'The door of Room 202 opens, and a gentle young woman with long silver-white hair steps out with a rubbish bag, pausing in surprise.'
+              },
+              {
+                type: 'speech',
+                speakerZh: '银发的女子',
+                speakerEn: 'Silver-haired Woman',
+                characterImage: `${MIYUKI}happy.webp`,
+                jp: 'あら。……おはようございます。もしかして、二〇一号室に新しく越してこられた方ですか？',
+                zh: '哎呀。……早上好。难不成，是新搬进 201 室的那位？',
+                en: 'Oh. ...Good morning. Might you be the new resident in Room 201?',
+                color: 'bg-sky-500'
+              }
+            ]
+          }
         ]
-      }]
-    }]
+      },
+      // 没在序章打过招呼的：在此自报家门并询问名字
+      {
+        type: 'speech',
+        speakerZh: '银发的女子',
+        speakerEn: 'Silver-haired Woman',
+        characterImage: `${MIYUKI}happy.webp`,
+        jp: 'まだ自己紹介していませんでしたね。私、隣の二〇二号室に住んでいる、三宅深雪と申します。……お名前、伺ってもよろしいですか？',
+        words: [
+          { jp: '自己紹介', reading: 'じこしょうかい', zh: '自我介绍', en: 'self-introduction' },
+          { jp: '申す', reading: 'もうす', zh: '叫做、说（自谦语）', en: 'to say / to be called (humble)' }
+        ],
+        zh: '还没正式自我介绍呢。我是住在隔壁 202 室的三宅深雪。……请问，怎么称呼您呢？',
+        en: 'I haven\'t properly introduced myself yet. I am Miyuki Miyake, living next door in Room 202. ...May I ask your name?',
+        color: 'bg-sky-500'
+      },
+      {
+        type: 'speech',
+        speakerZh: '你',
+        speakerEn: 'You',
+        jp: '{name}です。今日から海星高校に通うことになりました。これからよろしくお願いします、深雪さん。',
+        zh: '我叫{name}。今天开始要在海星高中上学。今后请多关照，深雪小姐。',
+        en: 'I am {name}. Starting at Kaisei High School today. It\'s a pleasure to meet you, Miyuki-san.',
+        color: 'bg-yellow-500'
+      },
+      {
+        type: 'speech',
+        speakerZh: '深雪',
+        speakerEn: 'Miyuki',
+        characterImage: `${MIYUKI}happy.webp`,
+        jp: 'ふふ、{name}さんですね。こちらこそ、よろしくお願いします。……制服、とてもよくお似合いですよ。',
+        zh: '呵呵，是{name}啊。我这边才是，请多关照。……制服很合身哦。',
+        en: 'Hmhm, {name}-san. The pleasure is mine. ...That uniform looks very good on you.',
+        color: 'bg-sky-500'
+      },
+      {
+        type: 'narration',
+        zh: '她温和地笑着，邻里之间的名字在开学第一天的早晨终于自然而然地互相知晓了。',
+        en: 'She smiles warmly, the neighbourly names finally naturally settled on this first morning of school.'
+      },
+      {
+        type: 'effect',
+        setFlags: ['day1_knows_miyuki_name'],
+        relations: [{ char: CharacterId.MIYUKI, familiarity: 10, affection: 2, reasonZh: '在门外互相做了自我介绍', reasonEn: 'Exchanged names properly outside your doors' }]
+      }
+    ]
   },
   {
     type: 'choice',
@@ -1204,8 +1222,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '明日香',
-    speakerEn: 'Asuka',
+    speakerZh: '红发的女生',
+    speakerEn: 'Red-haired Girl',
     characterImage: `${ASUKA}neutral.webp`,
     jp: '……あ。同じクラスの人、よね。出席簿で名前だけは見たことあるけど。',
     words: [{ jp: '出席簿', reading: 'しゅっせきぼ', zh: '点名册', en: 'class register' }],
@@ -1216,11 +1234,11 @@ export const DAY1_SCRIPT: StoryNode[] = [
   {
     type: 'choice',
     promptZh: '你手里还捏着半张讲义。今天早上那句玩笑正堵在喉咙口。',
-    promptEn: 'You are still holding half a handout. This morning\u2019s joke is sitting right at the top of your throat.',
+    promptEn: 'You are still holding half a handout. This morning’s joke is sitting right at the top of your throat.',
     options: [
       {
         id: 'day1_meta_say',
-        labelZh: '\u300c……抱歉。不过我今天早上刚预言过这一幕。\u300d',
+        labelZh: '「……抱歉。不过我今天早上刚预言过这一幕。」',
         labelEn: '"...Sorry. I predicted this exact scene this morning, though."',
         jp: '……すみません。実は今朝、この場面を予言したばかりで。',
         words: [{ jp: '予言', reading: 'よげん', zh: '预言', en: 'prediction' }],
@@ -1246,8 +1264,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '明日香',
-            speakerEn: 'Asuka',
+            speakerZh: '红发的女生',
+            speakerEn: 'Red-haired Girl',
             characterImage: `${ASUKA}surprised.webp`,
             jp: '……はい？',
             zh: '……啊？',
@@ -1261,8 +1279,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '明日香',
-            speakerEn: 'Asuka',
+            speakerZh: '红发的女生',
+            speakerEn: 'Red-haired Girl',
             characterImage: `${ASUKA}angry.webp`,
             jp: '……あのね。人を、そういう、記号みたいに数えるの、やめてくれる？',
             words: [{ jp: '記号', reading: 'きごう', zh: '符号、记号', en: 'sign / symbol' }],
@@ -1277,8 +1295,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '明日香',
-            speakerEn: 'Asuka',
+            speakerZh: '红发的女生',
+            speakerEn: 'Red-haired Girl',
             characterImage: `${ASUKA}neutral.webp`,
             jp: '……で。あと何個残ってるのよ、そのリスト。',
             zh: '……然后呢。那张清单，还剩几条。',
@@ -1316,7 +1334,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '明日香', speakerEn: 'Asuka',
+            speakerZh: '红发的女生', speakerEn: 'Red-haired Girl',
             characterImage: `${ASUKA}surprised.webp`,
             jp: '……は？今なんて言ったの？',
             zh: '……啊？你刚才说什么？',
@@ -1325,8 +1343,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你假装什么也没说，但明日香看你的眼神里多了一层「这个人是不是有点奇怪」的意味。',
-            en: 'You pretend you said nothing, but Asuka\'s expression now carries a distinct hint of "is this person a bit odd."'
+            zh: '你假装什么也没说，但红发少女看你的眼神里多了一层「这个人是不是有点奇怪」的意味。',
+            en: 'You pretend you said nothing, but the red-haired girl\'s expression now carries a distinct hint of "is this person a bit odd."'
           },
           {
             type: 'narration',
@@ -1375,12 +1393,12 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '虽然日语词汇量还很有限，句式也简单得像初级课文，但你的语气很平静，丝毫没有打算平白无故背黑锅的意思。明日香抬起头来，审视般地瞪着你。',
-            en: 'Though your Japanese vocabulary is still limited and the phrasing is simple, your tone remains calm, with zero intention of taking an unfair fall. Asuka lifts her head, glaring at you with an appraising eye.'
+            zh: '虽然日语词汇量还很有限，句式也简单得像初级课文，但你的语气很平静，丝毫没有打算平白无故背黑锅的意思。红发的女生抬起头来，审视般地瞪着你。',
+            en: 'Though your Japanese vocabulary is still limited and the phrasing is simple, your tone remains calm, with zero intention of taking an unfair fall. The red-haired girl lifts her head, glaring at you with an appraising eye.'
           },
           {
             type: 'speech',
-            speakerZh: '明日香', speakerEn: 'Asuka',
+            speakerZh: '红发的女生', speakerEn: 'Red-haired Girl',
             characterImage: `${ASUKA}surprised.webp`,
             jp: '…………走ってたわよ。悪い？',
             zh: '…………我是在跑。有问题吗？',
@@ -1394,7 +1412,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '明日香', speakerEn: 'Asuka',
+            speakerZh: '红发的女生', speakerEn: 'Red-haired Girl',
             characterImage: `${ASUKA}neutral.webp`,
             jp: '……ふん。まあ、そこで謝り倒さないだけマシね。',
             zh: '……哼。算了，起码没在那儿一个劲儿地赔不是，还行。',
@@ -1417,8 +1435,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '明日香',
-    speakerEn: 'Asuka',
+    speakerZh: '红发的女生',
+    speakerEn: 'Red-haired Girl',
     characterImage: `${ASUKA}neutral.webp`,
     jp: 'はい、これ。あなたの分。……先生が言ってたわ。日本語の授業についていけてない子がいるって。',
     zh: '给，这个。你那份。……老师说过。有个跟不上日语课的孩子。',
@@ -1427,8 +1445,34 @@ export const DAY1_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她说完这句，视线飞快地从你脸上移开，落到窗外的操场上。',
-    en: 'Having said it, her eyes leave your face fast and settle on the sports ground outside.'
+    zh: '你接过讲义。虽然她刚才提到了点名册，但你还不知道面前这位雷厉风行的红发少女的名字。你礼貌地问了一句：',
+    en: 'You take the handout. Although she mentioned the register, you still don\'t know the name of the brisk red-haired girl in front of you. You ask politely:'
+  },
+  {
+    type: 'speech',
+    speakerZh: '你',
+    speakerEn: 'You',
+    jp: 'あの……名前、聞いてもいいですか？',
+    words: [{ jp: '名前', reading: 'なまえ', zh: '名字', en: 'name' }],
+    zh: '那个……请问你的名字是？',
+    en: 'Um... may I ask your name?',
+    color: 'bg-yellow-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '明日香',
+    speakerEn: 'Asuka',
+    characterImage: `${ASUKA}neutral.webp`,
+    jp: '……日比野。日比野明日香。二年B組の学級委員長よ。',
+    words: [{ jp: '学級委員長', reading: 'がっきゅういいんちょう', zh: '班级委员长（班长）', en: 'class president' }],
+    zh: '……日比野。日比野明日香。二年B班的学级委员长。',
+    en: '...Hibino. Asuka Hibino. Class president of Class 2-B.',
+    color: 'bg-red-600'
+  },
+  {
+    type: 'narration',
+    zh: '她回答得很简短，语气公事公办。但说完这句，视线飞快地从你脸上移开，落到窗外的操场上。',
+    en: 'Her answer is crisp and strictly business. Having said it, though, her eyes leave your face fast and settle on the sports ground outside.'
   },
   {
     type: 'speech',

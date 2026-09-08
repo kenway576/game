@@ -44,7 +44,7 @@ export const DAY1_GYM: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '空', speakerEn: 'Sora',
+    speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
     characterImage: `${SORA}school_happy.webp`,
     jp: 'お、転校生じゃん。見学？それとも——やる？',
     words: [{ jp: '見学', reading: 'けんがく', zh: '参观、旁观', en: 'to watch / observe' }],
@@ -79,7 +79,7 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'narration',
             zh: '你把制服外套脱下来搭在栏杆上。里面那件是从行李箱最上层翻出来的——昨晚拆行李时，它被你用来裹外公那本手账，防止路上磕坏。',
-            en: 'You take off the blazer and hang it on the rail. What is underneath came out of the top of the suitcase: last night you had used it to wrap your grandfather\u2019s journal so it would not get knocked about on the way.'
+            en: 'You take off the blazer and hang it on the rail. What is underneath came out of the top of the suitcase: last night you had used it to wrap your grandfather’s journal so it would not get knocked about on the way.'
           },
           {
             type: 'narration',
@@ -89,12 +89,12 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${SORA}school_shock.webp`,
-            zh: '空直勾勾地盯着那个号码，指尖转动的篮球不知不觉停了下来。她脸上那种原本带着点挑衅的戏谑笑意，一瞬间收敛得干干净净。',
-            en: 'Sora stares fixedly at the number, the ball spinning on her fingertip coming to an unconscious halt. The playful, provocative smirk on her face vanishes entirely.'
+            zh: '短发女生直勾勾地盯着那个号码，指尖转动的篮球不知不觉停了下来。她脸上那种原本带着点挑衅的戏谑笑意，一瞬间收敛得干干净净。',
+            en: 'The short-haired girl stares fixedly at the number, the ball spinning on her fingertip coming to an unconscious halt. The playful, provocative smirk on her face vanishes entirely.'
           },
           {
             type: 'speech',
-            speakerZh: '空', speakerEn: 'Sora',
+            speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
             characterImage: `${SORA}school_shock.webp`,
             jp: '……二十四番。あんた、それ分かって着てんの？',
             zh: '……24 号。你知道自己穿的是什么才穿的吧？',
@@ -103,57 +103,91 @@ export const DAY1_GYM: StoryNode[] = [
           },
           {
             type: 'narration',
-            zh: '你把球捡起来，在指尖上轻巧地转了半圈。看着高挑的篮筐，不知怎么脑子里条件反射般浮现出《直到世界尽头》的前奏，甚至差点脱口而出一句「教练，我想打篮球」……好在理智战胜了中二。你屈膝、起跳，手腕在三分线外稳稳压了下去。',
-            en: 'You pick up the ball and spin it neatly on your fingertip. Looking at the high rim, an iconic basketball anime ballad involuntarily plays in your mind, and you almost blur out "Coach, I want to play basketball..." Fortunately sanity prevails over chuunibyou. You bend your knees, jump, and snap your wrist cleanly from beyond the arc.'
+            zh: '你捡起球，在掌心里沉稳地拍了两下，感受着熟悉的皮革纹理。紫金相间，神圣的 24 号——在这座名叫神户（KOBE）的城市里，你怎么可能不知道这件球衣的分量？',
+            en: 'You pick up the ball and bounce it twice in your palm, feeling the familiar leather grain. Purple and gold, the sacred number 24—in this city called Kobe, how could you not know what this jersey means?'
           },
           {
             type: 'narration',
-            zh: '空心。整个体育馆只有网绳擦过的那一声。',
-            en: 'Nothing but net. The only sound in the whole gym is the cord.'
+            zh: '你抬起头，迎着她惊愕的目光，嘴角微扬，字正腔圆地说出了那句刻在每个篮球迷 DNA 里的经典台词：',
+            en: 'You lift your head, meeting her astonished gaze. With a confident smirk, you utter the legendary line etched into every basketball fan\'s DNA:'
           },
           {
             type: 'speech',
             speakerZh: '你', speakerEn: 'You',
-            jp: 'この街の名前、なんて言うんでしたっけ。',
-            words: [{ jp: '街', reading: 'まち', zh: '城市、街区', en: 'town / city' }],
-            zh: '这座城市叫什么来着？',
-            en: 'Remind me what this city is called?',
+            jp: 'Man! What can I say!',
+            zh: 'Man! What can I say!',
+            en: 'Man! What can I say!',
             color: 'bg-yellow-500'
           },
           {
             type: 'narration',
+            zh: '话音未落，你顺势运球、后撤、蹬地干拔！身体在半空中优雅地向后漂移——标准到无可挑剔、教科书般的美如画后仰跳投（Fadeaway）！',
+            en: 'Before the words even settle, you dribble, step back, and elevate! Your body drifts back through the air with fluid grace—a picture-perfect, textbook Fadeaway jumper!'
+          },
+          {
+            type: 'narration',
+            zh: '篮球带着柔和的反旋从指尖脱手，划出一道极高的弧线。',
+            en: 'The ball rolls softly off your fingertips with clean backspin, tracing a high arc against the rafters.'
+          },
+          {
+            type: 'narration',
+            zh: '「唰——！」空心入网！清脆悦耳的擦网声在空旷高耸的体育馆里回荡。',
+            en: '"Swish—!" Nothing but net! The crisp sound of the cord snaps through the cavernous gym.'
+          },
+          {
+            type: 'narration',
+            characterImage: `${SORA}school_shock.webp`,
+            zh: '短发女生两只眼睛瞪得滚圆，下巴几乎要砸到地板上，手里的动作彻底僵死。',
+            en: 'The short-haired girl\'s eyes go wide as saucers, her jaw dropping open, completely frozen where she stands.'
+          },
+          {
+            type: 'narration',
             characterImage: `${SORA}school_happy.webp`,
-            zh: '她先是抱着球僵在那儿，等回过味来，整个人笑得直接蹲了下去，清脆的笑声在空旷高耸的体育馆顶棚下回荡了好几圈。',
-            en: 'She freezes clutching the ball, then collapses into laughter as the punchline lands, her bright laugh echoing round and round the cavernous gym rafters.'
+            zh: '足足愣了三秒，她猛地「噗」地一声笑喷出来，拍着大腿直接蹲到了地上，笑得肩膀直颤，清脆爽朗的笑声在顶棚下回响不绝。',
+            en: 'After three full seconds of dead silence, she suddenly bursts into helpless laughter, slapping her thigh and squatting right on the court, shoulders shaking.'
           },
           {
             type: 'speech',
-            speakerZh: '空', speakerEn: 'Sora',
+            speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
             characterImage: `${SORA}school_happy.webp`,
-            jp: 'あかん、それずるい！神戸でそれ着られたら誰も文句言われへんやん！',
+            jp: 'あっははは！なんやそれ！英語の発音めっちゃええし、フォームも完全に本物やん！',
+            words: [
+              { jp: '発音', reading: 'はつおん', zh: '发音', en: 'pronunciation' },
+              { jp: 'フォーム', reading: 'ふぉーむ', zh: '姿态、姿势 (form)', en: 'form / posture' }
+            ],
+            zh: '哈哈哈哈！什么鬼啊那是！不仅英语发音贼正，而且那个投篮姿势完全是本尊啊！',
+            en: 'Ahahaha! What in the world was that! Perfect English accent, and that shooting form is literally him!',
+            color: 'bg-orange-500'
+          },
+          {
+            type: 'speech',
+            speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
+            characterImage: `${SORA}school_happy.webp`,
+            jp: 'あかん、神戸でそれやられたら誰も文句言われへんわ！ずるすぎ！',
             words: [{ jp: 'ずるい', reading: 'ずるい', zh: '狡猾、耍赖', en: 'unfair / sly' }],
-            zh: '不行，这太赖皮了！在神户穿这个谁还敢说你啊！',
-            en: 'That is cheating! Wear that in Kobe and nobody can say a word to you!',
+            zh: '不行了，在神户秀这个谁还敢说你啊！太犯规了！',
+            en: 'No way, pull that off in Kobe and nobody can say a word to you! Totally unfair!',
             color: 'bg-orange-500'
           },
           {
             type: 'narration',
-            zh: '她站起来，把球从你手里抢回去，认真了。',
-            en: 'She gets up, takes the ball back off you, and stops playing around.'
+            characterImage: `${SORA}school_neutral.webp`,
+            zh: '她笑着擦掉眼角的泪花，站起身捡起球，眼神里的好胜火苗彻底被点燃了。',
+            en: 'She wipes a tear of laughter from her eye, stands up and grabs the ball, the competitive spark in her eyes blazing bright.'
           },
           {
             type: 'speech',
-            speakerZh: '空', speakerEn: 'Sora',
+            speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
             characterImage: `${SORA}school_neutral.webp`,
-            jp: '……もう一本。今度は本気でいくで。',
-            zh: '……再来一个。这次我认真了。',
-            en: '...One more. I am not going easy this time.',
+            jp: '……もう一本！今度はウチが本気でいくで！',
+            zh: '……再来一球！这次我可要动真格的了！',
+            en: '...One more! I\'m not holding back this time!',
             color: 'bg-orange-500'
           },
           {
             type: 'narration',
-            zh: '随后的对决中，她彻底展现了主力选手的实力，一次都没有再手下留情。在接连不断的扣球轰鸣声中，你输得心服口服。',
-            en: 'In the rallies that follow she shows the full weight of a varsity starter, giving you no quarter. Between the thundering spikes, you lose with zero excuses.'
+            zh: '随后的半场单挑里，她彻底展现了校队主力级别的恐怖爆发力与敏捷身手。在一次次凌厉的突破和贴身防守下，刚下飞机体能透支的你被连连得分，打得心服口服。',
+            en: 'In the half-court rallies that follow, she unleashes the full athletic prowess of a varsity starter. Against her fierce drives and tight defense, your jet-lagged stamina wears thin, and she racks up points one after another—leaving you thoroughly bested.'
           }
         ]
       },
@@ -172,12 +206,12 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${SORA}school_happy.webp`,
-            zh: '她像是没防备会被这么吐槽，眨了眨眼，随即笑得弯下腰去，一只手撑着膝盖直不起身。',
+            zh: '短发女生像是没防备会被这么吐槽，眨了眨眼，随即笑得弯下腰去，一只手撑着膝盖直不起身。',
             en: 'Caught completely off-guard by the comeback, she blinks in surprise before doubling over with laughter, hand propped on her knee.'
           },
           {
             type: 'speech',
-            speakerZh: '空', speakerEn: 'Sora',
+            speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
             characterImage: `${SORA}school_happy.webp`,
             jp: 'あはははっ！なんやそれ！……ほな次は、夕陽が差し込んでこなあかんな。',
             zh: '啊哈哈哈！什么啊那是！……那下一步，得有夕阳照进来才行吧。',
@@ -229,12 +263,12 @@ export const DAY1_GYM: StoryNode[] = [
           {
             type: 'narration',
             characterImage: `${SORA}school_happy.webp`,
-            zh: '她的表情亮了一下，像是听见了什么久违的好消息。',
+            zh: '短发女生的表情亮了一下，像是听见了什么久违的好消息。',
             en: 'Her face lights up, as if she has heard some good news she had stopped expecting.'
           },
           {
             type: 'speech',
-            speakerZh: '空', speakerEn: 'Sora',
+            speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
             characterImage: `${SORA}school_happy.webp`,
             jp: 'それでええねん！できひんのは別に恥ずかしいことちゃうで。やらんのが恥ずかしいねん。',
             words: [{ jp: '恥ずかしい', reading: 'はずかしい', zh: '丢脸、难为情', en: 'embarrassing / shameful' }],
@@ -249,7 +283,7 @@ export const DAY1_GYM: StoryNode[] = [
           },
           {
             type: 'speech',
-            speakerZh: '空', speakerEn: 'Sora',
+            speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
             characterImage: `${SORA}school_happy.webp`,
             jp: '肘、内側。目はリングの手前のフチ。……ほい、投げてみ。',
             words: [{ jp: '肘', reading: 'ひじ', zh: '手肘', en: 'elbow' }],
@@ -273,7 +307,7 @@ export const DAY1_GYM: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '空', speakerEn: 'Sora',
+    speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
     characterImage: `${SORA}school_happy.webp`,
     jp: 'よし、交換な。ウチが体育教えたるから、そっちは——',
     words: [{ jp: '交換', reading: 'こうかん', zh: '交换', en: 'exchange / swap' }],
@@ -288,7 +322,7 @@ export const DAY1_GYM: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '空', speakerEn: 'Sora',
+    speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
     characterImage: `${SORA}school_shock.webp`,
     jp: '……英語。英語な。ウチ、赤点二回とってんねん。',
     words: [{ jp: '赤点', reading: 'あかてん', zh: '不及格分数', en: 'a failing grade' }],
@@ -303,7 +337,7 @@ export const DAY1_GYM: StoryNode[] = [
   },
   {
     type: 'speech',
-    speakerZh: '空', speakerEn: 'Sora',
+    speakerZh: '短发的女生', speakerEn: 'Short-haired Girl',
     characterImage: `${SORA}school_shy.webp`,
     jp: 'ええやろ別に。走んのは速いんやから。',
     zh: '有什么关系嘛。反正我跑得快。',
@@ -312,8 +346,72 @@ export const DAY1_GYM: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她把球抱在腰上，转身往器材室走了两步，又停下。',
-    en: 'She tucks the ball against her hip, takes two steps toward the equipment room, and stops.'
+    zh: '你忍不住笑了笑，点头答应了这桩交易。不过看着眼前这位率真开朗的少女，你忽然想起一件事。',
+    en: 'You smile and nod in agreement to the trade. But looking at the candid, cheerful girl before you, a thought strikes.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '你', speakerEn: 'You',
+    jp: 'ところで……名前、まだ聞いてませんでした。',
+    words: [{ jp: '名前', reading: 'なまえ', zh: '名字', en: 'name' }],
+    zh: '说起来……我还不知道你的名字呢。',
+    en: 'By the way... I never got your name.',
+    color: 'bg-yellow-500'
+  },
+  {
+    type: 'narration',
+    characterImage: `${SORA}school_shock.webp`,
+    zh: '短发女生猛地一拍自己的脑门，露出一副「我怎么把这事给忘了」的表情。',
+    en: 'She slaps her forehead with a dramatic "how on earth did I forget that" look.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}school_happy.webp`,
+    jp: 'あ、せや！自己紹介まだやったわ！ウチは天野空。二年A組！バレー部やけど球技はなんでも好きやで！',
+    words: [
+      { jp: '自己紹介', reading: 'じこしょうかい', zh: '自我介绍', en: 'self-introduction' },
+      { jp: '天野空', reading: 'あまの そら', zh: '天野空', en: 'Amano Sora' }
+    ],
+    zh: '啊，对哦！自我介绍都给忘了！我叫天野空，高二A班！虽然是排球部的，不过球类运动我都喜欢！',
+    en: 'Ah, right! We never introduced ourselves! I\'m Sora Amano, Class 2-A! I\'m in the volleyball club, but I love any ball game!',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    zh: '她大大咧咧地用大拇指指了指自己，随即笑嘻嘻地望向你。',
+    en: 'She points a thumb proudly at herself, grinning openly at you.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}school_happy.webp`,
+    jp: 'で、転校生のあんたの名前は？',
+    zh: '那，身为转学生的你叫什么名字？',
+    en: 'And what about you, transfer student?',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '你', speakerEn: 'You',
+    jp: '{name}です。よろしく。',
+    zh: '我叫{name}。请多指教。',
+    en: 'I\'m {name}. Nice to meet you.',
+    color: 'bg-yellow-500'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}school_happy.webp`,
+    jp: 'よし、{name}な！しっかり覚えたで！',
+    zh: '好，{name}是吧！我牢牢记住啦！',
+    en: 'All right, {name}! Got it locked in!',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    zh: '她把球抱在腰间，转身往器材室走了两步，又停下脚步回头看你。',
+    en: 'She tucks the ball against her hip, takes two steps toward the equipment room, and stops to look back.'
   },
   {
     type: 'speech',
@@ -327,14 +425,77 @@ export const DAY1_GYM: StoryNode[] = [
   },
   {
     type: 'narration',
-    zh: '她说的是「体育馆空着」，不是「我在」。你点了头。她这才转身进去，球在她手上转得比刚才快。',
-    en: 'What she says is that the gym is free, not that she will be in it. You nod. Only then does she turn and go, the ball spinning faster on her hand than it was before.'
+    zh: '她说的是「体育馆空着」，不是「我在」。你认真地点了点头。',
+    en: 'What she says is that the gym is free, not that she will be in it. You give a firm nod.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}school_happy.webp`,
+    jp: '約束やで！ほな、片付け手伝ってぇな！ボール散らかりっぱなしや。',
+    zh: '那就说定了！来，搭把手帮我收拾收拾！球散得满地都是呢。',
+    en: 'That\'s a promise! Come on, help me clean up! Balls are scattered all over the floor.',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    zh: '你跟着她把滚散在各个角落的篮球逐一捡回铁丝球车里。最后一只球滚到了看台底下，你弯腰把它捞出来，空在门边「啪嗒」一声扣上了球架的铁锁。',
+    en: 'You help her round up every stray ball from across the floor into the wire basket. When you fish the last one out from under the bleachers, Sora snaps the padlock shut with a satisfying click.'
+  },
+  {
+    type: 'narration',
+    zh: '随着主电闸合上，体育馆的探照大灯一排排熄灭。走出侧门，略带凉意的初春晚风迎面拂过，浑身的汗意顿时化作一阵舒爽的清凉。',
+    en: 'With the flip of the main switch, the overhead floodlights shut down one row at a time. Stepping out the side door, the cool early-spring evening breeze rushes past, washing away the sweat with a refreshing chill.'
+  },
+  {
+    type: 'narration',
+    zh: '空拉着你走到体育馆外墙那台泛着荧光的自动贩卖机前，熟练地投进硬币，按下两个按钮。「咚当！」两罐冰镇宝矿力水特滚落下来。',
+    en: 'Sora leads you to the glowing vending machine beside the gym wall. She drops in coins with practiced ease and hits two buttons. "Clunk!" Two chilled cans of Pocari Sweat drop down.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}school_happy.webp`,
+    jp: 'ほいっ、奢りや！今日の「Man, what can I say」代な！',
+    zh: '接住，前辈请客！当作是今天那句「Man, what can I say」的观赏费啦！',
+    en: 'Here, my treat! Consider it admission for today\'s "Man, what can I say!"',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    zh: '易拉罐拉环「呲」地拉开。冰凉微酸的电解质饮料顺着喉咙灌下去，瞬间扫空了剧烈运动后的干渴与疲惫。',
+    en: 'The pull tab cracks open with a hiss. The cold, crisp citrus drink rushes down your throat, washing away all thirst and fatigue in an instant.'
+  },
+  {
+    type: 'narration',
+    zh: '西侧六甲山的轮廓在夕阳残照中沉入墨蓝，天际染着一片紫红色的晚霞。从学校的高坡向下望去，神户港的灯塔与坡道两旁的路灯正一盏盏静静亮起，海风隐隐带来了汽笛的低鸣。',
+    en: 'The silhouette of Mount Rokko to the west sinks into deep indigo against the lingering sunset, the horizon painted in violet and amber. Looking down from the school slope, Kobe harbor lights and hillside streetlamps blink to life one by one, with the low hum of distant ship horns on the breeze.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}school_happy.webp`,
+    jp: '明日は負けへんからな！気ぃつけて帰りや、{name}！',
+    zh: '明天我可不会输了哦！路上小心，{name}！',
+    en: 'I won\'t lose tomorrow! Get home safe, {name}!',
+    color: 'bg-orange-500'
+  },
+  {
+    type: 'narration',
+    characterImage: '',
+    zh: '她单手把喝完的易拉罐投进回收箱，将运动包甩在肩头，笑着朝你用力挥了挥手，踩着轻快的脚步朝车棚小跑而去。',
+    en: 'She tosses her empty can neatly into the recycle bin, slings her duffel bag over her shoulder, waves energetically, and jogs off toward the bicycle racks with a bounce in her step.'
+  },
+  {
+    type: 'narration',
+    zh: '你把制服外套重新穿好，拉平衣领。夕阳渐渐隐没，整座港口城市正迎来属于它的夜色。你背上书包，迈步走下校门口的长阶梯。',
+    en: 'You slip back into your blazer and smooth your collar. As the last embers of the sun fade, the port city welcomes the dusk. You shoulder your backpack and head down the long front steps of the school.'
   },
   {
     type: 'effect',
     setFlags: ['day1_met_sora', 'day1_deep_sora'],
-    effects: [{ stat: 'guts', amount: 1, reasonZh: '在体育馆门口没有转身就走', reasonEn: 'You did not turn around at the gym door' }],
-    relations: [{ char: CharacterId.SORA, familiarity: 12, reasonZh: '她主动问了明天', reasonEn: 'She was the one who asked about tomorrow' }]
+    effects: [{ stat: 'guts', amount: 1, reasonZh: '在体育馆痛快地打了一场球', reasonEn: 'Had a thrilling game of basketball in the gym' }],
+    relations: [{ char: CharacterId.SORA, familiarity: 16, affection: 6, reasonZh: '一起喝了贩卖机的冷饮，约定了明天的球局', reasonEn: 'Shared cold drinks from the vending machine and set up tomorrow\'s match' }]
   }
 ];
 
