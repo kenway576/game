@@ -73,7 +73,7 @@ export const SORA_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${S}school_sad.webp`,
+    characterImage: `${S}sad.webp`,
     zh: '左手那个没进。她捡回来，又用左手投。又没进。',
     en: 'The left-handed one misses. She fetches it and shoots left-handed again. Misses again.'
   },
@@ -110,7 +110,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             zh: '她转过来的时候明显吓了一跳，随即整个人换上了那副笑：「うわ、なんでおるん」。',
             en: 'She jumps when she turns, and the grin goes straight on: what are you doing here.'
           },
@@ -143,14 +143,14 @@ export const SORA_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             zh: '她没有立刻说话。她先低头看了一眼自己的右手，然后才抬起头。',
             en: 'She does not speak straight away. She looks down at her own right hand first, and only then looks up.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             jp: '……どっからおった。',
             zh: '……从哪儿开始看的。',
             en: '...From where.',
@@ -231,7 +231,7 @@ export const SORA_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_sad.webp`,
+    characterImage: `${S}sad.webp`,
     jp: '決勝は出られへんかったけどな。',
     zh: '不过决赛没能上。',
     en: 'Could not play the final, though.',
@@ -265,7 +265,7 @@ export const SORA_STORY_2: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '空', speakerEn: 'Sora',
-    characterImage: `${S}school_sad.webp`,
+    characterImage: `${S}sad.webp`,
     jp: '……治っとるのに、届かへんねん。あと五センチ。',
     zh: '……明明好了，就是够不到。差五公分。',
     en: '...It healed, and it still will not reach. Five centimetres short.',
@@ -300,7 +300,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             zh: '她整个人僵了一下。',
             en: 'Something in her locks.'
           },
@@ -316,14 +316,14 @@ export const SORA_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             zh: '她低头看着那个球，看了很久。',
             en: 'She looks at the ball for a long time.'
           },
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             jp: '……こわいねん。好きって言うたら、',
             zh: '……我怕。要是说了喜欢，',
             en: '...I am scared. If I say I like it,',
@@ -332,7 +332,7 @@ export const SORA_STORY_2: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '空', speakerEn: 'Sora',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             jp: 'また、あと五センチのために三年やらなあかんくなるやん。',
             zh: '就又得为了那五公分再拼三年了嘛。',
             en: 'then I have to spend another three years on five centimetres.',
@@ -358,7 +358,7 @@ export const SORA_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${S}school_sad.webp`,
+            characterImage: `${S}sad.webp`,
             zh: '她愣了一下，然后答了：初中的教练。',
             en: 'It stops her. Then she answers: her middle-school coach.'
           },
