@@ -57,7 +57,7 @@ const TIRING: Record<string, number> = {
 export const staminaCostOf = (
   loc: MapLocation, ev: MapEventDef | null | undefined, cal: GameCalendar
 ): number => {
-  const base = TIRING[loc.id] ?? ((ev?.timeCost ?? loc.timeCost ?? (loc.district === 'far' ? 2 : 1)) * 18);
+  const base = loc.stamina ?? TIRING[loc.id] ?? ((ev?.timeCost ?? loc.timeCost ?? (loc.district === 'far' ? 2 : 1)) * 18);
   // 下雨天走一趟更费劲。这是唯一一个天气真正影响到玩法的地方。
   // 但泡温泉不会因为下雨变累。
   const wet = cal.weather === 'rainy' && base > 0 ? 6 : 0;

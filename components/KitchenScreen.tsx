@@ -4,13 +4,13 @@ import { RECIPES, canCook, consumeFor, fishCounts, recipeKnown } from '../data/c
 import { SEEDS, findFish } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
-import { CookingQTEModal, CookingResult } from './CookingQTEModal';
+import { CookingRecipeModal, CookingResult } from './CookingRecipeModal';
 
 // ---------------------------------------------------------
 // 🍳 厨房
 //
 // 菜谱全部列出来，做不了的灰着并标出缺什么。
-// 点击做菜将启动随机化 QTE 烹饪小游戏（刀工/火候/沸腾掀盖/点睛），
+// 点击做菜会打开一张日文菜谱卡，读懂句子、按顺序点步骤（见 CookingRecipeModal），
 // 完美或良好完成才能做出色香味俱全的加属性饭菜！
 // ---------------------------------------------------------
 
@@ -89,7 +89,7 @@ const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, o
     setCookingTarget(sel);
   };
 
-  const handleQTEFinish = (result: CookingResult, pack?: boolean) => {
+  const handleCookFinish = (result: CookingResult, pack?: boolean) => {
     if (cookingTarget) {
       onCook(cookingTarget, !dex[cookingTarget.id], result, pack);
     }
@@ -227,7 +227,7 @@ const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, o
                     ok ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-black hover:brightness-110 shadow-[0_0_20px_rgba(245,158,11,0.4)]' : 'bg-white/10 text-white/30 cursor-not-allowed'
                   }`}>
                   <span className="block transform skew-x-12">
-                    {ok ? (en ? 'Cook (QTE) ▶' : '开始料理 (QTE) ▶') : (en ? 'Missing ingredients' : '材料不够')}
+                    {ok ? (en ? 'Read the recipe ▶' : '看菜谱，开始做 ▶') : (en ? 'Missing ingredients' : '材料不够')}
                   </span>
                 </button>
               </div>
@@ -237,12 +237,13 @@ const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, o
         </div>
       </div>
 
+      {/* 做菜是读日文菜谱排顺序，不再是看准时机按——那是钓鱼的手感，两个不该一样 */}
       {cookingTarget && (
-        <CookingQTEModal
+        <CookingRecipeModal
           recipe={cookingTarget}
           language={language}
           firstTime={!dex[cookingTarget.id]}
-          onFinish={handleQTEFinish}
+          onFinish={handleCookFinish}
           onCancel={() => setCookingTarget(null)}
         />
       )}

@@ -133,6 +133,21 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientZh: ['画架上有一张没画完的港口。颜料还没干透。'],
     ambientEn: ['An unfinished harbour sits on an easel. The paint has not fully dried.']
   },
+  {
+    // 🎴 作法室：茶道社和竞技歌留多社共用的和室。明日香是歌留多社的。
+    id: 'school_sahoushitsu', district: 'school',
+    nameJp: '作法室', reading: 'さほうしつ',
+    nameZh: '作法室（和室）', nameEn: 'Tatami Room',
+    blurbZh: '十二张榻榻米。茶道社和歌留多社轮流用，门口的拖鞋永远摆得整整齐齐。',
+    blurbEn: 'Twelve tatami mats, shared by the tea ceremony and karuta clubs. The slippers at the door are always lined up perfectly.',
+    requiresFlag: 'day1_done',
+    lockedHintZh: '你还没在这栋楼里走全过。',
+    lockedHintEn: 'You have not walked the whole building yet.',
+    timeSlots: ['lunch', 'afternoon'],
+    regulars: [CharacterId.ASUKA],
+    ambientZh: ['榻榻米上散着几张歌留多的牌，还没收。拉门外有人在练挥手的动作。'],
+    ambientEn: ['A few karuta cards lie scattered on the tatami, not yet put away. Outside the sliding door someone is practising the swipe.']
+  },
 
   {
     id: 'school_infirmary', district: 'school',

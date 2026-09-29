@@ -12,6 +12,9 @@ import {
   pickEventFor, getTimeCost, slotsLeftToday, AFTERSCHOOL_SLOTS, mapSceneFor
 } from '../story/mapEvents';
 import { audioManager } from '../services/audioManager';
+import { activitiesAt, checkActivity, practiceKeyOf, ActivityDef } from '../data/activityData';
+import { progressLine } from '../data/drillData';
+import { LifeState } from '../types';
 import { lunchSpotsToday, isWeekend } from '../data/scheduleData';
 
 // ---------------------------------------------------------
@@ -49,6 +52,9 @@ interface Props {
   onClose: () => void;
   onTravel: (loc: MapLocation) => void;
   metChars: CharacterId[];
+  // 🎯 地点上的活动（情景对答、小游戏）
+  life: LifeState;
+  onActivity: (loc: MapLocation, act: ActivityDef) => void;
 }
 
 // CHARACTERS 里只有罗马字名，中文界面上写 "Asuka 常在" 很出戏。
@@ -63,7 +69,7 @@ const NAME_ZH: Record<string, string> = {
 const bgOf = (id: string) => SCENE_MAP[id] || SCENE_FALLBACK[id] || SCENE_MAP['street'];
 
 const MapScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, stamina, yen, affection, familiarity, onClose, onTravel, metChars
+  language, calendar, storyFlags, stamina, yen, affection, familiarity, onClose, onTravel, metChars, life, onActivity
 }) => {
   const en = language === 'en';
   const ctx: EventContext = useMemo(
@@ -367,6 +373,39 @@ const MapScreen: React.FC<Props> = ({
                   </span>
                 </div>
               )}
+
+              {/* 🎯 在这儿能做的事。没见过的人的活动不列——那等于剧透。
+                  做不了的也列出来，只是灰着、写清楚为什么：玩家要知道"什么时候再来"。 */}
+              {selUnlocked && (() => {
+                const acts = activitiesAt(selected.id).filter(a => !a.partner || metChars.includes(a.partner));
+                if (!acts.length) return null;
+                return (
+                  <div className="mt-4 space-y-2 max-w-2xl">
+                    <p className="text-[10px] text-yellow-400/80 font-black tracking-widest">{en ? 'THINGS TO DO HERE' : '在这儿能做的事'}</p>
+                    {acts.map(a => {
+                      const chk = checkActivity(a, { calendar, life, slotsLeft, met: metChars });
+                      return (
+                        <button key={a.id} disabled={!chk.ok}
+                          onClick={() => { if (chk.ok) { audioManager.playSfx('confirm'); markVisited(selected.id); onActivity(selected, a); } }}
+                          className={`w-full text-left px-3 py-2.5 border flex items-center gap-3 transition-all ${
+                            chk.ok ? 'border-yellow-400/40 bg-yellow-400/[0.06] hover:bg-yellow-400/15' : 'border-white/10 bg-white/[0.02] opacity-60 cursor-not-allowed'}`}>
+                          <span className="text-2xl shrink-0">{a.emoji}</span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-white text-sm font-black">{en ? a.titleEn : a.titleZh}</span>
+                            <span className="block text-white/55 text-[11px] leading-snug">{en ? a.blurbEn : a.blurbZh}</span>
+                            <span className="block text-[10px] mt-0.5">
+                              <span className="text-emerald-300/80">{progressLine(life.practice?.[practiceKeyOf(a)], en)}</span>
+                              <span className="text-white/35 ml-2">🔋 −{a.stamina}{a.fee ? ` · ¥${a.fee}` : ''}</span>
+                              {!chk.ok && <span className="text-rose-300 ml-2">{en ? chk.en : chk.zh}</span>}
+                            </span>
+                          </span>
+                          {chk.ok && <span className="text-yellow-300 text-xs font-black shrink-0">{en ? 'Do it ▶' : '去 ▶'}</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
             </div>
           </div>
 

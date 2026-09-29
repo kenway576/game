@@ -84,6 +84,9 @@ export const SCENE_MAP: Record<string, string> = {
   'music_room':        '/images/backgrounds/bg_kaisei_music_room.webp',
   'school_gate':       '/images/backgrounds/bg_school_gate_sakura.webp',
   'art_room':          '/images/backgrounds/bg_art_club_room.webp',
+  // 🎴 作法室（歌留多）与夏夜的生田神社（捞金鱼）——小游戏用，Gemini 以现有图为参考生成
+  'school_sahoushitsu': '/images/backgrounds/bg_school_sahoushitsu.webp',
+  'ikuta_summer_night': '/images/backgrounds/bg_ikuta_shrine_summer_night.webp',
   'school_terrace':    '/images/backgrounds/bg_kaisei_cafeteria_sunlight.webp',
   'courtyard_rain':    '/images/backgrounds/bg_school_courtyard_rain.webp',
   'school_hallway_new': '/images/backgrounds/bg_school_hallway.webp',

@@ -30,10 +30,12 @@ interface Props {
   onOpenKitchen: () => void;
   // 软木板上钉的那张地图。点开是真的一张神户地图，不是一句旁白
   onOpenKobeMap: () => void;
+  // 🐟 夏天夜店捞回来的金鱼。有才摆鱼缸
+  goldfish?: number;
 }
 
 const RoomScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep, plotCount, onOpenBalcony, onOpenKitchen, onOpenKobeMap
+  language, calendar, storyFlags, onClose, onOpenWordbook, onSleep, plotCount, onOpenBalcony, onOpenKitchen, onOpenKobeMap, goldfish = 0
 }) => {
   const en = language === 'en';
   const [active, setActive] = useState<{ hotspot: RoomHotspot; text: string } | null>(null);
@@ -346,6 +348,38 @@ const RoomScreen: React.FC<Props> = ({
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 🐟 金鱼缸。夏天在生田神社的夜店捞回来的，一条一条游在窗台上。
+          不做成热区：它不需要"点开有一段话"，它只需要在那儿。 */}
+      {goldfish > 0 && (
+        // pointer-events-none：鱼缸只是摆在那儿，不能挡住后面家具的热区（行李箱就在旁边）
+        <div className="absolute right-3 bottom-3 md:right-5 md:bottom-4 z-20 w-20 md:w-24 pointer-events-none">
+          <svg viewBox="0 0 120 110" className="w-full h-auto drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)]">
+            <defs>
+              <radialGradient id="bowlWater" cx="50%" cy="40%" r="70%">
+                <stop offset="0%" stopColor="#d7f0fb" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#6fb8de" stopOpacity="0.8" />
+              </radialGradient>
+            </defs>
+            <ellipse cx="60" cy="62" rx="52" ry="44" fill="url(#bowlWater)" stroke="#e8f6ff" strokeOpacity="0.8" strokeWidth="2" />
+            <ellipse cx="60" cy="20" rx="34" ry="6" fill="none" stroke="#e8f6ff" strokeOpacity="0.9" strokeWidth="2" />
+            <ellipse cx="42" cy="44" rx="10" ry="18" fill="#ffffff" opacity="0.18" />
+            {Array.from({ length: Math.min(goldfish, 8) }).map((_, i) => (
+              <g key={i} style={{ animation: `bowlSwim ${5 + (i % 3) * 1.3}s ease-in-out ${i * 0.7}s infinite alternate` }}>
+                <g transform={`translate(${34 + (i * 11) % 52} ${46 + (i * 17) % 34})`}>
+                  <path d="M-6,0 L-13,-5 L-11,0 L-13,5 Z" fill="#ff9a6b" />
+                  <ellipse rx="7" ry="4" fill={i % 5 === 3 ? '#262229' : '#f25c2a'} />
+                  <circle cx="4" cy="-1" r="0.9" fill="#111" />
+                </g>
+              </g>
+            ))}
+          </svg>
+          <p className="text-center text-[10px] text-white/55">
+            {en ? `${goldfish} goldfish` : `金鱼 ×${goldfish}`}
+          </p>
+          <style>{`@keyframes bowlSwim { from { transform: translateX(-8px) } to { transform: translateX(8px) } }`}</style>
         </div>
       )}
 

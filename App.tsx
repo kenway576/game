@@ -57,6 +57,13 @@ import { promiseDue } from './story/day2Promises';
 import GiftScreen from './components/GiftScreen';
 import SlotCard from './components/SlotCard';
 import KonbiniShiftModal, { ShiftResult } from './components/KonbiniShiftModal';
+import DrillModal, { DrillResult } from './components/DrillModal';
+import KarutaModal, { KarutaResult } from './components/KarutaModal';
+import ShiritoriModal, { ShiritoriResult } from './components/ShiritoriModal';
+import MichiModal, { MichiResult } from './components/MichiModal';
+import KingyoModal, { KingyoResult } from './components/KingyoModal';
+import { ActivityDef, practiceKeyOf, drillRewards } from './data/activityData';
+import { DRILL_PACKS, buildSession, settlePractice } from './data/drillData';
 import { PART_TIME } from './story/restDayScenes';
 import { GiftVerdict } from './data/giftData';
 import { FARM_TUTORIAL, FISH_TUTORIAL } from './story/tutorials';
@@ -307,6 +314,9 @@ const App: React.FC = () => {
   const lastSlotRef = useRef<string>('');
   // 🏪 便利店那一天班：先站六个客人，再演剧本。
   const [shiftRunning, setShiftRunning] = useState(false);
+  // 🎯 地图上正在进行的活动（情景对答 / 歌留多 / 接龙 / 指路 / 捞金鱼）。
+  // session 是情景对答这一次抽到的题——开始那一刻就定下来，中途不变。
+  const [activeActivity, setActiveActivity] = useState<{ act: ActivityDef; loc: MapLocation; session?: ReturnType<typeof buildSession> } | null>(null);
   // 🧑‍🏫 教程演完之后再打开的那个玩法。种菜和钓鱼第一次都得有人先教一遍，
   // 否则玩家点开的是一个没写说明书的仪表盘。
   const [pendingFishing, setPendingFishing] = useState<MapLocation | null>(null);
@@ -796,13 +806,154 @@ const App: React.FC = () => {
     setGameMode(GameMode.LOBBY);
   };
 
+  // 🎯 活动结算完、收尾那句旁白也播完之后，写一次自动存档。
+  // 出门一趟本来不自动存；但练习进度（升到第几档）是玩家一点点攒的，刷新一下就没了太冤。
+  // 等 activeTrip 清空（时间、体力都落进 state）再存，避免存进过期的值。
+  const pendingActivitySaveRef = useRef(false);
+  useEffect(() => {
+    if (!pendingActivitySaveRef.current || activeTrip || activeActivity) return;
+    pendingActivitySaveRef.current = false;
+    triggerAutoSave();
+  }, [activeTrip, activeActivity, gameCalendar.timeSlot, gameMode]);
+
+  // 反悔了：什么都不结算，回到地图上刚才那个地点
+  const cancelActivity = () => {
+    setActiveActivity(null);
+    setCurrentScene(DEFAULT_SCENE);
+    setGameMode(GameMode.MAP);
+  };
+
+  // 🎯 地图上的活动：开始。
+  // 时间、体力的结算放到结束时一起做，跟出门一趟走同一条路（finishTrip），
+  // 所以午休在校内做完，照样回教室上下午的课。
+  const startActivity = (loc: MapLocation, act: ActivityDef) => {
+    setStoryFlags(prev => (prev[beenFlag(loc.id)] ? prev : { ...prev, [beenFlag(loc.id)]: true }));
+    setCurrentScene(act.kind === 'kingyo' ? 'ikuta_summer_night' : (loc.mapScene || loc.id));
+    const session = act.kind === 'drill' && act.packId
+      ? buildSession(DRILL_PACKS[act.packId], life.practice?.[practiceKeyOf(act)])
+      : undefined;
+    setGameMode(GameMode.LOBBY);
+    setActiveActivity({ act, loc, session });
+  };
+
+  // 🎯 活动：结束。进度、属性、生词、熟悉度、然后按"出门一趟"结算时间和体力。
+  const finishActivity = (payload:
+    | { kind: 'drill'; r: DrillResult }
+    | { kind: 'karuta'; r: KarutaResult }
+    | { kind: 'shiritori'; r: ShiritoriResult }
+    | { kind: 'michi'; r: MichiResult }
+    | { kind: 'kingyo'; r: KingyoResult }
+  ) => {
+    const cur = activeActivity;
+    if (!cur) return;
+    const { act, loc } = cur;
+    const key = practiceKeyOf(act);
+    const prev = life.practice?.[key];
+    const en = userState.language === 'en';
+
+    // 进度：各自换算成"得分 / 满分"交给同一套升档规则
+    const [score, total, seen] =
+      payload.kind === 'drill' ? [payload.r.score, payload.r.total, payload.r.seenIds]
+      : payload.kind === 'karuta' ? [payload.r.mine, payload.r.total, [] as string[]]
+      : payload.kind === 'shiritori' ? [payload.r.turns, payload.r.maxTurns, [] as string[]]
+      : payload.kind === 'michi' ? [payload.r.score, payload.r.total, [] as string[]]
+      : [Math.min(payload.r.caught, 5), 5, [] as string[]];
+    const settled = settlePractice(prev, score, total, seen);
+
+    // 属性
+    const effects: StoryEffect[] = [];
+    if (payload.kind === 'drill') {
+      effects.push(...drillRewards(act.packId || '', prev?.tier ?? 1, settled.cleared));
+    } else if (payload.kind === 'karuta') {
+      const won = payload.r.mine > payload.r.hers;
+      effects.push({ stat: 'knowledge', amount: won ? 2 : 1, reasonZh: won ? '单词本里的词，一张一张抢了回来' : '被抢走的那几张，现在记得特别牢', reasonEn: won ? 'You took your own words back, card by card' : 'The cards she took are the ones you will remember' });
+      if (won) effects.push({ stat: 'guts', amount: 1, reasonZh: '赢了明日香', reasonEn: 'You beat Asuka' });
+    } else if (payload.kind === 'shiritori') {
+      effects.push({ stat: 'knowledge', amount: 1, reasonZh: '脑子里的词一个接一个地冒出来', reasonEn: 'Words kept surfacing one after another' });
+      if (payload.r.outcome !== 'lose') effects.push({ stat: 'charm', amount: 1, reasonZh: '光笑得前仰后合', reasonEn: 'Hikari was in fits of laughter' });
+    } else if (payload.kind === 'michi') {
+      const good = payload.r.score >= payload.r.total * 0.75;
+      effects.push({ stat: 'kindness', amount: good ? 2 : 1, reasonZh: '有人照着你的话，找到了要去的地方', reasonEn: 'Someone followed your words and found their way' });
+      if (good) effects.push({ stat: 'knowledge', amount: 1, reasonZh: '三宫的地图刻进了脑子里', reasonEn: 'The map of Sannomiya is in your head now' });
+    } else {
+      effects.push({ stat: 'proficiency', amount: payload.r.caught >= 3 ? 2 : 1, reasonZh: '纸网的角度，手慢慢记住了', reasonEn: 'Your hand is learning the angle of the scoop' });
+      if (payload.r.rare) effects.push({ stat: 'charm', amount: 1, reasonZh: '捞到了琉金，旁边的小孩都在鼓掌', reasonEn: 'You landed a ryukin and the kids nearby clapped' });
+    }
+    if (effects.length) applyStoryEffects(effects);
+
+    // 生词
+    const words =
+      payload.kind === 'drill' ? payload.r.words
+      : payload.kind === 'karuta' ? payload.r.words
+      : payload.kind === 'kingyo' ? payload.r.words
+      : [];
+    if (words.length) collectStoryWords(words);
+
+    // 跟对面那个人熟一点：一起花掉的时间，本身就是相处
+    if (act.partner) {
+      applyStoryRelations([{
+        char: act.partner,
+        familiarity: settled.cleared ? 3 : 1,
+        reasonZh: settled.cleared ? '一来一回，话越说越顺' : '磕磕绊绊，但一起待了一阵子',
+        reasonEn: settled.cleared ? 'The back-and-forth got easier' : 'Clumsy, but time spent together'
+      }]);
+    }
+
+    // 进度、今天做过了、捞金鱼的钱和鱼
+    const today = dayIndex(gameCalendar);
+    setLife(l => ({
+      ...l,
+      practice: { ...(l.practice || {}), [key]: settled.progress },
+      activityOn: { ...(l.activityOn || {}), [act.id]: today },
+      yen: act.fee ? Math.max(0, l.yen - act.fee) : l.yen,
+      goldfish: payload.kind === 'kingyo' ? Math.min(12, (l.goldfish || 0) + payload.r.caught) : l.goldfish
+    }));
+
+    if (settled.promoted) {
+      const lbl = ['', en ? 'Beginner' : '初级', en ? 'Intermediate' : '中级', en ? 'Advanced' : '上级'][settled.progress.tier];
+      flashLife(en ? `${act.titleEn}: up to ${lbl}` : `${act.titleZh}：升到${lbl}`);
+    }
+
+    // 收尾一小段，然后按出门一趟结算：花一格时间，体力按活动表
+    const outro: Record<ActivityDef['kind'], [string, string]> = {
+      drill: ['说了声"下次见"，你往回走。刚才那几句，你在脑子里又过了一遍。', 'You say "see you" and head back, running those few sentences through your head once more.'],
+      karuta: ['作法室的拉门在身后合上。指尖还留着拍在榻榻米上的触感。', 'The sliding door of the tatami room closes behind you. Your fingertips still remember the slap on the mat.'],
+      shiritori: ['食堂的广播响了。光还在嘟囔刚才那个词到底算不算。', 'The cafeteria speakers crackle. Hikari is still muttering about whether that last word counted.'],
+      michi: ['站前的人潮又涌上来一批。你把手机揣回口袋，觉得三宫在脑子里清楚了一点。', 'Another wave of people surges out of the station. You pocket your phone, Sannomiya a little clearer in your head.'],
+      kingyo: ['你拎着装金鱼的塑料袋走下神社的石阶。袋子里的水在灯笼底下一晃一晃。', 'You carry the bag of goldfish down the shrine steps. The water sways under the lanterns.']
+    };
+    const [oz, oe] = outro[act.kind];
+    // 出门剧本带"断点续播"：播到一半关掉页面，下次同一个地点会问要不要接着看。
+    // 活动收尾只有一句话，没有什么可续的——上次要是断在这儿，这次直接清掉，别弹那个问句。
+    try { localStorage.removeItem(`kobe_study_trip_activity_${act.id}`); } catch { /* ignore */ }
+    pendingActivitySaveRef.current = true;
+    setActiveActivity(null);
+    setActiveTrip({
+      loc: {
+        ...loc,
+        id: `activity_${act.id}`,
+        nameZh: act.titleZh, nameEn: act.titleEn,
+        timeCost: 1,
+        stamina: act.stamina
+      },
+      event: null,
+      script: [
+        { type: 'scene', scene: act.kind === 'kingyo' ? 'ikuta_summer_night' : (loc.mapScene || loc.id) },
+        { type: 'narration', zh: oz, en: oe }
+      ]
+    });
+    setGameMode(GameMode.LOBBY);
+  };
+
   // 下班。工钱进钱包，收银台上学到的词进单词本，剧本接着演。
   const finishShift = (r: ShiftResult) => {
     setShiftRunning(false);
     setLife(l => ({
       ...l,
       yen: l.yen + r.pay,
-      stamina: Math.max(0, (l.stamina ?? STAMINA_MAX) - 45)
+      stamina: Math.max(0, (l.stamina ?? STAMINA_MAX) - 45),
+      // 收银台上的敬语跟地图上的情景对答共用一套分档：第十次上班，客人不该还是第一天那几个
+      practice: { ...(l.practice || {}), konbini: settlePractice(l.practice?.konbini, r.score, r.total, r.seenIds).progress }
     }));
     if (r.words.length) collectStoryWords(r.words);
     applyStoryEffects(
@@ -3019,6 +3170,8 @@ ${wind}`;
           onClose={() => setGameMode(GameMode.LOBBY)}
           onTravel={startTrip}
           metChars={metChars}
+          life={life}
+          onActivity={startActivity}
         />
       )}
 
@@ -3235,6 +3388,7 @@ ${wind}`;
           }}
           onOpenKitchen={() => setInKitchen(true)}
           onOpenKobeMap={() => setShowKobeMap(true)}
+          goldfish={life.goldfish || 0}
         />
       )}
 
@@ -3282,8 +3436,57 @@ ${wind}`;
       {shiftRunning && (
         <KonbiniShiftModal
           language={userState.language}
+          playerName={userState.playerName}
+          progress={life.practice?.konbini}
           onFinish={finishShift}
           onCancel={() => setShiftRunning(false)}
+        />
+      )}
+
+      {/* 🎯 地图上的活动。取消 = 什么都不结算（不花时间、不记"今天做过了"） */}
+      {activeActivity?.act.kind === 'drill' && activeActivity.act.packId && activeActivity.session && (
+        <DrillModal
+          pack={DRILL_PACKS[activeActivity.act.packId]}
+          rounds={activeActivity.session}
+          progress={life.practice?.[practiceKeyOf(activeActivity.act)]}
+          language={userState.language}
+          playerName={userState.playerName}
+          background={SCENE_MAP[activeActivity.loc.mapScene || activeActivity.loc.id] || SCENE_FALLBACK[activeActivity.loc.id]}
+          onFinish={r => finishActivity({ kind: 'drill', r })}
+          onCancel={cancelActivity}
+        />
+      )}
+      {activeActivity?.act.kind === 'karuta' && (
+        <KarutaModal
+          language={userState.language}
+          wordbook={userState.collectedWords}
+          progress={life.practice?.[practiceKeyOf(activeActivity.act)]}
+          onFinish={r => finishActivity({ kind: 'karuta', r })}
+          onCancel={cancelActivity}
+        />
+      )}
+      {activeActivity?.act.kind === 'shiritori' && (
+        <ShiritoriModal
+          language={userState.language}
+          progress={life.practice?.[practiceKeyOf(activeActivity.act)]}
+          onFinish={r => finishActivity({ kind: 'shiritori', r })}
+          onCancel={cancelActivity}
+        />
+      )}
+      {activeActivity?.act.kind === 'michi' && (
+        <MichiModal
+          language={userState.language}
+          progress={life.practice?.[practiceKeyOf(activeActivity.act)]}
+          onFinish={r => finishActivity({ kind: 'michi', r })}
+          onCancel={cancelActivity}
+        />
+      )}
+      {activeActivity?.act.kind === 'kingyo' && (
+        <KingyoModal
+          language={userState.language}
+          progress={life.practice?.[practiceKeyOf(activeActivity.act)]}
+          onFinish={r => finishActivity({ kind: 'kingyo', r })}
+          onCancel={cancelActivity}
         />
       )}
 

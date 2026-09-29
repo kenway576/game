@@ -354,6 +354,89 @@ export interface LifeState {
   // 有人会因为这个来问你——这是这两个数字唯一的用处。
   wentOutOn?: number | null;
   stayInDays?: number;
+  // 🎯 各个小游戏 / 情景对答练到哪一档了。key = 练习 id（drill 包名、karuta、kingyo…）
+  practice?: Record<string, PracticeProgress>;
+  // 每个活动最后一次玩是哪一天（dayIndex）。一天一次，跟钓鱼、浇花一个规矩。
+  activityOn?: Record<string, number>;
+  // 🐟 捞回家的金鱼。只是一个数，房间里那只鱼缸靠它决定里面游着几条。
+  goldfish?: number;
+}
+
+// ---------------------------------------------------------
+// 🎯 练习进度（情景对答 + 小游戏共用）
+//
+// 【为什么要分档】
+// 同一套题一直是同一个难度，第三次就只是在背答案。
+// 分三档，而且升档要"达标两次"而不是一次：一次达标可能是运气好，
+// 两次才说明真会了。不降档——这游戏不惩罚你今天状态不好。
+// ---------------------------------------------------------
+export type PracticeTier = 1 | 2 | 3;
+
+export interface PracticeProgress {
+  tier: PracticeTier;
+  // 在当前档位达标了几次。满 PROMOTE_AFTER 次升一档。
+  clears: number;
+  plays: number;
+  // 历史最好的正确率（0-100）
+  best: number;
+  // 最近出过的题，下次尽量避开
+  recent: string[];
+}
+
+// ---------------------------------------------------------
+// 🗣️ 情景对答（原来手机里那个"让她考考你"的替身）
+//
+// 规矩跟便利店收银一样：对方说一句，你在时限里挑一句回应。
+// 区别是每一包题绑一个地方、一个人、一类语法——
+// 授受跟着深雪（邻居之间永远在给来给去），受身使役跟着明日香（班长永远在抱怨被谁怎么了）。
+// ---------------------------------------------------------
+export interface DrillOption {
+  jp: string;
+  zh: string;
+  en: string;
+  ok?: boolean;
+}
+
+export interface DrillRound {
+  id: string;
+  tier: PracticeTier;
+  // 对方说的那句话
+  jp: string;
+  zh: string;
+  en: string;
+  // 这一句是在什么情况下说的（一行小字，交代"你想表达什么"）
+  ctxZh?: string;
+  ctxEn?: string;
+  options: DrillOption[];
+  // 答完之后的讲解：对的那句为什么对，错的错在哪
+  noteZh: string;
+  noteEn: string;
+  word?: StoryWord;
+  // 答错时的一句场面描写（便利店那种"客人愣了一下"）。不写就只给讲解。
+  missZh?: string;
+  missEn?: string;
+}
+
+export interface DrillLine {
+  jp: string;
+  zh: string;
+  en: string;
+}
+
+export interface DrillPack {
+  id: string;
+  // 这包题练什么
+  grammarZh: string;
+  grammarEn: string;
+  // 对面是谁。没有常驻角色的包（便利店、后辈）写一个名字就行。
+  partnerZh: string;
+  partnerEn: string;
+  // 立绘：普通 / 答对 / 答错
+  sprites: { neutral: string; happy: string; miss: string };
+  // 答对、答错时对方的反应，随机挑一句
+  onRight: DrillLine[];
+  onWrong: DrillLine[];
+  rounds: DrillRound[];
 }
 
 // ---------------------------------------------------------
@@ -383,6 +466,9 @@ export interface MapLocation {
   // 这一趟要花掉几格放学后时间。不写 = 市内 1 格、市外(far) 2 格。
   // 吃一碗二郎系拉面和顺路拐进便利店，代价不该一样。
   timeCost?: number;
+  // 这一趟耗多少体力。不写就按 TIRING 表 / timeCost 推算。
+  // 地图上的小游戏（捞金鱼、陪空练球）各自累法不一样，由活动表直接写进来。
+  stamina?: number;
   // 解锁条件：剧情 flag。不写 = 一开始就能去。
   requiresFlag?: string;
   // 没解锁时地图上给的提示。要说"还去不了"，但不能剧透。

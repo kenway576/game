@@ -365,20 +365,15 @@ const PhoneScreen: React.FC<Props> = ({
               )}
             </div>
 
-            {/* 回复。这两个按钮就是原来大厅上那两个，只是现在它们在手机里，
-                而且措辞变成了"发消息"——文字聊天和当面说话不是一回事。 */}
+            {/* 回复。原来这里还有一个"让她考考你"——无限次、不花时间、不用见面地刷知识，
+                跟这个游戏里别的一切都不守同一套规矩。语法练习现在长在地图上：
+                去深雪家门口、去图书室找铃、去体育馆找空，一天一次。 */}
             <div className="shrink-0 px-4 py-3 border-t border-white/8 space-y-2">
               <button
                 onClick={() => { audioManager.playSfx('confirm'); onEnterChat(thread.id, ChatMode.FREE_TALK); }}
                 className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-black py-3 rounded-xl transition-colors"
               >
                 {en ? '💬  Message her' : '💬  发消息'}
-              </button>
-              <button
-                onClick={() => { audioManager.playSfx('confirm'); onEnterChat(thread.id, ChatMode.STUDY); }}
-                className="w-full bg-white/8 hover:bg-white/15 text-white/80 text-[12px] font-bold py-2.5 rounded-xl transition-colors"
-              >
-                {en ? '📚  Ask her to quiz you' : '📚  让她考考你'}
               </button>
               <p className="text-[10px] text-white/25 text-center leading-relaxed pt-0.5">
                 {en
