@@ -226,6 +226,10 @@ export interface GameCalendar {
   dayOfWeek: string;
   timeSlot: TimeSlot;
   weather: 'sunny' | 'cloudy' | 'rainy' | 'sunset' | 'night';
+  // 午休那一格已经用掉了（吃过饭 / 在校内走过一趟）。下一件事是回教室。
+  lunchUsed?: boolean;
+  // 夜里已经出过一趟门了。夜里只有一趟——回来就是该睡的时候。
+  nightUsed?: boolean;
 }
 
 // ---------------------------------------------------------
@@ -571,7 +575,20 @@ export interface StoryWord {
 }
 
 // 剧本可以指定的 BGM 轨（audioManager.BgmTrack 由此派生，保持单一事实来源）
-export type StoryBgmTrack = 'title' | 'lobby' | 'chat' | 'train' | 'town' | 'store' | 'night';
+// 每个名字在 public/audio/manifest.json 里对应一首或一组曲子。
+export type StoryBgmTrack =
+  | 'title' | 'lobby' | 'chat' | 'train' | 'town' | 'store' | 'night' | 'festival' | 'sports' | 'basketball'
+  // 2026-10 加的：按时段、天气、地点细分
+  | 'morning'     // 早上醒来
+  | 'afternoon'   // 上学日放学后
+  | 'weekend'     // 休息日白天
+  | 'rain'        // 下雨的白天
+  | 'harbor'      // 港口、海边、钓鱼、阳台
+  | 'late_night'  // 深夜的车站、港口
+  | 'arcade'      // 游戏厅
+  | 'study'       // 情景对答、上课、图书室
+  | 'shrine_rain' // 雨中的神社
+  | 'reflective'; // 抒情、回忆
 
 // 选项的属性门槛。不满足时选项灰掉但仍然可见——
 // 让玩家看见"如果当时勇气再高一点"，这是这套系统的主要驱动力。
@@ -677,10 +694,28 @@ export type StoryNode =
       then: StoryNode[];
       otherwise?: StoryNode[];
     }
+  // 🏀 剧情里直接开一局小游戏（空在体育馆拉你比投篮）。剧情停在这儿，
+  // 打完把输赢写成 flag，后面用 branch 接不同的台词。
+  // App 没接这个口子的时候（比如序章）直接跳过。
+  | { type: 'minigame'; game: 'basketball'; mode: 'solo' | 'vs_sora'; venue?: 'gym' | 'arcade'; setFlagsOnWin?: string[]; setFlagsOnLose?: string[] }
   // 随机插播：从 pick 里随机抽一组播出去（重玩时遇到的人不一样）。
   // 抽中的结果会被就地拼进节点表、随进度一起存档，
   // 所以读档回来播的还是同一段，不会刷新一次换一个人。
   | { type: 'random'; pick: StoryNode[][] };
+
+// 📱 手机里的一条消息（玩家和她之间真正发过的那些，不是剧本里预写的通知）。
+// 预写的那几条在第一次点开对话时也会被抄进来，于是一个对话里的先后永远是对的。
+export interface PhoneChatMsg {
+  id: string;
+  from: 'me' | 'her' | 'system';
+  jp?: string;          // 她发的日语原文 / 玩家打的字 / 系统那一行
+  tr?: string;          // 她那句的译文
+  sticker?: string;     // 表情包 id（data/stickers.ts）
+  day: number;          // dayIndex：哪一天发的，用来画日期分隔线
+  time: string;         // 显示用的时刻
+  scriptId?: string;    // 从预写消息抄进来的那几条，记一下出处
+  delta?: { aff: number; fam: number };   // 这一轮聊完关系变了多少（挂在她最后一条下面）
+}
 
 // 剧情选择留下的痕迹。随存档保存，可注入 AI 的 system prompt。
 export type StoryFlags = Record<string, boolean>;

@@ -61,7 +61,9 @@ export const staminaCostOf = (
   // 下雨天走一趟更费劲。这是唯一一个天气真正影响到玩法的地方。
   // 但泡温泉不会因为下雨变累。
   const wet = cal.weather === 'rainy' && base > 0 ? 6 : 0;
-  return base + wet;
+  // 夜里出门是在一整天之后再出门，比白天多费一点。同样不算温泉。
+  const late = cal.timeSlot === 'night' && base > 0 ? 5 : 0;
+  return base + wet + late;
 };
 
 // 体力条的颜色和那句提示。分四档而不是渐变，
@@ -123,4 +125,4 @@ export const tiredLine = (cal: GameCalendar, en: boolean): string => {
 // 8 是便利店那一趟的价钱——这个游戏里最便宜的一次出门。
 export const CHEAPEST_TRIP = 8;
 export const canGoOutAtAll = (stamina: number, cal: GameCalendar): boolean =>
-  stamina >= CHEAPEST_TRIP + (cal.weather === 'rainy' ? 6 : 0);
+  stamina >= CHEAPEST_TRIP + (cal.weather === 'rainy' ? 6 : 0) + (cal.timeSlot === 'night' ? 5 : 0);

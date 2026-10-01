@@ -1,0 +1,24 @@
+{
+  "bgm": {
+    "title":       "bgm/The_Pier_at_Daybreak.mp3",
+    "train":       "bgm/The_Pier_at_Daybreak.mp3",
+    "morning":     ["bgm/Opening_the_Blinds.mp3", "bgm/The_Pier_at_Daybreak.mp3"],
+    "lobby":       ["bgm/Velvet_Pavement.mp3", "bgm/Midday_at_the_Gallery.mp3"],
+    "afternoon":   ["bgm/Three_O_clock_in_Kobe.mp3", "bgm/Amber_Pavement.mp3"],
+    "weekend":     ["bgm/Silk_Scarf_Sunday.mp3", "bgm/Afternoon_on_Rue_Lepic.mp3"],
+    "town":        ["bgm/Velvet_Pavement.mp3", "bgm/Afternoon_on_Rue_Lepic.mp3", "bgm/Plum_Blossom_and_Pavement.mp3"],
+    "rain":        "bgm/Rain_on_Sannomiya.mp3",
+    "night":       ["bgm/Corner_Table_Solitude.mp3", "bgm/Before_the_Porch_Lights_Go_Out.mp3", "bgm/Midnight_in_Minato.mp3"],
+    "late_night":  ["bgm/Midnight_in_Minato.mp3", "bgm/Silver_Rails_at_Midnight.mp3"],
+    "chat":        ["bgm/Corner_Table_Solitude.mp3", "bgm/Afternoon_on_Rue_Lepic.mp3", "bgm/Velvet_Pavement.mp3"],
+    "harbor":      ["bgm/Harbor_Afternoon.mp3", "bgm/Meriken_Shore.mp3"],
+    "store":       "bgm/Stroll_through_the_Arcade.mp3",
+    "arcade":      "bgm/Arcade_High_Score.mp3",
+    "festival":    ["bgm/Summer_Night_at_the_Shrine.mp3", "bgm/Auspicious_Lantern_Night.mp3"],
+    "sports":      ["bgm/Beyond_the_Buzzer.mp3", "bgm/Asphalt_Tip_Off.mp3"],
+    "basketball":  ["bgm/Beyond_the_Buzzer.mp3", "bgm/Asphalt_Tip_Off.mp3"],
+    "study":       "bgm/Ink_on_the_Page.mp3",
+    "shrine_rain": "bgm/Rain_at_the_Stone_Fox.mp3",
+    "reflective":  "bgm/The_Unfinished_Page.mp3"
+  }
+}

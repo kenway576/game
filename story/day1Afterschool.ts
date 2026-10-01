@@ -408,6 +408,47 @@ export const DAY1_GYM: StoryNode[] = [
     en: 'All right, {name}! Got it locked in!',
     color: 'bg-orange-500'
   },
+  // 🏀 投篮机的教学就在这儿：第一次见到空的这天，她教你「一分间シュート」。
+  // 没走体育馆这条线的人，会在之后第一次碰到她的时候补上（story/basketballScenes.ts）。
+  {
+    type: 'speech',
+    speakerZh: '空', speakerEn: 'Sora',
+    characterImage: `${SORA}cute.webp`,
+    jp: 'せや、せっかくやしウチの特訓メニューやってみ。「一分間シュート」。ルールは教えたる！',
+    words: [{ jp: '特訓', reading: 'とっくん', zh: '特训', en: 'special training' }],
+    zh: '对了，难得来一趟，试试我的特训菜单吧。「一分钟投篮」。规则我教你！',
+    en: 'Oh — while you are here, try my training drill. The one-minute shootout. I will teach you the rules!',
+    color: 'bg-orange-500'
+  },
+  { type: 'effect', setFlags: ['!bb_won_now'] },
+  { type: 'minigame', game: 'basketball', mode: 'vs_sora', venue: 'gym', setFlagsOnWin: ['bb_won_now', 'bb_beat_sora', 'day1_bb_won'] },
+  {
+    type: 'branch', ifFlag: 'bb_won_now',
+    then: [
+      {
+        type: 'narration', characterImage: `${SORA}shock.webp`,
+        zh: '空盯着计时器上的数字，半天没说话。',
+        en: 'Sora stares at the numbers on the timer and says nothing for a while.'
+      },
+      {
+        type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}shock.webp`,
+        jp: '……初日でウチに勝つか、普通。',
+        zh: '……第一天就赢我，正常人会这样吗。',
+        en: '...Who beats me on their first day. Seriously.',
+        color: 'bg-orange-500'
+      }
+    ],
+    otherwise: [
+      {
+        type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}happy.webp`,
+        jp: 'へへん、まだまだやな！でも筋はええで。',
+        zh: '嘿嘿，还差得远呢！不过底子不错。',
+        en: 'Heh, not yet! But you have got the knack.',
+        color: 'bg-orange-500'
+      }
+    ]
+  },
+  { type: 'effect', setFlags: ['basketball_tutorial_done', '!bb_won_now'] },
   {
     type: 'narration',
     zh: '她把球抱在腰间，转身往器材室走了两步，又停下脚步回头看你。',
@@ -1268,7 +1309,7 @@ export const DAY1_CAMEO_AFTER_ARC: StoryNode[] = [];
 // 傍晚：稻荷 → 奈绪（两个都必遇，让 8 个人在一周目里全部露面）
 // ==========================================================
 export const DAY1_EVENING: StoryNode[] = [
-  { type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'night', titleZh: '生田神社 · 鸟居前', titleEn: 'Ikuta Shrine · The Torii', subtitleZh: '傍晚 6:05', subtitleEn: '6:05 PM' },
+  { type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'festival', titleZh: '生田神社 · 鸟居前', titleEn: 'Ikuta Shrine · The Torii', subtitleZh: '傍晚 6:05', subtitleEn: '6:05 PM' },
   {
     type: 'narration',
     zh: '回家的路要绕过神社。外公的地图上，这里画得比别处都重——同一个鸟居描了三遍。',

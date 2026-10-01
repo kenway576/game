@@ -1435,7 +1435,7 @@ const EV_SHRINE_INARI: MapEventDef = {
   requiresFlags: ['day1_met_inari'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'ikuta_shrine', bgm: 'night', titleZh: '生田神社', titleEn: 'Ikuta Shrine', subtitleZh: '傍晚 6:00', subtitleEn: '6:00 PM' },
+    { type: 'scene', scene: 'ikuta_shrine', bgm: 'festival', titleZh: '生田神社', titleEn: 'Ikuta Shrine', subtitleZh: '傍晚 6:00', subtitleEn: '6:00 PM' },
     {
       type: 'narration',
       zh: '你穿过红色的楼门，外面商店街的声音一下子退到很远的地方去了。',

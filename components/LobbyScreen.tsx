@@ -28,9 +28,11 @@ interface Props {
   onOpenInventory: () => void;
   onOpenGift: () => void;
   onOpenPhone: () => void;
-  // 「今天怎么过」。休息日会自己弹，但上学日也得有个入口——
-  // 不想上学这件事，恰恰只在有课的日子才成立。
-  onOpenDayPlan: () => void;
+  // 点了某个人 → 掏出手机，直接进她的对话。没有她号码的时候按钮是灰的。
+  onMessage: (id: CharacterId) => void;
+  canMessage: (id: CharacterId) => boolean;
+  // 今天早上的安排定了没有。没定的话，主按钮就是「今天的安排」。
+  dayPlanned: boolean;
   // 第一章还没打完 → 左上角变成回主线的入口
   mainStoryPending?: boolean;
   onResumeMainStory?: () => void;
@@ -51,12 +53,40 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenGift, onOpenPhone, onOpenDayPlan, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenGift, onOpenPhone, onMessage, canMessage, dayPlanned, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, background
 }) => {
   // 连最轻的一趟都撑不住 = 今天出不去了
   const spent = !canGoOutAtAll(stamina, calendar);
-  // 午休 + 上学日 = 能去的只有校内那几处
-  const lunchOnCampus = calendar.timeSlot === 'lunch' && isSchoolDay(calendar);
+  // 🧭 大厅只有一个「去做点什么」的主按钮，它说的是**现在**能做的那件事。
+  //
+  // 以前这里并排两个：「出门」和「今天的行动」。后者其实是早上那张
+  // "去不去上学"的面板，可它一天到晚都挂着——夜里点开还能选「去上学」；
+  // 而「出门」打开的地图里又列着教室，等于另一条去学校的路。
+  // 两个按钮管的是同一件事的不同时段，玩家分不清该按哪个。
+  //
+  // 现在按时段只给一个入口：
+  //   早上    → 今天的安排（上学 / 做便当 / 翘课 / 休息日的整天计划）
+  //   午休    → 午休去哪（只有校内）；用掉了 → 回教室
+  //   放学后  → 放学后去哪（留在学校的社团教室，或者下山去街上）
+  //   夜里    → 夜里出门（只有一趟）；出去过了 → 回家睡觉
+  const schoolDayNow = isSchoolDay(calendar);
+  const slot = calendar.timeSlot;
+  const action: { icon: string; zh: string; en: string; primary: boolean } =
+    slot === 'morning' && !dayPlanned
+      ? { icon: '📅', zh: '今天的安排', en: 'Plan the day', primary: true }
+    : slot === 'lunch' && schoolDayNow && calendar.lunchUsed && classPending
+      ? { icon: '🔔', zh: '回教室', en: 'Back to class', primary: true }
+    : slot === 'night' && calendar.nightUsed
+      ? { icon: '🛏', zh: '回家睡觉', en: 'Home to bed', primary: false }
+    : spent
+      ? { icon: '🛏', zh: '走不动了', en: 'Too tired', primary: false }
+    : slot === 'lunch' && schoolDayNow
+      ? { icon: '🏫', zh: '午休去哪', en: 'Lunch break', primary: true }
+    : slot === 'afternoon' && schoolDayNow
+      ? { icon: '🎒', zh: '放学后去哪', en: 'After school', primary: true }
+    : slot === 'night'
+      ? { icon: '🌙', zh: '夜里出门', en: 'Out tonight', primary: true }
+      : { icon: '🗺', zh: '出门', en: 'Go out', primary: true };
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
   // 卡片上显示关系"名称"而不是数字——「朋友 · 无意」比「♥ 130」更说明现在处在哪一步
@@ -164,20 +194,10 @@ const LobbyScreen: React.FC<Props> = ({
             回自己房间、出门、掏手机。 */}
         {([
           { key: 'room',  on: onOpenRoom,  icon: '🏠', zh: '回房间', en: 'My room' },
-          // 🚪 走不动的时候「出门」不再是那个亮黄色的主按钮。
-          // 它还点得动（点了会说一句话），但它得先看上去不像今天该做的事。
-          // 🏫 午休那一格，校门外的地方全是灰的（走出去就等于翘掉下午）。
-          // 按钮还写着「出门」，玩家点开一张全灰的地图，只会以为游戏坏了。
-          // 午休时它说的是它实际能做的事：在学校里逛逛。
-          { key: 'map',   on: onOpenMap,
-            icon: spent ? '🛏' : (lunchOnCampus ? '🏫' : '🗺'),
-            zh: spent ? '走不动了' : (lunchOnCampus ? '在学校里逛逛' : '出门'),
-            en: spent ? 'Too tired' : (lunchOnCampus ? 'Around school' : 'Go out'),
-            primary: !spent },
+          // 主按钮说的是现在能做的那件事（见上面 action）。走不动、或者今晚已经出去过了，
+          // 它就不再是亮黄色——还点得动，但看上去不像今天该做的事。
+          { key: 'map',   on: onOpenMap, icon: action.icon, zh: action.zh, en: action.en, primary: action.primary },
           { key: 'phone', on: onOpenPhone, icon: '📱', zh: '手机',   en: 'Phone', badge: phoneUnread },
-          // 「今天」听起来像日历，可它其实是"这半天怎么过"的选单。
-          { key: 'day',   on: onOpenDayPlan, icon: '📅',
-            zh: '今天的行动', en: 'Today’s plan' },
           // 🎁 把包里的东西递给谁。放在大厅这一排，因为送东西和
           // 回房间、出门一样，是"用身体做的一件事"，不是菜单里的设置项。
           { key: 'gift',  on: onOpenGift,   icon: '🎁', zh: '送东西', en: 'Give' }
@@ -308,11 +328,18 @@ const LobbyScreen: React.FC<Props> = ({
                 那是这个游戏最说不通的一处设定。现在这里只看关系，
                 要说话就掏手机（发消息），要好好说话就去当面碰到她。 */}
             <button
-              onClick={onOpenPhone}
-              className="group relative w-full overflow-hidden bg-emerald-700 hover:bg-emerald-600 text-white font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl"
+              onClick={() => { if (canMessage(lobbySelectedChar)) { setLobbySelectedChar(null); onMessage(lobbySelectedChar); } }}
+              disabled={!canMessage(lobbySelectedChar)}
+              className={`group relative w-full overflow-hidden font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl ${
+                canMessage(lobbySelectedChar)
+                  ? 'bg-emerald-700 hover:bg-emerald-600 text-white'
+                  : 'bg-white/10 text-white/35 cursor-not-allowed'
+              }`}
             >
               <span className="relative z-10 flex items-center justify-center gap-3">
-                📱 {userState.language === 'en' ? 'Message her' : '发消息给她'}
+                📱 {canMessage(lobbySelectedChar)
+                  ? (userState.language === 'en' ? 'Message her' : '发消息给她')
+                  : (userState.language === 'en' ? 'No number yet' : '还没有她的联系方式')}
               </span>
             </button>
             <p className="text-[10px] md:text-[11px] text-white/35 text-center leading-relaxed px-2">

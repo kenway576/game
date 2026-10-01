@@ -16,7 +16,7 @@ import { dayIndex } from './lifeData';
 // 地点卡片上直接列出来，所以玩家挑地方的时候就知道"去那儿能干嘛"。
 // ==========================================================
 
-export type ActivityKind = 'drill' | 'karuta' | 'shiritori' | 'michi' | 'kingyo';
+export type ActivityKind = 'drill' | 'karuta' | 'shiritori' | 'michi' | 'kingyo' | 'basketball';
 
 export interface ActivityDef {
   id: string;
@@ -37,6 +37,11 @@ export interface ActivityDef {
   seasonZh?: string; seasonEn?: string;
   fee?: number;
   stamina: number;
+  // 这个 flag 有了才能做（投篮：空教过之后才会玩）
+  needsFlag?: string;
+  needsZh?: string; needsEn?: string;
+  // 投篮机摆在哪儿：体育馆，还是游戏厅的机台
+  venue?: 'gym' | 'arcade';
 }
 
 const summerNights = (cal: GameCalendar) => cal.month === 7 || cal.month === 8;
@@ -104,7 +109,7 @@ export const ACTIVITIES: ActivityDef[] = [
     titleZh: '跟光玩接龙', titleEn: 'Shiritori with Hikari',
     blurbZh: '用上一个词的最后一个假名开头。说到「ん」就输。',
     blurbEn: 'Start with the last kana of the last word. End on ん and you lose.',
-    timeSlots: ['lunch', 'afternoon'], schoolDayOnly: true, stamina: 8
+    timeSlots: ['lunch'], schoolDayOnly: true, stamina: 8
   },
   {
     id: 'michi', kind: 'michi', locId: 'sannomiya_station',
@@ -125,22 +130,48 @@ export const ACTIVITIES: ActivityDef[] = [
     seasonZh: '夜店只在七、八月的晚上摆出来。',
     seasonEn: 'The night stalls only set up on July and August evenings.',
     fee: 300, stamina: 8
+  },
+  // ---------------- 投篮机 ----------------
+  // 一个人练。规则是空教的，所以得先被她教过一次。
+  {
+    id: 'bb_gym', kind: 'basketball', locId: 'gym', venue: 'gym',
+    emoji: '🏀',
+    titleZh: '一个人练「一分钟投篮」', titleEn: 'The one-minute shootout, solo',
+    blurbZh: '计时器、一筐球、一个篮筐。限时投进够数就晋级下一关。',
+    blurbEn: 'A timer, a cart of balls, one hoop. Make the target in time to move up a stage.',
+    timeSlots: ['lunch', 'afternoon'], schoolDayOnly: true, stamina: 14,
+    needsFlag: 'basketball_tutorial_done',
+    needsZh: '规则还没人教过你。体育馆里那个短发的女生会教。', needsEn: 'Nobody has shown you the rules yet. The short-haired girl in the gym will.'
+  },
+  {
+    id: 'bb_arcade', kind: 'basketball', locId: 'sannomiya_arcade', venue: 'arcade',
+    emoji: '🕹️',
+    titleZh: '游戏厅的投篮机', titleEn: 'The arcade basketball machine',
+    blurbZh: '中央街游戏厅门口那台。一百日元一局，排行榜第一写着「SORA」。',
+    blurbEn: 'The one at the front of the Center Gai game centre. A hundred yen a go. Top of the leaderboard: SORA.',
+    timeSlots: ['afternoon', 'night'], fee: 100, stamina: 10,
+    needsFlag: 'basketball_tutorial_done',
+    needsZh: '你还不太会玩。也许该先让空教教你。', needsEn: 'You do not really know how it works. Maybe get Sora to show you first.'
   }
 ];
 
 export const activitiesAt = (locId: string) => ACTIVITIES.filter(a => a.locId === locId);
 
 // 练习进度存在哪个 key 下：情景对答按题包，小游戏按活动
-export const practiceKeyOf = (a: ActivityDef) => a.packId || a.id;
+// 投篮机不管在体育馆还是游戏厅，练的是同一双手，所以共用一个进度
+export const practiceKeyOf = (a: ActivityDef) => a.kind === 'basketball' ? 'basketball' : (a.packId || a.id);
 
 // ok 为 false 时，zh / en 是「为什么现在做不了」，地图卡片上原样显示
 export type ActivityCheck = { ok: boolean; zh: string; en: string };
 
 export const checkActivity = (
   a: ActivityDef,
-  ctx: { calendar: GameCalendar; life: LifeState; slotsLeft: number; met: CharacterId[] }
+  ctx: { calendar: GameCalendar; life: LifeState; slotsLeft: number; met: CharacterId[]; flags?: Record<string, boolean> }
 ): ActivityCheck => {
   const { calendar, life, slotsLeft } = ctx;
+  if (a.needsFlag && !ctx.flags?.[a.needsFlag]) {
+    return { ok: false, zh: a.needsZh || '还不会。', en: a.needsEn || 'Not yet.' };
+  }
   if (a.schoolDayOnly && !isSchoolDay(calendar)) {
     return { ok: false, zh: '今天不上学，这儿没人。', en: 'No school today — nobody is here.' };
   }

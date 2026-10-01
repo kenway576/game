@@ -59,6 +59,8 @@ interface Props {
   onRestore: (payload: StoryRestorePayload) => void;
   // 序章播完（或跳过）时把最终 flags 交回去存档
   onFinish: (flags: StoryFlags, opts: { skipped: boolean }) => void;
+  // 🏀 minigame 节点：App 把小游戏画出来，打完调 done(赢没赢)
+  renderMinigame?: (node: Extract<StoryNode, { type: 'minigame' }>, done: (won: boolean) => void) => React.ReactNode;
 }
 
 // ---------- 阅读偏好（打字速度 / 自动播放间隔），本地记住 ----------
@@ -99,7 +101,8 @@ const StoryScreen: React.FC<Props> = ({
   initialProgress, initialFlags, onAutoSave, onOpenSystemMenu, playerName, onSetPlayerName,
   storyAffection = 0, storyFamiliarity = 0,
   chapterNameZh, chapterNameEn, allowSkip,
-  onEffects, onRelations, onFlags, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish
+  onEffects, onRelations, onFlags, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish,
+  renderMinigame
 }) => {
   const en = language === 'en';
 
@@ -119,6 +122,8 @@ const StoryScreen: React.FC<Props> = ({
   const appliedEffectIdxRef = useRef<Set<number>>(new Set());
   // random 节点同样只能抽一次：StrictMode 下这个 effect 会跑两遍
   const pickedRandomIdxRef = useRef<Set<number>>(new Set());
+  // 小游戏打完只结算一次
+  const minigameDoneRef = useRef<Set<number>>(new Set());
   const statsRef = useRef<ProtagonistStats>(stats);
   statsRef.current = stats;
 
@@ -142,7 +147,8 @@ const StoryScreen: React.FC<Props> = ({
   const node = nodes[idx];
   const isDisplayNode = node?.type === 'narration' || node?.type === 'speech';
   const isBlockingNode = node?.type === 'choice' || node?.type === 'shop'
-    || node?.type === 'cg' || node?.type === 'nameInput' || node?.type === 'phone';
+    || node?.type === 'cg' || node?.type === 'nameInput' || node?.type === 'phone'
+    || node?.type === 'minigame';
 
   const advance = useCallback(() => setIdx(i => i + 1), []);
 
@@ -164,7 +170,13 @@ const StoryScreen: React.FC<Props> = ({
     // 「give:物品id:个数」是发东西，不是留痕。它照样交给上层（那边负责往
     // 背包里放），但不能进 flag 表——进了就会跟着存档一路传下去，
     // 变成一个永远为真、谁也不查的假 flag。
-    list.forEach(f => { if (!f.startsWith('give:')) next[f] = true; });
+    // 「!xxx」是撤掉 xxx（可重复的剧情每次开场清掉上一回的结果）
+    list.forEach(f => {
+      // give: 发东西、pay: 花钱，都不是留痕，不进 flag 表
+      if (f.startsWith('give:') || f.startsWith('pay:')) return;
+      if (f.startsWith('!')) delete next[f.slice(1)];
+      else next[f] = true;
+    });
     flagsRef.current = next;
     onFlags?.(list);
   };
@@ -356,6 +368,9 @@ const StoryScreen: React.FC<Props> = ({
           ? storyFamiliarity
           : (statsRef.current[node.metric] || 0);
       spliceAfter(value >= node.min ? node.then : (node.otherwise || []));
+      advance();
+    } else if (node.type === 'minigame' && !renderMinigame) {
+      // 没有地方能开小游戏（序章之类）：当作没打，直接往下走
       advance();
     } else if (node.type === 'random') {
       // 抽中的那一组就地拼进 nodes，于是它会跟着进度一起存盘 ——
@@ -920,6 +935,14 @@ const StoryScreen: React.FC<Props> = ({
             </div>
           </div>
         )}
+
+        {/* 🏀 小游戏：剧情停在这儿，打完把输赢写成 flag 再往下走 */}
+        {node?.type === 'minigame' && renderMinigame && renderMinigame(node, (won) => {
+          if (minigameDoneRef.current.has(idx)) return;
+          minigameDoneRef.current.add(idx);
+          applyFlags(won ? node.setFlagsOnWin : node.setFlagsOnLose);
+          advance();
+        })}
 
         {/* 便利店：预算内自由挑选 */}
         {node?.type === 'shop' && (

@@ -10,10 +10,11 @@
 //  - 两层降级：
 //      1) 有真实素材 → public/audio/manifest.json 里登记，运行时 fetch + decode，
 //         用 AudioBufferSourceNode 播放；
-//      2) 没有素材 → 用 OscillatorNode / 噪声实时合成一个占位音。
+//      2) 没有素材 → 音效用 OscillatorNode / 噪声实时合成一个占位音；
+//         BGM 不合成（以前那个单音节垫音删掉了），没有文件就安静。
 //    把真素材丢进 public/audio/ 并更新 manifest.json 即自动切换，代码不用动。
-//  - 自动播放策略：浏览器要求首次用户手势后才能出声。unlock() 之前 BGM 只记
-//    pendingBgm，绝不启动；unlock() 里 resume() AudioContext 再补上。
+//  - 自动播放策略：浏览器要求首次用户手势后才能出声。被拦下的那首 BGM 留着，
+//    unlock() 里补放；BGM 同一时刻只会有一首在响（见 crossfadeBgm）。
 //  - StrictMode：init() / unlock() / crossfadeBgm(同曲) 全部幂等。
 //  - 素材缺失 / 解码失败：只 console.info 一次，播放静默降级，绝不抛错、绝不卡游戏。
 // ============================================================================
@@ -41,7 +42,7 @@ const AUDIO_BASE = '/audio';
 
 export const DEFAULT_AUDIO_SETTINGS: AudioSettings = {
   master: 0.9,
-  bgm: 0.2,        // 决策：BGM 默认 20%（不是默认关）
+  bgm: 0.6,        // 决策：BGM 默认 60%，清晰动听
   sfx: 0.7,
   typing: 0.35,
   muted: false,
@@ -88,7 +89,10 @@ export type SfxName = keyof typeof SFX_DEFS | string;
 
 interface AudioManifest {
   sfx?: Record<string, string>;   // "click" -> "mp3" | "ogg" | "wav" | "audio/x/click.mp3"
-  bgm?: Record<string, string>;   // "lobby" -> "mp3" | ...
+  // "lobby" -> "bgm/xxx.mp3"，或者一组文件（曲库）：
+  // 一首自然放完（这批曲子结尾都是淡出）就接同一组里的下一首，
+  // 不会每三分钟一段静音再从头来。
+  bgm?: Record<string, string | string[]>;
 }
 
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
@@ -114,12 +118,12 @@ class AudioManager {
 
   // 已解码的素材缓存（缺失时值为 null，表示"用合成音"）
   private sfxBuffers = new Map<string, AudioBuffer | null>();
-  private bgmBuffers = new Map<BgmTrack, AudioBuffer | null>();
   private warned = new Set<string>();
 
   // BGM 运行时
-  private currentBgm: { track: BgmTrack; gain: GainNode; stop: () => void } | null = null;
-  private pendingBgm: BgmTrack | null = null;
+  private currentBgm: { track: BgmTrack; url: string; audio: HTMLAudioElement } | null = null;
+  // 场景想放哪首。BGM 关着的时候也记着，打开时接上。
+  private wantedBgm: BgmTrack | null = null;
   private bgmDucked = false;
 
   // 节流 / 循环句柄
@@ -135,6 +139,9 @@ class AudioManager {
     this.initialized = true;
 
     this.loadSettings();
+    // 清单最先拉：BGM 用的是 <audio>，不依赖下面的 Web Audio。
+    // 放在后面的话，AudioContext 一初始化失败就提前 return，BGM 会永远等清单。
+    void this.loadManifest();
 
     try {
       const Ctor = window.AudioContext || (window as AnyWindow).webkitAudioContext;
@@ -157,26 +164,21 @@ class AudioManager {
     } catch {
       this.ctx = null;
       this.infoOnce('audio-init-failed', '[audio] AudioContext 初始化失败，音效已禁用');
-      return;
     }
-
-    // manifest 是可选的：没有它就纯合成占位音（零网络请求、零 404）。
-    void this.loadManifest();
   }
 
   /** 首次用户手势时调用（App.tsx 监听 pointerdown / keydown）。幂等。 */
   unlock(): void {
-    if (this.unlocked) return;
-    this.unlocked = true;
     const ctx = this.ctx;
-    if (!ctx) return;
-    try {
-      if (ctx.state === 'suspended') void ctx.resume().catch(() => {});
-    } catch { /* ignore */ }
-    if (this.pendingBgm) {
-      const t = this.pendingBgm;
-      this.pendingBgm = null;
-      this.crossfadeBgm(t, 800);
+    if (ctx && ctx.state === 'suspended') {
+      void ctx.resume().catch(() => {});
+    }
+    this.unlocked = true;
+    // 被浏览器拦下来的那一首：现在补放（只放当前这一首，旧的早就停了）
+    if (this.settings.bgmEnabled && this.currentBgm && this.currentBgm.audio.paused) {
+      this.startBgmAudio(this.currentBgm.audio, this.bgmGen, 800);
+    } else if (this.settings.bgmEnabled && !this.currentBgm && this.wantedBgm) {
+      this.crossfadeBgm(this.wantedBgm, 800);
     }
   }
 
@@ -202,14 +204,8 @@ class AudioManager {
 
   setBgmEnabled(enabled: boolean): void {
     this.update({ bgmEnabled: enabled });
-    if (enabled && this.unlocked && !this.currentBgm && this.pendingBgm) {
-      const t = this.pendingBgm;
-      this.pendingBgm = null;
-      this.crossfadeBgm(t, 600);
-    }
-    // 重新打开时把当前场景该放的曲子接上。
-    // 关掉期间 crossfadeBgm 仍然记着 currentBgm，只是总线被压到 0，
-    // 所以这里不需要重新起播，恢复音量就够了。
+    if (!enabled) this.stopBgm(400);
+    else this.crossfadeBgm(this.wantedBgm || 'lobby', 600);
   }
   toggleBgm(): void { this.setBgmEnabled(!this.settings.bgmEnabled); }
 
@@ -226,6 +222,11 @@ class AudioManager {
       if (raw) {
         const parsed = JSON.parse(raw) as Partial<AudioSettings>;
         this.settings = { ...DEFAULT_AUDIO_SETTINGS, ...parsed };
+        // 存坏了（不是数字）才纠正。玩家自己关掉的 BGM、调低的音量、静音都原样保留——
+        // 以前这里每次启动都强制打开 BGM、取消静音，设置里关掉的东西一刷新又响了。
+        if (typeof this.settings.bgm !== 'number' || isNaN(this.settings.bgm)) {
+          this.settings.bgm = DEFAULT_AUDIO_SETTINGS.bgm;
+        }
       }
     } catch { /* 用默认值 */ }
   }
@@ -238,21 +239,32 @@ class AudioManager {
     } catch { /* 隐私模式等 */ }
   }
 
+  private getTargetBgmVolume(): number {
+    if (this.settings.muted || !this.settings.bgmEnabled) return 0;
+    const duckFactor = this.bgmDucked ? 0.35 : 1.0;
+    return clamp01(this.settings.master * this.settings.bgm * duckFactor);
+  }
+
   private applyVolumes(immediate = false): void {
     const ctx = this.ctx;
-    if (!ctx || !this.masterGain || !this.busGain) return;
-    const t = ctx.currentTime;
-    const ramp = (g: GainNode, target: number) => {
-      try {
-        g.gain.cancelScheduledValues(t);
-        if (immediate) g.gain.setValueAtTime(target, t);
-        else g.gain.setTargetAtTime(target, t, 0.03);
-      } catch { try { g.gain.value = target; } catch { /* ignore */ } }
-    };
-    ramp(this.masterGain, this.settings.muted ? 0 : this.settings.master);
-    ramp(this.busGain.bgm, this.settings.bgmEnabled ? this.settings.bgm * (this.bgmDucked ? 0.35 : 1) : 0);
-    ramp(this.busGain.sfx, this.settings.sfx);
-    ramp(this.busGain.typing, this.settings.typing);
+    if (ctx && this.masterGain && this.busGain) {
+      const t = ctx.currentTime;
+      const ramp = (g: GainNode, target: number) => {
+        try {
+          g.gain.cancelScheduledValues(t);
+          if (immediate) g.gain.setValueAtTime(target, t);
+          else g.gain.setTargetAtTime(target, t, 0.03);
+        } catch { try { g.gain.value = target; } catch { /* ignore */ } }
+      };
+      ramp(this.masterGain, this.settings.muted ? 0 : this.settings.master);
+      ramp(this.busGain.bgm, this.settings.bgmEnabled ? this.settings.bgm * (this.bgmDucked ? 0.35 : 1) : 0);
+      ramp(this.busGain.sfx, this.settings.sfx);
+      ramp(this.busGain.typing, this.settings.typing);
+    }
+
+    if (this.currentBgm && !this.currentBgm.audio.paused) {
+      this.rampAudioVolume(this.currentBgm.audio, this.getTargetBgmVolume(), immediate ? 50 : 150);
+    }
   }
 
   private infoOnce(key: string, msg: string): void {
@@ -277,17 +289,41 @@ class AudioManager {
     } catch {
       this.infoOnce('manifest-none', '[audio] 未找到 public/audio/manifest.json —— 占位模式：全部音效实时合成');
     }
+    // 清单到了：启动时那首（标题曲）是在清单到之前点的，现在才知道它对应哪个文件
+    this.manifestDone = true;
+    if (this.wantedBgm && !this.currentBgm) this.crossfadeBgm(this.wantedBgm, 800);
   }
 
   private urlFor(category: 'sfx' | 'bgm', name: string): string | null {
-    const entry = this.manifest?.[category]?.[name];
-    if (!entry) return null;
-    if (entry.includes('/') || entry.includes('.')) {
-      // 完整相对路径写法
-      return entry.startsWith('/') ? entry : `${AUDIO_BASE}/${entry}`;
+    const raw = this.manifest?.[category]?.[name];
+    const entry = Array.isArray(raw) ? raw[0] : raw;
+    if (entry) {
+      if (entry.startsWith('/')) return entry;
+      if (entry.startsWith(`${category}/`)) return `${AUDIO_BASE}/${entry}`;
+      if (entry.includes('/')) return `${AUDIO_BASE}/${entry}`;
+      if (entry.includes('.')) return `${AUDIO_BASE}/${category}/${entry}`;
+      return `${AUDIO_BASE}/${category}/${name}.${entry}`;
     }
-    // 只写了扩展名
-    return `${AUDIO_BASE}/${category}/${name}.${entry}`;
+    return `${AUDIO_BASE}/${category}/${name}.mp3`;
+  }
+
+  /** 这个曲目名对应的整组文件（曲库）。只写了一个文件的就是一组一首。 */
+  private bgmPool(track: string): string[] {
+    const raw = this.manifest?.bgm?.[track];
+    const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
+    const urls = list.map(e =>
+      e.startsWith('/') ? e
+      : e.includes('/') ? `${AUDIO_BASE}/${e}`
+      : `${AUDIO_BASE}/bgm/${e}`);
+    if (!urls.length) { const u = this.urlFor('bgm', track); if (u) urls.push(u); }
+    return urls;
+  }
+
+  /** 从曲库里挑一首：尽量别跟刚才那首一样 */
+  private pickFromPool(pool: string[], avoid?: string): string | null {
+    if (!pool.length) return null;
+    const rest = pool.length > 1 && avoid ? pool.filter(u => u !== avoid) : pool;
+    return rest[Math.floor(Math.random() * rest.length)];
   }
 
   private async decode(url: string): Promise<AudioBuffer | null> {
@@ -311,17 +347,6 @@ class AudioManager {
     const buf = await this.decode(url);
     this.sfxBuffers.set(name, buf);
     if (!buf) this.infoOnce(`sfx:${name}`, `[audio] 音效素材 "${name}" 加载失败，改用合成音（检查 ${url}）`);
-    return buf;
-  }
-
-  private async ensureBgmBuffer(track: BgmTrack): Promise<AudioBuffer | null> {
-    if (this.bgmBuffers.has(track)) return this.bgmBuffers.get(track) ?? null;
-    this.bgmBuffers.set(track, null);
-    const url = this.urlFor('bgm', track);
-    if (!url) return null;
-    const buf = await this.decode(url);
-    this.bgmBuffers.set(track, buf);
-    if (!buf) this.infoOnce(`bgm:${track}`, `[audio] BGM 素材 "${track}" 加载失败，改用合成氛围音（检查 ${url}）`);
     return buf;
   }
 
@@ -645,159 +670,139 @@ class AudioManager {
   }
 
   // ---- BGM --------------------------------------------------------
+  //
+  // 规矩只有一条：任何时刻最多一首在响。
+  //
+  //   · 每次点歌 bgmGen + 1。播放成功的回调里先对代号，过期的（中途又点了别的）直接停掉——
+  //     以前这种情况会报 AbortError，被当成"自动播放被拦截"记下来，
+  //     下次点屏幕时又被拉起来，跟当前那首一起响。
+  //   · 淡入淡出用 setInterval，不用 requestAnimationFrame：标签页切到后台 rAF 就停了，
+  //     旧曲既淡不出去、也走不到 pause 那一步。
+  //   · 旧曲到点一律 pause，不管音量渐变有没有走完（兜底计时器）。
+  //   · 两个曲目名指向同一个文件（大厅和街道都是 Velvet Pavement）就接着放，不从头来。
+  //   · 没有文件就安静。以前会退回合成器垫音——那个"单音节"的嗡嗡声，
+  //     而且文件晚到一步时两样会叠在一起响。
 
-  /** 切换 BGM，交叉淡入淡出。解锁前只记 pendingBgm。幂等（同曲不重播）。 */
+  private bgmGen = 0;
+  private manifestDone = false;
+  private bgmRamps = new WeakMap<HTMLAudioElement, number>();
+
+  private rampAudioVolume(audio: HTMLAudioElement, targetVol: number, ms: number, onDone?: () => void): void {
+    const prevTimer = this.bgmRamps.get(audio);
+    if (prevTimer) window.clearInterval(prevTimer);
+    const startVol = audio.volume;
+    const t0 = now();
+    const duration = Math.max(50, ms);
+    const id = window.setInterval(() => {
+      const p = Math.min(1, (now() - t0) / duration);
+      try { audio.volume = clamp01(startVol + (targetVol - startVol) * p); } catch { /* ignore */ }
+      if (p >= 1) {
+        window.clearInterval(id);
+        this.bgmRamps.delete(audio);
+        onDone?.();
+      }
+    }, 30);
+    this.bgmRamps.set(audio, id);
+  }
+
+  /** 让一首退场：淡出，到点必停。 */
+  private retireBgm(audio: HTMLAudioElement, ms: number): void {
+    let done = false;
+    const kill = () => {
+      if (done) return;
+      done = true;
+      const t = this.bgmRamps.get(audio);
+      if (t) window.clearInterval(t);
+      this.bgmRamps.delete(audio);
+      try { audio.pause(); audio.removeAttribute('src'); audio.load(); } catch { /* ignore */ }
+    };
+    if (ms <= 0 || audio.paused) { kill(); return; }
+    this.rampAudioVolume(audio, 0, ms, kill);
+    window.setTimeout(kill, ms + 200);
+  }
+
+  private startBgmAudio(audio: HTMLAudioElement, gen: number, ms: number): void {
+    audio.play().then(() => {
+      // 这期间又点了别的歌：这一首作废
+      if (gen !== this.bgmGen || this.currentBgm?.audio !== audio) { this.retireBgm(audio, 0); return; }
+      this.unlocked = true;
+      this.rampAudioVolume(audio, this.getTargetBgmVolume(), ms);
+    }).catch((err: unknown) => {
+      if (gen !== this.bgmGen) return;   // 被后来的点歌顶掉了，不是被拦截
+      const e = err as { name?: string };
+      if (e?.name === 'NotAllowedError') {
+        this.infoOnce('bgm-autoplay-blocked', '[audio] 浏览器拦截了自动播放，点一下页面后开始放 BGM');
+      } else {
+        this.infoOnce(`bgm-err:${this.currentBgm?.track}`, `[audio] BGM 播放失败：${String(e?.name || err)}`);
+      }
+    });
+  }
+
+  /** 切换 BGM，交叉淡入淡出。幂等：同一首（或同一个文件）不重播。 */
   crossfadeBgm(track: BgmTrack, ms = 800): void {
-    if (!this.ctx || !this.busGain) { this.pendingBgm = track; return; }
-    if (!this.unlocked) { this.pendingBgm = track; return; }
-    // BGM 关着的时候不起振荡器：白白占着 CPU，一个音也听不见
-    if (!this.settings.bgmEnabled) { this.pendingBgm = track; return; }
-    if (this.currentBgm?.track === track) return;
+    this.wantedBgm = track;
+    if (!this.settings.bgmEnabled) { this.stopBgm(ms); return; }
+    // 清单还没到：不知道这首对应哪个文件，先记着，清单一到就放（见 loadManifest）
+    if (!this.manifestDone) return;
 
-    const ctx = this.ctx;
-    const tNow = ctx.currentTime;
-    const fade = Math.max(0.05, ms / 1000);
+    const pool = this.bgmPool(track);
+    const cur = this.currentBgm;
+    // 正在放的这首也在新场景的曲库里（大厅 → 聊天、街上 → 地图）：接着放，不换歌
+    if (cur && pool.includes(cur.url)) {
+      cur.track = track;
+      if (cur.audio.paused && this.unlocked) this.startBgmAudio(cur.audio, this.bgmGen, ms);
+      return;
+    }
 
-    // 淡出旧曲
-    const prev = this.currentBgm;
+    const gen = ++this.bgmGen;
     this.currentBgm = null;
     this.bgmDucked = false;
-    if (prev) {
-      try {
-        prev.gain.gain.cancelScheduledValues(tNow);
-        prev.gain.gain.setValueAtTime(prev.gain.gain.value, tNow);
-        prev.gain.gain.linearRampToValueAtTime(0.0001, tNow + fade);
-      } catch { /* ignore */ }
-      window.setTimeout(() => { try { prev.stop(); } catch { /* ignore */ } }, ms + 120);
-    }
-
-    // 淡入新曲：trackGain（0..1 的淡入/duck 系数）→ busGain.bgm（音量）→ master
-    const trackGain = ctx.createGain();
-    trackGain.gain.setValueAtTime(0.0001, tNow);
-    trackGain.gain.linearRampToValueAtTime(1, tNow + fade);
-    trackGain.connect(this.busGain.bgm);
-
-    let stopFn: () => void = () => { try { trackGain.disconnect(); } catch { /* ignore */ } };
-
-    const startSynthOrBuffer = () => {
-      const buf = this.bgmBuffers.get(track);
-      if (buf) {
-        try {
-          const src = ctx.createBufferSource();
-          src.buffer = buf;
-          src.loop = true;
-          src.connect(trackGain);
-          src.start();
-          stopFn = () => { try { src.stop(); src.disconnect(); trackGain.disconnect(); } catch { /* ignore */ } };
-          return;
-        } catch { /* 落合成 */ }
-      }
-      const pad = this.startPad(track, trackGain);
-      stopFn = () => { pad(); try { trackGain.disconnect(); } catch { /* ignore */ } };
-    };
-
-    if (this.bgmBuffers.get(track) === undefined) {
-      // 先用合成音起播，素材到位后下次切歌自然换成文件
-      void this.ensureBgmBuffer(track);
-    }
-    startSynthOrBuffer();
-
-    this.currentBgm = { track, gain: trackGain, stop: () => stopFn() };
-    this.applyVolumes();
+    if (cur) this.retireBgm(cur.audio, ms);
+    const url = this.pickFromPool(pool);
+    if (!url) return;
+    this.playBgmFile(track, url, gen, ms);
   }
 
-  /** 合成氛围 BGM：3 个 gameMode 三种情绪。返回 stop 函数。 */
-  private startPad(track: BgmTrack, out: AudioNode): () => void {
-    const ctx = this.ctx;
-    if (!ctx) return () => {};
-
-    // 三种情绪的和弦 / 音色
-    const presets: Record<BgmTrack, { chord: number[]; type: OscillatorType; lp: number; lfoRate: number; beat?: number }> = {
-      title:  { chord: [130.81, 196.00, 261.63, 392.00], type: 'sine',     lp: 900,  lfoRate: 0.05 },   // 沉静、开阔
-      lobby:  { chord: [146.83, 220.00, 293.66, 440.00], type: 'triangle', lp: 1400, lfoRate: 0.08, beat: 0.5 }, // 明亮、日常
-      chat:   { chord: [110.00, 164.81, 220.00, 329.63], type: 'sine',     lp: 700,  lfoRate: 0.04 },   // 温柔、贴近
-      // ---- 序章分场景 ----
-      train:  { chord: [164.81, 246.94, 329.63, 493.88], type: 'triangle', lp: 1600, lfoRate: 0.11, beat: 0.62 }, // 明亮、向前，像窗外掠过的海
-      town:   { chord: [155.56, 233.08, 311.13, 415.30], type: 'triangle', lp: 1200, lfoRate: 0.07, beat: 0.45 }, // 傍晚的坡道与商店街
-      store:  { chord: [174.61, 261.63, 349.23, 440.00], type: 'square',   lp: 1900, lfoRate: 0.16, beat: 0.9 },  // 便利店白炽灯下的轻快
-      night:  { chord: [98.00,  146.83, 196.00, 293.66], type: 'sine',     lp: 620,  lfoRate: 0.03 },   // 开学前夜，海风与钟表
-    };
-    const p = presets[track];
-    const nodes: Array<{ stop: () => void }> = [];
-
-    // 铺底和弦：每个音一对轻微失谐的振荡器
-    p.chord.forEach((f, i) => {
-      const lp = ctx.createBiquadFilter();
-      lp.type = 'lowpass';
-      lp.frequency.value = p.lp;
-      lp.Q.value = 0.3;
-
-      const vGain = ctx.createGain();
-      vGain.gain.value = (i === 0 ? 0.16 : 0.09) / Math.sqrt(p.chord.length);
-      lp.connect(vGain);
-      vGain.connect(out);
-
-      const oscA = ctx.createOscillator();
-      oscA.type = p.type;
-      oscA.frequency.value = f;
-      oscA.detune.value = -5;
-      const oscB = ctx.createOscillator();
-      oscB.type = p.type;
-      oscB.frequency.value = f;
-      oscB.detune.value = 6;
-      oscA.connect(lp); oscB.connect(lp);
-
-      // 缓慢的音量起伏，让铺底"呼吸"
-      const lfo = ctx.createOscillator();
-      lfo.frequency.value = p.lfoRate * (1 + i * 0.15);
-      const lfoGain = ctx.createGain();
-      lfoGain.gain.value = vGain.gain.value * 0.5;
-      lfo.connect(lfoGain);
-      lfoGain.connect(vGain.gain);
-
-      oscA.start(); oscB.start(); lfo.start();
-      nodes.push({ stop: () => { try { oscA.stop(); oscB.stop(); lfo.stop(); oscA.disconnect(); oscB.disconnect(); lfo.disconnect(); lfoGain.disconnect(); lp.disconnect(); vGain.disconnect(); } catch { /* ignore */ } } });
+  /** 起一首。不循环：放完（结尾自带淡出）由 nextInPool 接下一首。 */
+  private playBgmFile(track: BgmTrack, url: string, gen: number, ms: number): void {
+    const audio = new Audio(url);
+    audio.loop = false;
+    audio.volume = 0;
+    audio.preload = 'auto';
+    audio.addEventListener('error', () => {
+      if (gen === this.bgmGen) this.infoOnce(`bgm-load-err:${url}`, `[audio] BGM 文件加载失败（${url}），这段先安静着`);
     });
-
-    // lobby 多一层很轻的脉冲，制造一点"生活感"
-    let beatTimer: number | null = null;
-    if (p.beat) {
-      const root = p.chord[2];
-      beatTimer = window.setInterval(() => {
-        if (this.settings.muted) return;
-        this.tone({ freq: root * 2, dur: 0.18, type: 'sine', gain: 0.05, bus: 'bgm', release: 0.16 });
-      }, p.beat * 1000 * 4);
-    }
-
-    return () => {
-      nodes.forEach(n => n.stop());
-      if (beatTimer != null) clearInterval(beatTimer);
-    };
+    audio.addEventListener('ended', () => this.nextInPool(audio));
+    this.currentBgm = { track, url, audio };
+    this.startBgmAudio(audio, gen, ms);
   }
 
-  /** 升级庆祝时压低 BGM。 */
+  /** 一首放完了：同一组里换一首接上。期间切过场景的话，这首早就不是"当前"了，什么都不做。 */
+  private nextInPool(finished: HTMLAudioElement): void {
+    const cur = this.currentBgm;
+    if (!cur || cur.audio !== finished || !this.settings.bgmEnabled) return;
+    const gen = ++this.bgmGen;
+    this.retireBgm(finished, 0);
+    const url = this.pickFromPool(this.bgmPool(cur.track), cur.url) || cur.url;
+    this.playBgmFile(cur.track, url, gen, 1500);
+  }
+
+  /** 升级庆祝或重要对白时压低 BGM。 */
   duckBgm(): void {
     this.bgmDucked = true;
-    this.applyVolumes();
+    if (this.currentBgm) this.rampAudioVolume(this.currentBgm.audio, this.getTargetBgmVolume(), 150);
   }
 
   restoreBgm(ms = 600): void {
-    void ms;
     this.bgmDucked = false;
-    this.applyVolumes();
+    if (this.currentBgm) this.rampAudioVolume(this.currentBgm.audio, this.getTargetBgmVolume(), ms);
   }
 
   stopBgm(ms = 400): void {
+    this.bgmGen++;
     const cur = this.currentBgm;
-    if (!cur || !this.ctx) return;
     this.currentBgm = null;
-    try {
-      const t = this.ctx.currentTime;
-      cur.gain.gain.cancelScheduledValues(t);
-      cur.gain.gain.setValueAtTime(cur.gain.gain.value, t);
-      cur.gain.gain.linearRampToValueAtTime(0.0001, t + Math.max(0.05, ms / 1000));
-    } catch { /* ignore */ }
-    window.setTimeout(() => { try { cur.stop(); } catch { /* ignore */ } }, ms + 120);
+    if (cur) this.retireBgm(cur.audio, ms);
   }
 }
 
@@ -806,6 +811,7 @@ export const audioManager = new AudioManager();
 // onClickCapture 用的通用 UI 点击音：给屏幕根元素挂上即可覆盖其中所有按钮。
 // 用 data-sfx="confirm" 覆盖音色；data-sfx-silent 关闭该元素的点击音。
 export const handleUiClickSfx = (e: React.MouseEvent): void => {
+  audioManager.unlock();
   const target = e.target as HTMLElement | null;
   if (!target || typeof target.closest !== 'function') return;
   const el = target.closest('button, a[role="button"], [role="button"], [data-sfx]') as HTMLElement | null;

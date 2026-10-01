@@ -1,9 +1,11 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { Language, GameCalendar, StoryFlags, CharacterId, ChatMode, AffectionMap, FamiliarityMap } from '../types';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
+import { Language, GameCalendar, StoryFlags, CharacterId, AffectionMap, FamiliarityMap, PhoneChatMsg } from '../types';
 import {
-  PHONE_CONTACTS, PHONE_APPS, PhoneAppId, PhoneContact,
-  messagesFor, unreadFor, totalUnread, readFlag, CONTACT_MIN_FAMILIARITY, PhoneContext
+  PHONE_CONTACTS, PHONE_APPS, PhoneAppId, PhoneContact, PhoneMessage,
+  messagesFor, unreadFor, totalUnread, readFlag, hasContact, PhoneContext
 } from '../data/phoneData';
+import { COMMON_STICKERS } from '../data/stickers';
+import Sticker from './Sticker';
 import { audioManager } from '../services/audioManager';
 
 // ---------------------------------------------------------
@@ -13,20 +15,19 @@ import { audioManager } from '../services/audioManager';
 // 全游戏的 UI 是女神异闻录那套斜切色块，手机故意**不是**——
 // 它是圆角的、深色的、安静的，像一部真的手机。
 // 因为它在设定里就是一件实物：你把它从口袋里掏出来。
-// 界面语言不一样，反而让"这是个道具，不是菜单"这件事成立。
 //
 // 【三层：锁屏 → 主页 → App】
-// 锁屏那一层不是装饰。它给了三样东西一个位置：
-// 现在几点几号、天气、以及**几条未读**——
+// 锁屏那一层不是装饰：现在几点几号、天气、以及**几条未读**——
 // 一部手机最重要的信息本来就在锁屏上，不用点进去。
 //
-// 【动画】
-// 掏出来：整机从屏幕下方推上来（280ms）。
-// 解锁：锁屏往上滑走，主页的图标错开 40ms 依次弹进来。
-// 进 App：从图标那个位置放大铺满。
-// 这三段是这个界面唯一的动效，都很短——手机的动画要快，
-// 慢一点就变成"在看动画"而不是"在用手机"。
+// 【聊天就是聊天】
+// 以前点「发消息」会跳出手机、换成立绘对话——人"蹦"到你面前，
+// 跟发消息这件事对不上。现在消息就在手机里发、在手机里收：
+// 她的回复一条一条冒出来，会打字、会已读、会甩一张表情包过来。
+// 见到本人的那种对话（立绘、场景、表情）只在现实里碰到她的时候才有。
 // ---------------------------------------------------------
+
+export type PhoneView = 'lock' | 'home' | 'messages' | 'thread';
 
 interface Props {
   language: Language;
@@ -36,111 +37,108 @@ interface Props {
   familiarity: FamiliarityMap;
   metChars: CharacterId[];
   wordCount: number;
+  // 从哪一层开始：从 App 里退回来时直接回主页，从大厅点某个人时直接进她的对话
+  startView?: PhoneView;
+  initialThread?: CharacterId | null;
+  // 真正聊过的那些（含抄进来的预写消息）
+  chats: Partial<Record<CharacterId, PhoneChatMsg[]>>;
+  // 她正在打字
+  typingFor: CharacterId | null;
+  // 今天她还回不回。返回一句说明 = 不回了（冷淡期 / 今天聊够了）
+  replyBlock: (id: CharacterId) => string | null;
   onClose: () => void;
   onOpenApp: (app: PhoneAppId) => void;
-  onEnterChat: (charId: CharacterId, mode: ChatMode) => void;
-  onReadMessages: (msgIds: string[]) => void;
+  onSend: (id: CharacterId, payload: { text?: string; sticker?: string }) => void;
+  // 点开对话时把还没读的预写消息交出去：App 把它们抄进聊天记录、记成已读
+  onReadMessages: (id: CharacterId, msgs: PhoneMessage[]) => void;
 }
 
 const WEEK_JP = ['日', '月', '火', '水', '木', '金', '土'];
 
 const PhoneScreen: React.FC<Props> = ({
   language, calendar, storyFlags, affection, familiarity, metChars,
-  wordCount, onClose, onOpenApp, onEnterChat, onReadMessages
+  wordCount, startView = 'lock', initialThread = null, chats, typingFor, replyBlock,
+  onClose, onOpenApp, onSend, onReadMessages
 }) => {
   const en = language === 'en';
-  // 'lock' → 'home' → 'messages' → 'thread'
-  const [view, setView] = useState<'lock' | 'home' | 'messages' | 'thread'>('lock');
-  const [thread, setThread] = useState<PhoneContact | null>(null);
-  // 对话里的气泡一条一条冒出来，不是一次性铺满
-  const [shown, setShown] = useState(0);
-
   const ctx: PhoneContext = useMemo(
     () => ({ flags: storyFlags, affection, familiarity, met: metChars }),
     [storyFlags, affection, familiarity, metChars]
   );
-
-  // 通讯录的门槛不是"见过"，是"交换过联系方式"。
-  //
-  // 以前只要 metChars 里有她就有号码，于是在校门口擦肩而过一次的人
-  // 也躺在你的通讯录里 —— 谁都知道现实里不是这样。
-  // 现在要処到「面熟」以上（親密度 40）才拿得到号码；
-  // 奈绪例外，她的号码你十年前就有了。
-  // ⚠️ 光有親密度不够。八个人的初始親密度里有四个开局就过了 40
-  // （奈绪 215、深雪 130、真希 100、光 95），于是开学第二天你的通讯录里
-  // 就躺着几个一句话没说过的人。号码是**说过话之后**才会有的东西，
-  // 所以再加一条：得真的开口聊过一次。
-  // 奈绪例外——她的号码你十年前就存着了。
-  const contacts = useMemo(
-    () => PHONE_CONTACTS.filter(c => {
-      if (!metChars.includes(c.id)) return false;
-      if (c.id === CharacterId.NAO) return true;
-      if (!storyFlags[`talked_${c.id}`]) return false;
-      return (familiarity[c.id] ?? 0) >= CONTACT_MIN_FAMILIARITY;
-    }),
-    [metChars, familiarity, storyFlags]
-  );
+  const contacts = useMemo(() => PHONE_CONTACTS.filter(c => hasContact(c.id, ctx)), [ctx]);
   const unread = useMemo(() => totalUnread(ctx), [ctx]);
 
-  const threadMsgs = useMemo(
-    () => (thread ? messagesFor(thread.id, ctx) : []),
-    [thread, ctx]
-  );
-  // 展开成一条一条的气泡
-  const bubbles = useMemo(
-    () => threadMsgs.flatMap(m => m.lines.map(l => ({ ...l, msgId: m.id, word: m.word }))),
-    [threadMsgs]
-  );
-
-  // 打开对话时，**已经读过的那些直接就在那儿**，只有新的一条一条冒出来。
-  //
-  // 以前不管读没读过，每次点进去都从第一条开始重播一遍，连音效一起。
-  // 一个聊了二十条的对话每次要重演二十次，而且看不出哪几条是新的。
-  // readAtOpen 记的是"点进来的那一刻已经读到第几个气泡"，
-  // 必须在 onReadMessages 把 flag 翻掉之前算好。
-  const [readAtOpen, setReadAtOpen] = useState(0);
-
-  useEffect(() => {
-    if (view !== 'thread' || !bubbles.length) return;
-    const from = Math.min(readAtOpen, bubbles.length);
-    setShown(from);
-    if (from >= bubbles.length) return;    // 全都读过 → 不放动画
-    let i = from;
-    const t = setInterval(() => {
-      i++;
-      setShown(i);
-      audioManager.playSfx('page');
-      if (i >= bubbles.length) clearInterval(t);
-    }, 420);
-    return () => clearInterval(t);
-  }, [view, thread]);          // bubbles 不进依赖：已读之后它会变，会把动画重放一遍
+  const startThread = initialThread ? contacts.find(c => c.id === initialThread) || null : null;
+  const [view, setView] = useState<PhoneView>(startThread ? 'thread' : (initialThread ? 'messages' : startView));
+  const [thread, setThread] = useState<PhoneContact | null>(startThread);
+  const [draft, setDraft] = useState('');
+  const [trayOpen, setTrayOpen] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // 这次点进来之前已经在记录里的条数：之后的才播入场动画
+  const [seenAt, setSeenAt] = useState(0);
 
   const openThread = (c: PhoneContact) => {
     audioManager.playSfx('click');
-    const msgs = messagesFor(c.id, ctx);
-    // 先数已读的气泡数，再去翻 flag —— 顺序反了就永远是"全部已读"
-    let read = 0;
-    for (const m of msgs) {
-      if (storyFlags[readFlag(m.id)]) read += m.lines.length;
-      else break;                        // 遇到第一条未读就停：后面都算新的
-    }
-    setReadAtOpen(read);
+    setSeenAt((chats[c.id] || []).length);
     setThread(c);
     setView('thread');
-    const unreadIds = msgs.filter(m => !storyFlags[readFlag(m.id)]).map(m => m.id);
-    if (unreadIds.length) onReadMessages(unreadIds);
+    setTrayOpen(false);
+    const fresh = messagesFor(c.id, ctx).filter(m => !storyFlags[readFlag(m.id)]);
+    if (fresh.length) onReadMessages(c.id, fresh);
+  };
+
+  // 从大厅直接点进某个人：挂载时也要把她的未读交出去
+  useEffect(() => {
+    if (startThread) openThread(startThread);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const log = thread ? (chats[thread.id] || []) : [];
+  // 在这套聊天记录出现之前就已经读过的预写消息：放在最上面，原样显示
+  const legacy = useMemo(() => {
+    if (!thread) return [];
+    const copied = new Set(log.map(m => m.scriptId).filter(Boolean));
+    return messagesFor(thread.id, ctx).filter(m => storyFlags[readFlag(m.id)] && !copied.has(m.id));
+  }, [thread, log, ctx, storyFlags]);
+
+  // 新消息进来就滚到底
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [log.length, typingFor, view, trayOpen]);
+
+  const block = thread ? replyBlock(thread.id) : null;
+  const typing = !!thread && typingFor === thread.id;
+
+  const send = (payload: { text?: string; sticker?: string }) => {
+    if (!thread || typing) return;
+    if (payload.text !== undefined && !payload.text.trim()) return;
+    audioManager.playSfx('send');
+    onSend(thread.id, payload);
+    setDraft('');
+    setTrayOpen(false);
   };
 
   const time = calendar.timeSlot === 'morning' ? '07:42'
     : calendar.timeSlot === 'lunch' ? '12:26'
     : calendar.timeSlot === 'afternoon' ? '16:05' : '21:18';
-  const weekIdx = ['日', '月', '火', '水', '木', '金', '土']
-    .indexOf((calendar.dayOfWeek || '').charAt(0));
+  const weekIdx = WEEK_JP.indexOf((calendar.dayOfWeek || '').charAt(0));
   const dateLine = en
     ? `${calendar.month}/${calendar.day}`
     : `${calendar.month} 月 ${calendar.day} 日 ${weekIdx >= 0 ? '（' + WEEK_JP[weekIdx] + '）' : ''}`;
   const weatherIcon = calendar.weather === 'rainy' ? '🌧'
     : calendar.weather === 'cloudy' ? '☁' : calendar.timeSlot === 'night' ? '🌙' : '☀';
+
+  // 日期分隔线："今天 / 昨天 / 3 天前"
+  const todayIdx = log.length ? Math.max(...log.map(m => m.day)) : 0;
+  const dayLabel = (d: number, now: number) => {
+    const diff = now - d;
+    if (diff <= 0) return en ? 'Today' : '今天';
+    if (diff === 1) return en ? 'Yesterday' : '昨天';
+    return en ? `${diff} days ago` : `${diff} 天前`;
+  };
+  // 我发的最后一条之后她回过没有——回过就挂「既読」
+  const lastHerIdx = (() => { for (let i = log.length - 1; i >= 0; i--) if (log[i].from === 'her') return i; return -1; })();
 
   return (
     <div
@@ -170,7 +168,6 @@ const PhoneScreen: React.FC<Props> = ({
               <p className="mt-1 text-sm text-white/55">{dateLine}</p>
             </div>
 
-            {/* 通知堆。手机最重要的信息本来就在这一层。 */}
             <div className="mt-10 w-full space-y-2">
               {contacts.filter(c => unreadFor(c.id, ctx) > 0).slice(0, 4).map((c, i) => (
                 <div
@@ -184,7 +181,7 @@ const PhoneScreen: React.FC<Props> = ({
                       {en ? c.savedAsEn : c.savedAsZh}
                     </span>
                     <span className="block text-[11px] text-white/55 truncate">
-                      {en ? 'New message' : '发来了新消息'}
+                      {(() => { const ms = messagesFor(c.id, ctx).filter(m => !storyFlags[readFlag(m.id)]); return ms.length ? ms[0].lines[0].jp : (en ? 'New message' : '发来了新消息'); })()}
                     </span>
                   </span>
                   <span className="shrink-0 min-w-[20px] h-5 px-1.5 rounded-full bg-rose-500 text-white text-[11px] font-black flex items-center justify-center">
@@ -272,10 +269,22 @@ const PhoneScreen: React.FC<Props> = ({
                   {en ? 'You have nobody’s number yet.' : '你还没有任何人的联系方式。'}
                 </p>
               )}
+              {initialThread && !startThread && (
+                <p className="px-5 py-3 text-[11px] text-amber-300/80 border-b border-white/5">
+                  {en ? 'You have not swapped numbers with her yet. Talk to her in person first.' : '你们还没交换联系方式。先当面跟她说上话吧。'}
+                </p>
+              )}
               {contacts.map((c, i) => {
                 const n = unreadFor(c.id, ctx);
-                const msgs = messagesFor(c.id, ctx);
-                const last = msgs.length ? msgs[msgs.length - 1].lines.slice(-1)[0] : null;
+                const mine = chats[c.id] || [];
+                const lastLog = mine[mine.length - 1];
+                const scripted = messagesFor(c.id, ctx);
+                const lastScripted = scripted.length ? scripted[scripted.length - 1].lines.slice(-1)[0].jp : null;
+                const preview = n > 0
+                  ? lastScripted
+                  : lastLog
+                    ? (lastLog.sticker ? (en ? '[Sticker]' : '[表情包]') : (lastLog.from === 'me' ? (en ? 'You: ' : '你：') : '') + (lastLog.jp || ''))
+                    : lastScripted;
                 return (
                   <button
                     key={c.id}
@@ -295,7 +304,7 @@ const PhoneScreen: React.FC<Props> = ({
                         <span className="text-[10px] font-mono text-white/25 shrink-0">{c.savedAsJp}</span>
                       </span>
                       <span className={`block text-[11px] truncate mt-0.5 ${n > 0 ? 'text-white/75' : 'text-white/35'}`}>
-                        {last ? last.jp : (en ? c.statusEn : c.statusZh)}
+                        {preview || (en ? c.statusEn : c.statusZh)}
                       </span>
                     </span>
                     {n > 0 && (
@@ -312,50 +321,82 @@ const PhoneScreen: React.FC<Props> = ({
         {view === 'thread' && thread && (
           <div className="flex-1 min-h-0 flex flex-col">
             <div className="shrink-0 flex items-center gap-3 px-5 py-3 border-b border-white/8">
-              <button onClick={() => { audioManager.playSfx('click'); setView('messages'); }}
+              <button onClick={() => { audioManager.playSfx('click'); setView('messages'); setTrayOpen(false); }}
                       className="text-white/60 hover:text-white text-lg leading-none">‹</button>
               <img src={thread.avatar} alt="" className="w-8 h-8 rounded-full object-cover" />
               <span className="min-w-0">
                 <span className="block text-[13px] font-bold text-white truncate">
                   {en ? thread.savedAsEn : thread.savedAsZh}
                 </span>
-                <span className="block text-[10px] text-white/35 truncate">
-                  {en ? thread.statusEn : thread.statusZh}
+                <span className={`block text-[10px] truncate ${typing ? 'text-emerald-300' : 'text-white/35'}`}>
+                  {typing ? (en ? 'typing…' : '对方正在输入…') : (en ? thread.statusEn : thread.statusZh)}
                 </span>
               </span>
             </div>
 
-            <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-2">
-              {bubbles.length === 0 && (
+            <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-2 bg-[#0b0d11]">
+              {legacy.length === 0 && log.length === 0 && !typing && (
                 <p className="text-center text-[12px] text-white/25 py-10">
-                  {en ? 'Nothing here yet.' : '这里还什么都没有。'}
+                  {en ? 'No messages yet. Say something.' : '还没有聊过。说点什么吧。'}
                 </p>
               )}
-              {bubbles.slice(0, shown).map((b, i) => (
-                <div key={i}>
-                  <div className="flex items-end gap-2" style={i >= readAtOpen ? { animation: 'bubbleIn 240ms ease-out' } : undefined}>
-                    {i === 0 && <img src={thread.avatar} alt="" className="w-6 h-6 rounded-full object-cover shrink-0 mb-1" />}
-                    {i > 0 && <span className="w-6 shrink-0" />}
-                    <span className="max-w-[78%] bg-[#1e2129] rounded-2xl rounded-bl-md px-3.5 py-2.5">
-                      <span className="block text-[13px] text-white leading-relaxed">{b.jp}</span>
-                      <span className="block text-[11px] text-white/45 mt-1 leading-relaxed">{en ? b.en : b.zh}</span>
-                    </span>
-                  </div>
-                  {/* 「既読」画在读过的那一段的最后一条底下 —— 和真的聊天软件一样，
-                      一眼就能看出从哪儿开始是这次的新消息。 */}
-                  {readAtOpen > 0 && i === readAtOpen - 1 && (
-                    <div className="pl-8 mt-1 mb-1 flex items-center gap-2">
-                      <span className="text-[9px] text-white/25 tracking-wider">{en ? 'read' : '既読'}</span>
-                      {bubbles.length > readAtOpen && <span className="flex-1 h-px bg-white/8" />}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {/* 还在打字 */}
-              {shown < bubbles.length && (
+
+              {/* 以前就读过的预写消息 */}
+              {legacy.flatMap(m => m.lines.map((l, j) => (
+                <HerBubble key={`${m.id}-${j}`} avatar={j === 0 ? thread.avatar : null} jp={l.jp} tr={en ? l.en : l.zh} />
+              )))}
+
+              {log.map((m, i) => {
+                const prev = log[i - 1];
+                const newDay = !prev || prev.day !== m.day;
+                const animate = i >= seenAt;
+                return (
+                  <React.Fragment key={m.id}>
+                    {newDay && (
+                      <div className="flex justify-center py-1">
+                        <span className="text-[10px] text-white/40 bg-white/5 rounded-full px-2.5 py-0.5">
+                          {dayLabel(m.day, todayIdx)}
+                        </span>
+                      </div>
+                    )}
+                    {m.from === 'system' ? (
+                      <p className="text-center text-[10px] text-white/35 px-6 py-1 leading-relaxed">{m.jp}</p>
+                    ) : m.from === 'me' ? (
+                      <div className="flex justify-end items-end gap-1.5" style={animate ? { animation: 'bubbleIn 220ms ease-out' } : undefined}>
+                        <span className="flex flex-col items-end text-[9px] text-white/30 leading-tight shrink-0 mb-0.5">
+                          {i < lastHerIdx || typing ? <span>{en ? 'Read' : '既読'}</span> : null}
+                          <span>{m.time}</span>
+                        </span>
+                        {m.sticker ? (
+                          <Sticker id={m.sticker} size={118} />
+                        ) : (
+                          <span className="max-w-[74%] bg-[#06c755] text-black rounded-2xl rounded-br-md px-3.5 py-2 text-[13px] leading-relaxed break-words">
+                            {m.jp}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <div style={animate ? { animation: 'bubbleIn 240ms ease-out' } : undefined}>
+                        <HerBubble
+                          avatar={!prev || prev.from !== 'her' || newDay ? thread.avatar : null}
+                          jp={m.jp} tr={m.tr} sticker={m.sticker} time={m.time}
+                        />
+                        {m.delta && (m.delta.aff !== 0 || m.delta.fam !== 0) && (
+                          <div className="pl-9 mt-1 flex gap-2 text-[10px] font-bold">
+                            {m.delta.fam !== 0 && <span className={m.delta.fam > 0 ? 'text-sky-300' : 'text-rose-300'}>🤝 {m.delta.fam > 0 ? '+' : ''}{m.delta.fam}</span>}
+                            {m.delta.aff !== 0 && <span className={m.delta.aff > 0 ? 'text-pink-300' : 'text-rose-300'}>♥ {m.delta.aff > 0 ? '+' : ''}{m.delta.aff}</span>}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+
+              {typing && (
                 <div className="flex items-end gap-2">
-                  <span className="w-6 shrink-0" />
-                  <span className="bg-[#1e2129] rounded-2xl rounded-bl-md px-4 py-3 flex gap-1">
+                  <img src={thread.avatar} alt="" className="w-7 h-7 rounded-full object-cover shrink-0" />
+                  <span className="bg-[#22252d] rounded-2xl rounded-bl-md px-4 py-3 flex gap-1">
                     {[0, 1, 2].map(d => (
                       <span key={d} className="w-1.5 h-1.5 rounded-full bg-white/40"
                             style={{ animation: `typing 1s ease-in-out ${d * 0.18}s infinite` }} />
@@ -365,17 +406,50 @@ const PhoneScreen: React.FC<Props> = ({
               )}
             </div>
 
-            {/* 回复。原来这里还有一个"让她考考你"——无限次、不花时间、不用见面地刷知识，
-                跟这个游戏里别的一切都不守同一套规矩。语法练习现在长在地图上：
-                去深雪家门口、去图书室找铃、去体育馆找空，一天一次。 */}
-            <div className="shrink-0 px-4 py-3 border-t border-white/8 space-y-2">
-              <button
-                onClick={() => { audioManager.playSfx('confirm'); onEnterChat(thread.id, ChatMode.FREE_TALK); }}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-black py-3 rounded-xl transition-colors"
-              >
-                {en ? '💬  Message her' : '💬  发消息'}
-              </button>
-              <p className="text-[10px] text-white/25 text-center leading-relaxed pt-0.5">
+            {/* 表情包面板 */}
+            {trayOpen && !block && (
+              <div className="shrink-0 h-[210px] overflow-y-auto border-t border-white/8 bg-[#14161c] px-2 py-2 grid grid-cols-4 gap-1" style={{ animation: 'trayIn 180ms ease-out' }}>
+                {COMMON_STICKERS.map(s => (
+                  <button key={s.id} onClick={() => send({ sticker: s.id })}
+                          className="rounded-xl hover:bg-white/5 active:scale-95 transition flex justify-center py-1">
+                    <Sticker def={s} size={72} showMeaning en={en} />
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* 输入栏 */}
+            <div className="shrink-0 px-3 py-2.5 border-t border-white/8 bg-[#0e1014]">
+              {block ? (
+                <p className="text-[11px] text-white/40 text-center py-2 leading-relaxed">{block}</p>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => { audioManager.playSfx('click'); setTrayOpen(o => !o); }}
+                    className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-lg transition ${trayOpen ? 'bg-emerald-500/25' : 'bg-white/10 hover:bg-white/15'}`}
+                    aria-label="stickers"
+                  >😊</button>
+                  <input
+                    value={draft}
+                    onChange={e => setDraft(e.target.value)}
+                    onFocus={() => setTrayOpen(false)}
+                    onKeyDown={e => {
+                      // 输入法还在选字的时候按回车是"确定这个字"，不是"发送"
+                      if (e.key === 'Enter' && !(e.nativeEvent as any).isComposing) send({ text: draft });
+                    }}
+                    disabled={typing}
+                    placeholder={en ? 'Message (Japanese is best)' : '发消息（最好用日语）'}
+                    className="flex-1 min-w-0 bg-white/10 rounded-full px-4 py-2 text-[13px] text-white placeholder-white/30 outline-none focus:bg-white/15"
+                  />
+                  <button
+                    onClick={() => send({ text: draft })}
+                    disabled={typing || !draft.trim()}
+                    className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-sm font-black transition ${draft.trim() && !typing ? 'bg-[#06c755] text-black' : 'bg-white/10 text-white/25'}`}
+                    aria-label="send"
+                  >➤</button>
+                </div>
+              )}
+              <p className="text-[9px] text-white/20 text-center mt-1.5 leading-relaxed">
                 {en
                   ? 'Texting is not the same as being there. Find her in person for the real thing.'
                   : '发消息和见面不是一回事。想好好说话，得在对的地方碰到她。'}
@@ -391,10 +465,27 @@ const PhoneScreen: React.FC<Props> = ({
         @keyframes appIn    { from { transform: scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }
         @keyframes rowIn    { from { transform: translateX(-10px); opacity: 0; } to { transform: none; opacity: 1; } }
         @keyframes bubbleIn { from { transform: translateY(6px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+        @keyframes trayIn   { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
         @keyframes typing   { 0%,60%,100% { opacity: 0.25; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
       `}</style>
     </div>
   );
 };
+
+// 她的一条：头像（连发时只在第一条显示）+ 气泡（日语 + 小字译文），或者一张表情包
+const HerBubble: React.FC<{ avatar: string | null; jp?: string; tr?: string; sticker?: string; time?: string }> = ({ avatar, jp, tr, sticker, time }) => (
+  <div className="flex items-end gap-2">
+    {avatar ? <img src={avatar} alt="" className="w-7 h-7 rounded-full object-cover shrink-0 mb-1" /> : <span className="w-7 shrink-0" />}
+    {sticker ? (
+      <Sticker id={sticker} size={118} />
+    ) : (
+      <span className="max-w-[74%] bg-[#22252d] rounded-2xl rounded-bl-md px-3.5 py-2">
+        <span className="block text-[13px] text-white leading-relaxed break-words">{jp}</span>
+        {tr && <span className="block text-[11px] text-white/45 mt-0.5 leading-relaxed">{tr}</span>}
+      </span>
+    )}
+    {time && <span className="text-[9px] text-white/25 shrink-0 mb-0.5">{time}</span>}
+  </div>
+);
 
 export default PhoneScreen;

@@ -235,6 +235,10 @@ export const SCENE_MAP: Record<string, string> = {
   'courtyard_winter_rainy':        '/images/backgrounds/bg_courtyard_winter_rainy.webp',
   'kaisei_art_room':               '/images/backgrounds/bg_kaisei_art_room.webp',
   'kaisei_gym_interior':           '/images/backgrounds/bg_kaisei_gym_interior.webp',
+  // 🏀 篮球部主场与投篮机视角
+  'basketball_court_hoop':         '/images/backgrounds/bg_basketball_court_hoop.webp',
+  'basketball_gym_sunset':         '/images/backgrounds/bg_basketball_gym_sunset.webp',
+  'basketball_swish_cg':           '/images/backgrounds/bg_basketball_swish_cg.webp',
   // 🏰 北野异人馆风见鸡馆
   'kitano_kazamidori_square':      '/images/backgrounds/bg_kitano_kazamidori_square.webp',
   'kazamidori_square':             '/images/backgrounds/bg_kitano_kazamidori_square.webp',
@@ -347,6 +351,13 @@ export const DEFAULT_SCENE = 'classroom';
 // 选人界面是每次进游戏看到的第一屏，用差分图当门面太亏，
 // 所以每人另出一张有姿势、有衣服、有表情的。只有大厅用，剧情引擎完全不碰。
 // 缺哪个就自动退回该角色的 neutral 立绘。
+// 剧本里一直用的中文名。CHARACTERS 里只有罗马字名，中文界面上写「Asuka 在招手」很出戏。
+export const CHAR_NAME_ZH: Record<CharacterId, string> = {
+  [CharacterId.ASUKA]: '明日香', [CharacterId.HIKARI]: '光', [CharacterId.REI]: '铃', [CharacterId.INARI]: '稻荷',
+  [CharacterId.MIYUKI]: '深雪', [CharacterId.SORA]: '空', [CharacterId.NAO]: '奈绪', [CharacterId.MAKI]: '真希'
+};
+export const charName = (id: CharacterId, en: boolean) => en ? CHARACTERS[id].nameEn : (CHAR_NAME_ZH[id] || CHARACTERS[id].name);
+
 export const LOBBY_PORTRAITS: Partial<Record<CharacterId, string>> = {
   [CharacterId.ASUKA]:  '/images/ui/lobby/asuka.webp',
   [CharacterId.HIKARI]: '/images/ui/lobby/hikari.webp',
@@ -638,6 +649,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'casual_shy'      : '/images/characters/hikari/casual_shy.webp',
       'casual_smug'     : '/images/characters/hikari/casual_smug.webp',
       'casual_surprised': '/images/characters/hikari/casual_surprised.webp',
+      'casual_bangdream': '/images/characters/hikari/casual_bangdream.webp',
       'dress_angry'     : '/images/characters/hikari/dress_angry.webp',
       'dress_elegant'   : '/images/characters/hikari/dress_elegant.webp',
       'dress_happy'     : '/images/characters/hikari/dress_happy.webp',
@@ -735,6 +747,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'casual_neutral'  : '/images/characters/rei/casual_neutral.webp',
       'casual_reading'  : '/images/characters/rei/casual_reading.webp',
       'casual_smile'    : '/images/characters/rei/casual_smile.webp',
+      'school_bangdream': '/images/characters/rei/school_bangdream.webp',
       'dress_elegant'   : '/images/characters/rei/dress_elegant.webp',
       'dress_neutral'   : '/images/characters/rei/dress_elegant.webp',
       'gym_neutral'     : '/images/characters/rei/gym_neutral.webp',
@@ -864,6 +877,7 @@ CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging ques
       'cardigan_neutral_alt': '/images/characters/miyuki/cardigan_neutral_alt.webp',
       'cardigan_sad'        : '/images/characters/miyuki/cardigan_sad.webp',
       'cardigan_shy'        : '/images/characters/miyuki/cardigan_shy.webp',
+      'casual_bangdream'    : '/images/characters/miyuki/casual_bangdream.webp',
       'gown_angry'          : '/images/characters/miyuki/gown_angry.webp',
       'gown_happy'          : '/images/characters/miyuki/gown_happy.webp',
       'gown_love'           : '/images/characters/miyuki/gown_love.webp',
@@ -2085,8 +2099,10 @@ export const MAX_SLOTS = 6;
 export const CUSTOM_MODEL_VALUE = 'custom';
 
 export const AVAILABLE_MODELS = [
-  { value: 'deepseek-v4-flash',      label: 'DeepSeek V4 Flash (默认/内置专线)' },
-  { value: 'deepseek-v4-pro',        label: 'DeepSeek V4 Pro (最强深度思考)' },
+  // value 还是旧的两个（设置和存档里存的就是它们），实际发给 DeepSeek 的名字
+  // 在 geminiService.resolveActualModelName 里换成 deepseek-flash / deepseek-v4-pro。
+  { value: 'deepseek-v4-flash',      label: 'DeepSeek Flash (默认 · 快)' },
+  { value: 'deepseek-v4-pro',        label: 'DeepSeek V4 Pro (深度思考 · 慢)' },
   { value: 'gemini-3-flash-preview', label: 'Gemini 3.0 Flash (谷歌极速预览)' },
   { value: 'gemini-3-pro-preview',   label: 'Gemini 3.0 Pro (谷歌深度推理)' },
   { value: 'gemini-2.5-flash',       label: 'Gemini 2.0 Flash Exp (稳定预览)' },
@@ -3073,5 +3089,16 @@ export const STORY_CGS: StoryCgDef[] = [
     quote: '「聴きや、一人暮らしの第一歩は『百均』を制することやで！」',
     chapterZh: '第 1 章 · 三宫街头日常',
     chapterEn: 'Chapter 1 · Sannomiya Street Life'
+  },
+  {
+    id: 'cg_basketball_swish',
+    titleZh: '夕阳下的完美绝杀',
+    titleEn: 'Sunset Swish Shot',
+    descZh: '放学后的体育馆内，篮球在夕阳的逆光中划出完美的抛物线，伴随着清脆的擦网声空心入网。',
+    descEn: 'In the afterschool gym bathed in sunset glow, the ball arches gracefully through the air, snapping the net with a crisp swish.',
+    cgUrl: '/images/cg/cg_basketball_swish.webp',
+    quote: '「ナイスシュート！完璧だったっすよ！」',
+    chapterZh: '学园生活 · 汗水与青春',
+    chapterEn: 'School Life · Sweat and Youth'
   }
 ];

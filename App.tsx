@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode } from './types';
-import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, findLevelStory, isLevelStoryReady, appendDay1Memories, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver, levelStorySlots } from './constants';
-import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK } from './constants';
-import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief } from './services/geminiService';
+import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode, PhoneChatMsg, StoryBgmTrack } from './types';
+import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, findLevelStory, isLevelStoryReady, appendDay1Memories, DAY1_MEMORIES, LEVEL_STORIES, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver, levelStorySlots } from './constants';
+import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK, charName } from './constants';
+import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief, sendPhoneChat } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
 import type { DialoguePage } from './types';
 import type { LevelStoryDef } from './constants';
@@ -26,8 +26,9 @@ import { CalendarModal } from './components/CalendarModal';
 import InventoryScreen from './components/InventoryScreen';
 import JournalModal from './components/JournalModal';
 import CafeteriaScreen from './components/CafeteriaScreen';
-import PhoneScreen from './components/PhoneScreen';
-import { PhoneAppId, readFlag as msgReadFlag, totalUnread } from './data/phoneData';
+import PhoneScreen, { PhoneView } from './components/PhoneScreen';
+import { PhoneAppId, PhoneMessage, readFlag as msgReadFlag, totalUnread, hasContact } from './data/phoneData';
+import { stickerById, stickersFor } from './data/stickers';
 import { CafeteriaItem, tastedFlag } from './data/cafeteriaData';
 import {
   SocialState, INITIAL_SOCIAL_STATE, turnsLeft, bumpTurn, windDownHint,
@@ -47,13 +48,13 @@ import FishingScreen from './components/FishingScreen';
 import FishDexModal from './components/FishDexModal';
 import KitchenScreen from './components/KitchenScreen';
 import { PROLOGUE_SCRIPT } from './story/prologueData';
-import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday } from './story/mapEvents';
+import { pickEventFor, buildAmbientScript, getTimeCost, AFTERSCHOOL_SLOTS, slotsLeftToday, MAP_EVENTS, tripBgmFor } from './story/mapEvents';
 import { STAMINA_MAX, staminaCostOf, MEAL_RESTORE, canGoOutAtAll, tiredLine } from './data/staminaData';
 import { buildClassSlot, classHeadline } from './story/classMorning';
 import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
-import { promiseDue } from './story/day2Promises';
+import { promiseScriptFor } from './story/day2Promises';
 import GiftScreen from './components/GiftScreen';
 import SlotCard from './components/SlotCard';
 import KonbiniShiftModal, { ShiftResult } from './components/KonbiniShiftModal';
@@ -62,13 +63,16 @@ import KarutaModal, { KarutaResult } from './components/KarutaModal';
 import ShiritoriModal, { ShiritoriResult } from './components/ShiritoriModal';
 import MichiModal, { MichiResult } from './components/MichiModal';
 import KingyoModal, { KingyoResult } from './components/KingyoModal';
+import BasketballModal, { BasketballResult, BB_FULL_RUN } from './components/BasketballModal';
+import { BB_SORA_FIRST, BB_SORA_CHALLENGE, BB_SORA_ARCADE, BB_SPOTS } from './story/basketballScenes';
+import type { PracticeTier } from './types';
 import { ActivityDef, practiceKeyOf, drillRewards } from './data/activityData';
 import { DRILL_PACKS, buildSession, settlePractice } from './data/drillData';
 import { PART_TIME } from './story/restDayScenes';
 import { GiftVerdict } from './data/giftData';
 import { FARM_TUTORIAL, FISH_TUTORIAL } from './story/tutorials';
 import { beenFlag } from './story/kobeMap';
-import { findLocation } from './story/mapLocations';
+import { findLocation, MAP_LOCATIONS } from './story/mapLocations';
 import { lunchPresenceAt, lunchAwayNote, encounterAt } from './data/scheduleData';
 import { pickStreetScene } from './story/streetScenes';
 import { npcsAt } from './data/npcData';
@@ -363,35 +367,74 @@ const App: React.FC = () => {
     if (storedModelName) setCustomModelName(storedModelName);
   }, []);
 
-  // 🔊 音效系统：init 幂等；BGM 要等首次用户手势解锁后才响（浏览器自动播放策略）。
+  // 🔊 音效系统：init 幂等；首个用户交互即可在捕获阶段解锁音频播放（浏览器自动播放策略）。
   useEffect(() => {
     audioManager.init();
-    if (audioManager.isUnlocked()) return;
     const unlock = () => {
       audioManager.unlock();
-      window.removeEventListener('pointerdown', unlock);
-      window.removeEventListener('keydown', unlock);
-      window.removeEventListener('touchstart', unlock);
     };
-    window.addEventListener('pointerdown', unlock);
-    window.addEventListener('keydown', unlock);
-    window.addEventListener('touchstart', unlock);
+    window.addEventListener('pointerdown', unlock, true);
+    window.addEventListener('keydown', unlock, true);
+    window.addEventListener('touchstart', unlock, true);
     return () => {
-      window.removeEventListener('pointerdown', unlock);
-      window.removeEventListener('keydown', unlock);
-      window.removeEventListener('touchstart', unlock);
+      window.removeEventListener('pointerdown', unlock, true);
+      window.removeEventListener('keydown', unlock, true);
+      window.removeEventListener('touchstart', unlock, true);
     };
   }, []);
 
-  // 🎵 按 gameMode 切 BGM（title / lobby / chat），交叉淡入 800ms。
-  // 序章期间由 StoryScreen 按场景自己点曲（列车 / 街道 / 便利店 / 夜），这里不插手。
+  // 🎵 现在该放哪首 —— 全游戏只在这一处决定。
+  //
+  // 以前只分三种：大厅 lobby、聊天 chat、其余一律 title。于是商店、房间、钓鱼、
+  // 地图里放的都是标题曲；夜里的大厅还是白天那首；小游戏和出门剧情自己点了歌，
+  // 结束后没人切回来——玩完歌留多回到大厅，祭典的曲子还在放。
+  //
+  // 现在：剧情（序章、第一章、出门、专属剧情、主线、上课）和小游戏播放期间
+  // 由它们自己按场景点歌，这里不插手；它们一结束，下面这个 effect 的依赖就变了，
+  // 立刻切回当前界面 + 当前时段该放的那首。
+  //   曲目 → 文件见 public/audio/manifest.json（同一个文件的两个名字切换时不会重播）。
+  const storyPlaying = playingDay1 || gameMode === GameMode.PROLOGUE
+    || !!activeTrip || !!activeLevelStory || !!activeMain || !!activeClass;
+  const minigameUp = !!activeActivity || shiftRunning;
+  const sceneBgm: StoryBgmTrack = (() => {
+    const slot = gameCalendar.timeSlot;
+    const rainy = gameCalendar.weather === 'rainy';
+    const restDay = !isSchoolDay(gameCalendar);
+    // 一天的底色：早上醒来 / 午休 / 放学后（休息日是周末那组）/ 下雨 / 夜里
+    const daily: StoryBgmTrack =
+      slot === 'morning' ? 'morning'
+      : slot === 'night' ? 'night'
+      : rainy ? 'rain'
+      : restDay ? 'weekend'
+      : slot === 'lunch' ? 'lobby'
+      : 'afternoon';
+    switch (gameMode) {
+      case GameMode.SETUP:     return 'title';
+      case GameMode.LOBBY:     return daily;
+      case GameMode.ROOM:      return daily;
+      case GameMode.MAP:       return slot === 'night' ? 'night' : rainy ? 'rain' : 'town';
+      case GameMode.STORE:     return 'store';
+      case GameMode.CAFETERIA: return 'store';     // 午休的食堂：热闹、排队、抢炸鸡
+      case GameMode.FISHING:   return 'harbor';    // 防波堤
+      case GameMode.GARDEN:    return slot === 'night' ? 'night' : 'harbor';   // 阳台正对着港口
+      case GameMode.CHAT:      return slot === 'night' ? 'night' : 'chat';
+      default:                 return daily;
+    }
+  })();
+  // 小游戏开着的时候放它自己的曲子（也在这儿定，免得各个弹窗自己点歌、关掉之后没人切回来）
+  const activityBgm: StoryBgmTrack | null = shiftRunning ? 'store'
+    : !activeActivity ? null
+    : activeActivity.act.kind === 'drill' ? 'study'
+    : activeActivity.act.kind === 'karuta' ? 'festival'
+    : activeActivity.act.kind === 'kingyo' ? 'festival'
+    : activeActivity.act.kind === 'shiritori' ? 'lobby'
+    : activeActivity.act.kind === 'michi' ? 'town'
+    : activeActivity.act.kind === 'basketball' ? (activeActivity.act.venue === 'arcade' ? 'arcade' : 'sports')
+    : null;
   useEffect(() => {
-    if (gameMode === GameMode.PROLOGUE) return;
-    const track = gameMode === GameMode.LOBBY ? 'lobby'
-      : gameMode === GameMode.CHAT ? 'chat'
-      : 'title';
-    audioManager.crossfadeBgm(track, 800);
-  }, [gameMode]);
+    if (storyPlaying) return;
+    audioManager.crossfadeBgm(minigameUp && activityBgm ? activityBgm : sceneBgm, 800);
+  }, [sceneBgm, activityBgm, storyPlaying, minigameUp]);
 
   // OpenAI 兼容自定义接口：选中 custom 时使用用户填写的 Base URL 与模型名
   const isCustomApi = customModel === CUSTOM_MODEL_VALUE;
@@ -538,6 +581,7 @@ const App: React.FC = () => {
     setMemoryMap(createCharacterRecord(id => getSeedMemory(id)));
     setUnlockedCgs([]);
     setMetChars([]);   // 新开一局：谁都还没见过
+    setPhoneChats({});
     setPrologueResult(null);
     setStatGainEvent(null);
     setStatGainQueue([]);
@@ -641,7 +685,8 @@ const App: React.FC = () => {
     if (gameMode !== GameMode.LOBBY) return;
     if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
     if (!day1Done) return;
-    const due = promiseDue(gameCalendar.month, gameCalendar.day, gameCalendar.timeSlot, storyFlags as Record<string, boolean>);
+    // 两个约撞在一起时，这里拿到的是"二选一"那一段（见 promiseScriptFor）
+    const due = promiseScriptFor(gameCalendar.month, gameCalendar.day, gameCalendar.timeSlot, storyFlags as Record<string, boolean>);
     if (!due) return;
     setShowRestPlan(false);
     setActiveTrip({
@@ -652,7 +697,7 @@ const App: React.FC = () => {
         timeCost: 1
       },
       event: null,
-      script: [...due.script, { type: 'effect', setFlags: [`${due.id}_done`] }]
+      script: due.script
     });
   }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done]);
 
@@ -725,10 +770,12 @@ const App: React.FC = () => {
     // 于是"今天去不去上学、怎么去"这件事在界面上根本不存在。
     // 现在上学日也问，只是问的是「今天还去学校吗」（面板自己会换标题）。
     if (storyFlags[plannedFlag(gameCalendar)]) return;
-    if (gameCalendar.timeSlot !== 'lunch' && gameCalendar.timeSlot !== 'morning') return;
+    // 「今天怎么过」只在早上问。一整天的安排是睁眼的时候定的；
+    // 午休、放学后、夜里各有各的事，不该再弹一次"去不去上学"。
+    if (gameCalendar.timeSlot !== 'morning') return;
     // 早上是在自己房间里醒的。面板叠在房间上，不是叠在人物名单上——
     // "睁开眼睛，然后决定今天怎么过"，顺序应该是这个。
-    if (gameCalendar.timeSlot === 'morning') setCurrentScene('apartment_room');
+    setCurrentScene('apartment_room');
     setShowRestPlan(true);
   }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, day1Done, showYearEnd]);
 
@@ -843,6 +890,7 @@ const App: React.FC = () => {
     | { kind: 'shiritori'; r: ShiritoriResult }
     | { kind: 'michi'; r: MichiResult }
     | { kind: 'kingyo'; r: KingyoResult }
+    | { kind: 'basketball'; r: BasketballResult }
   ) => {
     const cur = activeActivity;
     if (!cur) return;
@@ -857,6 +905,7 @@ const App: React.FC = () => {
       : payload.kind === 'karuta' ? [payload.r.mine, payload.r.total, [] as string[]]
       : payload.kind === 'shiritori' ? [payload.r.turns, payload.r.maxTurns, [] as string[]]
       : payload.kind === 'michi' ? [payload.r.score, payload.r.total, [] as string[]]
+      : payload.kind === 'basketball' ? [payload.r.made, BB_FULL_RUN, [] as string[]]
       : [Math.min(payload.r.caught, 5), 5, [] as string[]];
     const settled = settlePractice(prev, score, total, seen);
 
@@ -875,6 +924,17 @@ const App: React.FC = () => {
       const good = payload.r.score >= payload.r.total * 0.75;
       effects.push({ stat: 'kindness', amount: good ? 2 : 1, reasonZh: '有人照着你的话，找到了要去的地方', reasonEn: 'Someone followed your words and found their way' });
       if (good) effects.push({ stat: 'knowledge', amount: 1, reasonZh: '三宫的地图刻进了脑子里', reasonEn: 'The map of Sannomiya is in your head now' });
+    } else if (payload.kind === 'basketball') {
+      const r = payload.r;
+      effects.push({
+        stat: 'proficiency', amount: r.stageReached >= 2 ? 2 : 1,
+        reasonZh: r.stageReached >= 2 ? '手腕压下去的那一下，开始有准头了' : '投了一筐球，手感一点点找回来',
+        reasonEn: r.stageReached >= 2 ? 'The wrist snap is starting to find the rim' : 'A cart of balls later, the feel is coming back'
+      });
+      if (r.cleared) {
+        effects.push({ stat: 'guts', amount: 1, reasonZh: '三关全过，最后十秒手都没抖', reasonEn: 'All three stages, and your hands did not shake in the last ten seconds' });
+        unlockStoryCg('cg_basketball_swish');
+      }
     } else {
       effects.push({ stat: 'proficiency', amount: payload.r.caught >= 3 ? 2 : 1, reasonZh: '纸网的角度，手慢慢记住了', reasonEn: 'Your hand is learning the angle of the scoop' });
       if (payload.r.rare) effects.push({ stat: 'charm', amount: 1, reasonZh: '捞到了琉金，旁边的小孩都在鼓掌', reasonEn: 'You landed a ryukin and the kids nearby clapped' });
@@ -920,7 +980,10 @@ const App: React.FC = () => {
       karuta: ['作法室的拉门在身后合上。指尖还留着拍在榻榻米上的触感。', 'The sliding door of the tatami room closes behind you. Your fingertips still remember the slap on the mat.'],
       shiritori: ['食堂的广播响了。光还在嘟囔刚才那个词到底算不算。', 'The cafeteria speakers crackle. Hikari is still muttering about whether that last word counted.'],
       michi: ['站前的人潮又涌上来一批。你把手机揣回口袋，觉得三宫在脑子里清楚了一点。', 'Another wave of people surges out of the station. You pocket your phone, Sannomiya a little clearer in your head.'],
-      kingyo: ['你拎着装金鱼的塑料袋走下神社的石阶。袋子里的水在灯笼底下一晃一晃。', 'You carry the bag of goldfish down the shrine steps. The water sways under the lanterns.']
+      kingyo: ['你拎着装金鱼的塑料袋走下神社的石阶。袋子里的水在灯笼底下一晃一晃。', 'You carry the bag of goldfish down the shrine steps. The water sways under the lanterns.'],
+      basketball: act.venue === 'arcade'
+        ? ['投篮机的灯暗下去，屏幕上滚出「THANK YOU FOR PLAYING」。排行榜第一那一栏还是「SORA」——今天还是。', 'The machine’s lights dim and THANK YOU FOR PLAYING scrolls past. Top of the board still says SORA. For today.']
+        : ['计时器「哔——」地响了。你把最后一个球放回球车，手腕还记着刚才那一下的感觉。', 'The timer beeps. You put the last ball back in the cart, your wrist still remembering that last shot.']
     };
     const [oz, oe] = outro[act.kind];
     // 出门剧本带"断点续播"：播到一半关掉页面，下次同一个地点会问要不要接着看。
@@ -944,6 +1007,48 @@ const App: React.FC = () => {
     });
     setGameMode(GameMode.LOBBY);
   };
+
+  // 🏀 剧情里跟空比完一局（第一次那一局就是教学）。
+  // 加好感、加属性都在这儿按比分算，剧本里只管台词。
+  const settleBasketball = (r: BasketballResult) => {
+    setStoryFlags(prev => (prev['basketball_tutorial_done'] ? prev : { ...prev, basketball_tutorial_done: true }));
+    setLife(l => ({
+      ...l,
+      practice: { ...(l.practice || {}), basketball: settlePractice(l.practice?.basketball, r.made, BB_FULL_RUN, []).progress }
+    }));
+    if (r.mode === 'vs_sora') {
+      applyStoryRelations([{
+        char: CharacterId.SORA,
+        familiarity: r.won ? 5 : 3,
+        affection: r.won ? 5 : 2,
+        reasonZh: r.won ? '你在她最拿手的事情上赢了她' : '输了，但你一直投到了最后一秒',
+        reasonEn: r.won ? 'You beat her at the thing she is best at' : 'You lost, but you kept shooting to the last second'
+      }]);
+      applyStoryEffects(r.won
+        ? [
+            { stat: 'proficiency', amount: 2, reasonZh: '跟空对投，手比脑子先学会了节奏', reasonEn: 'Shooting against Sora, your hands found the rhythm before your head did' },
+            { stat: 'charm', amount: 1, reasonZh: '游戏厅门口那几个小学生在给你鼓掌', reasonEn: 'The kids watching gave you a round of applause' }
+          ]
+        : [
+            { stat: 'proficiency', amount: 1, reasonZh: '空在隔壁投，你在这边学', reasonEn: 'She shot, you watched and learned' },
+            { stat: 'guts', amount: 1, reasonZh: '明知道打不过，还是站到了机台前面', reasonEn: 'You knew you would lose and you stepped up anyway' }
+          ]);
+    }
+    if ((r.mode === 'vs_sora' && r.won) || r.cleared) unlockStoryCg('cg_basketball_swish');
+  };
+
+  // 剧本里的 minigame 节点：画出投篮机，打完把输赢交回剧本
+  const renderMinigame = (node: Extract<StoryNode, { type: 'minigame' }>, done: (won: boolean) => void) =>
+    node.game === 'basketball' ? (
+      <BasketballModal
+        language={userState.language}
+        mode={node.mode}
+        venue={node.venue || 'gym'}
+        tutorial={!storyFlags['basketball_tutorial_done']}
+        tier={(life.practice?.basketball?.tier ?? 1) as PracticeTier}
+        onFinish={(r) => { settleBasketball(r); done(r.won); }}
+      />
+    ) : null;
 
   // 下班。工钱进钱包，收银台上学到的词进单词本，剧本接着演。
   const finishShift = (r: ShiftResult) => {
@@ -998,11 +1103,16 @@ const App: React.FC = () => {
   // 待播队列的出口一：回到大厅、手上没有别的东西在播 → 补播一段手写剧情。
   // 只补有剧本的那些；没剧本的那一级要靠 AI 即兴，而即兴得在聊天里演，
   // 所以留在队列里，等玩家下次找她说话（出口二）。
+  //
+  // ⚠️ 现在这条只是兜底：有常去地点的人，剧情改成"下次在她常去的地方碰到她"
+  // 才演（见 pendingStoryAt）。只有地图上哪儿都找不到她的人才走这里，
+  // 不然剧情又会接在一段跟她毫无关系的出门后面自己冒出来。
   useEffect(() => {
     if (gameMode !== GameMode.LOBBY) return;
     if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
     if (!pendingLevelUps.length) return;
     const eligible = (e: { charId: CharacterId; axis: RelationshipAxis; level: number }) => {
+      if (MAP_LOCATIONS.some(l => l.regulars?.includes(e.charId))) return false;
       const d = findLevelStory(e.charId, e.axis, e.level);
       if (!d?.script?.length || !isLevelStoryReady(d, storyFlags)) return false;
       // 🕐 时段对不上就先不播，留在队列里等对的时候。
@@ -1033,7 +1143,10 @@ const App: React.FC = () => {
   const applyStoryFlags = (list: string[]) => {
     if (!list?.length) return;
     const gifts = list.filter(f => f.startsWith('give:'));
-    const flags = list.filter(f => !f.startsWith('give:'));
+    // 「pay:金额」：剧情里花的钱（扭蛋、二手店的电子羊）。不够就扣到零为止。
+    const paid = list.filter(f => f.startsWith('pay:')).reduce((n, f) => n + (Number(f.slice(4)) || 0), 0);
+    if (paid) setLife(l => ({ ...l, yen: Math.max(0, l.yen - paid) }));
+    const flags = list.filter(f => !f.startsWith('give:') && !f.startsWith('pay:'));
     if (gifts.length) {
       setLife(l => {
         const items = { ...l.items };
@@ -1063,7 +1176,12 @@ const App: React.FC = () => {
     setStoryFlags(prev => {
       const next = { ...prev };
       let changed = false;
-      for (const f of flags) if (!next[f]) { next[f] = true; changed = true; }
+      for (const f of flags) {
+        // 「!xxx」= 把 xxx 撤掉。可以重复演的剧情（跟空比投篮）每一局开场
+        // 都要先把上一局的输赢清掉，不然 branch 读到的是上一局的结果。
+        if (f.startsWith('!')) { if (next[f.slice(1)]) { delete next[f.slice(1)]; changed = true; } }
+        else if (!next[f]) { next[f] = true; changed = true; }
+      }
       return changed ? next : prev;
     });
   };
@@ -1115,9 +1233,32 @@ const App: React.FC = () => {
 
   // 序章痕迹 → AI 的"你们到底认不认识"。
   // 没有这一步，玩家在便利店主动跟深雪搭过话，正篇第一句仍然是"我们素不相识"。
-  const getEncounterOverride = (charId: CharacterId, flags: StoryFlags = storyFlags, done: boolean = prologueDone) => {
+  //
+  // 但序章只管到"搬来那天晚上"。序章里没碰上的人（光、铃、真希、深雪）
+  // 拿到的是"你们素不相识、你不知道他叫什么"——而第一章明明已经把她们
+  // 一个个介绍过了。于是开学一周后在手机上找光，她开口问的是
+  // "你就是新来的留学生吧？叫什么名字？"。
+  //
+  // 所以：第一章过完、剧情里真的照过面的人，一律不再是陌生人。
+  // 序章里本来就认识的（或者档案里就是老熟人的奈绪）保持原样。
+  const getEncounterOverride = (
+    charId: CharacterId, flags: StoryFlags = storyFlags, done: boolean = prologueDone, met: CharacterId[] = metChars
+  ) => {
     const enc = resolvePrologueEncounter(charId, flags, done);
-    return enc ? { origin: enc.origin, encounter: enc.encounter } : undefined;
+    const base = enc ? { origin: enc.origin, encounter: enc.encounter } : undefined;
+    const metInStory = !!flags['day1_done'] && (met.includes(charId) || !!flags[`day1_met_${charId}`]);
+    if (!metInStory) return base;
+    const origin = base?.origin ?? getRelationshipProfile(charId).origin;
+    if (origin === 'acquainted') return base;
+    const ownMemory = Object.values(DAY1_MEMORIES)
+      .filter((m, i) => m.char === charId && flags[Object.keys(DAY1_MEMORIES)[i]])
+      .map(m => m.memory).join(' ');
+    return {
+      origin: 'acquainted' as const,
+      encounter: `You met the player in person on April 11, the first day of term, when they started at your school as a new exchange student from abroad, and you have run into each other since. You are NOT strangers any more: do NOT introduce yourself as if for the first time, do NOT ask what their name is, and do NOT greet them as "the new student".`
+        + (ownMemory ? ` Your own memory of that first day: ${ownMemory}` : '')
+        + ' How close you are now is decided by the familiarity track below, not by how you first met.'
+    };
   };
 
   const unlockStoryCg = (cgId: string) => {
@@ -1256,7 +1397,8 @@ const App: React.FC = () => {
       const next = (i < 0 ? 0 : i) + 1;
       return next < AFTERSCHOOL_SLOTS.length
         ? { ...prev, timeSlot: AFTERSCHOOL_SLOTS[next] }
-        : prev;   // 已经是夜里了就停在夜里，让玩家自己回去睡
+        // 已经是夜里了就停在夜里，让玩家自己回去睡——今晚这一趟算是用掉了
+        : { ...prev, nightUsed: true };
     });
     setGameMode(GameMode.LOBBY);
   };
@@ -1283,6 +1425,20 @@ const App: React.FC = () => {
     setGameCalendar(prev => ({ ...prev, timeSlot: slot === 'morning' ? 'lunch' : 'afternoon' }));
     setGameMode(GameMode.LOBBY);
   };
+
+  // 🔔 午休那一件事做完了（吃了饭、在校内走了一趟、跟谁聊完了）→ 预备铃响，回教室。
+  // 以前做完什么都不发生，玩家站在大厅里，不知道下一步是去上课；
+  // 更早以前是直接跳到放学——下午两节课凭空消失。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || activeActivity || playingDay1 || levelUpEvent || showPhone) return;
+    if (gameCalendar.timeSlot !== 'lunch' || !gameCalendar.lunchUsed || !classPending) return;
+    flashLife(userState.language === 'en'
+      ? 'The five-minute bell. Back to class for the afternoon.'
+      : '预备铃响了。回教室上下午的课。');
+    const t = setTimeout(() => goToClass(), 900);
+    return () => clearTimeout(t);
+  }, [gameMode, gameCalendar, classPending, activeMain, activeClass, activeLevelStory, activeTrip, activeActivity, playingDay1, levelUpEvent, showPhone]);
 
   // 睡一觉 = 推进到第二天早晨。天气随机，房间背景会跟着换。
   const advanceToNextDay = () => {
@@ -1321,7 +1477,9 @@ const App: React.FC = () => {
       return {
         ...advanceCalendarDay(prev),
         timeSlot: 'morning',
-        weather: weathers[Math.floor(Math.random() * weathers.length)]
+        weather: weathers[Math.floor(Math.random() * weathers.length)],
+        lunchUsed: false,
+        nightUsed: false
       };
     });
     // 过夜：昨天没浇水的盆会蔫。蔫了只是收成减半，不会死——
@@ -1348,6 +1506,33 @@ const App: React.FC = () => {
   // 店和钓点是例外：它们本身就是一个界面，不该被"今天这儿没事发生"的空转旁白挡住。
   // 但第一次去仍然让剧情事件先播（比如第一次走到三宫站那段），所以顺序是
   // "有事件先演事件，没事件才直接开门"。
+  // 💞 攒着没演的好感度剧情，今天在这个地方能不能演。
+  //
+  // 以前它们挂在"回到大厅"上：随便出去一趟回来，队列里谁的剧情时段对上了
+  // 就直接开演——于是跟奈绪逛完百元店，一回大厅接着就是跟空的体育馆戏，
+  // 中间没有任何因由。
+  //
+  // 现在改成"下次碰到她"：她得真的在你去的那个地方（午休按作息表，
+  // 放学后和夜里按她常去的地方），时段也对得上，才演。
+  // 地图上会给这样的地方打一个 ♥，玩家知道去哪儿能找到她。
+  const pendingStoryAt = (loc: MapLocation) => {
+    if (!pendingLevelUps.length) return null;
+    const lunchHere = gameCalendar.timeSlot === 'lunch'
+      ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.char ?? null)
+      : null;
+    for (const e of pendingLevelUps) {
+      const def = findLevelStory(e.charId, e.axis, e.level);
+      if (!def?.script?.length || !isLevelStoryReady(def, storyFlags)) continue;
+      if (!levelStorySlots(def).includes(gameCalendar.timeSlot)) continue;
+      if (!metChars.includes(e.charId) || riftFor(social, e.charId, gameCalendar)) continue;
+      const here = gameCalendar.timeSlot === 'lunch' && isSchoolDay(gameCalendar)
+        ? lunchHere === e.charId
+        : !!loc.regulars?.includes(e.charId);
+      if (here) return { entry: e, def };
+    }
+    return null;
+  };
+
   const startTrip = (loc: MapLocation, confirmedSkip = false) => {
     // 🏫 午休 + 下午还有课 + 要去的地方在校外 = 这一趟等于翘掉下午。
     // 以前是不问自取：玩家午休去趟商店街，回来发现已经放学了，
@@ -1378,6 +1563,24 @@ const App: React.FC = () => {
       familiarity: familiarityMap,
       met: metChars
     });
+    // 💞 这个地方没有专属事件，但她在这儿，而且她那段剧情等着演 → 演它。
+    // 包成一个只演一次的地图事件，时间、体力、"见过了"都走出门那一套结算。
+    const owed = !ev ? pendingStoryAt(loc) : null;
+    if (owed) {
+      setPendingLevelUps(q => q.filter(x => x !== owed.entry));
+      setPendingEncounter(null);
+      setCurrentScene(loc.mapScene || loc.id);
+      setActiveTrip({
+        loc,
+        event: {
+          id: `lvstory_${owed.def.id}`, locationId: loc.id, chars: [owed.entry.charId],
+          titleZh: owed.def.titleZh, titleEn: owed.def.titleEn, script: owed.def.script!
+        },
+        script: owed.def.script!
+      });
+      setGameMode(GameMode.LOBBY);
+      return;
+    }
     if (!ev) {
       // 🏪 到店门口先看见的是店门口。
       // 以前这里直接把场景切成店内（或者压根没切，背景还留着上一趟的商店街），
@@ -1404,7 +1607,7 @@ const App: React.FC = () => {
           setActiveTrip({
             loc, event: null,
             script: [
-              { type: 'scene', scene: loc.mapScene || loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+              { type: 'scene', scene: loc.mapScene || loc.id, bgm: 'store', titleZh: loc.nameZh, titleEn: loc.nameEn },
               ...inShop.script,
               { type: 'effect', setFlags: [inShop.id] }
             ]
@@ -1415,7 +1618,14 @@ const App: React.FC = () => {
         setActiveStore(SHOP_AT[loc.id]); setGameMode(GameMode.STORE); return;
       }
       if (loc.id === 'tackle_shop')   { setCurrentScene(loc.mapScene || loc.id); setActiveStore('tackle');  setGameMode(GameMode.STORE); return; }
-      if (loc.id === 'school_terrace') { setCurrentScene(loc.id); setInCafeteria(true); setGameMode(GameMode.CAFETERIA); return; }
+      if (loc.id === 'school_terrace') {
+        // 🍱 午休的食堂里有没有认识的人。有的话她会招手，
+        // 吃完端着盘子坐过去——那顿饭剩下的部分就是面对面的聊天。
+        const free = metChars.filter(c => !riftFor(social, c, gameCalendar));
+        const mate = lunchPresenceAt(loc.id, gameCalendar, storyFlags, free)?.char ?? null;
+        setPendingEncounter(mate);
+        setCurrentScene(loc.id); setInCafeteria(true); setGameMode(GameMode.CAFETERIA); return;
+      }
       if (FISHING_SPOTS.includes(loc.id)) {
         setCurrentScene(loc.id);
         // 🎣 第一次上堤防，先让源さん把竿、饵、时辰讲一遍，讲完再开钓场。
@@ -1424,7 +1634,7 @@ const App: React.FC = () => {
           setActiveTrip({
             loc, event: null,
             script: [
-              { type: 'scene', scene: loc.mapScene || loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+              { type: 'scene', scene: loc.mapScene || loc.id, bgm: 'harbor', titleZh: loc.nameZh, titleEn: loc.nameEn },
               ...FISH_TUTORIAL
             ]
           });
@@ -1454,6 +1664,24 @@ const App: React.FC = () => {
         met = encounterAt(loc.id, loc.regulars, gameCalendar, speaking, familiarityMap as Record<string, number>);
       }
     }
+    // 🏀 碰到的是空，而且是在体育馆 / 天台 / 中央街游戏厅：
+    // 第一次一定拉你过去教你投篮机；之后一天最多一次，有时候会拉你比一场。
+    if (!ev && met === CharacterId.SORA && BB_SPOTS.includes(loc.id)) {
+      const first = !storyFlags['basketball_tutorial_done'];
+      const today = dayIndex(gameCalendar);
+      const fresh = life.activityOn?.['bb_sora'] !== today;
+      if (first || (fresh && Math.random() < 0.6)) {
+        const where = loc.id === 'rooftop_sunset' ? 'rooftop' : loc.id === 'sannomiya_arcade' ? 'arcade' : 'gym';
+        const script = first
+          ? BB_SORA_FIRST(where)
+          : where === 'arcade' ? BB_SORA_ARCADE : BB_SORA_CHALLENGE(where === 'rooftop');
+        setLife(l => ({ ...l, activityOn: { ...(l.activityOn || {}), bb_sora: today } }));
+        setPendingEncounter(null);
+        setActiveTrip({ loc, event: null, script });
+        setGameMode(GameMode.LOBBY);
+        return;
+      }
+    }
     // 本来今天该在这儿、但正在冷淡期的那个人。有的话，这一趟演一次错身。
     const avoided = (!ev && !met && gameCalendar.timeSlot === 'lunch')
       ? (lunchPresenceAt(loc.id, gameCalendar, storyFlags, metChars)?.char ?? null)
@@ -1476,12 +1704,12 @@ const App: React.FC = () => {
         ? ev.script
         : avoided
         ? [
-            { type: 'scene', scene: loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+            { type: 'scene', scene: loc.id, bgm: tripBgmFor(loc, gameCalendar), titleZh: loc.nameZh, titleEn: loc.nameEn },
             { type: 'narration', zh: avoidNote(gameCalendar, 'zh'), en: avoidNote(gameCalendar, 'en') }
           ]
         : street
         ? [
-            { type: 'scene', scene: loc.id, bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+            { type: 'scene', scene: loc.id, bgm: tripBgmFor(loc, gameCalendar), titleZh: loc.nameZh, titleEn: loc.nameEn },
             ...street.script,
             { type: 'effect', setFlags: [street.id] },
             ...npcTalk
@@ -1532,9 +1760,157 @@ const App: React.FC = () => {
     });
   };
 
+  // ---------- 📱 手机里的聊天 ----------
+  // 真正发过的消息（含第一次点开时抄进来的预写消息），按人存。
+  const [phoneChats, setPhoneChats] = useState<Partial<Record<CharacterId, PhoneChatMsg[]>>>({});
+  // 她正在打字（等模型回话）
+  const [phoneTyping, setPhoneTyping] = useState<CharacterId | null>(null);
+  // 手机掏出来停在哪一层：从大厅点某个人 → 直接进她的对话；从 App 退回来 → 主页
+  const [phoneStart, setPhoneStart] = useState<{ view: PhoneView; thread: CharacterId | null }>({ view: 'lock', thread: null });
+  // 从手机里点开地图、相册……关掉之后应该回到手机，而不是连手机一起收起来
+  const phoneReturnRef = useRef(false);
+  const phoneRepliesRef = useRef(0);
+
+  const openPhone = (view: PhoneView = 'lock', thread: CharacterId | null = null) => {
+    setPhoneStart({ view, thread });
+    setShowPhone(true);
+  };
+  const backToPhone = () => {
+    if (!phoneReturnRef.current) return;
+    phoneReturnRef.current = false;
+    openPhone('home');
+  };
+
+  // 气泡上的时刻：按时段给一个起点，同一个对话里每多一条往后走一分钟——
+  // 随机取的话会出现"回复比提问还早"。
+  const phoneClock = (id?: CharacterId) => {
+    const [h, m] = ({ morning: [7, 38], lunch: [12, 14], afternoon: [16, 2], night: [21, 9] } as Record<string, number[]>)[gameCalendar.timeSlot] || [12, 0];
+    const today = dayIndex(gameCalendar);
+    const n = id ? (phoneChats[id] || []).filter(x => x.day === today).length : 0;
+    const mm = Math.min(59, m + n);
+    return `${String(h).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+  };
+  const pushPhone = (id: CharacterId, msgs: PhoneChatMsg[]) =>
+    setPhoneChats(p => ({ ...p, [id]: [...(p[id] || []), ...msgs].slice(-150) }));
+
+  // 预写的消息：第一次点开对话的时候抄进聊天记录。
+  // 一次全抄进去，不一条一条等——它们是你掏手机之前就已经到了的。
+  const readPhoneMessages = (id: CharacterId, msgs: PhoneMessage[]) => {
+    markMessagesRead(msgs.map(m => m.id));
+    const en = userState.language === 'en';
+    const day = dayIndex(gameCalendar);
+    const t = phoneClock(id);
+    pushPhone(id, msgs.flatMap(m => m.lines.map((l, j) => ({
+      id: `${m.id}-${j}-${Date.now()}`, from: 'her' as const,
+      jp: l.jp, tr: en ? l.en : l.zh, day, time: t, scriptId: m.id
+    }))));
+    const words = msgs.filter(m => m.word).map(m => m.word!);
+    if (words.length) collectStoryWords(words);
+    audioManager.playSfx('receive');
+  };
+
+  // 今天她还回不回。冷淡期 → 已读不回；今天聊够了 → 她不回了。
+  const phoneReplyBlock = (id: CharacterId): string | null => {
+    const rift = riftFor(social, id, gameCalendar);
+    if (rift) return riftNote(rift, gameCalendar, userState.language);
+    const fam = familiarityMap[id] ?? getInitialFamiliarity(id);
+    if (turnsLeft(social, id, gameCalendar, fam, false) <= 0) {
+      return userState.language === 'en'
+        ? 'She will not reply any more today. Try again tomorrow — or go and find her.'
+        : '她今天不会再回了。明天再发——或者，去找她本人。';
+    }
+    return null;
+  };
+
+  const sendPhone = async (id: CharacterId, payload: { text?: string; sticker?: string }) => {
+    if (phoneTyping) return;
+    if (isCustomApi && (!customBaseUrl.trim() || !customModelName.trim())) {
+      alert(userState.language === 'en'
+        ? 'Custom API selected: please fill in the API Base URL and Model ID first.'
+        : '当前选择了自定义 API：请先填写接口地址 (Base URL) 和模型名称 (Model ID)。');
+      return;
+    }
+    const en = userState.language === 'en';
+    const day = dayIndex(gameCalendar);
+    const before = phoneChats[id] || [];
+    const mine: PhoneChatMsg = {
+      id: 'me-' + Date.now(), from: 'me', day, time: phoneClock(id),
+      jp: payload.text?.trim() || undefined, sticker: payload.sticker
+    };
+    pushPhone(id, [mine]);
+    if (phoneReplyBlock(id)) return;
+
+    const fam = familiarityMap[id] ?? getInitialFamiliarity(id);
+    const aff = affectionMap[id] || 0;
+    const left = turnsLeft(social, id, gameCalendar, fam, false);
+    setSocial(sc => bumpTurn(sc, id, gameCalendar));
+    const roll = rollFateDice(getFamiliarityLevelIndex(fam));
+    const asText = (m: PhoneChatMsg) => m.sticker ? `[スタンプ「${stickerById(m.sticker)?.jp || ''}」]` : (m.jp || '');
+    const st = stickerById(payload.sticker);
+    const said = st ? `[スタンプ「${st.jp}」 = ${st.en}]` : (payload.text || '').trim();
+
+    setPhoneTyping(id);
+    try {
+      const reply = await sendPhoneChat({
+        character: CHARACTERS[id], lang: userState.language,
+        apiKey: customApiKey, modelName: effectiveModelName, baseUrl: effectiveBaseUrl,
+        affection: aff, familiarity: fam,
+        memory: memoryMap[id] || getSeedMemory(id),
+        encounterOverride: getEncounterOverride(id),
+        situation: buildSituation(false, id),
+        history: before.filter(m => m.from !== 'system').slice(-24)
+          .map(m => ({ role: m.from === 'me' ? 'user' as const : 'model' as const, text: asText(m) })),
+        stickers: stickersFor(id).map(s => ({ id: s.id, jp: s.jp, meaning: s.en })),
+        windDown: windDownHint(id, left - 1, gameCalendar)
+      }, `【運命のダイス: ${roll}/6】\n${said}`);
+
+      // 关系：跟当面聊同一套骰子保底，但隔着手机只给一半
+      const affD = reply.affectionDelta >= 0 ? Math.max(reply.affectionDelta, getDiceAffectionFloor(roll)) : reply.affectionDelta;
+      const famD = reply.familiarityDelta >= 0 ? Math.max(reply.familiarityDelta, getDiceFamiliarityFloor(roll)) : reply.familiarityDelta;
+      const changed = applyRelationship(id, Math.round(affD * 0.5), Math.round(famD * 0.5), { quiet: true });
+
+      const t = phoneClock(id);
+      const items: PhoneChatMsg[] = reply.messages.map((m, i) => ({
+        id: `her-${Date.now()}-${i}`, from: 'her', jp: m.jp, tr: m.tr, sticker: m.sticker, day, time: t
+      }));
+      if (items.length && changed) items[items.length - 1].delta = changed;
+      // 一条一条冒出来：长的那句要多打一会儿
+      for (let i = 0; i < items.length; i++) {
+        const wait = i === 0 ? 250 : 450 + Math.min(1500, (items[i].jp?.length || 6) * 45);
+        await new Promise(r => setTimeout(r, wait));
+        pushPhone(id, [items[i]]);
+        audioManager.playSfx('receive');
+      }
+
+      // 🧊 吵起来了：跟当面一样，两条轴同时被判负才算
+      if (reply.affectionDelta <= -1 && reply.familiarityDelta <= -1) {
+        const reason: RiftReason = reply.affectionDelta <= -2 ? 'fight' : 'said_too_much';
+        setSocial(sc => openRift(sc, id, gameCalendar, reason));
+        pushPhone(id, [{ id: 'sys-' + Date.now(), from: 'system', jp: en ? 'She stopped replying.' : '她不再回了。', day, time: t }]);
+      } else if (left - 1 <= 0) {
+        pushPhone(id, [{ id: 'sys-' + Date.now(), from: 'system', jp: en ? 'She has gone quiet for today.' : '她今天大概不会再回了。', day, time: t }]);
+      }
+
+      phoneRepliesRef.current += 1;
+      if (phoneRepliesRef.current >= MEMORY_UPDATE_EVERY) {
+        phoneRepliesRef.current = 0;
+        updateCharacterMemory(id, [...before, mine, ...items].filter(m => m.from !== 'system').map(m => ({
+          id: m.id, role: m.from === 'me' ? 'user' : 'model', text: asText(m)
+        } as Message)));
+      }
+    } catch (error: any) {
+      pushPhone(id, [{ id: 'sys-' + Date.now(), from: 'system', jp: (en ? 'Not delivered: ' : '消息没发出去：') + error.message, day, time: phoneClock(id) }]);
+      audioManager.playSfx('error');
+    } finally {
+      setPhoneTyping(null);
+    }
+  };
+
   // 手机上的 App 只是入口，点开的还是原来那几个面板——
   // 它们没有被重写，只是从大厅右上角那一排搬进了手机里。
+  // 关掉它们会回到手机主页（见 backToPhone），不会连手机一起收起来。
   const openPhoneApp = (app: PhoneAppId) => {
+    phoneReturnRef.current = true;
     if (app === 'map')      { setShowPhone(false); setShowKobeMap(true); return; }
     if (app === 'album')    { setShowPhone(false); setShowCgGallery(true); return; }
     if (app === 'notes')    { setShowPhone(false); setShowWordbook(true); return; }
@@ -1674,8 +2050,11 @@ const App: React.FC = () => {
 
   // 出门回来：时段往前走一格。夜里出去的那一趟回来就直接是第二天早上——
   // 否则夜里可以无限刷，"今天去哪儿"就不是个选择了。
-  const finishTrip = (flags: StoryFlags) => {
-    const trip = activeTrip;
+  // stopAt：不走剧本、直接开界面的那几个地方（食堂）。以前它们关掉时
+  // 这里拿到的 trip 是 null，于是"在哪儿"这件事丢了——午休在食堂吃完饭，
+  // 被当成一趟校外的出门结算，时间直接跳到放学。
+  const finishTrip = (flags: StoryFlags, stopAt?: MapLocation) => {
+    const trip = activeTrip ?? (stopAt ? { loc: stopAt, event: null, script: [] as StoryNode[] } : null);
     setStoryFlags(prev => ({
       ...prev,
       ...flags,
@@ -1735,7 +2114,13 @@ const App: React.FC = () => {
       // 没有机会看手机、翻手账、跟人回条消息，画面一黑就是明天早上。
       // 现在停在夜里、人回到房间，睡不睡由玩家自己按。
       setLife(l => ({ ...l, wentOutOn: dayIndex(gameCalendar), stayInDays: 0 }));
-      setGameCalendar(prev => ({ ...prev, timeSlot: 'night' }));
+      // 🔋 夜里那一趟的体力也得扣。以前滚到夜里就直接 return，
+      // 晚上出门等于不花力气。
+      if (trip) {
+        const drain = staminaCostOf(trip.loc, trip.event, gameCalendar);
+        setLife(l => ({ ...l, stamina: Math.max(0, Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) - drain)) }));
+      }
+      setGameCalendar(prev => ({ ...prev, timeSlot: 'night', nightUsed: true }));
       setCurrentScene('apartment_room');
       setGameMode(GameMode.ROOM);
       flashLife(userState.language === 'en'
@@ -1761,15 +2146,20 @@ const App: React.FC = () => {
             ...prev, skipped_school: true, [classDoneFlag(gameCalendar, classSlotNow() ?? 'morning')]: true
           }));
         }
-        const drain = staminaCostOf(trip.loc, trip.event, gameCalendar);
+        // 食堂这种直接开界面的地方（stopAt）不收脚力：午休下楼吃顿饭不算出门，
+        // 收了的话那一顿回的体力几乎全被抵掉。
+        const drain = (stopAt && !activeTrip) ? 0 : staminaCostOf(trip.loc, trip.event, gameCalendar);
         // 温泉和保健室的 drain 是负的，所以两头都要夹
         setLife(l => ({ ...l, stamina: Math.max(0, Math.min(STAMINA_MAX, (l.stamina ?? STAMINA_MAX) - drain)) }));
       }
       // 午休在校内活动完，时段不动——下一件事是回教室上下午的课，
       // 不是放学。推进时段的话，下午那两节就没地方放了。
+      // 但午休只有一件事：校内走了一趟（或者吃完了饭），这一格就用掉了，
+      // 下一件事是回教室——下面那个 effect 会把玩家送回去。
       const stayLunch = !!trip && trip.loc.district === 'school'
         && gameCalendar.timeSlot === 'lunch' && classPending;
-      if (!stayLunch) setGameCalendar(prev => ({ ...prev, timeSlot: AFTERSCHOOL_SLOTS[nextSlot] }));
+      if (stayLunch) setGameCalendar(prev => ({ ...prev, lunchUsed: true }));
+      else setGameCalendar(prev => ({ ...prev, timeSlot: AFTERSCHOOL_SLOTS[nextSlot] }));
     }
   };
 
@@ -1841,8 +2231,14 @@ const App: React.FC = () => {
   // ---------- 关系（双轴） ----------
   // 親密度先结算，因为它决定了本回合好感度的天花板：
   // 不熟的人再怎么聊也不会心动，要推恋爱线得先把人处熟。
-  const applyRelationship = (charId: CharacterId, rawAffection: number, rawFamiliarity: number) => {
-    if (!rawAffection && !rawFamiliarity) return;
+  // quiet：手机上聊出来的变化。升级的庆祝画面挂在当面聊天那个界面里，
+  // 手机上弹不出来（硬弹的话 levelUpEvent 一直挂着，大厅里什么都不会再触发），
+  // 所以两条轴的升级都进队列——等下次真的见到她再演。
+  // 返回实际变了多少，手机上要在她最后一条消息下面标出来。
+  const applyRelationship = (
+    charId: CharacterId, rawAffection: number, rawFamiliarity: number, opts?: { quiet?: boolean }
+  ): { aff: number; fam: number } | null => {
+    if (!rawAffection && !rawFamiliarity) return null;
 
     const curFam = familiarityMap[charId] ?? getInitialFamiliarity(charId);
     const famDelta = rawFamiliarity * FAMILIARITY_DELTA_SCALE;
@@ -1854,10 +2250,30 @@ const App: React.FC = () => {
     // 天花板只挡上涨，不倒扣已有的好感度（避免关系倒退时数值被抹掉）
     const nextAff = wantedAff > curAff ? Math.min(wantedAff, Math.max(curAff, ceiling)) : wantedAff;
 
-    if (nextFam === curFam && nextAff === curAff) return;
+    if (nextFam === curFam && nextAff === curAff) return null;
 
     if (nextFam !== curFam) setFamiliarityMap(prev => ({ ...prev, [charId]: nextFam }));
     if (nextAff !== curAff) setAffectionMap(prev => ({ ...prev, [charId]: nextAff }));
+    const changed = { aff: nextAff - curAff, fam: nextFam - curFam };
+
+    if (opts?.quiet) {
+      const lvAff = getAffectionLevelIndex(nextAff) > getAffectionLevelIndex(curAff) ? getAffectionLevelIndex(nextAff) + 1 : 0;
+      const lvFam = getFamiliarityLevelIndex(nextFam) > getFamiliarityLevelIndex(curFam) ? getFamiliarityLevelIndex(nextFam) + 1 : 0;
+      const queued: { charId: CharacterId; axis: RelationshipAxis; level: number }[] = [];
+      if (lvAff) queued.push({ charId, axis: 'affection', level: lvAff });
+      if (lvFam) queued.push({ charId, axis: 'familiarity', level: lvFam });
+      if (queued.length) {
+        setPendingLevelUps(q => [...q, ...queued]);
+        audioManager.playSfx(lvAff ? 'levelup_affection' : 'levelup_familiarity');
+        flashLife(userState.language === 'en'
+          ? `You and ${charName(charId, true)} feel closer. Next time you see her, something may happen.`
+          : `跟${charName(charId, false)}的关系又近了一步。下次见到她的时候，也许会发生点什么。`);
+      } else if (changed.aff > 0) audioManager.playSfx('affection_up');
+      else if (changed.fam > 0) audioManager.playSfx('familiarity_up');
+      else audioManager.playSfx('relation_down');
+      return changed;
+    }
+
     setAffectionToast({ delta: nextAff - curAff, famDelta: nextFam - curFam, key: Date.now() });
 
     // 跨越等级阈值 → 庆祝画面 + 升级剧情。两条轴同回合升级时，
@@ -1880,6 +2296,7 @@ const App: React.FC = () => {
     else if (nextAff < curAff || nextFam < curFam) audioManager.playSfx('relation_down');
     else if (nextAff > curAff) audioManager.playSfx('affection_up');
     else if (nextFam > curFam) audioManager.playSfx('familiarity_up');
+    return changed;
   };
 
   // 玩家在升级庆祝画面点击继续 → 触发"关系升级"特别场景
@@ -2025,6 +2442,10 @@ const App: React.FC = () => {
         protagonistStats, gameCalendar, storyFlags, prologueDone, day1Done, unlockedCgs, life, metChars,
         // 欠着没播的升级剧情。不存的话，读档就把某人的专属剧情永久吞掉了。
         pendingLevelUps,
+        // 手机里真正聊过的消息。容量告急时每人只留最近 30 条。
+        phoneChats: hard
+          ? Object.fromEntries(Object.entries(phoneChats).map(([k, v]) => [k, (v || []).slice(-30)]))
+          : phoneChats,
         // 今天跟谁聊了几轮、谁还在生气。不存的话，读档就能把额度刷回来。
         social,
         // 序章进行中：把这一刻的进度（读到第几句、做过哪些选择）随槽位一起存下来，
@@ -2121,6 +2542,8 @@ const App: React.FC = () => {
       setStoryFlags(data.storyFlags || {});
       setPendingLevelUps(data.pendingLevelUps || []);
       setSocial(data.social || INITIAL_SOCIAL_STATE);
+      setPhoneChats(data.phoneChats || {});
+      setPhoneTyping(null);
       setUnlockedCgs(Array.isArray(data.unlockedCgs) ? data.unlockedCgs : []);
       // 老存档没有休闲系统：给一份初值，别让读档崩掉
       setLife({ ...INITIAL_LIFE_STATE, ...(data.life || {}),
@@ -2189,7 +2612,7 @@ const App: React.FC = () => {
               unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
               unlockedScenes: getUnlockedScenes(familiarityValue),
               // 读档恢复会话时同样要带上序章痕迹，否则 AI 会退回"素不相识"
-              encounterOverride: getEncounterOverride(charId, data.storyFlags || {}, data.prologueDone ?? true)
+              encounterOverride: getEncounterOverride(charId, data.storyFlags || {}, data.prologueDone ?? true, Array.isArray(data.metChars) ? data.metChars : [...VISIBLE_CHARACTER_IDS])
             }
           );
           setIsDialogueFinished(true);
@@ -2289,7 +2712,7 @@ const App: React.FC = () => {
   // 以前它什么都不知道：不知道今天几号、现在几点、人在哪儿、是当面还是隔着手机，
   // 也不知道剧情走到了哪一步。于是它自己编——午休的走廊上聊起昨晚的晚饭，
   // 手机短信里伸手替你理领带，还没去过的祭典被说成"上次我们一起去的时候"。
-  const buildSituation = (inPerson: boolean) => {
+  const buildSituation = (inPerson: boolean, charId?: CharacterId) => {
     const en = userState.language === 'en';
     const school = dayKindOf(gameCalendar) === 'school';
     const slot = en
@@ -2308,6 +2731,30 @@ const App: React.FC = () => {
     if (storyFlags['farm_tutorial_done']) notes.push(en ? 'There is a plant pot on the player balcony now.' : '主角的阳台上已经有一个花盆了。');
     if (storyFlags['fish_tutorial_done']) notes.push(en ? 'The player has been shown how to fish off the breakwater.' : '主角在防波堤上被人教过怎么钓鱼。');
     if (storyFlags['skipped_school']) notes.push(en ? 'The player has skipped school at least once.' : '主角翘过课。');
+    // 跟**这个人**一起经历过的剧情。只列标题——够模型知道"那件事发生过"，
+    // 又不至于把整段剧本塞进去。以前它一条都不知道，于是一起逛过百元店、
+    // 一起在体育馆投过篮的人，在手机上照样当你是刚认识。
+    if (charId) {
+      const shared: string[] = [];
+      MAP_EVENTS.forEach(ev => {
+        if (ev.chars.includes(charId) && storyFlags[ev.id]) shared.push(en ? ev.titleEn : ev.titleZh);
+      });
+      (LEVEL_STORIES[charId] || []).forEach(d => {
+        if (storyFlags[`lvstory_${d.id}`]) shared.push(en ? d.titleEn : d.titleZh);
+      });
+      if (charId === CharacterId.NAO && storyFlags['day2_nao_done'] && !storyFlags['day2_nao_missed'])
+        shared.push(en ? 'Apr 12: met at Sannomiya station, she showed the player the supermarket and the 100-yen shop' : '4/12 在三宫站碰头，她带主角逛了超市和百元店');
+      if (charId === CharacterId.SORA && storyFlags['day2_sora_done'] && !storyFlags['day2_sora_missed'])
+        shared.push(en ? 'Apr 12: the player came to the gym after school as promised and shot hoops with her' : '4/12 放学后主角按约定来了体育馆，陪她投了篮');
+      if (storyFlags[`day2_${charId}_missed`])
+        shared.push(en ? 'Apr 12: the player did NOT come to the meeting you two agreed on — they went to meet someone else instead' : '4/12 主角没来赴你们说好的约——他去见了别人');
+      if (charId === CharacterId.SORA && storyFlags['basketball_tutorial_done'])
+        shared.push(en ? 'You taught the player how to play the shooting game and have played against each other' : '你教过主角玩投篮机，两个人比过投篮');
+      if (shared.length) {
+        notes.push((en ? 'Things you and the player have done together (real, you remember them): ' : '你和主角一起经历过的事（真的发生过，你记得）：')
+          + shared.slice(-8).join(en ? '; ' : '；'));
+      }
+    }
     return {
       dateLabel: en
         ? `${gameCalendar.month}/${gameCalendar.day} ${gameCalendar.dayOfWeek}`
@@ -2317,6 +2764,7 @@ const App: React.FC = () => {
       sceneLabel,
       schoolDay: school,
       inPerson,
+      playerName: userState.playerName,
       storyNotes: notes
     };
   };
@@ -2386,7 +2834,10 @@ const App: React.FC = () => {
             memory: memoryMap[charId] || getSeedMemory(charId), resume: false,
             unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
             unlockedScenes: getUnlockedScenes(familiarityValue),
-            encounterOverride: getEncounterOverride(charId)
+            encounterOverride: getEncounterOverride(charId),
+            // 接着上次聊也得知道"现在"——以前只有第一次开口时才给，
+            // 隔了三天再来，模型还以为是上次那个午休。
+            situation: buildSituation(chatInPerson, charId)
           }
         );
         // 恢复上次最后一条 AI 消息的画面（表情/服装/场景），并把输入框直接就绪
@@ -2412,9 +2863,12 @@ const App: React.FC = () => {
     // 没写的角色回退到 firstMessage（对已认识的角色，那就是日常的一天）。
     const profile = getRelationshipProfile(charId);
     const encounterOverride = getEncounterOverride(charId);
+    // 初対面脚本只给真的初次见面用。已经认识的人拿它当基调，
+    // 就会演出"你就是新来的吧"那一套。
+    const openingOrigin = encounterOverride?.origin || profile.origin;
     const openingBrief = buildOpeningBrief(
-      encounterOverride?.origin || profile.origin,
-      profile.firstMeeting || CHARACTERS[charId].firstMessage
+      openingOrigin,
+      openingOrigin === 'stranger' ? (profile.firstMeeting || CHARACTERS[charId].firstMessage) : CHARACTERS[charId].firstMessage
     ) + buildPrologueBrief(storyFlags, charId);
 
     const stream = makeStreamHandler(charId, true);
@@ -2428,7 +2882,7 @@ const App: React.FC = () => {
           unlockedScenes: getUnlockedScenes(familiarityValue),
           openingBrief,
           encounterOverride,
-          situation: buildSituation(chatInPerson),
+          situation: buildSituation(chatInPerson, charId),
           onPage: stream.onPage
         }
       );
@@ -2830,6 +3284,29 @@ ${wind}`;
           onOpenCgGallery={() => setShowCgGallery(true)}
           onOpenRoom={() => setGameMode(GameMode.ROOM)}
           onOpenMap={() => {
+            // 🌅 早上不是直接推门出去的时段。
+            // 一天怎么开头，是在"今天的安排"那张面板上定的：去上学、做个便当、
+            // 或者干脆不去。绕过它直接开地图，等于把每天早上那个选择删掉。
+            if (gameCalendar.timeSlot === 'morning' && !storyFlags[plannedFlag(gameCalendar)]) {
+              audioManager.playSfx('click');
+              setShowRestPlan(true);
+              return;
+            }
+            // 🔔 午休已经用掉了：下一件事是回教室，不是再逛一圈。
+            if (gameCalendar.timeSlot === 'lunch' && gameCalendar.lunchUsed && classPending) {
+              goToClass();
+              return;
+            }
+            // 🌙 今晚已经出去过一趟了。夜里只有一趟，剩下的是回家睡觉。
+            if (gameCalendar.timeSlot === 'night' && gameCalendar.nightUsed) {
+              audioManager.playSfx('click');
+              flashLife(userState.language === 'en'
+                ? 'You have already been out tonight. Time to go home and sleep.'
+                : '今晚已经出去过了。该回去睡了。');
+              setCurrentScene('apartment_room');
+              setGameMode(GameMode.ROOM);
+              return;
+            }
             // 🚪 连最轻的一趟都撑不住，就别打开地图了。
             // 开一张全灰的地图让玩家自己看出来"哦我走不动"，
             // 比直接说一句"鞋都脱了"要糟得多。
@@ -2838,21 +3315,15 @@ ${wind}`;
               flashLife(tiredLine(gameCalendar, userState.language === 'en'));
               return;
             }
-            // 🌅 早上不是直接推门出去的时段。
-            // 一天怎么开头，是在"今天"那张面板上定的：去上学、做个便当、
-            // 或者干脆不去。绕过它直接开地图，等于把每天早上那个选择删掉。
-            if (gameCalendar.timeSlot === 'morning' && !storyFlags[plannedFlag(gameCalendar)]) {
-              audioManager.playSfx('click');
-              setShowRestPlan(true);
-              return;
-            }
             setGameMode(GameMode.MAP);
           }}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenInventory={() => setShowInventory(true)}
           onOpenGift={() => setShowGift(true)}
-          onOpenPhone={() => setShowPhone(true)}
-          onOpenDayPlan={() => setShowRestPlan(true)}
+          onOpenPhone={() => openPhone()}
+          onMessage={(id) => openPhone('thread', id)}
+          canMessage={(id) => hasContact(id, { flags: storyFlags, affection: affectionMap, familiarity: familiarityMap, met: metChars })}
+          dayPlanned={!!storyFlags[plannedFlag(gameCalendar)]}
           mainStoryPending={prologueDone && !day1Done && !playingDay1}
           onResumeMainStory={() => {
             setPendingDay1Progress(readDay1Progress());
@@ -2920,7 +3391,7 @@ ${wind}`;
           showExitToLobby={gameMode === GameMode.CHAT}
           hasAnySave={hasAnySave}
           isSyncing={isSyncing}
-          onClose={() => setShowSystemMenu(false)}
+          onClose={() => { setShowSystemMenu(false); backToPhone(); }}
           onOpenWordbook={() => { setShowSystemMenu(false); setShowWordbook(true); }}
           onOpenHistory={() => { setShowSystemMenu(false); setShowHistoryLog(true); }}
           onOpenCgGallery={() => { setShowSystemMenu(false); setShowCgGallery(true); }}
@@ -2952,7 +3423,7 @@ ${wind}`;
           stats={protagonistStats}
           playerName={userState.playerName}
           language={userState.language}
-          onClose={() => setShowProtagonistProfile(false)}
+          onClose={() => { setShowProtagonistProfile(false); backToPhone(); }}
         />
       )}
 
@@ -2968,7 +3439,7 @@ ${wind}`;
             if (a === 'map') setShowKobeMap(true);
             else setShowJournal(true);
           }}
-          onClose={() => setShowInventory(false)}
+          onClose={() => { setShowInventory(false); backToPhone(); }}
         />
       )}
 
@@ -2981,10 +3452,16 @@ ${wind}`;
           familiarity={familiarityMap}
           metChars={metChars}
           wordCount={userState.collectedWords.length}
+          key={`phone-${phoneStart.view}-${phoneStart.thread || ''}`}
+          startView={phoneStart.view}
+          initialThread={phoneStart.thread}
+          chats={phoneChats}
+          typingFor={phoneTyping}
+          replyBlock={phoneReplyBlock}
           onClose={() => setShowPhone(false)}
           onOpenApp={openPhoneApp}
-          onEnterChat={(id, mode) => { setShowPhone(false); setChatInPerson(false); enterChat(id, mode); }}
-          onReadMessages={markMessagesRead}
+          onSend={sendPhone}
+          onReadMessages={readPhoneMessages}
         />
       )}
 
@@ -2992,7 +3469,7 @@ ${wind}`;
         <KobeMapModal
           language={userState.language}
           storyFlags={storyFlags}
-          onClose={() => setShowKobeMap(false)}
+          onClose={() => { setShowKobeMap(false); backToPhone(); }}
         />
       )}
 
@@ -3000,7 +3477,7 @@ ${wind}`;
         <CalendarModal
           calendar={gameCalendar}
           language={userState.language}
-          onClose={() => setShowCalendar(false)}
+          onClose={() => { setShowCalendar(false); backToPhone(); }}
         />
       )}
 
@@ -3038,7 +3515,12 @@ ${wind}`;
           calendar={gameCalendar}
           plans={plansFor(restPlanCtx)}
           onPick={pickRestPlan}
-          onSkip={closeRestPlan}
+          // 上学日那个按钮写的是「照常去上学」——那就真的去上学，
+          // 而不是把面板关掉、留玩家站在大厅里再找一次入口。
+          onSkip={() => {
+            closeRestPlan();
+            if (dayKindOf(gameCalendar) === 'school' && classPending) goToClass();
+          }}
         />
       )}
 
@@ -3065,7 +3547,7 @@ ${wind}`;
           language={userState.language}
           affectionMap={affectionMap}
           unlockedCgs={unlockedCgs}
-          onClose={() => setShowCgGallery(false)}
+          onClose={() => { setShowCgGallery(false); backToPhone(); }}
         />
       )}
 
@@ -3073,7 +3555,7 @@ ${wind}`;
         <WordbookModal
           T={T}
           words={userState.collectedWords}
-          onClose={() => setShowWordbook(false)}
+          onClose={() => { setShowWordbook(false); backToPhone(); }}
           onClear={() => setUserState(prev => ({ ...prev, collectedWords: [] }))}
           onRemove={removeCollectedWord}
           onMove={handleWordAction}
@@ -3119,6 +3601,7 @@ ${wind}`;
           onCollectWords={collectStoryWords}
           onUnlockCg={unlockStoryCg}
           onRestore={restoreStoryProgress}
+          renderMinigame={renderMinigame}
           onFinish={finishDay1}
         />
         </div>
@@ -3150,8 +3633,11 @@ ${wind}`;
           onCollectWords={collectStoryWords}
           onUnlockCg={unlockStoryCg}
           onRestore={restoreStoryProgress}
+          renderMinigame={renderMinigame}
           onFinish={(flags) => {
-            setStoryFlags(prev => ({ ...prev, ...flags }));
+            const id = activeLevelStory.def.id;
+            // 记一笔"演过了"，AI 那边的剧情回顾就靠它
+            setStoryFlags(prev => ({ ...prev, ...flags, [`lvstory_${id}`]: true }));
             setActiveLevelStory(null);
           }}
         />
@@ -3172,6 +3658,7 @@ ${wind}`;
           metChars={metChars}
           life={life}
           onActivity={startActivity}
+          storySpots={MAP_LOCATIONS.filter(l => pendingStoryAt(l)).map(l => l.id)}
         />
       )}
 
@@ -3209,7 +3696,8 @@ ${wind}`;
           onCollectWords={collectStoryWords}
           onUnlockCg={unlockStoryCg}
           onRestore={restoreStoryProgress}
-          onFinish={finishTrip}
+          renderMinigame={renderMinigame}
+          onFinish={(flags) => finishTrip(flags)}
         />
         </div>
       )}
@@ -3282,7 +3770,8 @@ ${wind}`;
           yen={life.yen}
           slotsLeft={slotsLeftToday(gameCalendar)}
           metChars={metChars}
-          onClose={() => { setInCafeteria(false); finishTrip({}); }}
+          companion={pendingEncounter}
+          onClose={() => { setInCafeteria(false); finishTrip({}, findLocation('school_terrace')); }}
           onEat={eatAtCafeteria}
           onEffects={applyStoryEffects}
           onFlags={npcFlags}
@@ -3486,6 +3975,17 @@ ${wind}`;
           language={userState.language}
           progress={life.practice?.[practiceKeyOf(activeActivity.act)]}
           onFinish={r => finishActivity({ kind: 'kingyo', r })}
+          onCancel={cancelActivity}
+        />
+      )}
+      {activeActivity?.act.kind === 'basketball' && (
+        <BasketballModal
+          language={userState.language}
+          mode="solo"
+          venue={activeActivity.act.venue || 'gym'}
+          tutorial={false}
+          tier={(life.practice?.basketball?.tier ?? 1) as PracticeTier}
+          onFinish={r => finishActivity({ kind: 'basketball', r })}
           onCancel={cancelActivity}
         />
       )}

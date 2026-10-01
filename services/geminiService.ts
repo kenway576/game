@@ -14,7 +14,8 @@ import {
   filterEmotionsByRomance
 } from '../constants';
 
-const TIMEOUT_MS = 60000;
+// Pro 开着思考模式，非流式一次可能要想一分多钟
+const TIMEOUT_MS = 90000;
 
 // JSON 字符串内的裸控制字符（换行/制表符等）会导致解析失败，用于修复重试
 const CONTROL_CHARS = new RegExp('[' + String.fromCharCode(0) + '-' + String.fromCharCode(31) + ']+', 'g');
@@ -34,13 +35,28 @@ let currentCharacterName: string = ''; // 用于把旁白里的第一人称改�
 // baseUrl 支持带或不带尾部斜杠；用户按服务商要求自行决定是否包含 /v1
 const resolveChatUrl = (base: string) => `${base.replace(/\/+$/, '')}/chat/completions`;
 
-// 官方 DeepSeek 接口模型映射（将 UI 显示的 deepseek-v4-flash 映射为官方官方模型名 deepseek-chat）
+// 官方 DeepSeek 接口的模型映射。
+//
+// 2026 年 DeepSeek 换代：现在只有 deepseek-flash 和 deepseek-v4-pro 两个模型，
+// 以前用的 deepseek-chat / deepseek-reasoner 已经不在文档里了（对话失效就是因为这个）。
+// 设置里、存档里存的还是 deepseek-v4-flash / deepseek-v4-pro 这两个值——
+// 不改它们，只在发请求的这一层换成新名字，玩家的设置一个都不用动。
+// 见 https://api-docs.deepseek.com/zh-cn/quick_start/pricing
 const resolveActualModelName = (modelName: string, baseUrl?: string): string => {
   if (baseUrl) return modelName; // 用户自定义 API 保持原名
-  if (modelName === 'deepseek-v4-flash' || modelName === 'deepseek-chat') return 'deepseek-chat';
-  if (modelName === 'deepseek-v4-pro' || modelName === 'deepseek-reasoner') return 'deepseek-reasoner';
+  if (modelName === 'deepseek-v4-flash' || modelName === 'deepseek-chat' || modelName === 'deepseek-flash') return 'deepseek-flash';
+  if (modelName === 'deepseek-v4-pro' || modelName === 'deepseek-reasoner') return 'deepseek-v4-pro';
   return modelName;
 };
+
+// 新模型默认开「思考模式」。游戏对话要的是快、而且 JSON 要稳，
+// 所以 Flash 明确关掉思考（等于以前的 deepseek-chat）；
+// Pro 保持默认的思考模式（等于以前的 deepseek-reasoner），想要深一点就选它。
+// 只发给官方接口：自定义 Base URL 那边不一定认这个参数，多传一个字段可能直接 400。
+const deepseekExtras = (modelName: string, baseUrl?: string): Record<string, unknown> =>
+  !baseUrl && resolveActualModelName(modelName) === 'deepseek-flash'
+    ? { thinking: { type: 'disabled' } }
+    : {};
 
 const isOpenAICompatible = (modelName: string, baseUrl?: string) => !!baseUrl || modelName.includes('deepseek');
 
@@ -67,6 +83,30 @@ const getEmotionVocab = (character: Character): string[] => {
   });
   return [...set];
 };
+
+// 🕐 现在几点、在哪儿、隔着什么。当面聊和手机聊共用这一段。
+const buildSituationBlock = (situation: ChatSituation | undefined, origin: 'stranger' | 'acquainted'): string => situation ? `
+    [RIGHT NOW - THE HARD FACTS OF THIS CONVERSATION]
+    - Date: ${situation.dateLabel}${situation.schoolDay ? ' (a school day)' : ' (no school today)'}
+    - Time of day: ${situation.slotLabel}
+    - Weather: ${situation.weather}
+    - ${situation.inPerson ? 'Where you are' : 'Where the PLAYER is (you are somewhere else, wherever you would plausibly be at this hour)'}: ${situation.sceneLabel}
+    - Channel: ${situation.inPerson ? 'FACE TO FACE — you are standing/sitting in front of each other right now.' : 'BY PHONE — you are NOT in the same place. You are typing.'}
+    ${situation.playerName ? `- The player's name: ${situation.playerName}${origin === 'acquainted' ? ' — you already know this name. Never ask for it; address them by it (or by the form of address your familiarity level gives).' : ' — but you only know it once they tell you.'}` : ''}
+
+    RULES ABOUT THIS (violating these breaks the game):
+    1. NEVER contradict the time of day. Do not say good morning in the evening, do not talk about "after school today" once school is already over, do not describe sunlight at night.
+    2. NEVER contradict the weather or the place. If it is raining you do not describe a clear sky. If you are in a classroom you are not on a train.
+    3. Do NOT move the two of you somewhere else on your own, and do NOT jump forward or backward in time. No "later that evening", no "the next morning". This conversation happens HERE and NOW, in one continuous moment.
+    ${situation.inPerson
+      ? '4. Because you are face to face, physical narration is allowed — gestures, distance, where you are looking.'
+      : '4. Because this is a phone conversation you CANNOT see, touch, hand over, or physically react to the player. No narration of your face being seen by them, no touching, no handing objects over. You may describe what you are doing on your end, but they are not there.'}
+    5. Do not invent events that have not happened in this save: no festivals you two never went to, no promises never made, no shared memories that are not in your long-term memory block.
+    ${situation.storyNotes && situation.storyNotes.length ? `
+    [WHAT HAS ACTUALLY HAPPENED SO FAR]
+    ${situation.storyNotes.map(n => '    - ' + n).join(String.fromCharCode(10))}
+    - Anything NOT on this list has not happened yet. Do not refer to it.` : ''}
+  ` : '';;
 
 const getSystemInstruction = (character: Character, mode: ChatMode, goal: string, topic: N3GrammarTopic, lang: Language, affection: number = 0, memory: string = '', unlockedOutfits?: string[], unlockedScenes?: string[], familiarity: number = 0, encounterOverride?: EncounterOverride, situation?: ChatSituation) => {
   const personaBase = character.systemPrompt;
@@ -95,27 +135,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
   // 🕐 现在几点、在哪儿、隔着什么。
   // 不给这一块的话，模型每一轮都会自己重新想象一个场合，
   // 于是午休的走廊上她开始聊昨晚的晚饭，手机短信里她替你理领带。
-  const situationBlock = situation ? `
-    [RIGHT NOW - THE HARD FACTS OF THIS CONVERSATION]
-    - Date: ${situation.dateLabel}${situation.schoolDay ? ' (a school day)' : ' (no school today)'}
-    - Time of day: ${situation.slotLabel}
-    - Weather: ${situation.weather}
-    - Where you are: ${situation.sceneLabel}
-    - Channel: ${situation.inPerson ? 'FACE TO FACE — you are standing/sitting in front of each other right now.' : 'BY PHONE — you are NOT in the same place. You are typing.'}
-
-    RULES ABOUT THIS (violating these breaks the game):
-    1. NEVER contradict the time of day. Do not say good morning in the evening, do not talk about "after school today" once school is already over, do not describe sunlight at night.
-    2. NEVER contradict the weather or the place. If it is raining you do not describe a clear sky. If you are in a classroom you are not on a train.
-    3. Do NOT move the two of you somewhere else on your own, and do NOT jump forward or backward in time. No "later that evening", no "the next morning". This conversation happens HERE and NOW, in one continuous moment.
-    ${situation.inPerson
-      ? '4. Because you are face to face, physical narration is allowed — gestures, distance, where you are looking.'
-      : '4. Because this is a phone conversation you CANNOT see, touch, hand over, or physically react to the player. No narration of your face being seen by them, no touching, no handing objects over. You may describe what you are doing on your end, but they are not there.'}
-    5. Do not invent events that have not happened in this save: no festivals you two never went to, no promises never made, no shared memories that are not in your long-term memory block.
-    ${situation.storyNotes && situation.storyNotes.length ? `
-    [WHAT HAS ACTUALLY HAPPENED SO FAR]
-    ${situation.storyNotes.map(n => '    - ' + n).join(String.fromCharCode(10))}
-    - Anything NOT on this list has not happened yet. Do not refer to it.` : ''}
-  ` : '';
+  const situationBlock = buildSituationBlock(situation, origin);
 
   // 🔥 终极防崩溃与防出戏测验指令
   const quizInstruction = mode === ChatMode.STUDY 
@@ -398,7 +418,7 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
         try {
             const res = await fetch(resolveChatUrl(baseUrl || DEEPSEEK_BASE_URL), {
                 method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${activeKey}` },
-                body: JSON.stringify({ model: translateModel, messages: [{ role: "user", content: `Translate: "${text}" to ${target}. Output only text.` }] })
+                body: JSON.stringify({ model: translateModel, messages: [{ role: "user", content: `Translate: "${text}" to ${target}. Output only text.` }], ...deepseekExtras(translateModel, baseUrl) })
             });
             const data = await res.json(); return data.choices[0].message.content.trim();
         } catch (e) { return "Error"; }
@@ -444,6 +464,8 @@ export interface ChatSituation {
   sceneLabel: string;      // 教室 / 三宫中心街
   schoolDay: boolean;
   inPerson: boolean;       // 面对面，还是隔着手机
+  // 主角叫什么。以前模型从来不知道——所以她们会问。
+  playerName?: string;
   // 剧情走到哪儿了：已经发生过的关键节点，用来挡住"还没发生的事"
   storyNotes?: string[];
 }
@@ -512,7 +534,7 @@ Discard small talk and one-off details. Output ONLY the memory text itself, no e
         const summaryModel = resolveActualModelName(baseUrl ? modelName : 'deepseek-v4-flash', baseUrl);
         const res = await withTimeout(fetch(resolveChatUrl(baseUrl || DEEPSEEK_BASE_URL), {
             method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${activeKey}` },
-            body: JSON.stringify({ model: summaryModel, messages: [{ role: "user", content: prompt }] })
+            body: JSON.stringify({ model: summaryModel, messages: [{ role: "user", content: prompt }], ...deepseekExtras(summaryModel, baseUrl) })
         }), TIMEOUT_MS, "Timeout");
         if (!res.ok) throw new Error(`Memory API ${res.status}`);
         const data = await res.json();
@@ -526,7 +548,7 @@ Discard small talk and one-off details. Output ONLY the memory text itself, no e
 
 const callOpenAI = async (withJsonFormat: boolean) => {
     const actualModel = resolveActualModelName(currentModelName, currentBaseUrl !== DEEPSEEK_BASE_URL ? currentBaseUrl : undefined);
-    const body: any = { model: actualModel, messages: openaiHistory };
+    const body: any = { model: actualModel, messages: openaiHistory, ...deepseekExtras(actualModel, currentBaseUrl !== DEEPSEEK_BASE_URL ? currentBaseUrl : undefined) };
     if (withJsonFormat) body.response_format = { type: "json_object" };
     return await withTimeout(fetch(resolveChatUrl(currentBaseUrl), {
         method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${currentApiKey}` },
@@ -598,7 +620,7 @@ const geminiSend = async (text: string, onPage?: PageCallback) => {
 
 const callOpenAIStream = async (withJsonFormat: boolean) => {
     const actualModel = resolveActualModelName(currentModelName, currentBaseUrl !== DEEPSEEK_BASE_URL ? currentBaseUrl : undefined);
-    const body: any = { model: actualModel, messages: openaiHistory, stream: true };
+    const body: any = { model: actualModel, messages: openaiHistory, stream: true, ...deepseekExtras(actualModel, currentBaseUrl !== DEEPSEEK_BASE_URL ? currentBaseUrl : undefined) };
     if (withJsonFormat) body.response_format = { type: "json_object" };
     return await fetch(resolveChatUrl(currentBaseUrl), {
         method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${currentApiKey}` },
@@ -660,4 +682,160 @@ export const sendMessage = async (text: string, onPage?: PageCallback) => {
   const fullText = text + TURN_RULES;
   if (currentProvider === 'openai') return await handleOpenAIMessageStream(fullText, onPage);
   return await geminiSend(fullText, onPage);
+};
+
+// ---------------------------------------------------------
+// 📱 手机上的文字聊天
+//
+// 跟当面聊不是一回事，所以不复用上面那个会话：
+//   · 当面聊是视觉小说——旁白、台词、表情、立绘、十几页。
+//   · 手机上是 LINE——一到四个短气泡，偶尔一张表情包，没有旁白，看不见人。
+// 用同一个 system prompt 的话，模型会在消息框里写「（彼女は頬を赤らめた）」。
+//
+// 这里每次都把最近的聊天记录整段带上，不留全局会话：
+// 手机和当面聊可能交替着开，共用那个全局 session 会互相串台。
+// ---------------------------------------------------------
+export interface PhoneChatOptions {
+  character: Character;
+  lang: Language;
+  apiKey?: string;
+  modelName?: string;
+  baseUrl?: string;
+  affection: number;
+  familiarity: number;
+  memory?: string;
+  encounterOverride?: EncounterOverride;
+  situation?: ChatSituation;
+  // 最近的往来。user = 玩家，model = 她
+  history: { role: 'user' | 'model'; text: string }[];
+  // 她能发的表情包
+  stickers: { id: string; jp: string; meaning: string }[];
+  // 今天快聊到头了：让她自己找个理由收尾
+  windDown?: string | null;
+}
+
+export interface PhoneReply {
+  messages: { jp?: string; tr?: string; sticker?: string }[];
+  affectionDelta: number;
+  familiarityDelta: number;
+}
+
+const getTextingInstruction = (o: PhoneChatOptions): string => {
+  const { character, lang, affection, familiarity, memory, encounterOverride, situation } = o;
+  const tr = lang === 'en' ? 'English' : 'Chinese (Simplified)';
+  const profile = getRelationshipProfile(character.id);
+  const origin = encounterOverride?.origin ?? profile.origin;
+  const encounter = encounterOverride?.encounter ?? profile.encounter;
+  const famLv = getFamiliarityLevel(familiarity);
+  const affLv = getAffectionLevel(affection);
+  const capped = isRomanceCapped(affection, familiarity);
+  const stickerLines = o.stickers.map(s => `      ${s.id} — 「${s.jp}」 (${s.meaning})`).join('\n');
+  return `
+    [CHARACTER]
+    You are ${character.name}. ${character.systemPrompt}
+    You are a fictional anime character, never an AI assistant.
+    RIGHT NOW you are texting the player on LINE (a Japanese messaging app) from your own phone. You are NOT with them.
+
+    [HOW YOU KNOW THIS PLAYER - GROUND TRUTH]
+    ${origin === 'stranger'
+      ? `You barely know them. ${encounter} Do not invent shared history.`
+      : `You already know them. ${encounter} Do not make it more intimate than it is.`}
+    ${memory && memory.trim() ? `[YOUR MEMORY OF THEM - real shared history]\n    ${memory.trim()}` : ''}
+    ${buildSituationBlock(situation, origin)}
+
+    [RELATIONSHIP]
+    - Familiarity ${familiarity}/${FAMILIARITY_MAX} (${famLv.id}): ${famLv.promptHint}
+    - How you address them and which register you use: ${getFamiliarityStage(character.id, familiarity)}
+    - Affection ${affection}/${AFFECTION_MAX} (${affLv.id}): ${affLv.promptHint}
+    ${capped ? `- Your feelings cannot deepen past "${affLv.id}" yet. Nothing more romantic than that.` : ''}
+    - ${FAMILIARITY_VS_ROMANCE_RULE}
+
+    [DICE OF FATE]
+    The player's message may start with 【運命のダイス: X/6】. 6 = unusually warm (affectionDelta +2), 4-5 = friendly (+1), 3 = ordinary (0 or +1), 2 = a bit distracted (0), 1 = curt (0 or -1).
+    Rude or creepy messages get affectionDelta -1 or -2 regardless of the dice.
+    familiarityDelta: +1 for an ordinary genuine exchange, +2 if they shared something real, 0 for pure formality.
+    Never mention the dice or the numbers.
+
+    [TEXTING STYLE - CRITICAL]
+    - Reply with 1 to 4 short chat bubbles, the way a real person texts. Each bubble at most about 40 Japanese characters.
+    - Write in your own voice and dialect exactly as your persona speaks. Casual texting style is fine (〜, ！, …, ｗ) if it suits you.
+    - NO narration, NO stage directions, NO actions in parentheses, NO 「」 quote marks, NO furigana or HTML tags. It is a text message.
+    - The player is learning Japanese: keep vocabulary roughly JLPT N3 level.
+    - Every text bubble MUST carry "tr": a natural ${tr} translation of that bubble.
+    - Stickers: you MAY send at most ONE sticker in a reply when it genuinely fits the mood — roughly one reply in three, not every time. A sticker is its own bubble: {"sticker":"<id>"}. Choose ONLY from this list:
+${stickerLines}
+    - If the player sends a sticker, it arrives as [スタンプ「…」]; react to what it means.
+    - You do not have to end every reply with a question — real chats sometimes just end.
+
+    [OUTPUT - STRICT JSON ONLY]
+    { "messages": [ { "jp": "今どこ？", "tr": "..." }, { "sticker": "<id>" } ], "familiarityDelta": 1, "affectionDelta": 0 }`;
+};
+
+const parsePhoneReply = (raw: string, allowed: Set<string>): PhoneReply => {
+  const clean = raw.replace(/<think>[\s\S]*?(?:<\/think>|$)/gi, '').replace(/```json/gi, '').replace(/```/g, '').trim();
+  const a = clean.indexOf('{'), b = clean.lastIndexOf('}');
+  let obj: any = null;
+  if (a !== -1 && b !== -1) {
+    const sub = clean.substring(a, b + 1);
+    try { obj = JSON.parse(sub); } catch { try { obj = JSON.parse(sub.replace(CONTROL_CHARS, ' ')); } catch { obj = null; } }
+  }
+  const list: any[] = Array.isArray(obj?.messages) ? obj.messages : [];
+  const messages = list
+    .map(m => {
+      if (m && typeof m.sticker === 'string') return allowed.has(m.sticker) ? { sticker: m.sticker } : null;
+      const jp = String(m?.jp ?? m?.text ?? '')
+        .replace(/<rt>.*?<\/rt>/g, '').replace(/<[^>]+>/g, '')
+        .replace(/^「/, '').replace(/」$/, '').trim();
+      return jp ? { jp, tr: String(m?.tr ?? '').trim() } : null;
+    })
+    .filter(Boolean)
+    .slice(0, 5) as PhoneReply['messages'];
+  const clamp = (v: any, lo: number, hi: number) =>
+    Number.isFinite(Number(v)) ? Math.max(lo, Math.min(hi, Math.round(Number(v)))) : 0;
+  return {
+    // JSON 整个坏掉的时候，别把一堆花括号当消息发出来
+    messages: messages.length ? messages : [{ jp: '……', tr: '' }],
+    affectionDelta: clamp(obj?.affectionDelta, -2, 3),
+    familiarityDelta: clamp(obj?.familiarityDelta, -1, 3)
+  };
+};
+
+export const sendPhoneChat = async (o: PhoneChatOptions, userText: string): Promise<PhoneReply> => {
+  const modelName = o.modelName || 'deepseek-v4-flash';
+  const sys = getTextingInstruction(o);
+  const allowed = new Set(o.stickers.map(s => s.id));
+  const content = userText + (o.windDown ? `\n${o.windDown}` : '');
+  if (isOpenAICompatible(modelName, o.baseUrl)) {
+    const key = o.apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
+    const msgs = [
+      { role: 'system', content: sys },
+      ...o.history.map(m => ({ role: m.role === 'model' ? 'assistant' : 'user', content: m.text })),
+      { role: 'user', content }
+    ];
+    const call = (json: boolean) => withTimeout(fetch(resolveChatUrl(o.baseUrl || DEEPSEEK_BASE_URL), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+      body: JSON.stringify({
+        model: resolveActualModelName(modelName, o.baseUrl), messages: msgs,
+        ...deepseekExtras(modelName, o.baseUrl),
+        ...(json ? { response_format: { type: 'json_object' } } : {})
+      })
+    }), TIMEOUT_MS, 'Timeout');
+    let res = await call(true);
+    if (!res.ok && (res.status === 400 || res.status === 422)) res = await call(false);
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    return parsePhoneReply(String(data.choices?.[0]?.message?.content || ''), allowed);
+  }
+  const genAI = getGenAI(o.apiKey);
+  const model = genAI.getGenerativeModel({
+    model: modelName === 'gemini-2.5-flash' ? 'gemini-2.0-flash-exp' : modelName,
+    systemInstruction: sys,
+    generationConfig: { responseMimeType: 'application/json' }
+  });
+  const chat = model.startChat({
+    history: o.history.map(m => ({ role: m.role === 'model' ? 'model' : 'user', parts: [{ text: m.text }] }))
+  });
+  const result = await withTimeout(chat.sendMessage(content), TIMEOUT_MS, 'Timeout');
+  return parsePhoneReply(result.response.text(), allowed);
 };

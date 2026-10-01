@@ -199,6 +199,47 @@ export const KEEPSAKES: Keepsake[] = [
     descEn: 'Purple and gold, a very large 24 on the back. On the way over you used it to wrap your grandfather’s journal so it would not get knocked about. When Sora saw it she folded up laughing: wearing that in this city really is cheating.',
     subZh: '行李箱最上层', subEn: 'Top of the suitcase',
     requiresFlag: 'day1_sora_mamba'
+  },
+  // ---- 街上捡回来的那几样（story/easterScenesScifi.ts） ----
+  {
+    key: 'keepsake_electric_sheep', kind: 'keepsake', emoji: '🐑',
+    nameZh: '电子羊', nameEn: 'Electric Sheep',
+    nameJp: '電気羊', reading: 'でんきひつじ',
+    descZh: '駿河屋最里面那排玻璃柜里买的，三百日元。毛是真羊毛，肚子底下是电池盒。关了灯以后它偶尔会自己「咩」一声。前一个主人一直想知道它会不会做梦，你现在也开始想了。',
+    descEn: 'Three hundred yen from the back case at Surugaya. Real wool, battery box underneath. Sometimes, after the lights are off, it bleats on its own. The previous owner always wondered whether it dreams. Now you do too.',
+    subZh: '放在枕头边', subEn: 'By the pillow',
+    requiresFlag: 'egg_sheep_bought',
+    word: { jp: '電気羊', reading: 'でんきひつじ', zh: '电子羊', en: 'electric sheep' }
+  },
+  {
+    key: 'keepsake_origami_unicorn', kind: 'keepsake', emoji: '🦄',
+    nameZh: '锡纸独角兽', nameEn: 'Foil Unicorn',
+    nameJp: '銀紙のユニコーン', reading: 'ぎんがみのユニコーン',
+    descZh: '雨夜里，一个穿长风衣的男人在站前长椅上用口香糖包装纸折的。他放下就走了。角有一点点弯，是你揣进口袋时压的。',
+    descEn: 'Folded from a gum wrapper by a man in a long coat on a bench outside the station one rainy night. He put it down and walked away. The horn is bent a fraction where your pocket pressed it.',
+    subZh: '雨夜捡到的', subEn: 'Found on a rainy night',
+    requiresFlag: 'egg_unicorn_kept',
+    word: { jp: '折り紙', reading: 'おりがみ', zh: '折纸', en: 'origami' }
+  },
+  {
+    key: 'keepsake_blue_spider', kind: 'keepsake', emoji: '🕷',
+    nameZh: '蓝色多脚战车（扭蛋）', nameEn: 'Blue Multi-Legged Tank (Capsule Toy)',
+    nameJp: '多脚戦車のガチャ', reading: 'たきゃくせんしゃのガチャ',
+    descZh: '中央街扭蛋墙上「AI搭載・しゃべる多脚戦車」，五分之一抽到的蓝色款。按一下背，它会问你它有没有灵魂，或者问你要天然机油。你两个都给不了它。',
+    descEn: 'The blue one, a one-in-five pull from the TALKING MULTI-LEGGED TANK machine on Center Gai. Press its back and it asks whether it has a soul, or asks for natural oil. You can give it neither.',
+    subZh: '会说话', subEn: 'It talks',
+    requiresFlag: 'egg_spider_got',
+    word: { jp: 'ガチャ', reading: 'ガチャ', zh: '扭蛋', en: 'capsule toy' }
+  },
+  {
+    key: 'keepsake_moon_flyer', kind: 'keepsake', emoji: '🌕',
+    nameZh: '去月亮的传单', nameEn: 'A Flyer for the Moon',
+    nameJp: '月面旅行のチラシ', reading: 'げつめんりょこうのチラシ',
+    descZh: '「月面旅行・片道チケット 抽選受付中」——一看就是骗人的。背面有两个荧光笔写的字母。那天晚上防波堤上的两个人骑着破摩托走了，你再也没见过他们。',
+    descEn: 'MOON TRAVEL — ONE-WAY TICKETS. Obviously a scam. Two initials in highlighter on the back. The two people on the sea wall that night rode off on a battered scooter, and you never saw them again.',
+    subZh: '钱包最里面那一层', subEn: 'Innermost pocket of your wallet',
+    requiresFlag: 'egg_moon_flyer_kept',
+    word: { jp: '片道', reading: 'かたみち', zh: '单程', en: 'one-way' }
   }
 ];
 

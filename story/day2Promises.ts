@@ -825,13 +825,86 @@ export const DAY2_PROMISES: PromiseDef[] = [
     script: NAO_STATION
   },
   {
-    id: 'day2_sora', month: 4, day: 12, slot: 'night',
+    // 她说的是"四点开始一直空着"——那是放学后，不是夜里。
+    // 以前这里写的是 night，于是跟奈绪逛完百元店、天一黑回到大厅，
+    // 体育馆四点二十那一场就接着自己演了起来。
+    id: 'day2_sora', month: 4, day: 12, slot: 'afternoon',
     // 只有第一天真的去了体育馆，她才说过这句话
     requiresFlags: ['day1_route_gym'],
     titleZh: '四点以后', titleEn: 'After Four',
     script: SORA_GYM
   }
 ];
+
+// ---------------------------------------------------------
+// 两个约撞在同一个下午
+//
+// 走过体育馆那条线的玩家，4/12 放学后同时欠着两个人：
+// 奈绪在三宫站等，空在体育馆等。两边都是"四点"。
+// 以前两段会一前一后全演掉——人不可能同时在两个地方，
+// 玩家看到的就是"刚跟奈绪逛完百元店，莫名其妙又在体育馆投篮"。
+//
+// 现在让玩家选。没去的那一边不会凭空消失：她会发来一条消息，
+// 而这件事也会留在她对你的记忆里。
+// ---------------------------------------------------------
+export interface DuePromise {
+  id: string;
+  titleZh: string; titleEn: string;
+  script: StoryNode[];
+}
+
+export const promiseScriptFor = (
+  month: number, day: number, slot: string, flags: Record<string, boolean>
+): DuePromise | null => {
+  const due = DAY2_PROMISES.filter(p =>
+    p.month === month && p.day === day && p.slot === slot
+    && !flags[`${p.id}_done`]
+    && (!p.requiresFlags || p.requiresFlags.every(f => flags[f])));
+  if (!due.length) return null;
+  if (due.length === 1) {
+    const p = due[0];
+    return { id: p.id, titleZh: p.titleZh, titleEn: p.titleEn, script: [...p.script, { type: 'effect', setFlags: [`${p.id}_done`] }] };
+  }
+  const nao = due.find(p => p.id === 'day2_nao')!;
+  const sora = due.find(p => p.id === 'day2_sora')!;
+  return {
+    id: 'day2_clash',
+    titleZh: '两个约，一个下午', titleEn: 'Two promises, one afternoon',
+    script: [
+      { type: 'scene', scene: 'school_entrance_lockers', bgm: 'chat', titleZh: '鞋柜前', titleEn: 'The shoe lockers', subtitleZh: '下午 3:50', subtitleEn: '3:50 PM' },
+      { type: 'narration', zh: '换鞋的时候手机震了两下。两条消息，前后差了不到十秒。', en: 'Your phone buzzes twice while you change shoes. Two messages, less than ten seconds apart.' },
+      {
+        type: 'phone', savedAsZh: '小奈绪', savedAsEn: 'Nao-chan', avatar: '/images/phone/nao.webp',
+        lines: [{ jp: '四時、駅な。忘れてへんやろな', zh: '四点，车站。没忘吧', en: 'Four, the station. You have not forgotten' }]
+      },
+      {
+        type: 'phone', savedAsZh: '空（篮球）', savedAsEn: 'Sora (basketball)', avatar: '/images/phone/sora.webp',
+        lines: [{ jp: '体育館、今日も四時から空いとる', zh: '体育馆，今天也是四点开始空着', en: 'The gym is free from four again today' }]
+      },
+      { type: 'narration', zh: '两个"四点"。一个在山下的车站，一个就在你身后那栋楼里。你只有一双腿。', en: 'Two fours. One at the station at the bottom of the hill, one in the building right behind you. You only have the one pair of legs.' },
+      {
+        type: 'choice',
+        promptZh: '去哪边？', promptEn: 'Which one?',
+        options: [
+          {
+            id: 'clash_pick_nao',
+            labelZh: '下山，去三宫站找奈绪', labelEn: 'Down the hill to Nao at the station',
+            hintZh: '昨天先约的是她', hintEn: 'She asked first',
+            setFlags: ['day2_sora_done', 'day2_sora_missed'],
+            then: [...nao.script, { type: 'effect', setFlags: ['day2_nao_done'] }]
+          },
+          {
+            id: 'clash_pick_sora',
+            labelZh: '回头，去体育馆找空', labelEn: 'Turn round, the gym and Sora',
+            hintZh: '她说"不是在等"的时候，听起来就是在等', hintEn: 'When she said she was not waiting, she sounded like she was',
+            setFlags: ['day2_nao_done', 'day2_nao_missed'],
+            then: [...sora.script, { type: 'effect', setFlags: ['day2_sora_done'] }]
+          }
+        ]
+      }
+    ]
+  };
+};
 
 export const promiseDue = (
   month: number, day: number, slot: string, flags: Record<string, boolean>

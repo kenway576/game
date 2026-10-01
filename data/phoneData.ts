@@ -265,6 +265,18 @@ export const PHONE_MESSAGES: PhoneMessage[] = [
     ]
   },
 
+  // 买了电子羊之后。铃不问你为什么买——她问你一个关于沙漠和乌龟的问题。
+  {
+    id: 'msg_rei_tortoise', char: CharacterId.REI, requiresFlags: ['egg_sheep_bought', 'day1_met_rei'],
+    lines: [
+      { jp: '駿河屋の店員さんから、あなたが電気羊を買ったと聞きました', zh: '听駿河屋的店员说，你买了一只电子羊', en: 'The clerk at Surugaya told me you bought an electric sheep' },
+      { jp: '一つ質問します。あなたは砂漠を歩いている。足元で、亀がひっくり返っている', zh: '问你一个问题。你走在沙漠里。脚边有一只乌龟翻了过来', en: 'One question. You are walking in a desert. At your feet, a tortoise is lying on its back' },
+      { jp: 'あなたは、どうしますか', zh: '你会怎么做', en: 'What do you do' },
+      { jp: '……返事は不要です。心拍数は、こちらで推定します', zh: '……不用回复。你的心率，我这边自己推算', en: '...No reply needed. I will estimate your heart rate from here' }
+    ],
+    word: { jp: '亀', reading: 'かめ', zh: '乌龟', en: 'tortoise' }
+  },
+
   // ---- 空：全是短句，还全是关西腔 ----
   {
     id: 'msg_sora_gym', char: CharacterId.SORA, requiresFlags: ['day1_met_sora'],
@@ -321,6 +333,25 @@ export const PHONE_MESSAGES: PhoneMessage[] = [
     lines: [
       { jp: 'まだ覚えておるぞ', zh: '我还记着哦', en: 'I still remember, you know' },
       { jp: '四本目のこと', zh: '第四棵的事', en: 'About the fourth one' }
+    ]
+  },
+
+  // ---- 4/12 两个约只能赴一个。没去的那一边 ----
+  {
+    id: 'msg_nao_missed', char: CharacterId.NAO, requiresFlags: ['day2_nao_missed'],
+    lines: [
+      { jp: '六個の出口、全部回った', zh: '六个出口，我全绕了一遍', en: 'I went round all six exits' },
+      { jp: 'うそ。三個', zh: '骗你的。三个', en: 'Lie. Three' },
+      { jp: '……ええよ別に。今度ラーメンおごりな', zh: '……算了，没事。下次请我吃拉面', en: '...It is fine. You owe me ramen' }
+    ],
+    word: { jp: 'おごり', reading: 'おごり', zh: '请客', en: 'a treat (you pay)' }
+  },
+  {
+    id: 'msg_sora_missed', char: CharacterId.SORA, requiresFlags: ['day2_sora_missed'],
+    lines: [
+      { jp: '五時半まで空いとった', zh: '一直空到五点半', en: 'It was free until half five' },
+      { jp: '……べつに待ってへんけど', zh: '……我又没在等', en: '...Not that I was waiting' },
+      { jp: '明日は来いよ', zh: '明天给我来', en: 'Come tomorrow' }
     ]
   },
 
@@ -408,5 +439,21 @@ export const messagesFor = (char: CharacterId, ctx: PhoneContext): PhoneMessage[
 export const unreadFor = (char: CharacterId, ctx: PhoneContext): number =>
   messagesFor(char, ctx).filter(m => !ctx.flags[readFlag(m.id)]).length;
 
+// 通讯录里有没有她。
+//
+// 门槛不是"见过"，是"交换过联系方式"：要处到「面熟」以上、而且真的开口聊过。
+// 但**她给你发过消息**本身就说明号码早就换过了——光的第一条就是
+// 「交换联系方式的那个！记得吗？」。以前通讯录不认这一条，
+// 于是右上角写着「7 条未读」，点开列表里只有奈绪一个人：
+// 另外六条躺在通讯录里根本不显示的人名下。
+// 奈绪例外——她的号码你十年前就存着了。
+export const hasContact = (id: CharacterId, ctx: PhoneContext): boolean => {
+  if (!ctx.met.includes(id)) return false;
+  if (id === CharacterId.NAO) return true;
+  if (messagesFor(id, ctx).length) return true;
+  return !!ctx.flags[`talked_${id}`] && famOf(ctx, id) >= CONTACT_MIN_FAMILIARITY;
+};
+
+// 未读数只数通讯录里看得见的人。红点上的数字必须点得进去。
 export const totalUnread = (ctx: PhoneContext): number =>
-  PHONE_CONTACTS.reduce((n, c) => n + unreadFor(c.id, ctx), 0);
+  PHONE_CONTACTS.filter(c => hasContact(c.id, ctx)).reduce((n, c) => n + unreadFor(c.id, ctx), 0);

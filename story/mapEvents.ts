@@ -1,6 +1,6 @@
 import {
   MapEventDef, MapLocation, StoryFlags, StoryNode,
-  GameCalendar, AffectionMap, FamiliarityMap, CharacterId, TimeSlot
+  GameCalendar, AffectionMap, FamiliarityMap, CharacterId, TimeSlot, StoryBgmTrack
 } from '../types';
 import { AFTERSCHOOL_EVENTS } from './afterschoolEvents';
 import { GROUP_EVENTS } from './groupEvents';
@@ -105,6 +105,11 @@ export const AFTERSCHOOL_SLOTS: TimeSlot[] = ['lunch', 'afternoon', 'night'];
 
 // 今天还剩几格。早上视为一整天都还没用（第 1 章之后正常不会停在早上）。
 export const slotsLeftToday = (calendar: GameCalendar): number => {
+  // 🌙 夜里只有一趟。以前夜里出门回来还是夜里，于是可以一直出门——
+  // 体力还够就能把整张地图刷一遍，"今天去哪儿"就不是个选择了。
+  if (calendar.timeSlot === 'night') return calendar.nightUsed ? 0 : 1;
+  // 🍱 午休也只有一件事：吃饭，或者在校内走一趟。用掉了就该回教室。
+  if (calendar.timeSlot === 'lunch' && calendar.lunchUsed) return 0;
   // 寒暑假一天四格：假期真正的样子是"时间变多了"，不是"少了一节课"。
   const total = slotsForDay(calendar);
   const i = AFTERSCHOOL_SLOTS.indexOf(calendar.timeSlot);
@@ -145,6 +150,20 @@ export interface AmbientMeeting {
   nameZh: string; nameEn: string;
 }
 
+// 出门这一趟的开场 BGM。以前一律是 town——夜里的港口、下雨的神社、
+// 午休的校园放的都是同一组白天逛街的曲子。
+const SHRINES = ['ikuta_shrine', 'kyoto_torii', 'kitano_lookout'];   // 生田神社、伏见稻荷、北野天满（展望台）
+export const tripBgmFor = (loc: MapLocation, calendar: GameCalendar): StoryBgmTrack => {
+  const night = calendar.timeSlot === 'night';
+  const rainy = calendar.weather === 'rainy';
+  if (rainy && SHRINES.includes(loc.id)) return 'shrine_rain';
+  if (night) return loc.district === 'harbor' || loc.id === 'sannomiya_station' ? 'late_night' : 'night';
+  if (rainy) return 'rain';
+  if (loc.district === 'harbor') return 'harbor';
+  if (loc.district === 'school') return calendar.timeSlot === 'lunch' ? 'lobby' : 'afternoon';
+  return 'town';
+};
+
 export const buildAmbientScript = (
   loc: MapLocation, language: 'zh' | 'en', calendar: GameCalendar, meet?: AmbientMeeting
 ): StoryNode[] => {
@@ -156,7 +175,7 @@ export const buildAmbientScript = (
     : ['You spend a while here. Nothing in particular happens today.'];
   const i = Math.floor(Math.random() * zh.length);
   const out: StoryNode[] = [
-    { type: 'scene', scene: sceneFor(loc, calendar), bgm: 'town', titleZh: loc.nameZh, titleEn: loc.nameEn },
+    { type: 'scene', scene: sceneFor(loc, calendar), bgm: tripBgmFor(loc, calendar), titleZh: loc.nameZh, titleEn: loc.nameEn },
     { type: 'narration', zh: zh[i] || zh[0], en: en[i] || en[0] }
   ];
 

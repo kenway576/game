@@ -78,6 +78,10 @@ const KingyoModal: React.FC<Props> = ({ language, progress, onFinish, onCancel }
   const svgRef = useRef<SVGSVGElement>(null);
   const splash = useRef<{ x: number; y: number; t: number }[]>([]);
 
+  useEffect(() => {
+    audioManager.crossfadeBgm('festival', 600);
+  }, []);
+
   // 主循环
   useEffect(() => {
     let raf = 0, last = performance.now();

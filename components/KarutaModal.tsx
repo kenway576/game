@@ -98,6 +98,10 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
   const herTimer = useRef<number | null>(null);
 
   useEffect(() => {
+    audioManager.crossfadeBgm('festival', 600);
+  }, []);
+
+  useEffect(() => {
     const check = () => setHasVoice(!!jaVoice());
     check();
     window.speechSynthesis?.addEventListener?.('voiceschanged', check);

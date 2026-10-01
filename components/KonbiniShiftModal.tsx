@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Language, PracticeProgress, StoryWord } from '../types';
 import { shiftPay, shiftGrade } from '../data/konbiniData';
 import { KONBINI_PACK } from '../data/drills/konbini';
 import { buildSession } from '../data/drillData';
 import { SCENE_MAP, SCENE_FALLBACK } from '../constants';
+import { audioManager } from '../services/audioManager';
 import DrillModal from './DrillModal';
 
 // ---------------------------------------------------------
@@ -36,6 +37,9 @@ interface Props {
 
 const KonbiniShiftModal: React.FC<Props> = ({ language, playerName, progress, onFinish, onCancel }) => {
   const en = language === 'en';
+  useEffect(() => {
+    audioManager.crossfadeBgm('store', 600);
+  }, []);
   // 一班出的题在开门那一刻定下来，中途不再变
   const rounds = useMemo(() => buildSession(KONBINI_PACK, progress), []);
   const bg = SCENE_MAP['convenience_store'] || SCENE_FALLBACK['convenience_store'];

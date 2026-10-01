@@ -5,7 +5,7 @@ import {
   GameCalendar, Language, StoryFlags, MapLocation,
   AffectionMap, FamiliarityMap, CharacterId
 } from '../types';
-import { SCENE_MAP, SCENE_FALLBACK, CHARACTERS } from '../constants';
+import { SCENE_MAP, SCENE_FALLBACK, CHARACTERS, charName } from '../constants';
 import { MAP_LOCATIONS, DISTRICT_LABELS, DISTRICT_ORDER } from '../story/mapLocations';
 import {
   EventContext, isLocationUnlocked, isLocationOpenNow, locationHasEvent,
@@ -55,21 +55,16 @@ interface Props {
   // 🎯 地点上的活动（情景对答、小游戏）
   life: LifeState;
   onActivity: (loc: MapLocation, act: ActivityDef) => void;
+  // 💞 去了就能碰到她、而她有一段剧情等着演的地方
+  storySpots?: string[];
 }
-
-// CHARACTERS 里只有罗马字名，中文界面上写 "Asuka 常在" 很出戏。
-// 剧本里一直用的是这一组中文名，这里跟着对齐。
-const NAME_ZH: Record<string, string> = {
-  asuka: '明日香', hikari: '光', rei: '铃', inari: '稻荷',
-  miyuki: '深雪', sora: '空', nao: '奈绪', maki: '真希'
-};
 
 // 地图上给哪张图：优先用这个地方登记的"门脸"。
 // 挑去哪儿的时候，玩家想看的是外观——决定去不去的是门脸，不是屋里长什么样。
 const bgOf = (id: string) => SCENE_MAP[id] || SCENE_FALLBACK[id] || SCENE_MAP['street'];
 
 const MapScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, stamina, yen, affection, familiarity, onClose, onTravel, metChars, life, onActivity
+  language, calendar, storyFlags, stamina, yen, affection, familiarity, onClose, onTravel, metChars, life, onActivity, storySpots = []
 }) => {
   const en = language === 'en';
   const ctx: EventContext = useMemo(
@@ -251,6 +246,10 @@ const MapScreen: React.FC<Props> = ({
                       {has && (
                         <span className="shrink-0 w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_2px_rgba(244,63,94,0.6)]" />
                       )}
+                      {/* 💞 她在这儿，而且有话想说 */}
+                      {!has && open && now && storySpots.includes(loc.id) && (
+                        <span className="shrink-0 text-[12px] text-pink-400 animate-pulse" title={en ? 'someone has something to tell you' : '有人有话想对你说'}>♥</span>
+                      )}
                       {/* 午休有人的地方打个人影。不写名字。 */}
                       {!has && lunchSpots.includes(loc.id) && (
                         <span className="shrink-0 text-[11px] text-sky-300/80" title={en ? 'someone is here' : '有人在'}>👤</span>
@@ -325,10 +324,15 @@ const MapScreen: React.FC<Props> = ({
                   )}
                   {(selected.regulars || []).map(id => (
                     <span key={id} className="text-[11px] px-2 py-1 border border-white/15 text-white/55">
-                      {en ? CHARACTERS[id as CharacterId].nameEn : (NAME_ZH[id] || CHARACTERS[id as CharacterId].name)}
+                      {charName(id as CharacterId, en)}
                       <span className="ml-1 text-white/30">{en ? 'often here' : '常在'}</span>
                     </span>
                   ))}
+                  {!selHasEvent && selOpen && storySpots.includes(selected.id) && (
+                    <span className="text-[11px] px-2 py-1 border border-pink-400/60 text-pink-300 font-bold">
+                      {en ? '♥ she seems to want to talk' : '♥ 她好像有话想对你说'}
+                    </span>
+                  )}
                   {selHasEvent && (
                     <span className="text-[11px] px-2 py-1 border border-rose-500/60 text-rose-300 font-bold">
                       {en ? '● something today' : '● 今天有点什么'}
@@ -383,7 +387,7 @@ const MapScreen: React.FC<Props> = ({
                   <div className="mt-4 space-y-2 max-w-2xl">
                     <p className="text-[10px] text-yellow-400/80 font-black tracking-widest">{en ? 'THINGS TO DO HERE' : '在这儿能做的事'}</p>
                     {acts.map(a => {
-                      const chk = checkActivity(a, { calendar, life, slotsLeft, met: metChars });
+                      const chk = checkActivity(a, { calendar, life, slotsLeft, met: metChars, flags: storyFlags });
                       return (
                         <button key={a.id} disabled={!chk.ok}
                           onClick={() => { if (chk.ok) { audioManager.playSfx('confirm'); markVisited(selected.id); onActivity(selected, a); } }}
@@ -412,7 +416,11 @@ const MapScreen: React.FC<Props> = ({
           {/* 出发 */}
           <div className="shrink-0 px-4 md:px-6 py-3 border-t border-white/10 flex items-center justify-between gap-3">
             <span className="text-[11px] text-white/40">
-              {calendar.timeSlot === 'lunch'
+              {calendar.timeSlot === 'night'
+                ? (en
+                    ? 'Night. You get one trip out — after that you go home, and the rest waits for tomorrow. Night trips take more out of you, too.'
+                    : '夜里。只能出去一趟——回来就该睡了，剩下的明天再说。夜里出门也更费体力。')
+                : calendar.timeSlot === 'lunch'
                 ? (en
                     ? (isWeekend(calendar)
                         ? 'No school today, so there is nobody on campus to run into.'

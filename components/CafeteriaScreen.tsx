@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Language, GameCalendar, StoryFlags, StoryEffect, CharacterId } from '../types';
+import { charName } from '../constants';
 import { CAFETERIA_MENU, CafeteriaItem, isSoldOut, tastedFlag } from '../data/cafeteriaData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
@@ -25,6 +26,8 @@ interface Props {
   yen: number;
   slotsLeft: number;
   metChars: CharacterId[];
+  // 午休在食堂里等你的那个人。吃完端着盘子过去，剩下的饭是跟她一起吃的。
+  companion?: CharacterId | null;
   onClose: () => void;
   onEat: (item: CafeteriaItem, firstTime: boolean) => void;
   onEffects: (fx: StoryEffect[]) => void;
@@ -34,7 +37,7 @@ interface Props {
 const yenStr = (n: number) => '¥' + n.toLocaleString('ja-JP');
 
 const CafeteriaScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, yen, slotsLeft, metChars, onClose, onEat, onEffects, onFlags
+  language, calendar, storyFlags, yen, slotsLeft, metChars, companion, onClose, onEat, onEffects, onFlags
 }) => {
   const en = language === 'en';
   const [pickId, setPickId] = useState<string>(CAFETERIA_MENU[0].id);
@@ -97,9 +100,22 @@ const CafeteriaScreen: React.FC<Props> = ({
           onClick={() => { audioManager.playSfx('click'); onClose(); }}
           className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
         >
-          <span className="block transform skew-x-12">{en ? '◀ Leave' : '◀ 离开'}</span>
+          <span className="block transform skew-x-12">{companion
+            ? (en ? `Sit with ${charName(companion, true)} ▶` : `端着盘子去${charName(companion, false)}那桌 ▶`)
+            : (en ? '◀ Back to class' : '◀ 吃完回教室')}</span>
         </button>
       </div>
+
+      {companion && (
+        <div className="relative shrink-0 flex items-center gap-3 px-4 md:px-6 py-2 bg-sky-500/15 border-b border-sky-400/30">
+          <img src={`/images/phone/${companion}.webp`} alt="" className="w-8 h-8 rounded-full object-cover bg-black/40 shrink-0" />
+          <span className="text-[12px] md:text-sm text-sky-100">
+            {en
+              ? `${charName(companion, true)} is waving at you from a table by the window. Get your tray and go over.`
+              : `${charName(companion, false)}在靠窗那桌朝你招手。打好饭就过去吧。`}
+          </span>
+        </div>
+      )}
 
       <div className="relative flex-1 min-h-0 flex flex-col md:flex-row">
         {/* 左：墙上的菜单牌 */}
