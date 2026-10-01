@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
         // 这样你自己开着的那个 dev server 和预览可以同时跑，不抢端口。
         port: Number(process.env.PORT) || 3000,
         host: '0.0.0.0',
+        watch: {
+          ignored: ['**/release/**', '**/dist-desktop/**', '**/dist/**', '**/.backup-originals/**', '**/.git/**']
+        }
       },
       plugins: [react()],
       define: {
