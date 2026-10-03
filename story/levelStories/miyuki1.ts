@@ -26,7 +26,7 @@ const M = '/images/characters/miyuki/';
 export const MIYUKI_STORY_1: StoryNode[] = [
   {
     type: 'scene',
-    scene: 'kitchen',
+    scene: 'miyuki_dinner_table',
     bgm: 'lobby',
     titleZh: '二〇二号室の夕飯',
     titleEn: 'Dinner in 202',

@@ -7,7 +7,7 @@ echo   Starting Kobe Study Game Dev Server...
 echo   Default Model: DeepSeek V4 Flash (Economical)
 echo ===================================================
 
-set "PATH=C:\Users\adm\node-portable\node-v24.19.0-win-x64;%PATH%"
+set "PATH=C:\Program Files\nodejs;C:\Users\adm\node-portable\node-v24.19.0-win-x64;%PATH%"
 
 call npm run dev -- --open
 

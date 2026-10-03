@@ -158,7 +158,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
   // 🌀 「不是这个世界的常识吗」：认错了的名场面
   // ---------------------------------------------------------
   {
-    id: 'ot2_misfire', locationIds: ['kitano_slope', 'ikuta_road', 'school_bicycle_parking'],
+    id: 'ot2_misfire', locationIds: ['kitano_slope'],
     weight: 4, minDay: 82,
     script: [
       {
@@ -308,7 +308,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
   // 🔬 「エル・プサイ・コングルゥ」：白大褂
   // ---------------------------------------------------------
   {
-    id: 'ot2_labcoat', locationIds: ['school_science_lab', 'pia_kobe_arcade'],
+    id: 'ot2_labcoat', locationIds: ['school_science_lab'],
     weight: 4, minDay: 105, timeSlots: ['afternoon', 'night'],
     script: [
       {
@@ -379,7 +379,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
   // 🎸 「结束バンド」：练团室外面
   // ---------------------------------------------------------
   {
-    id: 'ot2_band_shy', locationIds: ['music_room', 'pia_kobe_arcade'],
+    id: 'ot2_band_shy', locationIds: ['music_room'],
     weight: 4, minDay: 120, timeSlots: ['afternoon'],
     script: [
       {
@@ -452,7 +452,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
   // 🥟 「面对疾风吧」：南京町的蒸笼
   // ---------------------------------------------------------
   {
-    id: 'ot2_steam', locationIds: ['nankinmachi', 'motomachi_arcade'],
+    id: 'ot2_steam', locationIds: ['nankinmachi'],
     weight: 4, minDay: 68,
     script: [
       {
@@ -659,7 +659,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
   // 🍙 「便当交换」：真的发生了
   // ---------------------------------------------------------
   {
-    id: 'ot2_bento_swap', locationIds: ['rooftop_sunset', 'school_terrace'],
+    id: 'ot2_bento_swap', locationIds: ['rooftop_sunset'],
     weight: 4, minDay: 155, requiresFlags: ['day1_done'], timeSlots: ['lunch'],
     script: [
       {
@@ -737,7 +737,7 @@ export const OTAKU_SCENES_2: StreetScene[] = [
   // 🌸 「转学生的自我介绍」：一年后的回响
   // ---------------------------------------------------------
   {
-    id: 'ot2_new_transfer', locationIds: ['classroom_morning', 'school_terrace'],
+    id: 'ot2_new_transfer', locationIds: ['classroom_morning'],
     weight: 6, minDay: 300, timeSlots: ['lunch', 'afternoon'],
     script: [
       {

@@ -6,6 +6,7 @@ import { AFTERSCHOOL_EVENTS } from './afterschoolEvents';
 import { GROUP_EVENTS } from './groupEvents';
 import { getInitialFamiliarity } from '../constants';
 import { isSchoolDay, slotsForDay } from '../data/calendarLife';
+import { scriptFitsNow } from './timeContext';
 
 export const MAP_EVENTS: MapEventDef[] = [...AFTERSCHOOL_EVENTS, ...GROUP_EVENTS];
 
@@ -38,6 +39,8 @@ export const eventAvailable = (ev: MapEventDef, ctx: EventContext): boolean => {
   if (ctx.met && !ev.introduces && ev.chars.length
       && !ev.chars.every(c => ctx.met!.includes(c))) return false;
   if (ev.timeSlots && !ev.timeSlots.includes(ctx.calendar.timeSlot)) return false;
+  // 标题卡上写着「傍晚 6:20」的戏，只在傍晚演（见 timeContext）
+  if (!scriptFitsNow(ev.script, ctx.calendar)) return false;
   if (ev.weather && !ev.weather.includes(ctx.calendar.weather)) return false;
   if (ev.requiresFlags && !ev.requiresFlags.every(f => ctx.flags[f])) return false;
   if (ev.forbidsFlags && ev.forbidsFlags.some(f => ctx.flags[f])) return false;

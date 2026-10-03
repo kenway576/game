@@ -7,6 +7,7 @@ import { STREET_PEOPLE } from './streetPeople';
 // 抄两遍的代价是换图时漏掉一处，而漏掉的那处不报错，只显示碎图标。
 import { SCHOOL_NPC_SPRITES, CITY_NPC_SPRITES, EASTER_EGG_SPRITES, CLERK_MISAKI_SPRITES, schoolDayNumber } from '../constants';
 import { EASTER_SCENES } from './easterScenes';
+import { scriptFitsNow } from './timeContext';
 import { SCIFI_EASTER_SCENES } from './easterScenesScifi';
 
 // ---------------------------------------------------------
@@ -86,7 +87,7 @@ export const STREET_SCENES: StreetScene[] = [
     ]
   },
   {
-    id: 'st_sakamoto_stopwatch', locationIds: ['gym', 'courtyard_rain'], weight: 10,
+    id: 'st_sakamoto_stopwatch', locationIds: ['gym'], weight: 10,
     script: [
       {
         type: 'narration', characterImage: SCHOOL_NPC_SPRITES.sakamoto,
@@ -204,7 +205,7 @@ export const STREET_SCENES: StreetScene[] = [
     ]
   },
   {
-    id: 'st_hiroki_frontrow', locationIds: ['classroom_morning', 'school_library'], weight: 8,
+    id: 'st_hiroki_frontrow', locationIds: ['classroom_morning'], weight: 8,
     script: [
       {
         type: 'narration', characterImage: SCHOOL_NPC_SPRITES.hiroki,
@@ -302,7 +303,7 @@ export const STREET_SCENES: StreetScene[] = [
     ]
   },
   {
-    id: 'st_gensan_still', locationIds: ['suma_fishing_pier', 'meriken_park'], weight: 10, repeatable: true,
+    id: 'st_gensan_still', locationIds: ['suma_fishing_pier'], weight: 10, repeatable: true,
     script: [
       {
         type: 'narration', characterImage: CITY_NPC_SPRITES.gensan,
@@ -581,7 +582,7 @@ export const STREET_SCENES: StreetScene[] = [
   // ================= 彩蛋 =================
   // 一个名字都不出现。主角谁都不认识，他只是看见了。
   {
-    id: 'st_egg_band', locationIds: ['pia_kobe_arcade', 'sannomiya_arcade'], weight: 3,
+    id: 'st_egg_band', locationIds: ['pia_kobe_arcade'], weight: 3,
     timeSlots: ['afternoon', 'night'],
     script: [
       {
@@ -788,7 +789,7 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 拿着写字板的人，在一个只有游客的地方做记录。
-    id: 'st_egg_marine', locationIds: ['suma_aquarium', 'meriken_park', 'suma_beach'], weight: 3,
+    id: 'st_egg_marine', locationIds: ['suma_aquarium'], weight: 3,
     script: [
       {
         type: 'narration', characterImage: EASTER_EGG_SPRITES.jotaro,
@@ -870,7 +871,7 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 值日生。你什么都没看清，但地扫完了。
-    id: 'st_egg_class_duty', locationIds: ['classroom_morning', 'school_bicycle_parking'], weight: 3,
+    id: 'st_egg_class_duty', locationIds: ['classroom_morning'], weight: 3,
     script: [
       {
         type: 'narration', characterImage: EASTER_EGG_SPRITES.sakamoto,
@@ -899,7 +900,7 @@ export const STREET_SCENES: StreetScene[] = [
     // 黄昏操场的撑杆跳。一次又一次跃不过的高度。
     // 这一条留着当「只是路过瞥了一眼」的版本，权重压到 1；
     // 有选择、有下文的那一场在 easterScenes.ts 的 st_egg_shirou_vault。
-    id: 'st_egg_high_jump', locationIds: ['school_terrace', 'gym'], weight: 1,
+    id: 'st_egg_high_jump', locationIds: ['gym'], weight: 1,
     timeSlots: ['afternoon'],
     script: [
       {
@@ -1027,7 +1028,7 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 届かない恋的旋律。
-    id: 'st_egg_white_album', locationIds: ['pia_kobe_arcade', 'sannomiya_arcade'], weight: 3,
+    id: 'st_egg_white_album', locationIds: ['pia_kobe_arcade'], weight: 3,
     timeSlots: ['afternoon', 'night'],
     script: [
       {
@@ -1055,7 +1056,7 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 团长与资讯统合体。
-    id: 'st_egg_sos_brigade', locationIds: ['sannomiya_station', 'kitano_slope'], weight: 3,
+    id: 'st_egg_sos_brigade', locationIds: ['sannomiya_station'], weight: 3,
     timeSlots: ['afternoon'],
     script: [
       {
@@ -1078,7 +1079,7 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 坡道上飞落的白色贝雷帽。
-    id: 'st_egg_beret_slope', locationIds: ['kitano_slope', 'kitano_lookout'], weight: 3,
+    id: 'st_egg_beret_slope', locationIds: ['kitano_slope'], weight: 3,
     timeSlots: ['lunch', 'afternoon'],
     script: [
       {
@@ -1114,7 +1115,7 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 疯狂科学家与狂气助手。
-    id: 'st_egg_mad_scientist', locationIds: ['pia_kobe_arcade', 'meriken_park'], weight: 3,
+    id: 'st_egg_mad_scientist', locationIds: ['pia_kobe_arcade'], weight: 3,
     timeSlots: ['night'],
     script: [
       {
@@ -1166,7 +1167,7 @@ export const STREET_SCENES: StreetScene[] = [
   },
   {
     // 坡道下面抱着团子玩偶的女孩。
-    id: 'st_egg_dango_family', locationIds: ['convenience_store', 'sannomiya_arcade'], weight: 3,
+    id: 'st_egg_dango_family', locationIds: ['sannomiya_arcade'], weight: 3,
     timeSlots: ['afternoon'],
     script: [
       {
@@ -1201,6 +1202,8 @@ const eligible = (s: StreetScene, locationId: string, ctx: StreetCtx): boolean =
   if (!s.locationIds.includes(locationId)) return false;
   if (!s.repeatable && ctx.flags[s.id]) return false;
   if (s.timeSlots && !s.timeSlots.includes(ctx.calendar.timeSlot)) return false;
+  // 没写时段的，看第一句旁白：「放学后的教室里…」不该在午休演
+  if (!s.timeSlots && !scriptFitsNow(s.script, ctx.calendar)) return false;
   if (s.weather && !s.weather.includes(ctx.calendar.weather)) return false;
   if (s.requiresFlags && !s.requiresFlags.every(f => ctx.flags[f])) return false;
   if (s.forbidsFlags && s.forbidsFlags.some(f => ctx.flags[f])) return false;

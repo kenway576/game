@@ -38,7 +38,7 @@ const EV_RAMEN_SORA: MapEventDef = {
   requiresFlags: ['day1_met_sora'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'ramen_shop_interior', bgm: 'town', titleZh: '拉面 太郎', titleEn: 'Ramen Taro', subtitleZh: '傍晚 6:40', subtitleEn: '6:40 PM' },
+    { type: 'scene', scene: 'ramen_shop_interior', bgm: 'town', titleZh: '拉面 太郎', titleEn: 'Ramen Taro' },
     {
       type: 'narration',
       zh: '八个座位的店，你推门进去的时候只坐了一个人。运动包扔在脚边，占了半条过道。',
@@ -282,7 +282,7 @@ const EV_BOOKSTORE_REI: MapEventDef = {
   requiresFlags: ['day1_met_rei'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'junkudo_bookstore', bgm: 'chat', titleZh: '淳久堂书店', titleEn: 'Junkudo Books', subtitleZh: '傍晚 5:10', subtitleEn: '5:10 PM' },
+    { type: 'scene', scene: 'junkudo_bookstore', bgm: 'chat', titleZh: '淳久堂书店', titleEn: 'Junkudo Books' },
     {
       type: 'narration',
       zh: '你在四楼找参考书，走过慣用句那一排的时候，看见一个人站在那里。',
@@ -523,7 +523,7 @@ const EV_ARCADE_MAKI: MapEventDef = {
   requiresFlags: ['day1_met_maki'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'pia_kobe_arcade', bgm: 'town', titleZh: '高架下 Piazza 神户', titleEn: 'Under the Tracks', subtitleZh: '傍晚 6:00', subtitleEn: '6:00 PM' },
+    { type: 'scene', scene: 'pia_kobe_arcade', bgm: 'town', titleZh: '高架下 Piazza 神户', titleEn: 'Under the Tracks' },
     {
       type: 'narration',
       zh: '电车从头顶开过去，整条街的天花板跟着震。震完之后，你听见最里面那台音游机在响。',
@@ -802,7 +802,7 @@ const EV_NANKINMACHI_HIKARI: MapEventDef = {
   requiresFlags: ['day1_met_hikari'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'nankinmachi', bgm: 'town', titleZh: '南京町', titleEn: 'Nankinmachi', subtitleZh: '傍晚 5:30', subtitleEn: '5:30 PM' },
+    { type: 'scene', scene: 'nankinmachi', bgm: 'town', titleZh: '南京町', titleEn: 'Nankinmachi' },
     {
       type: 'narration',
       zh: '红灯笼从街这头挂到那头。蒸笼的白气一股股往上冒，闻起来像同时打开了十家店的门。',
@@ -1010,7 +1010,7 @@ const EV_SLOPE_NAO: MapEventDef = {
   requiresFlags: ['day1_met_nao'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'kitano_slope', bgm: 'chat', titleZh: '北野坂', titleEn: 'Kitano Slope', subtitleZh: '傍晚 5:50', subtitleEn: '5:50 PM' },
+    { type: 'scene', scene: 'kitano_slope', bgm: 'chat', titleZh: '北野坂', titleEn: 'Kitano Slope' },
     {
       type: 'narration',
       zh: '你在坡道中段停下来喘气，装作是在看那栋绿色屋顶的洋馆。',
@@ -1240,7 +1240,7 @@ const EV_COFFEE_MIYUKI: MapEventDef = {
   requiresFlags: ['ev_slope_nao'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'nishimura_coffee_salon', bgm: 'chat', titleZh: '西村咖啡店', titleEn: 'Nishimura Coffee', subtitleZh: '傍晚 6:20', subtitleEn: '6:20 PM' },
+    { type: 'scene', scene: 'nishimura_coffee_salon', bgm: 'chat', titleZh: '西村咖啡店', titleEn: 'Nishimura Coffee' },
     {
       type: 'narration',
       zh: '倒数第二个座位果然空着。但再往里那一个不是。',
@@ -1435,7 +1435,7 @@ const EV_SHRINE_INARI: MapEventDef = {
   requiresFlags: ['day1_met_inari'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'ikuta_shrine', bgm: 'festival', titleZh: '生田神社', titleEn: 'Ikuta Shrine', subtitleZh: '傍晚 6:00', subtitleEn: '6:00 PM' },
+    { type: 'scene', scene: 'ikuta_shrine', bgm: 'festival', titleZh: '生田神社', titleEn: 'Ikuta Shrine' },
     {
       type: 'narration',
       zh: '你穿过红色的楼门，外面商店街的声音一下子退到很远的地方去了。',
@@ -1820,7 +1820,7 @@ const EV_COURTYARD_ASUKA: MapEventDef = {
   requiresFlags: ['day1_met_asuka'],
   priority: 10,
   script: [
-    { type: 'scene', scene: 'courtyard_rain', bgm: 'chat', titleZh: '中庭', titleEn: 'The Courtyard', subtitleZh: '放学后 · 雨', subtitleEn: 'After School · Rain' },
+    { type: 'scene', scene: 'courtyard_rain', bgm: 'chat', titleZh: '中庭', titleEn: 'The Courtyard', subtitleZh: '雨', subtitleEn: 'Rain' },
     {
       type: 'narration',
       zh: '雨下得不大，但没停。你从走廊经过的时候，看见中庭的雨棚下站着一个人。',
@@ -2045,7 +2045,7 @@ const EV_SANNOMIYA_FIRST: MapEventDef = {
   requiresFlags: ['day1_done'],
   priority: 50,
   script: [
-    { type: 'scene', scene: 'sannomiya_station', bgm: 'town', titleZh: '三宫站', titleEn: 'Sannomiya Station', subtitleZh: '放学后', subtitleEn: 'After School' },
+    { type: 'scene', scene: 'sannomiya_station', bgm: 'town', titleZh: '三宫站', titleEn: 'Sannomiya Station' },
     {
       type: 'narration',
       zh: '你是第一次一个人站在这个路口。JR、阪急、阪神、地铁——四块指示牌各指一个方向，你转了一圈才把它们看全。',
@@ -2083,7 +2083,7 @@ const EV_PORTLINER_FIRST: MapEventDef = {
   requiresFlags: ['map_harbor'],
   priority: 50,
   script: [
-    { type: 'scene', scene: 'portliner_platform', bgm: 'town', titleZh: 'Port Liner', titleEn: 'Port Liner', subtitleZh: '傍晚', subtitleEn: 'Evening' },
+    { type: 'scene', scene: 'portliner_platform', bgm: 'town', titleZh: 'Port Liner', titleEn: 'Port Liner' },
     {
       type: 'narration',
       zh: '车进站的时候你才发现最前面那节没有司机座。整块玻璃就是前窗。',

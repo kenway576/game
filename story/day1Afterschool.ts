@@ -544,10 +544,10 @@ export const DAY1_GYM: StoryNode[] = [
 // 深度路线 B：图书馆 —— 铃（致敬长门有希）
 // ==========================================================
 export const DAY1_LIBRARY: StoryNode[] = [
-  { type: 'scene', scene: 'school_library', bgm: 'chat', titleZh: '图书馆', titleEn: 'The Library', subtitleZh: '下午 4:20 · 西晒', subtitleEn: '4:20 PM · Western light' },
+  { type: 'scene', scene: 'school_library', bgm: 'chat', titleZh: '图书馆', titleEn: 'The Library', subtitleZh: '下午 4:20 · 夕阳', subtitleEn: '4:20 PM · Western light' },
   {
     type: 'narration',
-    zh: '西晒的光斜穿过书架，把地板切成一条一条。整个阅览室只有翻页的声音。',
+    zh: '夕阳的光斜穿过书架，把地板切成一条一条。整个阅览室只有翻页的声音。',
     en: 'Late sun cuts through the shelves and lays the floor out in stripes. The only sound in the whole reading room is pages turning.'
   },
   {

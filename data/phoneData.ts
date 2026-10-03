@@ -1,3 +1,4 @@
+import { miyukiInviteMessages } from './inviteData';
 import { CharacterId, StoryFlags, StoryWord, AffectionMap, FamiliarityMap } from '../types';
 import { getInitialFamiliarity } from '../constants';
 import { MAKEUP_LINES, makeupFlag } from './socialLimits';
@@ -188,14 +189,8 @@ export const PHONE_MESSAGES: PhoneMessage[] = [
   },
 
   // ---- 深雪：房东、隔壁、做多了 ----
-  {
-    id: 'msg_miyuki_dinner', char: CharacterId.MIYUKI, requiresFlags: ['day1_done'],
-    lines: [
-      { jp: '今日もね、作りすぎちゃって', zh: '今天也是，做多了', en: 'I have gone and made too much again' },
-      { jp: '２０２号室、開いてるわよ', zh: '202 室开着哦', en: 'Room 202 is open' }
-    ],
-    word: { jp: '作りすぎる', reading: 'つくりすぎる', zh: '做太多了', en: 'to make too much' }
-  },
+  // 「今日もね、作りすぎちゃって」那条以前挂在 day1_done 上，第一天就到，
+  // 可那时候 202 根本进不去。现在它是真的邀请：见 data/inviteData，那天门是开着的。
   {
     id: 'msg_miyuki_pairs', char: CharacterId.MIYUKI, requiresFlags: ['miyuki_story_saw_pairs'],
     lines: [
@@ -433,6 +428,8 @@ export const isDelivered = (m: PhoneMessage, ctx: PhoneContext): boolean => {
 // 和解那条单独接在最后——它总是"刚刚才发来的"，不管前面攒了多少条。
 export const messagesFor = (char: CharacterId, ctx: PhoneContext): PhoneMessage[] => [
   ...PHONE_MESSAGES.filter(m => m.char === char && isDelivered(m, ctx)),
+  // 🍚 深雪叫你去吃饭的那几条（每次邀请一条，按日期）
+  ...(char === CharacterId.MIYUKI && ctx.met.includes(char) ? miyukiInviteMessages(ctx.flags) : []),
   ...MAKEUP_MESSAGES.filter(m => m.char === char && isDelivered(m, ctx))
 ];
 
@@ -450,6 +447,8 @@ export const unreadFor = (char: CharacterId, ctx: PhoneContext): number =>
 export const hasContact = (id: CharacterId, ctx: PhoneContext): boolean => {
   if (!ctx.met.includes(id)) return false;
   if (id === CharacterId.NAO) return true;
+  // 深雪是房东兼隔壁：搬进来那天就留了号码（以前靠第一天那条「作りすぎちゃって」撑着通讯录）
+  if (id === CharacterId.MIYUKI && ctx.flags['day1_done']) return true;
   if (messagesFor(id, ctx).length) return true;
   return !!ctx.flags[`talked_${id}`] && famOf(ctx, id) >= CONTACT_MIN_FAMILIARITY;
 };

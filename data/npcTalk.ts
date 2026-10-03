@@ -222,6 +222,74 @@ export const NPC_TOPICS: Record<string, NpcTopic[]> = {
       lines: []
     }
   ],
+  clerk_uniqlo: [
+    {
+      id: 'uniqlo_recommend', labelZh: '询问当季推荐款式', labelEn: 'Ask for seasonal recommendations',
+      jp: '今のおすすめ、何ですか？',
+      lines: [
+        { jp: '今季はヒートテックと新作のUTが特に人気ですよ。どうぞごゆっくりご覧ください！',
+          zh: '这一季的发热内衣和最新的联名 UT 特别受欢迎哦。请慢慢挑选，试衣间随时可以用！',
+          en: 'The Heattech and new UT graphics are especially popular this season. Take your time, fitting rooms are free!' },
+        { zh: '店员小姐手脚麻利地叠好了旁边的一件T恤，向你露出了标准的职业微笑。',
+          en: 'The clerk swiftly folds a nearby tee and gives you a polished, professional smile.' }
+      ],
+      effects: [{ stat: 'charm', amount: 1, reasonZh: '店员向你介绍了当季最流行的搭配', reasonEn: 'The clerk shared this season’s best matching tips' }]
+    },
+    {
+      id: 'uniqlo_size', labelZh: '询问是否有库房尺码', labelEn: 'Ask if sizes are in the back',
+      jp: 'サイズ、これだけですか？', once: true,
+      lines: [
+        { jp: '店頭に出ていないサイズやカラーも、奥の在庫からお出しできますよ。お気軽に声をかけてくださいね！',
+          zh: '架子上没摆出来的尺码或者颜色，我们也可以从里面的库房调出来哦。随时叫我！',
+          en: 'If your size or color isn’t on the rack, we can bring it from the stockroom. Just ask anytime!' },
+        { zh: '你记住了这句话。在优衣库买衣服，架子上没有不代表真的卖光了。',
+          en: 'You keep that in mind. At UNIQLO, an empty rack doesn’t mean it’s actually sold out.' }
+      ],
+      effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你掌握了在优衣库找店员调货的生活常识', reasonEn: 'You learned to ask for backroom stock at UNIQLO' }]
+    }
+  ],
+  clerk_matsukiyo: [
+    {
+      id: 'matsukiyo_recommend', labelZh: '向七海小姐咨询护眼与药品', labelEn: 'Ask Nanami about eye care and vitamins',
+      jp: '勉強で目が疲れるんですけど……',
+      lines: [
+        { jp: 'それならこの清涼感のある目薬とビタミンCが一番ですよ！私も受験のとき使ってました。',
+          zh: '那样的话，这款清凉眼药水和维生素 C 是最合适的哦！我当年备考时也是靠它们的。',
+          en: 'In that case, cooling eye drops and vitamin C are the best! I relied on them when studying for exams too.' },
+        { zh: '七海小姐眉眼弯弯地从货架上指给你看，语调让人很安心。',
+          en: 'Nanami points them out with a warm smile, her tone reassuring and gentle.' }
+      ],
+      effects: [{ stat: 'kindness', amount: 1, reasonZh: '七海小姐温柔地为你推荐了对症的常备品', reasonEn: 'Nanami kindly recommended the right everyday essentials' }]
+    }
+  ],
+  clerk_bookoff: [
+    {
+      id: 'bookoff_arrivals', labelZh: '询问特价漫画和文库何时上新', labelEn: 'Ask when new manga is stocked',
+      jp: '新入荷っていつ出ますか？',
+      lines: [
+        { jp: '毎日夕方に検品して出してますよ！百十円コーナーは本当に早い者勝ちです！',
+          zh: '每天傍晚都会验货上架哦！110日元的特价专区真的是先到先得！',
+          en: 'We inspect and stock new items every evening! The 110-yen racks really are first-come, first-served!' },
+        { zh: '店员中气十足地回答完，又小跑着去收银台帮忙了。',
+          en: 'The clerk answers with brisk energy and jogs off to help at the counter.' }
+      ],
+      effects: [{ stat: 'knowledge', amount: 1, reasonZh: '你掌握了二手书店的上新规律', reasonEn: 'You learned the secondhand bookstore stocking routine' }]
+    }
+  ],
+  clerk_surugaya: [
+    {
+      id: 'surugaya_rare', labelZh: '打听中古手办和卡带的淘货心得', labelEn: 'Ask about hunting retro figures and games',
+      jp: 'いいの、入ってますか？',
+      lines: [
+        { jp: 'ガラスケースの中は一期一会っすよ！迷ったら買っとかないと、明日には消えてます！',
+          zh: '玻璃柜里的中古绝品可全是一期一会啊！犹豫就会败北，明天来看绝对就被别人秒了！',
+          en: 'Treasures in the glass cases are once-in-a-lifetime! Hesitate and they’ll be gone tomorrow!' },
+        { zh: '店员推了推眼镜，眼神里满是同道中人的热切。',
+          en: 'The clerk adjusts his glasses with the knowing fervor of a fellow collector.' }
+      ],
+      effects: [{ stat: 'guts', amount: 1, reasonZh: '你从駿河屋店员那里学到了资深御宅的抢货心法', reasonEn: 'You picked up hardcore otaku collector wisdom' }]
+    }
+  ],
   munakata: [
     {
       id: 'munakata_why', labelZh: '问他为什么不放糖', labelEn: 'Ask why no sugar',

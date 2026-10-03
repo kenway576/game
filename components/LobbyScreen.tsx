@@ -46,6 +46,8 @@ interface Props {
   onStartMainChapter?: () => void;
   phoneUnread: number;
   stamina: number;
+  // 🏠 下个月 1 号要交多少、现在欠多少（见 data/rentData）
+  rent?: { nextMonth: number; net: number; owed: number; warn: boolean; short: boolean };
   onOpenProtagonistProfile: () => void;
   background: React.ReactNode;
 }
@@ -53,7 +55,7 @@ interface Props {
 const LobbyScreen: React.FC<Props> = ({
   T, userState, customAssets, visibleLobbyChars, lobbyChars, lobbySelectedChar,
   setLobbySelectedChar, affectionMap, familiarityMap, calendar, stats,
-  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenGift, onOpenPhone, onMessage, canMessage, dayPlanned, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, background
+  onOpenSystemMenu, onOpenCgGallery, onOpenCalendar, onOpenProtagonistProfile, onOpenRoom, onOpenMap, onOpenInventory, onOpenGift, onOpenPhone, onMessage, canMessage, dayPlanned, mainStoryPending, onResumeMainStory, classPending, classLine, onGoToClass, mainChapter, onStartMainChapter, phoneUnread, stamina, rent, background
 }) => {
   // 连最轻的一趟都撑不住 = 今天出不去了
   const spent = !canGoOutAtAll(stamina, calendar);
@@ -253,6 +255,27 @@ const LobbyScreen: React.FC<Props> = ({
         {/* 🔋 体力。挨着日历放：一个说"还剩几格"，一个说"还撑不撑得住"，
             这两件事是一起看的。 */}
         <StaminaBar cur={stamina} en={userState.language === 'en'} />
+
+        {/* 🏠 房租。平时只在宽屏上淡淡地挂着，方便算账；
+            月底（25 号以后）和欠着的时候，手机上也会冒出来，而且变色。 */}
+        {rent && (() => {
+          const alarm = rent.owed > 0 || (rent.warn && rent.short);
+          const en = userState.language === 'en';
+          return (
+            <div className={`transform -skew-x-12 bg-black/80 backdrop-blur-md border px-3 py-2 ${
+              alarm ? 'border-red-500/70' : rent.warn ? 'border-yellow-400/60' : 'border-white/15 hidden md:block'
+            }`}>
+              <span className={`block transform skew-x-12 text-[10px] font-bold whitespace-nowrap ${
+                alarm ? 'text-red-300' : rent.warn ? 'text-yellow-300' : 'text-white/45'
+              }`}>
+                🏠 {rent.owed > 0
+                  ? (en ? `Rent owed ¥${rent.owed.toLocaleString('ja-JP')}` : `欠房租 ¥${rent.owed.toLocaleString('ja-JP')}`)
+                  : (en ? `${rent.nextMonth}/1 bills −¥${rent.net.toLocaleString('ja-JP')}`
+                        : `${rent.nextMonth}/1 房租水电 −¥${rent.net.toLocaleString('ja-JP')}`)}
+              </span>
+            </div>
+          );
+        })()}
       </div>
     </div>
 

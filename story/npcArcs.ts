@@ -41,7 +41,7 @@ export const NPC_ARCS: StreetScene[] = [
   // 跟谁都能聊上的人，没有一个人可以说真话。
   // =========================================================
   {
-    id: 'arc_kenta_1', locationIds: ['school_bicycle_parking', 'gym', 'school_terrace'],
+    id: 'arc_kenta_1', locationIds: ['school_bicycle_parking'],
     weight: 8, minDay: 16,
     script: [
       {
@@ -68,7 +68,7 @@ export const NPC_ARCS: StreetScene[] = [
     ]
   },
   {
-    id: 'arc_kenta_2', locationIds: ['gym', 'school_terrace', 'courtyard_rain'],
+    id: 'arc_kenta_2', locationIds: ['gym'],
     weight: 8, minDay: 70, requiresFlags: ['arc_kenta_1'],
     script: [
       {
@@ -229,7 +229,7 @@ export const NPC_ARCS: StreetScene[] = [
   // 这条线讲的是他为什么坐第一排——理由和成绩没有关系。
   // =========================================================
   {
-    id: 'arc_hiroki_1', locationIds: ['school_library', 'classroom_morning'],
+    id: 'arc_hiroki_1', locationIds: ['school_library'],
     weight: 8, minDay: 24,
     script: [
       {
@@ -315,7 +315,7 @@ export const NPC_ARCS: StreetScene[] = [
     ]
   },
   {
-    id: 'arc_hiroki_3', locationIds: ['school_library', 'classroom_morning'],
+    id: 'arc_hiroki_3', locationIds: ['classroom_morning'],
     weight: 8, minDay: 195, requiresFlags: ['arc_hiroki_2'],
     script: [
       {
@@ -409,7 +409,7 @@ export const NPC_ARCS: StreetScene[] = [
   // 主角是唯一一个同时看见两边的人。
   // =========================================================
   {
-    id: 'arc_idol_1', locationIds: ['pia_kobe_arcade', 'sannomiya_arcade'],
+    id: 'arc_idol_1', locationIds: ['pia_kobe_arcade'],
     weight: 6, minDay: 50, requiresFlags: ['sp_otaku_1'], timeSlots: ['afternoon', 'night'],
     script: [
       {
@@ -431,7 +431,7 @@ export const NPC_ARCS: StreetScene[] = [
     ]
   },
   {
-    id: 'arc_idol_2', locationIds: ['convenience_store', 'sannomiya_arcade', 'pia_kobe_arcade'],
+    id: 'arc_idol_2', locationIds: ['convenience_store'],
     weight: 6, minDay: 125, requiresFlags: ['arc_idol_1'], timeSlots: ['night'],
     script: [
       {
@@ -519,7 +519,7 @@ export const NPC_ARCS: StreetScene[] = [
     ]
   },
   {
-    id: 'arc_idol_3', locationIds: ['pia_kobe_arcade', 'sannomiya_arcade'],
+    id: 'arc_idol_3', locationIds: ['pia_kobe_arcade'],
     weight: 7, minDay: 215, requiresFlags: ['arc_idol_2'], timeSlots: ['afternoon', 'night'],
     script: [
       {

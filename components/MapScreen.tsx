@@ -50,7 +50,7 @@ interface Props {
   affection: AffectionMap;
   familiarity: FamiliarityMap;
   onClose: () => void;
-  onTravel: (loc: MapLocation) => void;
+  onTravel: (loc: MapLocation, playLevelStory?: boolean) => void;
   metChars: CharacterId[];
   // 🎯 地点上的活动（情景对答、小游戏）
   life: LifeState;
@@ -72,9 +72,12 @@ const MapScreen: React.FC<Props> = ({
     [storyFlags, calendar, affection, familiarity, metChars]
   );
 
+  // 进得去吗：解锁了，或者她正在那儿等你（♥）——比如深雪的第一顿饭，那天 202 的门是为你开的
+  const canEnter = (loc: MapLocation) => isLocationUnlocked(loc, storyFlags) || storySpots.includes(loc.id);
+
   const unlocked = useMemo(
-    () => MAP_LOCATIONS.filter(l => isLocationUnlocked(l, storyFlags)),
-    [storyFlags]
+    () => MAP_LOCATIONS.filter(canEnter),
+    [storyFlags, storySpots]
   );
 
   const [seen, setSeen] = useState<string[]>(readSeen);
@@ -99,18 +102,22 @@ const MapScreen: React.FC<Props> = ({
 
   const isNew = (id: string) => !seen.includes(id);
 
+  // 她在那儿等你的那几段（夜里的天台、夜里的体育馆、夏祭的神社）写的正好是平时关门的时候。
+  // 这种时候那个地方为她开着——地图上照样能去，而且打着 ♥。
+  const openNow = (loc: MapLocation) => isLocationOpenNow(loc, calendar) || storySpots.includes(loc.id);
+
   const pick = (loc: MapLocation) => {
     audioManager.playSfx('click');
     setSelectedId(loc.id);
   };
 
-  const go = () => {
-    if (!isLocationUnlocked(selected, storyFlags)) return;
-    if (!isLocationOpenNow(selected, calendar)) return;
+  const go = (playLevelStory = false) => {
+    if (!canEnter(selected)) return;
+    if (!openNow(selected)) return;
     if (!affordable(selected)) { audioManager.playSfx('error'); return; }
     audioManager.playSfx('confirm');
     markVisited(selected.id);
-    onTravel(selected);
+    onTravel(selected, playLevelStory);
   };
 
   // ⏳ 今天放学后还剩几格，以及每个地方要花几格
@@ -125,7 +132,7 @@ const MapScreen: React.FC<Props> = ({
   const affordable = (loc: MapLocation) => costOf(loc) <= slotsLeft && hasLegs(loc) && canPay(loc);
   // 这个时段真正还能去的地方：解锁了、没打烊、今天的时间也还够
   const openNowCount = unlocked.filter(
-    l => isLocationOpenNow(l, calendar) && affordable(l)
+    l => openNow(l) && affordable(l)
   ).length;
   // 时间用小方块画出来：实心 = 还剩，空心 = 已经用掉
   const slotPips = (used: number, total: number, cls = '') =>
@@ -160,8 +167,8 @@ const MapScreen: React.FC<Props> = ({
     [calendar, storyFlags, metChars]
   );
 
-  const selUnlocked = isLocationUnlocked(selected, storyFlags);
-  const selOpen = isLocationOpenNow(selected, calendar);
+  const selUnlocked = canEnter(selected);
+  const selOpen = openNow(selected);
   const selHasEvent = selUnlocked && selOpen && locationHasEvent(selected.id, ctx);
 
   return (
@@ -203,7 +210,7 @@ const MapScreen: React.FC<Props> = ({
           {DISTRICT_ORDER.map(d => {
             const inDistrict = MAP_LOCATIONS.filter(l => l.district === d);
             if (!inDistrict.length) return null;
-            const anyOpen = inDistrict.some(l => isLocationUnlocked(l, storyFlags));
+            const anyOpen = inDistrict.some(l => canEnter(l));
             const label = DISTRICT_LABELS[d];
             return (
               <div key={d}>
@@ -215,8 +222,8 @@ const MapScreen: React.FC<Props> = ({
                   {!anyOpen && <span className="ml-auto text-[10px] text-white/25">🔒</span>}
                 </div>
                 {inDistrict.map(loc => {
-                  const open = isLocationUnlocked(loc, storyFlags);
-                  const now = isLocationOpenNow(loc, calendar);
+                  const open = canEnter(loc);
+                  const now = openNow(loc);
                   const has = open && now && locationHasEvent(loc.id, ctx);
                   const active = loc.id === selectedId;
                   const cost = costOf(loc);
@@ -432,29 +439,43 @@ const MapScreen: React.FC<Props> = ({
                     ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home. 🔋 is a separate question: having the time does not mean you have the legs. Eat something, or go and sit in a hot spring.'
                     : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。🔋 是另一回事：时间够、人不够也去不了。想缓过来就吃点东西，或者去泡个汤。')}
             </span>
-            <button
-              onClick={go}
-              disabled={!selUnlocked || !selOpen || !affordable(selected)}
-              className={`px-6 md:px-10 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
-                selUnlocked && selOpen && affordable(selected)
-                  ? 'bg-yellow-400 text-black hover:bg-white'
-                  : 'bg-white/10 text-white/30 cursor-not-allowed'
-              }`}
-            >
-              <span className="block transform skew-x-12">
-                {!selUnlocked
-                  ? (en ? 'Locked' : '未解锁')
-                  : !selOpen
-                    ? (en ? 'Not now' : '现在不行')
-                    : costOf(selected) > slotsLeft
-                      ? (en ? 'Too late' : '来不及了')
-                      : !hasLegs(selected)
-                        ? (en ? 'Too tired' : '走不动了')
-                        : !canPay(selected)
-                          ? (en ? 'Cannot afford it' : '付不起')
-                      : (en ? 'Go ▶' : '出发 ▶')}
-              </span>
-            </button>
+            <div className="flex items-center gap-2">
+              {selUnlocked && selOpen && affordable(selected) && storySpots.includes(selected.id) && (
+                <button
+                  onClick={() => go(true)}
+                  className="px-4 md:px-6 py-2.5 text-sm font-black uppercase tracking-wider transform -skew-x-12 bg-pink-500 hover:bg-pink-400 text-white shadow-lg shadow-pink-500/20 transition-all cursor-pointer"
+                >
+                  <span className="block transform skew-x-12">
+                    {en ? '♥ Story ▶' : '♥ 专属剧情 ▶'}
+                  </span>
+                </button>
+              )}
+              <button
+                onClick={() => go(false)}
+                disabled={!selUnlocked || !selOpen || !affordable(selected)}
+                className={`px-6 md:px-10 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
+                  selUnlocked && selOpen && affordable(selected)
+                    ? 'bg-yellow-400 text-black hover:bg-white cursor-pointer'
+                    : 'bg-white/10 text-white/30 cursor-not-allowed'
+                }`}
+              >
+                <span className="block transform skew-x-12">
+                  {!selUnlocked
+                    ? (en ? 'Locked' : '未解锁')
+                    : !selOpen
+                      ? (en ? 'Not now' : '现在不行')
+                      : costOf(selected) > slotsLeft
+                        ? (en ? 'Too late' : '来不及了')
+                        : !hasLegs(selected)
+                          ? (en ? 'Too tired' : '走不动了')
+                          : !canPay(selected)
+                            ? (en ? 'Cannot afford it' : '付不起')
+                        : storySpots.includes(selected.id)
+                          ? (en ? 'Explore ▶' : '常规探索 ▶')
+                          : (en ? 'Go ▶' : '出发 ▶')}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

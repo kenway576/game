@@ -222,6 +222,24 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientEn: ['A pizza flyer and a utility bill in the letterbox. Someone upstairs is watering plants; the drips land on the iron rail.']
   },
   {
+    // 🍚 深雪家。隔壁 202。只有她叫你的那天（发消息说做多了）门才开着——
+    // 解锁 flag 每天早上清掉，见 data/inviteData。她的剧情①也在这儿演。
+    id: 'miyuki_room_202', district: 'kitano',
+    nameJp: '深雪さんの部屋（海風荘 202）', reading: 'みゆきさんのへや（うみかぜそう にーまるに）',
+    nameZh: '深雪家（海风庄 202）', nameEn: "Miyuki's Flat (Umikaze 202)",
+    blurbZh: '隔壁的 202。门上挂着一块手写的小木牌，窗台上的绿植比你房间里的家具还多。',
+    blurbEn: 'Next door, number 202. A small hand-lettered wooden plate on the door, and more plants on the windowsill than you have furniture.',
+    mapScene: 'miyuki_room_dinner',
+    extraScenes: ['miyuki_dinner_table'],
+    requiresFlag: 'invite_miyuki_open',
+    lockedHintZh: '没被邀请的话，不能随便去敲别人家的门。',
+    lockedHintEn: "You cannot just knock on someone's door without being asked.",
+    timeSlots: ['afternoon', 'night'],
+    timeCost: 1,
+    ambientZh: ['你在 202 门口站了一会儿，里面传来电视的声音和锅盖轻轻碰撞的声音。'],
+    ambientEn: ['You stand outside 202 for a moment. From inside: a television, and the soft clink of a saucepan lid.']
+  },
+  {
     id: 'kitano_slope', district: 'kitano',
     nameJp: '北野坂', reading: 'きたのざか',
     nameZh: '北野坂', nameEn: 'Kitano Slope',
@@ -442,6 +460,8 @@ export const MAP_LOCATIONS: MapLocation[] = [
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
     timeSlots: ['afternoon', 'night'],
+    // 第一次就是奈绪带你来的（「一人暮らしの第一歩は百均を制することやで」）
+    regulars: [CharacterId.NAO],
     ambientZh: ['你在收纳用品那一排走了两个来回，最后买了一个你其实用不上的沥水篮。'],
     ambientEn: ['You walk the storage aisle twice and leave with a draining basket you have no use for.']
   },
@@ -1046,3 +1066,31 @@ export const DISTRICT_ORDER = ['school', 'kitano', 'sannomiya', 'harbor', 'far']
 
 export const findLocation = (id: string): MapLocation | undefined =>
   MAP_LOCATIONS.find(l => l.id === id);
+
+// ---------------------------------------------------------
+// 💞 一段手写剧情的"家"：它在地图上的哪个地点演。
+//
+// 剧本第一张场景图是什么，它就发生在哪儿。图名跟地点 id / 地点用的图对不上的，
+// 在这张表里补一下（夕阳下的教室就是那间教室，夏祭的生田神社就是生田神社）。
+// 返回空数组 = 地图上没有这个地方（比如你家的厨房），回大厅时补播。
+// ---------------------------------------------------------
+const STORY_SCENE_HOME: Record<string, string> = {
+  classroom_sunset: 'classroom_morning',
+  ikuta_shrine_summer_festival: 'ikuta_shrine',
+  school_gate: 'school_bicycle_parking',
+  jazz_livehouse: 'pia_kobe_arcade',
+  // 深雪是隔壁 202 的人。屋里的戏（饭桌、客厅）在 202，阳台的戏在海风庄
+  kitchen: 'miyuki_room_202',
+  miyuki_dinner_table: 'miyuki_room_202',
+  miyuki_room_dinner: 'miyuki_room_202',
+  apartment_balcony: 'umikaze_exterior'
+};
+
+export const levelStoryHome = (def: { script?: { type: string }[] }): string[] => {
+  const first = def.script?.find(n => n.type === 'scene') as { scene?: string } | undefined;
+  if (!first?.scene) return [];
+  const key = STORY_SCENE_HOME[first.scene] || first.scene;
+  return MAP_LOCATIONS
+    .filter(l => l.id === key || l.mapScene === key || !!l.extraScenes?.includes(key))
+    .map(l => l.id);
+};

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   StoryNode, StoryOption, StoryEffect, StoryRelationEffect, StoryWord,
-  ShopItem, StoryFlags, Language, ProtagonistStats, StoryProgress
+  ShopItem, StoryFlags, Language, ProtagonistStats, StoryProgress, GameCalendar
 } from '../types';
 import { STAT_METADATA } from '../constants';
 import { audioManager } from '../services/audioManager';
+import { isSchoolDay } from '../data/calendarLife';
 
 // StoryScreen 恢复出来的那份"已经拿到手的东西"，由 App 一次性灌回全局状态
 export interface StoryRestorePayload {
@@ -21,6 +22,7 @@ interface Props {
   language: Language;
   stats: ProtagonistStats;
   background: React.ReactNode;
+  calendar?: GameCalendar;
   // 读档进来的那一份进度：直接静默恢复，不再弹"要不要接着看"
   // （玩家在存档界面已经做过一次选择了，不该再问一遍）
   initialProgress?: StoryProgress | null;
@@ -96,8 +98,71 @@ const loadPrefs = (): StoryPrefs => {
 
 interface BacklogEntry { speaker: string; main: string; sub: string; }
 
+export function formatSceneSubtitle(
+  rawSubtitle: string | undefined,
+  calendar: GameCalendar | undefined,
+  en: boolean,
+  isPrologue: boolean
+): string {
+  if (isPrologue || !calendar) return rawSubtitle || '';
+
+  const slot = calendar.timeSlot;
+  const weekend = !isSchoolDay(calendar);
+
+  let slotTimeZh = '';
+  let slotTimeEn = '';
+  if (slot === 'morning') {
+    slotTimeZh = '早晨 8:40';
+    slotTimeEn = '8:40 AM';
+  } else if (slot === 'lunch') {
+    slotTimeZh = weekend ? '上午 11:30' : '午休 12:20';
+    slotTimeEn = weekend ? '11:30 AM' : '12:20 PM';
+  } else if (slot === 'afternoon') {
+    slotTimeZh = '下午 4:30';
+    slotTimeEn = '4:30 PM';
+  } else {
+    slotTimeZh = '晚上 8:20';
+    slotTimeEn = '8:20 PM';
+  }
+
+  if (!rawSubtitle) {
+    const dayTagZh = weekend ? '周末 · ' : '';
+    const dayTagEn = weekend ? 'Weekend · ' : '';
+    return en ? `${dayTagEn}${slotTimeEn}` : `${dayTagZh}${slotTimeZh}`;
+  }
+
+  let text = rawSubtitle;
+
+  // 1. 周末没有"放学后"
+  if (weekend) {
+    text = text.replace(/放学后|放課後/g, '休息日');
+    text = text.replace(/After\s*School/gi, 'Day Off');
+  }
+
+  // 2. 修正写死的具体钟点或冲突的时段，使其与日历当前时段保持一致
+  const hasTime = /\b\d{1,2}[:：]\d{2}\b|傍晚|下午|清晨|早晨|早上|晚上|夜里|午休/i.test(text);
+  if (hasTime) {
+    text = text.replace(/(傍晚|下午|晚上|夜里|早晨|清晨|早上|午休)?\s*\b\d{1,2}[:：]\d{2}\s*(PM|AM)?/gi, en ? slotTimeEn : slotTimeZh);
+    if (slot === 'morning' || (slot === 'lunch' && weekend)) {
+      text = text.replace(/傍晚|下午|晚上|夜里/g, '上午');
+      text = text.replace(/Evening|Afternoon|Night/gi, 'Morning');
+    } else if (slot === 'lunch') {
+      text = text.replace(/傍晚|下午|晚上|夜里|早晨|清晨/g, '午休');
+      text = text.replace(/Evening|Afternoon|Night|Early\s*Morning/gi, 'Lunch Break');
+    } else if (slot === 'afternoon') {
+      text = text.replace(/早晨|清晨|早上|上午|夜里/g, '下午');
+      text = text.replace(/Early\s*Morning|Morning|Night/gi, 'Afternoon');
+    } else if (slot === 'night') {
+      text = text.replace(/早晨|清晨|早上|上午|下午|傍晚|午休/g, '晚上');
+      text = text.replace(/Early\s*Morning|Morning|Afternoon|Evening|Lunch\s*Break/gi, 'Night');
+    }
+  }
+
+  return text;
+}
+
 const StoryScreen: React.FC<Props> = ({
-  script, scriptVersion, progressKey, language, stats, background,
+  script, scriptVersion, progressKey, language, stats, background, calendar,
   initialProgress, initialFlags, onAutoSave, onOpenSystemMenu, playerName, onSetPlayerName,
   storyAffection = 0, storyFamiliarity = 0,
   chapterNameZh, chapterNameEn, allowSkip,
@@ -336,10 +401,13 @@ const StoryScreen: React.FC<Props> = ({
       // 分场景 BGM：整段序章共用一首大厅曲，列车、便利店和开学前夜就全是一个温度
       if (node.bgm) audioManager.crossfadeBgm(node.bgm, 900);
       const title = en ? node.titleEn : node.titleZh;
+      const rawSub = en ? node.subtitleEn : node.subtitleZh;
+      const isPrologue = progressKey.startsWith('kobe_study_prologue');
+      const subtitle = formatSceneSubtitle(rawSub, calendar, en, isPrologue);
       if (title && !fastForward) {
         setTitleCard({
           title,
-          subtitle: (en ? node.subtitleEn : node.subtitleZh) || ''
+          subtitle
         });
         const t = setTimeout(() => { setTitleCard(null); advance(); }, 2400);
         return () => clearTimeout(t);

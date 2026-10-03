@@ -97,6 +97,13 @@ const ChatScreen: React.FC<Props> = ({
     return () => { clearInterval(interval); audioManager.stopDiceRattle(); };
   }, [diceRoll?.key]);
   // 划词菜单与翻译弹窗属于聊天界面的局部交互，状态收在组件内部
+  // 结束对话：点一下变成"确定？"，再点才走——误触就白聊了
+  const [confirmLeave, setConfirmLeave] = useState(false);
+  useEffect(() => {
+    if (!confirmLeave) return;
+    const t = setTimeout(() => setConfirmLeave(false), 3000);
+    return () => clearTimeout(t);
+  }, [confirmLeave]);
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, text: string } | null>(null);
   const [translationResult, setTranslationResult] = useState<{ original: string, translation: string } | null>(null);
   const [, setIsTranslating] = useState(false);
@@ -195,6 +202,17 @@ const ChatScreen: React.FC<Props> = ({
       <div className="absolute top-0 left-0 w-full z-50 p-4 md:p-6 flex justify-between items-start pointer-events-none">
         <div className="flex gap-2 pointer-events-auto">
           <button onClick={onOpenSystemMenu} className="bg-black/80 px-5 py-3 rounded-sm text-white font-black text-[10px] md:text-xs border border-white/20 hover:border-yellow-500 transition-colors uppercase tracking-[0.2em] shadow-xl">⚙️ {T.system}</button>
+          {onLeaveChat && !dayClosed && (
+            <button
+              onClick={() => (confirmLeave ? onLeaveChat() : setConfirmLeave(true))}
+              disabled={isLoading}
+              className={`px-5 py-3 rounded-sm font-black text-[10px] md:text-xs border transition-colors tracking-[0.2em] shadow-xl disabled:opacity-40 ${confirmLeave ? 'bg-red-600/90 border-red-300 text-white' : 'bg-black/80 border-white/20 text-white hover:border-red-400'}`}
+            >
+              {confirmLeave
+                ? (userState.language === 'en' ? 'Leave? Tap again' : '确定结束？再点一次')
+                : (userState.language === 'en' ? '👋 End chat' : '👋 结束对话')}
+            </button>
+          )}
         </div>
         <div className="flex flex-wrap justify-end gap-2 max-w-[70%] pointer-events-auto">
           <div className="bg-black/80 px-4 py-3 text-white/50 text-[10px] font-mono border-b-2 border-red-500 w-full md:w-auto text-right shadow-xl">N3: {userState.playerName.toUpperCase()} | {userState.grammarTopic}</div>

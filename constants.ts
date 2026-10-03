@@ -43,6 +43,8 @@ export const SCENE_MAP: Record<string, string> = {
   'room_sora':   '/images/backgrounds/room_sora.webp',
   'room_maki':   '/images/backgrounds/room_maki.webp',
   'kitchen':   '/images/backgrounds/kitchen.webp',
+  'miyuki_dinner_table': '/images/backgrounds/bg_miyuki_dinner_table.webp',
+  'miyuki_room_dinner':  '/images/backgrounds/bg_miyuki_room_dinner.webp',
   'street':    '/images/backgrounds/bg_kitano_slope_foot_dusk.webp',
   'park':      '/images/backgrounds/park.webp',
   'beach':     '/images/backgrounds/beach.webp',

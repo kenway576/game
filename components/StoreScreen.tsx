@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { STAMINA_MAX } from '../data/staminaData';
-import { NEW_SHOPS, findShop, shopGood, ShopKind } from '../data/shopData';
+import { findShop, shopGood, ShopKind, ShopGood, EXTRA_GOODS } from '../data/shopData';
 import { RECIPE_BOOKS } from '../data/cookData';
 import { Language, LifeState, GameCalendar, StoryFlags, StoryEffect, CharacterId } from '../types';
 import {
@@ -83,14 +83,18 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
   type Row = { id: string; emoji: string; icon?: string; nameZh: string; nameEn: string; nameJp: string;
                reading: string; price: number; descZh: string; descEn: string; owned?: number; note?: string };
 
+  const goodRow = (g: ShopGood): Row => ({
+    id: g.id, emoji: g.emoji, icon: g.id, nameZh: g.nameZh, nameEn: g.nameEn,
+    nameJp: g.nameJp, reading: g.reading, price: g.price,
+    descZh: g.descZh, descEn: g.descEn,
+    owned: life.items[g.id] || 0,
+    note: g.unique && (life.items[g.id] || 0) > 0 ? (en ? 'owned' : '已有') : undefined
+  });
+  // 百元店、渔具店手写的货架后面再摆一排杂货
+  const extraRows: Row[] = (EXTRA_GOODS[kind] || []).map(goodRow);
+
   const buyRows: Row[] = newShop
-    ? newShop.goods.map(g => ({
-        id: g.id, emoji: g.emoji, icon: g.id, nameZh: g.nameZh, nameEn: g.nameEn,
-        nameJp: g.nameJp, reading: g.reading, price: g.price,
-        descZh: g.descZh, descEn: g.descEn,
-        owned: life.items[g.id] || 0,
-        note: g.unique && (life.items[g.id] || 0) > 0 ? (en ? 'owned' : '已有') : undefined
-      }))
+    ? newShop.goods.map(goodRow)
     : kind === 'hyakkin'
     ? [
         {
@@ -117,7 +121,8 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
           note: s.months && !s.months.includes(calendar.month)
             ? (en ? 'out of season' : '不是季节')
             : undefined
-        }))
+        })),
+        ...extraRows
       ]
     : [
         {
@@ -133,7 +138,8 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
           descZh: r.descZh, descEn: r.descEn,
           owned: life.rodId === r.id ? 1 : 0,
           note: life.rodId === r.id ? (en ? 'equipped' : '使用中') : undefined
-        }))
+        })),
+        ...extraRows
       ];
 
   // ---- 收购台 ----
@@ -253,7 +259,8 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
 
       {/* 买 / 卖 */}
       <div className="flex gap-2 px-4 md:px-6 py-2 shrink-0">
-        {(['buy', 'sell'] as const).map(t => (
+        {/* 收购台只有百元店（收菜）和渔具店（收鱼）有 */}
+        {((kind === 'hyakkin' || kind === 'tackle') ? (['buy', 'sell'] as const) : (['buy'] as const)).map(t => (
           <button
             key={t}
             onClick={() => { audioManager.playSfx('click'); setTab(t); setPickId(null); }}
@@ -344,13 +351,24 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
         </div>
       </div>
 
-      {/* 站柜台的那个人。百元店的高桥知道今天哪一排贴了新标签，
-          渔具店的源老爹知道今天潮动不动——这两条都是能换到东西的情报。 */}
-      <NpcTalkPanel
-        npcId={kind === 'hyakkin' ? 'takahashi' : 'gensan'}
-        calendar={calendar} storyFlags={storyFlags}
-        metChars={metChars} en={en} onEffects={onEffects} onFlags={onFlags}
-      />
+      {/* 站柜台的那个人。百元店是高桥，渔具店是源老爹，优衣库是优衣库店员，松本清是七海小姐，BookOff和駿河屋各自对应自己的店员。 */}
+      {(() => {
+        const clerkNpcId =
+          kind === 'hyakkin' ? 'takahashi'
+          : kind === 'tackle' ? 'gensan'
+          : kind === 'uniqlo' ? 'clerk_uniqlo'
+          : (kind === 'matsukiyo' || kind === 'drugstore') ? 'clerk_matsukiyo'
+          : kind === 'bookoff' ? 'clerk_bookoff'
+          : kind === 'surugaya' ? 'clerk_surugaya'
+          : null;
+        return clerkNpcId ? (
+          <NpcTalkPanel
+            npcId={clerkNpcId}
+            calendar={calendar} storyFlags={storyFlags}
+            metChars={metChars} en={en} onEffects={onEffects} onFlags={onFlags}
+          />
+        ) : null;
+      })()}
     </div>
   );
 };

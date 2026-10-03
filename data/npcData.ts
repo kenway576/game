@@ -177,6 +177,34 @@ export const NPCS: Npc[] = [
     roleZh: '拿着相机和地图的观光客。她比住在这儿的人更认真地看这座城市。',
     roleEn: 'A tourist with a camera and a map. She looks at this city harder than the people who live in it.',
     home: ['meriken_park', 'kitano_slope', 'kitano_kazamidori_square']
+  },
+  {
+    id: 'clerk_uniqlo', sprite: '/images/characters/clerk_uniqlo.webp',
+    nameJp: 'ユニクロ店員', nameZh: '优衣库店员', nameEn: 'UNIQLO Clerk',
+    roleZh: '优衣库三宫店店员。叠衣服速度极快，对各款尺码与面料了如指掌。',
+    roleEn: 'Staff at UNIQLO Sannomiya. Folds clothes in seconds and knows every fabric and size.',
+    home: ['uniqlo_sannomiya']
+  },
+  {
+    id: 'clerk_matsukiyo', sprite: '/images/characters/clerk_drugstore_smile.webp',
+    nameJp: '七海さん', nameZh: '七海', nameEn: 'Nanami',
+    roleZh: '松本清药妆店店员。总是挂着热情的微笑，善解人意，精通常见药品与护肤品。',
+    roleEn: 'Clerk at Matsumoto Kiyoshi. Always smiling warmly and knowledgeable about medicines and skincare.',
+    home: ['sannomiya_drugstore', 'drugstore_sannomiya']
+  },
+  {
+    id: 'clerk_bookoff', sprite: '/images/characters/clerk_bookoff.webp',
+    nameJp: 'ブックオフ店員', nameZh: 'Book Off 店员', nameEn: 'Book Off Staff',
+    roleZh: 'Book Off 二手书店店员。嗓门清亮，在收银台和书架间穿梭整理。',
+    roleEn: 'Staff at Book Off. Energetic and keeps shelves stocked and organized.',
+    home: ['bookoff_sannomiya']
+  },
+  {
+    id: 'clerk_surugaya', sprite: '/images/characters/clerk_surugaya.webp',
+    nameJp: '駿河屋店員', nameZh: '駿河屋店员', nameEn: 'Surugaya Staff',
+    roleZh: '駿河屋店员。是个资深御宅族，对中古卡带、胶黑胶和模型行情一清二楚。',
+    roleEn: 'Staff at Surugaya. A veteran otaku who knows everything about retro games and figures.',
+    home: ['surugaya_sannomiya']
   }
 ];
 

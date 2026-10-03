@@ -47,8 +47,8 @@ export const STREET_PEOPLE: StreetScene[] = [
     script: [
       {
         type: 'narration', characterImage: P.uranai,
-        zh: '高架下摆着一张折叠桌，桌上一块紫布，布上一副牌。桌子后面坐着一个人，正在给自己剥橘子。',
-        en: 'A folding table under the viaduct, a square of purple cloth on it, a deck on the cloth. Behind it somebody is peeling a satsuma for herself.'
+        zh: '路边摆着一张折叠桌，桌上一块紫布，布上一副牌。桌子后面坐着一个人，正在给自己剥橘子。',
+        en: 'A folding table at the side of the street, a square of purple cloth on it, a deck on the cloth. Behind it somebody is peeling a satsuma for herself.'
       },
       {
         type: 'narration',
@@ -298,7 +298,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // 🎸 天桥上的街头歌手 · 两条
   // ---------------------------------------------------------
   {
-    id: 'sp_busker_1', locationIds: ['sannomiya_station', 'sannomiya_arcade', 'meriken_park'],
+    id: 'sp_busker_1', locationIds: ['sannomiya_station'],
     weight: 6, minDay: 30, timeSlots: ['afternoon', 'night'],
     script: [
       {
@@ -315,7 +315,7 @@ export const STREET_PEOPLE: StreetScene[] = [
     ]
   },
   {
-    id: 'sp_busker_2', locationIds: ['sannomiya_station', 'sannomiya_arcade'],
+    id: 'sp_busker_2', locationIds: ['sannomiya_station'],
     weight: 6, minDay: 190, requiresFlags: ['sp_busker_1'], timeSlots: ['night'],
     script: [
       {
@@ -501,7 +501,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // 🏃 田径社学妹 枫
   // ---------------------------------------------------------
   {
-    id: 'sp_kaede_1', locationIds: ['kitano_kazamidori_square', 'mosaic_night', 'courtyard_rain'],
+    id: 'sp_kaede_1', locationIds: ['kitano_kazamidori_square'],
     weight: 6, minDay: 8, timeSlots: ['morning', 'afternoon'],
     script: [
       {
@@ -544,7 +544,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // 📚 书店店员 晴树
   // ---------------------------------------------------------
   {
-    id: 'sp_haruki_1', locationIds: ['junkudo_bookstore', 'sannomiya_arcade'],
+    id: 'sp_haruki_1', locationIds: ['junkudo_bookstore'],
     weight: 6, minDay: 15, timeSlots: ['afternoon', 'night'],
     script: [
       {
@@ -564,7 +564,7 @@ export const STREET_PEOPLE: StreetScene[] = [
   // 📷 街头摄影生 佳奈
   // ---------------------------------------------------------
   {
-    id: 'sp_kana_1', locationIds: ['sannomiya_station', 'nankinmachi', 'mosaic_night'],
+    id: 'sp_kana_1', locationIds: ['sannomiya_station'],
     weight: 6, minDay: 20, timeSlots: ['afternoon'],
     script: [
       {

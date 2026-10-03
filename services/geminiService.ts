@@ -222,6 +222,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     - Change "location" only when the story naturally moves there (an invitation, a plan, a time skip). When location changes and it implies a different outfit, also set "outfitChange": true and update "outfit".
     - UNLOCKED outfits for ${character.name}: [${availableOutfits}, ""]. NEVER use any other outfit value. If the player asks for an outfit that is NOT in this list, stay in character and gently deflect/postpone instead of changing (set "outfitChange": false).
     - UNLOCKED locations: [${availableScenes}]. NEVER move to any other location — you only go somewhere more private with someone you actually know that well.
+    - You ran into the player at the place in [RIGHT NOW]. STAY THERE. Never take the scene into your own room / your home / the player's room on your own initiative — only if the PLAYER explicitly asks to go there. Bumping into each other outside is not an invitation inside.
 
     [CONVERSATION HOOK - COMPULSORY]
     - The VERY LAST page MUST be a "speech" page ending with an engaging question to compel the user to reply.
@@ -342,7 +343,7 @@ const createPageExtractor = (emit: PageCallback) => {
 
 const parseResponse = (rawText: string) => {
     try {
-        if (!rawText) return { pages: [{ type: 'speech', text: "（通信エラー）" }], vocabulary: [], emotion: "neutral", location: "classroom", affectionDelta: 0, familiarityDelta: 0 };
+        if (!rawText) return { pages: [{ type: 'speech', text: "（通信エラー）" }], vocabulary: [], emotion: "neutral", location: "classroom", affectionDelta: 0, familiarityDelta: 0, failed: true };
         let cleanText = rawText.replace(/<think>[\s\S]*?(?:<\/think>|$)/gi, '').trim();
         cleanText = cleanText.replace(/```json/gi, '').replace(/```/g, '').trim();
 
@@ -406,8 +407,8 @@ const parseResponse = (rawText: string) => {
             const emotionMatch = cleanText.match(/"emotion"\s*:\s*"([a-z_]+)"/);
             return { pages: ensureQuestionEnding(normalizePages(salvagedPages)), vocabulary: [], emotion: emotionMatch ? emotionMatch[1] : "neutral", location: "classroom", affectionDelta: salvagedDelta, familiarityDelta: salvagedFamDelta };
         }
-        return { pages: [{ type: 'speech', text: "（通信が不安定です）" }], vocabulary: [], emotion: "neutral", affectionDelta: 0, familiarityDelta: 0 };
-    } catch (e) { return { pages: [{ type: 'speech', text: "Error parsing" }], vocabulary: [], emotion: "neutral", affectionDelta: 0, familiarityDelta: 0 }; }
+        return { pages: [{ type: 'speech', text: "（通信が不安定です）" }], vocabulary: [], emotion: "neutral", affectionDelta: 0, familiarityDelta: 0, failed: true };
+    } catch (e) { return { pages: [{ type: 'speech', text: "Error parsing" }], vocabulary: [], emotion: "neutral", affectionDelta: 0, familiarityDelta: 0, failed: true }; }
 };
 
 export const translateText = async (text: string, targetLang: Language, apiKey?: string, modelName: string = 'gemini-1.5-flash-latest', baseUrl?: string): Promise<string> => {
@@ -432,7 +433,7 @@ export const translateText = async (text: string, targetLang: Language, apiKey?:
 };
 
 const START_TRIGGER = "Start the session. Generate 10-15 pages. Strictly separate narration and speech. End with a question.";
-const RESUME_TRIGGER = "【システム：プレイヤーが再びあなたに会いに来ました。長期記憶とこれまでの会話を踏まえ、再会の挨拶から自然に会話を再開してください。覚えている出来事や約束に軽く触れると良いでしょう。10〜15ページ生成し、最後は必ず質問で終わること。】";
+const RESUME_TRIGGER = "【システム：これは新しい場面です。前回の会話はもう終わっています——前回の最後の話題の続きを話してはいけません。[RIGHT NOW] に書かれた今の日付・時間・場所に合った再会の挨拶から、あなたの方から話しかけ、新しい話題を振ってください。長期記憶にある出来事や約束に軽く触れるのは構いません。10〜15ページ生成し、最後は必ず質問で終わること。】";
 const compactText = (m: Message) => (m.text || '').replace(/<rt>.*?<\/rt>/g, '').replace(/<[^>]+>/g, '');
 
 // 🎬 开场指令：第一次进入某角色的故事时，明确是"初次见面"还是"日常的一天"。
@@ -608,7 +609,7 @@ const geminiSend = async (text: string, onPage?: PageCallback) => {
       await withTimeout(streamRun, STREAM_TIMEOUT_MS, "Stream timeout");
       if (content.trim()) {
         const parsed = parseResponse(content);
-        return { ...parsed, pages: collected.length ? ensureQuestionEnding(collected) : parsed.pages };
+        return { ...parsed, pages: collected.length ? ensureQuestionEnding(collected) : parsed.pages, failed: collected.length ? false : parsed.failed };
       }
     } catch (e) {
       console.warn('Gemini stream failed, falling back to non-stream:', e);
@@ -675,7 +676,7 @@ const handleOpenAIMessageStream = async (text: string, onPage?: PageCallback) =>
     }
     openaiHistory.push({ role: "assistant", content });
     const parsed = parseResponse(content);
-    return { ...parsed, pages: collected.length ? ensureQuestionEnding(collected) : parsed.pages };
+    return { ...parsed, pages: collected.length ? ensureQuestionEnding(collected) : parsed.pages, failed: collected.length ? false : parsed.failed };
 };
 
 export const sendMessage = async (text: string, onPage?: PageCallback) => {
@@ -706,8 +707,8 @@ export interface PhoneChatOptions {
   memory?: string;
   encounterOverride?: EncounterOverride;
   situation?: ChatSituation;
-  // 最近的往来。user = 玩家，model = 她
-  history: { role: 'user' | 'model'; text: string }[];
+  // 最近的往来。user = 玩家，model = 她（她的气泡带上翻译/表情包 id，好原样回放成 JSON）
+  history: { role: 'user' | 'model'; text: string; tr?: string; sticker?: string }[];
   // 她能发的表情包
   stickers: { id: string; jp: string; meaning: string }[];
   // 今天快聊到头了：让她自己找个理由收尾
@@ -771,33 +772,73 @@ ${stickerLines}
     { "messages": [ { "jp": "今どこ？", "tr": "..." }, { "sticker": "<id>" } ], "familiarityDelta": 1, "affectionDelta": 0 }`;
 };
 
-const parsePhoneReply = (raw: string, allowed: Set<string>): PhoneReply => {
+const cleanBubble = (s: any) => String(s ?? '')
+  .replace(/<rt>.*?<\/rt>/g, '').replace(/<[^>]+>/g, '')
+  .replace(/^「/, '').replace(/」$/, '').trim();
+
+// 解析失败返回 null —— 不再用一个「……」糊过去：
+// 那样玩家看到的是"她没回"，好感度却照涨（骰子保底照样加）。
+const parsePhoneReply = (raw: string, allowed: Set<string>): PhoneReply | null => {
   const clean = raw.replace(/<think>[\s\S]*?(?:<\/think>|$)/gi, '').replace(/```json/gi, '').replace(/```/g, '').trim();
+  if (!clean) return null;
   const a = clean.indexOf('{'), b = clean.lastIndexOf('}');
   let obj: any = null;
   if (a !== -1 && b !== -1) {
     const sub = clean.substring(a, b + 1);
     try { obj = JSON.parse(sub); } catch { try { obj = JSON.parse(sub.replace(CONTROL_CHARS, ' ')); } catch { obj = null; } }
   }
-  const list: any[] = Array.isArray(obj?.messages) ? obj.messages : [];
+  // 模型不总是老老实实用 messages：bubbles / replies / reply，或者干脆一个字符串
+  const field = obj?.messages ?? obj?.bubbles ?? obj?.replies ?? obj?.reply ?? obj?.message;
+  const list: any[] = Array.isArray(field) ? field : (field != null ? [field] : []);
   const messages = list
     .map(m => {
+      if (typeof m === 'string') { const jp = cleanBubble(m); return jp ? { jp, tr: '' } : null; }
       if (m && typeof m.sticker === 'string') return allowed.has(m.sticker) ? { sticker: m.sticker } : null;
-      const jp = String(m?.jp ?? m?.text ?? '')
-        .replace(/<rt>.*?<\/rt>/g, '').replace(/<[^>]+>/g, '')
-        .replace(/^「/, '').replace(/」$/, '').trim();
-      return jp ? { jp, tr: String(m?.tr ?? '').trim() } : null;
+      const jp = cleanBubble(m?.jp ?? m?.text ?? m?.ja ?? m?.japanese ?? m?.content ?? m?.message);
+      return jp ? { jp, tr: String(m?.tr ?? m?.translation ?? m?.zh ?? m?.en ?? '').trim() } : null;
     })
     .filter(Boolean)
     .slice(0, 5) as PhoneReply['messages'];
+
   const clamp = (v: any, lo: number, hi: number) =>
     Number.isFinite(Number(v)) ? Math.max(lo, Math.min(hi, Math.round(Number(v)))) : 0;
-  return {
-    // JSON 整个坏掉的时候，别把一堆花括号当消息发出来
-    messages: messages.length ? messages : [{ jp: '……', tr: '' }],
-    affectionDelta: clamp(obj?.affectionDelta, -2, 3),
-    familiarityDelta: clamp(obj?.familiarityDelta, -1, 3)
-  };
+
+  if (messages.length) {
+    return {
+      messages,
+      affectionDelta: clamp(obj?.affectionDelta, -2, 3),
+      familiarityDelta: clamp(obj?.familiarityDelta, -1, 3)
+    };
+  }
+  // 根本不是 JSON、就是一段纯文本：按行当气泡发（不带关系变化）
+  if (!obj && !clean.includes('{')) {
+    const lines = clean.split(/\n+/).map(cleanBubble).filter(Boolean).slice(0, 4);
+    if (lines.length) return { messages: lines.map(jp => ({ jp, tr: '' })), affectionDelta: 0, familiarityDelta: 0 };
+  }
+  console.warn('[phone] unparseable reply:', raw.slice(0, 400));
+  return null;
+};
+
+// 把聊天记录整理成模型认得的对话：
+//  · 连着的同一方合成一轮（她连发三条 = 一轮回复；Gemini 不接受同一方连续出现）
+//  · 她那一轮按她自己的输出格式（JSON）回放——以前回放的是纯文本，
+//    模型照着学，下一句就不出 JSON 了，于是解析失败、"不回复"
+const buildPhoneTurns = (history: PhoneChatOptions['history']) => {
+  const turns: { role: 'user' | 'model'; items: PhoneChatOptions['history'] }[] = [];
+  for (const m of history) {
+    const last = turns[turns.length - 1];
+    if (last && last.role === m.role) last.items.push(m);
+    else turns.push({ role: m.role, items: [m] });
+  }
+  return turns.map(t => ({
+    role: t.role,
+    text: t.role === 'user'
+      ? t.items.map(m => m.text).join('\n')
+      : JSON.stringify({
+          messages: t.items.map(m => m.sticker ? { sticker: m.sticker } : { jp: m.text, tr: m.tr || '' }),
+          familiarityDelta: 1, affectionDelta: 0
+        })
+  }));
 };
 
 export const sendPhoneChat = async (o: PhoneChatOptions, userText: string): Promise<PhoneReply> => {
@@ -805,12 +846,20 @@ export const sendPhoneChat = async (o: PhoneChatOptions, userText: string): Prom
   const sys = getTextingInstruction(o);
   const allowed = new Set(o.stickers.map(s => s.id));
   const content = userText + (o.windDown ? `\n${o.windDown}` : '');
+  const turns = buildPhoneTurns(o.history);
+  // 本轮也是玩家说话：如果记录最后一轮恰好也是玩家（上一条没回成），并进去
+  const lastUser = turns.length && turns[turns.length - 1].role === 'user' ? turns.pop()!.text + '\n' : '';
+  const prompt = lastUser + content;
+  const FAIL = o.lang === 'en'
+    ? 'her reply did not come through. Please send again.'
+    : '她的回复没收到，再发一次试试。';
+
   if (isOpenAICompatible(modelName, o.baseUrl)) {
     const key = o.apiKey || (modelName.includes('deepseek') ? DEFAULT_DEEPSEEK_KEY : '');
     const msgs = [
       { role: 'system', content: sys },
-      ...o.history.map(m => ({ role: m.role === 'model' ? 'assistant' : 'user', content: m.text })),
-      { role: 'user', content }
+      ...turns.map(t => ({ role: t.role === 'model' ? 'assistant' : 'user', content: t.text })),
+      { role: 'user', content: prompt }
     ];
     const call = (json: boolean) => withTimeout(fetch(resolveChatUrl(o.baseUrl || DEEPSEEK_BASE_URL), {
       method: 'POST',
@@ -821,21 +870,38 @@ export const sendPhoneChat = async (o: PhoneChatOptions, userText: string): Prom
         ...(json ? { response_format: { type: 'json_object' } } : {})
       })
     }), TIMEOUT_MS, 'Timeout');
-    let res = await call(true);
-    if (!res.ok && (res.status === 400 || res.status === 422)) res = await call(false);
-    if (!res.ok) throw new Error(`API ${res.status}`);
-    const data = await res.json();
-    return parsePhoneReply(String(data.choices?.[0]?.message?.content || ''), allowed);
+    let useJson = true;
+    // 空正文 / 解析不出来 → 再要一次，别直接给玩家一个「……」
+    for (let attempt = 0; attempt < 2; attempt++) {
+      let res = await call(useJson);
+      if (!res.ok && useJson && (res.status === 400 || res.status === 422)) { useJson = false; res = await call(false); }
+      if (!res.ok) {
+        if (attempt === 0 && (res.status === 429 || res.status >= 500)) continue;
+        throw new Error(`API ${res.status}`);
+      }
+      const data = await res.json();
+      const parsed = parsePhoneReply(String(data.choices?.[0]?.message?.content || ''), allowed);
+      if (parsed) return parsed;
+    }
+    throw new Error(FAIL);
   }
+
   const genAI = getGenAI(o.apiKey);
   const model = genAI.getGenerativeModel({
     model: modelName === 'gemini-2.5-flash' ? 'gemini-2.0-flash-exp' : modelName,
     systemInstruction: sys,
     generationConfig: { responseMimeType: 'application/json' }
   });
-  const chat = model.startChat({
-    history: o.history.map(m => ({ role: m.role === 'model' ? 'model' : 'user', parts: [{ text: m.text }] }))
-  });
-  const result = await withTimeout(chat.sendMessage(content), TIMEOUT_MS, 'Timeout');
-  return parsePhoneReply(result.response.text(), allowed);
+  // Gemini 的历史必须从 user 开始：她预写的那几条在最前面时，补一个占位
+  const gHistory = turns.map(t => ({ role: t.role === 'model' ? 'model' : 'user', parts: [{ text: t.text }] }));
+  if (gHistory.length && gHistory[0].role === 'model') gHistory.unshift({ role: 'user', parts: [{ text: '（LINEを開いた）' }] });
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const chat = model.startChat({ history: gHistory });
+    const result = await withTimeout(chat.sendMessage(prompt), TIMEOUT_MS, 'Timeout');
+    let text = '';
+    try { text = result.response.text(); } catch { text = ''; } // 安全过滤拦下时 text() 会抛
+    const parsed = parsePhoneReply(text, allowed);
+    if (parsed) return parsed;
+  }
+  throw new Error(FAIL);
 };

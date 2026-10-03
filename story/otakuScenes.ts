@@ -124,7 +124,7 @@ export const OTAKU_SCENES: StreetScene[] = [
   // 😭 「你那个眼泪能守护地球吗」
   // ---------------------------------------------------------
   {
-    id: 'ot_tears', locationIds: ['school_terrace', 'rooftop_sunset', 'courtyard_rain'],
+    id: 'ot_tears', locationIds: ['rooftop_sunset'],
     weight: 4, minDay: 55, timeSlots: ['lunch', 'afternoon'],
     script: [
       {
@@ -343,7 +343,7 @@ export const OTAKU_SCENES: StreetScene[] = [
   // 🎮 駿河屋：跟店员对上暗号
   // ---------------------------------------------------------
   {
-    id: 'ot_surugaya_clerk', locationIds: ['surugaya_sannomiya', 'pia_kobe_arcade'],
+    id: 'ot_surugaya_clerk', locationIds: ['surugaya_sannomiya'],
     weight: 6, minDay: 45, timeSlots: ['afternoon', 'night'],
     script: [
       {
@@ -682,7 +682,7 @@ export const OTAKU_SCENES: StreetScene[] = [
   // 🌀 「ヤレヤレだぜ」：便利店门口的姿势
   // ---------------------------------------------------------
   {
-    id: 'ot_yareyare', locationIds: ['convenience_store', 'sannomiya_arcade', 'meriken_park'],
+    id: 'ot_yareyare', locationIds: ['convenience_store'],
     weight: 4, minDay: 115, timeSlots: ['afternoon', 'night'],
     script: [
       {

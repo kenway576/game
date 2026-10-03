@@ -364,6 +364,11 @@ export interface LifeState {
   activityOn?: Record<string, number>;
   // 🐟 捞回家的金鱼。只是一个数，房间里那只鱼缸靠它决定里面游着几条。
   goldfish?: number;
+  // 🏠 房租：欠着多少、最后一次结账是哪个月（"年-月"，防止同一个月扣两次）
+  rentOwed?: number;
+  rentPaidFor?: string;
+  // 👋 今天已经碰见过谁（dayIndex + 名单）。同一天在别处再撞上同一个人的概率会压低。
+  metToday?: { day: number; chars: CharacterId[] };
 }
 
 // ---------------------------------------------------------

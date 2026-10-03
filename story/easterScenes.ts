@@ -44,7 +44,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_shirou_vault',
     minDay: 3,
-    locationIds: ['gym', 'school_terrace', 'school_bicycle_parking'],
+    locationIds: ['gym'],
     weight: 4,
     timeSlots: ['afternoon', 'night'],
     script: [
@@ -260,7 +260,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_microwave',
     minDay: 12,
-    locationIds: ['convenience_store', 'hyakkin_store', 'sannomiya_station'],
+    locationIds: ['convenience_store'],
     weight: 4,
     timeSlots: ['afternoon', 'night'],
     script: [
@@ -502,7 +502,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_recruit',
     minDay: 8,
-    locationIds: ['school_terrace', 'school_bicycle_parking', 'international_office'],
+    locationIds: ['school_bicycle_parking'],
     weight: 4,
     timeSlots: ['lunch', 'afternoon'],
     script: [
@@ -603,7 +603,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_aquarium',
     minDay: 40,
-    locationIds: ['suma_aquarium', 'suma_beach', 'suma_fishing_pier'],
+    locationIds: ['suma_aquarium'],
     weight: 4,
     script: [
       {
@@ -805,7 +805,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_bakery',
     minDay: 30,
-    locationIds: ['sannomiya_arcade', 'nankinmachi', 'convenience_store'],
+    locationIds: ['sannomiya_arcade'],
     weight: 4,
     script: [
       {
@@ -909,7 +909,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_forgettable',
     minDay: 55,
-    locationIds: ['kitano_slope', 'kitano_lookout', 'sannomiya_station', 'meriken_park'],
+    locationIds: ['kitano_slope'],
     weight: 4,
     repeatable: true,
     script: [
@@ -1008,7 +1008,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_big_bento',
     minDay: 20,
-    locationIds: ['school_terrace', 'rooftop_sunset', 'school_library'],
+    locationIds: ['rooftop_sunset'],
     weight: 4,
     timeSlots: ['lunch'],
     script: [
@@ -1219,7 +1219,7 @@ export const EASTER_SCENES: StreetScene[] = [
   {
     id: 'st_egg_cho_kaguya_pancake',
     minDay: 2,
-    locationIds: ['pancake_shop', 'sannomiya_arcade'],
+    locationIds: ['pancake_shop'],
     weight: 5,
     timeSlots: ['morning', 'afternoon'],
     script: [
