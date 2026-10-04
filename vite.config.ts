@@ -15,7 +15,16 @@ export default defineConfig(({ mode }) => {
         strictPort: true,
         host: '0.0.0.0',
         watch: {
-          ignored: ['**/release/**', '**/dist-desktop/**', '**/dist/**', '**/.backup-originals/**', '**/.git/**']
+          ignored: [
+            '**/release/**',
+            '**/dist-desktop/**',
+            '**/dist/**',
+            '**/.backup-originals/**',
+            '**/.git/**',
+            '**/.generated/**',
+            '**/.incoming-gdrive/**',
+            '**/logs/**'
+          ]
         }
       },
       plugins: [react(), localSaves()],
