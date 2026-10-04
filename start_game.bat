@@ -3,7 +3,7 @@ chcp 65001 >nul
 title KobeStudy - 游戏服务器（关掉这个窗口 = 关掉游戏）
 cd /d "%~dp0"
 
-set "PATH=C:\Program Files\nodejs;%PATH%"
+set "PATH=C:\Users\adm\node-portable\node-v24.19.0-win-x64;C:\Program Files\nodejs;%PATH%"
 set "GAME_URL=http://localhost:3000"
 
 echo ===================================================

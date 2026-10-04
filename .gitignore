@@ -56,3 +56,7 @@ _git-backup-*.bundle
 # 临时脚本
 .chk.py
 .v.py
+
+# 桌面版打包产物
+release/
+dist-desktop/
