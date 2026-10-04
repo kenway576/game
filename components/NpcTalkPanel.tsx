@@ -3,6 +3,7 @@ import { GameCalendar, StoryFlags, CharacterId, StoryEffect } from '../types';
 import { findNpc } from '../data/npcData';
 import { openTopics, topicLines, topicSeenFlag, NpcTopic } from '../data/npcTalk';
 import { audioManager } from '../services/audioManager';
+import { useDisplayPrefs } from '../services/displayPrefs';
 
 // ---------------------------------------------------------
 // 💬 在自建界面里跟 NPC 说话
@@ -31,6 +32,7 @@ const NpcTalkPanel: React.FC<Props> = ({
 }) => {
   const npc = findNpc(npcId);
   const [said, setSaid] = useState<{ topic: NpcTopic; lines: ReturnType<typeof topicLines> } | null>(null);
+  const { showTranslation } = useDisplayPrefs();
   if (!npc) return null;
 
   const topics = openTopics(npcId, storyFlags);
@@ -64,9 +66,11 @@ const NpcTalkPanel: React.FC<Props> = ({
                   >
                     <span className="block transform skew-x-12 text-[11px] font-bold">
                       {t.jp && <span className="block text-[11px]">{t.jp}</span>}
-                      <span className={t.jp ? 'block text-[10px] opacity-70' : ''}>
-                        {en ? t.labelEn : t.labelZh}
-                      </span>
+                      {(!t.jp || showTranslation) && (
+                        <span className={t.jp ? 'block text-[10px] opacity-70' : ''}>
+                          {en ? t.labelEn : t.labelZh}
+                        </span>
+                      )}
                     </span>
                   </button>
                 ))}
@@ -77,7 +81,7 @@ const NpcTalkPanel: React.FC<Props> = ({
               {said.lines.map((l, i) => (
                 <p key={i} className="text-[12px] leading-relaxed mb-1">
                   {l.jp && <span className="text-white font-bold mr-2">「{l.jp}」</span>}
-                  <span className="text-white/70">{en ? l.en : l.zh}</span>
+                  {(!l.jp || showTranslation) && <span className="text-white/70">{en ? l.en : l.zh}</span>}
                 </p>
               ))}
               <button

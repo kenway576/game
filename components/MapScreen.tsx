@@ -57,6 +57,8 @@ interface Props {
   onActivity: (loc: MapLocation, act: ActivityDef) => void;
   // 💞 去了就能碰到她、而她有一段剧情等着演的地方
   storySpots?: string[];
+  // 🏃 午休时翘掉下午的课出校门。只在上学日午休、下午的课还没上的时候给。
+  onSkipAfternoon?: () => void;
 }
 
 // 地图上给哪张图：优先用这个地方登记的"门脸"。
@@ -64,8 +66,9 @@ interface Props {
 const bgOf = (id: string) => SCENE_MAP[id] || SCENE_FALLBACK[id] || SCENE_MAP['street'];
 
 const MapScreen: React.FC<Props> = ({
-  language, calendar, storyFlags, stamina, yen, affection, familiarity, onClose, onTravel, metChars, life, onActivity, storySpots = []
+  language, calendar, storyFlags, stamina, yen, affection, familiarity, onClose, onTravel, metChars, life, onActivity, storySpots = [], onSkipAfternoon
 }) => {
+  const [confirmSkip, setConfirmSkip] = useState(false);
   const en = language === 'en';
   const ctx: EventContext = useMemo(
     () => ({ flags: storyFlags, calendar, affection, familiarity, met: metChars }),
@@ -431,15 +434,38 @@ const MapScreen: React.FC<Props> = ({
                 ? (en
                     ? (isWeekend(calendar)
                         ? 'No school today, so there is nobody on campus to run into.'
-                        : 'Lunch break. You can get as far as the campus, and the shrine at the bottom of the hill. Who is where depends on the day of the week. 👤 means somebody is there.')
+                        : 'Lunch break. You can get as far as the campus, and the shrine at the bottom of the hill. Who is where depends on the day of the week. 👤 means somebody is there. Want the town instead? Skip the afternoon.')
                     : (isWeekend(calendar)
                         ? '今天不上学，校内碰不到人。'
-                        : '午休。走得到校内，还有坡下面那座神社。谁在哪儿要看星期几。👤 表示那儿有人。'))
+                        : '午休。走得到校内，还有坡下面那座神社。谁在哪儿要看星期几。👤 表示那儿有人。想去街上？那就得翘掉下午的课。'))
                 : (en
                     ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home. 🔋 is a separate question: having the time does not mean you have the legs. Eat something, or go and sit in a hot spring.'
                     : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。🔋 是另一回事：时间够、人不够也去不了。想缓过来就吃点东西，或者去泡个汤。')}
             </span>
             <div className="flex items-center gap-2">
+              {/* 🏃 午休翘掉下午的课。点一次变成"真的要翘？"，再点才算数——
+                  这是一个有代价的决定（班长会知道），不该一下误触就翘了。 */}
+              {onSkipAfternoon && (
+                <button
+                  onClick={() => {
+                    if (!confirmSkip) { audioManager.playSfx('click'); setConfirmSkip(true); return; }
+                    audioManager.playSfx('confirm'); setConfirmSkip(false); onSkipAfternoon();
+                  }}
+                  onMouseLeave={() => setConfirmSkip(false)}
+                  className={`px-3 md:px-4 py-2.5 text-[11px] md:text-xs font-black tracking-wider transform -skew-x-12 border transition-all ${
+                    confirmSkip
+                      ? 'bg-rose-500 border-rose-400 text-white'
+                      : 'bg-black/60 border-rose-400/60 text-rose-200 hover:bg-rose-500/20'
+                  }`}
+                  title={en ? 'Skip the afternoon classes and leave school' : '下午的课不上了，直接出校门'}
+                >
+                  <span className="block transform skew-x-12 whitespace-nowrap">
+                    {confirmSkip
+                      ? (en ? 'Really skip? Click again' : '真的翘课？再点一次')
+                      : (en ? '🏃 Skip the afternoon' : '🏃 翘掉下午的课')}
+                  </span>
+                </button>
+              )}
               {selUnlocked && selOpen && affordable(selected) && storySpots.includes(selected.id) && (
                 <button
                   onClick={() => go(true)}

@@ -6,6 +6,11 @@ import {
 import { STAT_METADATA } from '../constants';
 import { audioManager } from '../services/audioManager';
 import { isSchoolDay } from '../data/calendarLife';
+import { useDisplayPrefs } from '../services/displayPrefs';
+import DisplayPrefsToggles from './DisplayPrefsToggles';
+import LivelySprite, { isLivelySprite, livelySpeakerOf } from './LivelySprite';
+import PuppetSprite, { hasPuppetRig } from './PuppetSprite';
+import { puppetSpeakerOf } from '../data/puppetRigs';
 
 // StoryScreen 恢复出来的那份"已经拿到手的东西"，由 App 一次性灌回全局状态
 export interface StoryRestorePayload {
@@ -195,6 +200,8 @@ const StoryScreen: React.FC<Props> = ({
   // ---------- 播放控制 ----------
   const [prefs, setPrefs] = useState<StoryPrefs>(loadPrefs);
   const [showPrefs, setShowPrefs] = useState(false);
+  // 译文 / 选项提示 / 生词卡片显不显示（全局偏好，⚙ 和系统菜单都能改）
+  const display = useDisplayPrefs();
   const [auto, setAuto] = useState(false);
   const [fastForward, setFastForward] = useState(false);
   const [backlog, setBacklog] = useState<BacklogEntry[]>([]);
@@ -794,6 +801,7 @@ const StoryScreen: React.FC<Props> = ({
         <PhoneCard
           node={node}
           en={en}
+          showTranslation={display.showTranslation}
           onDone={() => { audioManager.playSfx('page'); advance(); }}
         />
       )}
@@ -824,7 +832,31 @@ const StoryScreen: React.FC<Props> = ({
       )}
 
       {/* 角色立绘：和自由对话一样铺在画面正中、底端对齐，对话框压在它上面 */}
-      {activeSprite && (
+      {activeSprite && hasPuppetRig(activeSprite) ? (
+        // 🎎 有骨骼标注的立绘：木偶（头、眼睛、尾巴各动各的）
+        <div className="absolute inset-0 z-20 flex items-end justify-center pointer-events-none overflow-hidden">
+          <div className="animate-in fade-in slide-in-from-bottom-8 duration-500">
+            <PuppetSprite
+              src={activeSprite}
+              speaking={typing && node?.type === 'speech' && node.speakerEn === puppetSpeakerOf(activeSprite)}
+              className="block h-[60dvh] md:h-[82vh] max-h-[86dvh] w-auto drop-shadow-[0_18px_36px_rgba(0,0,0,0.8)] filter brightness-105"
+            />
+          </div>
+        </div>
+      ) : activeSprite && isLivelySprite(activeSprite) ? (
+        // 动态立绘：换表情不再整张重新滑入，而是原地交叉淡化。
+        // 外层这个入场动画只在她第一次出现时播一次。
+        <div className="absolute inset-0 z-20 flex items-end justify-center pointer-events-none overflow-hidden">
+          <div className="animate-in fade-in slide-in-from-bottom-8 duration-500">
+            <LivelySprite
+              src={activeSprite}
+              alt={displayText.speaker || ''}
+              speaking={typing && node?.type === 'speech' && node.speakerEn === livelySpeakerOf(activeSprite)}
+              imgClassName="h-[58dvh] md:h-[78vh] max-h-[82dvh] w-auto object-contain object-bottom drop-shadow-[0_18px_36px_rgba(0,0,0,0.8)] filter brightness-105"
+            />
+          </div>
+        </div>
+      ) : activeSprite && (
         <div className="absolute inset-0 z-20 flex items-end justify-center pointer-events-none overflow-hidden">
           <img
             key={activeSprite}
@@ -870,15 +902,16 @@ const StoryScreen: React.FC<Props> = ({
                   {typed}
                 </p>
 
-                {/* 日语原文下方的译文：本作是日语学习游戏，原文永远在上 */}
-                {displayText.sub && !typing && (
+                {/* 日语原文下方的译文：本作是日语学习游戏，原文永远在上。
+                    玩家可以在 ⚙ 里关掉；关了回想里还留着。 */}
+                {display.showTranslation && displayText.sub && !typing && (
                   <p className="mt-4 pt-3 border-t border-white/10 text-sm md:text-lg text-yellow-100/70 leading-relaxed animate-in fade-in duration-500">
                     {displayText.sub}
                   </p>
                 )}
 
                 {/* 这句话里挂的生词（已自动进单词本，这里只是让玩家看见） */}
-                {node.words?.length && !typing ? (
+                {display.showWordChips && node.words?.length && !typing ? (
                   <div className="mt-3 flex flex-wrap gap-2 animate-in fade-in duration-500">
                     {node.words.map(w => (
                       <span key={w.jp} className="inline-flex items-baseline gap-1.5 bg-emerald-500/15 border border-emerald-400/40 rounded px-2.5 py-1">
@@ -967,16 +1000,18 @@ const StoryScreen: React.FC<Props> = ({
                           <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-white group-hover:text-black' : 'text-white/50'}`}>
                             {opt.jp}
                           </div>
-                          <div className={`mt-0.5 text-[11px] md:text-sm font-bold ${ok ? 'text-yellow-300/80 group-hover:text-black/65' : 'text-white/30'}`}>
-                            {en ? opt.labelEn : opt.labelZh}
-                          </div>
+                          {display.showTranslation && (
+                            <div className={`mt-0.5 text-[11px] md:text-sm font-bold ${ok ? 'text-yellow-300/80 group-hover:text-black/65' : 'text-white/30'}`}>
+                              {en ? opt.labelEn : opt.labelZh}
+                            </div>
+                          )}
                         </>
                       ) : (
                         <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-white group-hover:text-black' : 'text-white/50'}`}>
                           {en ? opt.labelEn : opt.labelZh}
                         </div>
                       )}
-                      {(en ? opt.hintEn : opt.hintZh) && (
+                      {display.showHints && (en ? opt.hintEn : opt.hintZh) && (
                         <div className={`mt-1 text-[11px] md:text-sm italic ${ok ? 'text-blue-200/60 group-hover:text-black/70' : 'text-white/30'}`}>
                           {en ? opt.hintEn : opt.hintZh}
                         </div>
@@ -1152,10 +1187,10 @@ const StoryScreen: React.FC<Props> = ({
       {/* 阅读速度设置 */}
       {showPrefs && (
         <div className="absolute inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowPrefs(false)}>
-          <div className="bg-black border-4 border-white p-7 md:p-10 max-w-md w-full shadow-[12px_12px_0px_rgba(215,38,56,1)] transform -skew-x-2" onClick={e => e.stopPropagation()}>
+          <div className="bg-black border-4 border-white p-7 md:p-10 max-w-md w-full max-h-[92dvh] overflow-y-auto shadow-[12px_12px_0px_rgba(215,38,56,1)] transform -skew-x-2" onClick={e => e.stopPropagation()}>
             <div className="transform skew-x-2 flex flex-col gap-6">
               <h3 className="text-xl md:text-2xl font-black italic text-white">
-                {en ? 'Reading speed' : '阅读设置'}
+                {en ? 'Reading settings' : '阅读设置'}
               </h3>
 
               <div>
@@ -1200,6 +1235,13 @@ const StoryScreen: React.FC<Props> = ({
                     </button>
                   ))}
                 </div>
+              </div>
+
+              <div>
+                <div className="text-[11px] font-black uppercase tracking-widest text-white/50 mb-2">
+                  {en ? 'Under the text' : '文本下方的小字'}
+                </div>
+                <DisplayPrefsToggles en={en} />
               </div>
 
               <p className="text-[11px] text-white/40 leading-relaxed">
@@ -1307,8 +1349,9 @@ const StoryScreen: React.FC<Props> = ({
 const PhoneCard: React.FC<{
   node: Extract<StoryNode, { type: 'phone' }>;
   en: boolean;
+  showTranslation: boolean;
   onDone: () => void;
-}> = ({ node, en, onDone }) => {
+}> = ({ node, en, showTranslation, onDone }) => {
   const [shown, setShown] = React.useState(0);
   const listRef = React.useRef<HTMLDivElement>(null);
   const total = node.lines.length;
@@ -1357,9 +1400,11 @@ const PhoneCard: React.FC<{
                   l.fromMe ? 'bg-[#2f6f4f] rounded-br-md' : 'bg-[#1e2129] rounded-bl-md'
                 }`}>
                   {l.jp && <span className="block text-[13px] text-white leading-relaxed">{l.jp}</span>}
-                  <span className={`block leading-relaxed ${l.jp ? 'text-[11px] text-white/45 mt-1' : 'text-[13px] text-white'}`}>
-                    {en ? l.en : l.zh}
-                  </span>
+                  {(!l.jp || showTranslation) && (
+                    <span className={`block leading-relaxed ${l.jp ? 'text-[11px] text-white/45 mt-1' : 'text-[13px] text-white'}`}>
+                      {en ? l.en : l.zh}
+                    </span>
+                  )}
                   {l.time && <span className="block text-[9px] text-white/25 mt-1 text-right font-mono">{l.time}</span>}
                 </span>
               </div>

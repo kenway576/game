@@ -73,22 +73,24 @@ const LobbyScreen: React.FC<Props> = ({
   //   夜里    → 夜里出门（只有一趟）；出去过了 → 回家睡觉
   const schoolDayNow = isSchoolDay(calendar);
   const slot = calendar.timeSlot;
+  // 这个按钮永远打开「行动」面板（App 的 RestDayPanel），文字只是告诉你现在是什么时段、该想什么。
+  // 走不动 / 今晚已经出去过的时候它不再是亮黄色——面板里照样能回房间睡觉。
   const action: { icon: string; zh: string; en: string; primary: boolean } =
-    slot === 'morning' && !dayPlanned
-      ? { icon: '📅', zh: '今天的安排', en: 'Plan the day', primary: true }
+    slot === 'morning'
+      ? { icon: '📅', zh: dayPlanned ? '今天做什么' : '今天的安排', en: dayPlanned ? 'What now' : 'Plan the day', primary: true }
     : slot === 'lunch' && schoolDayNow && calendar.lunchUsed && classPending
       ? { icon: '🔔', zh: '回教室', en: 'Back to class', primary: true }
     : slot === 'night' && calendar.nightUsed
-      ? { icon: '🛏', zh: '回家睡觉', en: 'Home to bed', primary: false }
+      ? { icon: '🛏', zh: '今晚就这样', en: 'Done for tonight', primary: false }
     : spent
       ? { icon: '🛏', zh: '走不动了', en: 'Too tired', primary: false }
     : slot === 'lunch' && schoolDayNow
-      ? { icon: '🏫', zh: '午休去哪', en: 'Lunch break', primary: true }
+      ? { icon: '🏫', zh: '午休做什么', en: 'Lunch break', primary: true }
     : slot === 'afternoon' && schoolDayNow
-      ? { icon: '🎒', zh: '放学后去哪', en: 'After school', primary: true }
+      ? { icon: '🎒', zh: '放学后做什么', en: 'After school', primary: true }
     : slot === 'night'
-      ? { icon: '🌙', zh: '夜里出门', en: 'Out tonight', primary: true }
-      : { icon: '🗺', zh: '出门', en: 'Go out', primary: true };
+      ? { icon: '🌙', zh: '今晚做什么', en: 'Tonight', primary: true }
+      : { icon: '🗺', zh: '今天做什么', en: 'What now', primary: true };
   const famOf = (id: CharacterId) => familiarityMap[id] ?? getInitialFamiliarity(id);
   const affOf = (id: CharacterId) => affectionMap[id] ?? 0;
   // 卡片上显示关系"名称"而不是数字——「朋友 · 无意」比「♥ 130」更说明现在处在哪一步

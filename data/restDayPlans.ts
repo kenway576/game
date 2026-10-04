@@ -1,4 +1,4 @@
-import { CharacterId, GameCalendar, StoryFlags, StoryNode, FamiliarityMap } from '../types';
+import { CharacterId, GameCalendar, StoryFlags, StoryNode, FamiliarityMap, TimeSlot } from '../types';
 import { DayKind, dayKindOf } from './calendarLife';
 import {
   seasonOf, HOME_DAY, STUDY_DAY, PART_TIME, CHORES_DAY,
@@ -46,7 +46,14 @@ export interface RestPlan {
   available: (ctx: RestPlanCtx) => boolean;
   // 演过一次就不再出现
   doneFlag: (ctx: RestPlanCtx) => string;
+  // 哪些时段能选。不写：一整天的、跟上学有关的只在早上；半天的到下午都还来得及。
+  slots?: TimeSlot[];
 }
+
+// 只在早上成立的那几样：去不去上学、做不做便当，过了早上就没有意义了
+const MORNING_ONLY = new Set(['go_school', 'morning_bento', 'skip_sleep', 'skip_wander']);
+const slotsOf = (p: RestPlan): TimeSlot[] =>
+  p.slots ?? (p.wholeDay || MORNING_ONLY.has(p.id) ? ['morning'] : ['morning', 'lunch', 'afternoon']);
 
 const famOf = (ctx: RestPlanCtx, id: CharacterId) =>
   ctx.familiarity[id] ?? getInitialFamiliarity(id);
@@ -263,10 +270,19 @@ export const REST_PLANS: RestPlan[] = [
   }))
 ];
 
-// 今天能选的那些。演过的不再出现。
+// 现在能选的那些。演过的不再出现。
+//
+// 以前这份清单只在早上用，所以不看时段；现在「行动」面板一整天都能打开，
+// 夜里打开它不该还列着「去上学」。
+// 「出门逛逛」不在这里：面板上方那排「现在能做的事」里已经有出门了。
+// 上学日的午休也不给安排——午休是校内的时间，翘课出校门走面板上方那一项。
 export const plansFor = (ctx: RestPlanCtx): RestPlan[] => {
   const kind = dayKindOf(ctx.calendar);
+  const slot = ctx.calendar.timeSlot;
+  if (kind === 'school' && slot === 'lunch') return [];
   return REST_PLANS.filter(p => {
+    if (p.id === 'go_out') return false;
+    if (!slotsOf(p).includes(slot)) return false;
     if (!p.kinds.includes(kind)) return false;
     if (!p.available(ctx)) return false;
     const f = p.doneFlag(ctx);

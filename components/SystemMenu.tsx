@@ -3,6 +3,7 @@ import { Language, UserState, N3GrammarTopic } from '../types';
 import { AVAILABLE_MODELS, CUSTOM_MODEL_VALUE } from '../constants';
 import { audioManager } from '../services/audioManager';
 import { useAudioSettings } from '../hooks/useAudioSettings';
+import DisplayPrefsToggles from './DisplayPrefsToggles';
 
 interface Props {
   T: Record<string, string>;
@@ -196,6 +197,10 @@ const SystemMenu: React.FC<Props> = ({
         <button onClick={onLoadRequest} disabled={!hasAnySave} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 border border-white/10 transition-all disabled:opacity-20"><span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{T.loadData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
 
         <AudioSettingsPanel T={T} />
+
+        <Section title={`💬 ${T.textDisplay || '文本显示'}`}>
+          <DisplayPrefsToggles en={language === 'en'} />
+        </Section>
 
         <Section title={`🎯 ${T.studySettings || '学习设置'}`}>
           <div>

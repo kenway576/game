@@ -7,6 +7,7 @@ import {
 import { COMMON_STICKERS } from '../data/stickers';
 import Sticker from './Sticker';
 import { audioManager } from '../services/audioManager';
+import { useDisplayPrefs } from '../services/displayPrefs';
 
 // ---------------------------------------------------------
 // 📱 手机
@@ -473,19 +474,22 @@ const PhoneScreen: React.FC<Props> = ({
 };
 
 // 她的一条：头像（连发时只在第一条显示）+ 气泡（日语 + 小字译文），或者一张表情包
-const HerBubble: React.FC<{ avatar: string | null; jp?: string; tr?: string; sticker?: string; time?: string }> = ({ avatar, jp, tr, sticker, time }) => (
-  <div className="flex items-end gap-2">
-    {avatar ? <img src={avatar} alt="" className="w-7 h-7 rounded-full object-cover shrink-0 mb-1" /> : <span className="w-7 shrink-0" />}
-    {sticker ? (
-      <Sticker id={sticker} size={118} />
-    ) : (
-      <span className="max-w-[74%] bg-[#22252d] rounded-2xl rounded-bl-md px-3.5 py-2">
-        <span className="block text-[13px] text-white leading-relaxed break-words">{jp}</span>
-        {tr && <span className="block text-[11px] text-white/45 mt-0.5 leading-relaxed">{tr}</span>}
-      </span>
-    )}
-    {time && <span className="text-[9px] text-white/25 shrink-0 mb-0.5">{time}</span>}
-  </div>
-);
+const HerBubble: React.FC<{ avatar: string | null; jp?: string; tr?: string; sticker?: string; time?: string }> = ({ avatar, jp, tr, sticker, time }) => {
+  const { showTranslation } = useDisplayPrefs();
+  return (
+    <div className="flex items-end gap-2">
+      {avatar ? <img src={avatar} alt="" className="w-7 h-7 rounded-full object-cover shrink-0 mb-1" /> : <span className="w-7 shrink-0" />}
+      {sticker ? (
+        <Sticker id={sticker} size={118} />
+      ) : (
+        <span className="max-w-[74%] bg-[#22252d] rounded-2xl rounded-bl-md px-3.5 py-2">
+          <span className="block text-[13px] text-white leading-relaxed break-words">{jp}</span>
+          {tr && showTranslation && <span className="block text-[11px] text-white/45 mt-0.5 leading-relaxed">{tr}</span>}
+        </span>
+      )}
+      {time && <span className="text-[9px] text-white/25 shrink-0 mb-0.5">{time}</span>}
+    </div>
+  );
+};
 
 export default PhoneScreen;

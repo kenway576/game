@@ -360,15 +360,18 @@ export const CHAR_NAME_ZH: Record<CharacterId, string> = {
 };
 export const charName = (id: CharacterId, en: boolean) => en ? CHARACTERS[id].nameEn : (CHAR_NAME_ZH[id] || CHARACTERS[id].name);
 
+// 立绘重制（2026-10）后，大厅直接用每个人新立绘的基础姿势图（底图原本的那张脸）：
+// 和剧情里是同一套画风，而且有木偶骨骼（data/puppetRigs.ts），大厅里也会动。
+// 旧的大厅专属图还留在 /images/ui/lobby/，想换回去改这里就行。
 export const LOBBY_PORTRAITS: Partial<Record<CharacterId, string>> = {
-  [CharacterId.ASUKA]:  '/images/ui/lobby/asuka.webp',
-  [CharacterId.HIKARI]: '/images/ui/lobby/hikari.webp',
-  [CharacterId.REI]:    '/images/ui/lobby/rei.webp',
-  [CharacterId.INARI]:  '/images/ui/lobby/inari.webp',
-  [CharacterId.MIYUKI]: '/images/ui/lobby/miyuki.webp',
-  [CharacterId.SORA]:   '/images/ui/lobby/sora.webp',
-  [CharacterId.NAO]:    '/images/ui/lobby/nao.webp',
-  [CharacterId.MAKI]:   '/images/ui/lobby/maki.webp'
+  [CharacterId.ASUKA]:  '/images/characters/asuka/smug.webp',
+  [CharacterId.HIKARI]: '/images/characters/hikari/school_happy.webp',
+  [CharacterId.REI]:    '/images/characters/rei/lecturing.webp',
+  [CharacterId.INARI]:  '/images/characters/inari/school_sly.webp',
+  [CharacterId.MIYUKI]: '/images/characters/miyuki/cardigan_neutral.webp',
+  [CharacterId.SORA]:   '/images/characters/sora/school_happy.webp',
+  [CharacterId.NAO]:    '/images/characters/nao/happy.webp',
+  [CharacterId.MAKI]:   '/images/characters/maki/school_smug.webp'
 };
 
 // 🏫 港见高校校园群像 NPC 立绘（纯净无白边透明通道）
@@ -569,6 +572,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
       'maid_smug'        : '/images/characters/asuka/maid_smug.webp',
       'maid_surprised'   : '/images/characters/asuka/maid_surprised.webp',
       'neutral'          : '/images/characters/asuka/neutral.webp',
+      'pout'             : '/images/characters/asuka/pout.webp',
       'sad'              : '/images/characters/asuka/sad.webp',
       'school_blush'     : '/images/characters/asuka/school_blush.webp',
       'shy'              : '/images/characters/asuka/shy.webp',
@@ -2144,6 +2148,7 @@ emailPlaceholder: "用于接收后续实验问卷与搭档留言...",
     typingSound: "打字音效",
     bgmToggle: "背景音乐",
     studySettings: "学习设置",
+    textDisplay: "文本显示",
     apiSettings: "API 设置"
   },
   en: {
@@ -2178,6 +2183,7 @@ emailPlaceholder: "For experiment updates and partner messages...",
     typingSound: "TYPING SOUND",
     bgmToggle: "MUSIC",
     studySettings: "STUDY",
+    textDisplay: "TEXT",
     apiSettings: "API"
   }
 };

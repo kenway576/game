@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Character } from '../types';
 import { SPRITE_OUTLINE, SPRITE_OUTLINE_WIDTH } from '../constants';
+import LivelySprite, { isLivelySprite } from './LivelySprite';
+import PuppetSprite, { hasPuppetRig } from './PuppetSprite';
 
 interface Props {
   character: Character;
@@ -170,7 +172,36 @@ const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSp
         <div className="absolute inset-x-0 bottom-0 top-1/4 pointer-events-none bg-radial from-yellow-400/15 via-transparent to-transparent z-0 animate-pulse duration-1000" />
       )}
 
-      {/* key=URL：表情变化时平滑过场与重置动画 */}
+      {hasPuppetRig(character.avatarUrl) ? (
+        // 🎎 木偶：头、眼睛、尾巴各动各的（data/puppetRigs.ts 里标过骨骼的图）
+        <div className={`h-full flex items-end ${isPoked ? 'galgame-anim-poke' : ''}`}>
+          <PuppetSprite
+            src={character.avatarUrl}
+            speaking={isSpeaking}
+            className={`block h-full w-auto ${fit === 'height' ? 'max-w-none' : 'max-w-full'}`}
+            style={{ filter: buildSpriteFilter(isSpeaking) }}
+            onError={() => setHasError(true)}
+          />
+        </div>
+      ) : isLivelySprite(character.avatarUrl) ? (
+        // 动态立绘：呼吸 / 摇摆 / 换表情交叉淡化都在 LivelySprite 里，
+        // 这里只保留点一下的回弹
+        <div className={`${fit === 'height' ? 'h-full' : 'w-full h-full'} ${isPoked ? 'galgame-anim-poke' : ''}`}>
+          <LivelySprite
+            src={character.avatarUrl}
+            alt={character.name}
+            speaking={isSpeaking}
+            boxClassName={fit === 'height' ? 'h-full' : 'w-full h-full'}
+            imgClassName={`${fit === 'height' ? 'h-full w-auto max-w-none' : 'w-full h-full'} object-contain object-bottom`}
+            imgStyle={{ filter: buildSpriteFilter(isSpeaking) }}
+            onError={() => {
+              console.error("Image Dead:", character.name, character.avatarUrl);
+              setHasError(true);
+            }}
+          />
+        </div>
+      ) : (
+      /* key=URL：表情变化时平滑过场与重置动画 */
       <img
         key={`${character.avatarUrl}_${pokeCount}`}
         src={character.avatarUrl}
@@ -183,6 +214,7 @@ const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSp
           setHasError(true);
         }}
       />
+      )}
     </div>
   );
 };

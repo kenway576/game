@@ -17,7 +17,7 @@ import HistoryLogModal from './components/HistoryLogModal';
 import SaveLoadScreen from './components/SaveLoadScreen';
 import CgGalleryModal from './components/CgGalleryModal';
 import EndingsModal from './components/EndingsModal';
-import RestDayPanel from './components/RestDayPanel';
+import RestDayPanel, { QuickAction } from './components/RestDayPanel';
 import YearEndScreen from './components/YearEndScreen';
 import { YEAR_END } from './story/yearEnd';
 import { plansFor, plannedFlag, RestPlan } from './data/restDayPlans';
@@ -88,6 +88,7 @@ import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
 import type { MapLocation, MapEventDef } from './types';
 import { DAY1_SCRIPT } from './story/day1Data';
+import { DAY1_GUARANTEED_FLAGS, missingSafetyFlags } from './story/flagRepair';
 import { DAY1_VERSION, DAY1_PROGRESS_KEY } from './story/day1Meta';
 import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
 
@@ -180,6 +181,8 @@ const App: React.FC = () => {
   const [chatClosedToday, setChatClosedToday] = useState(false);
   // 休息日的今日计划。挑完的那一段直接当一次"出门"来演。
   const [showRestPlan, setShowRestPlan] = useState(false);
+  // 是早上睁眼自动弹的那一次（面板前面带两句醒来的旁白）；从大厅手动打开就不带
+  const [restPlanWake, setRestPlanWake] = useState(false);
   // 学年走到 3/24 → 修了式，演完出结算屏
   const [showYearEnd, setShowYearEnd] = useState(false);
   const [showProtagonistProfile, setShowProtagonistProfile] = useState(false);
@@ -306,6 +309,11 @@ const App: React.FC = () => {
   // 第一天（第 1 章）：序章之后、进入自由游玩之前的手写章节
   const [day1Done, setDay1Done] = useState(false);
   const [playingDay1, setPlayingDay1] = useState(false);
+  // 🩹 防死档：第一天已过却丢了 day1_done 之类的，缺什么补什么（见 story/flagRepair.ts）
+  useEffect(() => {
+    const add = missingSafetyFlags(storyFlags, { day1Done }, gameCalendar);
+    if (add) setStoryFlags(prev => ({ ...prev, ...add }));
+  }, [day1Done, storyFlags, gameCalendar]);
   // 正在播的专属剧情（手写剧本走 StoryScreen，和序章同一套引擎）
   const [activeLevelStory, setActiveLevelStory] = useState<{ charId: CharacterId; def: LevelStoryDef } | null>(null);
   // 🗺️ 出门：正在走的那一趟。event 为 null 表示今天这地方没戏，播空转旁白。
@@ -789,6 +797,7 @@ const App: React.FC = () => {
     // 早上是在自己房间里醒的。面板叠在房间上，不是叠在人物名单上——
     // "睁开眼睛，然后决定今天怎么过"，顺序应该是这个。
     setCurrentScene('apartment_room');
+    setRestPlanWake(true);
     setShowRestPlan(true);
   }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, day1Done, showYearEnd]);
 
@@ -818,6 +827,7 @@ const App: React.FC = () => {
   // flag 挡的是自动弹窗，不是玩家自己的手。
   const closeRestPlan = () => {
     setShowRestPlan(false);
+    setRestPlanWake(false);
     setStoryFlags(prev => ({ ...prev, [plannedFlag(gameCalendar)]: true }));
   };
 
@@ -1427,6 +1437,126 @@ const App: React.FC = () => {
     if (!script.length) { finishClass({}); return; }
     audioManager.playSfx('confirm');
     setActiveClass(script);
+  };
+
+  // 🗺️ 打开地图前的几道检查。以前写在大厅按钮上；现在「行动」面板里的出门也走这里。
+  const openMapNow = () => {
+    // 🔔 午休已经用掉了：下一件事是回教室，不是再逛一圈。
+    if (gameCalendar.timeSlot === 'lunch' && gameCalendar.lunchUsed && classPending) { goToClass(); return; }
+    // 🌙 今晚已经出去过一趟了。夜里只有一趟，剩下的是回家睡觉。
+    if (gameCalendar.timeSlot === 'night' && gameCalendar.nightUsed) {
+      flashLife(userState.language === 'en'
+        ? 'You have already been out tonight. Time to go home and sleep.'
+        : '今晚已经出去过了。该回去睡了。');
+      setCurrentScene('apartment_room');
+      setGameMode(GameMode.ROOM);
+      return;
+    }
+    // 🚪 连最轻的一趟都撑不住，就别打开地图了。
+    if (!canGoOutAtAll(life.stamina ?? STAMINA_MAX, gameCalendar)) {
+      audioManager.playSfx('error');
+      flashLife(tiredLine(gameCalendar, userState.language === 'en'));
+      return;
+    }
+    setGameMode(GameMode.MAP);
+  };
+
+  // 📋 「行动」面板上方那排：此刻能做的事。
+  // 做不了的不藏，灰着写清楚为什么——玩家要知道"什么时候再来"。
+  const buildQuickActions = (): QuickAction[] => {
+    const slot = gameCalendar.timeSlot;
+    const school = isSchoolDay(gameCalendar);
+    const tired = !canGoOutAtAll(life.stamina ?? STAMINA_MAX, gameCalendar);
+    const tiredBlock = tired
+      ? { blockedZh: '走不动了。吃点东西，或者回房间歇一会儿。', blockedEn: 'Too tired. Eat something or rest at home first.' }
+      : {};
+    const run = (f: () => void) => () => { setShowRestPlan(false); setRestPlanWake(false); f(); };
+    const list: QuickAction[] = [];
+    const goOut = (icon: string, titleZh: string, titleEn: string, descZh: string, descEn: string, primary = true) =>
+      list.push({ id: 'go_out', icon, titleZh, titleEn, descZh, descEn, primary, ...tiredBlock, onSelect: run(openMapNow) });
+
+    if (mainChapter) {
+      list.push({
+        id: 'main', icon: '📕', primary: true,
+        titleZh: `第 ${mainChapter.n} 章 · ${mainChapter.titleZh}`, titleEn: `Chapter ${mainChapter.n} · ${mainChapter.titleEn}`,
+        descZh: mainChapter.teaseZh, descEn: mainChapter.teaseEn,
+        onSelect: run(startMainChapter)
+      });
+    }
+
+    if (slot === 'morning') {
+      // 上学日早上还没定：去上学、翘课都在下面的「安排」里。定过了（比如上午翘了）才直接出门。
+      if (!school || storyFlags[plannedFlag(gameCalendar)]) {
+        goOut('🗺', '出门逛逛', 'Go out', '不定计划。地图上现在开着的地方都能去。', 'No plan. Anywhere open right now.');
+      }
+    } else if (slot === 'lunch' && school && classPending) {
+      list.push({
+        id: 'class', icon: '🔔', primary: true,
+        titleZh: '回教室上下午的课', titleEn: 'Back to class',
+        descZh: '午休之后还有两节。', descEn: 'Two more periods after lunch.',
+        onSelect: run(goToClass)
+      });
+      if (!gameCalendar.lunchUsed) {
+        goOut('🏫', '在学校里转转', 'Around school',
+          '食堂、图书室、天台、体育馆……谁在哪儿要看星期几。只能做一件事，然后预备铃就响了。',
+          'Cafeteria, library, roof, gym… who is where depends on the day. One thing, then the bell goes.', false);
+        list.push({
+          id: 'skip_pm', icon: '🏃',
+          titleZh: '翘掉下午的课，出校门', titleEn: 'Skip the afternoon and leave',
+          descZh: '下午两节不上了，街上的店都开着。班长会知道。', descEn: 'No afternoon classes; the town is open. The class president will know.',
+          ...tiredBlock,
+          onSelect: run(() => { skipAfternoonClass(); setGameMode(GameMode.MAP); })
+        });
+      }
+    } else if (slot === 'night') {
+      if (gameCalendar.nightUsed) {
+        list.push({
+          id: 'go_out', icon: '🌙', titleZh: '夜里出门', titleEn: 'Out tonight',
+          descZh: '夜里只能出去一趟。', descEn: 'One trip a night.',
+          blockedZh: '今晚已经出去过了。', blockedEn: 'You have already been out tonight.',
+          onSelect: () => {}
+        });
+      } else {
+        goOut('🌙', '夜里出门', 'Out tonight', '只能出去一趟，回来就该睡了。夜里出门也更累。', 'One trip, then bed. Night trips take more out of you.');
+      }
+      list.push({
+        id: 'sleep', icon: '🛏', primary: !!gameCalendar.nightUsed,
+        titleZh: '回房间睡觉', titleEn: 'Home to bed',
+        descZh: '今天就到这儿。睡前还能看看手机、翻翻单词本。', descEn: 'That is the day. You can still check your phone or wordbook before bed.',
+        onSelect: run(() => { setCurrentScene('apartment_room'); setGameMode(GameMode.ROOM); })
+      });
+    } else {
+      goOut('🗺', school && slot === 'afternoon' ? '放学后出门' : '出门', school && slot === 'afternoon' ? 'Out after school' : 'Go out',
+        '地图上现在开着的地方都能去：留在学校的社团教室，或者下山去街上。',
+        'Anywhere open right now: the club rooms at school, or down the hill into town.');
+    }
+
+    // 回房间（上学日的午休人在学校，回不了家）
+    if (slot !== 'night' && !(slot === 'lunch' && school)) {
+      list.push({
+        id: 'room', icon: '🏠', primary: false,
+        titleZh: '回房间', titleEn: 'My room',
+        descZh: '做饭、浇花、看看阳台。', descEn: 'Cook, water the plants, sit on the balcony.',
+        onSelect: run(() => setGameMode(GameMode.ROOM))
+      });
+    }
+    return list;
+  };
+
+  // 🏃 午休翘掉下午的课。
+  //
+  // 以前这件事靠午休弹出的「下午还回去上课吗？」面板；那个面板改成只在早上问之后，
+  // 午休就没有任何办法出校门了（街上的店午休时段都不开门）。现在入口在午休的地图底部。
+  // 代价跟以前一样：下午的课记为没上、班长会知道（skipped_school）。
+  // 时间直接跳到下午——翘课换来的就是这一段，街上的店这时候都开着。
+  const skipAfternoonClass = () => {
+    if (gameCalendar.timeSlot !== 'lunch' || !classPending) return;
+    setStoryFlags(prev => ({ ...prev, skipped_school: true, [classDoneFlag(gameCalendar, 'afternoon')]: true }));
+    setGameCalendar(prev => ({ ...prev, timeSlot: 'afternoon', lunchUsed: false }));
+    setLife(l => ({ ...l, wentOutOn: dayIndex(gameCalendar), stayInDays: 0 }));
+    flashLife(userState.language === 'en'
+      ? 'You do not go back to class. Out the side gate — the afternoon is yours, and the town is open.'
+      : '你没回教室，从侧门溜了出去。下午是你的了，街上的店都开着。');
   };
 
   // 下课：记 flag、扣一点体力、推到午休。
@@ -2241,11 +2371,7 @@ const App: React.FC = () => {
     // 午休、偶遇、大厅名单又都只认已经认识的人 ——
     // 结果是跳过一次章节，八个人里五个永久见不到，全攻略直接没了。
     // 所以这里把"第 1 章走完一定会有的那批 flag"补齐，跳没跳过都一样。
-    const day1Guaranteed: StoryFlags = {
-      day1_met_asuka: true, day1_met_hikari: true, day1_met_sora: true,
-      day1_met_rei: true, day1_met_maki: true, day1_met_inari: true, day1_met_nao: true
-    };
-    setStoryFlags(prev => ({ ...prev, ...day1Guaranteed, ...flags, day1_done: true }));
+    setStoryFlags(prev => ({ ...prev, ...DAY1_GUARANTEED_FLAGS, ...flags, day1_done: true }));
     // 大厅名单同理：跳过的人也得能找到人说话。
     markMet([
       CharacterId.ASUKA, CharacterId.HIKARI, CharacterId.MIYUKI,
@@ -3343,39 +3469,11 @@ ${wind}`;
           onOpenSystemMenu={() => setShowSystemMenu(true)}
           onOpenCgGallery={() => setShowCgGallery(true)}
           onOpenRoom={() => setGameMode(GameMode.ROOM)}
+          // 大厅的主按钮永远打开「行动」面板：出门、上课、翘课、安排、睡觉都在里面
           onOpenMap={() => {
-            // 🌅 早上不是直接推门出去的时段。
-            // 一天怎么开头，是在"今天的安排"那张面板上定的：去上学、做个便当、
-            // 或者干脆不去。绕过它直接开地图，等于把每天早上那个选择删掉。
-            if (gameCalendar.timeSlot === 'morning' && !storyFlags[plannedFlag(gameCalendar)]) {
-              audioManager.playSfx('click');
-              setShowRestPlan(true);
-              return;
-            }
-            // 🔔 午休已经用掉了：下一件事是回教室，不是再逛一圈。
-            if (gameCalendar.timeSlot === 'lunch' && gameCalendar.lunchUsed && classPending) {
-              goToClass();
-              return;
-            }
-            // 🌙 今晚已经出去过一趟了。夜里只有一趟，剩下的是回家睡觉。
-            if (gameCalendar.timeSlot === 'night' && gameCalendar.nightUsed) {
-              audioManager.playSfx('click');
-              flashLife(userState.language === 'en'
-                ? 'You have already been out tonight. Time to go home and sleep.'
-                : '今晚已经出去过了。该回去睡了。');
-              setCurrentScene('apartment_room');
-              setGameMode(GameMode.ROOM);
-              return;
-            }
-            // 🚪 连最轻的一趟都撑不住，就别打开地图了。
-            // 开一张全灰的地图让玩家自己看出来"哦我走不动"，
-            // 比直接说一句"鞋都脱了"要糟得多。
-            if (!canGoOutAtAll(life.stamina ?? STAMINA_MAX, gameCalendar)) {
-              audioManager.playSfx('error');
-              flashLife(tiredLine(gameCalendar, userState.language === 'en'));
-              return;
-            }
-            setGameMode(GameMode.MAP);
+            audioManager.playSfx('click');
+            setRestPlanWake(false);
+            setShowRestPlan(true);
           }}
           onOpenCalendar={() => setShowCalendar(true)}
           onOpenInventory={() => setShowInventory(true)}
@@ -3579,13 +3677,11 @@ ${wind}`;
           language={userState.language}
           calendar={gameCalendar}
           plans={plansFor(restPlanCtx)}
+          actions={buildQuickActions()}
+          wakeUp={restPlanWake}
           onPick={pickRestPlan}
-          // 上学日那个按钮写的是「照常去上学」——那就真的去上学，
-          // 而不是把面板关掉、留玩家站在大厅里再找一次入口。
-          onSkip={() => {
-            closeRestPlan();
-            if (dayKindOf(gameCalendar) === 'school' && classPending) goToClass();
-          }}
+          // 关掉 = 待会儿再说。面板随时能从大厅那个主按钮再打开。
+          onSkip={closeRestPlan}
         />
       )}
 
@@ -3726,6 +3822,7 @@ ${wind}`;
           life={life}
           onActivity={startActivity}
           storySpots={MAP_LOCATIONS.filter(l => pendingStoryAt(l)).map(l => l.id)}
+          onSkipAfternoon={gameCalendar.timeSlot === 'lunch' && classPending && !gameCalendar.lunchUsed ? skipAfternoonClass : undefined}
         />
       )}
 
@@ -4147,6 +4244,88 @@ styleSheet.innerText = `
   .tachie-anim-speak {
     animation: tachie-speak 0.45s ease-out;
     transform-origin: bottom center;
+  }
+
+  /* 🌬 动态立绘（LivelySprite）。几层嵌套各管一件事，周期互相错开，
+     叠在一起才不像在循环播放。幅度全部压得很小——看得出在动、说不出哪里在动。 */
+  .lively-sway, .lively-breathe, .lively-talk,
+  [class*="lively-react-"] { transform-origin: 50% 100%; will-change: transform; }
+
+  @keyframes lively-breathe {
+    0%, 100% { transform: scale(1, 1) translateY(0); }
+    45%      { transform: scale(1.004, 1.011) translateY(-1px); }
+  }
+  .lively-breathe { animation: lively-breathe 4.1s ease-in-out infinite; }
+
+  @keyframes lively-sway {
+    0%, 100% { transform: rotate(0deg) translateX(0); }
+    30%      { transform: rotate(0.45deg) translateX(1.5px); }
+    70%      { transform: rotate(-0.35deg) translateX(-1px); }
+  }
+  .lively-sway { animation: lively-sway 7.3s ease-in-out infinite; }
+
+  @keyframes lively-talk {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    35%      { transform: translateY(-2.5px) scale(1, 1.004); }
+    65%      { transform: translateY(-0.5px) scale(1, 1.001); }
+  }
+  .lively-talk { animation: lively-talk 0.62s ease-in-out infinite; }
+
+  /* 换表情时的一下 */
+  @keyframes lively-react-lift {
+    0%   { transform: translateY(0) scale(1, 1); }
+    30%  { transform: translateY(-9px) scale(0.995, 1.012); }
+    60%  { transform: translateY(1px) scale(1.004, 0.996); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes lively-react-jolt {
+    0%   { transform: translateY(0) scale(1); }
+    15%  { transform: translateY(-7px) scale(1.012); }
+    35%  { transform: translateY(0) translateX(-2px) scale(1.006); }
+    55%  { transform: translateX(2px) scale(1.003); }
+    100% { transform: translateX(0) scale(1); }
+  }
+  @keyframes lively-react-sink {
+    0%   { transform: translateY(0) scale(1, 1); }
+    45%  { transform: translateY(6px) scale(1.003, 0.988); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes lively-react-shy {
+    0%   { transform: translateY(0) rotate(0deg); }
+    35%  { transform: translateY(4px) rotate(-1.1deg) scale(0.996); }
+    70%  { transform: translateY(2px) rotate(0.5deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+  @keyframes lively-react-huff {
+    0%   { transform: translateY(0) scale(1, 1); }
+    25%  { transform: translateY(-4px) scale(1.01, 1.008); }
+    45%  { transform: translateY(1px) scale(1.004, 0.996); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes lively-react-tilt {
+    0%   { transform: rotate(0deg); }
+    40%  { transform: rotate(1.3deg) translateY(-2px); }
+    100% { transform: rotate(0deg); }
+  }
+  @keyframes lively-react-settle {
+    0%   { transform: translateY(0); }
+    40%  { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+  }
+  .lively-react-lift   { animation: lively-react-lift 0.6s cubic-bezier(0.3, 0.7, 0.3, 1) both; }
+  .lively-react-jolt   { animation: lively-react-jolt 0.55s cubic-bezier(0.3, 0.7, 0.3, 1) both; }
+  .lively-react-sink   { animation: lively-react-sink 1s ease-in-out both; }
+  .lively-react-shy    { animation: lively-react-shy 0.9s ease-in-out both; }
+  .lively-react-huff   { animation: lively-react-huff 0.5s ease-out both; }
+  .lively-react-tilt   { animation: lively-react-tilt 0.9s ease-in-out both; }
+  .lively-react-settle { animation: lively-react-settle 0.5s ease-out both; }
+
+  /* 交叉淡化：新图在下面直接全显，旧图盖在上面淡出 */
+  @keyframes lively-fade-out { from { opacity: 1; } to { opacity: 0; } }
+  .lively-fade-out { animation: lively-fade-out 0.38s ease-out forwards; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lively-sway, .lively-breathe, .lively-talk, [class*="lively-react-"] { animation: none !important; }
   }
 
   /* 🎬 Galgame 动态立绘动画系统 */
