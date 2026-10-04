@@ -638,6 +638,14 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     avatarUrl: '/images/characters/hikari/neutral.webp',
     color: 'bg-yellow-500',
     emotionMap: {
+      // ↓ 立绘重制补登记（scripts/sync-emotion-keys.mjs）
+      'school_angry'      : '/images/characters/hikari/school_angry.webp',
+      'school_happy'      : '/images/characters/hikari/school_happy.webp',
+      'school_neutral'    : '/images/characters/hikari/school_neutral.webp',
+      'school_sad'        : '/images/characters/hikari/school_sad.webp',
+      'school_shy'        : '/images/characters/hikari/school_shy.webp',
+      'school_smug'       : '/images/characters/hikari/school_smug.webp',
+      'school_surprised'  : '/images/characters/hikari/school_surprised.webp',
       'angry'           : '/images/characters/hikari/angry.webp',
       'autumn_angry'    : '/images/characters/hikari/autumn_angry.webp',
       'autumn_happy'    : '/images/characters/hikari/autumn_happy.webp',
@@ -748,6 +756,10 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     avatarUrl: '/images/characters/rei/neutral.webp',
     color: 'bg-blue-600',
     emotionMap: {
+      // ↓ 立绘重制补登记（scripts/sync-emotion-keys.mjs）
+      'angry'             : '/images/characters/rei/angry.webp',
+      'sad'               : '/images/characters/rei/sad.webp',
+      'surprised'         : '/images/characters/rei/surprised.webp',
       'autumn_camera'   : '/images/characters/rei/autumn_camera.webp',
       'autumn_neutral'  : '/images/characters/rei/autumn_camera.webp',
       'casual_neutral'  : '/images/characters/rei/casual_neutral.webp',
@@ -797,6 +809,12 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     avatarUrl: '/images/characters/inari/neutral.webp',
     color: 'bg-orange-600',
     emotionMap: {
+      // ↓ 立绘重制补登记（scripts/sync-emotion-keys.mjs）
+      'school_sad'        : '/images/characters/inari/school_sad.webp',
+      'school_shy'        : '/images/characters/inari/school_shy.webp',
+      'school_sly'        : '/images/characters/inari/school_sly.webp',
+      'school_smug'       : '/images/characters/inari/school_smug.webp',
+      'school_surprised'  : '/images/characters/inari/school_surprised.webp',
       'angry'             : '/images/characters/inari/angry.webp',
       'casual_angry'      : '/images/characters/inari/casual_angry.webp',
       'casual_happy'      : '/images/characters/inari/casual_happy.webp',
@@ -873,6 +891,9 @@ CRITICAL RULE: You MUST end your turn by asking the user a direct, engaging ques
     avatarUrl: '/images/characters/miyuki/neutral.webp',
     color: 'bg-sky-500',
     emotionMap: {
+      // ↓ 立绘重制补登记（scripts/sync-emotion-keys.mjs）
+      'sad'               : '/images/characters/miyuki/sad.webp',
+      'surprised'         : '/images/characters/miyuki/surprised.webp',
       'angry'               : '/images/characters/miyuki/angry.webp',
       'apron_happy'         : '/images/characters/miyuki/apron_happy.webp',
       'apron_neutral'       : '/images/characters/miyuki/apron_happy.webp',
@@ -935,6 +956,9 @@ CRITICAL RULE: You MUST end your turn by asking a warm personal question about t
     avatarUrl: '/images/characters/sora/neutral.webp',
     color: 'bg-lime-600',
     emotionMap: {
+      // ↓ 立绘重制补登记（scripts/sync-emotion-keys.mjs）
+      'school_angry'      : '/images/characters/sora/school_angry.webp',
+      'school_shock'      : '/images/characters/sora/school_shock.webp',
       'angry'             : '/images/characters/sora/angry.webp',
       'autumn_angry'      : '/images/characters/sora/autumn_angry.webp',
       'autumn_happy'      : '/images/characters/sora/autumn_happy.webp',
@@ -1013,6 +1037,10 @@ CRITICAL RULE: You MUST end your turn by asking a direct question — inviting t
     avatarUrl: '/images/characters/nao/neutral.webp',
     color: 'bg-rose-500',
     emotionMap: {
+      // ↓ 立绘重制补登记（scripts/sync-emotion-keys.mjs）
+      'sad'               : '/images/characters/nao/sad.webp',
+      'shy'               : '/images/characters/nao/shy.webp',
+      'surprised'         : '/images/characters/nao/surprised.webp',
       'angry'              : '/images/characters/nao/angry.webp',
       'casual_angry'       : '/images/characters/nao/casual_angry.webp',
       'casual_cold'        : '/images/characters/nao/casual_cold.webp',
@@ -1090,6 +1118,11 @@ CRITICAL RULE: You MUST end your turn by asking a question about shared plans or
     avatarUrl: '/images/characters/maki/neutral.webp',
     color: 'bg-pink-500',
     emotionMap: {
+      // ↓ 立绘重制补登记（scripts/sync-emotion-keys.mjs）
+      'school_laugh'      : '/images/characters/maki/school_laugh.webp',
+      'school_pout'       : '/images/characters/maki/school_pout.webp',
+      'school_smug'       : '/images/characters/maki/school_smug.webp',
+      'school_surprised'  : '/images/characters/maki/school_surprised.webp',
       'angry'           : '/images/characters/maki/angry.webp',
       'angry_alt'       : '/images/characters/maki/angry_alt.webp',
       'cardigan_angry'  : '/images/characters/maki/cardigan_angry.webp',

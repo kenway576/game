@@ -90,6 +90,26 @@ for (let p = 0; p < N; p++) {
   out[p * 4 + 3] = Math.round(a * 255);
 }
 
+// 5. 清碎点：背景噪点偶尔有一两个像素色差超过阈值，留下孤零零的小点。
+// 它们会把装图时算的裁切框撑到整张图那么宽。只保留面积够大的不透明连通块。
+let specks = 0;
+{
+  const vis = new Uint8Array(N);
+  for (let s = 0; s < N; s++) {
+    if (vis[s] || out[s * 4 + 3] <= 8) continue;
+    const comp = [];
+    sp = 0; stack[sp++] = s; vis[s] = 1;
+    while (sp) {
+      const p = stack[--sp], x = p % W;
+      comp.push(p);
+      for (const q of [x > 0 ? p - 1 : -1, x < W - 1 ? p + 1 : -1, p >= W ? p - W : -1, p < N - W ? p + W : -1]) {
+        if (q >= 0 && !vis[q] && out[q * 4 + 3] > 8) { vis[q] = 1; stack[sp++] = q; }
+      }
+    }
+    if (comp.length < 400) { specks++; for (const p of comp) out[p * 4 + 3] = 0; }
+  }
+}
+
 await sharp(out, { raw: { width: W, height: H, channels: 4 } }).png().toFile(OUT);
 
 // 检查图：左边深色底、右边亮色底，缩小拼一起
@@ -102,4 +122,4 @@ await sharp({ create: { width: sm.width * 2, height: sm.height, channels: 3, bac
   .composite([{ input: dark, left: 0, top: 0 }, { input: light, left: sm.width, top: 0 }])
   .jpeg({ quality: 88 }).toFile(OUT.replace(/\.png$/, '_check.jpg'));
 
-console.log(`${OUT}  背景色 rgb(${bg.join(',')})  封闭空洞 ${holes} 个`);
+console.log(`${OUT}  背景色 rgb(${bg.join(',')})  封闭空洞 ${holes} 个  清掉碎点 ${specks} 个`);
