@@ -1061,8 +1061,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
     subtitleZh: '一楼最里面 · 十一点四十', subtitleEn: 'Far end of the ground floor · Twenty to twelve'
   },
   {
-    // 空字符串 = 让上一场的立绘退场。不清的话明日香会一直站在事务室里。
-    type: 'narration', characterImage: '',
+    // 换成事务室的藤原老师（npcData 里写着事务也归她管），明日香顺势退场
+    type: 'narration', characterImage: SCHOOL_NPC_SPRITES.fujiwara,
     zh: '事务室在一楼最里面。窗口后面的老师从抽屉里翻出一张卡，对着名单看了两眼，推过来。',
     en: 'The office is at the far end of the ground floor. The clerk behind the window digs a card out of a drawer, checks it against a list, and slides it across.'
   },
@@ -1880,6 +1880,7 @@ export const DAY1_SCRIPT: StoryNode[] = [
             type: 'speech',
             speakerZh: '同班男生',
             speakerEn: 'Classmate',
+            characterImage: SCHOOL_NPC_SPRITES.kenta,
             jp: 'Ohh! My name is Kenta! I am... uh... very... fine! Your hobby is?',
             zh: '哦哦！我叫健太！我……呃……非常……好！你的爱好是？',
             en: 'Ohh! My name is Kenta! I am... uh... very... fine! Your hobby is?',
@@ -1910,7 +1911,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
     ]
   },
   {
-    type: 'narration',
+    // 英语那一支里健太上过场，这里让他退场（别的分支本来就没人，清一下也无妨）
+    type: 'narration', characterImage: '',
     zh: '你的桌子边越围越多，第二节课的预备铃已经响过了。',
     en: 'The crowd at your desk keeps growing. The warning bell for second period has already gone.'
   },

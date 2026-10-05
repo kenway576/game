@@ -9,6 +9,11 @@
 // 标定方法见 scripts 里用过的网格图；调的时候在网址后面加 ?rig 能看到区域着色。
 // ---------------------------------------------------------
 
+import { AUTO_RIGS } from './puppetRigsAuto';
+import { AUTO_BLINKS } from './puppetBlinkAuto';
+import { AUTO_MASKS } from './puppetMaskAuto';
+import { AUTO_LAYERS } from './puppetLayerAuto';
+
 export interface PuppetRig {
   headC: [number, number];          // 头部椭圆中心（含耳朵）
   headR: [number, number];          // 头部椭圆半径
@@ -21,6 +26,15 @@ export interface PuppetRig {
   // 双马尾挂在头上：pivotY 写扎头发的高度，pivotDX 是扎头发的点离身体中线多远，amp 是幅度倍数。
   // maxY：摆动区的下边界（比例）。双马尾到腰就没了，往下是腿，不能跟着晃。不写 = 不限
   sway?: { pivotY: number; pivotDX: number; amp: number; maxY?: number };
+  // 眨眼过渡帧（scripts/remake/outfit-pipeline.mjs 生成）：一张小图，上半闭、下全闭，
+  // rect 是它在整张立绘上的位置（比例 x, y, w, h）。有它就换图眨眼，没有就压扁 eyes
+  blink?: { src: string; rect: [number, number, number, number] };
+  // 哪些像素是头发/尾巴、可以摆（灰度图，scripts/remake/sway-masks.mjs 生成）。
+  // 有它就只摆头发本身，同一片区域里举起来的手、袖子不跟着弯；没有就按老办法整片区域摆
+  mask?: string;
+  // 头发/尾巴分层（scripts/remake/hair-layers.mjs）：body = 去掉垂发后补画的身体，hair = 垂发蒙版。
+  // 有它就只让头发层摆，身体层只做整体的呼吸、晃动——手和袖子不会被拉弯
+  layer?: { body: string; hair: string };
 }
 
 const INARI = '/images/characters/inari/';
@@ -212,6 +226,23 @@ for (const r of REMAKE) {
     const eyes = r.closed?.includes(f) ? undefined : r.wideFiles?.includes(f) ? (r.rig.wideEyes ?? wide(r.rig.eyes)) : r.rig.eyes;
     PUPPET_RIGS[`/images/characters/${r.dir}/${f}.webp`] = fromBase(r.rig, eyes);
   }
+}
+
+// 第二轮重制的换装：骨骼是流水线自动标的（scripts/remake/build-rigs.mjs 汇总），
+// 同名的旧手标条目一律被盖掉——图换了，旧坐标也就作废了
+Object.assign(PUPPET_RIGS, AUTO_RIGS);
+
+// 第一轮重制（手标骨骼）的立绘补上的眨眼过渡帧（scripts/remake/blink-installed.mjs）
+for (const [src, blink] of Object.entries(AUTO_BLINKS)) {
+  if (PUPPET_RIGS[src] && !PUPPET_RIGS[src].blink) PUPPET_RIGS[src] = { ...PUPPET_RIGS[src], blink };
+}
+// 头发/尾巴分层
+for (const [src, layer] of Object.entries(AUTO_LAYERS)) {
+  if (PUPPET_RIGS[src]) PUPPET_RIGS[src] = { ...PUPPET_RIGS[src], layer };
+}
+// 摆动蒙版：只让头发/尾巴本身摆
+for (const [src, mask] of Object.entries(AUTO_MASKS)) {
+  if (PUPPET_RIGS[src]) PUPPET_RIGS[src] = { ...PUPPET_RIGS[src], mask };
 }
 
 // 剧本里这个角色的 speakerEn：判断"现在说话的是不是她"，说话时头才会一点一点

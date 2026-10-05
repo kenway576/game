@@ -1,6 +1,12 @@
 import { StoryNode } from '../types';
 import type { StreetScene } from './streetScenes';
 
+// 駿河屋的店员（shopScenes 里同一个人）
+const CLERK_SURUGAYA = '/images/characters/clerk_surugaya.webp';
+// 月亮那一场的两个人（立绘重制第二轮补画）
+const MOON_GIRL = '/images/characters/npc_egg_silver_girl.webp';
+const MOON_BOY = '/images/characters/npc_egg_yellow_jacket.webp';
+
 // ---------------------------------------------------------
 // 🥚 彩蛋 · 雨夜、电子羊、多脚战车、月亮
 //
@@ -37,7 +43,7 @@ export const SCIFI_EASTER_SCENES: StreetScene[] = [
       { type: 'narration', zh: '駿河屋最里面那排玻璃柜，平时放的是旧掌机和缺了零件的模型。今天最上层多了一只巴掌大的羊。', en: 'The glass case at the very back of the shop usually holds old handhelds and model kits missing parts. Today, on the top shelf, there is a sheep about the size of your hand.' },
       { type: 'narration', zh: '毛是真的羊毛，摸上去有点扎手。可是翻过来，肚子底下有一个拧螺丝的电池盖。价签上写着：「電気羊（動作品）¥300」。', en: 'The wool is real and a little scratchy. Turn it over, though, and there is a screw-down battery cover on its belly. The tag says: ELECTRIC SHEEP (WORKING) ¥300.' },
       {
-        type: 'speech', speakerZh: '店员', speakerEn: 'Clerk',
+        type: 'speech', speakerZh: '店员', speakerEn: 'Clerk', characterImage: CLERK_SURUGAYA,
         jp: '前の持ち主さん、毎晩これを枕元に置いてたらしいですよ。「こいつ、夢見るのかな」ってずっと気にしてたって。',
         words: [{ jp: '枕元', reading: 'まくらもと', zh: '枕边', en: 'bedside' }],
         zh: '听说前一个主人每天晚上都把它放在枕头边。一直在纠结「这家伙会不会做梦」。',
@@ -216,20 +222,20 @@ export const SCIFI_EASTER_SCENES: StreetScene[] = [
     weight: 6,
     script: [
       { type: 'narration', zh: '今晚的月亮又大又亮，低低地挂在海面上，像有人把它往下拉了一截。', en: 'The moon is huge and bright tonight, hanging low over the water as if someone had pulled it down a little.' },
-      { type: 'narration', zh: '栏杆边并排坐着两个人。男生穿一件大得不合身的黄色夹克，领口和袖口镶着荧光绿——看上去像是别人的衣服，他穿得很小心。', en: 'Two people sit side by side at the railing. The boy wears a yellow jacket far too big for him, trimmed in fluorescent green at the collar and cuffs — it looks like someone else’s, and he wears it carefully.' },
-      { type: 'narration', zh: '女生一头银色的短发，发梢染成粉色和蓝色，在路灯底下像是通了电。她抬起手，指着月亮。', en: 'The girl has a silver bob with the tips dyed pink and blue, which look electric under the street lamp. She lifts a hand and points at the moon.' },
+      { type: 'narration', characterImage: MOON_BOY, zh: '栏杆边并排坐着两个人。男生穿一件大得不合身的黄色夹克，领口和袖口镶着荧光绿——看上去像是别人的衣服，他穿得很小心。', en: 'Two people sit side by side at the railing. The boy wears a yellow jacket far too big for him, trimmed in fluorescent green at the collar and cuffs — it looks like someone else’s, and he wears it carefully.' },
+      { type: 'narration', characterImage: MOON_GIRL, zh: '女生一头银色的短发，发梢染成粉色和蓝色，在路灯底下像是通了电。她抬起手，指着月亮。', en: 'The girl has a silver bob with the tips dyed pink and blue, which look electric under the street lamp. She lifts a hand and points at the moon.' },
       {
-        type: 'speech', speakerZh: '银发的女生', speakerEn: 'Silver-haired Girl',
+        type: 'speech', speakerZh: '银发的女生', characterImage: MOON_GIRL, speakerEn: 'Silver-haired Girl',
         jp: '……いつか、あそこ行くの。',
         zh: '……总有一天，要去那里。', en: '...Someday I am going up there.'
       },
       {
-        type: 'speech', speakerZh: '穿黄夹克的男生', speakerEn: 'Boy in the Yellow Jacket',
+        type: 'speech', speakerZh: '穿黄夹克的男生', characterImage: MOON_BOY, speakerEn: 'Boy in the Yellow Jacket',
         jp: '連れてく。絶対。',
         zh: '我带你去。一定。', en: 'I will take you. Definitely.'
       },
-      { type: 'narration', zh: '女生笑了一下，说他的约定太轻了。可她把头靠到了他肩膀上。', en: 'She laughs and says his promises are too light. But she leans her head on his shoulder.' },
-      { type: 'narration', zh: '过了一会儿，两个人跨上一辆改得乱七八糟的小摩托。排气管喷出一串火星，引擎声撕开夜色，消失在港口的车流里。', en: 'After a while they climb onto a scooter modified to within an inch of its life. The exhaust spits a string of sparks, the engine tears through the night, and they vanish into the harbour traffic.' },
+      { type: 'narration', characterImage: MOON_GIRL, zh: '女生笑了一下，说他的约定太轻了。可她把头靠到了他肩膀上。', en: 'She laughs and says his promises are too light. But she leans her head on his shoulder.' },
+      { type: 'narration', characterImage: '', zh: '过了一会儿，两个人跨上一辆改得乱七八糟的小摩托。排气管喷出一串火星，引擎声撕开夜色，消失在港口的车流里。', en: 'After a while they climb onto a scooter modified to within an inch of its life. The exhaust spits a string of sparks, the engine tears through the night, and they vanish into the harbour traffic.' },
       { type: 'narration', zh: '风把一张传单吹到你脚边：「月面旅行・片道チケット 抽選受付中」。一看就是骗人的。背面用荧光笔写着两个字母。', en: 'The wind blows a flyer to your feet: MOON TRAVEL — ONE-WAY TICKETS, LOTTERY NOW OPEN. Obviously a scam. On the back, two initials in highlighter.' },
       {
         type: 'choice',

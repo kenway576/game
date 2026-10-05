@@ -748,3 +748,13 @@ export interface PrologueResult {
   wordsLearned: number;
   skipped: boolean;
 }
+
+// 💬 一段剧情演完之后接谁的面对面对话、她穿什么。
+// 约会是固定的一个人；万圣节、文化祭是玩家在剧情里选的那个人（按选项置的 flag 对应）。
+export interface ChatPick {
+  char: CharacterId;
+  outfit: string;          // 衣柜键，'' = 默认
+  scene?: string;          // 在哪儿聊（SCENE_MAP 的键）
+  noteZh: string;          // 告诉 AI 现在是什么情况
+  noteEn: string;
+}

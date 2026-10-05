@@ -74,7 +74,7 @@ export const INARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${I}summer_neutral_alt.webp`,
+    characterImage: `${I}summer_neutral.webp`,
     zh: '你说这个你也有一个。她说她知道——她说她「每年都要买一个」。',
     en: 'You say you have one of those. She says she knows, and that she buys one every year.'
   },
@@ -108,7 +108,7 @@ export const INARI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}summer_curious.webp`,
+            characterImage: `${I}summer_surprised.webp`,
             zh: '她把纸网翻来覆去看了半天，那个表情像是在研究一件出土文物。',
             en: 'She turns the paper scoop over and over with the expression of somebody examining an excavated artefact.'
           },
@@ -119,7 +119,7 @@ export const INARI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}summer_curious.webp`,
+            characterImage: `${I}summer_surprised.webp`,
             zh: '她整个人彻底愣住了。是真的猝不及防——完全不是平时装模作样的调侃轻笑，而是货真价实、大脑一片空白的手足无措。',
             en: 'She completely freezes. Truly caught off guard — not her usual feigned teasing, but genuine, wide-eyed bewilderment.'
           },
@@ -181,7 +181,7 @@ export const INARI_STORY_2: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}summer_neutral_alt.webp`,
+            characterImage: `${I}summer_neutral.webp`,
             zh: '然后她说了那个曾祖父的名字。全名，三个字，她一顿都没打。',
             en: 'Then she says the great-grandfather’s name. In full, without a pause.'
           }
@@ -261,7 +261,7 @@ export const INARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${I}summer_neutral_alt.webp`,
+    characterImage: `${I}summer_neutral.webp`,
     zh: '你们绕到本殿后面那片林子。她坐回那块石头上，从袖子里拿出一个东西。',
     en: 'You cut round behind the main hall into the wood. She sits back on the rock and takes something out of her sleeve.'
   },
@@ -331,7 +331,7 @@ export const INARI_STORY_2: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}summer_curious.webp`,
+            characterImage: `${I}summer_surprised.webp`,
             zh: '她把册子合上了，很快，像是被烫到。',
             en: 'She shuts the book fast, as though it burned.'
           },
@@ -448,7 +448,7 @@ export const INARI_STORY_2: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${I}summer_neutral_alt.webp`,
+    characterImage: `${I}summer_neutral.webp`,
     zh: '她站起来的时候，你第一次看清那件事——她的影子不动。风把树影吹得乱七八糟，她的没有动过一下。',
     en: 'When she stands, you see it clearly for the first time: her shadow does not move. The wind throws every other shadow about and hers has not shifted once.'
   },

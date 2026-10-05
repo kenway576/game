@@ -43,6 +43,8 @@ export const SHOP_INTERIOR: Record<ShopKind, string> = {
 const CLERK_BOOKOFF  = '/images/characters/clerk_bookoff.webp';
 const CLERK_SURUGAYA = '/images/characters/clerk_surugaya.webp';
 const CLERK_UNIQLO   = '/images/characters/clerk_uniqlo.webp';
+// 店里碰见的路人（立绘重制第二轮补画的，scripts/remake/npcs.mjs）
+const npc = (id: string) => `/images/characters/npc_${id}.webp`;
 
 export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
   // ================= 百元店 =================
@@ -50,7 +52,7 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
     {
       id: 'shop_hk_grandma_price',
       script: [
-        { type: 'narration', zh: '收纳用品那一排，一位老奶奶把一个塑料盒举得很近，又举得很远，眯着眼睛看底下的标签。', en: 'In the storage aisle an old woman holds a plastic box very close, then very far, squinting at the label underneath.' },
+        { type: 'narration', characterImage: npc('hk_obaa'), zh: '收纳用品那一排，一位老奶奶把一个塑料盒举得很近，又举得很远，眯着眼睛看底下的标签。', en: 'In the storage aisle an old woman holds a plastic box very close, then very far, squinting at the label underneath.' },
         {
           type: 'speech', speakerZh: '老奶奶', speakerEn: 'Old Woman',
           jp: 'ちょっとお兄さん、これ百円？字が小さくてねえ。',
@@ -72,7 +74,7 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
           zh: '哎呀，不是一百円啊。明明是百元店嘛。谢谢你啊。',
           en: 'Oh, not a hundred? And it\'s a hundred-yen shop. Thank you, dear.'
         },
-        { type: 'narration', zh: '她把盒子放回去，拿了旁边一个小一号的。那个是真的一百一十円。', en: 'She puts it back and takes the next size down. That one really is a hundred and ten.' }
+        { type: 'narration', characterImage: '', zh: '她把盒子放回去，拿了旁边一个小一号的。那个是真的一百一十円。', en: 'She puts it back and takes the next size down. That one really is a hundred and ten.' }
       ]
     },
     {
@@ -99,27 +101,27 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
     {
       id: 'shop_hk_kid_toys',
       script: [
-        { type: 'narration', zh: '玩具那一排前面蹲着一个小男孩，两只手各拿一个塑料恐龙，正在认真比较哪一只更凶。', en: 'A little boy squats in front of the toy shelf with a plastic dinosaur in each hand, seriously weighing which is fiercer.' },
+        { type: 'narration', characterImage: npc('hk_boy'), zh: '玩具那一排前面蹲着一个小男孩，两只手各拿一个塑料恐龙，正在认真比较哪一只更凶。', en: 'A little boy squats in front of the toy shelf with a plastic dinosaur in each hand, seriously weighing which is fiercer.' },
         {
-          type: 'speech', speakerZh: '妈妈', speakerEn: 'Mother',
+          type: 'speech', speakerZh: '妈妈', speakerEn: 'Mother', characterImage: npc('hk_mother'),
           jp: 'ほら、もう行くよー。一個だけって言ったでしょ。',
           zh: '好啦，要走了哦。不是说好只能买一个吗。',
           en: 'Come on, we\'re going. I said only one, didn\'t I.'
         },
         {
-          type: 'speech', speakerZh: '小男孩', speakerEn: 'Little Boy',
+          type: 'speech', speakerZh: '小男孩', speakerEn: 'Little Boy', characterImage: npc('hk_boy'),
           jp: 'まだ決めてない！',
           zh: '我还没决定好！',
           en: 'I haven\'t decided yet!',
           words: [{ jp: '決める', reading: 'きめる', zh: '决定', en: 'to decide' }]
         },
-        { type: 'narration', zh: '他最后选了那只更小、但嘴张得更大的。你觉得这是正确的判断。', en: 'In the end he picks the smaller one with the wider mouth. You think that is the right call.' }
+        { type: 'narration', characterImage: '', zh: '他最后选了那只更小、但嘴张得更大的。你觉得这是正确的判断。', en: 'In the end he picks the smaller one with the wider mouth. You think that is the right call.' }
       ]
     },
     {
       id: 'shop_hk_rain_umbrellas', weather: ['rainy'],
       script: [
-        { type: 'narration', zh: '门口的伞架前排着队。外面的雨来得太突然，透明塑料伞一把一把地被抽走，店员正从仓库里抱出第二箱。', en: 'There is a queue at the umbrella stand by the door. The rain came too suddenly; clear umbrellas are disappearing one by one and a clerk is bringing out a second box.' },
+        { type: 'narration', characterImage: CITY_NPC_SPRITES.takahashi, zh: '门口的伞架前排着队。外面的雨来得太突然，透明塑料伞一把一把地被抽走，店员正从仓库里抱出第二箱。', en: 'There is a queue at the umbrella stand by the door. The rain came too suddenly; clear umbrellas are disappearing one by one and a clerk is bringing out a second box.' },
         {
           type: 'speech', speakerZh: '店员', speakerEn: 'Clerk',
           jp: '傘、まだありますのでー！押さないでくださーい！',
@@ -127,7 +129,7 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
           en: 'We still have umbrellas! Please don\'t push!',
           words: [{ jp: '押す', reading: 'おす', zh: '推；挤', en: 'to push' }]
         },
-        { type: 'narration', zh: '全日本的透明伞大概有一半是在这种时候买的。', en: 'Probably half the clear umbrellas in Japan were bought at moments like this.' }
+        { type: 'narration', characterImage: '', zh: '全日本的透明伞大概有一半是在这种时候买的。', en: 'Probably half the clear umbrellas in Japan were bought at moments like this.' }
       ]
     }
   ],
@@ -187,7 +189,7 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
       id: 'shop_dr_jingle',
       script: [
         { type: 'narration', zh: '门口那段广告歌又从头开始了。你已经在脑子里跟着哼到第二句了。', en: 'The jingle by the door starts over. You realise you are already humming along to the second line in your head.' },
-        { type: 'narration', zh: '旁边挑洗面奶的高中女生也在哼。你们对视了一眼，同时停了下来。', en: 'The high-school girl choosing face wash next to you is humming it too. You catch each other\'s eye and both stop at once.' },
+        { type: 'narration', characterImage: npc('dr_schoolgirl'), zh: '旁边挑洗面奶的高中女生也在哼。你们对视了一眼，同时停了下来。', en: 'The high-school girl choosing face wash next to you is humming it too. You catch each other\'s eye and both stop at once.' },
         {
           type: 'speech', speakerZh: '女高中生', speakerEn: 'Schoolgirl',
           jp: '……この曲、頭から離れへんよね。',
@@ -195,13 +197,13 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
           en: '…This song never leaves your head, does it.',
           words: [{ jp: '離れる', reading: 'はなれる', zh: '离开', en: 'to leave; to separate' }]
         },
-        { type: 'narration', zh: '她笑了一下，拿着洗面奶去了收银台。那段旋律在你脑子里又转了一圈。', en: 'She smiles and takes her face wash to the till. The tune goes round your head one more time.' }
+        { type: 'narration', characterImage: '', zh: '她笑了一下，拿着洗面奶去了收银台。那段旋律在你脑子里又转了一圈。', en: 'She smiles and takes her face wash to the till. The tune goes round your head one more time.' }
       ]
     },
     {
       id: 'shop_dr_odaiji',
       script: [
-        { type: 'narration', zh: '药剂师柜台前，一位戴口罩的上班族正小声描述自己的症状。药剂师听得很认真，挑了一盒药递给他。', en: 'At the pharmacist\'s counter a masked office worker describes his symptoms quietly. The pharmacist listens carefully and hands him a box.' },
+        { type: 'narration', characterImage: npc('dr_pharmacist'), zh: '药剂师柜台前，一位戴口罩的上班族正小声描述自己的症状。药剂师听得很认真，挑了一盒药递给他。', en: 'At the pharmacist\'s counter a masked office worker describes his symptoms quietly. The pharmacist listens carefully and hands him a box.' },
         {
           type: 'speech', speakerZh: '药剂师', speakerEn: 'Pharmacist',
           jp: '一日三回、食後に飲んでください。お大事に。',
@@ -212,13 +214,13 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
             { jp: 'お大事に', reading: 'おだいじに', zh: '请保重（对病人说）', en: 'get well soon' }
           ]
         },
-        { type: 'narration', zh: '「お大事に」。你在心里默念了一遍。这是一句只对生病的人说的话，你想，将来总有一天会用到。', en: '"Odaiji ni." You repeat it to yourself. A phrase said only to people who are unwell. Someday you will need it.' }
+        { type: 'narration', characterImage: '', zh: '「お大事に」。你在心里默念了一遍。这是一句只对生病的人说的话，你想，将来总有一天会用到。', en: '"Odaiji ni." You repeat it to yourself. A phrase said only to people who are unwell. Someday you will need it.' }
       ]
     },
     {
       id: 'shop_dr_bag',
       script: [
-        { type: 'narration', zh: '你前面排队的人在结账。收银员的语速快得像一整个词。', en: 'The person ahead of you is paying. The cashier speaks so fast it sounds like a single word.' },
+        { type: 'narration', characterImage: npc('dr_cashier'), zh: '你前面排队的人在结账。收银员的语速快得像一整个词。', en: 'The person ahead of you is paying. The cashier speaks so fast it sounds like a single word.' },
         {
           type: 'speech', speakerZh: '收银员', speakerEn: 'Cashier',
           jp: 'レジ袋はご利用ですか？',
@@ -387,16 +389,16 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
     {
       id: 'shop_sg_debate',
       script: [
-        { type: 'narration', zh: '手办展柜前，两个穿格子衬衫的男生压低声音争论着什么，表情严肃得像在讨论国家大事。', en: 'In front of the figure case two boys in check shirts argue in low voices, as solemn as if discussing affairs of state.' },
+        { type: 'narration', characterImage: npc('sg_otaku_a'), zh: '手办展柜前，两个穿格子衬衫的男生压低声音争论着什么，表情严肃得像在讨论国家大事。', en: 'In front of the figure case two boys in check shirts argue in low voices, as solemn as if discussing affairs of state.' },
         {
-          type: 'speech', speakerZh: '格子衬衫 A', speakerEn: 'Check Shirt A',
+          type: 'speech', speakerZh: '格子衬衫 A', speakerEn: 'Check Shirt A', characterImage: npc('sg_otaku_a'),
           jp: 'いや、これ絶対本物やって。箱の角見てみ。',
           zh: '不，这个绝对是正版。你看盒子的角。',
           en: 'No, this is definitely genuine. Look at the corner of the box.',
           words: [{ jp: '本物', reading: 'ほんもの', zh: '真品；正版', en: 'the real thing' }]
         },
         {
-          type: 'speech', speakerZh: '格子衬衫 B', speakerEn: 'Check Shirt B',
+          type: 'speech', speakerZh: '格子衬衫 B', speakerEn: 'Check Shirt B', characterImage: npc('sg_otaku_b'),
           jp: '角で何がわかんねん……。',
           zh: '看个角能看出什么来啊……',
           en: 'What can you tell from a corner…'
@@ -425,7 +427,7 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
       id: 'shop_sg_atari',
       script: [
         { type: 'narration', zh: '扭蛋机那一排一直有"咔啦咔啦"的声音，像下雨。', en: 'The row of gacha machines makes a constant clatter, like rain.' },
-        { type: 'narration', zh: '你旁边一个穿校服的女生已经转了第七次。她拧开蛋壳，看了一眼，整个人僵住了。', en: 'The girl in school uniform beside you is on her seventh turn. She twists open the capsule, looks, and freezes.' },
+        { type: 'narration', characterImage: npc('sg_gacha_girl'), zh: '你旁边一个穿校服的女生已经转了第七次。她拧开蛋壳，看了一眼，整个人僵住了。', en: 'The girl in school uniform beside you is on her seventh turn. She twists open the capsule, looks, and freezes.' },
         {
           type: 'speech', speakerZh: '穿校服的女生', speakerEn: 'Girl in Uniform',
           jp: '……やった！当たった！やっと出たー！',
@@ -452,7 +454,7 @@ export const SHOP_SCENES: Record<ShopKind, ShopScene[]> = {
           words: [{ jp: 'いかが', zh: '如何（礼貌说法）', en: 'how (polite)' }]
         },
         {
-          type: 'speech', speakerZh: '客人', speakerEn: 'Customer',
+          type: 'speech', speakerZh: '客人', speakerEn: 'Customer', characterImage: npc('uq_customer'),
           jp: 'ちょっと大きかったです。ワンサイズ下、ありますか？',
           zh: '有点大。有小一号的吗？',
           en: 'A bit big. Do you have one size down?'

@@ -77,12 +77,19 @@ export const generate = async ({ parts, model = DEFAULT_IMAGE_MODEL, aspectRatio
     if (imageSize) generationConfig.imageConfig.imageSize = imageSize;
   }
   const payload = JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig });
+  // 不写项目的话 Vertex 按就近原则分到某个区域（实测是 asia-southeast1），那里画图模型很容易 429。
+  // 写了 GEMINI_VERTEX_PROJECT 就走 global 端点（或 GEMINI_VERTEX_LOCATION 指定的区域），容量大得多
+  const proj = process.env.GEMINI_VERTEX_PROJECT;
+  const vertexPath = proj
+    ? `/v1/projects/${proj}/locations/${process.env.GEMINI_VERTEX_LOCATION || 'global'}/publishers/google/models/${model}:generateContent`
+    : `/v1/publishers/google/models/${model}:generateContent`;
   const call = () => backend === 'vertex'
-    ? post('aiplatform.googleapis.com', `/v1/publishers/google/models/${model}:generateContent`, key, payload)
+    ? post('aiplatform.googleapis.com', vertexPath, key, payload)
     : post('generativelanguage.googleapis.com', `/v1beta/models/${model}:generateContent`, key, payload);
   // 429 = 每分钟的配额满了（Vertex 的画图模型限速比较紧），等一会儿再试；被拒的请求不收费
   let j = await call();
-  for (const wait of [30, 60, 120, 240]) {
+  // 批量跑的时候几路并发一起抢每分钟的额度，多等几轮总能排上
+  for (const wait of [30, 60, 90, 120, 180, 240, 300, 300, 300]) {
     if (j.error?.code !== 429) break;
     console.log(`[gemini] 429 配额暂满，${wait} 秒后重试…`);
     await new Promise(r => setTimeout(r, wait * 1000));

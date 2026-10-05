@@ -238,7 +238,7 @@ const CH3: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}summer_neutral_alt.webp`,
+    characterImage: `${I}summer_neutral.webp`,
     jp: 'ここに来て、ちゃんと名乗った者だけを書く。……そう多くはない。',
     zh: '来了这儿、而且好好报过名字的，才写进来。……不算多。',
     en: 'Only those who came here and actually gave me their name go in it. There are not many.',
@@ -282,7 +282,7 @@ const CH3: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}summer_curious.webp`,
+            characterImage: `${I}summer_surprised.webp`,
             jp: '数えたことはないが……ほぼ毎日じゃな。二年と、少し。',
             zh: '没数过……不过差不多是每天。两年，多一点。',
             en: 'I never counted. Nearly every day, though. Two years and a bit.',
@@ -380,7 +380,7 @@ const CH4: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}knit_thinking.webp`,
+    characterImage: `${I}knit_neutral.webp`,
     jp: 'お主、なぜ毎日来る。',
     zh: '你啊，为什么每天来。',
     en: 'You. Why do you come every day.',
@@ -458,7 +458,7 @@ const CH4: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}knit_thinking.webp`,
+            characterImage: `${I}knit_neutral.webp`,
             jp: '……ほう。',
             zh: '……哦。',
             en: '...Oh.',
@@ -542,14 +542,14 @@ const CH5: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${I}gown_serious.webp`,
+    characterImage: `${I}gown_neutral.webp`,
     zh: '她站在鸟居底下，穿着你没见过的那身，一动不动。你走过去的时候她没有看你。',
     en: 'She is standing under the torii in something you have not seen her wear, perfectly still. She does not look at you as you come over.'
   },
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}gown_serious.webp`,
+    characterImage: `${I}gown_neutral.webp`,
     jp: 'この鳥居はな、一度倒れておる。',
     zh: '这个鸟居啊，倒过一次。',
     en: 'This torii came down once.',
@@ -564,7 +564,7 @@ const CH5: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}gown_cold.webp`,
+    characterImage: `${I}gown_neutral.webp`,
     jp: '五時四十六分。まだ暗かった。',
     zh: '五点四十六分。天还没亮。',
     en: 'Five forty-six. It was still dark.',
@@ -598,7 +598,7 @@ const CH5: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}gown_cold.webp`,
+            characterImage: `${I}gown_neutral.webp`,
             jp: 'わしはいつも一人じゃ。……あの朝は、それが少し長かった。',
             zh: '我一直都是一个人。……那天早上，只是有点长。',
             en: 'I am always on my own. ...That morning it went on a little longer than usual.',
@@ -623,7 +623,7 @@ const CH5: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}gown_cold.webp`,
+            characterImage: `${I}gown_neutral.webp`,
             jp: '……あやつも、こうして黙って立っておった。',
             zh: '……那个人当年也是这样，一声不吭站着。',
             en: '...He used to stand like this too. Not saying anything.',
@@ -650,7 +650,7 @@ const CH5: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}gown_neutral_alt.webp`,
+    characterImage: `${I}gown_neutral.webp`,
     jp: '一度目のことは、あの帳面みたいなものにしか残っておらん。',
     zh: '第一次的事，只留在那种本子里了。',
     en: 'The first time only survives in things like that notebook of yours.',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, GameCalendar } from '../types';
-import { dayLabel, dayMood, dayKindOf } from '../data/calendarLife';
+import { dayLabel, dayMood, dayKindOf, cultureFestivalDay } from '../data/calendarLife';
 import { RestPlan } from '../data/restDayPlans';
 
 // ---------------------------------------------------------
@@ -54,8 +54,11 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
     ? ({ morning: 'MORNING', lunch: school ? 'LUNCH BREAK' : 'DAYTIME', afternoon: school ? 'AFTER SCHOOL' : 'AFTERNOON', night: 'NIGHT' } as Record<string, string>)[slot]
     : ({ morning: '早晨', lunch: school ? '午休' : '白天', afternoon: school ? '放学后' : '下午', night: '夜里' } as Record<string, string>)[slot];
 
+  const fest = cultureFestivalDay(calendar);
   const heading =
-    slot === 'morning'
+    fest && slot === 'morning'
+      ? (en ? 'Festival day. No lessons.' : '港见祭。今天不上课。')
+    : slot === 'morning'
       ? (school ? (en ? 'Are you going in today?' : '今天还去学校吗？') : (en ? 'What are you doing today?' : '今天要怎么过？'))
     : slot === 'lunch'
       ? (school ? (en ? 'Lunch break. What now?' : '午休做什么？') : (en ? 'What now?' : '白天做什么？'))
@@ -63,7 +66,11 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
       ? (school ? (en ? 'School is out. What now?' : '放学后做什么？') : (en ? 'The afternoon. What now?' : '下午做什么？'))
       : (en ? 'Tonight?' : '今晚做什么？');
   const mood =
-    slot === 'morning'
+    fest && slot === 'morning'
+      ? (fest === 1
+          ? (en ? 'The school has become another place for two days. Your class opens at nine.' : '学校在这两天里变成了另一个地方。你们班九点开张。')
+          : (en ? 'Open to the public today. Tonight there is a bonfire on the field.' : '今天对外开放。晚上操场中间会点起篝火。'))
+    : slot === 'morning'
       ? (school
           ? (en ? 'There are lessons today. Nothing is stopping you from not going, except what it costs.' : '今天有课。没有人拦着你不去，只有代价。')
           : dayMood(calendar, language))

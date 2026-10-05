@@ -92,6 +92,8 @@ const buildSituationBlock = (situation: ChatSituation | undefined, origin: 'stra
     - Weather: ${situation.weather}
     - ${situation.inPerson ? 'Where you are' : 'Where the PLAYER is (you are somewhere else, wherever you would plausibly be at this hour)'}: ${situation.sceneLabel}
     - Channel: ${situation.inPerson ? 'FACE TO FACE — you are standing/sitting in front of each other right now.' : 'BY PHONE — you are NOT in the same place. You are typing.'}
+    ${situation.inPerson && situation.outfitNow ? `- What you are wearing right now: ${situation.outfitNow.desc} — so your JSON "outfit" value MUST be "${situation.outfitNow.key}" (keep it unless the clothes actually change in the story).` : ''}
+    ${situation.occasion ? `- How this meeting came about: ${situation.occasion}` : ''}
     ${situation.playerName ? `- The player's name: ${situation.playerName}${origin === 'acquainted' ? ' — you already know this name. Never ask for it; address them by it (or by the form of address your familiarity level gives).' : ' — but you only know it once they tell you.'}` : ''}
 
     RULES ABOUT THIS (violating these breaks the game):
@@ -469,6 +471,10 @@ export interface ChatSituation {
   playerName?: string;
   // 剧情走到哪儿了：已经发生过的关键节点，用来挡住"还没发生的事"
   storyNotes?: string[];
+  // 她现在穿着什么（衣柜键 + 描述）。由场合决定（海边=泳衣、约会=换过的私服…）
+  outfitNow?: { key: string; desc: string };
+  // 这次见面是怎么来的（约会、万圣节、文化祭……）
+  occasion?: string;
 }
 
 export interface StartChatOptions {

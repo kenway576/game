@@ -169,6 +169,8 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
   },
   {
     type: 'narration',
+    // 三宫站检票口的年轻母亲（立绘重制第二轮补画）
+    characterImage: '/images/characters/npc_pro_mother.webp',
     zh: '出闸机前面有一位年轻母亲，两只手上挂满了袋子，另外还要腾出一只手牵孩子——这个算术显然不成立，于是有东西掉了下来。是一本儿童画册。',
     en: 'In front of the gates there was a young mother with bags hanging off both hands and a child who also needed a hand, which is arithmetic that does not work, and so something fell. It was a picture book.'
   },
@@ -269,7 +271,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
         setFlags: ['prologue_ignored_mother'],
         then: [
           {
-            type: 'narration',
+            type: 'narration', characterImage: '',
             zh: '你把视线移开，拉着行李箱从画册旁边绕了过去。轮子在瓷砖地上滚过，发出很响的声音。',
             en: 'You look away and wheel your suitcase around the fallen book. The casters rattle loudly across the tile.'
           },
@@ -301,7 +303,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     subtitleEn: '4:30 PM · Amber gold sunlight'
   },
   {
-    type: 'narration',
+    type: 'narration', characterImage: '',
     zh: '拉着行李箱沿北野坡道一路向上。坡度陡得让你鼻尖冒汗，行李箱的轮子在石板缝里一路磕磕绊绊。',
     en: 'You drag the suitcase up the Kitano slope. It is steep enough to bring sweat to the bridge of your nose, and the wheels catch in every seam of the cobblestones.'
   },

@@ -30,7 +30,7 @@ const MAK = '/images/characters/maki/';
 const CAMEO_REI: StoryNode[] = [
   {
     type: 'narration',
-    characterImage: `${REI}casual_reading.webp`,
+    characterImage: `${REI}casual_neutral.webp`,
     zh: '快到坡道口时，你在一栋洋馆的门前看见一个人。红框眼镜，一手托着摊开的书，正仰头对着门楣上的雕花较劲——从你走过到走远，她一次都没有低头。',
     en: 'Near the foot of the slope you pass someone standing at the door of one of the old Western houses. Red-framed glasses, an open book balanced on one hand, chin tilted up at a carving above the doorway. From the moment you pass her to the moment you are gone, she never once looks down.'
   },

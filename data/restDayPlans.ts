@@ -1,4 +1,6 @@
-import { CharacterId, GameCalendar, StoryFlags, StoryNode, FamiliarityMap, TimeSlot } from '../types';
+import { CharacterId, GameCalendar, StoryFlags, StoryNode, FamiliarityMap, TimeSlot, ChatPick } from '../types';
+import { cultureFestivalDay, isHalloween } from './outfitContext';
+import { buildHalloween, buildFestivalDay1, buildFestivalDay2 } from '../story/festivalEvents';
 import { DayKind, dayKindOf } from './calendarLife';
 import {
   seasonOf, HOME_DAY, STUDY_DAY, PART_TIME, CHORES_DAY,
@@ -48,6 +50,8 @@ export interface RestPlan {
   doneFlag: (ctx: RestPlanCtx) => string;
   // 哪些时段能选。不写：一整天的、跟上学有关的只在早上；半天的到下午都还来得及。
   slots?: TimeSlot[];
+  // 演完之后接谁的面对面对话（剧情里选的那个人）。flag → 她是谁、穿什么
+  chatPicks?: (ctx: RestPlanCtx) => Record<string, ChatPick>;
 }
 
 // 只在早上成立的那几样：去不去上学、做不做便当，过了早上就没有意义了
@@ -85,6 +89,39 @@ const CLUBS: { id: string; char: CharacterId; icon: string; zh: string; en: stri
 ];
 
 export const REST_PLANS: RestPlan[] = [
+  // ---- 🎪 港见祭。这两天不上课，"去上学"就是去文化祭。 ----
+  {
+    id: 'culture_festival_1', icon: '🎪', kinds: ANY, wholeDay: true,
+    titleZh: '港见祭 · 第一天', titleEn: 'Minatomi Festival · Day One',
+    descZh: '二年B班的女仆咖啡开张了。菜单是明日香定的，价格是铃算的，装饰是光贴的——贴得太多了。',
+    descEn: '2-B\'s maid café opens. Asuka set the menu, Rei did the prices, Hikari did the decorations. Far too many.',
+    script: ctx => buildFestivalDay1(ctx.met, ctx.flags).script,
+    chatPicks: ctx => buildFestivalDay1(ctx.met, ctx.flags).picks,
+    available: ctx => cultureFestivalDay(ctx.calendar) === 1 && !!ctx.flags['day1_done'],
+    doneFlag: () => 'festival_day1_done'
+  },
+  {
+    id: 'culture_festival_2', icon: '🏮', kinds: ANY, wholeDay: true,
+    titleZh: '港见祭 · 第二天与后夜祭', titleEn: 'Minatomi Festival · Day Two and the closing night',
+    descZh: '对外开放的一天。晚上操场中间会点起篝火，最后一支土风舞，不换舞伴。',
+    descEn: 'Open to the public. At night a bonfire on the field, and one last folk dance with no changing partners.',
+    script: ctx => buildFestivalDay2(ctx.met).script,
+    chatPicks: ctx => buildFestivalDay2(ctx.met).picks,
+    available: ctx => cultureFestivalDay(ctx.calendar) === 2 && !!ctx.flags['day1_done'],
+    doneFlag: () => 'festival_day2_done'
+  },
+  // ---- 🎃 万圣节。放学后到夜里都来得及。 ----
+  {
+    id: 'halloween', icon: '🎃', kinds: ANY, wholeDay: false, slots: ['afternoon', 'night'],
+    titleZh: '北野坂的万圣节', titleEn: 'Halloween on Kitano-zaka',
+    descZh: '光在群里说：仮装必須！没变装的人有惩罚游戏。后面跟了十一个南瓜。',
+    descEn: 'Hikari in the group chat: costumes compulsory! A forfeit for anyone who does not. Followed by eleven pumpkins.',
+    script: ctx => buildHalloween(ctx.met).script,
+    chatPicks: ctx => buildHalloween(ctx.met).picks,
+    available: ctx => isHalloween(ctx.calendar) && !!ctx.flags['day1_done'],
+    doneFlag: () => 'halloween_done'
+  },
+
   // ---- 出门。永远在，也永远不算"用掉了今天"。 ----
   {
     id: 'go_out', icon: '🚶', kinds: ALL, wholeDay: false,
@@ -215,7 +252,9 @@ export const REST_PLANS: RestPlan[] = [
     descZh: '三十六个纸箱要糊成一条商店街。铃说第三层会塌。她算了两遍。',
     descEn: 'Thirty-six boxes have to become a shopping street. Rei says the third tier will collapse. She checked twice.',
     script: () => GROUP_FESTIVAL_EVE,
-    available: ctx => ctx.calendar.month === 10 || ctx.calendar.month === 11
+    // 前夜就是前夜：港见祭是 11/1，所以只有 10/31 这一天。那天晚上也是万圣节——
+    // 选了通宵就去不了北野坂，选了北野坂就没有通宵。一天只有一个晚上。
+    available: ctx => ctx.calendar.month === 10 && ctx.calendar.day === 31
       ? [CharacterId.ASUKA, CharacterId.REI, CharacterId.NAO, CharacterId.MIYUKI].every(c => knows(ctx, c, 110))
       : false,
     doneFlag: () => 'restday_group_festival_eve'
@@ -276,12 +315,16 @@ export const REST_PLANS: RestPlan[] = [
 // 夜里打开它不该还列着「去上学」。
 // 「出门逛逛」不在这里：面板上方那排「现在能做的事」里已经有出门了。
 // 上学日的午休也不给安排——午休是校内的时间，翘课出校门走面板上方那一项。
-export const plansFor = (ctx: RestPlanCtx): RestPlan[] => {
+const SCHOOLGOING = new Set(['go_school', 'skip_sleep', 'skip_wander']);
+
+export const plansFor =(ctx: RestPlanCtx): RestPlan[] => {
   const kind = dayKindOf(ctx.calendar);
   const slot = ctx.calendar.timeSlot;
   if (kind === 'school' && slot === 'lunch') return [];
   return REST_PLANS.filter(p => {
     if (p.id === 'go_out') return false;
+    // 港见祭那两天没有课：不能"去上学"，也就谈不上翘课
+    if (cultureFestivalDay(ctx.calendar) && SCHOOLGOING.has(p.id)) return false;
     if (!slotsOf(p).includes(slot)) return false;
     if (!p.kinds.includes(kind)) return false;
     if (!p.available(ctx)) return false;

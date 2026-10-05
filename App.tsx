@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode, PhoneChatMsg, StoryBgmTrack } from './types';
 import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, findLevelStory, isLevelStoryReady, appendDay1Memories, DAY1_MEMORIES, LEVEL_STORIES, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver } from './constants';
 import { scriptFitsNow } from './story/timeContext';
-import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK, charName } from './constants';
+import { CHARACTERS, SCENE_MAP, CHARACTER_ROOMS, DEFAULT_SCENE, UI_TEXT, ALL_CHARACTER_IDS, VISIBLE_CHARACTER_IDS, createCharacterRecord, AFFECTION_MAX, AFFECTION_DELTA_SCALE, AFFECTION_LEVELS, FAMILIARITY_MAX, FAMILIARITY_DELTA_SCALE, FAMILIARITY_LEVELS, SAVE_SLOT_PREFIX, API_KEY_STORAGE_KEY, MODEL_STORAGE_KEY, CUSTOM_BASE_URL_STORAGE_KEY, CUSTOM_MODEL_NAME_STORAGE_KEY, CUSTOM_MODEL_VALUE, MAX_SLOTS, RECENT_HISTORY_COUNT, MEMORY_UPDATE_EVERY, SAVE_MESSAGES_LIMIT, SAVE_HISTORY_PER_CHAR, SAVE_MESSAGES_LIMIT_HARD, SAVE_HISTORY_PER_CHAR_HARD, getAffectionLevelIndex, getFamiliarityLevelIndex, getRomanceCeiling, getInitialFamiliarity, getSeedMemory, getRelationshipProfile, isEmotionUnlocked, rollFateDice, QUIZ_CORRECT_LUCK_LEVELS, QUIZ_CORRECT_AFFECTION_BONUS, QUIZ_CORRECT_FAMILIARITY_BONUS, getDiceAffectionFloor, getDiceFamiliarityFloor, EMOTION_SYNONYMS, WARDROBE, detectOutfitRequest, getUnlockedOutfits, getWearableOutfits, getUnlockedScenes, OUTFIT_UNLOCKS, SCENE_UNLOCKS_BY_LEVEL, FAMILIARITY_GATED_OUTFIT_LEVELS, ROMANCE_GATED_OUTFIT_LEVELS, INITIAL_PROTAGONIST_STATS, INITIAL_CALENDAR_STATE, SCENE_FALLBACK, charName } from './constants';
 import { startChat, sendMessage, translateText, summarizeMemory, buildOpeningBrief, sendPhoneChat } from './services/geminiService';
 import { audioManager, handleUiClickSfx } from './services/audioManager';
 import type { DialoguePage } from './types';
@@ -88,6 +88,11 @@ import { consumeFor } from './data/cookData';
 import type { LifeState, FishDef, RecipeDef } from './types';
 import type { MapLocation, MapEventDef } from './types';
 import { DAY1_SCRIPT } from './story/day1Data';
+import InviteModal, { InviteCandidate } from './components/InviteModal';
+import { buildDateScript, dateOccasionNote, askedTodayFlag, datedTodayFlag, datedSpotFlag, WearReason } from './data/dateData';
+import { DateSpot, DATE_SPOTS } from './story/dateSpots';
+import { pickContextOutfit, OUTFIT_LABEL, cultureFestivalDay } from './data/outfitContext';
+import type { ChatPick } from './types';
 import { DAY1_GUARANTEED_FLAGS, missingSafetyFlags } from './story/flagRepair';
 import { DAY1_VERSION, DAY1_PROGRESS_KEY } from './story/day1Meta';
 import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
@@ -317,7 +322,13 @@ const App: React.FC = () => {
   // 正在播的专属剧情（手写剧本走 StoryScreen，和序章同一套引擎）
   const [activeLevelStory, setActiveLevelStory] = useState<{ charId: CharacterId; def: LevelStoryDef } | null>(null);
   // 🗺️ 出门：正在走的那一趟。event 为 null 表示今天这地方没戏，播空转旁白。
-  const [activeTrip, setActiveTrip] = useState<{ loc: MapLocation; event: MapEventDef | null; script: StoryNode[] } | null>(null);
+  // chatPick / chatPicks：演完之后接谁的面对面对话、她穿什么（约会是固定一个人，
+  // 万圣节和文化祭是剧情里选的那个人——按选项置的 flag 对应）。
+  const [activeTrip, setActiveTrip] = useState<{ loc: MapLocation; event: MapEventDef | null; script: StoryNode[]; chatPick?: ChatPick; chatPicks?: Record<string, ChatPick> } | null>(null);
+  // 💌 约人出去的面板
+  const [showInvite, setShowInvite] = useState(false);
+  // 下一次 enterChat 要用的衣服和"这次见面是怎么来的"。用一次就清掉。
+  const chatExtraRef = useRef<{ outfit: string; note: string } | null>(null);
   // 🌱🎣 课余生活：钱包 / 背包 / 花盆 / 鱼图鉴，合成一份存
   const [life, setLife] = useState<LifeState>(INITIAL_LIFE_STATE);
   const [activeStore, setActiveStore] = useState<StoreKind | null>(null);
@@ -837,6 +848,8 @@ const App: React.FC = () => {
     closeRestPlan();
     const script = plan.script(restPlanCtx);
     const done = plan.doneFlag(restPlanCtx);
+    const pickMap = plan.chatPicks ? plan.chatPicks(restPlanCtx) : undefined;
+    const picks = pickMap && Object.keys(pickMap).length ? pickMap : undefined;
     // 🎒 去上学 → 直接演今天早上那节课，不用再回大厅点一次。
     if (plan.id === 'go_school') { goToClass(); return; }
     // 🍱 早上做便当 → 打开厨房。做完（或者不做）回来还能去上学，
@@ -870,11 +883,77 @@ const App: React.FC = () => {
         timeCost: plan.wholeDay ? 3 : 1
       },
       event: null,
-      // 结尾补一个 effect 把"演过了"记下来，这样同一段不会一年演两次。
-      script: done ? [...script, { type: 'effect', setFlags: [done] }] : script
+      // 开头先把"选了谁"的那几个 flag 撤掉（!flag），结尾补一个 effect 把"演过了"记下来，
+      // 这样同一段不会一年演两次，演完也不会把上一次选的人当成这一次的。
+      script: [
+        ...(picks ? [{ type: 'effect', setFlags: Object.keys(picks).map(f => `!${f}`) } as StoryNode] : []),
+        ...script,
+        ...(done ? [{ type: 'effect', setFlags: [done] } as StoryNode] : [])
+      ],
+      chatPicks: picks
     });
     setGameMode(GameMode.LOBBY);
   };
+
+  // 💌 约会出发：她换好了衣服，剧本按地点演一段，演完坐下来接面对面的对话。
+  const startDate = (char: CharacterId, spot: DateSpot, outfit: string, wearReason?: WearReason) => {
+    setShowInvite(false);
+    audioManager.playSfx('confirm');
+    const script = buildDateScript({ char, spot, outfit, calendar: gameCalendar, flags: storyFlags, wearReason, affection: affectionMap[char] || 0 });
+    const day = dayIndex(gameCalendar);
+    // 约会去的地方如果正好是地图上的地点，外公那张地图上也记一笔"到过"
+    const mapLoc = findLocation(spot.scene);
+    if (mapLoc) setStoryFlags(prev => (prev[beenFlag(mapLoc.id)] ? prev : { ...prev, [beenFlag(mapLoc.id)]: true }));
+    noteMet(char);
+    setCurrentScene(spot.scene);
+    setActiveTrip({
+      loc: {
+        id: `date_${spot.id}`, district: 'sannomiya',
+        nameJp: spot.nameJp, reading: '', nameZh: spot.nameZh, nameEn: spot.nameEn,
+        blurbZh: spot.blurbZh, blurbEn: spot.blurbEn,
+        timeCost: spot.timeCost ?? 1,
+        ...(spot.stamina !== undefined ? { stamina: spot.stamina } : {})
+      },
+      // 事件 id 带着日期：每一次约会各是各的，进度存档也不会串到上一次去
+      event: {
+        id: `date_${char}_${spot.id}_d${day}`, locationId: `date_${spot.id}`, chars: [char],
+        titleZh: spot.nameZh, titleEn: spot.nameEn, script
+      },
+      script,
+      chatPick: {
+        char, outfit, scene: spot.endScene || spot.scene,
+        noteZh: dateOccasionNote(char, spot, outfit, false),
+        noteEn: dateOccasionNote(char, spot, outfit, true)
+      }
+    });
+    setGameMode(GameMode.LOBBY);
+  };
+
+  // 被拒了（没空 / 还不到时候）：今天不能再约她。"不去"的那种，親密度还是会涨一点——
+  // 你又多知道了一件关于她的事。
+  const inviteRefused = (char: CharacterId, kind: 'busy' | 'no') => {
+    setStoryFlags(prev => ({ ...prev, [askedTodayFlag(char, gameCalendar)]: true }));
+    if (kind === 'no') {
+      applyStoryRelations([{ char, familiarity: 2, reasonZh: '她拒绝了，但说得很清楚', reasonEn: 'She said no, and said it plainly' }]);
+    }
+  };
+
+  // 约谁：认识、聊过天、没在冷战、今天没拒绝过你、今天还有话可说
+  const inviteCandidates = (): InviteCandidate[] => metChars
+    .filter(c => VISIBLE_CHARACTER_IDS.includes(c) && storyFlags[`talked_${c}`])
+    .map(c => {
+      const fam = familiarityMap[c] ?? getInitialFamiliarity(c);
+      const aff = affectionMap[c] || 0;
+      const cand: InviteCandidate = { id: c, familiarity: fam, affection: aff, wearable: getWearableOutfits(c, fam, aff, storyFlags) };
+      if (riftFor(social, c, gameCalendar)) {
+        cand.blockedZh = '还在生你的气。'; cand.blockedEn = 'Still cross with you.';
+      } else if (storyFlags[askedTodayFlag(c, gameCalendar)]) {
+        cand.blockedZh = '今天已经问过她了。'; cand.blockedEn = 'You already asked her today.';
+      } else if (turnsLeft(social, c, gameCalendar, fam, true) <= 0) {
+        cand.blockedZh = '今天已经聊了很多了。'; cand.blockedEn = 'You have talked plenty today already.';
+      }
+      return cand;
+    });
 
   // 🎯 活动结算完、收尾那句旁白也播完之后，写一次自动存档。
   // 出门一趟本来不自动存；但练习进度（升到第几档）是玩家一点点攒的，刷新一下就没了太冤。
@@ -1387,6 +1466,8 @@ const App: React.FC = () => {
     && tripDayOn(gameCalendar.month, gameCalendar.day) === 0
     && classSlotNow() !== null
     && dayKindOf(gameCalendar) === 'school'
+    // 🎪 港见祭那两天去学校，但不上课
+    && !cultureFestivalDay(gameCalendar)
     && !storyFlags[classDoneFlag(gameCalendar, classSlotNow()!)]
     && !isSchoolYearOver(gameCalendar);
 
@@ -1529,6 +1610,26 @@ const App: React.FC = () => {
       goOut('🗺', school && slot === 'afternoon' ? '放学后出门' : '出门', school && slot === 'afternoon' ? 'Out after school' : 'Go out',
         '地图上现在开着的地方都能去：留在学校的社团教室，或者下山去街上。',
         'Anywhere open right now: the club rooms at school, or down the hill into town.');
+    }
+
+    // 💌 约人出去。放学后、休息日的白天和下午、还没出过门的夜里。
+    // 一天只约成一次；被拒了可以换个人问。
+    const inviteSlot = (slot === 'afternoon') || (slot === 'lunch' && !school) || (slot === 'night' && !gameCalendar.nightUsed);
+    if (inviteSlot && day1Done) {
+      const datedToday = !!storyFlags[datedTodayFlag(gameCalendar)];
+      const anyone = inviteCandidates().some(c => !c.blockedZh);
+      list.push({
+        id: 'invite', icon: '💌', primary: false,
+        titleZh: school && slot === 'afternoon' ? '放学后约个人出去' : '约个人出去',
+        titleEn: school && slot === 'afternoon' ? 'Ask someone out after school' : 'Ask someone out',
+        descZh: '发条消息，约她去咖啡店、海边、夏祭、夜景……她会回去换一身衣服再来。',
+        descEn: 'Send a message: a café, the beach, a festival, a night view... She will go home and change first.',
+        ...(tired ? tiredBlock
+          : datedToday ? { blockedZh: '今天已经约过一次了。', blockedEn: 'You have already been out with someone today.' }
+          : !anyone ? { blockedZh: '现在没有能约的人。', blockedEn: 'There is nobody you can ask right now.' }
+          : {}),
+        onSelect: run(() => setShowInvite(true))
+      });
     }
 
     // 回房间（上学日的午休人在学校，回不了家）
@@ -2247,6 +2348,19 @@ const App: React.FC = () => {
     }));
     if (trip?.event?.chars?.length) markMet(trip.event.chars);
     setActiveTrip(null);
+    // 💌🎃🎪 约会 / 万圣节 / 文化祭：演完接着跟她面对面聊，她还穿着剧本里那一身。
+    // 约会是固定的一个人；节日是剧情里选的那个人（选项置的 flag）。
+    const tripPick = activeTrip?.chatPick
+      ?? (activeTrip?.chatPicks ? Object.entries(activeTrip.chatPicks).find(([f]) => flags[f])?.[1] : undefined);
+    if (tripPick && !pendingEncounter) {
+      chatExtraRef.current = {
+        outfit: tripPick.outfit,
+        note: userState.language === 'en' ? tripPick.noteEn : tripPick.noteZh
+      };
+      setChatInPerson(true);
+      const anchor = tripPick.scene && SCENE_MAP[tripPick.scene] ? tripPick.scene : null;
+      setTimeout(() => enterChat(tripPick.char, ChatMode.FREE_TALK, anchor), 0);
+    }
     // 碰到了人就直接进面对面的对话，不用回大厅再点一次
     if (pendingEncounter) {
       const who = pendingEncounter;
@@ -2810,7 +2924,7 @@ const App: React.FC = () => {
               apiKey: customApiKey, modelName: effectiveModelName, history: (data.messages || []).slice(-RECENT_HISTORY_COUNT),
               affection: affectionValue, familiarity: familiarityValue, baseUrl: effectiveBaseUrl,
               memory: (data.memoryMap || {})[charId] || getSeedMemory(charId), resume: false,
-              unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
+              unlockedOutfits: getWearableOutfits(charId, familiarityValue, affectionValue, data.storyFlags || {}),
               unlockedScenes: getUnlockedScenes(familiarityValue),
               // 读档恢复会话时同样要带上序章痕迹，否则 AI 会退回"素不相识"
               encounterOverride: getEncounterOverride(charId, data.storyFlags || {}, data.prologueDone ?? true, Array.isArray(data.metChars) ? data.metChars : [...VISIBLE_CHARACTER_IDS])
@@ -2955,6 +3069,11 @@ const App: React.FC = () => {
         shared.push(en ? 'Apr 12: the player came to the gym after school as promised and shot hoops with her' : '4/12 放学后主角按约定来了体育馆，陪她投了篮');
       if (storyFlags[`day2_${charId}_missed`])
         shared.push(en ? 'Apr 12: the player did NOT come to the meeting you two agreed on — they went to meet someone else instead' : '4/12 主角没来赴你们说好的约——他去见了别人');
+      // 💌 一起去过的约会地点
+      const dated = DATE_SPOTS.filter(s => storyFlags[datedSpotFlag(charId, s.id)]).map(s => en ? s.nameEn : s.nameZh);
+      if (dated.length) shared.push((en ? 'Went on dates together to: ' : '一起约会去过：') + dated.join(en ? ', ' : '、'));
+      if (storyFlags[`halloween_with_${charId}`]) shared.push(en ? 'Walked Kitano-zaka together on Halloween, both in costume' : '万圣节一起在北野坂走了一圈，你穿着变装');
+      if (storyFlags[`fest2_with_${charId}`]) shared.push(en ? 'Went round the school festival together and danced the last folk dance at the closing bonfire' : '文化祭第二天一起逛了一下午，后夜祭的最后一支土风舞是和主角跳的');
       if (charId === CharacterId.SORA && storyFlags['basketball_tutorial_done'])
         shared.push(en ? 'You taught the player how to play the shooting game and have played against each other' : '你教过主角玩投篮机，两个人比过投篮');
       if (shared.length) {
@@ -3007,7 +3126,19 @@ const App: React.FC = () => {
     setCurrentQuiz(null);
     setIsDialogueFinished(false);
     setCurrentEmotion('neutral');
-    setCurrentOutfit('');
+    // 👗 她穿什么：剧本指定的（约会、节日）优先；否则按场合挑——
+    // 海边是泳衣、夏祭是浴衣、休息日在街上碰见是当季的私服、上学日在学校里是校服。
+    // 以前这里一律清回默认，于是在须磨的海滩上碰见她，她也穿着校服。
+    const chatExtra = chatExtraRef.current;
+    chatExtraRef.current = null;
+    const famNow = familiarityMap[charId] ?? getInitialFamiliarity(charId);
+    const affNow = affectionMap[charId] || 0;
+    // 等级解锁的 + 剧情里穿过的（文化祭的女仆装、万圣节的变装……）
+    const unlockedNow = getWearableOutfits(charId, famNow, affNow, storyFlags);
+    const chatOutfit = chatExtra
+      ? chatExtra.outfit
+      : pickContextOutfit(charId, { scene: anchor, cal: gameCalendar, unlocked: unlockedNow });
+    setCurrentOutfit(chatOutfit);
     // 在哪儿碰见的，就在哪儿聊
     setCurrentScene(anchor || DEFAULT_SCENE);
     setChatAnchor(anchor);
@@ -3061,11 +3192,17 @@ const App: React.FC = () => {
           apiKey: customApiKey, modelName: effectiveModelName, history: isReunion ? pastHistory : [],
           affection: affectionValue, familiarity: familiarityValue, baseUrl: effectiveBaseUrl,
           memory: memoryMap[charId] || getSeedMemory(charId), resume: isReunion,
-          unlockedOutfits: getUnlockedOutfits(charId, familiarityValue, affectionValue),
+          // 剧本指定的衣服（万圣节的变装、文化祭的女仆装）可能还没"解锁"，
+          // 但她此刻确实穿着——加进可选表，免得模型把它当成非法值换掉
+          unlockedOutfits: chatOutfit && !unlockedNow.includes(chatOutfit) ? [...unlockedNow, chatOutfit] : unlockedNow,
           unlockedScenes: getUnlockedScenes(familiarityValue),
           openingBrief: isReunion ? '' : openingBrief,
           encounterOverride,
-          situation: buildSituation(chatInPerson, charId, anchor),
+          situation: {
+            ...buildSituation(true, charId, anchor),
+            outfitNow: { key: chatOutfit, desc: OUTFIT_LABEL[charId]?.[chatOutfit]?.desc || (chatOutfit || 'her default outfit') },
+            ...(chatExtra?.note ? { occasion: chatExtra.note } : {})
+          },
           onPage: stream.onPage
         }
       );
@@ -3086,7 +3223,9 @@ const App: React.FC = () => {
       setIsStreaming(false);
       setMessages(prev => stream.state.msgId ? prev.map(m => m.id === stream.state.msgId ? greetingMsg : m) : [greetingMsg]);
       setCurrentEmotion(result.emotion || 'neutral');
-      if (result.outfit) setCurrentOutfit(result.outfit);
+      // 开场白里的 outfit 只在模型明说"换了"的时候才认：衣服已经按场合定好了，
+      // 以前这里照单全收，模型随手写一个 casual 就把海边的泳衣换掉了。
+      if ((result as { outfitChange?: boolean }).outfitChange === true && result.outfit !== undefined) setCurrentOutfit(result.outfit);
 
       if (!anchor) updateSceneIfMatched(result.location);
 
@@ -3162,7 +3301,7 @@ const App: React.FC = () => {
     }
 
     // 👗 换装意图识别：玩家明说"换泳装/私服"等且该服装已解锁 → 提示 AI 配合，并在回复后强制换装（兜底）
-    const requestedOutfit = isInternalTrigger ? null : detectOutfitRequest(currentInput, selectedCharId, turnFamiliarity, affectionMap[selectedCharId] || 0);
+    const requestedOutfit = isInternalTrigger ? null : detectOutfitRequest(currentInput, selectedCharId, turnFamiliarity, affectionMap[selectedCharId] || 0, storyFlags);
     if (requestedOutfit) {
       outgoingText += `\n【システム：プレイヤーの要望通り、服装を「${requestedOutfit.outfit || 'デフォルト(制服/私服)'}」に着替える描写を自然に入れ、JSONに "outfit":"${requestedOutfit.outfit}" と "outfitChange":true を必ず設定すること。】`;
     }
@@ -3682,6 +3821,20 @@ ${wind}`;
           onPick={pickRestPlan}
           // 关掉 = 待会儿再说。面板随时能从大厅那个主按钮再打开。
           onSkip={closeRestPlan}
+        />
+      )}
+
+      {showInvite && (
+        <InviteModal
+          language={userState.language}
+          calendar={gameCalendar}
+          flags={storyFlags}
+          stamina={life.stamina ?? STAMINA_MAX}
+          yen={life.yen}
+          candidates={inviteCandidates()}
+          onGo={startDate}
+          onRefused={inviteRefused}
+          onClose={() => setShowInvite(false)}
         />
       )}
 

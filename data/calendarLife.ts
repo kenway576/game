@@ -189,6 +189,15 @@ export const dayKindOf = (cal: GameCalendar): DayKind => {
 
 export const isSchoolDay = (cal: GameCalendar): boolean => dayKindOf(cal) === 'school';
 
+// 🎪 港见祭：11/1（校内）、11/2（一般公开 + 后夜祭）。这两天上学但不上课。
+// 🎃 万圣节：10/31。照常上课，放学后北野坂有活动。
+export const CULTURE_FESTIVAL_DAYS: [number, number][] = [[11, 1], [11, 2]];
+export const cultureFestivalDay = (cal: GameCalendar): 0 | 1 | 2 => {
+  const i = CULTURE_FESTIVAL_DAYS.findIndex(([m, d]) => m === cal.month && d === cal.day);
+  return (i + 1) as 0 | 1 | 2;
+};
+export const isHalloween = (cal: GameCalendar) => cal.month === 10 && cal.day === 31;
+
 // 这一天叫什么。日历、大厅角标、日程面板共用一句。
 export const dayLabel = (cal: GameCalendar, language: Language): string => {
   const en = language === 'en';
@@ -196,6 +205,9 @@ export const dayLabel = (cal: GameCalendar, language: Language): string => {
   if (h) return en ? h.nameEn : `${h.nameZh}（${h.nameJp}）`;
   const v = vacationOn(cal);
   if (v) return en ? v.nameEn : `${v.nameZh}（${v.nameJp}）`;
+  const fest = cultureFestivalDay(cal);
+  if (fest) return en ? `Minatomi Festival, day ${fest}` : `港见祭 · 第${fest === 1 ? '一' : '二'}天`;
+  if (isHalloween(cal)) return en ? 'Halloween' : '万圣节';
   // 考试周照常上学，但它得有个名字——不然玩家不知道这一周为什么忽然不一样
   const ex = examOn(cal);
   if (ex && !isWeekend(cal)) return en ? ex.nameEn : `${ex.nameZh}（${ex.nameJp}）`;

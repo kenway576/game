@@ -79,7 +79,7 @@ export const INARI_STORY_3: StoryNode[] = [
   // ---- 中段：她把册子摊开 ----
   {
     type: 'narration',
-    characterImage: `${I}knit_thinking.webp`,
+    characterImage: `${I}knit_neutral.webp`,
     zh: '她把那本册子摊在膝盖上，翻到最后一页。那条空的横线还在。',
     en: 'She spreads the book across her knees and turns to the last page. The blank rule is still there.'
   },
@@ -150,7 +150,7 @@ export const INARI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}knit_thinking.webp`,
+            characterImage: `${I}knit_neutral.webp`,
             zh: '她整个人转过来看你，那种毫无准备的表情，你只在她捞破纸网的时候见过一次。',
             en: 'She turns her whole self towards you with the unprepared look you have seen exactly once before, over a torn paper scoop.'
           },
@@ -194,7 +194,7 @@ export const INARI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}knit_thinking.webp`,
+            characterImage: `${I}knit_neutral.webp`,
             zh: '她想了一下，然后问了一个非常认真的问题：「何時からじゃ」。',
             en: 'She thinks about it and then asks, entirely seriously, from what time.'
           },
@@ -234,7 +234,7 @@ export const INARI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}knit_thinking.webp`,
+            characterImage: `${I}knit_neutral.webp`,
             zh: '她看着那片空白，很久。',
             en: 'She looks at the blank space for a long time.'
           },
@@ -378,7 +378,7 @@ export const INARI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '稻荷', speakerEn: 'Inari',
-        characterImage: `${I}knit_thinking.webp`,
+        characterImage: `${I}knit_neutral.webp`,
         jp: '鉛筆じゃ。消せるようにな。',
         zh: '铅笔哦。为了能擦掉。',
         en: 'Pencil. So that it can be rubbed out.',

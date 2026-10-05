@@ -37,6 +37,9 @@ export const jukuTier = (cal: GameCalendar): JukuTier => {
 
 const SCENE = 'juku_night';
 
+// 补习班的老师（立绘重制第二轮补画）。他讲课的那几句挂上，散场就退场
+const TEACHER = '/images/characters/npc_juku_teacher.webp';
+
 // 一节课的正文。四档各写各的——同一段文字配四种收益，
 // 玩家两次就会发现这个地方是假的。
 const BODY: Record<JukuTier, StoryNode[]> = {
@@ -47,12 +50,12 @@ const BODY: Record<JukuTier, StoryNode[]> = {
       en: 'A Wednesday night in the ordinary part of the year: four people in the room. You take the booth by the window because you can see the viaduct from it.'
     },
     {
-      type: 'narration',
+      type: 'narration', characterImage: TEACHER,
       zh: '讲的是基础语法，进度慢得像在照顾谁。你后来发现照顾的就是你——老师讲到「〜ておく」的时候特意停下来，用了两个例句。',
       en: 'It is basic grammar, at a pace slow enough to be looking after somebody. You work out later that the somebody is you: at "-te oku" the teacher stops and gives two example sentences instead of one.'
     },
     {
-      type: 'narration',
+      type: 'narration', characterImage: '',
       zh: '九点半散场。你在楼梯口把讲义卷起来塞进书包，纸是热的。',
       en: 'They let you out at half nine. You roll the handout up and push it into your bag on the stairs. The paper is warm.'
     },
@@ -65,7 +68,7 @@ const BODY: Record<JukuTier, StoryNode[]> = {
   ],
   near: [
     {
-      type: 'narration',
+      type: 'narration', characterImage: TEACHER,
       zh: '人多了一倍。白板上多了一行字：出题范围。下面列着十二项，老师用红笔在其中四项上画了圈。',
       en: 'Twice as many people. There is a new line on the whiteboard: what the exam covers. Twelve items under it, four of them circled in red.'
     },
@@ -75,7 +78,7 @@ const BODY: Record<JukuTier, StoryNode[]> = {
       en: '"This will come up." He says it without qualifying it in any way. Every pen in the room moves at the same moment.'
     },
     {
-      type: 'narration',
+      type: 'narration', characterImage: '',
       zh: '你也在动。你甚至没完全听懂那句话，但你看懂了别人的手。',
       en: 'Yours moves too. You did not entirely follow the sentence, but you read everybody else’s hands.'
     },
@@ -97,7 +100,7 @@ const BODY: Record<JukuTier, StoryNode[]> = {
       en: 'The queue reaches the stairs. Somebody has brought a folding stool. Booths are drawn by lot and your number is written on the back of your hand.'
     },
     {
-      type: 'narration',
+      type: 'narration', characterImage: TEACHER,
       zh: '整堂冲刺课上老师只做一件事：把近三年的真题试卷并排摊开，冷酷地指出同一道考点是如何换了三种马甲卷土重来。',
       en: 'For the entire sprint lecture the teacher does one thing: laying out three years of past papers side by side, coldly revealing how the exact same exam point was repackaged three different ways.'
     },
@@ -107,7 +110,7 @@ const BODY: Record<JukuTier, StoryNode[]> = {
       en: 'Before letting you go he tells everybody to please sleep. The room laughs. Nobody intends to.'
     },
     {
-      type: 'narration',
+      type: 'narration', characterImage: '',
       zh: '踏出补习班大楼时已是夜深。三宫的夜雨不知何时已悄然停歇，湿漉漉的沥青路面在街灯倒影下泛着冷冽的青光。',
       en: 'It is late when you step out of the prep school. The rain over Sannomiya has ceased unannounced, the dark asphalt glistening beneath the streetlights.'
     },

@@ -291,8 +291,8 @@ export const STUDY_DAY: StoryNode[] = [
 
 export const PART_TIME: StoryNode[] = [
   { type: 'scene', scene: 'convenience_store_counter', bgm: 'store', titleZh: '八小时', titleEn: 'An Eight-Hour Shift', subtitleZh: '休息日 · 便利店', subtitleEn: 'Day off · The convenience store' },
-  { type: 'narration', zh: '西村店长说缺人，问你要不要来顶一天。时薪一千零五十日元。', en: 'The manager says they are short-handed and asks if you want a day. A thousand and fifty yen an hour.' },
-  { type: 'narration', zh: '「いらっしゃいませ」这句话你今天要说大约两百四十次。', en: 'You will say the welcome line roughly two hundred and forty times today.' },
+  { type: 'narration', characterImage: '/images/characters/npc_konbini_nishimura.webp', zh: '西村店长说缺人，问你要不要来顶一天。时薪一千零五十日元。', en: 'The manager says they are short-handed and asks if you want a day. A thousand and fifty yen an hour.' },
+  { type: 'narration', characterImage: '', zh: '「いらっしゃいませ」这句话你今天要说大约两百四十次。', en: 'You will say the welcome line roughly two hundred and forty times today.' },
   {
     type: 'choice',
     promptZh: '中午高峰，队排到了杂志架。收银机在你手上。',
@@ -306,7 +306,7 @@ export const PART_TIME: StoryNode[] = [
         setFlags: ['restday_parttime_rush'],
         then: [
           { type: 'narration', zh: '你按错了两次加热键，把一个大叔的便当加热了两遍。他说没关系，笑得很开心。', en: 'You hit the microwave twice on one bento. The man says it is fine and seems genuinely delighted.' },
-          { type: 'narration', zh: '一点十分，队没了。店长从后面出来，什么都没说，把一罐咖啡放在你手边。', en: 'At ten past one the queue is gone. The manager comes out from the back, says nothing, and puts a tin of coffee by your hand.' }
+          { type: 'narration', characterImage: '/images/characters/npc_konbini_nishimura.webp', zh: '一点十分，队没了。店长从后面出来，什么都没说，把一罐咖啡放在你手边。', en: 'At ten past one the queue is gone. The manager comes out from the back, says nothing, and puts a tin of coffee by your hand.' }
         ]
       },
       {
@@ -321,7 +321,7 @@ export const PART_TIME: StoryNode[] = [
       }
     ]
   },
-  { type: 'narration', zh: '晚上七点下班。八千四百日元，现金，装在一个小信封里。', en: 'Off at seven. Eight thousand four hundred yen, cash, in a small envelope.' },
+  { type: 'narration', characterImage: '', zh: '晚上七点下班。八千四百日元，现金，装在一个小信封里。', en: 'Off at seven. Eight thousand four hundred yen, cash, in a small envelope.' },
   { type: 'narration', zh: '你在回去的路上一直捏着那个信封。这是你在这个国家赚到的第一笔钱。', en: 'You hold the envelope the whole way home. It is the first money you have earned in this country.' },
   {
     type: 'effect', setFlags: ['restday_parttime_done'],
@@ -716,7 +716,7 @@ export const OUTING_AUTUMN: StoryNode[] = [
 export const OUTING_HATSUMODE: StoryNode[] = [
   { type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'night', titleZh: '初詣', titleEn: 'The First Visit', subtitleZh: '冬 · 元旦 · 生田神社', subtitleEn: 'Winter · New Year · Ikuta Shrine' },
   { type: 'narration', zh: '元旦零点，生田神社前的人潮从朱红鸟居一直蜿蜒排到了马路对面。寒风夹杂着参拜者的低语，大家搓着手在队列中寸寸挪动。', en: 'Midnight on New Year Day. The queue at Ikuta stretches from the vermilion torii across the street, people rubbing hands in the winter chill.' },
-  { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '明日香穿的是私服。你几乎没见过她穿私服，她自己也不太自在，一直在整理围巾。', en: 'Asuka is in her own clothes. You have almost never seen this, and neither has she; she keeps rearranging her scarf.' },
+  { type: 'narration', characterImage: `${ASUKA}winter_neutral.webp`, zh: '明日香穿的是私服：藏青大衣扣到最上面一颗，红格子围巾，一对白色的毛绒耳罩。你几乎没见过她穿私服，她自己也不太自在，一直在整理围巾。', en: 'Asuka is in her own clothes. You have almost never seen this, and neither has she; she keeps rearranging her scarf.' },
   { type: 'narration', characterImage: `${INARI}neutral.webp`, zh: '稻荷不用排队。你们排到一半的时候她已经站在里面了，靠着一根柱子，手里拿着一杯甜酒。', en: 'Inari does not queue. Halfway up you find her already inside, leaning on a pillar with a cup of amazake.' },
   { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}sly.webp`, jp: '毎年、この日だけは混むのう。年に一度、皆が思い出すのじゃ。', zh: '每年就这一天挤。一年一次，大家会想起来。', en: 'Only on this one day of the year. Once a year, everybody remembers.', color: 'bg-amber-500' },
   {
@@ -733,9 +733,9 @@ export const OUTING_HATSUMODE: StoryNode[] = [
         setFlags: ['restday_hatsumode_ema'],
         then: [
           { type: 'narration', zh: '你写了自己的，挂上去。挂的时候你听见旁边"咔"的一声，她也挂上了。', en: 'You write yours and hang it. Beside you there is a small knock as hers goes up too.' },
-          { type: 'narration', characterImage: `${ASUKA}shy.webp`, zh: '然后她伸手，把自己那块转了过来，正面朝你。', en: 'Then she reaches over and turns hers round, face towards you.' },
+          { type: 'narration', characterImage: `${ASUKA}winter_shy.webp`, zh: '然后她伸手，把自己那块转了过来，正面朝你。', en: 'Then she reaches over and turns hers round, face towards you.' },
           { type: 'narration', zh: '上面只有一行字，不是「一番になれますように」。是：「一番じゃなくても、いられますように」。', en: 'One line on it. Not that she may be first. That she may be all right even if she is not.' },
-          { type: 'narration', characterImage: `${ASUKA}shy.webp`, zh: '她转完就走了，走得很快，没有等你说任何话。', en: 'She turns and walks off fast, without waiting for you to say anything.' }
+          { type: 'narration', characterImage: `${ASUKA}winter_shy.webp`, zh: '她转完就走了，走得很快，没有等你说任何话。', en: 'She turns and walks off fast, without waiting for you to say anything.' }
         ]
       },
       {
@@ -1207,10 +1207,11 @@ export const GROUP_KARAOKE: StoryNode[] = [
 // ==========================================================
 
 export const GROUP_FESTIVAL_EVE: StoryNode[] = [
-  { type: 'scene', scene: 'classroom_sunset', bgm: 'night', titleZh: '文化祭前夜', titleEn: 'The Night Before', subtitleZh: '十一月 · 教室 · 晚上八点', subtitleEn: 'November · A classroom · Eight p.m.' },
+  { type: 'scene', scene: 'classroom_sunset', bgm: 'night', titleZh: '文化祭前夜', titleEn: 'The Night Before', subtitleZh: '十月三十一日 · 教室 · 晚上八点', subtitleEn: '31 October · A classroom · Eight p.m.' },
   { type: 'narration', zh: '明天开幕。今晚要把三十六个纸箱糊成一条商店街。', en: 'It opens tomorrow. Tonight, thirty-six cardboard boxes have to become a shopping street.' },
-  { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '明日香贴了一张进度表在黑板上。表上把今晚切成了十五分钟一格。', en: 'Asuka has taped a schedule to the blackboard. It divides the night into fifteen-minute blocks.' },
-  { type: 'narration', characterImage: `${REI}neutral.webp`, zh: '铃在算承重。她说按现在的糊法，第三层会塌。她算了两遍。', en: 'Rei is calculating load. She says the third tier will collapse as currently glued. She has checked twice.' },
+  { type: 'narration', characterImage: `${ASUKA}gym_neutral.webp`, zh: '明日香已经换上了体操服，说通宵干活还穿裙子是不合理的，哨子照样挂在脖子上。她贴了一张进度表在黑板上，表上把今晚切成了十五分钟一格。', en: 'Asuka has already changed into her PE kit, on the grounds that working all night in a skirt is irrational, whistle still round her neck. She has taped a schedule to the blackboard. It divides the night into fifteen-minute blocks.' },
+  { type: 'effect', setFlags: ['seen_outfit_asuka_gym', 'seen_outfit_rei_gym'] },
+  { type: 'narration', characterImage: `${REI}gym_neutral.webp`, zh: '铃的运动外套拉链拉到了下巴，正在算承重。她说按现在的糊法，第三层会塌。她算了两遍。', en: 'Rei is calculating load. She says the third tier will collapse as currently glued. She has checked twice.' },
   { type: 'narration', characterImage: `${NAO}happy.webp`, zh: '奈绪带了四个人的夜宵，装在一个比她还宽的袋子里。', en: 'Nao has brought supper for four in a bag wider than she is.' },
   { type: 'narration', characterImage: `${MIYUKI}school_neutral.webp`, zh: '深雪是被叫来当"成年人监护"的。她说她只坐着，然后马上开始糊纸箱。', en: 'Miyuki is here as the responsible adult. She says she will only sit, and immediately starts gluing boxes.' },
   { type: 'narration', zh: '十点，进度表落后一格。十二点，落后三格。两点，明日香把表撕了。', en: 'At ten they are one block behind. At midnight, three. At two, Asuka takes the schedule down.' },
@@ -1236,9 +1237,9 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
         ],
         setFlags: ['group_eve_rebuilt'],
         then: [
-          { type: 'narration', characterImage: `${REI}shy.webp`, zh: '铃愣了一下，然后从口袋里拿出一张纸。上面已经画好了改法。', en: 'Rei blinks, and takes a piece of paper out of her pocket. The revised method is already drawn on it.' },
+          { type: 'narration', characterImage: `${REI}gym_shy.webp`, zh: '铃愣了一下，然后从运动外套的口袋里拿出一张纸。上面已经画好了改法。', en: 'Rei blinks, and takes a piece of paper out of her pocket. The revised method is already drawn on it.' },
           { type: 'narration', zh: '她两个小时前就画好了。她没有拿出来，因为没有人问。', en: 'She drew it two hours ago. She did not produce it, because nobody asked.' },
-          { type: 'narration', characterImage: `${ASUKA}sad.webp`, zh: '明日香看了那张纸很久，然后说了句"ごめん"。', en: 'Asuka looks at the paper for a long time and says sorry.' },
+          { type: 'narration', characterImage: `${ASUKA}gym_sad.webp`, zh: '明日香看了那张纸很久，然后说了句"ごめん"。', en: 'Asuka looks at the paper for a long time and says sorry.' },
           { type: 'narration', zh: '四点四十，第三层立住了。五点，天开始亮。', en: 'At twenty to five the third tier stands. At five it starts getting light.' }
         ]
       },
@@ -1298,7 +1299,7 @@ export const GROUP_HANABI: StoryNode[] = [
   { type: 'narration', zh: '六个人约在三宫站的鸽子雕像前碰头。汹涌的人潮差点把队伍冲散，好不容易才在人头攒动中把走错出口的两个人捞了回来。', en: 'Six of you meet at the Sannomiya pigeon statue. The surging crowd nearly scatters everyone, and it takes time to round up the two who took the wrong exit.' },
   { type: 'narration', characterImage: `${NAO}yukata_happy.webp`, zh: '奈绪穿了浴衣。她说她自己系的腰带，说完就开始担心会不会散。', en: 'Nao is in a yukata. She says she tied the obi herself, and immediately starts worrying it will come undone.' },
   { type: 'narration', characterImage: `${ASUKA}yukata_smug.webp`, zh: '明日香也穿了浴衣，而且系得非常标准。她没有说是谁帮她系的。', en: 'Asuka is in a yukata too, immaculately tied. She does not say who tied it.' },
-  { type: 'narration', characterImage: `${SORA}kimono_laugh.webp`, zh: '空穿浴衣配了运动鞋。她说木屐跑不动。没有人问她今晚为什么需要跑。', en: 'Sora has paired hers with trainers, on the grounds that you cannot run in geta. Nobody asks why she expects to run tonight.' },
+  { type: 'narration', characterImage: `${SORA}kimono_happy.webp`, zh: '空穿浴衣配了运动鞋。她说木屐跑不动。没有人问她今晚为什么需要跑。', en: 'Sora has paired hers with trainers, on the grounds that you cannot run in geta. Nobody asks why she expects to run tonight.' },
   { type: 'narration', characterImage: `${MAKI}kimono_smug.webp`, zh: '真希的浴衣是租的，而且明显大了一号。她说这是故意的。', en: 'Maki’s is rented and visibly a size too big. She says that is deliberate.' },
   { type: 'narration', characterImage: `${HIKARI}yukata_happy.webp`, zh: '光带了六个人的水，装在一个保温包里。她说去年她中暑了。', en: 'Hikari has brought water for six in a cool bag. She says she got heatstroke last year.' },
   { type: 'narration', characterImage: `${MIYUKI}kimono_shy.webp`, zh: '深雪一直在数人头。你注意到了，因为你也在数。', en: 'Miyuki keeps counting heads. You notice, because you are doing it too.' },
@@ -1344,7 +1345,7 @@ export const GROUP_HANABI: StoryNode[] = [
           { type: 'narration', characterImage: `${MIYUKI}kimono_shy.webp`, zh: '深雪去了。她走之前把水递给你，说"ここ、お願いね"。', en: 'Miyuki goes. Before she does she hands you the water and asks you to hold it.' },
           { type: 'narration', zh: '深雪走后，你独自坚守着这片足以容纳六人的河堤野餐垫。周围人潮如织，接连有三拨游客上前询问能不能借个空位挤一挤。', en: 'For twenty minutes you hold a stretch of embankment big enough for six. Three separate groups ask whether they can squeeze in.' },
           { type: 'narration', zh: '你三次都说了"すみません、連れが来ます"。第三次你说得很流利，自己都吓了一跳。', en: 'Three times you say you are keeping it for people. The third time it comes out fluently, and startles you.' },
-          { type: 'narration', characterImage: `${SORA}kimono_laugh.webp`, zh: '她们回来的时候花火放到一半了。空手里牵着一个小孩，那个小孩的妈妈跟在后面一路道谢。', en: 'They come back halfway through. Sora is holding a child’s hand, and the child’s mother follows, thanking everybody.' }
+          { type: 'narration', characterImage: `${SORA}kimono_happy.webp`, zh: '她们回来的时候花火放到一半了。空手里牵着一个小孩，那个小孩的妈妈跟在后面一路道谢。', en: 'They come back halfway through. Sora is holding a child’s hand, and the child’s mother follows, thanking everybody.' }
         ]
       }
     ]

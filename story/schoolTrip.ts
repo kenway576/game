@@ -284,6 +284,32 @@ const DAY3: StoryNode[] = [
     zh: '门外站着七个人，其中三个不是这一层的。',
     en: 'Seven people outside, three of whom are not from this floor.'
   },
+  // 👗 睡衣。旅馆的夜里是全年唯一一次能看见她们穿睡衣的地方。
+  {
+    type: 'branch', ifFlag: 'day1_met_hikari',
+    then: [
+      { type: 'narration', characterImage: `${H}sleep_shy.webp`, zh: '打头的是光。淡黄色的小熊睡衣，帽子上两只圆耳朵，手里拎着一只小熊玩偶的胳膊。她说她睡不着，然后第一个冲进来占了最好的位置。', en: 'Hikari is at the front, in pale yellow bear pyjamas with two round ears on the hood and a teddy dangling by one arm. She says she could not sleep, and is first in to claim the best spot.' },
+      { type: 'speech', speakerZh: '光', speakerEn: 'Hikari', color: 'bg-sky-500', characterImage: `${H}sleep_happy.webp`, jp: 'えへへ……バレた？ 寝られへんくて、ちょっとだけ抜けてきてん。', zh: '嘿嘿……被发现了？睡不着，就偷偷溜出来一下。', en: 'Hehe... caught me? I could not sleep, so I slipped out for a bit.' },
+      { type: 'effect', setFlags: ['seen_outfit_hikari_sleep'] }
+    ]
+  },
+  {
+    type: 'branch', ifFlag: 'day1_met_rei',
+    then: [
+      { type: 'narration', characterImage: `${R}sleep_neutral.webp`, zh: '铃也来了。长长的薰衣草色睡裙，眼镜没摘，怀里抱着一本小书。她在角落里坐下来看你们打扑克，看了整整一个小时，然后说「ルールは理解しました」，第一局就赢了。', en: 'Rei comes too, in a long lavender nightgown with her glasses still on and a small book held to her chest. She sits in a corner watching the cards for an entire hour, then says she understands the rules, and wins her first hand.' },
+      { type: 'speech', speakerZh: '铃', speakerEn: 'Rei', color: 'bg-indigo-500', characterImage: `${R}sleep_shy.webp`, jp: '消灯時刻は過ぎています。……私もあなたも、規則違反ですね。', zh: '已经过了熄灯时间。……我和你，都违反规定了呢。', en: 'It is past lights-out. ...So we are both breaking the rules.' },
+      { type: 'effect', setFlags: ['seen_outfit_rei_sleep'] }
+    ]
+  },
+  {
+    type: 'branch', ifFlag: 'day1_met_asuka',
+    then: [
+      { type: 'narration', characterImage: `${A}sleep_surprised.webp`, zh: '十点半，门又被敲了一次。所有人一下子僵住，以为是老师。门外站着的是班长：粉色的星星睡衣，兔子拖鞋，双马尾松松地散了一点，怀里死死抱着一个枕头。', en: 'At half past ten there is another knock. Everybody freezes, thinking it is a teacher. It is the class rep: pink star pyjamas, bunny slippers, twin tails slightly loose, a pillow clutched to her chest.' },
+      { type: 'speech', speakerZh: '明日香', speakerEn: 'Asuka', color: 'bg-red-600', characterImage: `${A}sleep_surprised.webp`, jp: 'な、な、何見てんのよ！ これは、その、見回りよ！ 見回りに来ただけ！', zh: '你、你、你看什么看！这是，那个，巡查！我只是来巡查的！', en: 'Wh-wh-what are you looking at! This is, um, a patrol! I am only here on patrol!' },
+      { type: 'narration', characterImage: `${A}sleep_pout.webp`, zh: '她「巡查」了两个小时，中途输了四局扑克，每一局都要求重来。', en: 'She patrols for two hours, loses four hands of cards along the way, and demands a rematch after every one.' },
+      { type: 'effect', setFlags: ['seen_outfit_asuka_sleep'] }
+    ]
+  },
   {
     type: 'narration',
     zh: '接下来两个小时发生的事，事后回想全都记不清顺序：谁带了扑克，谁把零食全倒在中间那张矮桌上，谁在走廊尽头放了哨。',
