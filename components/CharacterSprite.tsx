@@ -3,6 +3,7 @@ import { Character } from '../types';
 import { SPRITE_OUTLINE, SPRITE_OUTLINE_WIDTH } from '../constants';
 import LivelySprite, { isLivelySprite } from './LivelySprite';
 import PuppetSprite, { hasPuppetRig } from './PuppetSprite';
+import IdleVideoSprite, { IDLE_VIDEOS } from './IdleVideoSprite';
 
 interface Props {
   character: Character;
@@ -11,6 +12,8 @@ interface Props {
   className?: string;
   // 'height'：按容器高度对齐（所有角色等高，宽图向两侧展开）；'contain'：完整塞进容器
   fit?: 'contain' | 'height';
+  // 大厅用：这张立绘有待机小视频就播视频。剧情里不开——表情要换、说话要点头
+  idleVideo?: boolean;
 }
 
 // 立绘描边 + 落地阴影：基于透明 PNG 的 alpha 轮廓，用 drop-shadow 画出白/黑圈
@@ -64,7 +67,9 @@ const getEmotionBubbleIcon = (emo: string): string | null => {
   return null;
 };
 
-const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSpeaking, className = "", fit = 'contain' }) => {
+const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSpeaking, className = "", fit = 'contain', idleVideo = false }) => {
+  const [videoFailed, setVideoFailed] = useState(false);
+  const videoSrc = idleVideo && !videoFailed ? IDLE_VIDEOS[character.avatarUrl] : undefined;
   const [hasError, setHasError] = useState(false);
   const [activeAnim, setActiveAnim] = useState<string>('');
   const [pokeCount, setPokeCount] = useState(0);
@@ -172,7 +177,17 @@ const CharacterSprite: React.FC<Props> = ({ character, emotion = 'neutral', isSp
         <div className="absolute inset-x-0 bottom-0 top-1/4 pointer-events-none bg-radial from-yellow-400/15 via-transparent to-transparent z-0 animate-pulse duration-1000" />
       )}
 
-      {hasPuppetRig(character.avatarUrl) ? (
+      {videoSrc ? (
+        // 🎞️ 待机小视频（components/IdleVideoSprite.tsx）：放不了就退回木偶
+        <div className={`h-full flex items-end ${isPoked ? 'galgame-anim-poke' : ''}`}>
+          <IdleVideoSprite
+            src={videoSrc}
+            className={`block h-full w-auto ${fit === 'height' ? 'max-w-none' : 'max-w-full'}`}
+            style={{ filter: buildSpriteFilter(isSpeaking) }}
+            onFallback={() => setVideoFailed(true)}
+          />
+        </div>
+      ) : hasPuppetRig(character.avatarUrl) ? (
         // 🎎 木偶：头、眼睛、尾巴各动各的（data/puppetRigs.ts 里标过骨骼的图）
         <div className={`h-full flex items-end ${isPoked ? 'galgame-anim-poke' : ''}`}>
           <PuppetSprite

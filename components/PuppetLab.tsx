@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import PuppetSprite from './PuppetSprite';
+import IdleVideoSprite, { IDLE_VIDEOS } from './IdleVideoSprite';
 import { PUPPET_RIGS } from '../data/puppetRigs';
 
 // ---------------------------------------------------------
@@ -42,7 +43,13 @@ const PuppetLab: React.FC = () => {
       <div style={{ flex: 1, height: '100vh', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden' }}>
         {/* &zoom=4：放大看脸（眨眼帧、表情接缝） */}
         <div style={{ height: '95vh', transform: `scale(${zoom})`, transformOrigin: '50% 8%' }}>
-          {src && <PuppetSprite src={src} speaking={talk} className="block h-full w-auto" />}
+          {/* &video：有待机视频的立绘，左边视频、右边木偶，并排对比 */}
+          {src && q.has('video') && IDLE_VIDEOS[src] ? (
+            <div style={{ display: 'flex', height: '100%', gap: 24 }}>
+              <IdleVideoSprite src={IDLE_VIDEOS[src]} className="block h-full w-auto" />
+              <PuppetSprite src={src} speaking={talk} className="block h-full w-auto" />
+            </div>
+          ) : src && <PuppetSprite src={src} speaking={talk} className="block h-full w-auto" />}
         </div>
       </div>
     </div>

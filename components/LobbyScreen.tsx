@@ -312,7 +312,7 @@ const LobbyScreen: React.FC<Props> = ({
             <div className={`absolute inset-0 opacity-0 md:group-hover:opacity-20 transition-opacity duration-300 ${char.color} bg-gradient-to-t from-black via-transparent to-transparent`}></div>
             <div className="absolute top-4 right-4 text-7xl md:text-[100px] font-black text-white/5 italic leading-none select-none z-0">0{index + 1}</div>
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[80%] md:h-[88%] flex items-end justify-center origin-bottom">
-              <CharacterSprite character={displayChar} isSpeaking={false} fit="height" className="w-full h-full"/>
+              <CharacterSprite character={displayChar} isSpeaking={false} fit="height" className="w-full h-full" idleVideo />
             </div>
             <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/80 to-transparent pt-20 pb-6 md:pb-10 px-4 md:px-6 flex flex-col items-center md:items-start md:opacity-60 md:group-hover:opacity-100 transition-opacity duration-300">
               <div className={`h-1 w-8 md:w-12 mb-2 ${char.color}`}></div>
