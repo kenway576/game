@@ -1,7 +1,10 @@
 {
  "name": "kobestudy-persona-learner",
  "private": true,
- "version": "0.0.0",
+ "version": "1.0.0",
+ "description": "Kobe Study — 在神户学日语的恋爱生活模拟",
+ "author": "Kobe Study",
+ "main": "electron/main.cjs",
  "type": "module",
  "scripts": {
   "dev": "vite",
@@ -13,7 +16,10 @@
   "assets:check": "node scripts/compress-assets.mjs",
   "assets": "node scripts/compress-assets.mjs --write",
   "sprites:defringe": "node scripts/defringe-sprites.mjs",
-  "sprites:audit-outfits": "node scripts/audit-sprite-outfits.mjs"
+  "sprites:audit-outfits": "node scripts/audit-sprite-outfits.mjs",
+  "desktop": "node scripts/build-desktop.mjs",
+  "desktop:release": "node scripts/build-desktop.mjs --release",
+  "desktop:dev": "electron ."
  },
  "dependencies": {
   "@google/generative-ai": "^0.24.1",
@@ -29,6 +35,41 @@
   "pngjs": "^7.0.0",
   "sharp": "^0.35.4",
   "typescript": "~5.8.2",
-  "vite": "^6.2.0"
+  "vite": "^6.2.0",
+  "electron": "^44.5.1",
+  "electron-builder": "^26.15.3"
+ },
+ "build": {
+  "appId": "com.kobestudy.game",
+  "productName": "KobeStudy",
+  "electronDist": "node_modules/electron/dist",
+  "electronLanguages": [
+   "zh-CN",
+   "en-US",
+   "ja"
+  ],
+  "directories": {
+   "output": "release",
+   "buildResources": "build"
+  },
+  "files": [
+   "dist/**/*",
+   "electron/**/*",
+   "build/icon.png",
+   "package.json"
+  ],
+  "win": {
+   "target": "nsis",
+   "icon": "build/icon.png"
+  },
+  "nsis": {
+   "oneClick": false,
+   "allowToChangeInstallationDirectory": true,
+   "createDesktopShortcut": "always",
+   "createStartMenuShortcut": true,
+   "shortcutName": "Kobe Study",
+   "artifactName": "KobeStudy-Setup-${version}.${ext}",
+   "deleteAppDataOnUninstall": false
+  }
  }
 }
