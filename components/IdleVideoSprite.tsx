@@ -25,6 +25,8 @@ varying vec2 vUv;
 uniform sampler2D uTex;
 uniform vec3 uKey;
 void main() {
+  // 留白的地方会采到画面外：一律透明
+  if (vUv.x < 0.0 || vUv.x > 1.0 || vUv.y < 0.0 || vUv.y > 1.0) { gl_FragColor = vec4(0.0); return; }
   vec3 c = texture2D(uTex, vUv).rgb;
   // 绿得多"超出"红蓝多少：越超出越透明
   float g = c.g - max(c.r, c.b);
@@ -34,6 +36,8 @@ void main() {
   c.g = min(c.g, max(c.r, c.b) + 0.02);
   gl_FragColor = vec4(c * a, a);
 }`;
+
+const PAD = { l: 0.05, t: 0.04, r: 0.05, b: 0.01 };
 
 interface Meta { frame: [number, number]; sprite: [number, number, number, number]; key: { r: number; g: number; b: number } }
 
@@ -72,7 +76,9 @@ const IdleVideoSprite: React.FC<Props> = ({ src, className = '', style, onFallba
 
     fetch(src.replace(/\.mp4$/, '.json')).then(r => r.json()).then((m: Meta) => {
       if (dead) return;
-      const [x, y, w, h] = m.sprite;
+      // 跟 PuppetSprite 一样四周留白（左右 5%、上 4%、下 1%），换来换去大小一致
+      const [sx, sy, sw, sh] = m.sprite;
+      const x = sx - sw * PAD.l, y = sy - sh * PAD.t, w = sw * (1 + PAD.l + PAD.r), h = sh * (1 + PAD.t + PAD.b);
       gl.uniform4f(uCrop, x, y, w, h);
       gl.uniform3f(uKey, m.key.r / 255, m.key.g / 255, m.key.b / 255);
       setAspect((w * m.frame[0]) / (h * m.frame[1]));
@@ -103,7 +109,15 @@ const IdleVideoSprite: React.FC<Props> = ({ src, className = '', style, onFallba
 export const IDLE_VIDEOS: Record<string, string> = {
   '/images/characters/hikari/school_neutral.webp': '/videos/idle/hikari_school_neutral.mp4',
   // 大厅里光用的是 school_happy：同一套身体，画面位置一样，直接共用
-  '/images/characters/hikari/school_happy.webp': '/videos/idle/hikari_school_neutral.mp4'
+  '/images/characters/hikari/school_happy.webp': '/videos/idle/hikari_school_neutral.mp4',
+  // 其余七人：各自大厅立绘（constants.ts 的 LOBBY_PORTRAITS）做的
+  '/images/characters/asuka/smug.webp': '/videos/idle/asuka_smug.mp4',
+  '/images/characters/rei/lecturing.webp': '/videos/idle/rei_lecturing.mp4',
+  '/images/characters/inari/school_sly.webp': '/videos/idle/inari_school_sly.mp4',
+  '/images/characters/miyuki/cardigan_neutral.webp': '/videos/idle/miyuki_cardigan_neutral.mp4',
+  '/images/characters/sora/school_happy.webp': '/videos/idle/sora_school_happy.mp4',
+  '/images/characters/nao/happy.webp': '/videos/idle/nao_happy.mp4',
+  '/images/characters/maki/school_smug.webp': '/videos/idle/maki_school_smug.mp4'
 };
 
 export default IdleVideoSprite;
