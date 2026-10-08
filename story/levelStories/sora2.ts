@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 空 · 第②段「肩の話」
@@ -271,6 +272,7 @@ export const SORA_STORY_2: StoryNode[] = [
     en: '...It healed, and it still will not reach. Five centimetres short.',
     color: 'bg-orange-500'
   },
+  eventCgNode('sora2'),
   {
     type: 'narration',
     zh: '五公分。她说这个数字的时候语气很平，平到你知道她量过很多次。',

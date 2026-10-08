@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 明日香 · 第①段「委員長の放課後」
@@ -241,6 +242,7 @@ export const ASUKA_STORY_1: StoryNode[] = [
     zh: '「顺便」两个字，写了三百多个假名。',
     en: 'Three hundred-odd readings, written while she was at it.'
   },
+  eventCgNode('asuka1'),
   {
     type: 'narration',
     zh: '窗外操场上有人在收球网。铁架子倒下去的声音传上来，房间里安静了一会儿。',

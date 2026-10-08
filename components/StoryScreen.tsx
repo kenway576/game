@@ -48,6 +48,8 @@ interface Props {
   // 序章这类没有特定对象的章节不传，check 判关系时一律当 0。
   storyAffection?: number;
   storyFamiliarity?: number;
+  // heart 节点用：所有人的好感度（主线最终章要在几个人里挑一个）
+  affectionMap?: Partial<Record<string, number>>;
   // 当前玩家名，用来替换台词里的 {name} 占位符
   playerName: string;
   // nameInput 节点提交时回填给 App
@@ -169,7 +171,7 @@ export function formatSceneSubtitle(
 const StoryScreen: React.FC<Props> = ({
   script, scriptVersion, progressKey, language, stats, background, calendar,
   initialProgress, initialFlags, onAutoSave, onOpenSystemMenu, playerName, onSetPlayerName,
-  storyAffection = 0, storyFamiliarity = 0,
+  storyAffection = 0, storyFamiliarity = 0, affectionMap,
   chapterNameZh, chapterNameEn, allowSkip,
   onEffects, onRelations, onFlags, onSceneChange, onCollectWords, onUnlockCg, onRestore, onFinish,
   renderMinigame
@@ -443,6 +445,15 @@ const StoryScreen: React.FC<Props> = ({
           ? storyFamiliarity
           : (statsRef.current[node.metric] || 0);
       spliceAfter(value >= node.min ? node.then : (node.otherwise || []));
+      advance();
+    } else if (node.type === 'heart') {
+      // 走完第③段的人里，好感度最高的那个。同分按 routes 的书写顺序
+      let best: string | null = null;
+      for (const c of Object.keys(node.routes)) {
+        if (!flagsRef.current[`${c}_story_3_done`]) continue;
+        if (best === null || (affectionMap?.[c] || 0) > (affectionMap?.[best] || 0)) best = c;
+      }
+      spliceAfter(best ? (node.routes as Record<string, StoryNode[]>)[best] : (node.otherwise || []));
       advance();
     } else if (node.type === 'minigame' && !renderMinigame) {
       // 没有地方能开小游戏（序章之类）：当作没打，直接往下走

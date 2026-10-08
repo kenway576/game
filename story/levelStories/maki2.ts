@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 真希 · 第②段「待ち伏せの理由」
@@ -55,6 +56,7 @@ export const MAKI_STORY_2: StoryNode[] = [
     zh: '她坐在 Live House 门口的台阶上，一个人，手里拿着手机没在看。',
     en: 'She is sitting on the steps outside the live house, alone, holding a phone she is not looking at.'
   },
+  eventCgNode('maki2'),
   {
     type: 'narration',
     zh: '你看了一眼手机。七点四十一。',

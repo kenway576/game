@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 真希 · 第①段「センパイ認定」
@@ -205,6 +206,7 @@ export const MAKI_STORY_1: StoryNode[] = [
     en: '...Third round. Do you want to?',
     color: 'bg-pink-500'
   },
+  eventCgNode('maki1'),
   {
     type: 'narration',
     zh: '三局两胜。她已经赢了两局。第三局在规则上不存在。',

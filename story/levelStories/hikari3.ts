@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { journalPage } from '../grandfatherJournal';
 
 // ---------------------------------------------------------
 // 光 · 第③段「二年目の海」
@@ -639,5 +640,7 @@ export const HIKARI_STORY_3: StoryNode[] = [
         ]
       }
     ]
-  }
+  },
+  // 📓 外公手账里对应这个地方的那一页（见 story/grandfatherJournal.ts）
+  ...journalPage('hikari')
 ];

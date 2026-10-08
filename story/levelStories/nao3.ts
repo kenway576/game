@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { journalPage } from '../grandfatherJournal';
 
 // ---------------------------------------------------------
 // 奈绪 · 第③段「十年分の距離」
@@ -431,5 +432,7 @@ export const NAO_STORY_3: StoryNode[] = [
         ]
       }
     ]
-  }
+  },
+  // 📓 外公手账里对应这个地方的那一页（见 story/grandfatherJournal.ts）
+  ...journalPage('nao')
 ];

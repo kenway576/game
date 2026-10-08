@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 空 · 第①段「交換条件」
@@ -78,6 +79,7 @@ export const SORA_STORY_1: StoryNode[] = [
     zh: '你把书合上，然后又打开，直接翻到第十一页。',
     en: 'You close the book. Then open it again, straight to page eleven.'
   },
+  eventCgNode('sora1'),
 
   // ---- 选择 1 ----
   {

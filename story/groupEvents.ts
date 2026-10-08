@@ -1,4 +1,5 @@
 import { MapEventDef, CharacterId } from '../types';
+import { eventCgNode } from '../data/eventCgs';
 
 // ---------------------------------------------------------
 // 👥 多人剧情
@@ -70,6 +71,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
       zh: '你在她们中间坐下。这是唯一的空位组合。',
       en: 'You sit down between them. It is the only arrangement the empty seats allow.'
     },
+    eventCgNode('group_ramen'),
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
@@ -614,6 +616,7 @@ const EV_GROUP_MERIKEN: MapEventDef = {
       zh: '这一张拍得很好。四个人都在里面，港塔也在，而且没有人是黑的。',
       en: 'That one comes out well. All four of you are in it, the tower is in it, and nobody is a silhouette.'
     },
+    eventCgNode('group_meriken'),
     {
       type: 'effect',
       relations: [
@@ -708,6 +711,7 @@ const EV_GROUP_MOSAIC: MapEventDef = {
       zh: '你顺着她指的方向看过去。右边数第三个是亮的，第四个也是亮的。第四个是你的。',
       en: 'You follow where she is pointing. Third from the right is lit. So is the fourth. The fourth is yours.'
     },
+    eventCgNode('group_wheel'),
     {
       type: 'choice',
       promptZh: '到最高点还有大概四分钟。',

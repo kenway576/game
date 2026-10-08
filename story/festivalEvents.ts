@@ -2,6 +2,7 @@ import { CharacterId, ChatPick, StoryFlags, StoryNode, StoryOption } from '../ty
 import { outfitImg, seenOutfitFlag, Mood } from '../data/outfitContext';
 import { OUTFIT_REVEALS } from './outfitReveals';
 import { SPEAKER } from '../data/dateData';
+import { eventCgNode } from '../data/eventCgs';
 
 // ---------------------------------------------------------
 // 🎃 万圣节（10/31）· 🎪 港见祭（11/1 – 11/2）
@@ -106,6 +107,7 @@ export const buildHalloween = (met: C[]): FestivalBuild => {
     say(CharacterId.MAKI, 'punk', 'tease', '仮装？ してるやん。「ゲーセンから出てこられへんゾンビ」や。……普段と一緒やろって？ 普段からゾンビやねん、ウチ。', '变装？有啊。"从游戏厅里出不来的僵尸"。……你说跟平时一样？我平时就是僵尸啊。', 'Costume? I am wearing one. Zombie Who Never Left The Arcade. ...Same as usual, you say? I am always a zombie.')
   );
   s.push(
+    eventCgNode('fest_halloween'),
     nar('坡道顶上，风见鸡馆的风向鸡在夜空里转了半圈，停下来，指着海的方向。有人开始往下走，有人往上，人群像一条走不动的河。',
       'At the top of the slope the weathercock on the Kazamidori house turns half round in the night sky, stops, and points towards the sea. Some people start down, some up, and the crowd moves like a river that cannot quite flow.', '')
   );
@@ -220,6 +222,7 @@ export const buildFestivalDay1 = (met: C[], flags: StoryFlags): FestivalBuild =>
         ...reveal(CharacterId.REI, 'lab', '理科室的窗帘全拉上了，门口有人在发入场券。发券的人是铃。', 'Every curtain in the science lab is drawn and somebody at the door is handing out tickets. It is Rei.'),
         nar('天象仪是一个打满了小孔的黑色纸球，里面放着一只灯泡。灯一关，几百个光点落满了天花板、墙壁和观众的脸。铃站在中间，用很平的声音讲十一月的星空：飞马座、仙女座、还有一颗她说"目视很难看到、但确实在那里"的星。',
           'The planetarium is a black paper globe pricked full of holes with a bulb inside. When the lights go off, hundreds of points of light settle over the ceiling, the walls, the audience\'s faces. Rei stands in the middle and describes the November sky in a level voice: Pegasus, Andromeda, and a star she says is hard to see with the naked eye but is definitely there.', ''),
+        eventCgNode('fest_day1'),
         say(CharacterId.REI, 'lab', 'shy', '……今日の最後の回です。観客は、あなた一人でした。……問題ありません。むしろ、好都合です。', '……这是今天最后一场。观众，只有你一个。……没有问题。倒不如说，正合适。', '...That was the last show today. The audience was you alone. ...That is no problem. If anything, it is convenient.')
       ]
     });
@@ -338,6 +341,7 @@ export const buildFestivalDay2 = (met: C[]): FestivalBuild => {
     { type: 'scene', scene: 'classroom_sunset', bgm: 'reflective', titleZh: '后夜祭', titleEn: 'The Closing Night', subtitleZh: '十一月二日 · 夜 · 操场', subtitleEn: '2 November · Night · The field' },
     nar('天黑以后，操场中间点起了一堆篝火。所有的纸箱、招牌、写坏了的海报，都被一样一样地放进火里。你看见那条纸箱商店街的第三层也进去了，烧得很快，像是终于可以休息了。',
       'After dark a bonfire is lit in the middle of the field. All the cardboard, the signs, the spoilt posters go into it one by one. You see the third tier of the cardboard street go in too. It burns quickly, as if it has finally been allowed to rest.', ''),
+    eventCgNode('fest_bonfire'),
     nar('广播里放起了《Oklahoma Mixer》。按照港见高中不知道哪一年定下来的传统，后夜祭的最后一支土风舞，要跟一个人跳到底，不换舞伴。',
       'The speakers start playing the Oklahoma Mixer. By a Minatomi High tradition nobody can date, the last folk dance of the closing night is danced with one partner all the way through, no changing.')
   );

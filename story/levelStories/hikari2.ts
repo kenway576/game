@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 光 · 第②段「一週間の差」
@@ -427,6 +428,7 @@ export const HIKARI_STORY_2: StoryNode[] = [
   },
 
   // ---- 落地：墙立起来 ----
+  eventCgNode('hikari2'),
   {
     type: 'narration',
     zh: '轿厢快到底了。她抬起头，很快地擦了一下脸。微笑先勉强挂上了唇边，眼神却慢了半拍才跟上。你全程都看在眼里。',

@@ -1,4 +1,5 @@
 import { CharacterId, StoryNode } from '../types';
+import { eventCgNode } from '../data/eventCgs';
 
 // ==========================================================
 // ✈️ 修学旅行
@@ -257,6 +258,7 @@ const DAY2: StoryNode[] = [
     zh: '太阳落得比神户早。五点半天就红了，云的下面全是金的。全班在沙滩上排成一排看，没有人拍照。',
     en: 'The sun goes down earlier than in Kobe. The sky is red by half five and the undersides of the clouds are all gold. The whole class lines up on the sand to watch. Nobody photographs it.'
   },
+  eventCgNode('trip_sea'),
   { type: 'effect', effects: [{ stat: 'charm', amount: 2, reasonZh: '整整三个小时你没有想过明年的事', reasonEn: 'Three whole hours in which you did not think about next year' }], setFlags: ['trip_day2_done'] }
 ];
 
@@ -325,6 +327,7 @@ const DAY3: StoryNode[] = [
     zh: '房间里骤然陷入了难言的沉寂。不是尴尬的那种冷场，而是七个人在同一瞬间被现实击中、意识到彼此其实心知肚明却谁也不愿先点破的那种沉重静默。',
     en: 'The room suddenly falls into a profound quiet. Not an awkward lull, but that heavy silence when seven people are struck at once by reality, knowing full well yet loath to voice it.'
   },
+  eventCgNode('trip_night'),
   {
     type: 'choice',
     promptZh: '你得回答。',

@@ -1,4 +1,5 @@
 import { ASUKA_STORY_1 } from './story/levelStories/asuka1';
+import { EVENT_CGS, eventCgUrl } from './data/eventCgs';
 import { HIKARI_STORY_1 } from './story/levelStories/hikari1';
 import { HIKARI_STORY_2 } from './story/levelStories/hikari2';
 import { HIKARI_STORY_3 } from './story/levelStories/hikari3';
@@ -3381,7 +3382,7 @@ export interface StoryCgDef {
   chapterEn: string;
 }
 
-export const STORY_CGS: StoryCgDef[] = [
+const BASE_STORY_CGS: StoryCgDef[] = [
   {
     id: 'cg_prologue_grandfather_journal',
     titleZh: '外祖父的泛黄手账',
@@ -3448,4 +3449,14 @@ export const STORY_CGS: StoryCgDef[] = [
     chapterZh: '学园生活 · 汗水与青春',
     chapterEn: 'School Life · Sweat and Youth'
   }
+];
+
+// 🎴 剧情事件 CG（data/eventCgs.ts）：每人①②、主线、多人、节日、修学旅行、修了式。
+// 和上面那组一样，剧本里播过才解锁
+export const STORY_CGS: StoryCgDef[] = [
+  ...BASE_STORY_CGS,
+  ...EVENT_CGS.map(c => ({
+    id: c.id, titleZh: c.titleZh, titleEn: c.titleEn, descZh: c.captionZh, descEn: c.captionEn,
+    cgUrl: eventCgUrl(c.id), quote: c.quote, chapterZh: c.chapterZh, chapterEn: c.chapterEn
+  }))
 ];

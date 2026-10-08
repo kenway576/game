@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { journalPage } from '../grandfatherJournal';
 
 // ---------------------------------------------------------
 // 铃 · 第③段「星図の余白」
@@ -631,5 +632,7 @@ export const REI_STORY_3: StoryNode[] = [
         ]
       }
     ]
-  }
+  },
+  // 📓 外公手账里对应这个地方的那一页（见 story/grandfatherJournal.ts）
+  ...journalPage('rei')
 ];

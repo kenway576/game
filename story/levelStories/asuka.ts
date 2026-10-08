@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 明日香 · 第②段「一番じゃないと」
@@ -141,6 +142,7 @@ export const ASUKA_STORY_2: StoryNode[] = [
     en: 'Not first. Second.',
     color: 'bg-red-600'
   },
+  eventCgNode('asuka2'),
   {
     type: 'narration',
     zh: '她终于转过身。眼睛是红的，脸上却一滴眼泪都没有——她大概已经在这里站了很久，久到把该流的全都逼了回去。',

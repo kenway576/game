@@ -706,7 +706,11 @@ export type StoryNode =
   // 随机插播：从 pick 里随机抽一组播出去（重玩时遇到的人不一样）。
   // 抽中的结果会被就地拼进节点表、随进度一起存档，
   // 所以读档回来播的还是同一段，不会刷新一次换一个人。
-  | { type: 'random'; pick: StoryNode[][] };
+  | { type: 'random'; pick: StoryNode[][] }
+  // 💗 跟着谁的声音走：在「第③段已经演完」的人里挑好感度最高的那一个，播她那一支。
+  // 主线最终章用：雾里有好几个人在叫你，你只能朝一个方向走。
+  // 谁都没走完第③段（或者 routes 里没有她）就播 otherwise。同分时按 routes 里写的顺序。
+  | { type: 'heart'; routes: Partial<Record<CharacterId, StoryNode[]>>; otherwise?: StoryNode[] };
 
 // 📱 手机里的一条消息（玩家和她之间真正发过的那些，不是剧本里预写的通知）。
 // 预写的那几条在第一次点开对话时也会被抄进来，于是一个对话里的先后永远是对的。

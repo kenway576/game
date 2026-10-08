@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 稻荷 · 第②段「面の下」
@@ -117,6 +118,7 @@ export const INARI_STORY_2: StoryNode[] = [
             zh: '她蹲下去，伸手，网破了。第一下就破了。',
             en: 'She crouches, reaches in, and the paper tears. On the very first try.'
           },
+          eventCgNode('inari2'),
           {
             type: 'narration',
             characterImage: `${I}summer_surprised.webp`,
@@ -269,6 +271,12 @@ export const INARI_STORY_2: StoryNode[] = [
     type: 'narration',
     zh: '一本册子。纸黄得发脆，装订换过很多次——线的颜色至少有五种。',
     en: 'A booklet. The paper is yellow and brittle and it has been rebound many times; there are at least five colours of thread.'
+  },
+  {
+    // 主线最终章的伏笔：封面里糊着的那张纸
+    type: 'narration',
+    zh: '线换了那么多次，封面却一直是同一块。封面里侧比别处厚一点，摸上去有个小小的、方形的鼓包，像是糊着什么东西。你的手指在那儿停了一下，她就把册子往回收了一点，没说为什么。',
+    en: 'For all the times the thread has been replaced, the cover has always been the same piece. The inside of it is slightly thicker than it should be, with a small square bump under the lining, as if something has been pasted in. Your finger stops on it for a second, and she draws the book back a little, without saying why.'
   },
   {
     type: 'speech',

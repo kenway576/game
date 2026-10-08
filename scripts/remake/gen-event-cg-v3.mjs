@@ -36,8 +36,20 @@ Papers, notebooks, screens and signs show only soft, unreadable marks — never 
 NO text, NO letters, NO logos, NO watermark, NO signature, NO UI, NO speech bubbles anywhere in the image.`;
 
 // 出图时额外强调的地方（第一批里画偏了的）
+// 空：第一次画得太黑，压成"很浅"之后又成了一个普通的短发女生（用户：不像空）。以角色卡为准：
+// 健康的小麦色、乱翘的短发、露齿的笑
 const CG_EXTRA = {
-  sora: 'Her skin is only LIGHTLY sun-kissed — a fair Japanese skin tone with a faint golden warmth, exactly as light as in her reference, NOT dark or brown. Soft girlish face with long lashes.'
+  sora: 'Match her CHARACTER REFERENCE and the face close-up closely: short, messy, tousled dark-brown pixie cut with spiky flicked-out ends and a raised tuft on top (not a neat bob); a warm golden-tan complexion exactly as in the reference; defined straight eyebrows; amber eyes; a lean athletic build. When she smiles it is a wide, confident grin showing her teeth.'
+};
+// 角色卡左边那张半身像，原分辨率裁出来再单独给一次（长相最准的地方）
+const faceOf = async (c, dir) => {
+  const out = path.join(dir, `_ref_${c}_face.jpg`);
+  if (!fs.existsSync(out)) {
+    const img = sharp(cardOf(c)); const { width, height } = await img.metadata();
+    await img.extract({ left: 0, top: 0, width: Math.round(width * 0.3), height: Math.round(height * 0.75) })
+      .flatten({ background: '#e6e6e6' }).resize({ width: 1200, withoutEnlargement: true }).jpeg({ quality: 92 }).toFile(out);
+  }
+  return out;
 };
 const cardOf = c => [`public/images/character_cards/${c}/school_blazer_remake.webp`, `public/images/character_cards/${c}/cardigan_remake.webp`].find(f => fs.existsSync(f));
 const spriteOf = (c, o) => {
@@ -59,8 +71,9 @@ async function render(id, n) {
   const who = [];
   for (const { id: c, outfit } of sc.chars) {
     const card = CARDS.find(x => x.id === c);
-    parts.push({ text: `CHARACTER REFERENCE for ${c} (identity: face, hair, eyes, accessories):` }, imagePart(await small(cardOf(c), 1800, dir)));
-    parts.push({ text: `OUTFIT REFERENCE for ${c} (the clothes she wears in this scene):` }, imagePart(await small(spriteOf(c, outfit), 1000, dir)));
+    parts.push({ text: `CHARACTER REFERENCE for ${c} (identity: face, hair, eyes, accessories):` }, imagePart(await small(cardOf(c), 1800, dir)), imagePart(await faceOf(c, dir)));
+    // outfit 写 null：这一幕穿的衣服没有立绘（比如八百年前的小稻荷），只靠文字
+    if (outfit) parts.push({ text: `OUTFIT REFERENCE for ${c} (the clothes she wears in this scene):` }, imagePart(await small(spriteOf(c, outfit), 1000, dir)));
     who.push(`- ${card.identity}${IDENTITY_EXTRA[c] ? ' ' + IDENTITY_EXTRA[c] : ''}${CG_EXTRA[c] ? ' ' + CG_EXTRA[c] : ''}`);
   }
   parts.push({ text: `${STYLE}\n\nCHARACTERS:\n${who.join('\n')}\n\nSCENE: ${sc.scene}\n\nLIGHT: ${sc.light}\n\nCAMERA: ${sc.camera}\n\nWide 16:9 event CG.` });

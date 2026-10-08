@@ -1,4 +1,5 @@
 import { StoryNode } from '../types';
+import { eventCgNode } from '../data/eventCgs';
 
 // ---------------------------------------------------------
 // 🎓 修了式
@@ -99,6 +100,7 @@ export const YEAR_END: StoryNode[] = [
             zh: '桌面上有一道很浅的刻痕，是你第二个月的时候手滑划的。你一直没跟任何人说。',
             en: 'There is a faint scratch on the desktop from your second month, when your hand slipped. You never told anybody.'
           },
+          eventCgNode('year_end'),
           {
             type: 'narration',
             zh: '你用手指摸了一遍那道痕。明年会有一个人坐在这儿，不知道这道痕是谁划的。',

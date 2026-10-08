@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 奈绪 · 第②段「知らない顔」
@@ -79,6 +80,7 @@ export const NAO_STORY_2: StoryNode[] = [
     zh: '她没有笑。她没听懂。',
     en: 'She is not laughing. She did not follow it.'
   },
+  eventCgNode('nao2'),
 
   // ---- 选择 1 ----
   {

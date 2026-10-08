@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 奈绪 · 第①段「幼馴染の距離」
@@ -192,6 +193,7 @@ export const NAO_STORY_1: StoryNode[] = [
     zh: '坡顶有一段矮墙，能看见整个神户。她坐上去，两条腿在墙外面晃。',
     en: 'There is a low wall at the top of the slope with the whole of Kobe below it. She sits up on it and swings her legs over the edge.'
   },
+  eventCgNode('nao1'),
   {
     type: 'speech',
     speakerZh: '奈绪', speakerEn: 'Nao',

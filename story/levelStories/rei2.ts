@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 铃 · 第②段「観測できない値」
@@ -300,6 +301,7 @@ export const REI_STORY_2: StoryNode[] = [
     zh: '她把表递过来的时候，手很稳。她这个人的手一直很稳。',
     en: 'Her hand is steady as she passes it over. Her hands are always steady.'
   },
+  eventCgNode('rei2'),
 
   // ---- 关键选择 ----
   {

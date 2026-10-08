@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { journalPage } from '../grandfatherJournal';
 
 // ---------------------------------------------------------
 // 明日香 · 第③段「放課後の残り日」
@@ -545,5 +546,7 @@ export const ASUKA_STORY_3: StoryNode[] = [
         ]
       }
     ]
-  }
+  },
+  // 📓 外公手账里对应这个地方的那一页（见 story/grandfatherJournal.ts）
+  ...journalPage('asuka')
 ];

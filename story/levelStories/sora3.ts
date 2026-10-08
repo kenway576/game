@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { journalPage } from '../grandfatherJournal';
 
 // ---------------------------------------------------------
 // 空 · 第③段「ゴールの向こう」
@@ -485,5 +486,7 @@ export const SORA_STORY_3: StoryNode[] = [
         ]
       }
     ]
-  }
+  },
+  // 📓 外公手账里对应这个地方的那一页（见 story/grandfatherJournal.ts）
+  ...journalPage('sora')
 ];

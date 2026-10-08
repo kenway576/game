@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 光 · 第①段「同じ船」
@@ -116,6 +117,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
     zh: '她指的方向什么都没有，只有海和更远的海。',
     en: 'There is nothing at all in the direction she is pointing. Sea, and then more sea.'
   },
+  eventCgNode('hikari1'),
 
   // ---- 选择 1 ----
   {

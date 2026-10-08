@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 稻荷 · 第①段「千年の暇つぶし」
@@ -48,6 +49,7 @@ export const INARI_STORY_1: StoryNode[] = [
     zh: '她坐在一块石头上，晃着一只脚。四月的石头是凉的——凉到你光是站在旁边都替她觉得冷。她像是不知道这回事。她一直是这样，你已经不问了。',
     en: 'She is sitting on a rock, swinging one foot. April stone is cold — cold enough that you feel it on her behalf just standing there. She appears not to have noticed. She always is like this. You have stopped asking.'
   },
+  eventCgNode('inari1'),
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
@@ -245,6 +247,42 @@ export const INARI_STORY_1: StoryNode[] = [
     zh: '那件事，是我看过的所有事里最有意思的。',
     en: 'That is the most interesting thing I have ever watched happen.',
     color: 'bg-amber-500'
+  },
+
+  // ---- 那棵梅（一一八四年。主线最终章会回到这棵树底下）----
+  {
+    type: 'narration',
+    zh: '林子边上还有一棵梅树，矮，歪着长，像一个站久了想换只脚的人。她顺手指了一下，说那棵的辈分比这些樟树都老——不是这一棵本身老，是「那里有一棵梅」这件事老。',
+    en: 'At the edge of the wood there is also a plum tree, short and leaning, like someone who has been standing a long time and would like to shift onto the other foot. She waves at it and says it outranks every camphor here. Not this particular tree; the fact that there is a plum there at all.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '稻荷', speakerEn: 'Inari',
+    characterImage: `${I}neutral.webp`,
+    jp: '昔、ここで戦があっての。若い武者が一人、あの梅を一枝折って、箙に挿して駆けていった。',
+    words: [{ jp: '箙', reading: 'えびら', zh: '箭筒', en: 'quiver' }],
+    zh: '很久以前，这儿打过一仗。有个年轻的武士折了那棵梅的一枝，插在箭筒上，就那么跑去打仗了。',
+    en: 'There was a battle here once. A young warrior snapped a sprig off that plum, stuck it in his quiver, and ran off to fight.',
+    color: 'bg-amber-500'
+  },
+  {
+    type: 'narration',
+    zh: '你问很久是多久。她想了一下，用了一个你没听过的年号。你回去查了才知道，那是八百多年前的二月。查的时候你一直在想，一个人打仗之前为什么要折一枝花。',
+    en: 'You ask how long ago. She thinks, and names an era you have never heard of. You look it up later: a February more than eight hundred years ago. All the while you are looking it up, you keep wondering why anyone would pick a flower on the way to a battle.'
+  },
+  {
+    type: 'speech',
+    speakerZh: '稻荷', speakerEn: 'Inari',
+    characterImage: `${I}neutral.webp`,
+    jp: '梅は毎年咲く。あやつらは、一度きりじゃった。',
+    zh: '梅每年都开。那些人，只有一次。',
+    en: 'The plum flowers every year. Those people only had the once.',
+    color: 'bg-amber-500'
+  },
+  {
+    type: 'narration',
+    zh: '她说「那些人」的时候，眼睛看的不是梅树，是林子的入口。像是那里随时会走进来一个人，而她已经这样看了很久，久到看成了习惯。',
+    en: 'When she says "those people" she is not looking at the plum. She is looking at the way into the wood, as though someone might walk in at any moment, and as though she has been looking at it like that for so long it has become a habit.'
   },
 
   // ---- 选择 2：落点 ----

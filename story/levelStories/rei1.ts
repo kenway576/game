@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 铃 · 第①段「一九〇四年」
@@ -79,6 +80,7 @@ export const REI_STORY_1: StoryNode[] = [
     zh: '她翻开笔记本。密密麻麻的表格：地址、年份、材质、层数、备注。已经记了七十几栋。',
     en: 'She opens a notebook. Dense tables: address, year, material, storeys, notes. Seventy-odd buildings so far.'
   },
+  eventCgNode('rei1'),
 
   // ---- 选择 1 ----
   {

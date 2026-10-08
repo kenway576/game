@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 深雪 · 第①段「二〇二号室の夕飯」
@@ -279,6 +280,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
     zh: '她扶着门框的手紧了一下。',
     en: 'The hand on the door frame tightens.'
   },
+  eventCgNode('miyuki1'),
   {
     type: 'speech',
     speakerZh: '深雪', speakerEn: 'Miyuki',

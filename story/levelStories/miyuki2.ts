@@ -1,4 +1,5 @@
 import { StoryNode, CharacterId } from '../../types';
+import { eventCgNode } from '../../data/eventCgs';
 
 // ---------------------------------------------------------
 // 深雪 · 第②段「お姉さんの役」
@@ -58,6 +59,7 @@ export const MIYUKI_STORY_2: StoryNode[] = [
     zh: '她坐在阳台上，没开灯，面前摆着一个碗。碗是空的，凉的。',
     en: 'She is out on the balcony with no light on and a bowl in front of her. The bowl is empty, and cold.'
   },
+  eventCgNode('miyuki2'),
   {
     type: 'narration',
     zh: '不是吃完的空。是从来没盛过东西的空。',

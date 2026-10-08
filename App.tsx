@@ -762,10 +762,11 @@ const App: React.FC = () => {
     // 📕 主线最后一章还欠着就先补上。它写的是修了式前一天的坡道，
     // 错过它整条主线就没有收尾——而玩家只要在三月最后几天没进过大厅
     // 就会错过。这里兜住。
+    // 最终章只在这里演：它写的是修了式那天天亮之前
     const owed = nextMainChapter({
       calendar: gameCalendar, flags: storyFlags,
       familiarity: familiarityMap, met: metChars
-    });
+    }, { finale: true });
     if (owed) { setShowRestPlan(false); setActiveMain(owed); return; }
     setShowRestPlan(false);
     setActiveLevelStory(null);
@@ -4028,9 +4029,10 @@ ${wind}`;
           script={activeMain.script}
           scriptVersion={`${activeMain.id}-v1`}
           progressKey={`kobe_study_main_${activeMain.id}`}
-          chapterNameZh={`第 ${activeMain.n} 章`}
-          chapterNameEn={`Chapter ${activeMain.n}`}
+          chapterNameZh={activeMain.finale ? '最终章' : `第 ${activeMain.n} 章`}
+          chapterNameEn={activeMain.finale ? 'Final Chapter' : `Chapter ${activeMain.n}`}
           initialFlags={storyFlags}
+          affectionMap={affectionMap}
           calendar={gameCalendar}
           onAutoSave={triggerAutoSave}
           language={userState.language}
