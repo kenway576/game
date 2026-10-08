@@ -418,7 +418,7 @@ export const CLUB_BASKETBALL: StoryNode[] = [
 ];
 
 export const CLUB_ASTRONOMY: StoryNode[] = [
-  { type: 'scene', scene: 'school_terrace', bgm: 'night', titleZh: '観測日和', titleEn: 'Good Seeing', subtitleZh: '休息日 · 天台', subtitleEn: 'Day off · The roof' },
+  { type: 'scene', scene: 'rooftop_night', bgm: 'night', titleZh: '観測日和', titleEn: 'Good Seeing', subtitleZh: '休息日 · 天台', subtitleEn: 'Day off · The roof' },
   { type: 'narration', zh: '天文部的休息日活动在晚上。铃发的通知只有一行：「今夜、快晴。二十時。」', en: 'The astronomy club meets in the evening. Rei\'s notice was one line: clear tonight, eight o\'clock.' },
   { type: 'narration', characterImage: `${REI}neutral.webp`, zh: '天台上只有她一个人和一台望远镜。天文部一共两个人，另一个是三年级，已经引退了。', en: 'On the roof there is one person and one telescope. The astronomy club has two members; the other is a third-year and has retired.' },
   { type: 'speech', speakerZh: '铃', speakerEn: 'Rei', characterImage: `${REI}neutral.webp`, jp: '来た。座標は合わせてある。', zh: '来了。坐标已经对好了。', en: 'You came. The coordinates are set.', color: 'bg-indigo-500' },
@@ -459,7 +459,7 @@ export const CLUB_ASTRONOMY: StoryNode[] = [
 ];
 
 export const CLUB_COUNCIL: StoryNode[] = [
-  { type: 'scene', scene: 'classroom', bgm: 'chat', titleZh: '誰もいない生徒会室', titleEn: 'The Empty Council Room', subtitleZh: '休息日 · 学生会室', subtitleEn: 'Day off · The student council room' },
+  { type: 'scene', scene: 'student_council_room', bgm: 'chat', titleZh: '誰もいない生徒会室', titleEn: 'The Empty Council Room', subtitleZh: '休息日 · 学生会室', subtitleEn: 'Day off · The student council room' },
   { type: 'narration', zh: '休息日的学生会室开着灯。里面只有明日香，和三个纸箱的文件。', en: 'The council room light is on. Inside: Asuka, and three boxes of paperwork.' },
   { type: 'narration', characterImage: `${ASUKA}neutral.webp`, zh: '她看见你的时候明显愣了一下，然后马上把桌上摊开的东西往里推了推。', en: 'She startles when she sees you and immediately pushes what is spread on the desk further in.' },
   { type: 'speech', speakerZh: '明日香', speakerEn: 'Asuka', characterImage: `${ASUKA}surprised.webp`, jp: 'ど、どうしてここに。今日は休みでしょう。', zh: '你、你怎么会在这儿。今天不是放假吗。', en: 'W-what are you doing here? It is a day off.', color: 'bg-red-500' },
@@ -996,7 +996,7 @@ export const TRIP_OSAKA: StoryNode[] = [
       }
     ]
   },
-  { type: 'scene', scene: 'osaka_dotonbori_canal' },
+  { type: 'scene', scene: 'train_interior_night' },
   { type: 'narration', zh: '晚上八点，回程的电车。四个人坐一排，三个人睡着了。', en: 'Eight o’clock, the train back. Four in a row, three of them asleep.' },
   { type: 'narration', characterImage: `${HIKARI}casual_neutral.webp`, zh: '光没睡。她看着窗外，忽然说：「うち、こういう日のために来たんかもしれん」。', en: 'Hikari is awake, looking out of the window. She says perhaps this is the sort of day she came here for.' },
   { type: 'narration', zh: '车过淀川的时候，桥上的灯一根一根从窗户上扫过去。', en: 'Crossing the Yodogawa, the lights on the bridge sweep across the window one at a time.' },
@@ -1207,7 +1207,7 @@ export const GROUP_KARAOKE: StoryNode[] = [
 // ==========================================================
 
 export const GROUP_FESTIVAL_EVE: StoryNode[] = [
-  { type: 'scene', scene: 'classroom_sunset', bgm: 'night', titleZh: '文化祭前夜', titleEn: 'The Night Before', subtitleZh: '十月三十一日 · 教室 · 晚上八点', subtitleEn: '31 October · A classroom · Eight p.m.' },
+  { type: 'scene', scene: 'classroom_night', bgm: 'night', titleZh: '文化祭前夜', titleEn: 'The Night Before', subtitleZh: '十月三十一日 · 教室 · 晚上八点', subtitleEn: '31 October · A classroom · Eight p.m.' },
   { type: 'narration', zh: '明天开幕。今晚要把三十六个纸箱糊成一条商店街。', en: 'It opens tomorrow. Tonight, thirty-six cardboard boxes have to become a shopping street.' },
   { type: 'narration', characterImage: `${ASUKA}gym_neutral.webp`, zh: '明日香已经换上了体操服，说通宵干活还穿裙子是不合理的，哨子照样挂在脖子上。她贴了一张进度表在黑板上，表上把今晚切成了十五分钟一格。', en: 'Asuka has already changed into her PE kit, on the grounds that working all night in a skirt is irrational, whistle still round her neck. She has taped a schedule to the blackboard. It divides the night into fifteen-minute blocks.' },
   { type: 'effect', setFlags: ['seen_outfit_asuka_gym', 'seen_outfit_rei_gym'] },
@@ -1294,7 +1294,7 @@ export const GROUP_FESTIVAL_EVE: StoryNode[] = [
 // ==========================================================
 
 export const GROUP_HANABI: StoryNode[] = [
-  { type: 'scene', scene: 'kobe_harbor', bgm: 'town', titleZh: 'みなと神戸海上花火大会', titleEn: 'The Harbour Fireworks', subtitleZh: '八月 · 傍晚六点', subtitleEn: 'August · Six in the evening' },
+  { type: 'scene', scene: 'kobe_harbor_fireworks', bgm: 'town', titleZh: 'みなと神戸海上花火大会', titleEn: 'The Harbour Fireworks', subtitleZh: '八月 · 傍晚六点', subtitleEn: 'August · Six in the evening' },
   { type: 'narration', zh: '一万发。港口那一带今晚会有二十万人。', en: 'Ten thousand shells. There will be two hundred thousand people around the harbour tonight.' },
   { type: 'narration', zh: '六个人约在三宫站的鸽子雕像前碰头。汹涌的人潮差点把队伍冲散，好不容易才在人头攒动中把走错出口的两个人捞了回来。', en: 'Six of you meet at the Sannomiya pigeon statue. The surging crowd nearly scatters everyone, and it takes time to round up the two who took the wrong exit.' },
   { type: 'narration', characterImage: `${NAO}yukata_happy.webp`, zh: '奈绪穿了浴衣。她说她自己系的腰带，说完就开始担心会不会散。', en: 'Nao is in a yukata. She says she tied the obi herself, and immediately starts worrying it will come undone.' },

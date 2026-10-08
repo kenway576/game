@@ -41,7 +41,7 @@ const R = '/images/characters/rei/';
 export const REI_STORY_2: StoryNode[] = [
   {
     type: 'scene',
-    scene: 'rooftop_sunset',
+    scene: 'rooftop_night',
     bgm: 'night',
     titleZh: '観測できない値',
     titleEn: 'The Value That Will Not Read',

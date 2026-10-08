@@ -47,7 +47,7 @@ const DAY1: StoryNode[] = [
   {
     // 十一月十四号早上五点半，天还没亮。校门口那张背景是樱花，
     // 那是四月的图；站内那张是白天且满是人。用三宫的夜路：有路灯，天没亮，一百二十个人站得下。
-    type: 'scene', scene: 'ikuta_road_night', bgm: 'town',
+    type: 'scene', scene: 'sannomiya_station_dawn', bgm: 'town',
     titleZh: '修学旅行 · 第一天', titleEn: 'School Trip · Day One',
     subtitleZh: '十一月十六日 · 五点三十分 集合', subtitleEn: '16 November · assembly at 5:30'
   },
@@ -276,6 +276,7 @@ const DAY3: StoryNode[] = [
     zh: '晚饭是宴会厅的定食，十人一桌。菜里有一道东西是紫色的，没有人知道那是什么，但全桌都吃完了。',
     en: 'Dinner is a set meal in the banquet room, ten to a table. One of the dishes is purple. Nobody knows what it is and the table finishes all of it.'
   },
+  { type: 'scene', scene: 'trip_hotel_room' },
   {
     type: 'narration',
     zh: '十点消灯。十点零四分，你房间的门被敲了。',

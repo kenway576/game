@@ -36,7 +36,7 @@ const M = '/images/characters/miyuki/';
 export const MIYUKI_STORY_2: StoryNode[] = [
   {
     type: 'scene',
-    scene: 'apartment_balcony',
+    scene: 'apartment_balcony_night',
     bgm: 'night',
     titleZh: 'お姉さんの役',
     titleEn: 'The Part of the Older Sister',

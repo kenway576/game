@@ -338,7 +338,7 @@ export const buildFestivalDay2 = (met: C[]): FestivalBuild => {
   if (opts.length) s.push({ type: 'choice', promptZh: '下午，和谁一起逛？', promptEn: 'Who do you spend the afternoon with?', options: opts });
 
   s.push(
-    { type: 'scene', scene: 'classroom_sunset', bgm: 'reflective', titleZh: '后夜祭', titleEn: 'The Closing Night', subtitleZh: '十一月二日 · 夜 · 操场', subtitleEn: '2 November · Night · The field' },
+    { type: 'scene', scene: 'field_bonfire_night', bgm: 'reflective', titleZh: '后夜祭', titleEn: 'The Closing Night', subtitleZh: '十一月二日 · 夜 · 操场', subtitleEn: '2 November · Night · The field' },
     nar('天黑以后，操场中间点起了一堆篝火。所有的纸箱、招牌、写坏了的海报，都被一样一样地放进火里。你看见那条纸箱商店街的第三层也进去了，烧得很快，像是终于可以休息了。',
       'After dark a bonfire is lit in the middle of the field. All the cardboard, the signs, the spoilt posters go into it one by one. You see the third tier of the cardboard street go in too. It burns quickly, as if it has finally been allowed to rest.', ''),
     eventCgNode('fest_bonfire'),

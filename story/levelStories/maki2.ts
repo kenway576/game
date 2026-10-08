@@ -33,7 +33,7 @@ const K = '/images/characters/maki/';
 export const MAKI_STORY_2: StoryNode[] = [
   {
     type: 'scene',
-    scene: 'jazz_livehouse',
+    scene: 'livehouse_entrance',
     bgm: 'night',
     titleZh: '待ち伏せの理由',
     titleEn: 'Why She Waits',

@@ -417,7 +417,7 @@ const CH3: StoryNode[] = [
 // ==========================================================
 const CH4: StoryNode[] = [
   {
-    type: 'scene', scene: 'ikuta_shrine', bgm: 'night',
+    type: 'scene', scene: 'ikuta_shrine_night', bgm: 'night',
     titleZh: '第 4 章 · 他在等谁',
     titleEn: 'Chapter 4 · Who He Was Waiting For',
     subtitleZh: '十月 · 生田神社', subtitleEn: 'October · Ikuta Shrine'
@@ -589,7 +589,7 @@ const CH4: StoryNode[] = [
 // ==========================================================
 const CH5: StoryNode[] = [
   {
-    type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'night',
+    type: 'scene', scene: 'ikuta_shrine_gate_night', bgm: 'night',
     titleZh: '第 5 章 · 一九九五',
     titleEn: 'Chapter 5 · Nineteen Ninety-Five',
     subtitleZh: '一月十七日', subtitleEn: '17th January'
@@ -768,7 +768,7 @@ const CH5: StoryNode[] = [
 // ==========================================================
 const CH6: StoryNode[] = [
   {
-    type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'night',
+    type: 'scene', scene: 'ikuta_shrine_gate_night', bgm: 'night',
     titleZh: '第 6 章 · 同一条坡',
     titleEn: 'Chapter 6 · The Same Hill',
     subtitleZh: '三月二十三日', subtitleEn: '23rd March'
@@ -973,7 +973,7 @@ const TORN_PAGE: StoryNode = {
 
 const CH7: StoryNode[] = [
   {
-    type: 'scene', scene: 'ikuta_road_night', bgm: 'night',
+    type: 'scene', scene: 'ikuta_hill_fog', bgm: 'night',
     titleZh: '最终章 · 待つ',
     titleEn: 'Final Chapter · To Wait',
     subtitleZh: '三月二十四日 · 天亮之前', subtitleEn: '24th March · Before dawn'
@@ -1002,7 +1002,7 @@ const CH7: StoryNode[] = [
   },
 
   // ---- 寿永三年 ----
-  { type: 'scene', scene: 'ikuta_shrine_forest', bgm: 'reflective' },
+  { type: 'scene', scene: 'ikuta_forest_1184', bgm: 'reflective' },
   {
     type: 'narration',
     zh: '雾散开一点。眼前是林子，可不是你认识的那片：没有写字楼，没有路灯，林子大得看不到边，一直铺到海那边去。空气里有烟味，还有一点梅花的香，两种味道搅在一起，闻上去像一封写到一半的信。',

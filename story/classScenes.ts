@@ -192,7 +192,7 @@ export const SKETCHES: Sketch[] = [
     midZh: '想起来这件事之后腿立刻就沉了，明明前五圈都还好。人的身体大概是听得懂话的，你一提它就当真了。剩下两圈你是靠数操场边上的树跑完的。', midEn: 'Remembering it made your legs heavy immediately, when the first five had been fine. Bodies apparently understand what you say about them, and take it seriously. You got round the last two by counting the trees along the edge of the field.',
     endZh: '跑完蹲在地上喘气的时候，有人往你手里塞了一瓶运动饮料。等你抬头，那个人已经在跑下一组了。', endEn: 'Crouched down getting your breath back afterwards, somebody put a sports drink into your hand. By the time you looked up they were already off on the next set.',
     word: { jp: '走る', reading: 'はしる', zh: '跑', en: 'to run' },
-    scene: 'gym'
+    scene: 'school_track_field'
   },
   {
     subject: 'taiiku',
@@ -247,7 +247,8 @@ export const SKETCHES: Sketch[] = [
     en: 'Home ec: sewing on a button. You do it four times. The first three times you sew the cloth shut.',
     midZh: '第四遍成了，靠的是把布掀起来看着针从背面出来。老师说这是最笨的办法，但也是最不会错的办法。她说这话的时候没有嘲笑的意思，你听得出来。', midEn: 'The fourth one worked, by lifting the cloth and watching the needle come out on the underside. The teacher said that was the clumsiest way of doing it and also the way that goes wrong least often. There was no mockery in how she said it, and you could hear that.',
     endZh: '扣子缝得歪，但很牢。你后来用力扯过一次，没掉。', endEn: 'The button ended up crooked and extremely secure. You gave it a hard pull later on. It stayed.',
-    word: { jp: 'ボタン', zh: '纽扣', en: 'button' }
+    word: { jp: 'ボタン', zh: '纽扣', en: 'button' },
+    scene: 'home_ec_room'
   },
   {
     subject: 'katei',
@@ -255,7 +256,8 @@ export const SKETCHES: Sketch[] = [
     en: 'The teacher says you must not let miso boil. You remember someone next door saying exactly the same thing.',
     midZh: '一模一样。连语气都像——都是那种「这不是建议，这是常识」的说法。你忽然意识到这个国家有一整套这样的东西，不写在任何书上，但所有人都知道。', midEn: 'Word for word, and in the same tone: the tone that says this is not advice, this is common knowledge. It struck you that this country has a whole body of that, written down nowhere, and known by everybody.',
     endZh: '下课你把这条记在了那张「原来不是全世界都一样的东西」的清单上。这是第几条你没数。', endEn: 'You added it to that list of things you had assumed were universal. You did not count which number it was.',
-    word: { jp: '沸騰', reading: 'ふっとう', zh: '沸腾', en: 'to boil' }
+    word: { jp: '沸騰', reading: 'ふっとう', zh: '沸腾', en: 'to boil' },
+    scene: 'home_ec_room'
   },
   // ---- 补的量：英语一年要上四十一次，只有三段的话玩家会看十四遍 ----
   {
@@ -403,7 +405,8 @@ export const SKETCHES: Sketch[] = [
     en: 'Today everyone measures their own palm. The teacher says it is so you know what one handful of rice means for you. Yours is slightly under.',
     midZh: '少一点也没关系，她说，知道自己少多少就行了。以后煮饭抓两把再加一点，比拿量杯准。这个说法你觉得非常好，好到有点想记下来，但又觉得记下来就没意思了。', midEn: 'It does not matter that it is less, she said; what matters is knowing by how much. Two handfuls and a bit will beat a measuring cup after that. You liked that a great deal, enough to want to write it down, and then felt that writing it down would spoil it.',
     endZh: '回去的路上你在口袋里张开手又合上，反复了好几次。', endEn: 'On the way home you opened and closed your hand in your pocket several times.',
-    word: { jp: '一握り', reading: 'ひとにぎり', zh: '一把', en: 'a handful' }
+    word: { jp: '一握り', reading: 'ひとにぎり', zh: '一把', en: 'a handful' },
+    scene: 'home_ec_room'
   }
 ];
 

@@ -32,7 +32,7 @@ export const SCENE_MAP: Record<string, string> = {
   'classroom': '/images/backgrounds/bg_classroom_morning.webp',
   'hallway':   '/images/backgrounds/bg_school_hallway.webp',
   'library':   '/images/backgrounds/library.webp',
-  'rooftop':   '/images/backgrounds/bg_school_rooftop_sunset.webp',
+  'rooftop':   '/images/backgrounds/bg_rooftop_day.webp',   // 白天的天台；黄昏用 rooftop_sunset
   'gym':       '/images/backgrounds/gym.webp',
   'room':      '/images/backgrounds/my_room.webp',
   'room_asuka':  '/images/backgrounds/room_asuka.webp',
@@ -311,7 +311,30 @@ export const SCENE_MAP: Record<string, string> = {
   'pancake_shop_exterior':         '/images/backgrounds/bg_pancake_exterior.webp',
   'pancake_shop_interior':         '/images/backgrounds/bg_pancake_interior.webp',
   'pancake_shop':                  '/images/backgrounds/bg_pancake_interior.webp',
-  'shiawase_no_pancake':           '/images/backgrounds/bg_pancake_interior.webp'
+  'shiawase_no_pancake':           '/images/backgrounds/bg_pancake_interior.webp',
+  // 🏞️ 补的背景（scripts/remake/gen-backgrounds.mjs）：以前这些场面都在借别处的图——
+  // 后夜祭的操场借黄昏教室、夜里的体育馆借白天的、时间回溯的雾坡借居酒屋街……
+  'field_bonfire_night':           '/images/backgrounds/bg_field_bonfire_night.webp',
+  'home_ec_room':                  '/images/backgrounds/bg_home_ec_room.webp',
+  'school_track_field':            '/images/backgrounds/bg_school_track_field.webp',
+  'student_council_room':          '/images/backgrounds/bg_student_council_room.webp',
+  'classroom_night':               '/images/backgrounds/bg_classroom_night.webp',
+  'rooftop_day':                   '/images/backgrounds/bg_rooftop_day.webp',
+  'rooftop_night':                 '/images/backgrounds/bg_rooftop_night.webp',
+  'gym_night':                     '/images/backgrounds/bg_gym_night.webp',
+  'school_hallway_festival':       '/images/backgrounds/bg_school_hallway_festival.webp',
+  'ikuta_hill_fog':                '/images/backgrounds/bg_ikuta_hill_fog.webp',
+  'ikuta_forest_1184':             '/images/backgrounds/bg_ikuta_forest_1184.webp',
+  'apartment_balcony_night':       '/images/backgrounds/bg_apartment_balcony_night.webp',
+  'ikuta_shrine_snow':             '/images/backgrounds/bg_ikuta_shrine_snow.webp',
+  'ikuta_shrine_night':            '/images/backgrounds/bg_ikuta_shrine_night.webp',
+  'ikuta_shrine_gate_night':       '/images/backgrounds/bg_ikuta_shrine_gate_night.webp',
+  'kobe_harbor_fireworks':         '/images/backgrounds/bg_kobe_harbor_fireworks.webp',
+  'ferris_wheel_gondola':          '/images/backgrounds/bg_ferris_wheel_gondola.webp',
+  'livehouse_entrance':            '/images/backgrounds/bg_livehouse_entrance.webp',
+  'trip_hotel_room':               '/images/backgrounds/bg_trip_hotel_room.webp',
+  'train_interior_night':          '/images/backgrounds/bg_train_interior_night.webp',
+  'sannomiya_station_dawn':        '/images/backgrounds/bg_sannomiya_station_dawn.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，

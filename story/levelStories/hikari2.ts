@@ -70,6 +70,7 @@ export const HIKARI_STORY_2: StoryNode[] = [
   },
 
   // ---- 上升：她还在演 ----
+  { type: 'scene', scene: 'ferris_wheel_gondola' },
   {
     type: 'narration',
     characterImage: `${H}casual_happy.webp`,
@@ -448,6 +449,7 @@ export const HIKARI_STORY_2: StoryNode[] = [
     zh: '你说好。你没有拆穿。',
     en: 'You say all right. You do not call it.'
   },
+  { type: 'scene', scene: 'mosaic_night' },
   {
     type: 'narration',
     zh: '门开了。她跳下去，回头等你，手已经举起来在挥了。',

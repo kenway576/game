@@ -34,7 +34,7 @@ const S = '/images/characters/sora/';
 export const SORA_STORY_2: StoryNode[] = [
   {
     type: 'scene',
-    scene: 'gym',
+    scene: 'gym_night',
     bgm: 'night',
     titleZh: '肩の話',
     titleEn: 'About the Shoulder',

@@ -33,7 +33,7 @@ const I = '/images/characters/inari/';
 export const INARI_STORY_3: StoryNode[] = [
   {
     type: 'scene',
-    scene: 'ikuta_shrine',
+    scene: 'ikuta_shrine_snow',
     bgm: 'night',
     titleZh: '人の時間',
     titleEn: 'Human Time',

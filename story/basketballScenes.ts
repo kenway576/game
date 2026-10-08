@@ -47,7 +47,7 @@ const MATCH = (venue: 'gym' | 'arcade', extraWinFlags: string[] = []): StoryNode
 // 第一次碰到她（第一天没去体育馆的人）：她教，然后比一场
 // ---------------------------------------------------------
 export const BB_SORA_FIRST = (where: 'gym' | 'rooftop' | 'arcade'): StoryNode[] => where === 'arcade' ? [
-  { type: 'scene', scene: 'sannomiya_arcade', bgm: 'town', titleZh: '中央街 · 游戏厅', titleEn: 'Center Gai · Game Centre' },
+  { type: 'scene', scene: 'pia_kobe_arcade', bgm: 'town', titleZh: '中央街 · 游戏厅', titleEn: 'Center Gai · Game Centre' },
   { type: 'narration', zh: '游戏厅门口那台投篮机前，有个短发女生正一个人投得飞快。屏幕上的排行榜第一名写着「SORA」。', en: 'At the basketball machine by the game centre entrance, a short-haired girl is shooting at a furious pace. Top of the leaderboard: SORA.' },
   { type: 'narration', characterImage: `${S}happy.webp`, zh: '最后一球进了。她转过身，正好跟你对上眼。', en: 'The last one drops. She turns round and catches your eye.' },
   SAY('お、{name}やん！これやったことある？ない？……ほな、ウチが教えたる。百円もウチが出したるわ。', '哦，{name}！玩过这个吗？没有？……那我来教你。一百日元我也请了。', 'Oh, {name}! Ever played this? No? ...Then I will teach you. My hundred yen.'),
@@ -118,7 +118,7 @@ export const BB_SORA_CHALLENGE = (fromRooftop: boolean): StoryNode[] => [
 // 中央街的游戏厅：投篮机的排行榜第一名写着 SORA
 // ---------------------------------------------------------
 export const BB_SORA_ARCADE: StoryNode[] = [
-  { type: 'scene', scene: 'sannomiya_arcade', bgm: 'town', titleZh: '中央街 · 游戏厅', titleEn: 'Center Gai · Game Centre' },
+  { type: 'scene', scene: 'pia_kobe_arcade', bgm: 'town', titleZh: '中央街 · 游戏厅', titleEn: 'Center Gai · Game Centre' },
   { type: 'narration', zh: '游戏厅门口那台投篮机前围了一小圈人。屏幕上的排行榜，第一名写着「SORA」。', en: 'A small crowd has gathered round the basketball machine at the front of the game centre. Top of the leaderboard: SORA.' },
   { type: 'narration', characterImage: `${S}happy.webp`, zh: '本人就站在机台旁边，正一脸得意地给围观的小学生讲解手腕要怎么压。', en: 'The lady herself is standing beside it, smugly explaining wrist snap to a couple of primary schoolers.' },
   SAY('あ、{name}！見てみ、ランキング一位ウチやで。……勝負する？百円はウチが出したる。', '啊，{name}！你看，排行第一是我哦。……比一场？一百日元我请。', 'Oh, {name}! Look — top of the board, that is me. ...Want a match? My hundred yen.'),

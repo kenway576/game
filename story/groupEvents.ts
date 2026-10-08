@@ -687,6 +687,7 @@ const EV_GROUP_MOSAIC: MapEventDef = {
       en: 'Mm. You get used to it.',
       color: 'bg-purple-600'
     },
+    { type: 'scene', scene: 'ferris_wheel_gondola' },
     {
       type: 'narration',
       zh: '门关上。包厢晃了一下，然后开始往上。',
@@ -878,6 +879,7 @@ const EV_GROUP_MOSAIC: MapEventDef = {
         }
       ]
     },
+    { type: 'scene', scene: 'mosaic_night' },
     {
       type: 'narration',
       zh: '轮子转到最低点，门开了。四个人下来，站在原地都没有立刻走。',
