@@ -16,7 +16,7 @@ import { dayIndex } from './lifeData';
 // 地点卡片上直接列出来，所以玩家挑地方的时候就知道"去那儿能干嘛"。
 // ==========================================================
 
-export type ActivityKind = 'drill' | 'karuta' | 'shiritori' | 'michi' | 'kingyo' | 'basketball';
+export type ActivityKind = 'drill' | 'karuta' | 'shiritori' | 'michi' | 'kingyo' | 'basketball' | 'rhythm' | 'haiku';
 
 export interface ActivityDef {
   id: string;
@@ -142,6 +142,25 @@ export const ACTIVITIES: ActivityDef[] = [
     timeSlots: ['lunch', 'afternoon'], schoolDayOnly: true, stamina: 14,
     needsFlag: 'basketball_tutorial_done',
     needsZh: '规则还没人教过你。体育馆里那个短发的女生会教。', needsEn: 'Nobody has shown you the rules yet. The short-haired girl in the gym will.'
+  },
+  // ---------------- 节奏机台 ----------------
+  // Maki 的地盘。认识她之后才会出现（partner 没见过的人，活动不显示）。
+  {
+    id: 'rhythm_maki', kind: 'rhythm', locId: 'sannomiya_arcade',
+    partner: CharacterId.MAKI, emoji: '🎵',
+    titleZh: '跟 Maki 比节奏机台', titleEn: 'Beat Crash against Maki',
+    blurbZh: '四条轨道，D F J K。她打她的，你打你的，分数高的赢。第一次她会教你。',
+    blurbEn: 'Four lanes, D F J K. She plays hers, you play yours; highest score wins. She will walk you through it the first time.',
+    timeSlots: ['afternoon', 'night'], fee: 100, stamina: 12
+  },
+  // ---------------- 句会 ----------------
+  {
+    id: 'kukai_rei', kind: 'haiku', locId: 'school_library',
+    partner: CharacterId.REI, emoji: '🍵',
+    titleZh: '跟铃玩句会：百人一首与俳句', titleEn: 'Poetry circle with Rei: Hyakunin Isshu and haiku',
+    blurbZh: '听上の句选下の句，或者把词块拼成 5-7-5。第一次玩，铃会先讲规则。',
+    blurbEn: 'Hear the first half of a waka and pick the second, or arrange chunks into a 5-7-5. Rei explains the rules the first time.',
+    timeSlots: ['lunch', 'afternoon'], schoolDayOnly: true, stamina: 10
   },
   {
     id: 'bb_arcade', kind: 'basketball', locId: 'sannomiya_arcade', venue: 'arcade',

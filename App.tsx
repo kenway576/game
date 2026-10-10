@@ -65,6 +65,8 @@ import ShiritoriModal, { ShiritoriResult } from './components/ShiritoriModal';
 import MichiModal, { MichiResult } from './components/MichiModal';
 import KingyoModal, { KingyoResult } from './components/KingyoModal';
 import BasketballModal, { BasketballResult, BB_FULL_RUN } from './components/BasketballModal';
+import RhythmArcadeModal, { RhythmResult } from './components/RhythmArcadeModal';
+import HaikuKukaiModal, { HaikuResult } from './components/HaikuKukaiModal';
 import { BB_SORA_FIRST, BB_SORA_CHALLENGE, BB_SORA_ARCADE, BB_SPOTS } from './story/basketballScenes';
 import type { PracticeTier } from './types';
 import { ActivityDef, practiceKeyOf, drillRewards } from './data/activityData';
@@ -462,6 +464,8 @@ const App: React.FC = () => {
     : activeActivity.act.kind === 'shiritori' ? 'lobby'
     : activeActivity.act.kind === 'michi' ? 'town'
     : activeActivity.act.kind === 'basketball' ? (activeActivity.act.venue === 'arcade' ? 'arcade' : 'sports')
+    : activeActivity.act.kind === 'rhythm' ? 'arcade'
+    : activeActivity.act.kind === 'haiku' ? 'study'
     : null;
   useEffect(() => {
     if (storyPlaying) return;
@@ -994,6 +998,8 @@ const App: React.FC = () => {
     | { kind: 'michi'; r: MichiResult }
     | { kind: 'kingyo'; r: KingyoResult }
     | { kind: 'basketball'; r: BasketballResult }
+    | { kind: 'rhythm'; r: RhythmResult }
+    | { kind: 'haiku'; r: HaikuResult }
   ) => {
     const cur = activeActivity;
     if (!cur) return;
@@ -1009,6 +1015,8 @@ const App: React.FC = () => {
       : payload.kind === 'shiritori' ? [payload.r.turns, payload.r.maxTurns, [] as string[]]
       : payload.kind === 'michi' ? [payload.r.score, payload.r.total, [] as string[]]
       : payload.kind === 'basketball' ? [payload.r.made, BB_FULL_RUN, [] as string[]]
+      : payload.kind === 'rhythm' ? [Math.round(payload.r.acc * 100), 100, [] as string[]]
+      : payload.kind === 'haiku' ? [payload.r.score, payload.r.total, payload.r.seenIds]
       : [Math.min(payload.r.caught, 5), 5, [] as string[]];
     const settled = settlePractice(prev, score, total, seen);
 
@@ -1027,6 +1035,27 @@ const App: React.FC = () => {
       const good = payload.r.score >= payload.r.total * 0.75;
       effects.push({ stat: 'kindness', amount: good ? 2 : 1, reasonZh: '有人照着你的话，找到了要去的地方', reasonEn: 'Someone followed your words and found their way' });
       if (good) effects.push({ stat: 'knowledge', amount: 1, reasonZh: '三宫的地图刻进了脑子里', reasonEn: 'The map of Sannomiya is in your head now' });
+    } else if (payload.kind === 'rhythm') {
+      const r = payload.r;
+      effects.push({
+        stat: 'proficiency', amount: r.rank === 'S' || r.rank === 'A' ? 2 : 1,
+        reasonZh: r.rank === 'S' || r.rank === 'A' ? '手指跟上了节拍，连按键的力道都收得住了' : '一曲打下来，手指慢慢记住了节奏',
+        reasonEn: r.rank === 'S' || r.rank === 'A' ? 'Your fingers kept the beat, and even your keystrokes were under control' : 'A whole song later, your fingers are starting to remember the rhythm'
+      });
+      if (r.won) {
+        effects.push({ stat: 'guts', amount: 1, reasonZh: '当着一屏幕的观众，赢了 Maki', reasonEn: 'You beat Maki with a screenful of onlookers' });
+        applyStoryRelations([{ char: CharacterId.MAKI, familiarity: 3, affection: 2, reasonZh: '她输了，却笑着说下次还要比', reasonEn: 'She lost, and grinned that she wants a rematch' }]);
+      }
+      if (r.rank === 'S') effects.push({ stat: 'charm', amount: 1, reasonZh: '全连的那一曲，旁边围了一圈人', reasonEn: 'A near-perfect run, and a crowd gathered behind you' });
+    } else if (payload.kind === 'haiku') {
+      const r = payload.r;
+      if (r.mode === 'hyakunin') {
+        effects.push({ stat: 'knowledge', amount: r.score >= 8 ? 2 : 1, reasonZh: r.score >= 8 ? '千年前的诗，一句一句接上了' : '又记住了几首古老的和歌', reasonEn: r.score >= 8 ? 'You completed poems a thousand years old, line by line' : 'A few more ancient waka are yours now' });
+      } else {
+        effects.push({ stat: 'knowledge', amount: 1, reasonZh: '五七五之间，数拍子数得更熟了', reasonEn: 'Counting beats in 5-7-5 is getting easier' });
+        if (r.best) effects.push({ stat: 'charm', amount: 1, reasonZh: '玲低声念了一遍你的句子', reasonEn: 'Rei read your verse aloud, softly' });
+      }
+      if (r.best) applyStoryRelations([{ char: CharacterId.REI, familiarity: 2, affection: 2, reasonZh: '她第一次，认真地夸了你', reasonEn: 'For the first time, she praised you properly' }]);
     } else if (payload.kind === 'basketball') {
       const r = payload.r;
       effects.push({
@@ -1084,6 +1113,8 @@ const App: React.FC = () => {
       shiritori: ['食堂的广播响了。光还在嘟囔刚才那个词到底算不算。', 'The cafeteria speakers crackle. Hikari is still muttering about whether that last word counted.'],
       michi: ['站前的人潮又涌上来一批。你把手机揣回口袋，觉得三宫在脑子里清楚了一点。', 'Another wave of people surges out of the station. You pocket your phone, Sannomiya a little clearer in your head.'],
       kingyo: ['你拎着装金鱼的塑料袋走下神社的石阶。袋子里的水在灯笼底下一晃一晃。', 'You carry the bag of goldfish down the shrine steps. The water sways under the lanterns.'],
+      rhythm: ['机台的屏幕滚出「GAME OVER」。耳朵里还是那段鼓点，手指微微发麻。Maki 在旁边一边数硬币，一边嘟囔着下次一定赢。', 'GAME OVER scrolls across the screen. The drumline is still in your ears, your fingertips a little numb. Maki counts coins beside you, muttering that next time she will win.'],
+      haiku: ['图书室的窗外，云慢慢移开了。玲把你写的那几行字，夹进了笔记本里。', 'Outside the library window the clouds drift apart. Rei slips the lines you wrote into her notebook.'],
       basketball: act.venue === 'arcade'
         ? ['投篮机的灯暗下去，屏幕上滚出「THANK YOU FOR PLAYING」。排行榜第一那一栏还是「SORA」——今天还是。', 'The machine’s lights dim and THANK YOU FOR PLAYING scrolls past. Top of the board still says SORA. For today.']
         : ['计时器「哔——」地响了。你把最后一个球放回球车，手腕还记着刚才那一下的感觉。', 'The timer beeps. You put the last ball back in the cart, your wrist still remembering that last shot.']
@@ -4308,6 +4339,27 @@ ${wind}`;
           tutorial={false}
           tier={(life.practice?.basketball?.tier ?? 1) as PracticeTier}
           onFinish={r => finishActivity({ kind: 'basketball', r })}
+          onCancel={cancelActivity}
+        />
+      )}
+
+      {activeActivity?.act.kind === 'rhythm' && (
+        <RhythmArcadeModal
+          language={userState.language}
+          tier={(life.practice?.[practiceKeyOf(activeActivity.act)]?.tier ?? 1) as PracticeTier}
+          introSeen={storyFlags}
+          onSeenIntro={k => setStoryFlags(prev => (prev[k] ? prev : { ...prev, [k]: true }))}
+          onFinish={r => finishActivity({ kind: 'rhythm', r })}
+          onCancel={cancelActivity}
+        />
+      )}
+      {activeActivity?.act.kind === 'haiku' && (
+        <HaikuKukaiModal
+          language={userState.language}
+          progress={life.practice?.[practiceKeyOf(activeActivity.act)]}
+          introSeen={storyFlags}
+          onSeenIntro={k => setStoryFlags(prev => (prev[k] ? prev : { ...prev, [k]: true }))}
+          onFinish={r => finishActivity({ kind: 'haiku', r })}
           onCancel={cancelActivity}
         />
       )}
