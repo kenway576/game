@@ -126,7 +126,7 @@ export const MIYUKI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${M}happy_alt.webp`,
+            characterImage: `${M}cardigan_happy_alt.webp`,
             zh: '她整个人亮了一下，然后马上低头去夹自己碗里的东西，掩饰得不太成功。',
             en: 'Something lights up in her, and she immediately looks down at her own bowl, not very successfully.'
           },

@@ -378,8 +378,8 @@ export const CHORES_DAY: StoryNode[] = [
 export const CLUB_BASKETBALL: StoryNode[] = [
   { type: 'scene', scene: 'kaisei_gym_interior', bgm: 'town', titleZh: '休日練習', titleEn: 'Weekend Practice', subtitleZh: '休息日 · 体育馆', subtitleEn: 'Day off · The gym' },
   { type: 'narration', zh: '休息日的体育馆只开一半的灯。另外半边是暗的，球撞在地板上有回声。', en: 'Half the gym lights are on. The other half of the floor is dark and the ball comes back with an echo.' },
-  { type: 'narration', characterImage: `${SORA}neutral.webp`, zh: '空一个人在。她说部活是十点开始的，现在是八点四十。', en: 'Sora is here on her own. She says club starts at ten. It is twenty to nine.' },
-  { type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}happy.webp`, jp: 'なんでおるん。休みやで、今日。', zh: '你怎么来了。今天放假啊。', en: 'What are you doing here? It\'s a day off.', color: 'bg-orange-500' },
+  { type: 'narration', characterImage: `${SORA}school_neutral.webp`, zh: '空一个人在。她说部活是十点开始的，现在是八点四十。', en: 'Sora is here on her own. She says club starts at ten. It is twenty to nine.' },
+  { type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}school_happy.webp`, jp: 'なんでおるん。休みやで、今日。', zh: '你怎么来了。今天放假啊。', en: 'What are you doing here? It\'s a day off.', color: 'bg-orange-500' },
   { type: 'narration', zh: '你把这句话原样还给她。她笑了，没接。', en: 'You hand the question straight back. She laughs and does not answer it.' },
   {
     type: 'choice',
@@ -394,8 +394,8 @@ export const CLUB_BASKETBALL: StoryNode[] = [
         relations: [{ char: CharacterId.SORA, familiarity: 6, affection: 4, reasonZh: '她笑了整整一分钟，然后教你手怎么放', reasonEn: 'She laughed for a full minute and then fixed your hands' }],
         then: [
           { type: 'narration', zh: '空气球。球连篮板都没碰到。', en: 'Air ball. It does not touch the backboard.' },
-          { type: 'narration', characterImage: `${SORA}happy.webp`, zh: '她笑得直不起腰来，笑够了才走过来，把你僵硬的手指一根一根摆到标准的投篮位置上。', en: 'She laughs until she is out of breath. Then she comes over and puts your fingers where they are supposed to be, one at a time.' },
-          { type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}neutral.webp`, jp: '肘。肘が外向いとる。……そう。それ。', zh: '手肘。手肘朝外了。……对。就那样。', en: 'Elbow. Your elbow\'s out. ...There. That.', color: 'bg-orange-500' },
+          { type: 'narration', characterImage: `${SORA}school_happy.webp`, zh: '她笑得直不起腰来，笑够了才走过来，把你僵硬的手指一根一根摆到标准的投篮位置上。', en: 'She laughs until she is out of breath. Then she comes over and puts your fingers where they are supposed to be, one at a time.' },
+          { type: 'speech', speakerZh: '空', speakerEn: 'Sora', characterImage: `${SORA}school_neutral.webp`, jp: '肘。肘が外向いとる。……そう。それ。', zh: '手肘。手肘朝外了。……对。就那样。', en: 'Elbow. Your elbow\'s out. ...There. That.', color: 'bg-orange-500' },
           { type: 'narration', zh: '第十四个进了。她"ナイッシュー"喊得整个体育馆都听得见，而馆里只有你们两个人。', en: 'The fourteenth goes in. Her "nice shot" fills the entire gym, which contains two people.' }
         ]
       },
@@ -554,7 +554,7 @@ export const CLUB_MUSIC: StoryNode[] = [
 export const OUTING_HANAMI: StoryNode[] = [
   { type: 'scene', scene: 'oji_amusement_park', bgm: 'town', titleZh: '花見', titleEn: 'Under the Blossom', subtitleZh: '春 · 王子公园', subtitleEn: 'Spring · Oji Park' },
   { type: 'narration', zh: '光在群里说她占了位子。她七点就去了，为了那棵最大的树底下那块地。', en: 'Hikari said in the group chat that she had a spot. She went at seven for the patch under the biggest tree.' },
-  { type: 'narration', characterImage: `${HIKARI}happy.webp`, zh: '你到的时候她已经在那块蓝色塑料布上坐了三个小时，靠着树睡着了一次。', en: 'By the time you arrive she has been on the blue tarpaulin three hours and has fallen asleep against the tree once.' },
+  { type: 'narration', characterImage: `${HIKARI}school_happy.webp`, zh: '你到的时候她已经在那块蓝色塑料布上坐了三个小时，靠着树睡着了一次。', en: 'By the time you arrive she has been on the blue tarpaulin three hours and has fallen asleep against the tree once.' },
   { type: 'narration', characterImage: `${NAO}happy.webp`, zh: '奈绪拎了两个便当盒来，一个是她做的，一个是她买的，她坚持不说哪个是哪个。', en: 'Nao arrives with two bento boxes, one she made and one she bought, and refuses to say which is which.' },
   { type: 'speech', speakerZh: '奈绪', speakerEn: 'Nao', characterImage: `${NAO}happy.webp`, jp: '当ててみ。当たったら両方あげる。', zh: '猜猜看。猜中了两个都给你。', en: 'Guess. If you get it right you can have both.', color: 'bg-emerald-500' },
   {
@@ -587,14 +587,14 @@ export const OUTING_HANAMI: StoryNode[] = [
           { char: CharacterId.HIKARI, familiarity: 5, affection: 5, reasonZh: '你和她站在同一边', reasonEn: 'You took her side' }
         ],
         then: [
-          { type: 'narration', characterImage: `${HIKARI}happy.webp`, zh: '光举起筷子跟你碰了一下，像干杯。', en: 'Hikari taps her chopsticks against yours like a toast.' },
+          { type: 'narration', characterImage: `${HIKARI}school_happy.webp`, zh: '光举起筷子跟你碰了一下，像干杯。', en: 'Hikari taps her chopsticks against yours like a toast.' },
           { type: 'narration', characterImage: `${NAO}angry.webp`, zh: '奈绪说你们两个都是滑头。她说完自己也夹了一筷子买来的那个。', en: 'Nao says you are both slippery, and then takes a piece from the shop-bought one herself.' }
         ]
       }
     ]
   },
   { type: 'narration', zh: '下午三点，风起来了，花瓣往塑料布上落，落进便当盒里。谁都没有去拨。', en: 'At three the wind gets up and petals come down onto the tarpaulin and into the boxes. Nobody brushes them out.' },
-  { type: 'narration', characterImage: `${HIKARI}neutral.webp`, zh: '光忽然说：「うち、去年の花見は一人やってん」。她说完就没再说了。', en: 'Hikari says, out of nowhere, that last year she did the blossom on her own. Then she does not say anything else.' },
+  { type: 'narration', characterImage: `${HIKARI}school_neutral.webp`, zh: '光忽然说：「うち、去年の花見は一人やってん」。她说完就没再说了。', en: 'Hikari says, out of nowhere, that last year she did the blossom on her own. Then she does not say anything else.' },
   { type: 'narration', zh: '奈绪往她那边挪了一点。就一点，挪完什么都没说。', en: 'Nao shifts a little way towards her. Just a little. Neither of them mentions it.' },
   {
     type: 'effect', setFlags: ['restday_outing_hanami'],
@@ -717,8 +717,8 @@ export const OUTING_HATSUMODE: StoryNode[] = [
   { type: 'scene', scene: 'ikuta_shrine_gate', bgm: 'night', titleZh: '初詣', titleEn: 'The First Visit', subtitleZh: '冬 · 元旦 · 生田神社', subtitleEn: 'Winter · New Year · Ikuta Shrine' },
   { type: 'narration', zh: '元旦零点，生田神社前的人潮从朱红鸟居一直蜿蜒排到了马路对面。寒风夹杂着参拜者的低语，大家搓着手在队列中寸寸挪动。', en: 'Midnight on New Year Day. The queue at Ikuta stretches from the vermilion torii across the street, people rubbing hands in the winter chill.' },
   { type: 'narration', characterImage: `${ASUKA}winter_neutral.webp`, zh: '明日香穿的是私服：藏青大衣扣到最上面一颗，红格子围巾，一对白色的毛绒耳罩。你几乎没见过她穿私服，她自己也不太自在，一直在整理围巾。', en: 'Asuka is in her own clothes. You have almost never seen this, and neither has she; she keeps rearranging her scarf.' },
-  { type: 'narration', characterImage: `${INARI}neutral.webp`, zh: '稻荷不用排队。你们排到一半的时候她已经站在里面了，靠着一根柱子，手里拿着一杯甜酒。', en: 'Inari does not queue. Halfway up you find her already inside, leaning on a pillar with a cup of amazake.' },
-  { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}sly.webp`, jp: '毎年、この日だけは混むのう。年に一度、皆が思い出すのじゃ。', zh: '每年就这一天挤。一年一次，大家会想起来。', en: 'Only on this one day of the year. Once a year, everybody remembers.', color: 'bg-amber-500' },
+  { type: 'narration', characterImage: `${INARI}school_neutral.webp`, zh: '稻荷不用排队。你们排到一半的时候她已经站在里面了，靠着一根柱子，手里拿着一杯甜酒。', en: 'Inari does not queue. Halfway up you find her already inside, leaning on a pillar with a cup of amazake.' },
+  { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}school_sly.webp`, jp: '毎年、この日だけは混むのう。年に一度、皆が思い出すのじゃ。', zh: '每年就这一天挤。一年一次，大家会想起来。', en: 'Only on this one day of the year. Once a year, everybody remembers.', color: 'bg-amber-500' },
   {
     type: 'choice',
     promptZh: '绘马挂在殿侧，密密麻麻。明日香在写。她写了很久，用手挡着。',
@@ -745,10 +745,10 @@ export const OUTING_HATSUMODE: StoryNode[] = [
         effects: [{ stat: 'knowledge', amount: 3, reasonZh: '你问了一个只有这里能问的问题', reasonEn: 'You asked a question you could only ask here' }],
         relations: [{ char: CharacterId.INARI, familiarity: 5, affection: 9, reasonZh: '她说了实话，虽然实话不好听', reasonEn: 'She told the truth, which was not the nice answer' }],
         then: [
-          { type: 'narration', characterImage: `${INARI}neutral.webp`, zh: '她看着那一整面绘马，看了很久。', en: 'She looks at the whole wall of them for a long time.' },
-          { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}sad.webp`, jp: '読む。全部な。……叶えられるとは言うておらん。', zh: '读。全都读。……我可没说能实现。', en: 'I read them. All of them. ...I did not say I could grant them.', color: 'bg-amber-500' },
+          { type: 'narration', characterImage: `${INARI}school_neutral.webp`, zh: '她看着那一整面绘马，看了很久。', en: 'She looks at the whole wall of them for a long time.' },
+          { type: 'speech', speakerZh: '稻荷', speakerEn: 'Inari', characterImage: `${INARI}school_sad.webp`, jp: '読む。全部な。……叶えられるとは言うておらん。', zh: '读。全都读。……我可没说能实现。', en: 'I read them. All of them. ...I did not say I could grant them.', color: 'bg-amber-500' },
           { type: 'narration', zh: '你问那读来干什么。她说：读了，那件事就有人知道了。', en: 'You ask what the point is. She says that once she has read it, somebody knows about it.' },
-          { type: 'narration', characterImage: `${INARI}sad.webp`, zh: '「知られたことは、一人ぶんだけ軽くなる。」', en: 'What is known, she says, gets one person\'s worth lighter.' }
+          { type: 'narration', characterImage: `${INARI}school_sad.webp`, zh: '「知られたことは、一人ぶんだけ軽くなる。」', en: 'What is known, she says, gets one person\'s worth lighter.' }
         ]
       }
     ]
@@ -1122,7 +1122,7 @@ export const TRIP_KYOTO: StoryNode[] = [
 export const GROUP_KARAOKE: StoryNode[] = [
   { type: 'scene', scene: 'sannomiya_karaoke_room', bgm: 'town', titleZh: '三个人，两小时，一个包厢', titleEn: 'Three People, Two Hours, One Booth', subtitleZh: '放学后 · 三宫的卡拉OK', subtitleEn: 'After school · Karaoke in Sannomiya' },
   { type: 'narration', zh: '学生优惠，两小时七百日元，饮料吧无限。这个价格是真希查出来的，她查了四家。', en: 'Student rate, seven hundred yen for two hours, drinks bar included. Maki found it. She compared four places.' },
-  { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '进包厢之前她先声明了一条规矩：不许点谁都会唱的那种。', en: 'Before going in she lays down one rule: nothing everybody already knows.' },
+  { type: 'narration', characterImage: `${MAKI}school_neutral.webp`, zh: '进包厢之前她先声明了一条规矩：不许点谁都会唱的那种。', en: 'Before going in she lays down one rule: nothing everybody already knows.' },
   { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空第一首就点了一首谁都会唱的。', en: 'Sora’s first pick is a song everybody knows.' },
   { type: 'narration', characterImage: `${HIKARI}casual_happy.webp`, zh: '光笑得从沙发上滑下去了。', en: 'Hikari laughs herself off the sofa.' },
   {
@@ -1145,7 +1145,7 @@ export const GROUP_KARAOKE: StoryNode[] = [
           { type: 'narration', zh: '前奏起来的时候你后悔了。副歌那一句的语速你从来没跟上过。', en: 'You regret it during the intro. You have never once kept up with that line in the chorus.' },
           { type: 'narration', zh: '你没跟上。你唱错了三个地方，最后一句直接跑没了。', en: 'You do not keep up. Three mistakes, and the last line simply gets away from you.' },
           { type: 'narration', characterImage: `${SORA}autumn_happy.webp`, zh: '空鼓掌鼓得整个包厢都在响。她说"うまいやん"，说得非常真诚，而且非常不准确。', en: 'Sora applauds hard enough to fill the booth. She says you were good, with total sincerity and total inaccuracy.' },
-          { type: 'narration', characterImage: `${MAKI}neutral.webp`, zh: '真希什么都没说。但她把那首歌加进了后面的列表里，加了两次。', en: 'Maki says nothing. She does add that song to the queue again. Twice.' }
+          { type: 'narration', characterImage: `${MAKI}school_neutral.webp`, zh: '真希什么都没说。但她把那首歌加进了后面的列表里，加了两次。', en: 'Maki says nothing. She does add that song to the queue again. Twice.' }
         ]
       },
       {

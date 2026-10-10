@@ -1785,7 +1785,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
               },
               {
                 type: 'speech',
-                characterImage: '/images/characters/miyuki/happy_alt.webp',
+                characterImage: '/images/characters/miyuki/cardigan_happy_alt.webp',
                 speakerZh: '深雪',
                 speakerEn: 'Miyuki',
                 jp: '初日から神戸プリン？……ふふ、いい趣味してるわ。',
@@ -1879,7 +1879,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                   },
                   {
                     type: 'narration',
-                    characterImage: '/images/characters/miyuki/happy_alt.webp',
+                    characterImage: '/images/characters/miyuki/cardigan_happy_alt.webp',
                     zh: '她在旁边看了你两眼，没有拆穿，只是把步子又放慢了一点。',
                     en: 'She glances at you twice, says nothing about it, and simply slows her pace a little further.'
                   }
@@ -2027,7 +2027,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                     type: 'speech',
                     speakerZh: '深雪',
                     speakerEn: 'Miyuki',
-                    characterImage: '/images/characters/miyuki/happy_alt.webp',
+                    characterImage: '/images/characters/miyuki/cardigan_happy_alt.webp',
                     jp: 'ふふ。ちゃんと覚えてくれた？……じゃあ、また明日。おやすみなさい。',
                     words: [
                       { jp: '覚える', reading: 'おぼえる', zh: '记住', en: 'to remember / to memorize' }
@@ -2216,7 +2216,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
                 then: [
                   {
                     type: 'narration',
-                    characterImage: '/images/characters/miyuki/happy_alt.webp',
+                    characterImage: '/images/characters/miyuki/cardigan_happy_alt.webp',
                     zh: '你弯下腰，角度深得有点过分。抬头时她还站在门口，像是被逗到了，忍着笑对你摆了摆手。',
                     en: 'You bend at the waist — rather deeper than necessary. When you straighten up she is still in the doorway, visibly holding back a laugh, waving you off.'
                   },
@@ -2436,7 +2436,7 @@ export const PROLOGUE_SCRIPT: StoryNode[] = [
     type: 'speech',
     speakerZh: '深雪',
     speakerEn: 'Miyuki',
-    characterImage: '/images/characters/miyuki/happy_alt.webp',
+    characterImage: '/images/characters/miyuki/cardigan_happy_alt.webp',
     jp: '{name}さん、ですね。……覚えました。',
     zh: '{name}先生。……我记住了。',
     en: 'So it is {name}. ...I will remember that.',

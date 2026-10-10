@@ -51,7 +51,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}neutral.webp`,
+      characterImage: `${SORA}school_neutral.webp`,
       jp: '……あ、来た。おい、こいつ誰なん。さっきから隣おんねん。',
       zh: '……啊，来了。喂，这家伙是谁啊。刚才就一直坐旁边。',
       en: '...Ah, there you are. Oi. Who is this. She has been sitting there this whole time.',
@@ -75,7 +75,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}happy.webp`,
+      characterImage: `${SORA}school_happy.webp`,
       jp: 'ふーん。……ほんなら、替え玉何回いける？',
       zh: '嗯——。……那，加面能加几次？',
       en: 'Hmm. ...Right then. How many rounds of extra noodles can you do?',
@@ -98,7 +98,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}happy.webp`,
+      characterImage: `${SORA}school_happy.webp`,
       jp: 'うちは五回。',
       zh: '我五次。',
       en: 'I do five.',
@@ -116,7 +116,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}happy.webp`,
+      characterImage: `${SORA}school_happy.webp`,
       jp: '増えとるやんけ。',
       zh: '你这数字还涨了啊。',
       en: 'Your number went up.',
@@ -184,7 +184,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}happy.webp`,
+              characterImage: `${SORA}school_happy.webp`,
               jp: '無理すな、後輩。腹壊すで。',
               zh: '别硬撑，后辈。会吃坏肚子的。',
               en: 'Do not push it, kouhai. You will make yourself sick.',
@@ -198,7 +198,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}neutral.webp`,
+              characterImage: `${SORA}school_neutral.webp`,
               jp: '半分こなら、引き分けでええやろ。',
               zh: '分一半的话，就算平手吧。',
               en: 'If we split it, we can call it a draw.',
@@ -260,7 +260,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '空', speakerEn: 'Sora',
-              characterImage: `${SORA}neutral.webp`,
+              characterImage: `${SORA}school_neutral.webp`,
               jp: '……なあ。替え玉、いる？',
               words: [{ jp: 'いる', zh: '要、需要', en: 'to need / to want' }],
               zh: '……喂。加面，要吗？',
@@ -307,7 +307,7 @@ const EV_GROUP_RAMEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '空', speakerEn: 'Sora',
-      characterImage: `${SORA}happy.webp`,
+      characterImage: `${SORA}school_happy.webp`,
       jp: '聞こえとるで。',
       zh: '我听得见哦。',
       en: 'I can hear you.',
@@ -364,14 +364,14 @@ const EV_GROUP_MERIKEN: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${HIKARI}happy.webp`,
+      characterImage: `${HIKARI}school_happy.webp`,
       zh: '结果是四个人都来了。',
       en: 'The result is that all four of you came.'
     },
     {
       type: 'speech',
       speakerZh: '光', speakerEn: 'Hikari',
-      characterImage: `${HIKARI}happy.webp`,
+      characterImage: `${HIKARI}school_happy.webp`,
       jp: '来た来た！ほな写真な、まず写真！ポートタワー入れて！',
       zh: '来了来了！那先拍照，先拍照！要把港塔拍进去！',
       en: 'You made it! Right, photo first, photo! Get the Port Tower in!',
@@ -404,7 +404,7 @@ const EV_GROUP_MERIKEN: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '光', speakerEn: 'Hikari',
-      characterImage: `${HIKARI}surprised.webp`,
+      characterImage: `${HIKARI}school_surprised.webp`,
       jp: '……二十七分待つん？',
       zh: '……要等二十七分钟？',
       en: '...We are waiting twenty-seven minutes?',
@@ -510,7 +510,7 @@ const EV_GROUP_MERIKEN: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}happy.webp`,
+              characterImage: `${HIKARI}school_happy.webp`,
               jp: 'あははは！誰やこれ！',
               zh: '啊哈哈哈！这是谁啊！',
               en: 'Ahahaha! Who are these people!',
@@ -550,7 +550,7 @@ const EV_GROUP_MERIKEN: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '光', speakerEn: 'Hikari',
-              characterImage: `${HIKARI}happy.webp`,
+              characterImage: `${HIKARI}school_happy.webp`,
               jp: 'あの二人な、絶対「寒くない」って言うで。ぜっったい言う。',
               words: [{ jp: '寒い', reading: 'さむい', zh: '冷', en: 'cold' }],
               zh: '那两个人啊，绝对会说「不冷」。绝——对会说。',
@@ -656,14 +656,14 @@ const EV_GROUP_MOSAIC: MapEventDef = {
     },
     {
       type: 'narration',
-      characterImage: `${INARI}neutral.webp`,
+      characterImage: `${INARI}school_neutral.webp`,
       zh: '稻荷是第一个上去的。她坐在正中间，占了两个人的位置，还理直气壮。',
       en: 'Inari gets on first. She sits dead centre, taking up two people worth of bench, entirely unembarrassed.'
     },
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}smug.webp`,
+      characterImage: `${INARI}school_smug.webp`,
       jp: 'ほう。人の子は、こうやって高いところへ上るようになったか。',
       zh: '哦。人类现在是这样上高处的了。',
       en: 'Hoh. So this is how humans get themselves up high these days.',
@@ -740,7 +740,7 @@ const EV_GROUP_MOSAIC: MapEventDef = {
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               jp: '四百年ほどかのう。……結局、来なんだ。',
               zh: '四百年左右吧。……最后没来。',
               en: 'Four hundred years or so. ...In the end he did not come.',
@@ -856,14 +856,14 @@ const EV_GROUP_MOSAIC: MapEventDef = {
             },
             {
               type: 'narration',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               zh: '稻荷一直没有指。她只是看着那一小片亮着的窗户，看了很久。',
               en: 'Inari does not point at anything. She only looks at that small cluster of lit windows, for a long time.'
             },
             {
               type: 'speech',
               speakerZh: '稻荷', speakerEn: 'Inari',
-              characterImage: `${INARI}neutral.webp`,
+              characterImage: `${INARI}school_neutral.webp`,
               jp: '……灯りというのは、誰かが帰ってくる家にしか点かぬものじゃ。',
               words: [{ jp: '灯り', reading: 'あかり', zh: '灯光', en: 'a light' }],
               zh: '……灯这种东西啊，只会亮在有人要回去的房子里。',
@@ -888,7 +888,7 @@ const EV_GROUP_MOSAIC: MapEventDef = {
     {
       type: 'speech',
       speakerZh: '稻荷', speakerEn: 'Inari',
-      characterImage: `${INARI}happy.webp`,
+      characterImage: `${INARI}school_happy.webp`,
       jp: '……十分。悪くない長さじゃ。',
       zh: '……十分钟。是个不错的长度。',
       en: '...Ten minutes. That is not a bad length.',

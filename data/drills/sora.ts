@@ -19,9 +19,9 @@ export const SORA_PACK: DrillPack = {
   grammarZh: '意向形', grammarEn: 'Volitional form',
   partnerZh: '空', partnerEn: 'Sora',
   sprites: {
-    neutral: '/images/characters/sora/neutral.webp',
-    happy: '/images/characters/sora/happy.webp',
-    miss: '/images/characters/sora/shock.webp'
+    neutral: '/images/characters/sora/school_neutral.webp',
+    happy: '/images/characters/sora/school_happy.webp',
+    miss: '/images/characters/sora/school_shock.webp'
   },
   onRight: [
     { jp: 'おっ、ええやん！', zh: '哦，不错嘛！', en: 'Oh, nice one!' },

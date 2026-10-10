@@ -9,7 +9,7 @@ export const AUTO_BLINKS: Record<string, { src: string; rect: [number, number, n
   '/images/characters/asuka/shy.webp': {"src":"/images/characters/asuka/blink/shy.webp","rect":[0.32,0.0905,0.2076,0.0435]},
   '/images/characters/asuka/smug.webp': {"src":"/images/characters/asuka/blink/smug.webp","rect":[0.3211,0.09,0.2032,0.0435]},
   '/images/characters/asuka/surprised.webp': {"src":"/images/characters/asuka/blink/surprised.webp","rect":[0.3211,0.0865,0.2011,0.051]},
-  '/images/characters/hikari/school_angry.webp': {"src":"/images/characters/hikari/blink/school_angry.webp","rect":[0.3669,0.142,0.2153,0.0495]},
+  '/images/characters/hikari/school_angry.webp': {"src":"/images/characters/hikari/blink/school_angry.webp","rect":[0.3669,0.142,0.2153,0.052]},
   '/images/characters/hikari/school_happy.webp': {"src":"/images/characters/hikari/blink/school_happy.webp","rect":[0.3733,0.145,0.2068,0.0435]},
   '/images/characters/hikari/school_neutral.webp': {"src":"/images/characters/hikari/blink/school_neutral.webp","rect":[0.369,0.14,0.2131,0.0535]},
   '/images/characters/hikari/school_pout.webp': {"src":"/images/characters/hikari/blink/school_pout.webp","rect":[0.368,0.1425,0.2142,0.0495]},
@@ -60,7 +60,7 @@ export const AUTO_BLINKS: Record<string, { src: string; rect: [number, number, n
   '/images/characters/rei/smile.webp': {"src":"/images/characters/rei/blink/smile.webp","rect":[0.2089,0.117,0.2065,0.045]},
   '/images/characters/rei/surprised.webp': {"src":"/images/characters/rei/blink/surprised.webp","rect":[0.203,0.121,0.2042,0.044]},
   '/images/characters/rei/thinking.webp': {"src":"/images/characters/rei/blink/thinking.webp","rect":[0.1949,0.12,0.2182,0.047]},
-  '/images/characters/sora/school_angry.webp': {"src":"/images/characters/sora/blink/school_angry.webp","rect":[0.3982,0.0915,0.2016,0.0595]},
+  '/images/characters/sora/school_angry.webp': {"src":"/images/characters/sora/blink/school_angry.webp","rect":[0.4002,0.106,0.1924,0.0395]},
   '/images/characters/sora/school_cool.webp': {"src":"/images/characters/sora/blink/school_cool.webp","rect":[0.4053,0.106,0.1842,0.04]},
   '/images/characters/sora/school_cool_alt.webp': {"src":"/images/characters/sora/blink/school_cool_alt.webp","rect":[0.4104,0.1075,0.174,0.0375]},
   '/images/characters/sora/school_happy.webp': {"src":"/images/characters/sora/blink/school_happy.webp","rect":[0.4043,0.0955,0.1894,0.0565]},
@@ -70,4 +70,5 @@ export const AUTO_BLINKS: Record<string, { src: string; rect: [number, number, n
   '/images/characters/sora/school_sad.webp': {"src":"/images/characters/sora/blink/school_sad.webp","rect":[0.4063,0.105,0.1873,0.045]},
   '/images/characters/sora/school_shock.webp': {"src":"/images/characters/sora/blink/school_shock.webp","rect":[0.4043,0.1,0.1873,0.051]},
   '/images/characters/sora/school_shy.webp': {"src":"/images/characters/sora/blink/school_shy.webp","rect":[0.4043,0.1035,0.1904,0.045]},
+  '/images/characters/sora/school_surprised.webp': {"src":"/images/characters/sora/blink/school_surprised.webp","rect":[0.4033,0.1,0.1934,0.0515]},
 };

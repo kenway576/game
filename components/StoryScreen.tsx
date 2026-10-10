@@ -10,6 +10,7 @@ import { useDisplayPrefs } from '../services/displayPrefs';
 import DisplayPrefsToggles from './DisplayPrefsToggles';
 import LivelySprite, { isLivelySprite, livelySpeakerOf } from './LivelySprite';
 import PuppetSprite, { hasPuppetRig } from './PuppetSprite';
+import { upgradeNodes } from '../data/retiredSprites';
 import { puppetSpeakerOf } from '../data/puppetRigs';
 
 // StoryScreen 恢复出来的那份"已经拿到手的东西"，由 App 一次性灌回全局状态
@@ -262,7 +263,9 @@ const StoryScreen: React.FC<Props> = ({
   };
 
   // 一份进度落到界面上：续玩弹窗和读档静默恢复共用同一段逻辑
-  const applyProgress = (p: StoryProgress) => {
+  const applyProgress = (pIn: StoryProgress) => {
+    // 老存档的半截进度里可能还写着退役的老立绘路径
+    const p = { ...pIn, nodes: upgradeNodes(pIn.nodes) };
     flagsRef.current = { ...(initialFlags || {}), ...(p.flags || {}) };
     wordsRef.current = p.words || [];
     relationsRef.current = p.relations || [];

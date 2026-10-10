@@ -43,14 +43,14 @@ export const MAKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}neutral.webp`,
+    characterImage: `${K}school_neutral.webp`,
     zh: '她在最里面那台机器前面，粉色的头发在屏幕的光里发紫。她没回头，但你还没走近她就开口了。',
     en: 'She is at the machine at the very back, pink hair going violet in the screen light. She does not turn round, and she speaks before you are close enough for it.'
   },
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}smug.webp`,
+    characterImage: `${K}school_smug.webp`,
     jp: '遅い。センパイ、五分遅刻やで。',
     words: [{ jp: '遅刻', reading: 'ちこく', zh: '迟到', en: 'being late' }],
     zh: '慢死了。前辈，你迟到五分钟。',
@@ -94,7 +94,7 @@ export const MAKI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}smug.webp`,
+            characterImage: `${K}school_smug.webp`,
             jp: 'は？　毎週水曜、ここやん。常識やろ。',
             zh: '哈？每周三，就是这儿啊。常识吧。',
             en: 'What? Every Wednesday, here. That is just common knowledge.',
@@ -123,14 +123,14 @@ export const MAKI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}happy.webp`,
+            characterImage: `${K}school_happy.webp`,
             zh: '硬币落进去的声音很响。她马上就把身子转过来了，转得比她自己想的快。',
             en: 'The coin lands loudly. She turns towards you at once, faster than she meant to.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}happy.webp`,
+            characterImage: `${K}school_happy.webp`,
             jp: 'お、やる気やん。ボロ負けしても泣かんといてや。',
             zh: '哦，有干劲嘛。输惨了别哭啊。',
             en: 'Oh, up for it. Do not cry when you get flattened.',
@@ -152,14 +152,14 @@ export const MAKI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}school_angry.webp`,
             zh: '她的脸一下子垮了半边。',
             en: 'Half her face falls off the pose.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}school_angry.webp`,
             jp: '待ってへんし。たまたま来てただけやし。',
             zh: '我才没等。只是刚好来了而已。',
             en: 'I was not waiting. I just happened to be here.',
@@ -188,7 +188,7 @@ export const MAKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}smug.webp`,
+    characterImage: `${K}school_smug.webp`,
     zh: '第一局她赢了。第二局她赢了。差距大到有点难看。',
     en: 'She wins the first. She wins the second. The margins are not close.'
   },
@@ -200,7 +200,7 @@ export const MAKI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}neutral_alt.webp`,
+    characterImage: `${K}school_neutral.webp`,
     jp: '……三本目、やる？',
     zh: '……第三局，打吗？',
     en: '...Third round. Do you want to?',
@@ -232,7 +232,7 @@ export const MAKI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}school_angry.webp`,
             zh: '她的手指停了。',
             en: 'The tapping stops.'
           },
@@ -244,7 +244,7 @@ export const MAKI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}school_shy.webp`,
             jp: '……勝負ちゃうくても、やったらあかんの。',
             zh: '……就算不是比赛，就不能打了吗。',
             en: '...Even if it is not a match. Are we not allowed to just play.',
@@ -263,7 +263,7 @@ export const MAKI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}shy.webp`,
+            characterImage: `${K}school_shy.webp`,
             jp: '……ほな、五本先取な。ハンデはやらん。',
             zh: '……那，先赢五局的。不给让子。',
             en: '...First to five, then. No handicap.',
@@ -287,7 +287,7 @@ export const MAKI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}happy.webp`,
+            characterImage: `${K}school_happy.webp`,
             zh: '她"よっしゃ"了一声，音量比她自己预想的大。旁边一台机器前面的大叔看了一眼。',
             en: 'She says "right then" louder than she intended. A man at the next cabinet looks over.'
           },
@@ -312,14 +312,14 @@ export const MAKI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}angry.webp`,
+            characterImage: `${K}school_angry.webp`,
             zh: '她猛地转过来，嘴张开了，然后什么都没说出来。',
             en: 'She whips round, opens her mouth, and nothing arrives.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}school_angry.webp`,
             jp: 'うっさい。……うっさいわ。',
             zh: '烦死了。……烦死了啦。',
             en: 'Shut up. ...Just shut up.',
@@ -333,7 +333,7 @@ export const MAKI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}neutral_alt.webp`,
+            characterImage: `${K}school_neutral.webp`,
             jp: '……勝負言うたら、来るやん。みんな。',
             zh: '……说是比赛的话，大家就会来嘛。',
             en: '...If you call it a match, people come. They do.',
@@ -357,14 +357,14 @@ export const MAKI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}happy.webp`,
+    characterImage: `${K}school_happy.webp`,
     zh: '她一边烫得吸气一边吃，一边报下周三的时间，报得像在念课表。',
     en: 'She eats them too hot, hissing, and recites next Wednesday’s time like a timetable entry.'
   },
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}smug.webp`,
+    characterImage: `${K}school_smug.webp`,
     jp: '来週も五分遅刻したら、ハンデ倍にするからな。',
     words: [{ jp: '倍', reading: 'ばい', zh: '加倍', en: 'double' }],
     zh: '下周再迟到五分钟，我就把让子加倍。',
@@ -384,7 +384,7 @@ export const MAKI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}happy_alt.webp`,
+    characterImage: `${K}school_happy.webp`,
     jp: 'センパイ！　……なんでもない！',
     zh: '前辈！……没事！',
     en: 'Senpai! ...Never mind!',

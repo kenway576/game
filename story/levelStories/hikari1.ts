@@ -41,7 +41,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${H}happy.webp`,
+    characterImage: `${H}school_happy.webp`,
     zh: '电车坐了两站。她一路都在讲今天数学课上老师把粉笔掰断了三次。',
     en: 'Two stops on the train. The whole way she is telling you about the maths teacher snapping the chalk three separate times.'
   },
@@ -63,7 +63,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${H}happy.webp`,
+        characterImage: `${H}school_happy.webp`,
         zh: '她拍了拍栏杆，回过头。「记得吧？就是这儿。」',
         en: 'She pats the rail and turns round. "You remember. Right here."'
       }
@@ -81,7 +81,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${H}happy.webp`,
+        characterImage: `${H}school_happy.webp`,
         zh: '她扶着栏杆回过头。「你还没来过这儿吧。我就知道。」',
         en: 'She takes hold of the rail and turns round. "You have not been here yet. I knew it."'
       }
@@ -91,7 +91,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${H}happy.webp`,
+    characterImage: `${H}school_happy.webp`,
     jp: 'あたしね、来た週、毎日ここ来てたんだ。',
     words: [{ jp: '毎日', reading: 'まいにち', zh: '每天', en: 'every day' }],
     zh: '我啊，刚来那一周，每天都来这儿。',
@@ -106,7 +106,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${H}neutral.webp`,
+    characterImage: `${H}school_neutral.webp`,
     jp: 'あっち。あの方向がね、うちの方角なんだって。地図で調べた。',
     zh: '那边。听说那个方向是我家的方向。我查过地图。',
     en: 'That way. That direction is home, apparently. I looked it up on a map.',
@@ -139,14 +139,14 @@ export const HIKARI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${H}surprised.webp`,
+            characterImage: `${H}school_surprised.webp`,
             zh: '她的手停在半空。',
             en: 'Her arm stops in mid-air.'
           },
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${H}happy.webp`,
+            characterImage: `${H}school_happy.webp`,
             jp: 'ううん、全然！　あたし切り替え早いから！',
             zh: '没有啦，完全不会！我这个人转换得可快了！',
             en: 'Nope, not at all! I bounce back really fast, me!',
@@ -165,7 +165,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${H}neutral.webp`,
+            characterImage: `${H}school_neutral.webp`,
             jp: '……七日目に、来なくてよくなったんだ。',
             zh: '……第七天的时候，就不用来了。',
             en: '...On the seventh day I did not need to come any more.',
@@ -195,7 +195,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${H}neutral.webp`,
+            characterImage: `${H}school_neutral.webp`,
             jp: '……何も見えないでしょ。',
             zh: '……什么都看不见吧。',
             en: '...You cannot see anything, right.',
@@ -209,7 +209,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${H}happy.webp`,
+            characterImage: `${H}school_happy.webp`,
             jp: 'でしょ。あたしも一週間かけて確かめた。',
             zh: '对吧。我也花了一周确认这件事。',
             en: 'Right? Took me a week to confirm that.',
@@ -234,7 +234,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${H}surprised.webp`,
+            characterImage: `${H}school_surprised.webp`,
             zh: '她愣了一下，然后掏出手机，很认真地开始查。',
             en: 'She blinks, gets her phone out, and starts looking it up in earnest.'
           },
@@ -251,7 +251,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '光', speakerEn: 'Hikari',
-            characterImage: `${H}happy.webp`,
+            characterImage: `${H}school_happy.webp`,
             jp: 'ほら。近いじゃん。',
             zh: '你看。挺近的嘛。',
             en: 'See? That is basically next door.',
@@ -276,7 +276,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${H}neutral.webp`,
+    characterImage: `${H}school_neutral.webp`,
     jp: 'ねえ、{name}。あたし、うるさい？',
     zh: '喂，{name}。我是不是很吵？',
     en: 'Hey, {name}. Am I too loud?',
@@ -290,7 +290,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${H}shy.webp`,
+    characterImage: `${H}school_shy.webp`,
     jp: 'よかった。一年生の時、言われたことあるからさ。',
     zh: '那就好。一年级的时候被人说过。',
     en: 'Good. Someone said it to me in first year.',
@@ -299,7 +299,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${H}neutral.webp`,
+    characterImage: `${H}school_neutral.webp`,
     jp: '「元気なのは分かったから、ちょっと静かにして」って。',
     words: [{ jp: '元気', reading: 'げんき', zh: '有精神、有活力', en: 'energetic / lively' }],
     zh: '说「知道你很有精神了，安静一点吧」。',
@@ -314,7 +314,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${H}happy.webp`,
+    characterImage: `${H}school_happy.webp`,
     jp: 'でもさ、静かにしてたら、誰も来ないんだよ。',
     zh: '可是啊，安静下来的话，就没有人来了。',
     en: 'But here is the thing. If you keep it down, nobody comes.',
@@ -329,7 +329,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   // ---- 收 ----
   {
     type: 'narration',
-    characterImage: `${H}happy.webp`,
+    characterImage: `${H}school_happy.webp`,
     zh: '回程的电车上人很挤。她站着睡着了一小会儿，头往你这边偏了一点，又自己弹回去了。',
     en: 'The train back is packed. She falls asleep standing up for a moment, head tipping your way, then snapping back on its own.'
   },
@@ -341,7 +341,7 @@ export const HIKARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '光', speakerEn: 'Hikari',
-    characterImage: `${H}happy.webp`,
+    characterImage: `${H}school_happy.webp`,
     jp: 'また来ようね。あそこ、一人だと結構でかいんだ。',
     words: [{ jp: '一人', reading: 'ひとり', zh: '一个人', en: 'alone' }],
     zh: '下次再来吧。那个地方，一个人的时候还挺大的。',

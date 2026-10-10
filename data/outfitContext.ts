@@ -286,13 +286,19 @@ const OUTFIT_EXPR: Record<CharacterId, string[]> = {
 const EXPR_EXCEPTIONS: Record<string, string[]> = {
   'miyuki/cardigan': ['neutral', 'happy', 'love', 'sad', 'shy'],
   'nao/cat': ['neutral', 'happy', 'curious', 'shy', 'love', 'angry', 'sad'],
-  'sora/school': ['angry', 'cool', 'happy', 'love', 'neutral', 'sad', 'shock', 'shy'],
+  'sora/school': ['angry', 'cool', 'happy', 'love', 'neutral', 'sad', 'shock', 'shy', 'surprised'],
   'inari/school': ['angry', 'happy', 'jealous', 'neutral', 'sad', 'shy', 'sly', 'smug', 'surprised'],
   'hikari/school': ['angry', 'happy', 'neutral', 'pout', 'sad', 'shy', 'smug', 'surprised'],
   'maki/school': ['angry', 'happy', 'laugh', 'neutral', 'pout', 'shy', 'smug', 'surprised']
 };
 
-export const outfitImg = (charId: CharacterId, outfit: string, mood: Mood = 'neutral'): string => {
+// 这四个人根目录下的是重制前的老立绘，默认那一身直接用重制后的校服
+const DEFAULT_OUTFIT: Partial<Record<CharacterId, string>> = {
+  [CharacterId.HIKARI]: 'school', [CharacterId.INARI]: 'school', [CharacterId.SORA]: 'school', [CharacterId.MAKI]: 'school'
+};
+
+export const outfitImg = (charId: CharacterId, outfitIn: string, mood: Mood = 'neutral'): string => {
+  const outfit = outfitIn || DEFAULT_OUTFIT[charId] || '';
   const have = outfit ? (EXPR_EXCEPTIONS[`${charId}/${outfit}`] || OUTFIT_EXPR[charId]) : ROOT_EXPR[charId];
   const want = [...MOOD_MAP[charId][mood], 'neutral'];
   const expr = want.find(e => have.includes(e)) || 'neutral';

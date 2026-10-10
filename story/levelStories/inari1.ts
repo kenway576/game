@@ -45,7 +45,7 @@ export const INARI_STORY_1: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}school_neutral.webp`,
     zh: '她坐在一块石头上，晃着一只脚。四月的石头是凉的——凉到你光是站在旁边都替她觉得冷。她像是不知道这回事。她一直是这样，你已经不问了。',
     en: 'She is sitting on a rock, swinging one foot. April stone is cold — cold enough that you feel it on her behalf just standing there. She appears not to have noticed. She always is like this. You have stopped asking.'
   },
@@ -53,7 +53,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}smug.webp`,
+    characterImage: `${I}school_smug.webp`,
     jp: 'おや。今日は早いのう。',
     zh: '哦呀。今天来得早呢。',
     en: 'Oh my. You are early today.',
@@ -94,14 +94,14 @@ export const INARI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}school_surprised.webp`,
             zh: '她转过来看你，眼睛在暗下来的林子里亮了一下。那不是反光。',
             en: 'She turns to look at you, and her eyes catch the light in the darkening wood. It is not a reflection.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}smug.webp`,
+            characterImage: `${I}school_smug.webp`,
             jp: 'ふふ。気づく子は、久しぶりじゃ。',
             words: [{ jp: '久しぶり', reading: 'ひさしぶり', zh: '好久没有了', en: 'it has been a while' }],
             zh: '呵呵。会注意到的孩子，好久没有了。',
@@ -116,7 +116,7 @@ export const INARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}neutral.webp`,
+            characterImage: `${I}school_neutral.webp`,
             jp: 'ん？　……そうさな。戦の前じゃ。',
             zh: '嗯？……我想想。是打仗之前。',
             en: 'Mm? ...Let me think. Before the war.',
@@ -140,14 +140,14 @@ export const INARI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}smug.webp`,
+            characterImage: `${I}school_smug.webp`,
             zh: '你在落叶边坐了下来。她那双狐狸般狡黠深邃的眼眸静静凝视着你，随即弯起唇角，露出一抹了然的微笑。',
             en: 'You sit among the fallen leaves. Her fox-like, deep gaze watches you quietly before her lips curve into an understanding smile.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}smug.webp`,
+            characterImage: `${I}school_smug.webp`,
             jp: '見なかったことにするのが、いちばん人らしいのう。',
             zh: '当作没看见——这才最像人呢。',
             en: 'Deciding you did not see it. That is the most human thing there is.',
@@ -172,14 +172,14 @@ export const INARI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}school_surprised.webp`,
             zh: '她低头看着那件外套，看了很久，久到你开始觉得自己是不是冒犯了什么。',
             en: 'She looks down at the blazer for long enough that you start to wonder whether you have offended something.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}shy.webp`,
+            characterImage: `${I}school_shy.webp`,
             jp: '……わらわは、寒くはならぬぞ。',
             zh: '……我啊，是不会冷的哦。',
             en: '...I do not get cold, you know.',
@@ -204,7 +204,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}school_neutral.webp`,
     jp: 'あれはの、三代目じゃ。',
     words: [{ jp: '三代目', reading: 'さんだいめ', zh: '第三代', en: 'the third of its line' }],
     zh: '那棵啊，是第三代。',
@@ -219,7 +219,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}school_neutral.webp`,
     jp: '一本目は焼けた。二本目も焼けた。五十年ほど空いての。',
     zh: '第一棵烧掉了。第二棵也烧掉了。中间隔了五十年左右。',
     en: 'The first burned. The second burned as well. Fifty years or so between them.',
@@ -233,7 +233,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}school_neutral.webp`,
     jp: '二度とも、次の春には人が来て、また植えおった。',
     zh: '两次，第二年春天都有人来，又种上了。',
     en: 'Both times, come the spring, people turned up and planted it again.',
@@ -242,7 +242,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}happy.webp`,
+    characterImage: `${I}school_happy.webp`,
     jp: 'あれが、わらわの見てきた中でいちばん面白い。',
     zh: '那件事，是我看过的所有事里最有意思的。',
     en: 'That is the most interesting thing I have ever watched happen.',
@@ -258,7 +258,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}school_neutral.webp`,
     jp: '昔、ここで戦があっての。若い武者が一人、あの梅を一枝折って、箙に挿して駆けていった。',
     words: [{ jp: '箙', reading: 'えびら', zh: '箭筒', en: 'quiver' }],
     zh: '很久以前，这儿打过一仗。有个年轻的武士折了那棵梅的一枝，插在箭筒上，就那么跑去打仗了。',
@@ -273,7 +273,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}neutral.webp`,
+    characterImage: `${I}school_neutral.webp`,
     jp: '梅は毎年咲く。あやつらは、一度きりじゃった。',
     zh: '梅每年都开。那些人，只有一次。',
     en: 'The plum flowers every year. Those people only had the once.',
@@ -305,14 +305,14 @@ export const INARI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}school_surprised.webp`,
             zh: '她安静了一会儿。林子里安静下来的时候，是真的一点声音都没有。',
             en: 'She goes quiet. When this wood goes quiet there is genuinely no sound in it at all.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}neutral.webp`,
+            characterImage: `${I}school_neutral.webp`,
             jp: '……そうじゃな。わらわの「ちょっと」は、そなたの一生より長いこともある。',
             zh: '……是啊。我的「一会儿」，有时候比你的一生还长。',
             en: '...That is so. My "a moment" is sometimes longer than your whole life.',
@@ -326,7 +326,7 @@ export const INARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}smug.webp`,
+            characterImage: `${I}school_smug.webp`,
             jp: 'じゃがの。だからこそ、こういう一日は数える。',
             zh: '不过呢。正因为这样，这样的一天我是数的。',
             en: 'Even so. That is exactly why a day like this one gets counted.',
@@ -352,7 +352,7 @@ export const INARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}smug.webp`,
+            characterImage: `${I}school_smug.webp`,
             jp: '退屈じゃよ。だから暇つぶしを探す。',
             words: [{ jp: '暇つぶし', reading: 'ひまつぶし', zh: '消磨时间的事', en: 'something to pass the time' }],
             zh: '无聊啊。所以要找点事情打发。',
@@ -387,14 +387,14 @@ export const INARI_STORY_1: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}school_surprised.webp`,
             zh: '她的脚停了。她刚才一直在很轻地晃着脚。',
             en: 'Her feet stop. She had been swinging them, very slightly.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}neutral.webp`,
+            characterImage: `${I}school_neutral.webp`,
             jp: '……そなた、そういうことを聞くのか。',
             zh: '……你居然会问这种事。',
             en: '...You would ask that.',
@@ -408,7 +408,7 @@ export const INARI_STORY_1: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}sad.webp`,
+            characterImage: `${I}school_sad.webp`,
             jp: 'わらわは植えられぬ。見ておることしかできぬ。',
             zh: '我种不了。我只能看着。',
             en: 'I cannot plant. All I can do is watch.',
@@ -426,14 +426,14 @@ export const INARI_STORY_1: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${I}surprised.webp`,
+            characterImage: `${I}school_surprised.webp`,
             zh: '她很久很久没有说话。久到你以为自己说错了什么。',
             en: 'She says nothing for a very long time. Long enough that you think you have said something wrong.'
           },
           {
             type: 'speech',
             speakerZh: '稻荷', speakerEn: 'Inari',
-            characterImage: `${I}shy.webp`,
+            characterImage: `${I}school_shy.webp`,
             jp: '……覚えておくぞ。わらわは、忘れぬからの。',
             zh: '……我记住了哦。我这个人，是不会忘的。',
             en: '...I shall remember that. I do not forget things.',
@@ -458,7 +458,7 @@ export const INARI_STORY_1: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '稻荷', speakerEn: 'Inari',
-    characterImage: `${I}happy.webp`,
+    characterImage: `${I}school_happy.webp`,
     jp: 'また来るとよい。……まあ、来ずともよいがの。',
     zh: '再来吧。……嘛，不来也没关系。',
     en: 'Do come again. ...Though it hardly matters if you do not.',

@@ -43,7 +43,12 @@ const REI = {
   shy: '/images/characters/rei/casual_shy.webp',
   sad: '/images/characters/rei/casual_sad.webp'
 };
-const BG = '/images/backgrounds/bg_kaisei_library_sunlight.webp';
+// 句会专用的美术（scripts/remake/gen-minigame-art.mjs）：图书馆里铺了榻榻米的一角、和纸的歌牌和短册
+const ART = '/images/minigames/';
+const BG = ART + 'kukai_bg.webp';
+// 和纸纹理：歌牌（取り札 / 読み札）用 washi_card，俳句那三行用 tanzaku_strip
+const WASHI = { backgroundImage: `url(${ART}washi_card.webp)`, backgroundSize: '100% 100%' } as const;
+const TANZAKU = { backgroundImage: `url(${ART}tanzaku_strip.webp)`, backgroundSize: '100% 100%' } as const;
 
 type Say = { jp: string; zh: string; en: string };
 const pickOf = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
@@ -285,8 +290,8 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
 
   const stage = (children: React.ReactNode) => createPortal(
     <div className="fixed inset-0 z-[400] bg-black text-white select-none overflow-y-auto">
-      <img src={BG} alt="" className="fixed inset-0 w-full h-full object-cover opacity-35" draggable={false} />
-      <div className="fixed inset-0 bg-gradient-to-t from-black via-black/55 to-black/70" />
+      <img src={BG} alt="" className="fixed inset-0 w-full h-full object-cover opacity-70" draggable={false} />
+      <div className="fixed inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/55" />
       <div className="relative min-h-full max-w-5xl mx-auto px-4 py-5 flex flex-col">
         <div className="flex items-center justify-between mb-3">
           <p className="text-amber-300 text-[11px] font-black tracking-[0.3em]">🍵 {en ? 'POETRY CIRCLE' : '句会'} · {tierLabel}</p>
@@ -390,13 +395,18 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
             ['hyakunin', '🎴', '百人一首', en ? 'Hyakunin Isshu' : '百人一首', en ? 'Hear the first half of a waka, pick the second half. Ten poems.' : '念出和歌的上の句，选出下の句。一共十首。'],
             ['haiku', '🌸', '俳句づくり', en ? 'Compose a haiku' : '俳句创作', en ? 'Arrange word chunks into a 5-7-5 with a season word. Two rounds.' : '把词块拼成 5-7-5，要有季语。一共两题。']
           ] as const).map(([k, ic, jp, title, blurb]) => (
-            <button key={k} onClick={() => startMode(k)} className="text-left bg-black/70 hover:bg-black/55 border border-amber-300/30 hover:border-amber-300 p-5 transition-colors">
+            <button key={k} onClick={() => startMode(k)} className="group text-left bg-black/70 hover:bg-black/55 border border-amber-300/30 hover:border-amber-300 overflow-hidden transition-colors">
+              <div className="aspect-[4/3] max-h-44 w-full overflow-hidden">
+                <img src={`${ART}menu_${k}.webp`} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" draggable={false} />
+              </div>
+              <div className="p-5 pt-3">
               <div className="text-3xl mb-1">{ic}</div>
               <div className="text-xl font-black">{jp} <span className="text-white/40 text-sm font-bold">{title}</span></div>
               <p className="text-white/60 text-sm mt-1">{blurb}</p>
               <p className="text-amber-300/80 text-[10px] font-black tracking-widest mt-3">
                 {introSeen[`minigame_intro_${k}`] ? (en ? 'PLAY' : '开始') : (en ? 'FIRST TIME · REI WILL EXPLAIN' : '第一次 · 铃会先讲规则')}
               </p>
+              </div>
             </button>
           ))}
         </div>
@@ -418,13 +428,14 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
         </div>
         <div className="grid md:grid-cols-[auto_1fr] gap-4 items-start">
           <div className="hidden md:block">{reiBox}</div>
-          <div className="bg-sky-950/70 border border-sky-300/40 p-5 text-center">
-            <p className="text-sky-200 text-[10px] font-black tracking-[0.3em] mb-2">上の句 {q.poem.author && revealed ? `· ${q.poem.author}` : ''}</p>
-            <div className="text-2xl md:text-3xl font-black leading-[2.2]">{kamiLines.map((l, i) => <div key={i}>{l}</div>)}</div>
-            {tier <= 2 && <p className="text-sky-200/70 text-sm mt-2">{q.poem.kamiR}</p>}
-            {tier === 1 && <p className="text-white/50 text-xs mt-2">{en ? q.poem.en : q.poem.zh}</p>}
+          {/* 読み札：和纸的歌牌，墨色的字 */}
+          <div className="p-5 md:p-6 text-center text-stone-900 shadow-[0_10px_30px_rgba(0,0,0,0.6)] rounded-sm" style={WASHI}>
+            <p className="text-emerald-900 text-[10px] font-black tracking-[0.3em] mb-2">読み札 · 上の句 {q.poem.author && revealed ? `· ${q.poem.author}` : ''}</p>
+            <div className="text-2xl md:text-3xl font-black leading-[2.2] font-serif">{kamiLines.map((l, i) => <div key={i}>{l}</div>)}</div>
+            {tier <= 2 && <p className="text-stone-600 text-sm mt-2">{q.poem.kamiR}</p>}
+            {tier === 1 && <p className="text-stone-500 text-xs mt-2">{en ? q.poem.en : q.poem.zh}</p>}
             {hasVoice && (
-              <button onClick={() => speak(q.poem.kami.replace(/ /g, ''))} className="mt-3 text-[11px] font-black text-sky-200 hover:text-white tracking-widest">🔊 {en ? 'READ AGAIN' : '再念一遍'}</button>
+              <button onClick={() => speak(q.poem.kami.replace(/ /g, ''))} className="mt-3 text-[11px] font-black text-emerald-900 hover:text-black tracking-widest">🔊 {en ? 'READ AGAIN' : '再念一遍'}</button>
             )}
           </div>
         </div>
@@ -433,14 +444,16 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
           {q.options.map((o, i) => {
             const isAns = i === q.answer;
             const isPick = i === picked;
+            // 取り札：和纸歌牌，翻开答案时用外框颜色和整张的透明度表示对错
             const cls = !revealed
-              ? 'bg-rose-950/70 border-rose-300/40 hover:border-rose-200 hover:bg-rose-900/60'
-              : isAns ? 'bg-emerald-800/70 border-emerald-300' : isPick ? 'bg-rose-900/80 border-rose-400 opacity-70' : 'bg-black/50 border-white/15 opacity-50';
+              ? 'ring-0 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(0,0,0,0.7)]'
+              : isAns ? 'ring-4 ring-emerald-400' : isPick ? 'ring-4 ring-rose-500 opacity-60' : 'opacity-35';
             return (
-              <button key={o.id} disabled={revealed} onClick={() => answer(i)} className={`text-left border p-4 transition-colors ${cls}`}>
-                <p className="text-rose-200 text-[10px] font-black tracking-widest mb-1">{['一', '二', '三', '四'][i]} · 下の句</p>
-                <p className="text-lg font-black leading-relaxed">{o.shimo.split(' ').map((l, k) => <span key={k} className="block">{l}</span>)}</p>
-                {tier <= 2 && <p className="text-white/50 text-xs mt-1">{o.shimoR}</p>}
+              <button key={o.id} disabled={revealed} onClick={() => answer(i)}
+                      className={`text-left p-4 text-stone-900 rounded-sm shadow-[0_8px_20px_rgba(0,0,0,0.55)] transition-all ${cls}`} style={WASHI}>
+                <p className="text-emerald-900 text-[10px] font-black tracking-widest mb-1">{['一', '二', '三', '四'][i]} · 取り札 · 下の句</p>
+                <p className="text-lg font-black leading-relaxed font-serif">{o.shimo.split(' ').map((l, k) => <span key={k} className="block">{l}</span>)}</p>
+                {tier <= 2 && <p className="text-stone-600 text-xs mt-1">{o.shimoR}</p>}
               </button>
             );
           })}
@@ -478,18 +491,19 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
               const ok = m === TARGET[li];
               return (
                 <div key={li} onClick={() => !verdict && setActive(li)}
-                     className={`flex items-center gap-2 border px-3 py-2 min-h-[48px] cursor-pointer transition-colors ${active === li && !verdict ? 'border-amber-300 bg-amber-300/10' : 'border-white/15 bg-white/5'}`}>
-                  <span className="text-white/45 text-xs font-black w-10 shrink-0">{li + 1}/{TARGET[li]}</span>
+                     style={TANZAKU}
+                     className={`flex items-center gap-2 px-3 py-2 min-h-[52px] cursor-pointer transition-all text-stone-900 rounded-sm shadow-[0_6px_16px_rgba(0,0,0,0.5)] ${active === li && !verdict ? 'ring-2 ring-amber-400' : ''}`}>
+                  <span className="text-stone-500 text-xs font-black w-10 shrink-0">{li + 1}/{TARGET[li]}</span>
                   <div className="flex flex-wrap gap-1.5 flex-1">
-                    {l.length === 0 && <span className="text-white/25 text-xs">{en ? 'tap a chunk below' : '点下面的词块'}</span>}
+                    {l.length === 0 && <span className="text-stone-400 text-xs">{en ? 'tap a chunk below' : '点下面的词块'}</span>}
                     {l.map(id => (
-                      <button key={id} onClick={e => { e.stopPropagation(); takeBack(li, id); }} className="bg-amber-100 text-black font-black px-2.5 py-1 text-base">
+                      <button key={id} onClick={e => { e.stopPropagation(); takeBack(li, id); }} className="text-stone-900 font-black px-1 py-1 text-lg font-serif hover:text-rose-700">
                         {chunkOf(id)?.t}
                       </button>
                     ))}
                   </div>
                   {(showCount || verdict) && (
-                    <span className={`text-xs font-black tabular-nums shrink-0 ${ok ? 'text-emerald-300' : m > TARGET[li] ? 'text-rose-400' : 'text-white/55'}`}>{m}/{TARGET[li]}</span>
+                    <span className={`text-xs font-black tabular-nums shrink-0 ${ok ? 'text-emerald-700' : m > TARGET[li] ? 'text-rose-600' : 'text-stone-500'}`}>{m}/{TARGET[li]}</span>
                   )}
                 </div>
               );
@@ -504,9 +518,10 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
           <div className="flex flex-wrap gap-2">
             {puzzle.chunks.map(ch => (
               <button key={ch.id} disabled={used.has(ch.id)} onClick={() => placeChunk(ch.id)}
-                      className={`border px-3 py-2 font-black text-base transition-colors ${used.has(ch.id) ? 'opacity-25 border-white/10' : 'bg-white/10 border-white/30 hover:bg-amber-200 hover:text-black'}`}>
+                      style={WASHI}
+                      className={`px-3 py-2 font-black text-base font-serif text-stone-900 rounded-sm shadow-[0_4px_10px_rgba(0,0,0,0.5)] transition-all ${used.has(ch.id) ? 'opacity-25' : 'hover:-translate-y-0.5 hover:shadow-[0_8px_16px_rgba(0,0,0,0.6)]'}`}>
                 {ch.t}
-                {tier === 1 && <span className="block text-[9px] font-bold text-white/45 hover:text-black/60">{ch.r}</span>}
+                {tier === 1 && <span className="block text-[9px] font-bold text-stone-500">{ch.r}</span>}
               </button>
             ))}
           </div>

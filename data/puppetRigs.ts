@@ -173,8 +173,8 @@ const REMAKE: { dir: string; rig: BaseRig; files: string[]; closed?: string[]; w
     }
   },
   {
-    dir: 'sora', files: ['school_neutral', 'school_neutral_alt', 'school_happy', 'school_angry', 'school_sad', 'school_shy', 'school_shock', 'school_love', 'school_cool', 'school_cool_alt'],
-    wideFiles: ['school_shock'],
+    dir: 'sora', files: ['school_neutral', 'school_neutral_alt', 'school_happy', 'school_angry', 'school_sad', 'school_shy', 'school_shock', 'school_love', 'school_cool', 'school_cool_alt', 'school_surprised'],
+    wideFiles: ['school_shock', 'school_surprised'],
     rig: {
       box: { left: 207, top: 28, width: 2653, height: 5432 },
       headC: [0.49, 0.125], headR: [0.135, 0.085], neck: [0.50, 0.205],

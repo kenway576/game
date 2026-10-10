@@ -125,6 +125,8 @@ class AudioManager {
   // 场景想放哪首。BGM 关着的时候也记着，打开时接上。
   private wantedBgm: BgmTrack | null = null;
   private bgmDucked = false;
+  // 小游戏自己放音乐（Beat Crash 用游戏里的 BGM 当歌）：场景 BGM 静音但不停，回来时接着放
+  private bgmSuspended = false;
 
   // 节流 / 循环句柄
   private lastTypeAt = 0;
@@ -240,7 +242,7 @@ class AudioManager {
   }
 
   private getTargetBgmVolume(): number {
-    if (this.settings.muted || !this.settings.bgmEnabled) return 0;
+    if (this.settings.muted || !this.settings.bgmEnabled || this.bgmSuspended) return 0;
     const duckFactor = this.bgmDucked ? 0.35 : 1.0;
     return clamp01(this.settings.master * this.settings.bgm * duckFactor);
   }
@@ -791,6 +793,25 @@ class AudioManager {
   duckBgm(): void {
     this.bgmDucked = true;
     if (this.currentBgm) this.rampAudioVolume(this.currentBgm.audio, this.getTargetBgmVolume(), 150);
+  }
+
+  /** 场景 BGM 淡到无声（还在播，位置不丢）。小游戏要放自己的音乐时用。 */
+  suspendBgm(ms = 300): void {
+    this.bgmSuspended = true;
+    if (this.currentBgm) this.rampAudioVolume(this.currentBgm.audio, 0, ms);
+  }
+
+  resumeBgm(ms = 900): void {
+    this.bgmSuspended = false;
+    if (this.currentBgm) this.rampAudioVolume(this.currentBgm.audio, this.getTargetBgmVolume(), ms);
+  }
+
+  /** 某个音量通道现在的有效音量（0..1），给自己开 AudioContext 的小游戏对齐用 */
+  effectiveVolume(bus: 'bgm' | 'sfx'): number {
+    const s = this.settings;
+    if (s.muted) return 0;
+    if (bus === 'bgm' && !s.bgmEnabled) return 0;
+    return clamp01(s.master * (bus === 'bgm' ? s.bgm : s.sfx));
   }
 
   restoreBgm(ms = 600): void {

@@ -48,7 +48,7 @@ export const MAKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}neutral.webp`,
+    characterImage: `${K}school_neutral.webp`,
     zh: '她已经在了。她永远已经在了。',
     en: 'She is already there. She is always already there.'
   },
@@ -65,7 +65,7 @@ export const MAKI_STORY_3: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}neutral.webp`,
+    characterImage: `${K}school_neutral.webp`,
     jp: '知っとった。先月から貼ってあんねん。',
     zh: '我早就知道。上个月就贴了。',
     en: 'I knew. It has been up since last month.',
@@ -86,7 +86,7 @@ export const MAKI_STORY_3: StoryNode[] = [
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}smug.webp`,
+    characterImage: `${K}school_smug.webp`,
     jp: '今日は……',
     zh: '今天是……',
     en: 'Today is...',
@@ -99,14 +99,14 @@ export const MAKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}shy_alt.webp`,
+    characterImage: `${K}school_shy.webp`,
     zh: '这一次她没有报。',
     en: 'This time she does not announce anything.'
   },
   {
     type: 'speech',
     speakerZh: '真希', speakerEn: 'Maki',
-    characterImage: `${K}shy_alt.webp`,
+    characterImage: `${K}school_shy.webp`,
     jp: '……今日、点数つけへん。',
     words: [{ jp: '点数', reading: 'てんすう', zh: '分数', en: 'score' }],
     zh: '……今天，不计分。',
@@ -125,7 +125,7 @@ export const MAKI_STORY_3: StoryNode[] = [
   },
   {
     type: 'narration',
-    characterImage: `${K}neutral.webp`,
+    characterImage: `${K}school_neutral.webp`,
     zh: '最后一局结束的时候，屏幕上跳出排行榜。第一名是 MAKI。第二名也是。第三名还是。',
     en: 'When the last round ends the leaderboard comes up. First place is MAKI. So is second. So is third.'
   },
@@ -163,7 +163,7 @@ export const MAKI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}school_angry.webp`,
             zh: '她马上顶了回来：「そんなん、ずるいやん」。',
             en: 'She bats it straight back: that is not fair.'
           },
@@ -174,14 +174,14 @@ export const MAKI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}school_shy.webp`,
             zh: '她盯着屏幕看了很久。头顶的电车过去了两班。',
             en: 'She stares at the screen for a long time. Two trains go over.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}school_shy.webp`,
             jp: '……この台、なくなる前に。',
             zh: '……在这台机器被搬走之前。',
             en: '...Before this machine goes.',
@@ -190,7 +190,7 @@ export const MAKI_STORY_3: StoryNode[] = [
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}school_shy.webp`,
             jp: '一位、二人の名前にしたい。',
             zh: '第一名，我想写两个人的名字。',
             en: 'I want first place to have two names on it.',
@@ -215,14 +215,14 @@ export const MAKI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}pout.webp`,
+            characterImage: `${K}school_pout.webp`,
             zh: '她"せやけど"了一声，然后没有接下去。',
             en: 'She starts to object and does not finish.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}school_shy.webp`,
             jp: '……一位から十位まで自分やと、誰とも競われへんねん。',
             zh: '……从第一到第十都是自己的话，就没法跟任何人比了。',
             en: '...When first through tenth are all you, there is nobody left to compete with.',
@@ -249,7 +249,7 @@ export const MAKI_STORY_3: StoryNode[] = [
         then: [
           {
             type: 'narration',
-            characterImage: `${K}angry_alt.webp`,
+            characterImage: `${K}school_angry.webp`,
             zh: '她整个人转过来：「は？　今さら？」',
             en: 'The whole of her turns round. What, now?'
           },
@@ -260,14 +260,14 @@ export const MAKI_STORY_3: StoryNode[] = [
           },
           {
             type: 'narration',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}school_shy.webp`,
             zh: '笑完之后她小声说了三个字。你听见了，但你决定假装没听清，让她再说一遍。',
             en: 'When she stops she says it quietly. You hear it, and decide to pretend you did not, so that she has to say it again.'
           },
           {
             type: 'speech',
             speakerZh: '真希', speakerEn: 'Maki',
-            characterImage: `${K}shy_alt.webp`,
+            characterImage: `${K}school_shy.webp`,
             jp: '……二回も言わせんな、あほ。',
             zh: '……别让我说第二遍，笨蛋。',
             en: '...Do not make me say it twice, idiot.',
@@ -299,7 +299,7 @@ export const MAKI_STORY_3: StoryNode[] = [
     then: [
       {
         type: 'narration',
-        characterImage: `${K}shy_alt.webp`,
+        characterImage: `${K}school_shy.webp`,
         zh: '她投了最后一枚硬币，打完一局，第一名。输入名字的界面跳出来。',
         en: 'She puts in a last coin, plays a round, takes first. The name-entry screen comes up.'
       },
@@ -311,7 +311,7 @@ export const MAKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}shy_alt.webp`,
+        characterImage: `${K}school_shy.webp`,
         jp: '前二つ、ウチ。後ろ二つ、そっち。',
         zh: '前两个我的。后两个你的。',
         en: 'First two mine. Last two yours.',
@@ -330,7 +330,7 @@ export const MAKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}shy_alt.webp`,
+        characterImage: `${K}school_shy.webp`,
         jp: 'なあ。一回だけ、本音言うてええ？',
         words: [{ jp: '本音', reading: 'ほんね', zh: '真心话', en: 'what one actually means' }],
         zh: '喂。我能说一次真心话吗？',
@@ -345,7 +345,7 @@ export const MAKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}happy.webp`,
+        characterImage: `${K}school_happy.webp`,
         jp: 'ざぁこって言うたん、全部うそ。一回も思ったことない。',
         zh: '我说的那些"杂鱼"，全是假的。一次都没那么想过。',
         en: 'Every time I called you a weakling, that was a lie. I have never once thought it.',
@@ -362,7 +362,7 @@ export const MAKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}happy.webp`,
+        characterImage: `${K}school_happy.webp`,
         jp: '……で、これ、勝負ちゃうからな。',
         zh: '……然后，这个不是比赛啊。',
         en: '...And this is not a match, all right.',
@@ -390,14 +390,14 @@ export const MAKI_STORY_3: StoryNode[] = [
     otherwise: [
       {
         type: 'narration',
-        characterImage: `${K}neutral.webp`,
+        characterImage: `${K}school_neutral.webp`,
         zh: '她投了最后一枚硬币，打完一局，第一名。输名字的时候她只用了两个字母，剩下两格空着。',
         en: 'She puts in a last coin, plays a round, takes first. She types two letters into the name and leaves the other two blank.'
       },
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}neutral.webp`,
+        characterImage: `${K}school_neutral.webp`,
         jp: '空けとく。埋めたかったら、自分で来て埋めや。',
         words: [{ jp: '埋める', reading: 'うめる', zh: '填上', en: 'to fill in' }],
         zh: '空着。想填的话，自己来填。',
@@ -411,14 +411,14 @@ export const MAKI_STORY_3: StoryNode[] = [
       },
       {
         type: 'narration',
-        characterImage: `${K}smug.webp`,
+        characterImage: `${K}school_smug.webp`,
         zh: '走出游戏厅的时候她一直在笑。到路口她停下来。',
         en: 'She grins the whole way out. At the crossing she stops.'
       },
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}shy_alt.webp`,
+        characterImage: `${K}school_shy.webp`,
         jp: 'あのな。ざぁこって言うの、あれ、',
         zh: '那个啊。我说"杂鱼"那个，那是，',
         en: 'Look. When I call you a weakling. That is,',
@@ -432,7 +432,7 @@ export const MAKI_STORY_3: StoryNode[] = [
       {
         type: 'speech',
         speakerZh: '真希', speakerEn: 'Maki',
-        characterImage: `${K}happy_alt.webp`,
+        characterImage: `${K}school_happy.webp`,
         jp: '……あれ言うてる相手、センパイだけやで。',
         zh: '……我只对前辈一个人说那个。',
         en: '...You are the only person I say it to.',

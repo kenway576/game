@@ -39,11 +39,11 @@ const TURN_MS: Record<PracticeTier, number> = { 1: 16000, 2: 12000, 3: 8500 };
 const TICK = 50;
 
 const HIKARI = {
-  neutral: '/images/characters/hikari/neutral.webp',
-  happy: '/images/characters/hikari/happy.webp',
-  smug: '/images/characters/hikari/smug.webp',
-  surprised: '/images/characters/hikari/surprised.webp',
-  sad: '/images/characters/hikari/sad.webp'
+  neutral: '/images/characters/hikari/school_neutral.webp',
+  happy: '/images/characters/hikari/school_happy.webp',
+  smug: '/images/characters/hikari/school_smug.webp',
+  surprised: '/images/characters/hikari/school_surprised.webp',
+  sad: '/images/characters/hikari/school_sad.webp'
 };
 
 type Entry = { who: 'me' | 'her'; word: ShiritoriWord };
