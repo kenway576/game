@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import StoryScreen from './StoryScreen';
 import { MAIN_CHAPTERS } from '../story/mainStory';
+import { RIVAL_CHAPTERS, KAI_DAY1 } from '../story/rivalStory';
+import { NUNOBIKI_EVENTS, nunobikiApproach } from '../story/nunobikiStory';
 import { SCENE_MAP } from '../constants';
 import { StoryNode } from '../types';
 
@@ -13,8 +15,13 @@ const StoryLab: React.FC = () => {
   const id = q.get('story') || 'main_ch7';
   const flags = Object.fromEntries((q.get('flags') || '').split(',').filter(Boolean).map(f => [f, true]));
   const aff = Object.fromEntries((q.get('aff') || '').split(',').filter(Boolean).map(p => { const [c, v] = p.split(':'); return [c, Number(v)]; }));
-  const ch = MAIN_CHAPTERS.find(c => c.id === id);
-  const script: StoryNode[] = ch?.script || [];
+  const ch = [...MAIN_CHAPTERS, ...RIVAL_CHAPTERS].find(c => c.id === id);
+  // ?story=kai_day1：开学第一天金城登场那一段
+  // ?story=ev_nunobiki_*：先走上山那一段，再演到了以后的事件（&slot=night 试夜里只能坐缆车）
+  const nb = NUNOBIKI_EVENTS.find(e => e.id === id);
+  const script: StoryNode[] = id === 'kai_day1' ? KAI_DAY1
+    : nb ? [...nunobikiApproach({ timeSlot: q.get('slot') || 'afternoon' } as any, flags), ...nb.script]
+    : ch?.script || [];
   const [scene, setScene] = useState('');
   const [log, setLog] = useState<string[]>([]);
   const note = (s: string) => setLog(l => [...l.slice(-6), s]);

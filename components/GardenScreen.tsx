@@ -134,9 +134,9 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
         </div>
         <button
           onClick={() => { audioManager.playSfx('click'); onClose(); }}
-          className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+          className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
         >
-          <span className="block transform skew-x-12">{en ? '◀ Back' : '◀ 返回'}</span>
+          <span className="block">{en ? '◀ Back' : '◀ 返回'}</span>
         </button>
       </div>
 
@@ -171,7 +171,7 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
                     key={p.id}
                     onClick={() => { audioManager.playSfx('click'); setSelId(p.id); }}
                     className={`aspect-square border flex flex-col items-center justify-center gap-1 transition-all ${
-                      sel?.id === p.id ? 'border-yellow-400 bg-yellow-400/10' : 'border-white/15 bg-black/40 hover:bg-white/5'
+                      sel?.id === p.id ? 'border-pink-300 bg-pink-400/10' : 'border-white/15 bg-black/40 hover:bg-white/5'
                     }`}
                   >
                     {st === 4 && sd
@@ -300,22 +300,22 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
               <div className="mt-6 flex flex-wrap gap-3">
                 {stage === 4 ? (
                   <button onClick={harvest}
-                    className="px-7 py-2.5 bg-emerald-500 text-black text-sm font-black uppercase tracking-widest transform -skew-x-12 hover:bg-white transition-all">
-                    <span className="block transform skew-x-12">{en ? 'Harvest' : '收获'}</span>
+                    className="px-7 py-2.5 bg-emerald-500 text-black text-sm font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all">
+                    <span className="block">{en ? 'Harvest' : '收获'}</span>
                   </button>
                 ) : (
                   <button onClick={water} disabled={!canWater}
-                    className={`px-7 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
+                    className={`px-7 py-2.5 text-sm font-black uppercase tracking-widest rounded-xl transition-all ${
                       canWater ? 'bg-sky-400 text-black hover:bg-white' : 'bg-white/10 text-white/30 cursor-not-allowed'
                     }`}>
-                    <span className="block transform skew-x-12">
+                    <span className="block">
                       {canWater ? (en ? 'Water' : '浇水') : (en ? 'Done today' : '今天已浇')}
                     </span>
                   </button>
                 )}
                 <button onClick={move}
-                  className="px-5 py-2.5 border border-white/25 text-white/70 text-xs font-black uppercase tracking-widest transform -skew-x-12 hover:bg-white/10 transition-all">
-                  <span className="block transform skew-x-12">
+                  className="px-5 py-2.5 border border-white/25 text-white/70 text-xs font-black uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all">
+                  <span className="block">
                     {site === 'balcony' ? (en ? 'Move to roof' : '搬去天台') : (en ? 'Move to balcony' : '搬回阳台')}
                   </span>
                 </button>

@@ -157,7 +157,7 @@ const DrillModal: React.FC<Props> = ({
         <div className="max-w-md w-full text-center space-y-5">
           <img src={outcome.cleared ? pack.sprites.happy : pack.sprites.neutral} alt=""
                className="h-48 mx-auto object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)]" />
-          <h3 className="text-white text-2xl font-black italic tracking-tight">
+          <h3 className="text-white text-2xl font-black font-ui tracking-tight">
             {outcome.promoted
               ? (en ? `Up to ${tierLabel(outcome.progress.tier)}!` : `升到${tierLabel(outcome.progress.tier)}了！`)
               : outcome.cleared
@@ -167,7 +167,7 @@ const DrillModal: React.FC<Props> = ({
           <div className="flex items-center justify-center gap-6 text-sm">
             <span className="text-white/70">{en ? 'Correct' : '答对'} <b className="text-white">{r.correct}/{r.total}</b></span>
             <span className="text-white/70">{en ? 'Score' : '得分'} <b className={outcome.cleared ? 'text-emerald-300' : 'text-white'}>{rate}%</b></span>
-            {r.bestCombo > 1 && <span className="text-white/70">{en ? 'Best run' : '最长连对'} <b className="text-yellow-300">{r.bestCombo}</b></span>}
+            {r.bestCombo > 1 && <span className="text-white/70">{en ? 'Best run' : '最长连对'} <b className="text-pink-200">{r.bestCombo}</b></span>}
           </div>
           {/* 离升档还有多远。这一行是整套分档机制唯一露在玩家面前的地方 */}
           <p className="text-white/55 text-xs leading-relaxed">
@@ -196,9 +196,9 @@ const DrillModal: React.FC<Props> = ({
           )}
           <button
             onClick={() => { audioManager.playSfx('confirm'); onFinish(r); }}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12"
+            className="bg-pink-400 hover:bg-pink-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl"
           >
-            <span className="block transform skew-x-12">{extra.button || (en ? 'Done' : '结束')}</span>
+            <span className="block">{extra.button || (en ? 'Done' : '结束')}</span>
           </button>
         </div>
       </div>
@@ -224,7 +224,7 @@ const DrillModal: React.FC<Props> = ({
       {/* 顶栏 */}
       <div className="relative z-10 flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10">
         <div className="flex items-center gap-3 min-w-0">
-          <span className="text-yellow-400 text-[10px] md:text-xs font-black tracking-widest shrink-0">
+          <span className="text-pink-300 text-[10px] md:text-xs font-black tracking-widest shrink-0">
             {en ? pack.grammarEn : pack.grammarZh}
           </span>
           <span className={`text-[10px] px-2 py-0.5 border shrink-0 ${
@@ -240,7 +240,7 @@ const DrillModal: React.FC<Props> = ({
         </div>
         <div className="flex items-center gap-4 shrink-0">
           <span className="text-white/40 text-[10px] font-black tracking-widest">{idx + 1} / {rounds.length}</span>
-          {combo > 1 && <span className="text-yellow-300 text-sm font-black">{combo} {en ? 'in a row' : '连'}</span>}
+          {combo > 1 && <span className="text-pink-200 text-sm font-black">{combo} {en ? 'in a row' : '连'}</span>}
           <button onClick={onCancel} className="text-white/35 hover:text-white/70 text-[10px] font-black tracking-widest">
             {variant === 'shift' ? (en ? 'GIVE UP' : '不干了') : (en ? 'LEAVE' : '先不练了')}
           </button>
@@ -256,7 +256,7 @@ const DrillModal: React.FC<Props> = ({
           <div className="flex items-center gap-3 mb-2">
             <img src={sprite} alt="" className="md:hidden h-20 object-contain" />
             <div>
-              <p className="text-yellow-400/90 text-xs font-black tracking-widest">{en ? pack.partnerEn : pack.partnerZh}</p>
+              <p className="text-pink-300/90 text-xs font-black tracking-widest">{en ? pack.partnerEn : pack.partnerZh}</p>
               {(round.ctxZh || round.ctxEn) && (
                 <p className="text-white/45 text-[11px] md:text-xs mt-0.5">{fill(en ? (round.ctxEn || '') : (round.ctxZh || ''))}</p>
               )}
@@ -277,7 +277,7 @@ const DrillModal: React.FC<Props> = ({
 
           {/* 倒计时贴着那句话：压力来自那句话本身 */}
           <div className="h-1 bg-white/10 mt-3 mb-5 overflow-hidden">
-            <div className={`h-full transition-[width] duration-75 ${pct < 25 ? 'bg-rose-400' : 'bg-yellow-400'}`}
+            <div className={`h-full transition-[width] duration-75 ${pct < 25 ? 'bg-rose-400' : 'bg-pink-400'}`}
                  style={{ width: `${answered ? 0 : pct}%` }} />
           </div>
 
@@ -294,7 +294,7 @@ const DrillModal: React.FC<Props> = ({
                         ? 'bg-rose-500/15 border-rose-400/60'
                         : answered
                           ? 'bg-white/[0.02] border-white/8 opacity-70'
-                          : 'bg-white/[0.04] border-white/15 hover:bg-white/[0.09] hover:border-yellow-400/50'}`}>
+                          : 'bg-white/[0.04] border-white/15 hover:bg-white/[0.09] hover:border-pink-300/50'}`}>
                   <span className="text-white/30 text-xs font-black mt-1 shrink-0">{n + 1}</span>
                   <span className="min-w-0">
                     <span className="block text-white text-base md:text-lg font-bold">{fill(o.jp)}</span>
@@ -318,7 +318,7 @@ const DrillModal: React.FC<Props> = ({
               {!chosenOk && (round.missZh || round.missEn) && (
                 <p className="text-white/55 text-xs italic">{fill(en ? (round.missEn || '') : (round.missZh || ''))}</p>
               )}
-              <div className="border-l-2 border-yellow-400/70 bg-white/[0.04] px-4 py-3">
+              <div className="border-l-2 border-pink-300/70 bg-white/[0.04] px-4 py-3">
                 <p className="text-white/80 text-sm leading-relaxed">{fill(en ? round.noteEn : round.noteZh)}</p>
                 {round.word && (
                   <p className="text-yellow-200/80 text-xs mt-2">
@@ -329,8 +329,8 @@ const DrillModal: React.FC<Props> = ({
               </div>
               <div className="flex justify-end">
                 <button onClick={next}
-                  className="bg-yellow-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest transform -skew-x-12">
-                  <span className="block transform skew-x-12">
+                  className="bg-pink-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest rounded-xl">
+                  <span className="block">
                     {idx + 1 >= rounds.length ? (en ? 'Finish ▶' : '结束 ▶') : (en ? 'Next ▶' : '下一题 ▶')}
                   </span>
                 </button>

@@ -20,9 +20,9 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
 
   return (
     <div className="fixed inset-0 z-[220] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4" onClick={onClose}>
-      <div className="w-full max-w-5xl bg-zinc-950/95 border-2 border-yellow-500/40 rounded-xl p-6 md:p-8 shadow-[0_0_80px_rgba(234,179,8,0.2)] max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
+      <div className="w-full max-w-5xl bg-zinc-950/95 border-2 border-pink-300/40 rounded-xl p-6 md:p-8 shadow-[0_0_80px_rgba(234,179,8,0.2)] max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
         {/* 标题栏 */}
-        <div className="flex items-center justify-between border-b border-yellow-500/30 pb-4 mb-6">
+        <div className="flex items-center justify-between border-b border-pink-300/30 pb-4 mb-6">
           <div>
             <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 tracking-wider">
               {language === 'en' ? '🌸 MEMORIES & EVENT CG GALLERY' : '🌸 特别回忆 · 事件 CG 画廊'}
@@ -92,7 +92,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
           </div>
         )}
 
-        <h3 className="text-sm md:text-base font-black text-yellow-400 tracking-wider mb-3 flex items-center gap-2">
+        <h3 className="text-sm md:text-base font-black text-pink-300 tracking-wider mb-3 flex items-center gap-2">
           💗 {language === 'en' ? 'HEROINE EVENT CG' : '心动事件 CG'}
           <span className="text-[10px] font-normal text-white/40 tracking-normal">
             {language === 'en' ? 'unlocked by affection' : '好感度解锁'}
@@ -114,7 +114,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
                 onClick={() => isUnlocked && setSelectedCg(cg)}
                 className={`group relative rounded-lg overflow-hidden border-2 transition-all duration-300 aspect-[16/9] flex flex-col justify-end p-3 ${
                   isUnlocked
-                    ? 'border-yellow-500/60 hover:border-yellow-400 hover:shadow-[0_0_30px_rgba(234,179,8,0.4)] cursor-pointer'
+                    ? 'border-pink-300/60 hover:border-pink-300 hover:shadow-[0_0_30px_rgba(234,179,8,0.4)] cursor-pointer'
                     : 'border-white/10 bg-zinc-900/60 opacity-60 cursor-not-allowed'
                 }`}
               >
@@ -140,7 +140,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
                 {/* 渐变遮罩与信息 */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
                 <div className="relative z-10">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-yellow-400 bg-black/60 px-2 py-0.5 rounded border border-yellow-500/30">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-pink-300 bg-black/60 px-2 py-0.5 rounded border border-pink-300/30">
                     {charName}
                   </span>
                   <h4 className="text-sm font-bold text-white mt-1 drop-shadow-md truncate">
@@ -162,14 +162,14 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
               <img
                 src={selectedCg.cgUrl}
                 alt={selectedCg.titleZh}
-                className="w-full max-h-[75vh] object-contain rounded-lg border-2 border-yellow-400/80 shadow-[0_0_50px_rgba(234,179,8,0.4)]"
+                className="w-full max-h-[75vh] object-contain rounded-lg border-2 border-pink-300/80 shadow-[0_0_50px_rgba(234,179,8,0.4)]"
                 onError={(e) => {
                   e.currentTarget.src = CHARACTER_ROOMS[selectedCg.charId] || CHARACTERS[selectedCg.charId].avatarUrl;
                 }}
               />
               <div className="w-full bg-zinc-900/90 border border-white/20 p-4 rounded-lg flex flex-col gap-1 backdrop-blur-md">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-black text-yellow-400">
+                  <h3 className="text-lg font-black text-pink-300">
                     {language === 'en' ? selectedCg.titleEn : selectedCg.titleZh}
                   </h3>
                   <span className="text-xs text-white/50 font-mono">

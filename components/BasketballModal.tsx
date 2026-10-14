@@ -384,16 +384,16 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30" />
         <div className="relative max-w-md w-full text-center space-y-4">
           {vs && <img src={`${S}${r.won ? 'shock' : 'happy'}.webp`} alt="" className="h-44 md:h-56 mx-auto object-contain drop-shadow-2xl" />}
-          <p className="text-yellow-400 text-[11px] font-black tracking-[0.3em]">
+          <p className="text-pink-300 text-[11px] font-black tracking-[0.3em]">
             {r.cleared ? (en ? 'ALL STAGES CLEAR' : '全关通过') : (en ? `REACHED STAGE ${r.stageReached}` : `打到第 ${r.stageReached} 关`)}
           </p>
-          <h3 className="text-white text-3xl md:text-4xl font-black italic">
+          <h3 className="text-white text-3xl md:text-4xl font-black font-ui">
             {vs
               ? (r.won ? (en ? 'You win!' : '你赢了！') : r.made === r.soraMade ? (en ? 'A draw' : '平手') : (en ? 'Sora wins' : '空赢了'))
               : (r.cleared ? (en ? 'Perfect run!' : '完美通关！') : r.won ? (en ? 'Good run' : '不错嘛') : (en ? 'Time up' : '时间到'))}
           </h3>
           <div className="flex justify-center gap-6 text-white">
-            <div><div className="text-3xl font-black text-yellow-300">{r.made}</div><div className="text-[10px] text-white/50 tracking-widest">{en ? 'MADE' : '进球'}</div></div>
+            <div><div className="text-3xl font-black text-pink-200">{r.made}</div><div className="text-[10px] text-white/50 tracking-widest">{en ? 'MADE' : '进球'}</div></div>
             {vs && <div><div className="text-3xl font-black text-orange-300">{r.soraMade}</div><div className="text-[10px] text-white/50 tracking-widest">{en ? 'SORA' : '空'}</div></div>}
             <div><div className="text-3xl font-black text-sky-300">{r.swishes}</div><div className="text-[10px] text-white/50 tracking-widest">{en ? 'SWISH' : '空心'}</div></div>
             <div><div className="text-3xl font-black text-white/80">{r.shots ? Math.round(r.made / r.shots * 100) : 0}%</div><div className="text-[10px] text-white/50 tracking-widest">{en ? 'ACC' : '命中率'}</div></div>
@@ -408,9 +408,9 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
           )}
           <button
             onClick={() => { audioManager.playSfx('confirm'); onFinish(r); }}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12"
+            className="bg-pink-400 hover:bg-pink-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl"
           >
-            <span className="block transform skew-x-12">{en ? 'Done' : '收工'}</span>
+            <span className="block">{en ? 'Done' : '收工'}</span>
           </button>
         </div>
       </div>,
@@ -437,21 +437,21 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
 
         {/* HUD */}
         <div className={`absolute top-[3%] left-1/2 -translate-x-1/2 flex items-stretch gap-1.5 ${tut?.focus === 'hud' && phase === 'tutorial' ? 'ring-2 ring-yellow-300 rounded animate-pulse' : ''}`}>
-          <div className="bg-black/80 border border-white/20 px-3 py-1 transform -skew-x-12">
-            <span className="block transform skew-x-12 text-[10px] md:text-xs font-black text-yellow-400 tracking-widest">
+          <div className="bg-black/80 border border-white/20 px-3 py-1 rounded-xl">
+            <span className="block text-[10px] md:text-xs font-black text-pink-300 tracking-widest">
               STAGE {stage + 1}
             </span>
           </div>
-          <div className="bg-black/80 border border-white/20 px-3 py-1 transform -skew-x-12 min-w-[64px] text-center">
-            <span className={`block transform skew-x-12 text-lg md:text-3xl font-black tabular-nums ${timeLeft <= 5 && phase === 'play' ? 'text-rose-400' : 'text-white'}`}>
+          <div className="bg-black/80 border border-white/20 px-3 py-1 rounded-xl min-w-[64px] text-center">
+            <span className={`block text-lg md:text-3xl font-black tabular-nums ${timeLeft <= 5 && phase === 'play' ? 'text-rose-400' : 'text-white'}`}>
               {phase === 'practice' || phase === 'tutorial' ? '--' : timeLeft}
             </span>
           </div>
-          <div className="bg-black/80 border border-white/20 px-3 py-1 transform -skew-x-12">
-            <span className="block transform skew-x-12 text-[10px] md:text-xs font-black text-white/80">
+          <div className="bg-black/80 border border-white/20 px-3 py-1 rounded-xl">
+            <span className="block text-[10px] md:text-xs font-black text-white/80">
               {en ? 'GOAL' : '目标'} <span className={stageMade >= cfg.target ? 'text-emerald-300' : 'text-white'}>{stageMade}</span>/{cfg.target}
             </span>
-            <span className="block transform skew-x-12 h-1 mt-0.5 bg-white/15">
+            <span className="block h-1 mt-0.5 bg-white/15">
               <span className="block h-full bg-emerald-400 transition-all" style={{ width: `${Math.min(100, stageMade / cfg.target * 100)}%` }} />
             </span>
           </div>
@@ -460,7 +460,7 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
         {/* 总进球 & 连进 */}
         <div className="absolute top-[3%] left-[2%] text-white">
           <div className="text-[9px] md:text-[10px] text-white/55 font-black tracking-widest">{en ? 'TOTAL' : '总进球'}</div>
-          <div className="text-xl md:text-4xl font-black text-yellow-300 tabular-nums drop-shadow">{made}</div>
+          <div className="text-xl md:text-4xl font-black text-pink-200 tabular-nums drop-shadow">{made}</div>
           {combo >= 3 && phase === 'play' && <div className="text-[10px] md:text-xs font-black text-orange-300 animate-pulse">🔥 {combo} {en ? 'IN A ROW' : '连进'}</div>}
         </div>
 
@@ -494,7 +494,7 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
 
         {/* 进没进 */}
         {pop && (
-          <div key={pop.key} className={`absolute left-1/2 top-[38%] -translate-x-1/2 text-2xl md:text-5xl font-black italic pointer-events-none ${pop.good ? 'text-yellow-300' : 'text-white/70'}`}
+          <div key={pop.key} className={`absolute left-1/2 top-[38%] -translate-x-1/2 text-2xl md:text-5xl font-black font-ui pointer-events-none ${pop.good ? 'text-pink-200' : 'text-white/70'}`}
                style={{ animation: 'bbPop 700ms ease-out forwards', WebkitTextStroke: '2px #1b1b1b', paintOrder: 'stroke fill' }}>
             {pop.text}
           </div>
@@ -506,7 +506,7 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
           <div className="absolute left-0 right-0 bg-emerald-400/70" style={{ bottom: `${(zoneC - half) * 100}%`, height: `${half * 2 * 100}%` }} />
           <div className="absolute left-0 right-0 h-[3px] bg-white" style={{ bottom: `calc(${zoneC * 100}% - 1.5px)` }} />
           {/* 指针 */}
-          <div className="absolute -left-1 -right-1 h-[6px] bg-yellow-300 shadow-[0_0_10px_3px_rgba(250,204,21,0.8)] rounded" style={{ bottom: `calc(${meter * 100}% - 3px)` }} />
+          <div className="absolute -left-1 -right-1 h-[6px] bg-pink-300 shadow-[0_0_10px_3px_rgba(250,204,21,0.8)] rounded" style={{ bottom: `calc(${meter * 100}% - 3px)` }} />
         </div>
         <div className="absolute right-[2.2%] top-[81.5%] text-[9px] md:text-[10px] font-black text-white/60 tracking-widest">POWER</div>
 
@@ -515,8 +515,8 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
           <div className="absolute left-[2%] bottom-[4%] flex items-end gap-2">
             <img src="/images/stickers/sora_happy.webp" alt="" className="w-[64px] md:w-[96px] drop-shadow-xl" draggable={false} />
             <div className="mb-1">
-              <div className="bg-orange-500 text-black text-[10px] md:text-xs font-black px-2 py-0.5 transform -skew-x-12 inline-block">
-                <span className="block transform skew-x-12">{en ? 'SORA' : '空'} {soraMade}</span>
+              <div className="bg-orange-500 text-black text-[10px] md:text-xs font-black px-2 py-0.5 rounded-xl inline-block">
+                <span className="block">{en ? 'SORA' : '空'} {soraMade}</span>
               </div>
               {soraSay && (
                 <div key={soraSay.jp} className="mt-1 bg-white/90 text-black rounded-lg px-2 py-1 text-[10px] md:text-xs max-w-[160px]" style={{ animation: 'bbPop2 2.4s ease-out forwards' }}>
@@ -537,16 +537,16 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
         {/* 倒数 & 过关 */}
         {phase === 'countdown' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 pointer-events-none">
-            <div className="text-[11px] md:text-sm font-black tracking-[0.3em] text-yellow-300 mb-2">
+            <div className="text-[11px] md:text-sm font-black tracking-[0.3em] text-pink-200 mb-2">
               STAGE {stage + 1} · {en ? `MAKE ${cfg.target} IN ${cfg.time}s` : `${cfg.time} 秒内投进 ${cfg.target} 个`}
             </div>
-            <div key={count} className="text-7xl md:text-9xl font-black italic text-white" style={{ animation: 'bbZoom 600ms ease-out' }}>{count}</div>
+            <div key={count} className="text-7xl md:text-9xl font-black font-ui text-white" style={{ animation: 'bbZoom 600ms ease-out' }}>{count}</div>
             {practiceLine && <p className="mt-3 text-white/80 text-xs md:text-sm">{practiceLine.jp}<span className="ml-2 text-white/50">{en ? practiceLine.en : practiceLine.zh}</span></p>}
           </div>
         )}
         {phase === 'stageClear' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 pointer-events-none">
-            <div className="text-4xl md:text-7xl font-black italic text-yellow-300" style={{ animation: 'bbZoom 600ms ease-out', WebkitTextStroke: '2px #000', paintOrder: 'stroke fill' }}>
+            <div className="text-4xl md:text-7xl font-black font-ui text-pink-200" style={{ animation: 'bbZoom 600ms ease-out', WebkitTextStroke: '2px #000', paintOrder: 'stroke fill' }}>
               STAGE CLEAR!
             </div>
             <div className="mt-2 text-white/80 text-xs md:text-sm font-bold">{en ? 'Gauge speeds up. The green moves around now.' : '计量条要变快了，绿区也会到处跑。'}</div>
@@ -578,9 +578,9 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
                     if (step < TUTORIAL.length - 1) setStep(s => s + 1);
                     else { setPracticeLine(null); practiceShots.current = 0; setPhase('practice'); }
                   }}
-                  className="bg-orange-400 hover:bg-orange-300 text-black px-5 py-1.5 text-xs font-black tracking-widest transform -skew-x-12"
+                  className="bg-orange-400 hover:bg-orange-300 text-black px-5 py-1.5 text-xs font-black tracking-widest rounded-xl"
                 >
-                  <span className="block transform skew-x-12">{step < TUTORIAL.length - 1 ? (en ? 'Next ▶' : '下一句 ▶') : (en ? 'Practice shot ▶' : '练一球 ▶')}</span>
+                  <span className="block">{step < TUTORIAL.length - 1 ? (en ? 'Next ▶' : '下一句 ▶') : (en ? 'Practice shot ▶' : '练一球 ▶')}</span>
                 </button>
               </div>
             </div>

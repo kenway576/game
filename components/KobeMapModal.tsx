@@ -147,17 +147,17 @@ const KobeMapModal: React.FC<Props> = ({ language, storyFlags, onClose }) => {
           })}
 
           {/* 纸上的角标 */}
-          <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-[#3a2c22]/90 text-[#efe6cf] px-3 py-1.5 transform -skew-x-12">
-            <span className="block transform skew-x-12 text-[10px] md:text-[11px] font-black tracking-widest">
+          <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-[#3a2c22]/90 text-[#efe6cf] px-3 py-1.5 rounded-xl">
+            <span className="block text-[10px] md:text-[11px] font-black tracking-widest">
               {en ? "GRANDFATHER'S MAP" : '外公的神户地图'}
               <span className="ml-2 font-mono text-[#e0c88a]">{tally.been}/{tally.total}</span>
             </span>
           </div>
           <button
             onClick={() => { audioManager.playSfx('click'); onClose(); }}
-            className="absolute top-2 right-2 md:top-3 md:right-3 bg-[#3a2c22]/90 hover:bg-[#b3261e] text-[#efe6cf] px-3 py-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-colors"
+            className="absolute top-2 right-2 md:top-3 md:right-3 bg-[#3a2c22]/90 hover:bg-[#b3261e] text-[#efe6cf] px-3 py-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-xl transition-colors"
           >
-            <span className="block transform skew-x-12">{en ? 'Close' : '收起来'}</span>
+            <span className="block">{en ? 'Close' : '收起来'}</span>
           </button>
         </div>
 
@@ -175,7 +175,7 @@ const KobeMapModal: React.FC<Props> = ({ language, storyFlags, onClose }) => {
                 <h3 className="text-lg md:text-2xl font-black text-white">
                   {en ? pick.nameEn : pick.nameZh}
                 </h3>
-                <span className="font-mono text-sm text-yellow-400/80">{pick.nameJp}</span>
+                <span className="font-mono text-sm text-pink-300/80">{pick.nameJp}</span>
                 <span className="ml-auto text-[11px] font-mono text-white/35">
                   {detail.filter(d => d.been).length}/{detail.length}
                 </span>
@@ -186,7 +186,7 @@ const KobeMapModal: React.FC<Props> = ({ language, storyFlags, onClose }) => {
                     key={d.loc.id}
                     className={`text-[11px] px-2 py-1 border ${
                       d.been
-                        ? 'border-yellow-400/50 text-yellow-200/90 bg-yellow-400/10'
+                        ? 'border-pink-300/50 text-yellow-200/90 bg-pink-400/10'
                         : 'border-white/12 text-white/35'
                     }`}
                   >

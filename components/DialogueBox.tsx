@@ -84,7 +84,7 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
   if (!step) {
     return streaming ? (
       <div className="w-full max-w-4xl mx-auto flex justify-center py-10">
-        <span className="text-yellow-400 text-2xl tracking-[0.5em] animate-pulse">●●●</span>
+        <span className="ui-chip !text-pink-500 text-xl tracking-[0.5em] animate-pulse">●●●</span>
       </div>
     ) : null;
   }
@@ -92,33 +92,33 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-3 md:gap-5 animate-in fade-in slide-in-from-bottom-4">
       {step.narration && (
-        <div className="w-11/12 md:w-5/6 bg-slate-900/60 backdrop-blur-sm border border-blue-400/20 rounded-lg p-3 md:p-5 shadow-xl text-center cursor-pointer select-text" onClick={next}>
-          <p className="text-xs md:text-lg text-blue-100/80 font-medium italic tracking-wide leading-relaxed" dangerouslySetInnerHTML={{ __html: dispN }} />
+        <div className="ui-panel w-11/12 md:w-5/6 px-5 py-3 md:px-8 md:py-5 text-center cursor-pointer select-text" onClick={next}>
+          <p className="font-story text-xs md:text-lg text-[#2b3152] tracking-wide leading-relaxed" dangerouslySetInnerHTML={{ __html: dispN }} />
         </div>
       )}
 
-      <div className={`relative w-full bg-black/85 backdrop-blur-2xl border-t-4 border-white/10 p-6 md:p-12 shadow-2xl rounded-t-xl transition-all ${!step.speech ? 'h-0 overflow-hidden opacity-0' : 'opacity-100'}`}>
+      <div className={`w-full transition-all ${!step.speech ? 'h-0 overflow-hidden opacity-0' : 'ui-panel px-6 py-6 md:px-12 md:py-10 pt-9 md:pt-12 opacity-100'}`}>
         {step.speech && (
           <div className="cursor-pointer select-text" onClick={next}>
-            <div className={`absolute top-0 left-0 w-full h-1.5 ${character.color}`} />
-            <div className={`absolute -top-7 md:-top-10 left-6 md:left-12 px-8 md:px-12 py-2 ${character.color} text-white font-black italic text-lg md:text-2xl shadow-2xl transform -skew-x-12 border-2 border-white/20 pointer-events-none`}>
-              <span className="block transform skew-x-12">{character.name}</span>
+            <div className={`absolute top-0 left-8 right-8 h-1 rounded-b-full opacity-80 ${character.color}`} />
+            <div className={`ui-name absolute -top-5 md:-top-6 left-6 md:left-12 px-6 md:px-10 py-1 md:py-1.5 ${character.color} text-base md:text-xl pointer-events-none`}>
+              <span className="opacity-80 mr-1.5 text-[0.7em]">✦</span>{character.name}
             </div>
             <div className="w-full min-h-[100px] md:min-h-[140px] pt-4">
-              <p className="text-xl md:text-4xl text-white font-bold leading-[1.8] md:leading-[1.6] tracking-wider" style={{ textShadow: '0 4px 8px rgba(0,0,0,0.9)' }} dangerouslySetInnerHTML={{ __html: dispS }} />
+              <p className="text-xl md:text-[2rem] text-[#1f2440] font-bold leading-[1.8] md:leading-[1.6] tracking-wider" dangerouslySetInnerHTML={{ __html: dispS }} />
             </div>
           </div>
         )}
 
         {/* 📚 隐藏式生词本 */}
         {!typing && !streaming && idx === steps.length - 1 && vocabulary?.length > 0 && (
-          <div className="mt-8 pt-6 border-t border-white/10">
+          <div className="mt-6 pt-5 border-t border-dashed border-[#1f2440]/15">
             <div className="flex justify-between items-center mb-4">
-              <span className="text-xs text-yellow-500 font-black tracking-widest uppercase">▶ VOCABULARY</span>
+              <span className="font-ui text-xs text-emerald-600 font-bold tracking-widest uppercase">✦ VOCABULARY</span>
               
               <button 
                 onClick={(e) => { e.stopPropagation(); setShowVocab(!showVocab); }} 
-                className="bg-yellow-600/30 hover:bg-yellow-600/60 text-yellow-400 border border-yellow-500/50 px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black uppercase transition-all flex items-center gap-2"
+                className="ui-chip !text-emerald-700 uppercase"
               >
                 <span>{showVocab ? 'Hide' : 'Show'}</span>
                 <span className={`transform transition-transform duration-300 ${showVocab ? 'rotate-180' : ''}`}>▼</span>
@@ -128,9 +128,9 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
             {showVocab && (
               <div className="flex flex-wrap gap-3 animate-in slide-in-from-top-2 duration-300 pb-2">
                 {vocabulary.map((v, i) => (
-                  <div key={i} className="bg-white/5 px-4 py-2 rounded-sm border border-white/10 flex items-baseline gap-2">
-                    <span className="text-white font-bold text-base">{v.word}</span>
-                    <span className="text-yellow-400/70 text-xs">{v.reading}</span>
+                  <div key={i} className="bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200 flex items-baseline gap-2">
+                    <span className="text-emerald-700 font-bold text-base">{v.word}</span>
+                    <span className="text-emerald-600/70 text-xs">{v.reading}</span>
                   </div>
                 ))}
               </div>
@@ -139,8 +139,8 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
         )}
         {!typing && (
           streaming && idx === steps.length - 1
-            ? <div className="absolute right-8 bottom-6 text-yellow-400 text-lg md:text-2xl tracking-[0.3em] animate-pulse pointer-events-none">●●●</div>
-            : <div className="absolute right-8 bottom-6 animate-bounce text-yellow-400 text-2xl md:text-4xl pointer-events-none">▼</div>
+            ? <div className="absolute right-8 bottom-4 text-pink-400 text-lg md:text-xl tracking-[0.3em] animate-pulse pointer-events-none">●●●</div>
+            : <div className="absolute right-8 bottom-4 ui-next text-lg md:text-xl pointer-events-none">▼</div>
         )}
       </div>
     </div>

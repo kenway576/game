@@ -204,12 +204,12 @@ const FishingScreen: React.FC<Props> = ({
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => { audioManager.playSfx('click'); onOpenDex(); }}
-            className="bg-black/70 hover:bg-cyan-400 hover:text-black text-white/80 border border-white/25 px-3 py-1.5 text-[11px] font-black tracking-widest transform -skew-x-12 transition-all">
-            <span className="block transform skew-x-12">📖 {dexCount}/{dexTotal}</span>
+            className="bg-black/70 hover:bg-cyan-400 hover:text-black text-white/80 border border-white/25 px-3 py-1.5 text-[11px] font-black tracking-widest rounded-xl transition-all">
+            <span className="block">📖 {dexCount}/{dexTotal}</span>
           </button>
           <button onClick={() => { clearTimers(); audioManager.playSfx('click'); onClose(); }}
-            className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all">
-            <span className="block transform skew-x-12">{en ? '◀ Back' : '◀ 返回'}</span>
+            className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all">
+            <span className="block">{en ? '◀ Back' : '◀ 返回'}</span>
           </button>
         </div>
       </div>
@@ -243,8 +243,8 @@ const FishingScreen: React.FC<Props> = ({
           <div className="text-center">
             <div className="text-7xl mb-5">🎣</div>
             <button onClick={cast}
-              className="px-10 py-3 bg-cyan-400 text-black text-sm font-black uppercase tracking-widest transform -skew-x-12 hover:bg-white transition-all">
-              <span className="block transform skew-x-12">{en ? 'Cast' : '抛竿'}</span>
+              className="px-10 py-3 bg-cyan-400 text-black text-sm font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all">
+              <span className="block">{en ? 'Cast' : '抛竿'}</span>
             </button>
             <p className="mt-4 text-[11px] text-white/40">
               {bait > 0
@@ -264,7 +264,7 @@ const FishingScreen: React.FC<Props> = ({
         {phase === 'bite' && (
           <button onClick={strike} className="text-center focus:outline-none">
             <div className="text-8xl mb-2 animate-bounce">❗</div>
-            <p className="text-yellow-400 font-black text-xl tracking-widest">
+            <p className="text-pink-300 font-black text-xl tracking-widest">
               {en ? 'NOW!' : '就是现在！'}
             </p>
             <p className="mt-2 text-[11px] text-white/50">{en ? 'tap / space' : '点一下 / 空格'}</p>
@@ -316,7 +316,7 @@ const FishingScreen: React.FC<Props> = ({
                 <div className="mt-3 flex items-center justify-center gap-4 text-sm">
                   <span className="text-white/80 tabular-nums">{hooked.cm} cm</span>
                   {!hooked.fish.junk && (
-                    <span className="text-yellow-400 font-black tabular-nums">
+                    <span className="text-pink-300 font-black tabular-nums">
                       ¥{fishValue(hooked.fish, hooked.cm).toLocaleString('ja-JP')}
                     </span>
                   )}
@@ -346,16 +346,16 @@ const FishingScreen: React.FC<Props> = ({
             )}
             <div className="mt-7 flex justify-center gap-3">
               <button onClick={reset} disabled={left <= 0}
-                className={`px-8 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
+                className={`px-8 py-2.5 text-sm font-black uppercase tracking-widest rounded-xl transition-all ${
                   left > 0 ? 'bg-cyan-400 text-black hover:bg-white' : 'bg-white/10 text-white/30 cursor-not-allowed'
                 }`}>
-                <span className="block transform skew-x-12">
+                <span className="block">
                   {left > 0 ? (en ? 'Again' : '再来') : (en ? 'Done for today' : '今天钓完了')}
                 </span>
               </button>
               <button onClick={() => { clearTimers(); onClose(); }}
-                className="px-6 py-2.5 border border-white/25 text-white/70 text-xs font-black uppercase tracking-widest transform -skew-x-12 hover:bg-white/10 transition-all">
-                <span className="block transform skew-x-12">{en ? 'Pack up' : '收竿'}</span>
+                className="px-6 py-2.5 border border-white/25 text-white/70 text-xs font-black uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all">
+                <span className="block">{en ? 'Pack up' : '收竿'}</span>
               </button>
             </div>
           </div>

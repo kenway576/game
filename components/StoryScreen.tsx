@@ -248,7 +248,7 @@ const StoryScreen: React.FC<Props> = ({
     // 「!xxx」是撤掉 xxx（可重复的剧情每次开场清掉上一回的结果）
     list.forEach(f => {
       // give: 发东西、pay: 花钱，都不是留痕，不进 flag 表
-      if (f.startsWith('give:') || f.startsWith('pay:')) return;
+      if (f.startsWith('give:') || f.startsWith('pay:') || f.startsWith('tire:')) return;
       if (f.startsWith('!')) delete next[f.slice(1)];
       else next[f] = true;
     });
@@ -721,8 +721,8 @@ const StoryScreen: React.FC<Props> = ({
   };
 
   const progressPct = nodes.length ? Math.min(100, Math.round((idx / nodes.length) * 100)) : 0;
-  const ctrlBtn = 'bg-black/70 hover:bg-yellow-400 hover:text-black text-white/70 border border-white/25 px-3 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm';
-  const ctrlBtnOn = 'bg-yellow-400 text-black border border-black px-3 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all shadow-[0_0_18px_rgba(250,204,21,0.5)]';
+  const ctrlBtn = 'ui-chip';
+  const ctrlBtnOn = 'ui-chip ui-chip-on';
 
   // ==========================================================
   return (
@@ -730,9 +730,9 @@ const StoryScreen: React.FC<Props> = ({
       {background}
 
       {/* 进度条：序章有 100 多段，玩家有权知道还剩多少 */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-black/50 z-50">
+      <div className="absolute top-0 left-0 w-full h-1 bg-white/20 z-50">
         <div
-          className="h-full bg-gradient-to-r from-red-500 via-yellow-400 to-yellow-200 transition-all duration-500"
+          className="h-full bg-gradient-to-r from-sky-300 via-pink-400 to-amber-300 transition-all duration-500"
           style={{ width: `${progressPct}%` }}
         />
       </div>
@@ -747,22 +747,22 @@ const StoryScreen: React.FC<Props> = ({
         >
           {/* 原来叫「快进」，和旁边的「自动」只差一个字，玩家点了它以为是自动翻页，
               结果剧情唰地飞过去。名字改成它实际干的事：跳到下一个选择。 */}
-          <span className="block transform skew-x-12">{fastForward ? '⏭ ...' : (en ? '⏭ To choice' : '⏭ 跳到选项')}</span>
+          <span className="block">{fastForward ? '⏭ ...' : (en ? '⏭ To choice' : '⏭ 跳到选项')}</span>
         </button>
         <button
           onClick={() => { audioManager.playSfx('click'); setAuto(v => !v); }}
           disabled={isBlockingNode}
           className={`${auto ? ctrlBtnOn : ctrlBtn} disabled:opacity-30`}
         >
-          <span className="block transform skew-x-12">
+          <span className="block">
             {auto ? (en ? '⏸ Auto ON' : '⏸ 自动中') : (en ? '▶ Auto' : '▶ 自动')}
           </span>
         </button>
         <button onClick={() => { audioManager.playSfx('click'); setShowBacklog(true); }} className={ctrlBtn}>
-          <span className="block transform skew-x-12">{en ? '📜 Log' : '📜 回想'}</span>
+          <span className="block">{en ? '📜 Log' : '📜 回想'}</span>
         </button>
         <button onClick={() => { audioManager.playSfx('click'); setShowPrefs(true); }} className={ctrlBtn}>
-          <span className="block transform skew-x-12">⚙</span>
+          <span className="block">⚙</span>
         </button>
         {/* 序章也能存盘：序章有 100 多段，不给存档等于逼玩家一口气读完 */}
         <button
@@ -770,11 +770,11 @@ const StoryScreen: React.FC<Props> = ({
           className={ctrlBtn}
           title={en ? 'Menu — save, load, wordbook' : '菜单 — 存档 / 读档 / 单词本'}
         >
-          <span className="block transform skew-x-12">{en ? '☰ Menu' : '☰ 菜单'}</span>
+          <span className="block">{en ? '☰ Menu' : '☰ 菜单'}</span>
         </button>
         {allowSkip !== false && (
           <button onClick={() => { audioManager.playSfx('click'); setConfirmSkip(true); }} className={ctrlBtn}>
-            <span className="block transform skew-x-12">{en ? 'Skip ▶▶' : '跳过 ▶▶'}</span>
+            <span className="block">{en ? 'Skip ▶▶' : '跳过 ▶▶'}</span>
           </button>
         )}
       </div>
@@ -782,8 +782,8 @@ const StoryScreen: React.FC<Props> = ({
       {/* 生词入库提示 */}
       {wordToast && (
         <div key={wordToast.key} className="absolute top-16 right-3 z-50 animate-in fade-in slide-in-from-right-4 duration-300">
-          <div className="bg-emerald-500/90 text-black border-2 border-black px-4 py-1.5 text-xs font-black tracking-wider transform -skew-x-12 shadow-lg">
-            <span className="block transform skew-x-12">
+          <div className="ui-chip !text-emerald-700">
+            <span className="block">
               📖 {en ? `${wordToast.count} word${wordToast.count > 1 ? 's' : ''} added` : `生词本 +${wordToast.count}`}
             </span>
           </div>
@@ -794,12 +794,13 @@ const StoryScreen: React.FC<Props> = ({
       {titleCard && (
         <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
           <div className="text-center animate-in fade-in zoom-in-95 duration-700">
-            <div className="inline-block bg-black/80 backdrop-blur-md border-l-8 border-red-600 px-10 md:px-16 py-5 md:py-7 shadow-2xl transform -skew-x-6">
-              <h2 className="text-2xl md:text-5xl font-black italic text-white tracking-tight transform skew-x-6">
+            <div className="inline-block ui-panel px-12 md:px-20 py-5 md:py-7">
+              <div className="h-px w-16 mx-auto mb-3 bg-gradient-to-r from-transparent via-pink-400 to-transparent" />
+              <h2 className="font-story text-2xl md:text-5xl font-bold text-[#1f2440] tracking-[0.12em]">
                 {titleCard.title}
               </h2>
               {titleCard.subtitle && (
-                <p className="mt-2 text-xs md:text-base text-yellow-400 font-bold tracking-[0.2em] transform skew-x-6">
+                <p className="mt-3 font-ui text-xs md:text-base text-pink-500 font-bold tracking-[0.25em]">
                   {titleCard.subtitle}
                 </p>
               )}
@@ -832,7 +833,7 @@ const StoryScreen: React.FC<Props> = ({
             onError={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.15'; }}
           />
           <div className="mt-5 w-full max-w-3xl text-center">
-            <h3 className="text-xl md:text-3xl font-black italic text-yellow-400 tracking-wide">
+            <h3 className="text-xl md:text-3xl font-black font-ui text-pink-300 tracking-wide">
               {en ? node.titleEn : node.titleZh}
             </h3>
             <p className="mt-2 text-sm md:text-base text-white/70 leading-relaxed">
@@ -892,34 +893,34 @@ const StoryScreen: React.FC<Props> = ({
           <div className="w-full max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4">
             {node.type === 'narration' ? (
               <div
-                className="bg-slate-900/70 backdrop-blur-sm border border-blue-400/25 rounded-lg p-5 md:p-8 shadow-2xl cursor-pointer select-text"
+                className="ui-panel px-6 py-5 md:px-10 md:py-8 cursor-pointer select-text"
                 onClick={handleTextClick}
               >
-                <p className="text-base md:text-2xl text-blue-50/90 font-medium italic tracking-wide leading-relaxed">
+                <p className="font-story text-base md:text-[1.45rem] text-[#2b3152] tracking-wide leading-[1.85]">
                   {typed}
                 </p>
                 {!typing && (
-                  <div className="text-right text-yellow-400 text-xl md:text-2xl animate-bounce mt-1">▼</div>
+                  <div className="absolute right-6 bottom-3 ui-next text-lg md:text-xl pointer-events-none">▼</div>
                 )}
               </div>
             ) : (
               <div
-                className="relative bg-black/88 backdrop-blur-2xl border-t-4 border-white/10 p-6 md:p-10 pt-9 md:pt-12 shadow-2xl rounded-t-xl cursor-pointer select-text"
+                className="ui-panel px-6 py-6 md:px-10 md:py-9 pt-9 md:pt-12 cursor-pointer select-text"
                 onClick={handleTextClick}
               >
-                <div className={`absolute top-0 left-0 w-full h-1.5 ${node.color || 'bg-yellow-500'}`} />
-                <div className={`absolute -top-6 md:-top-8 left-6 md:left-10 px-7 md:px-10 py-1.5 ${node.color || 'bg-yellow-500'} text-white font-black italic text-base md:text-xl shadow-2xl transform -skew-x-12 border-2 border-white/20 pointer-events-none`}>
-                  <span className="block transform skew-x-12">{displayText.speaker}</span>
+                <div className={`absolute top-0 left-8 right-8 h-1 rounded-b-full opacity-80 ${node.color || 'bg-pink-400'}`} />
+                <div className={`ui-name absolute -top-5 md:-top-6 left-6 md:left-10 px-6 md:px-9 py-1 md:py-1.5 ${node.color || 'bg-pink-400'} text-base md:text-xl pointer-events-none`}>
+                  <span className="opacity-80 mr-1.5 text-[0.7em]">✦</span>{displayText.speaker}
                 </div>
 
-                <p className="text-lg md:text-3xl text-white font-bold leading-[1.7] tracking-wide" style={{ textShadow: '0 4px 8px rgba(0,0,0,0.9)' }}>
+                <p className="text-lg md:text-[1.8rem] text-[#1f2440] font-bold leading-[1.7] tracking-wide">
                   {typed}
                 </p>
 
                 {/* 日语原文下方的译文：本作是日语学习游戏，原文永远在上。
                     玩家可以在 ⚙ 里关掉；关了回想里还留着。 */}
                 {display.showTranslation && displayText.sub && !typing && (
-                  <p className="mt-4 pt-3 border-t border-white/10 text-sm md:text-lg text-yellow-100/70 leading-relaxed animate-in fade-in duration-500">
+                  <p className="mt-4 pt-3 border-t border-dashed border-[#1f2440]/15 text-sm md:text-lg text-[#5b6286] leading-relaxed animate-in fade-in duration-500">
                     {displayText.sub}
                   </p>
                 )}
@@ -928,17 +929,17 @@ const StoryScreen: React.FC<Props> = ({
                 {display.showWordChips && node.words?.length && !typing ? (
                   <div className="mt-3 flex flex-wrap gap-2 animate-in fade-in duration-500">
                     {node.words.map(w => (
-                      <span key={w.jp} className="inline-flex items-baseline gap-1.5 bg-emerald-500/15 border border-emerald-400/40 rounded px-2.5 py-1">
-                        <span className="text-sm md:text-base font-bold text-emerald-200">{w.jp}</span>
-                        {w.reading && <span className="text-[10px] text-emerald-300/60">{w.reading}</span>}
-                        <span className="text-[11px] md:text-xs text-white/60">{en ? w.en : w.zh}</span>
+                      <span key={w.jp} className="inline-flex items-baseline gap-1.5 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
+                        <span className="text-sm md:text-base font-bold text-emerald-700">{w.jp}</span>
+                        {w.reading && <span className="text-[10px] text-emerald-600/70">{w.reading}</span>}
+                        <span className="text-[11px] md:text-xs text-slate-500">{en ? w.en : w.zh}</span>
                       </span>
                     ))}
                   </div>
                 ) : null}
 
                 {!typing && (
-                  <div className="absolute right-6 bottom-4 animate-bounce text-yellow-400 text-2xl md:text-3xl pointer-events-none">▼</div>
+                  <div className="absolute right-6 bottom-3 ui-next text-lg md:text-xl pointer-events-none">▼</div>
                 )}
               </div>
             )}
@@ -948,8 +949,8 @@ const StoryScreen: React.FC<Props> = ({
         {/* 剧情内问名字：取代开场的登记表单 */}
         {node?.type === 'nameInput' && (
           <div className="w-full max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-500">
-            <div className="bg-black/85 backdrop-blur-xl border-2 border-white/20 shadow-2xl p-6 md:p-8">
-              <p className="text-base md:text-xl text-blue-100/90 italic mb-5 text-center">
+            <div className="ui-panel p-6 md:p-8">
+              <p className="font-story text-base md:text-xl text-[#2b3152] mb-5 text-center">
                 {en ? node.promptEn : node.promptZh}
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -962,18 +963,18 @@ const StoryScreen: React.FC<Props> = ({
                   onChange={e => setNameDraft(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); submitName(); } }}
                   placeholder={en ? node.placeholderEn : node.placeholderZh}
-                  className="flex-1 bg-zinc-900 border-2 border-white/25 focus:border-yellow-400 outline-none text-white text-lg md:text-2xl font-bold px-4 py-3 transition-colors"
+                  className="flex-1 bg-white border-2 border-[#1f2440]/15 focus:border-pink-400 rounded-xl outline-none text-[#1f2440] text-lg md:text-2xl font-bold px-4 py-3 transition-colors"
                 />
                 <button
                   onClick={submitName}
                   disabled={!nameDraft.trim()}
                   data-sfx-silent
-                  className="bg-red-600 hover:bg-yellow-400 hover:text-black text-white border-2 border-black px-8 py-3 font-black italic text-lg tracking-widest transform -skew-x-12 shadow-[6px_6px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="ui-btn-primary px-8 py-3 text-lg disabled:cursor-not-allowed"
                 >
-                  <span className="block transform skew-x-12">{en ? 'THIS IS ME' : '就叫这个'}</span>
+                  <span className="block">{en ? 'THIS IS ME' : '就叫这个'}</span>
                 </button>
               </div>
-              <p className="mt-3 text-[11px] text-white/35 text-center">
+              <p className="mt-3 text-[11px] text-[#5b6286]/70 text-center">
                 {en
                   ? 'Everyone will call you by this from now on — some by name, some by surname, depending on how close you get.'
                   : '从这里开始，所有人都会这样叫你——是连名带姓、加个「君」，还是直呼其名，看你们后来走到哪一步。'}
@@ -986,7 +987,7 @@ const StoryScreen: React.FC<Props> = ({
         {node?.type === 'choice' && (
           <div className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-500">
             <div className="text-center mb-5">
-              <span className="inline-block bg-black/80 backdrop-blur-sm border border-white/20 text-blue-100/90 italic text-sm md:text-lg px-6 py-2 rounded-full">
+              <span className="inline-block ui-panel font-story text-[#2b3152] text-sm md:text-lg px-6 py-2 !rounded-full">
                 {en ? node.promptEn : node.promptZh}
               </span>
             </div>
@@ -1001,32 +1002,29 @@ const StoryScreen: React.FC<Props> = ({
                     key={opt.id}
                     onClick={() => pickOption(opt)}
                     disabled={!ok}
-                    className={`group relative w-full text-left px-5 md:px-8 py-4 md:py-5 border-2 transform -skew-x-6 transition-all duration-200 backdrop-blur-md shadow-[6px_6px_0px_rgba(0,0,0,0.5)]
-                      ${ok
-                        ? 'bg-black/85 border-white/30 hover:bg-yellow-400 hover:border-black hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer'
-                        : 'bg-black/60 border-white/10 opacity-45 cursor-not-allowed'}`}
+                    className={`ui-choice group w-full text-left pl-8 pr-5 md:pl-10 md:pr-8 py-4 md:py-5 ${ok ? 'cursor-pointer active:translate-y-0.5' : 'cursor-not-allowed'}`}
                   >
-                    <div className="transform skew-x-6">
+                    <div>
                       {/* 主角真的把这句话说出口的时候，大字就是那句日语，
                           译文退到下面一行。玩家选的是这句话，不是它的意思。 */}
                       {opt.jp ? (
                         <>
-                          <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-white group-hover:text-black' : 'text-white/50'}`}>
+                          <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-[#1f2440]' : 'text-[#1f2440]/50'}`}>
                             {opt.jp}
                           </div>
                           {display.showTranslation && (
-                            <div className={`mt-0.5 text-[11px] md:text-sm font-bold ${ok ? 'text-yellow-300/80 group-hover:text-black/65' : 'text-white/30'}`}>
+                            <div className={`mt-0.5 text-[11px] md:text-sm font-bold ${ok ? 'text-[#5b6286]' : 'text-[#5b6286]/50'}`}>
                               {en ? opt.labelEn : opt.labelZh}
                             </div>
                           )}
                         </>
                       ) : (
-                        <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-white group-hover:text-black' : 'text-white/50'}`}>
+                        <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-[#1f2440]' : 'text-[#1f2440]/50'}`}>
                           {en ? opt.labelEn : opt.labelZh}
                         </div>
                       )}
                       {display.showHints && (en ? opt.hintEn : opt.hintZh) && (
-                        <div className={`mt-1 text-[11px] md:text-sm italic ${ok ? 'text-blue-200/60 group-hover:text-black/70' : 'text-white/30'}`}>
+                        <div className={`mt-1 text-[11px] md:text-sm italic ${ok ? 'text-[#7a7fa0]' : 'text-[#7a7fa0]/50'}`}>
                           {en ? opt.hintEn : opt.hintZh}
                         </div>
                       )}
@@ -1074,7 +1072,7 @@ const StoryScreen: React.FC<Props> = ({
                   <span className="text-[10px] md:text-xs text-white/50 font-black uppercase tracking-widest">
                     {en ? 'Wallet' : '钱包'}
                   </span>
-                  <span className={`text-xl md:text-3xl font-black italic tabular-nums ${remaining < 200 ? 'text-red-400' : 'text-yellow-400'}`}>
+                  <span className={`text-xl md:text-3xl font-black font-ui tabular-nums ${remaining < 200 ? 'text-red-400' : 'text-pink-300'}`}>
                     ¥{remaining}
                   </span>
                   <span className="text-[10px] md:text-xs text-white/30">/ ¥{budget}</span>
@@ -1095,7 +1093,7 @@ const StoryScreen: React.FC<Props> = ({
                           ? 'bg-gradient-to-r from-yellow-400 to-amber-300 border-yellow-200 text-black shadow-[0_0_25px_rgba(250,204,21,0.45)] scale-[1.01]'
                           : tooExpensive
                             ? 'bg-black/50 border-white/10 opacity-35 cursor-not-allowed'
-                            : 'bg-zinc-900/90 border-white/15 hover:border-yellow-400/80 hover:bg-zinc-800/90 hover:shadow-lg cursor-pointer'}`}
+                            : 'bg-zinc-900/90 border-white/15 hover:border-pink-300/80 hover:bg-zinc-800/90 hover:shadow-lg cursor-pointer'}`}
                     >
                       {/* 商品立绘 / 图标 */}
                       <div className={`relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-lg overflow-hidden border ${picked ? 'border-black/30 bg-black/10' : 'border-white/20 bg-black/40'} flex items-center justify-center`}>
@@ -1119,7 +1117,7 @@ const StoryScreen: React.FC<Props> = ({
                           <span className={`font-black text-sm md:text-lg truncate ${picked ? 'text-black' : 'text-white'}`}>
                             {item.nameJp}
                           </span>
-                          <span className={`font-black text-sm md:text-base tabular-nums shrink-0 px-2 py-0.5 rounded ${picked ? 'bg-black text-yellow-400' : 'bg-red-600/90 text-white'}`}>
+                          <span className={`font-black text-sm md:text-base tabular-nums shrink-0 px-2 py-0.5 rounded ${picked ? 'bg-black text-pink-300' : 'bg-red-600/90 text-white'}`}>
                             ¥{item.price}
                           </span>
                         </div>
@@ -1130,7 +1128,7 @@ const StoryScreen: React.FC<Props> = ({
                           </span>
                           {/* 属性增益徽章 */}
                           {item.effects && item.effects.length > 0 && (
-                            <span className={`text-[9px] md:text-[10px] font-black px-1.5 py-0.2 rounded uppercase ${picked ? 'bg-black/80 text-yellow-300' : 'bg-yellow-400 text-black'}`}>
+                            <span className={`text-[9px] md:text-[10px] font-black px-1.5 py-0.2 rounded uppercase ${picked ? 'bg-black/80 text-pink-200' : 'bg-pink-400 text-black'}`}>
                               +{item.effects[0].amount} {STAT_METADATA[item.effects[0].stat]?.nameZh.split(' ')[0] || item.effects[0].stat}
                             </span>
                           )}
@@ -1142,7 +1140,7 @@ const StoryScreen: React.FC<Props> = ({
                       </div>
 
                       {/* 选中指示标记 */}
-                      <div className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center font-black text-sm md:text-base border-2 transition-all ${picked ? 'bg-black text-yellow-400 border-black' : 'bg-transparent text-white/30 border-white/20 group-hover:border-yellow-400 group-hover:text-yellow-400'}`}>
+                      <div className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center font-black text-sm md:text-base border-2 transition-all ${picked ? 'bg-black text-pink-300 border-black' : 'bg-transparent text-white/30 border-white/20 group-hover:border-pink-300 group-hover:text-pink-300'}`}>
                         {picked ? '✓' : '＋'}
                       </div>
                     </button>
@@ -1158,9 +1156,9 @@ const StoryScreen: React.FC<Props> = ({
                 </div>
                 <button
                   onClick={checkout}
-                  className="bg-red-600 hover:bg-yellow-400 hover:text-black text-white border-2 border-black px-8 md:px-12 py-2.5 md:py-3 font-black italic text-base md:text-xl tracking-widest transform -skew-x-12 shadow-[6px_6px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all"
+                  className="ui-btn-primary px-8 md:px-12 py-2.5 md:py-3 text-base md:text-xl"
                 >
-                  <span className="block transform skew-x-12">
+                  <span className="block">
                     {cart.length === 0 ? (en ? 'LEAVE' : '空手出去') : (en ? 'CHECK OUT' : 'お会計')}
                   </span>
                 </button>
@@ -1175,7 +1173,7 @@ const StoryScreen: React.FC<Props> = ({
         <div className="absolute inset-0 z-[60] bg-black/85 backdrop-blur-md flex items-center justify-center p-3 md:p-8 animate-in fade-in duration-200" onClick={() => setShowBacklog(false)}>
           <div className="w-full max-w-3xl max-h-[85dvh] bg-zinc-950/95 border-2 border-white/20 shadow-2xl flex flex-col" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-3 border-b-2 border-white/10 shrink-0">
-              <h3 className="text-lg md:text-2xl font-black italic text-yellow-400 tracking-wide">
+              <h3 className="text-lg md:text-2xl font-black font-ui text-pink-300 tracking-wide">
                 {en ? '📜 BACKLOG' : '📜 回想'}
               </h3>
               <button onClick={() => setShowBacklog(false)} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white font-bold transition-colors">✕</button>
@@ -1185,9 +1183,9 @@ const StoryScreen: React.FC<Props> = ({
                 <p className="text-white/40 text-sm italic">{en ? 'Nothing read yet.' : '还没有读过的内容。'}</p>
               )}
               {backlog.map((b, i) => (
-                <div key={i} className={`border-l-4 pl-3 py-1 ${b.speaker ? 'border-yellow-500/70' : 'border-blue-400/40'}`}>
+                <div key={i} className={`border-l-4 pl-3 py-1 ${b.speaker ? 'border-pink-300/70' : 'border-blue-400/40'}`}>
                   {b.speaker && (
-                    <div className="text-[11px] font-black uppercase tracking-widest text-yellow-400/90 mb-0.5">{b.speaker}</div>
+                    <div className="text-[11px] font-black uppercase tracking-widest text-pink-300/90 mb-0.5">{b.speaker}</div>
                   )}
                   <p className={`text-sm md:text-base leading-relaxed ${b.speaker ? 'text-white/90 font-medium' : 'text-blue-50/70 italic'}`}>{b.main}</p>
                   {b.sub && <p className="mt-1 text-xs md:text-sm text-yellow-100/50">{b.sub}</p>}
@@ -1200,15 +1198,15 @@ const StoryScreen: React.FC<Props> = ({
 
       {/* 阅读速度设置 */}
       {showPrefs && (
-        <div className="absolute inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowPrefs(false)}>
-          <div className="bg-black border-4 border-white p-7 md:p-10 max-w-md w-full max-h-[92dvh] overflow-y-auto shadow-[12px_12px_0px_rgba(215,38,56,1)] transform -skew-x-2" onClick={e => e.stopPropagation()}>
-            <div className="transform skew-x-2 flex flex-col gap-6">
-              <h3 className="text-xl md:text-2xl font-black italic text-white">
+        <div className="absolute inset-0 z-[60] bg-[#141a33]/55 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowPrefs(false)}>
+          <div className="ui-panel p-7 md:p-10 max-w-md w-full max-h-[92dvh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex flex-col gap-6">
+              <h3 className="font-ui text-xl md:text-2xl font-bold text-[#1f2440]">
                 {en ? 'Reading settings' : '阅读设置'}
               </h3>
 
               <div>
-                <div className="text-[11px] font-black uppercase tracking-widest text-white/50 mb-2">
+                <div className="font-ui text-[11px] font-bold uppercase tracking-widest text-[#5b6286] mb-2">
                   {en ? 'Text speed' : '文本速度'}
                 </div>
                 <div className="grid grid-cols-4 gap-2">
@@ -1221,7 +1219,7 @@ const StoryScreen: React.FC<Props> = ({
                         try { localStorage.setItem(PREFS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
                         audioManager.playSfx('click');
                       }}
-                      className={`py-2 text-xs font-black border-2 transition-all ${prefs.speedMs === o.ms ? 'bg-yellow-400 text-black border-black' : 'bg-zinc-900 text-white/70 border-white/25 hover:border-white'}`}
+                      className={`py-2 text-xs ${prefs.speedMs === o.ms ? 'ui-chip ui-chip-on' : 'ui-chip'} justify-center`}
                     >
                       {en ? o.labelEn : o.labelZh}
                     </button>
@@ -1230,7 +1228,7 @@ const StoryScreen: React.FC<Props> = ({
               </div>
 
               <div>
-                <div className="text-[11px] font-black uppercase tracking-widest text-white/50 mb-2">
+                <div className="font-ui text-[11px] font-bold uppercase tracking-widest text-[#5b6286] mb-2">
                   {en ? 'Auto-play pace' : '自动播放节奏'}
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -1243,7 +1241,7 @@ const StoryScreen: React.FC<Props> = ({
                         try { localStorage.setItem(PREFS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
                         audioManager.playSfx('click');
                       }}
-                      className={`py-2 text-xs font-black border-2 transition-all ${prefs.autoMs === o.ms ? 'bg-yellow-400 text-black border-black' : 'bg-zinc-900 text-white/70 border-white/25 hover:border-white'}`}
+                      className={`py-2 text-xs ${prefs.autoMs === o.ms ? 'ui-chip ui-chip-on' : 'ui-chip'} justify-center`}
                     >
                       {en ? o.labelEn : o.labelZh}
                     </button>
@@ -1252,13 +1250,13 @@ const StoryScreen: React.FC<Props> = ({
               </div>
 
               <div>
-                <div className="text-[11px] font-black uppercase tracking-widest text-white/50 mb-2">
+                <div className="font-ui text-[11px] font-bold uppercase tracking-widest text-[#5b6286] mb-2">
                   {en ? 'Under the text' : '文本下方的小字'}
                 </div>
                 <DisplayPrefsToggles en={en} />
               </div>
 
-              <p className="text-[11px] text-white/40 leading-relaxed">
+              <p className="text-[11px] text-[#5b6286]/80 leading-relaxed">
                 {en
                   ? 'Space / Enter: advance · A: auto · L: backlog · Ctrl: fast-forward to the next choice'
                   : '空格 / 回车：继续 · A：自动播放 · L：回想 · Ctrl：快进到下一个选择'}
@@ -1266,9 +1264,9 @@ const StoryScreen: React.FC<Props> = ({
 
               <button
                 onClick={() => setShowPrefs(false)}
-                className="bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/30 py-3 font-black italic tracking-widest transform -skew-x-12 transition-all"
+                className="rounded-full border-2 border-[#1f2440]/15 bg-white/90 hover:bg-pink-50 text-[#1f2440] font-ui font-bold tracking-widest transition-all py-3"
               >
-                <span className="block transform skew-x-12">{en ? 'CLOSE' : '关闭'}</span>
+                <span className="block">{en ? 'CLOSE' : '关闭'}</span>
               </button>
             </div>
           </div>
@@ -1277,18 +1275,18 @@ const StoryScreen: React.FC<Props> = ({
 
       {/* 续玩上次的进度 */}
       {restoreOffer && (
-        <div className="absolute inset-0 z-[70] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-black border-4 border-white p-8 md:p-12 max-w-lg shadow-[12px_12px_0px_rgba(56,189,248,1)] transform -skew-x-2">
-            <div className="transform skew-x-2">
-              <h3 className="text-2xl md:text-3xl font-black italic text-white mb-3">
+        <div className="absolute inset-0 z-[70] bg-[#141a33]/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="ui-panel p-8 md:p-12 max-w-lg">
+            <div>
+              <h3 className="font-ui text-2xl md:text-3xl font-bold text-[#1f2440] mb-3">
                 {en ? `Continue ${chapterNameEn || 'this chapter'}?` : `继续上次的${chapterNameZh || '这一章'}？`}
               </h3>
-              <p className="text-sm md:text-base text-white/60 mb-2 leading-relaxed">
+              <p className="text-sm md:text-base text-[#4b5375] mb-2 leading-relaxed">
                 {en
                   ? 'You stopped partway through last time. Your stats, vocabulary and choices from that run are all still there.'
                   : '上次读到一半就离开了。当时拿到的属性、生词与做过的选择都还在。'}
               </p>
-              <p className="text-xs text-sky-300/80 mb-8 tabular-nums">
+              <p className="text-xs text-sky-600 mb-8 tabular-nums">
                 {en ? 'Progress' : '进度'} {Math.round((restoreOffer.idx / Math.max(1, restoreOffer.nodes.length)) * 100)}%
                 {' · '}
                 {new Date(restoreOffer.savedAt).toLocaleString()}
@@ -1296,15 +1294,15 @@ const StoryScreen: React.FC<Props> = ({
               <div className="flex gap-3">
                 <button
                   onClick={acceptRestore}
-                  className="flex-1 bg-sky-500 hover:bg-sky-400 text-black border-2 border-black py-3 font-black italic tracking-widest transform -skew-x-12 shadow-[5px_5px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all"
+                  className="flex-1 ui-btn-primary py-3"
                 >
-                  <span className="block transform skew-x-12">{en ? 'CONTINUE' : '接着看'}</span>
+                  <span className="block">{en ? 'CONTINUE' : '接着看'}</span>
                 </button>
                 <button
                   onClick={declineRestore}
-                  className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/30 py-3 font-black italic tracking-widest transform -skew-x-12 transition-all"
+                  className="flex-1 rounded-full border-2 border-[#1f2440]/15 bg-white/90 hover:bg-pink-50 text-[#1f2440] font-ui font-bold tracking-widest transition-all py-3"
                 >
-                  <span className="block transform skew-x-12">{en ? 'RESTART' : '从头开始'}</span>
+                  <span className="block">{en ? 'RESTART' : '从头开始'}</span>
                 </button>
               </div>
             </div>
@@ -1314,18 +1312,18 @@ const StoryScreen: React.FC<Props> = ({
 
       {/* 跳过确认 */}
       {confirmSkip && (
-        <div className="absolute inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-black border-4 border-white p-8 md:p-12 max-w-lg shadow-[12px_12px_0px_rgba(215,38,56,1)] transform -skew-x-2">
-            <div className="transform skew-x-2">
-              <h3 className="text-2xl md:text-3xl font-black italic text-white mb-3">
+        <div className="absolute inset-0 z-[60] bg-[#141a33]/55 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="ui-panel p-8 md:p-12 max-w-lg">
+            <div>
+              <h3 className="font-ui text-2xl md:text-3xl font-bold text-[#1f2440] mb-3">
                 {en ? `Skip ${chapterNameEn || 'this chapter'}?` : `跳过${chapterNameZh || '这一章'}？`}
               </h3>
-              <p className="text-sm md:text-base text-white/60 mb-4 leading-relaxed">
+              <p className="text-sm md:text-base text-[#4b5375] mb-4 leading-relaxed">
                 {en
                   ? 'You will go straight to the lobby. Stats, vocabulary and choices from the part you have not played will not be counted.'
                   : '将直接进入大厅。没看到的部分不会计入任何属性、生词与选择结果。'}
               </p>
-              <p className="text-xs text-red-400/90 mb-8 leading-relaxed">
+              <p className="text-xs text-rose-500 mb-8 leading-relaxed">
                 {en
                   ? 'That includes the people you would have met: anyone you never ran into in the prologue starts the story not knowing you at all.'
                   : '这也包括序章里本该遇见的人——没碰上的角色，正篇开局时是真的不认识你。'}
@@ -1333,15 +1331,15 @@ const StoryScreen: React.FC<Props> = ({
               <div className="flex gap-3">
                 <button
                   onClick={skipPrologue}
-                  className="flex-1 bg-red-600 hover:bg-red-500 text-white border-2 border-black py-3 font-black italic tracking-widest transform -skew-x-12 shadow-[5px_5px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all"
+                  className="flex-1 ui-btn-primary py-3"
                 >
-                  <span className="block transform skew-x-12">{en ? 'SKIP' : '跳过'}</span>
+                  <span className="block">{en ? 'SKIP' : '跳过'}</span>
                 </button>
                 <button
                   onClick={() => setConfirmSkip(false)}
-                  className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/30 py-3 font-black italic tracking-widest transform -skew-x-12 transition-all"
+                  className="flex-1 rounded-full border-2 border-[#1f2440]/15 bg-white/90 hover:bg-pink-50 text-[#1f2440] font-ui font-bold tracking-widest transition-all py-3"
                 >
-                  <span className="block transform skew-x-12">{en ? 'BACK' : '继续看'}</span>
+                  <span className="block">{en ? 'BACK' : '继续看'}</span>
                 </button>
               </div>
             </div>

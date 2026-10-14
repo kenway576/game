@@ -247,7 +247,7 @@ for (const [src, mask] of Object.entries(AUTO_MASKS)) {
 
 // 剧本里这个角色的 speakerEn：判断"现在说话的是不是她"，说话时头才会一点一点
 const PUPPET_SPEAKERS: Record<string, string> = {
-  inari: 'Inari', asuka: 'Asuka', hikari: 'Hikari', rei: 'Rei', nao: 'Nao', sora: 'Sora', maki: 'Maki', miyuki: 'Miyuki'
+  inari: 'Inari', asuka: 'Asuka', hikari: 'Hikari', rei: 'Rei', nao: 'Nao', sora: 'Sora', maki: 'Maki', miyuki: 'Miyuki', kai: 'Kinjo'
 };
 export const puppetSpeakerOf = (src: string | null | undefined): string | null => {
   const m = src?.match(/\/images\/characters\/([^/]+)\//);

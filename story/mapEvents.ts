@@ -5,11 +5,12 @@ import {
 import { AFTERSCHOOL_EVENTS } from './afterschoolEvents';
 import { GROUP_EVENTS } from './groupEvents';
 import { CHAR_EVENTS } from './charEvents';
+import { NUNOBIKI_EVENTS } from './nunobikiStory';
 import { getInitialFamiliarity } from '../constants';
 import { isSchoolDay, slotsForDay } from '../data/calendarLife';
 import { scriptFitsNow } from './timeContext';
 
-export const MAP_EVENTS: MapEventDef[] = [...AFTERSCHOOL_EVENTS, ...GROUP_EVENTS, ...CHAR_EVENTS];
+export const MAP_EVENTS: MapEventDef[] = [...AFTERSCHOOL_EVENTS, ...GROUP_EVENTS, ...CHAR_EVENTS, ...NUNOBIKI_EVENTS];
 
 // 事件 id 同时就是"演过了"的 flag。不用另起一套命名，
 // 也就不会出现 id 和 flag 对不上的那类 bug。

@@ -82,8 +82,8 @@ const CafeteriaScreen: React.FC<Props> = ({
 
       {/* 顶栏 */}
       <div className="relative flex items-center justify-between gap-3 px-4 md:px-6 py-3 border-b border-white/10 shrink-0">
-        <div className="bg-black/75 border border-white/20 px-4 py-1.5 transform -skew-x-12">
-          <span className="block transform skew-x-12 text-[11px] md:text-sm font-black text-white tracking-widest">
+        <div className="bg-black/75 border border-white/20 px-4 py-1.5 rounded-xl">
+          <span className="block text-[11px] md:text-sm font-black text-white tracking-widest">
             {en ? 'CAFETERIA' : '学生食堂'}
             <span className="ml-3 text-white/40 font-mono text-[10px]">学生食堂</span>
           </span>
@@ -94,13 +94,13 @@ const CafeteriaScreen: React.FC<Props> = ({
               {en ? `${soldOutCount} sold out` : `${soldOutCount} 样卖完了`}
             </span>
           )}
-          <span className="text-[11px] font-mono text-yellow-400/80">{yenStr(yen)}</span>
+          <span className="text-[11px] font-mono text-pink-300/80">{yenStr(yen)}</span>
         </div>
         <button
           onClick={() => { audioManager.playSfx('click'); onClose(); }}
-          className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+          className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
         >
-          <span className="block transform skew-x-12">{companion
+          <span className="block">{companion
             ? (en ? `Sit with ${charName(companion, true)} ▶` : `端着盘子去${charName(companion, false)}那桌 ▶`)
             : (en ? '◀ Back to class' : '◀ 吃完回教室')}</span>
         </button>
@@ -129,10 +129,10 @@ const CafeteriaScreen: React.FC<Props> = ({
                 key={it.id}
                 onClick={() => { audioManager.playSfx('click'); setPickId(it.id); setAte(null); }}
                 className={`w-full text-left px-3 py-2.5 border-b border-white/5 flex items-center gap-3 transition-colors ${
-                  on ? 'bg-yellow-400/15' : 'hover:bg-white/5'
+                  on ? 'bg-pink-400/15' : 'hover:bg-white/5'
                 }`}
               >
-                <span className={`w-1 self-stretch shrink-0 ${on ? 'bg-yellow-400' : 'bg-transparent'}`} />
+                <span className={`w-1 self-stretch shrink-0 ${on ? 'bg-pink-400' : 'bg-transparent'}`} />
                 <ItemIcon id={it.id} emoji={it.emoji} size={34} className={`shrink-0 ${out ? 'opacity-30 grayscale' : ''}`} />
                 <span className="min-w-0 flex-1">
                   <span className={`block text-sm font-bold truncate ${out ? 'text-white/30 line-through' : 'text-white'}`}>
@@ -142,7 +142,7 @@ const CafeteriaScreen: React.FC<Props> = ({
                 </span>
                 {/* 吃过的打个点，方便看还剩哪几样没试过 */}
                 {had && !out && <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-400/70" />}
-                <span className={`shrink-0 font-mono text-xs ${out ? 'text-rose-300/60' : 'text-yellow-400/80'}`}>
+                <span className={`shrink-0 font-mono text-xs ${out ? 'text-rose-300/60' : 'text-pink-300/80'}`}>
                   {out ? (en ? 'SOLD OUT' : '売り切れ') : yenStr(it.price)}
                 </span>
               </button>
@@ -157,7 +157,7 @@ const CafeteriaScreen: React.FC<Props> = ({
               <div className="flex items-center gap-4">
                 <ItemIcon id={ate.item.id} emoji={ate.item.emoji} size={56} />
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-yellow-400/80">
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-pink-300/80">
                     {ate.first ? (en ? 'First time' : '第一次吃') : (en ? 'Again' : '又吃了一次')}
                   </p>
                   <h2 className="text-xl md:text-3xl font-black text-white">{en ? ate.item.nameEn : ate.item.nameZh}</h2>
@@ -172,9 +172,9 @@ const CafeteriaScreen: React.FC<Props> = ({
               </p>
 
               {ate.item.word && (
-                <div className="mt-6 inline-flex items-baseline gap-3 bg-black/60 border-l-4 border-yellow-400 px-4 py-2.5">
+                <div className="mt-6 inline-flex items-baseline gap-3 bg-black/60 border-l-4 border-pink-300 px-4 py-2.5">
                   <span className="text-lg md:text-2xl font-black text-white">{ate.item.word.jp}</span>
-                  <span className="text-[11px] font-mono text-yellow-400/80">{ate.item.word.reading}</span>
+                  <span className="text-[11px] font-mono text-pink-300/80">{ate.item.word.reading}</span>
                   <span className="text-xs md:text-sm text-white/65">{en ? ate.item.word.en : ate.item.word.zh}</span>
                 </div>
               )}
@@ -182,19 +182,19 @@ const CafeteriaScreen: React.FC<Props> = ({
               <div className="mt-6">
                 <button
                   onClick={() => { audioManager.playSfx('page'); setAte(null); }}
-                  className="bg-yellow-400 hover:bg-white text-black px-6 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+                  className="bg-pink-400 hover:bg-white text-black px-6 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
                 >
-                  <span className="block transform skew-x-12">{en ? 'Back to the board' : '再看看菜单'}</span>
+                  <span className="block">{en ? 'Back to the board' : '再看看菜单'}</span>
                 </button>
               </div>
             </div>
           ) : (
             <div key={sel.id} className="animate-in fade-in slide-in-from-bottom-3 duration-300">
               <div className="flex items-start gap-4 md:gap-6">
-                <div className={`shrink-0 w-24 h-24 md:w-32 md:h-32 flex items-center justify-center bg-black/60 border-2 transform -skew-x-6 ${
-                  soldOut ? 'border-rose-500/40' : 'border-yellow-400/50'
+                <div className={`shrink-0 w-24 h-24 md:w-32 md:h-32 flex items-center justify-center bg-black/60 border-2 rounded-2xl ${
+                  soldOut ? 'border-rose-500/40' : 'border-pink-300/50'
                 }`}>
-                  <span className="block transform skew-x-6">
+                  <span className="block">
                     <ItemIcon id={sel.id} emoji={sel.emoji} size={78} className={soldOut ? 'opacity-30 grayscale' : ''} />
                   </span>
                 </div>
@@ -202,7 +202,7 @@ const CafeteriaScreen: React.FC<Props> = ({
                   <h2 className="text-2xl md:text-4xl font-black text-white leading-tight">
                     {en ? sel.nameEn : sel.nameZh}
                   </h2>
-                  <p className="mt-0.5 text-sm md:text-lg font-mono text-yellow-400/85">
+                  <p className="mt-0.5 text-sm md:text-lg font-mono text-pink-300/85">
                     {sel.nameJp}
                     <span className="ml-2 text-[10px] md:text-xs text-white/35">{sel.reading}</span>
                   </p>
@@ -226,7 +226,7 @@ const CafeteriaScreen: React.FC<Props> = ({
                   </span>
                 )}
                 {sel.popularity === 3 && !soldOut && (
-                  <span className="text-[11px] px-2.5 py-1 border border-yellow-400/50 text-yellow-300/90">
+                  <span className="text-[11px] px-2.5 py-1 border border-pink-300/50 text-pink-200/90">
                     {en ? 'Goes fast' : '手慢就没'}
                   </span>
                 )}
@@ -244,13 +244,13 @@ const CafeteriaScreen: React.FC<Props> = ({
                 <button
                   onClick={buy}
                   disabled={soldOut || !canAfford}
-                  className={`px-8 md:px-12 py-3 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
+                  className={`px-8 md:px-12 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all ${
                     !soldOut && canAfford
-                      ? 'bg-yellow-400 text-black hover:bg-white'
+                      ? 'bg-pink-400 text-black hover:bg-white'
                       : 'bg-white/10 text-white/30 cursor-not-allowed'
                   }`}
                 >
-                  <span className="block transform skew-x-12">
+                  <span className="block">
                     {soldOut
                       ? (en ? 'Sold out' : '卖完了')
                       : !canAfford

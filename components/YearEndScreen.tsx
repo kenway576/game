@@ -60,7 +60,7 @@ const YearEndScreen: React.FC<Props> = ({
         <div className="w-full max-w-3xl">
           {/* 标题 */}
           <div className="mb-8 border-b-4 border-red-600 pb-4">
-            <div className="text-[10px] font-black tracking-[0.35em] text-yellow-400 mb-2">
+            <div className="text-[10px] font-black tracking-[0.35em] text-pink-300 mb-2">
               {en ? 'END OF THE SCHOOL YEAR' : '学年修了'}
             </div>
             <h1 className="text-4xl md:text-6xl font-black text-white italic tracking-tighter leading-none">
@@ -75,7 +75,7 @@ const YearEndScreen: React.FC<Props> = ({
 
           {/* 谁陪你走完的 */}
           <div className="mb-8">
-            <h2 className="text-sm font-black text-yellow-400 tracking-[0.2em] mb-3">
+            <h2 className="text-sm font-black text-pink-300 tracking-[0.2em] mb-3">
               {en ? 'WHO YOU SPENT IT WITH' : '这一年和谁一起过的'}
             </h2>
             {closest && (
@@ -102,7 +102,7 @@ const YearEndScreen: React.FC<Props> = ({
                   </div>
                   <div className="text-[10px] font-bold w-28 text-right shrink-0">
                     {p.ending ? (
-                      <span className="text-yellow-300">
+                      <span className="text-pink-200">
                         {p.ending.kind === 'love' ? '💗 ' : '🤝 '}
                         {en ? p.ending.titleEn : p.ending.titleZh}
                       </span>
@@ -132,7 +132,7 @@ const YearEndScreen: React.FC<Props> = ({
 
           {/* 五维 */}
           <div className="mb-10">
-            <h2 className="text-sm font-black text-yellow-400 tracking-[0.2em] mb-3">
+            <h2 className="text-sm font-black text-pink-300 tracking-[0.2em] mb-3">
               {en ? 'WHO YOU BECAME' : '你变成了什么样的人'}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -140,7 +140,7 @@ const YearEndScreen: React.FC<Props> = ({
                 <div key={r.k} className="flex items-center gap-3 bg-black/40 border border-white/10 rounded px-3 py-2">
                   <span className="text-white/60 text-xs w-16 shrink-0">{en ? r.en : r.zh}</span>
                   <div className="flex-1 h-1.5 bg-white/10 rounded overflow-hidden">
-                    <div className="h-full bg-yellow-500" style={{ width: `${Math.min(100, ((stats[r.k] || 0) / 60) * 100)}%` }} />
+                    <div className="h-full bg-pink-400" style={{ width: `${Math.min(100, ((stats[r.k] || 0) / 60) * 100)}%` }} />
                   </div>
                   <span className="text-white font-mono text-xs w-8 text-right">{stats[r.k] || 0}</span>
                 </div>
@@ -156,7 +156,7 @@ const YearEndScreen: React.FC<Props> = ({
 
           <button
             onClick={onClose}
-            className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black tracking-[0.2em] uppercase py-4 transition-colors"
+            className="w-full bg-pink-400 hover:bg-pink-400 text-black font-black tracking-[0.2em] uppercase py-4 transition-colors"
           >
             {en ? 'Continue' : '继续'}
           </button>

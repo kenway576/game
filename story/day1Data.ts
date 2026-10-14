@@ -1,5 +1,6 @@
 import { SCHOOL_NPC_SPRITES } from '../constants';
 import { StoryNode, CharacterId } from '../types';
+import { KAI_DAY1 } from './rivalStory';
 import {
   DAY1_GYM, DAY1_LIBRARY, DAY1_ARCADE, DAY1_EVENING,
   DAY1_LEAVING_ALL
@@ -1689,6 +1690,8 @@ export const DAY1_SCRIPT: StoryNode[] = [
       }
     ]
   },
+  // ⚔️ 第二个转学生：宿敌金城カイ在这里登场（story/rivalStory.ts）
+  ...KAI_DAY1,
   {
     // characterImage: '' 清掉明日香。上一句给她挂了立绘，
     // 之后一路到课间都没清过，于是她在讲台边站了整整一节课。

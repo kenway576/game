@@ -27,7 +27,7 @@ export const emotionText = (neutralFace) => ({
 
 export const exprPrompt = (text) => `This is a close-up crop of the head of a finished anime character illustration. Return the SAME image with ONE change.
 
-THE CHANGE: change ONLY her facial expression to ${text}.
+THE CHANGE: change ONLY the character's facial expression to ${text}.
 
 Both eyes must match each other: the same size, the same openness and the same style. The mouth is cleanly drawn with crisp lines.
 Everything else must stay exactly the same: identical framing and crop, identical head position, angle and size, every strand of hair in the same place, the same hair accessories and clothes, the same art style, line quality and colouring, the same flat grey background. Do not move, redraw or restyle anything outside the eyebrows, eyes, mouth and cheeks. Eye colour stays the same. No sparkles, no effects, no symbols.`;

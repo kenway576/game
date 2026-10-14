@@ -214,9 +214,9 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
       <div className="fixed inset-0 z-[160] bg-[#0b0b10] flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-5">
           <img src={iWon ? ASUKA.shy : ASUKA.smug} alt="" className="h-48 mx-auto object-contain" />
-          <h3 className="text-white text-2xl font-black italic">
+          <h3 className="text-white text-2xl font-black font-ui">
             {iWon ? (en ? 'You win' : '你赢了') : mine === hers ? (en ? 'A draw' : '平手') : (en ? 'Asuka wins' : '明日香赢了')}
-            <span className="ml-3 text-yellow-300">{mine} : {hers}</span>
+            <span className="ml-3 text-pink-200">{mine} : {hers}</span>
           </h3>
           <p className="text-white/70 text-sm">
             「{iWon ? '……今日は、あなたの勝ちってことにしといてあげる。' : 'ふん。出直してきなさい。'}」
@@ -231,9 +231,9 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
           )}
           <button
             onClick={() => { audioManager.playSfx('confirm'); onFinish({ mine, hers, total: READS, words: won.current }); }}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12"
+            className="bg-pink-400 hover:bg-pink-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl"
           >
-            <span className="block transform skew-x-12">{en ? 'Done' : '收牌'}</span>
+            <span className="block">{en ? 'Done' : '收牌'}</span>
           </button>
         </div>
       </div>
@@ -247,7 +247,7 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
 
       <div className="relative z-10 flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="text-yellow-400 text-xs font-black tracking-widest">{en ? 'KARUTA' : '歌留多'}</span>
+          <span className="text-pink-300 text-xs font-black tracking-widest">{en ? 'KARUTA' : '歌留多'}</span>
           <span className="text-[10px] px-2 py-0.5 border border-white/25 text-white/70">
             {en ? TIER_RULES[tier].labelEn : TIER_RULES[tier].labelZh}
             {' · '}
@@ -256,7 +256,7 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
         </div>
         <div className="flex items-center gap-4">
           <span className="text-white text-sm font-black">
-            {en ? 'You' : '你'} <span className="text-yellow-300">{mine}</span>
+            {en ? 'You' : '你'} <span className="text-pink-200">{mine}</span>
             <span className="text-white/30 mx-2">:</span>
             <span className="text-rose-300">{hers}</span> {en ? 'Asuka' : '明日香'}
           </span>
@@ -288,13 +288,13 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
                   「{'……手加減はしないわよ。'}」 {en ? '...I’m not going easy on you.' : '……我可不会放水。'}
                 </p>
                 <button onClick={() => { audioManager.playSfx('confirm'); startRead(); }}
-                  className="bg-yellow-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest transform -skew-x-12">
-                  <span className="block transform skew-x-12">{en ? 'Begin ▶' : '开始 ▶'}</span>
+                  className="bg-pink-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest rounded-xl">
+                  <span className="block">{en ? 'Begin ▶' : '开始 ▶'}</span>
                 </button>
               </div>
             ) : (
-              <div className="bg-black/60 border-l-4 border-yellow-400 px-4 py-3 min-h-[76px]">
-                <p className="text-[10px] text-yellow-400/80 font-black tracking-widest mb-1">{en ? 'READ' : '念'}</p>
+              <div className="bg-black/60 border-l-4 border-pink-300 px-4 py-3 min-h-[76px]">
+                <p className="text-[10px] text-pink-300/80 font-black tracking-widest mb-1">{en ? 'READ' : '念'}</p>
                 <p className="text-white text-xl md:text-2xl font-bold leading-snug">{typed}<span className="animate-pulse text-white/40">{phase === 'reading' ? '▍' : ''}</span></p>
                 {phase === 'taken' && target && (
                   <p className="text-white/55 text-xs mt-2">
@@ -333,8 +333,8 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
 
         {phase === 'taken' && (
           <button onClick={() => { audioManager.playSfx('page'); startRead(); }}
-            className="bg-yellow-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest transform -skew-x-12">
-            <span className="block transform skew-x-12">
+            className="bg-pink-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest rounded-xl">
+            <span className="block">
               {readNo >= READS ? (en ? 'See result ▶' : '看结果 ▶') : (en ? 'Next card ▶' : '下一张 ▶')}
             </span>
           </button>

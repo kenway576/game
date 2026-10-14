@@ -112,7 +112,8 @@ export const IDLE_VIDEOS: Record<string, string> = {
   '/images/characters/hikari/school_happy.webp': '/videos/idle/hikari_school_neutral.mp4',
   // 其余七人：各自大厅立绘（constants.ts 的 LOBBY_PORTRAITS）做的
   '/images/characters/asuka/smug.webp': '/videos/idle/asuka_smug.mp4',
-  '/images/characters/rei/lecturing.webp': '/videos/idle/rei_lecturing.mp4',
+  // 铃没有待机视频：Veo 两次都让她眨单眼、张嘴笑，跟一个安静克制的人对不上。
+  // 她走木偶（眨眼、呼吸、头微微晃），动作全在代码里，不会乱演。
   '/images/characters/inari/school_sly.webp': '/videos/idle/inari_school_sly.mp4',
   '/images/characters/miyuki/cardigan_neutral.webp': '/videos/idle/miyuki_cardigan_neutral.mp4',
   '/images/characters/sora/school_happy.webp': '/videos/idle/sora_school_happy.mp4',

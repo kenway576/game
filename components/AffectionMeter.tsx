@@ -60,15 +60,15 @@ const Bar: React.FC<BarProps> = ({ axis, value, language, label, compact, capped
     <div className="w-full flex flex-col gap-1.5">
       <div className="flex justify-between items-baseline">
         <span className={`${style.text} text-[10px] md:text-xs font-black uppercase tracking-widest`}>{style.icon} {label}</span>
-        <span className="text-white/70 text-[10px] md:text-xs font-mono">
+        <span className="text-slate-400 text-[10px] md:text-xs font-mono">
           <span className={`${style.text} font-bold`}>{levelLabel}</span> · {progress} / {span}
         </span>
       </div>
-      <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden border border-white/5">
+      <div className="w-full h-2 bg-slate-400/25 rounded-full overflow-hidden">
         <div className={`h-full ${style.bar} transition-all duration-700`} style={{ width: `${percent}%` }} />
       </div>
       {capped && cappedLabel && (
-        <span className="text-white/40 text-[9px] md:text-[10px] tracking-wide">🔒 {cappedLabel}</span>
+        <span className="text-slate-400 text-[9px] md:text-[10px] tracking-wide">🔒 {cappedLabel}</span>
       )}
     </div>
   );

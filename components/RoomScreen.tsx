@@ -98,18 +98,18 @@ const RoomScreen: React.FC<Props> = ({
 
       {/* 顶栏 */}
       <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 md:px-6 py-3">
-        <div className="bg-black/70 backdrop-blur-sm border border-white/20 px-4 py-1.5 transform -skew-x-12">
-          <span className="block transform skew-x-12 text-[11px] md:text-sm font-black text-white tracking-widest">
+        <div className="bg-black/70 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-xl">
+          <span className="block text-[11px] md:text-sm font-black text-white tracking-widest">
             {en ? 'ROOM 201' : '海风庄 201 室'}
-            <span className="ml-3 text-yellow-400/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
+            <span className="ml-3 text-pink-300/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
           </span>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => { audioManager.playSfx('click'); onOpenKitchen(); }}
-            className="bg-black/70 hover:bg-amber-400 hover:text-black text-amber-300 border border-amber-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
+            className="bg-black/70 hover:bg-amber-400 hover:text-black text-amber-300 border border-amber-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest rounded-xl transition-all backdrop-blur-sm"
           >
-            <span className="block transform skew-x-12">🍳 {en ? 'Kitchen' : '厨房'}</span>
+            <span className="block">🍳 {en ? 'Kitchen' : '厨房'}</span>
           </button>
           {/* 一个盆都没有的时候原来是不显示这个按钮的，理由是"点开也没东西"。
               但这样一来，没人告诉过你阳台能种菜，你也就永远不会去买盆——
@@ -118,16 +118,16 @@ const RoomScreen: React.FC<Props> = ({
           {(plotCount > 0 || !storyFlags['farm_tutorial_done']) && (
             <button
               onClick={() => { audioManager.playSfx('click'); onOpenBalcony(); }}
-              className="bg-black/70 hover:bg-emerald-400 hover:text-black text-emerald-300 border border-emerald-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
+              className="bg-black/70 hover:bg-emerald-400 hover:text-black text-emerald-300 border border-emerald-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest rounded-xl transition-all backdrop-blur-sm"
             >
-              <span className="block transform skew-x-12">🏺 {en ? 'Balcony' : '阳台'} {plotCount > 0 ? plotCount : ''}</span>
+              <span className="block">🏺 {en ? 'Balcony' : '阳台'} {plotCount > 0 ? plotCount : ''}</span>
             </button>
           )}
           <button
             onClick={onClose}
-            className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all backdrop-blur-sm"
+            className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all backdrop-blur-sm"
           >
-            <span className="block transform skew-x-12">{en ? 'Out ▶' : '出门 ▶'}</span>
+            <span className="block">{en ? 'Out ▶' : '出门 ▶'}</span>
           </button>
         </div>
       </div>
@@ -222,9 +222,9 @@ const RoomScreen: React.FC<Props> = ({
             {/* 卡面自己说得清楚，不用再在下面解释一遍名字为什么看不见 */}
             <button
               onClick={() => { audioManager.playSfx('click'); setCardOpen(false); }}
-              className="mt-4 bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-5 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+              className="mt-4 bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-5 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
             >
-              <span className="block transform skew-x-12">{en ? 'Put it away' : '收起来'}</span>
+              <span className="block">{en ? 'Put it away' : '收起来'}</span>
             </button>
           </div>
         </div>
@@ -292,9 +292,9 @@ const RoomScreen: React.FC<Props> = ({
                 <div className="mt-5">
                   <button
                     onClick={() => setSpot(null)}
-                    className="bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/25 px-6 py-2 font-black italic tracking-widest transform -skew-x-12 transition-all"
+                    className="bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/25 px-6 py-2 font-black font-ui tracking-widest rounded-xl transition-all"
                   >
-                    <span className="block transform skew-x-12">{en ? '◀ ALL' : '◀ 看别处'}</span>
+                    <span className="block">{en ? '◀ ALL' : '◀ 看别处'}</span>
                   </button>
                 </div>
               </div>
@@ -310,12 +310,12 @@ const RoomScreen: React.FC<Props> = ({
           onClick={() => setActive(null)}
         >
           <div
-            className="w-full max-w-3xl bg-black/90 backdrop-blur-xl border-t-4 border-yellow-400/70 rounded-t-xl p-6 md:p-9 shadow-2xl animate-in slide-in-from-bottom-4 duration-300"
+            className="w-full max-w-3xl bg-black/90 backdrop-blur-xl border-t-4 border-pink-300/70 rounded-t-xl p-6 md:p-9 shadow-2xl animate-in slide-in-from-bottom-4 duration-300"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center gap-2 mb-3">
               <span className="text-xl md:text-2xl">{active.hotspot.icon}</span>
-              <span className="text-[11px] md:text-xs font-black uppercase tracking-[0.3em] text-yellow-400">
+              <span className="text-[11px] md:text-xs font-black uppercase tracking-[0.3em] text-pink-300">
                 {en ? active.hotspot.labelEn : active.hotspot.labelZh}
               </span>
             </div>
@@ -327,24 +327,24 @@ const RoomScreen: React.FC<Props> = ({
               {active.hotspot.action === 'sleep' && (
                 <button
                   onClick={confirmAction}
-                  className="bg-indigo-600 hover:bg-yellow-400 hover:text-black text-white border-2 border-black px-7 py-2.5 font-black italic tracking-widest transform -skew-x-12 shadow-[5px_5px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all"
+                  className="bg-indigo-600 hover:bg-pink-400 hover:text-black text-white border-2 border-black px-7 py-2.5 font-black font-ui tracking-widest rounded-xl shadow-xl active:translate-y-1 active:shadow-none transition-all"
                 >
-                  <span className="block transform skew-x-12">{en ? 'SLEEP ▶' : '睡下 ▶'}</span>
+                  <span className="block">{en ? 'SLEEP ▶' : '睡下 ▶'}</span>
                 </button>
               )}
               {active.hotspot.action === 'wordbook' && (
                 <button
                   onClick={confirmAction}
-                  className="bg-yellow-500 hover:bg-yellow-300 text-black border-2 border-black px-7 py-2.5 font-black italic tracking-widest transform -skew-x-12 shadow-[5px_5px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all"
+                  className="bg-pink-400 hover:bg-pink-300 text-black border-2 border-black px-7 py-2.5 font-black font-ui tracking-widest rounded-xl shadow-xl active:translate-y-1 active:shadow-none transition-all"
                 >
-                  <span className="block transform skew-x-12">{en ? 'OPEN ▶' : '翻开 ▶'}</span>
+                  <span className="block">{en ? 'OPEN ▶' : '翻开 ▶'}</span>
                 </button>
               )}
               <button
                 onClick={() => setActive(null)}
-                className="bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/25 px-7 py-2.5 font-black italic tracking-widest transform -skew-x-12 transition-all"
+                className="bg-zinc-800 hover:bg-zinc-700 text-white border-2 border-white/25 px-7 py-2.5 font-black font-ui tracking-widest rounded-xl transition-all"
               >
-                <span className="block transform skew-x-12">{en ? 'BACK' : '收回视线'}</span>
+                <span className="block">{en ? 'BACK' : '收回视线'}</span>
               </button>
             </div>
           </div>

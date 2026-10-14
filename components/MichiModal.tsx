@@ -154,7 +154,7 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
       <div className="fixed inset-0 z-[160] bg-[#0b0b10] flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-5">
           <div className="text-5xl">🗺️</div>
-          <h3 className="text-white text-2xl font-black italic">
+          <h3 className="text-white text-2xl font-black font-ui">
             {s >= scenarios.length ? (en ? 'Every one of them got there' : '每个人都找到了') : s >= scenarios.length / 2 ? (en ? 'Most of them got there' : '大部分人找到了') : (en ? 'A few wanderers' : '有几个人还在转圈')}
           </h3>
           <p className="text-white/65 text-sm">{en ? `Directions given: ${s} / ${scenarios.length}` : `指路成功：${s} / ${scenarios.length}`}</p>
@@ -163,8 +163,8 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
                 : '神户人指路常说「山側」（靠山那边）和「海側」（靠海那边），不说北和南——在这座城市，山永远在北边。'}
           </p>
           <button onClick={() => { audioManager.playSfx('confirm'); onFinish({ score: s, total: scenarios.length }); }}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12">
-            <span className="block transform skew-x-12">{en ? 'Done' : '回去了'}</span>
+            className="bg-pink-400 hover:bg-pink-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl">
+            <span className="block">{en ? 'Done' : '回去了'}</span>
           </button>
         </div>
       </div>
@@ -184,7 +184,7 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
 
       <div className="relative z-10 flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="text-yellow-400 text-xs font-black tracking-widest">{en ? 'GIVING DIRECTIONS' : '指路'}</span>
+          <span className="text-pink-300 text-xs font-black tracking-widest">{en ? 'GIVING DIRECTIONS' : '指路'}</span>
           <span className="text-[10px] px-2 py-0.5 border border-white/25 text-white/70">{en ? TIER_RULES[sc.tier].labelEn : TIER_RULES[sc.tier].labelZh}</span>
         </div>
         <div className="flex items-center gap-4">
@@ -304,8 +304,8 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
           </div>
 
           {/* 你说出口的那句 */}
-          <div className="border-l-4 border-yellow-400 bg-black/50 px-4 py-3">
-            <p className="text-[10px] text-yellow-400/80 font-black tracking-widest mb-1">{en ? 'WHAT YOU SAY' : '你说'}</p>
+          <div className="border-l-4 border-pink-300 bg-black/50 px-4 py-3">
+            <p className="text-[10px] text-pink-300/80 font-black tracking-widest mb-1">{en ? 'WHAT YOU SAY' : '你说'}</p>
             <p className="text-white text-base md:text-lg font-bold leading-relaxed">「{sentence}」</p>
           </div>
 
@@ -318,8 +318,8 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
                 {tries > 0 && <span className="text-rose-300 ml-2">{en ? `Attempt ${tries + 1} of ${maxTries}` : `第 ${tries + 1} 次（共 ${maxTries} 次）`}</span>}
               </p>
               <button onClick={tell} disabled={!complete}
-                className="bg-yellow-400 hover:bg-white disabled:opacity-30 text-black px-8 py-2.5 text-xs font-black tracking-widest transform -skew-x-12 shrink-0">
-                <span className="block transform skew-x-12">{en ? 'Tell them ▶' : '告诉他 ▶'}</span>
+                className="bg-pink-400 hover:bg-white disabled:opacity-30 text-black px-8 py-2.5 text-xs font-black tracking-widest rounded-xl shrink-0">
+                <span className="block">{en ? 'Tell them ▶' : '告诉他 ▶'}</span>
               </button>
             </div>
           ) : verdict ? (
@@ -330,8 +330,8 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
                   : <>「……あれ？ここ、どこでしょう……」<span className="text-white/40 ml-1">{en ? '...Huh? Where am I...?' : '……咦？这是哪儿……'}</span></>}
               </p>
               <button onClick={afterVerdict}
-                className="bg-yellow-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest transform -skew-x-12">
-                <span className="block transform skew-x-12">
+                className="bg-pink-400 hover:bg-white text-black px-8 py-2.5 text-xs font-black tracking-widest rounded-xl">
+                <span className="block">
                   {verdict === 'lost' && tries + 1 < maxTries ? (en ? 'Try again' : '再说一次') : (en ? 'Next ▶' : '下一位 ▶')}
                 </span>
               </button>

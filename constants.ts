@@ -334,7 +334,18 @@ export const SCENE_MAP: Record<string, string> = {
   'livehouse_entrance':            '/images/backgrounds/bg_livehouse_entrance.webp',
   'trip_hotel_room':               '/images/backgrounds/bg_trip_hotel_room.webp',
   'train_interior_night':          '/images/backgrounds/bg_train_interior_night.webp',
-  'sannomiya_station_dawn':        '/images/backgrounds/bg_sannomiya_station_dawn.webp'
+  'sannomiya_station_dawn':        '/images/backgrounds/bg_sannomiya_station_dawn.webp',
+  // ⚔️ 宿敌线（story/rivalStory.ts）
+  'school_auditorium_stage':       '/images/backgrounds/bg_school_auditorium_stage.webp',
+  'kobe_harbor_night':             '/images/backgrounds/bg_kobe_harbor_night.webp',
+  'okinawa_fence_sunset':          '/images/backgrounds/bg_okinawa_fence_sunset.webp',
+  'kitano_slope_dawn':             '/images/backgrounds/bg_kitano_slope_dawn.webp',
+  // 布引香草园
+  'nunobiki_herb_garden':          '/images/backgrounds/bg_nunobiki_herb_garden.webp',
+  'nunobiki_herb_garden_night':    '/images/backgrounds/bg_nunobiki_herb_garden_night.webp',
+  'nunobiki_ropeway':              '/images/backgrounds/bg_nunobiki_ropeway.webp',
+  'nunobiki_falls':                '/images/backgrounds/bg_nunobiki_falls.webp',
+  'nunobiki_glasshouse':           '/images/backgrounds/bg_nunobiki_glasshouse.webp'
 };
 
 // 背景图缺失时的替补。新场景的图还没画好之前，先借一张气质最接近的顶上，
@@ -390,7 +401,8 @@ export const charName = (id: CharacterId, en: boolean) => en ? CHARACTERS[id].na
 export const LOBBY_PORTRAITS: Partial<Record<CharacterId, string>> = {
   [CharacterId.ASUKA]:  '/images/characters/asuka/smug.webp',
   [CharacterId.HIKARI]: '/images/characters/hikari/school_happy.webp',
-  [CharacterId.REI]:    '/images/characters/rei/lecturing.webp',
+  // 铃：竖着手指的讲课姿势循环播放很怪，换成安静的浅笑（木偶动画，见 IdleVideoSprite 的注释）
+  [CharacterId.REI]:    '/images/characters/rei/smile.webp',
   [CharacterId.INARI]:  '/images/characters/inari/school_sly.webp',
   [CharacterId.MIYUKI]: '/images/characters/miyuki/cardigan_neutral.webp',
   [CharacterId.SORA]:   '/images/characters/sora/school_happy.webp',

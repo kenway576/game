@@ -273,6 +273,29 @@ export const MAP_LOCATIONS: MapLocation[] = [
     ambientEn: ['A whole rack of ema plaques. You flip two at random. Both are prayers to pass an exam.']
   },
   {
+    // 新神户站背后的山腰。上去要选：缆车（花钱）还是走山路（累，但路过布引瀑布）——见 story/nunobikiStory.ts
+    id: 'nunobiki_herb_garden', district: 'kitano',
+    nameJp: '布引ハーブ園', reading: 'ぬのびきはーぶえん',
+    nameZh: '布引香草园', nameEn: 'Nunobiki Herb Garden',
+    blurbZh: '新神户站背后的山腰上。坐缆车十分钟，或者走一个钟头山路——半路是日本三大神瀑之一的布引瀑布。',
+    blurbEn: 'Halfway up the mountain behind Shin-Kobe station. Ten minutes by ropeway, or an hour on foot, past Nunobiki Falls, one of Japan’s three great sacred waterfalls.',
+    mapScene: 'nunobiki_herb_garden',
+    nightScene: 'nunobiki_herb_garden_night',
+    extraScenes: ['nunobiki_glasshouse'],
+    timeSlots: ['morning', 'afternoon', 'night'],
+    regulars: [CharacterId.MIYUKI, CharacterId.REI],
+    ambientZh: [
+      '你在薰衣草的花坛边坐了一会儿。蜜蜂比人多，而且比人忙。',
+      '温室里的香草茶今天是薄荷。你喝完以后，觉得连呼吸都是凉的。',
+      '观景台上有人在给远处的港口拍照。你在旁边，替他们认出了你住的那条坡。'
+    ],
+    ambientEn: [
+      'You sit by the lavender beds for a while. There are more bees than people, and the bees are busier.',
+      'Today’s herb tea in the glasshouse is mint. Afterwards even your breath feels cool.',
+      'Someone on the lookout is photographing the distant harbour. Standing beside them, you pick out the slope you live on.'
+    ]
+  },
+  {
     id: 'nishimura_coffee_salon', district: 'kitano',
     nameJp: 'にしむら珈琲店', reading: 'にしむらこーひーてん',
     nameZh: '西村咖啡店', nameEn: 'Nishimura Coffee',

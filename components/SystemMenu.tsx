@@ -44,17 +44,17 @@ interface Props {
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="mt-2 md:mt-4 pt-4 border-t border-white/10">
+    <div className="mt-2 md:mt-3 pt-4 border-t border-dashed border-[#1f2440]/15">
       <button
         onClick={() => setOpen(o => !o)}
         data-sfx-silent
-        className="w-full flex items-center justify-between text-[10px] md:text-xs text-cyan-400 font-bold uppercase tracking-widest mb-2"
+        className="w-full flex items-center justify-between font-ui text-[11px] md:text-xs text-[#5b6286] hover:text-pink-500 font-bold uppercase tracking-widest mb-2"
       >
         <span>{title}</span>
         <span className={`transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
       </button>
       {open && (
-        <div className="flex flex-col gap-3 bg-white/[0.03] border border-white/10 p-3 md:p-4 rounded-sm animate-in slide-in-from-top-2 duration-200">
+        <div className="flex flex-col gap-3 bg-[#f6f3ff] border border-[#1f2440]/10 p-3 md:p-4 rounded-2xl animate-in slide-in-from-top-2 duration-200">
           {children}
         </div>
       )}
@@ -62,8 +62,8 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
   );
 };
 
-const fieldCls = 'w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-xs px-3 py-2.5 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/20';
-const labelCls = 'text-[10px] font-black uppercase tracking-wider text-white/50 mb-1 block';
+const fieldCls = 'w-full bg-white border-2 border-[#1f2440]/12 rounded-xl text-[#1f2440] text-xs px-3 py-2.5 font-mono focus:border-pink-400 outline-none transition-all placeholder-[#1f2440]/30';
+const labelCls = 'font-ui text-[10px] font-bold uppercase tracking-wider text-[#5b6286] mb-1 block';
 
 // 🔊 音效设置面板：唯一订阅 audioManager 的地方（useSyncExternalStore）
 const AudioSettingsPanel: React.FC<{ T: Record<string, string> }> = ({ T }) => {
@@ -72,36 +72,36 @@ const AudioSettingsPanel: React.FC<{ T: Record<string, string> }> = ({ T }) => {
 
   const Slider: React.FC<{ label: string; value: number; onChange: (v: number) => void; disabled?: boolean }> = ({ label, value, onChange, disabled }) => (
     <label className={`flex items-center gap-3 ${disabled ? 'opacity-40' : ''}`}>
-      <span className="text-[10px] md:text-xs text-white/70 font-bold uppercase tracking-wider w-20 shrink-0">{label}</span>
+      <span className="font-ui text-[10px] md:text-xs text-[#4b5375] font-bold uppercase tracking-wider w-20 shrink-0">{label}</span>
       <input
         type="range" min={0} max={1} step={0.01} value={value} disabled={disabled}
         data-sfx-silent
         onChange={e => onChange(parseFloat(e.target.value))}
-        className="flex-1 accent-cyan-400 h-1"
+        className="flex-1 accent-pink-400 h-1"
       />
-      <span className="text-[10px] text-white/40 font-mono w-8 text-right">{Math.round(value * 100)}</span>
+      <span className="text-[10px] text-[#5b6286] font-mono w-8 text-right">{Math.round(value * 100)}</span>
     </label>
   );
 
   return (
-    <div className="mt-2 md:mt-4 pt-4 border-t border-white/10">
+    <div className="mt-2 md:mt-3 pt-4 border-t border-dashed border-[#1f2440]/15">
       <button
         onClick={() => setOpen(o => !o)}
         data-sfx-silent
-        className="w-full flex items-center justify-between text-[10px] md:text-xs text-cyan-400 font-bold uppercase tracking-widest mb-2"
+        className="w-full flex items-center justify-between font-ui text-[11px] md:text-xs text-[#5b6286] hover:text-pink-500 font-bold uppercase tracking-widest mb-2"
       >
         <span>🔊 {T.audioSettings || '音效设置'}</span>
         <span className={`transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
       </button>
 
       {open && (
-        <div className="flex flex-col gap-2.5 bg-white/[0.03] border border-white/10 p-3 md:p-4 rounded-sm animate-in slide-in-from-top-2 duration-200">
+        <div className="flex flex-col gap-2.5 bg-[#f6f3ff] border border-[#1f2440]/10 p-3 md:p-4 rounded-2xl animate-in slide-in-from-top-2 duration-200">
           <div className="flex items-center justify-between">
-            <span className="text-xs md:text-sm text-white font-bold uppercase tracking-wider">{T.audioMute || '静音'}</span>
+            <span className="font-ui text-xs md:text-sm text-[#1f2440] font-bold uppercase tracking-wider">{T.audioMute || '静音'}</span>
             <button
               onClick={() => audioManager.toggleMuted()}
               data-sfx-silent
-              className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-colors ${s.muted ? 'bg-red-600/80 border-red-400 text-white' : 'bg-white/10 border-white/20 text-white/60'}`}
+              className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-colors ${s.muted ? 'bg-rose-500 border-rose-400 text-white' : 'bg-white border-[#1f2440]/15 text-[#5b6286]'}`}
             >
               {s.muted ? 'OFF' : 'ON'}
             </button>
@@ -109,11 +109,11 @@ const AudioSettingsPanel: React.FC<{ T: Record<string, string> }> = ({ T }) => {
 
           <Slider label={T.volMaster || '总音量'} value={s.master} disabled={s.muted} onChange={v => audioManager.setBusVolume('master', v)} />
           <div className="flex items-center justify-between">
-            <span className="text-[10px] md:text-xs text-white/70 font-bold uppercase tracking-wider">{T.bgmToggle || '背景音乐'}</span>
+            <span className="font-ui text-[10px] md:text-xs text-[#4b5375] font-bold uppercase tracking-wider">{T.bgmToggle || '背景音乐'}</span>
             <button
               onClick={() => audioManager.toggleBgm()}
               data-sfx-silent
-              className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-colors ${s.bgmEnabled ? 'bg-cyan-600/70 border-cyan-400 text-white' : 'bg-white/10 border-white/20 text-white/50'}`}
+              className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-colors ${s.bgmEnabled ? 'bg-pink-400 border-pink-300 text-white' : 'bg-white border-[#1f2440]/15 text-[#5b6286]'}`}
             >
               {s.bgmEnabled ? 'ON' : 'OFF'}
             </button>
@@ -123,11 +123,11 @@ const AudioSettingsPanel: React.FC<{ T: Record<string, string> }> = ({ T }) => {
           <Slider label={T.volTyping || '打字音'} value={s.typing} disabled={s.muted || !s.typingEnabled} onChange={v => audioManager.setBusVolume('typing', v)} />
 
           <div className="flex items-center justify-between pt-1">
-            <span className="text-[10px] md:text-xs text-white/70 font-bold uppercase tracking-wider">{T.typingSound || '打字音效'}</span>
+            <span className="font-ui text-[10px] md:text-xs text-[#4b5375] font-bold uppercase tracking-wider">{T.typingSound || '打字音效'}</span>
             <button
               onClick={() => audioManager.toggleTyping()}
               data-sfx-silent
-              className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-colors ${s.typingEnabled ? 'bg-cyan-600/70 border-cyan-400 text-white' : 'bg-white/10 border-white/20 text-white/50'}`}
+              className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-colors ${s.typingEnabled ? 'bg-pink-400 border-pink-300 text-white' : 'bg-white border-[#1f2440]/15 text-[#5b6286]'}`}
             >
               {s.typingEnabled ? 'ON' : 'OFF'}
             </button>
@@ -147,15 +147,18 @@ const SystemMenu: React.FC<Props> = ({
   customApiKey, onApiKeyChange, customModel, onModelChange,
   customBaseUrl, onBaseUrlChange, customModelName, onModelNameChange
 }) => (
-  <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-lg p-4" onClick={onClose}>
-    <div className="w-full max-w-lg bg-zinc-900 border-2 border-white/10 p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)] transform -skew-x-2 overflow-y-auto max-h-[95dvh]" onClick={e => e.stopPropagation()}>
-      <h2 className="text-2xl md:text-3xl font-black text-white italic tracking-tighter mb-4 border-b-4 border-red-600 pb-2 uppercase">{T.system}</h2>
+  <div className="fixed inset-0 z-[200] flex items-center justify-center bg-[#141a33]/55 backdrop-blur-md p-4 animate-in fade-in duration-200" onClick={onClose}>
+    <div className="ui-panel w-full max-w-lg p-6 md:p-9 overflow-y-auto max-h-[95dvh]" onClick={e => e.stopPropagation()}>
+      <div className="mb-5 text-center">
+        <h2 className="font-ui text-2xl md:text-3xl font-black text-[#1f2440] tracking-[0.2em] uppercase">{T.system}</h2>
+        <div className="mt-2 h-px w-24 mx-auto bg-gradient-to-r from-transparent via-pink-400 to-transparent" />
+      </div>
 
       <div className="flex flex-col gap-3 md:gap-4">
         {/* ---------------------------------------------------------
             这一格原来是五个各自挑了颜色的按钮：黄、靛、玫红、正红、
             琥珀。挤在一个小弹窗里，谁也不比谁重要，看上去只是很吵。
-            现在全部统一：黑底、斜切、鼠标移上去翻成黄底黑字。
+            现在全部统一成白色圆角小卡，鼠标移上去泛粉。
             颜色不再用来区分功能，图标和文字就够了。
             --------------------------------------------------------- */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 md:gap-2 mb-2">
@@ -171,11 +174,10 @@ const SystemMenu: React.FC<Props> = ({
             <button
               key={b.label}
               onClick={b.on}
-              className="group relative overflow-hidden bg-black/70 border border-white/15 hover:border-yellow-400 text-white/80 hover:text-black py-3 md:py-3.5 px-2 transform -skew-x-12 transition-all duration-200 hover:-translate-y-0.5"
+              className="rounded-2xl bg-white/85 border-2 border-[#1f2440]/10 hover:border-pink-300 hover:bg-pink-50 text-[#1f2440] py-3 md:py-3.5 px-2 shadow-[0_3px_0_rgba(31,36,64,0.08)] transition-all duration-200 hover:-translate-y-0.5"
             >
-              <span className="absolute inset-0 w-0 bg-yellow-400 transition-all duration-200 group-hover:w-full" />
-              <span className="relative block transform skew-x-12 text-[10px] md:text-[11px] font-black uppercase tracking-wider leading-tight">
-                <span className="block text-base mb-0.5">{b.icon}</span>
+              <span className="block font-ui text-[10px] md:text-[11px] font-bold uppercase tracking-wider leading-tight">
+                <span className="block text-lg mb-0.5">{b.icon}</span>
                 {b.label}
               </span>
             </button>
@@ -183,18 +185,18 @@ const SystemMenu: React.FC<Props> = ({
         </div>
 
         {showExitToLobby && (
-          <button onClick={onExitToLobby} className="group flex items-center justify-between bg-red-900/30 hover:bg-red-800/60 p-4 border border-red-500/30 transition-all">
-            <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">🚪 {T.exit} {language === 'en' ? '' : '(返回休息室)'}</span>
+          <button onClick={onExitToLobby} className="group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all hover:!border-rose-300 hover:!bg-rose-50">
+            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-xs md:text-sm">🚪 {T.exit} {language === 'en' ? '' : '(返回休息室)'}</span>
           </button>
         )}
-        <button onClick={onReturnTitle} className="group flex items-center justify-between bg-red-900/30 hover:bg-red-800/60 p-4 border border-red-500/30 transition-all">
-          <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">⌂ {language === 'en' ? 'RETURN TO TITLE' : '返回标题画面'}</span>
+        <button onClick={onReturnTitle} className="group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all hover:!border-rose-300 hover:!bg-rose-50">
+          <span className="font-ui text-[#1f2440] font-bold tracking-widest text-xs md:text-sm">⌂ {language === 'en' ? 'RETURN TO TITLE' : '返回标题画面'}</span>
         </button>
 
-        <div className="h-px bg-white/10 my-2" />
+        <div className="h-px bg-[#1f2440]/10 my-1" />
 
-        <button onClick={onSaveRequest} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 border border-white/10 transition-all"><span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{T.saveData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
-        <button onClick={onLoadRequest} disabled={!hasAnySave} className="group flex items-center justify-between bg-white/5 hover:bg-white/10 p-4 border border-white/10 transition-all disabled:opacity-20"><span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm">{T.loadData}</span><span className="text-yellow-500 text-xs font-mono group-hover:translate-x-1 transition-transform">{'>>>'}</span></button>
+        <button onClick={onSaveRequest} className="group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all"><span className="font-ui text-[#1f2440] font-bold tracking-widest text-xs md:text-sm">{T.saveData}</span><span className="text-pink-400 text-xl leading-none font-bold group-hover:translate-x-1 transition-transform">›</span></button>
+        <button onClick={onLoadRequest} disabled={!hasAnySave} className="group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all disabled:opacity-40 disabled:hover:bg-white/80 disabled:hover:border-[#1f2440]/10"><span className="font-ui text-[#1f2440] font-bold tracking-widest text-xs md:text-sm">{T.loadData}</span><span className="text-pink-400 text-xl leading-none font-bold group-hover:translate-x-1 transition-transform">›</span></button>
 
         <AudioSettingsPanel T={T} />
 
@@ -259,17 +261,17 @@ const SystemMenu: React.FC<Props> = ({
           )}
         </Section>
 
-        <div className="mt-2 md:mt-4 pt-4 border-t border-white/10">
-          <p className="text-[10px] md:text-xs text-yellow-500 font-bold mb-2 md:mb-3 uppercase tracking-widest">{T.expDataTools}</p>
-          <button onClick={onExportJson} className="w-full group flex items-center justify-between bg-blue-900/30 hover:bg-blue-800/60 p-3 md:p-4 border border-blue-500/30 transition-all mb-2">
-            <span className="text-white font-bold tracking-widest uppercase text-[10px] md:text-xs">{T.exportJson}</span>
+        <div className="mt-2 md:mt-3 pt-4 border-t border-dashed border-[#1f2440]/15">
+          <p className="font-ui text-[11px] md:text-xs text-[#5b6286] font-bold mb-2 md:mb-3 uppercase tracking-widest">{T.expDataTools}</p>
+          <button onClick={onExportJson} className="w-full group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all mb-2">
+            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-[10px] md:text-xs">{T.exportJson}</span>
           </button>
-          <button onClick={onSyncCloud} disabled={isSyncing} className="w-full group flex items-center justify-between bg-green-900/30 hover:bg-green-800/60 p-3 md:p-4 border border-green-500/30 transition-all disabled:opacity-50">
-            <span className="text-white font-bold tracking-widest uppercase text-[10px] md:text-xs">{isSyncing ? T.syncing : T.syncCloud}</span>
+          <button onClick={onSyncCloud} disabled={isSyncing} className="w-full group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all disabled:opacity-50">
+            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-[10px] md:text-xs">{isSyncing ? T.syncing : T.syncCloud}</span>
           </button>
         </div>
 
-        <button onClick={onClose} className="mt-2 text-center text-white/40 hover:text-white font-black uppercase text-[10px] md:text-xs tracking-[0.5em] transition-colors">{T.cancel}</button>
+        <button onClick={onClose} className="mt-3 self-center ui-chip !px-10">{T.cancel}</button>
       </div>
     </div>
   </div>

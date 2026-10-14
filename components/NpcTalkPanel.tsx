@@ -62,9 +62,9 @@ const NpcTalkPanel: React.FC<Props> = ({
                   <button
                     key={t.id}
                     onClick={() => ask(t)}
-                    className="text-left bg-white/8 hover:bg-yellow-400 hover:text-black text-white/85 border border-white/15 px-3 py-1.5 transform -skew-x-12 transition-colors"
+                    className="ui-chip text-left"
                   >
-                    <span className="block transform skew-x-12 text-[11px] font-bold">
+                    <span className="block text-[11px] font-bold">
                       {t.jp && <span className="block text-[11px]">{t.jp}</span>}
                       {(!t.jp || showTranslation) && (
                         <span className={t.jp ? 'block text-[10px] opacity-70' : ''}>
@@ -86,7 +86,7 @@ const NpcTalkPanel: React.FC<Props> = ({
               ))}
               <button
                 onClick={() => { audioManager.playSfx('click'); setSaid(null); }}
-                className="mt-1 text-[10px] font-black uppercase tracking-widest text-yellow-400/80 hover:text-yellow-300"
+                className="mt-1 text-[10px] font-black uppercase tracking-widest text-pink-300/80 hover:text-pink-200"
               >
                 {en ? '◀ back' : '◀ 收回'}
               </button>

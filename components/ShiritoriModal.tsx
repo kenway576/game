@@ -198,16 +198,16 @@ const ShiritoriModal: React.FC<Props> = ({ language, progress, onFinish, onCance
       <div className="fixed inset-0 z-[160] bg-[#0b0b10] flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-5">
           <img src={face} alt="" className="h-48 mx-auto object-contain" />
-          <h3 className="text-white text-2xl font-black italic">
+          <h3 className="text-white text-2xl font-black font-ui">
             {outcome === 'win' ? (en ? 'You win!' : '你赢了！') : outcome === 'draw' ? (en ? 'A draw' : '平手') : (en ? 'Hikari wins' : '光赢了')}
           </h3>
           <p className="text-white/70 text-sm">「{say.jp}」<span className="block text-white/40 text-xs mt-1">{en ? say.en : say.zh}</span></p>
           <p className="text-white/55 text-xs">{en ? `You kept the chain going ${turns} time(s).` : `你一共接了 ${turns} 次。`}</p>
           <button
             onClick={() => { audioManager.playSfx('confirm'); onFinish({ turns: outcome === 'win' ? MAX_TURNS : turns, maxTurns: MAX_TURNS, outcome }); }}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12"
+            className="bg-pink-400 hover:bg-pink-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl"
           >
-            <span className="block transform skew-x-12">{en ? 'Done' : '不玩了'}</span>
+            <span className="block">{en ? 'Done' : '不玩了'}</span>
           </button>
         </div>
       </div>
@@ -223,7 +223,7 @@ const ShiritoriModal: React.FC<Props> = ({ language, progress, onFinish, onCance
 
       <div className="relative z-10 flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="text-yellow-400 text-xs font-black tracking-widest">{en ? 'SHIRITORI' : '接龙'}</span>
+          <span className="text-pink-300 text-xs font-black tracking-widest">{en ? 'SHIRITORI' : '接龙'}</span>
           <span className="text-[10px] px-2 py-0.5 border border-white/25 text-white/70">
             {en ? TIER_RULES[tier].labelEn : TIER_RULES[tier].labelZh}
           </span>
@@ -239,7 +239,7 @@ const ShiritoriModal: React.FC<Props> = ({ language, progress, onFinish, onCance
         <div className="flex items-end gap-3 w-full">
           <img src={face} alt="" className="h-28 md:h-40 object-contain shrink-0" />
           <div className="pb-2 min-w-0">
-            <p className="text-yellow-300/90 text-xs font-black">{en ? 'Hikari' : '光'}</p>
+            <p className="text-pink-200/90 text-xs font-black">{en ? 'Hikari' : '光'}</p>
             <p className="text-white text-base md:text-lg font-bold">「{say.jp}」</p>
             <p className="text-white/45 text-xs">{en ? say.en : say.zh}</p>
           </div>
@@ -250,7 +250,7 @@ const ShiritoriModal: React.FC<Props> = ({ language, progress, onFinish, onCance
           {chain.map((e, i) => (
             <React.Fragment key={i}>
               {i > 0 && <span className="text-white/25 text-xs">→</span>}
-              <span className={`text-sm px-2 py-0.5 ${e.who === 'me' ? 'bg-yellow-400/15 text-yellow-100' : 'bg-white/8 text-white/75'}`}
+              <span className={`text-sm px-2 py-0.5 ${e.who === 'me' ? 'bg-pink-400/15 text-yellow-100' : 'bg-white/8 text-white/75'}`}
                 title={`${e.word.r} · ${en ? e.word.en : e.word.zh}`}>
                 {e.word.w}
               </span>
@@ -262,17 +262,17 @@ const ShiritoriModal: React.FC<Props> = ({ language, progress, onFinish, onCance
           <>
             <div className="w-full flex items-center gap-3">
               <span className="text-white/60 text-sm shrink-0">{en ? 'Starts with' : '要以'}</span>
-              <span className="text-4xl font-black text-yellow-300 leading-none">{need}</span>
+              <span className="text-4xl font-black text-pink-200 leading-none">{need}</span>
               <span className="text-white/60 text-sm shrink-0">{en ? '' : '开头'}</span>
               <div className="flex-1 h-1 bg-white/10 overflow-hidden">
-                <div className={`h-full transition-[width] duration-75 ${pct < 25 ? 'bg-rose-400' : 'bg-yellow-400'}`} style={{ width: `${pct}%` }} />
+                <div className={`h-full transition-[width] duration-75 ${pct < 25 ? 'bg-rose-400' : 'bg-pink-400'}`} style={{ width: `${pct}%` }} />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 w-full">
               {cards.map(w => (
                 <button key={w.r} onClick={() => pick(w)}
                   className={`py-4 px-3 border-2 text-center transition-all ${
-                    flash === w.r ? 'border-yellow-300 bg-yellow-400/20' : 'border-white/15 bg-white/[0.05] hover:border-yellow-400/60 hover:bg-white/[0.1]'}`}>
+                    flash === w.r ? 'border-yellow-300 bg-pink-400/20' : 'border-white/15 bg-white/[0.05] hover:border-pink-300/60 hover:bg-white/[0.1]'}`}>
                   <span className="block text-white text-2xl md:text-3xl font-black">{w.w}</span>
                   {/* 注音只在初级给；片假名词本来就读得出来，汉字才是考点 */}
                   {tier === 1 && w.w !== w.r && <span className="block text-white/50 text-xs mt-1">{w.r}</span>}

@@ -27,13 +27,13 @@ const ConsentGate: React.FC<Props> = ({ language, T, email, onEmailChange, onAgr
 
   return (
     <div className="fixed inset-0 z-[500] bg-black/92 backdrop-blur-lg flex items-center justify-center p-4 animate-in fade-in duration-500">
-      <div className="w-full max-w-2xl bg-zinc-950 border-4 border-white p-7 md:p-12 shadow-[14px_14px_0px_rgba(215,38,56,1)] transform -skew-x-2 max-h-[92dvh] overflow-y-auto">
-        <div className="transform skew-x-2">
+      <div className="w-full max-w-2xl bg-zinc-950 border-4 border-white p-7 md:p-12 shadow-xl rounded-2xl max-h-[92dvh] overflow-y-auto">
+        <div className="">
 
           <p className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] text-red-500 mb-2">
             {en ? 'Before you go on' : '在继续之前'}
           </p>
-          <h2 className="text-2xl md:text-4xl font-black italic text-white tracking-tight mb-5">
+          <h2 className="text-2xl md:text-4xl font-black font-ui text-white tracking-tight mb-5">
             {T.consentTitle}
           </h2>
 
@@ -50,7 +50,7 @@ const ConsentGate: React.FC<Props> = ({ language, T, email, onEmailChange, onAgr
             </p>
           </div>
 
-          <label className="flex items-start gap-3 md:gap-4 border-2 border-white/20 p-4 md:p-5 bg-black/50 hover:border-yellow-500/50 transition-colors cursor-pointer mb-5">
+          <label className="flex items-start gap-3 md:gap-4 border-2 border-white/20 p-4 md:p-5 bg-black/50 hover:border-pink-300/50 transition-colors cursor-pointer mb-5">
             <input
               type="checkbox"
               checked={checked}
@@ -73,7 +73,7 @@ const ConsentGate: React.FC<Props> = ({ language, T, email, onEmailChange, onAgr
               data-sfx-silent
               onChange={e => onEmailChange(e.target.value.trim())}
               placeholder={T.emailPlaceholder}
-              className="w-full bg-black/50 border-2 border-white/10 text-yellow-400 text-sm px-4 py-3 font-mono focus:border-yellow-400 outline-none transition-all placeholder-white/20"
+              className="w-full bg-black/50 border-2 border-white/10 text-pink-300 text-sm px-4 py-3 font-mono focus:border-pink-300 outline-none transition-all placeholder-white/20"
             />
           </div>
 
@@ -81,9 +81,9 @@ const ConsentGate: React.FC<Props> = ({ language, T, email, onEmailChange, onAgr
             onClick={() => { audioManager.playSfx('confirm'); onAgree(); }}
             disabled={!checked}
             data-sfx-silent
-            className="w-full bg-red-600 hover:bg-yellow-400 hover:text-black text-white border-2 border-black py-4 font-black italic text-lg md:text-xl tracking-[0.2em] transform -skew-x-12 shadow-[7px_7px_0px_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all disabled:opacity-25 disabled:cursor-not-allowed"
+            className="w-full bg-red-600 hover:bg-pink-400 hover:text-black text-white border-2 border-black py-4 font-black font-ui text-lg md:text-xl tracking-[0.2em] rounded-xl shadow-xl active:translate-y-1 active:shadow-none transition-all disabled:opacity-25 disabled:cursor-not-allowed"
           >
-            <span className="block transform skew-x-12">
+            <span className="block">
               {en ? 'I AGREE — CONTINUE' : '我同意 — 继续'}
             </span>
           </button>

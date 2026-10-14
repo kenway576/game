@@ -42,7 +42,7 @@ interface Props {
   onGoToClass?: () => void;
   // 📕 主线：外公那张地图。排在上课前面——
   // 它一学年只出现五次，出现的时候就该是当天最要紧的事。
-  mainChapter?: { titleZh: string; titleEn: string; teaseZh: string; teaseEn: string; n: number } | null;
+  mainChapter?: { titleZh: string; titleEn: string; teaseZh: string; teaseEn: string; n: number; labelZh?: string; labelEn?: string } | null;
   onStartMainChapter?: () => void;
   phoneUnread: number;
   stamina: number;
@@ -135,49 +135,49 @@ const LobbyScreen: React.FC<Props> = ({
 
           第一章没打完的时候，这一块变成回主线的入口：以前存档一读回来
           就掉在大厅里，主线断在半路，界面上没有任何地方能回去。 */}
-      <div className="bg-black/85 backdrop-blur text-white px-5 md:px-8 py-2.5 md:py-3.5 border-l-4 border-yellow-500 skew-x-12 transform origin-top-left pointer-events-auto shadow-2xl">
+      <div className="ui-panel font-ui pointer-events-auto px-5 md:px-7 py-2.5 md:py-3.5 !rounded-2xl">
         {mainChapter ? (
-          <button onClick={onStartMainChapter} className="-skew-x-12 text-left group">
-            <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-amber-300 group-hover:text-amber-200">
+          <button onClick={onStartMainChapter} className="text-left group">
+            <h2 className="text-base md:text-2xl font-black tracking-tight text-rose-500 group-hover:text-rose-400">
               {userState.language === 'en'
-                ? `CHAPTER ${mainChapter.n} · ${mainChapter.titleEn} ▶`
-                : `第 ${mainChapter.n} 章 · ${mainChapter.titleZh} ▶`}
+                ? `${mainChapter.labelEn ?? `CHAPTER ${mainChapter.n}`} · ${mainChapter.titleEn} ▶`
+                : `${mainChapter.labelZh ?? `第 ${mainChapter.n} 章`} · ${mainChapter.titleZh} ▶`}
             </h2>
-            <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest truncate max-w-[62vw] md:max-w-none">
+            <p className="text-[#5b6286] text-[10px] md:text-xs font-bold tracking-widest truncate max-w-[62vw] md:max-w-none">
               {userState.language === 'en' ? mainChapter.teaseEn : mainChapter.teaseZh}
             </p>
           </button>
         ) : mainStoryPending ? (
-          <button onClick={onResumeMainStory} className="-skew-x-12 text-left group">
-            <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-yellow-400 group-hover:text-yellow-300">
+          <button onClick={onResumeMainStory} className="text-left group">
+            <h2 className="text-base md:text-2xl font-black tracking-tight text-rose-500 group-hover:text-rose-400">
               {userState.language === 'en' ? 'CONTINUE CHAPTER 1 ▶' : '继续第 1 章 ▶'}
             </h2>
-            <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest">
+            <p className="text-[#5b6286] text-[10px] md:text-xs font-bold tracking-widest">
               {userState.language === 'en' ? 'The first day is not over yet' : '第一天还没有过完'}
             </p>
           </button>
         ) : classPending ? (
           // 🏫 上课日的早晨。这一格以前是空的：玩家醒来，什么都点不了，
           // 只能等它过去。一周有五个这样的早晨。
-          <button onClick={onGoToClass} className="-skew-x-12 text-left group">
-            <h2 className="text-base md:text-2xl font-black italic uppercase tracking-tighter text-yellow-400 group-hover:text-yellow-300">
+          <button onClick={onGoToClass} className="text-left group">
+            <h2 className="text-base md:text-2xl font-black tracking-tight text-rose-500 group-hover:text-rose-400">
               {/* 午休那一格点进去上的是下午的课，不是"去上学"——
                   第一次玩的人看见"去上学"会以为自己还没出过门。 */}
               {calendar.timeSlot === 'lunch'
                 ? (userState.language === 'en' ? 'BACK FOR AFTERNOON CLASS ▶' : '回教室上下午的课 ▶')
                 : (userState.language === 'en' ? 'GO TO SCHOOL ▶' : '去上学 ▶')}
             </h2>
-            <p className="text-white/55 text-[10px] md:text-xs font-bold tracking-widest truncate max-w-[62vw] md:max-w-none">
+            <p className="text-[#5b6286] text-[10px] md:text-xs font-bold tracking-widest truncate max-w-[62vw] md:max-w-none">
               {classLine}
             </p>
           </button>
         ) : (
           <>
-            <h2 className="-skew-x-12 text-base md:text-2xl font-black italic uppercase tracking-tighter">
+            <h2 className="text-base md:text-2xl font-black tracking-tight text-[#1f2440]">
               {calendar.month} / {calendar.day}
-              <span className="text-yellow-500 text-sm md:text-lg ml-2">{calendar.dayOfWeek}</span>
+              <span className="text-rose-500 text-sm md:text-lg ml-2">{calendar.dayOfWeek}</span>
             </h2>
-            <p className="-skew-x-12 text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">
+            <p className="text-[#5b6286] text-[10px] md:text-xs font-bold uppercase tracking-widest">
               {slotLabel}
             </p>
           </>
@@ -209,23 +209,16 @@ const LobbyScreen: React.FC<Props> = ({
           <button
             key={b.key}
             onClick={b.on}
-            className={`group relative overflow-hidden transform -skew-x-12 border transition-all duration-200 hover:-translate-y-0.5 px-3 md:px-3.5 py-2 md:py-2.5 ${
-              b.primary
-                ? 'bg-yellow-400 text-black border-yellow-300 shadow-[3px_3px_0_rgba(0,0,0,0.55)]'
-                : 'bg-black/80 text-white/80 border-white/15 hover:border-yellow-400/70 hover:text-white backdrop-blur-md'
-            }`}
+            className={`relative ${b.primary ? 'ui-chip ui-chip-on' : 'ui-chip'} !py-2 md:!py-2.5`}
           >
             {/* 黄条从左边推进来，作为 hover 的唯一反馈 */}
-            {!b.primary && (
-              <span className="absolute inset-y-0 left-0 w-0 bg-yellow-400/20 transition-all duration-200 group-hover:w-full" />
-            )}
-            <span className="relative block transform skew-x-12 text-[11px] md:text-xs font-black uppercase tracking-wider whitespace-nowrap">
+            <span className="relative block text-[11px] md:text-xs whitespace-nowrap">
               <span className="mr-1">{b.icon}</span>
               {userState.language === 'en' ? b.en : b.zh}
             </span>
             {/* 未读数。这是大厅上唯一一个会自己变的数字，所以它值得一个红点。 */}
             {!!b.badge && (
-              <span className="absolute -top-1.5 -right-1.5 z-10 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center transform skew-x-12 shadow">
+              <span className="absolute -top-1.5 -right-1.5 z-10 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center shadow border border-white">
                 {b.badge}
               </span>
             )}
@@ -235,17 +228,16 @@ const LobbyScreen: React.FC<Props> = ({
         {/* 日历单独一块：它要显示日期和时段，不是一个纯按钮 */}
         <button
           onClick={onOpenCalendar}
-          className="group relative overflow-hidden transform -skew-x-12 border border-white/15 hover:border-yellow-400/70 bg-black/80 backdrop-blur-md px-3 md:px-3.5 py-2 md:py-2.5 transition-all duration-200 hover:-translate-y-0.5"
+          className="ui-chip !py-2 md:!py-2.5"
         >
-          <span className="absolute inset-y-0 left-0 w-0 bg-yellow-400/20 transition-all duration-200 group-hover:w-full" />
-          <span className="relative block transform skew-x-12 flex items-baseline gap-2 whitespace-nowrap">
-            <span className="text-[11px] md:text-xs font-black text-white tracking-wider">
+          <span className="relative flex items-baseline gap-2 whitespace-nowrap">
+            <span className="text-[11px] md:text-xs font-black tracking-wider">
               {calendar.month}/{calendar.day}
             </span>
-            <span className="text-[10px] font-mono text-yellow-400/80">
+            <span className="text-[10px] font-mono text-rose-500">
               {calendar.dayOfWeek?.replace(/\s*\(.*\)/, '')}
             </span>
-            <span className="text-[10px] font-bold text-white/50">
+            <span className="text-[10px] font-bold text-[#5b6286]">
               {calendar.timeSlot === 'morning' ? (userState.language === 'en' ? 'morning' : '早晨')
                 : calendar.timeSlot === 'lunch' ? (userState.language === 'en' ? (schoolDay ? 'lunch' : 'daytime') : (schoolDay ? '午休' : '白天'))
                 : calendar.timeSlot === 'afternoon' ? (userState.language === 'en' ? (schoolDay ? 'after school' : 'afternoon') : (schoolDay ? '放学后' : '下午'))
@@ -264,11 +256,9 @@ const LobbyScreen: React.FC<Props> = ({
           const alarm = rent.owed > 0 || (rent.warn && rent.short);
           const en = userState.language === 'en';
           return (
-            <div className={`transform -skew-x-12 bg-black/80 backdrop-blur-md border px-3 py-2 ${
-              alarm ? 'border-red-500/70' : rent.warn ? 'border-yellow-400/60' : 'border-white/15 hidden md:block'
-            }`}>
-              <span className={`block transform skew-x-12 text-[10px] font-bold whitespace-nowrap ${
-                alarm ? 'text-red-300' : rent.warn ? 'text-yellow-300' : 'text-white/45'
+            <div className={`ui-chip !py-2 ${alarm ? '!border-rose-400' : rent.warn ? '!border-amber-300' : 'hidden md:inline-flex'}`}>
+              <span className={`block text-[10px] font-bold whitespace-nowrap ${
+                alarm ? 'text-rose-600' : rent.warn ? 'text-amber-600' : 'text-[#5b6286]'
               }`}>
                 🏠 {rent.owed > 0
                   ? (en ? `Rent owed ¥${rent.owed.toLocaleString('ja-JP')}` : `欠房租 ¥${rent.owed.toLocaleString('ja-JP')}`)
@@ -293,9 +283,9 @@ const LobbyScreen: React.FC<Props> = ({
           </p>
           <button
             onClick={onOpenMap}
-            className="mt-2 bg-yellow-400 text-black px-8 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 hover:bg-white transition-all"
+            className="mt-2 ui-btn-primary px-8 py-2.5 text-sm"
           >
-            <span className="block transform skew-x-12">
+            <span className="block">
               {userState.language === 'en' ? 'Go out ▶' : '出门 ▶'}
             </span>
           </button>
@@ -308,15 +298,15 @@ const LobbyScreen: React.FC<Props> = ({
         const portrait = LOBBY_PORTRAITS[id] || char.avatarUrl;
         const displayChar = { ...char, avatarUrl: customAssets.characters[id] || (shouldLoad ? portrait : '') };
         return (
-          <div key={id} className={`group relative flex-none w-[85vw] md:w-[320px] lg:w-[340px] snap-center h-full border-r border-white/5 overflow-hidden cursor-pointer bg-black/40 transition-opacity duration-300`} onClick={() => setLobbySelectedChar(id)}>
-            <div className={`absolute inset-0 opacity-0 md:group-hover:opacity-20 transition-opacity duration-300 ${char.color} bg-gradient-to-t from-black via-transparent to-transparent`}></div>
-            <div className="absolute top-4 right-4 text-7xl md:text-[100px] font-black text-white/5 italic leading-none select-none z-0">0{index + 1}</div>
+          <div key={id} className={`group relative flex-none w-[85vw] md:w-[320px] lg:w-[340px] snap-center h-full overflow-hidden cursor-pointer transition-opacity duration-300`} onClick={() => setLobbySelectedChar(id)}>
+            <div className={`absolute inset-x-3 top-24 bottom-3 rounded-[28px] opacity-0 md:group-hover:opacity-25 transition-opacity duration-300 ${char.color}`}></div>
+            <div className="absolute top-20 right-5 font-ui text-7xl md:text-[96px] font-black text-white/10 leading-none select-none z-0">0{index + 1}</div>
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[80%] md:h-[88%] flex items-end justify-center origin-bottom">
               <CharacterSprite character={displayChar} isSpeaking={false} fit="height" className="w-full h-full" idleVideo />
             </div>
-            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/80 to-transparent pt-20 pb-6 md:pb-10 px-4 md:px-6 flex flex-col items-center md:items-start md:opacity-60 md:group-hover:opacity-100 transition-opacity duration-300">
-              <div className={`h-1 w-8 md:w-12 mb-2 ${char.color}`}></div>
-              <h3 className="text-2xl md:text-4xl font-black text-white italic uppercase tracking-tighter drop-shadow-lg">{userState.language === 'en' ? char.nameEn : char.name}</h3>
+            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#121834]/95 via-[#121834]/70 to-transparent pt-24 pb-7 md:pb-10 px-4 md:px-6 flex flex-col items-center md:items-start md:opacity-80 md:group-hover:opacity-100 transition-opacity duration-300">
+              <div className={`h-1 w-8 md:w-12 mb-2 rounded-full ${char.color}`}></div>
+              <h3 className="font-ui text-2xl md:text-4xl font-black text-white tracking-wide drop-shadow-lg">{userState.language === 'en' ? char.nameEn : char.name}</h3>
               <p className="text-[10px] text-white/70 uppercase tracking-widest hidden md:block">{userState.language === 'en' ? char.roleEn : char.role}</p>
               <p className="text-[10px] md:text-xs font-bold mt-1 tracking-widest flex items-center gap-2">
                 <span className="text-sky-300">🤝 {levelName(getFamiliarityLevel(famOf(id)))}</span>
@@ -330,15 +320,15 @@ const LobbyScreen: React.FC<Props> = ({
     </div>
 
     {/* 🎠 桌面端翻页箭头 */}
-    <button onClick={() => scrollByCards(-1)} className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-40 w-12 h-12 items-center justify-center bg-black/60 hover:bg-yellow-500 hover:text-black text-white border border-white/20 rounded-full text-xl font-black backdrop-blur transition-all shadow-xl" aria-label="prev">‹</button>
-    <button onClick={() => scrollByCards(1)} className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-40 w-12 h-12 items-center justify-center bg-black/60 hover:bg-yellow-500 hover:text-black text-white border border-white/20 rounded-full text-xl font-black backdrop-blur transition-all shadow-xl" aria-label="next">›</button>
+    <button onClick={() => scrollByCards(-1)} className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-40 w-12 h-12 items-center justify-center ui-chip !p-0 !text-xl" aria-label="prev">‹</button>
+    <button onClick={() => scrollByCards(1)} className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-40 w-12 h-12 items-center justify-center ui-chip !p-0 !text-xl" aria-label="next">›</button>
 
     {lobbySelectedChar && (
-      <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setLobbySelectedChar(null)}>
-        <div className="bg-slate-900 border-2 border-white/10 p-6 md:p-10 rounded-sm max-w-lg w-full flex flex-col items-center gap-4 md:gap-6 shadow-[0_0_50px_rgba(0,0,0,1)] relative overflow-hidden" onClick={e => e.stopPropagation()}>
-          <div className={`absolute top-0 left-0 w-full h-1 ${CHARACTERS[lobbySelectedChar].color}`} />
-          <h2 className={`text-3xl md:text-4xl font-black italic tracking-tighter text-white drop-shadow-md`}>{userState.language === 'en' ? CHARACTERS[lobbySelectedChar].nameEn : CHARACTERS[lobbySelectedChar].name}</h2>
-          <p className="text-gray-300 text-center text-xs md:text-sm leading-relaxed px-2 md:px-4">{userState.language === 'en' ? CHARACTERS[lobbySelectedChar].descriptionEn : CHARACTERS[lobbySelectedChar].description}</p>
+      <div className="absolute inset-0 z-50 bg-[#141a33]/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setLobbySelectedChar(null)}>
+        <div className="ui-panel p-6 md:p-10 max-w-lg w-full flex flex-col items-center gap-4 md:gap-6 overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className={`absolute top-0 left-10 right-10 h-1 rounded-b-full ${CHARACTERS[lobbySelectedChar].color}`} />
+          <h2 className={`font-ui text-3xl md:text-4xl font-black tracking-wide text-[#1f2440]`}>{userState.language === 'en' ? CHARACTERS[lobbySelectedChar].nameEn : CHARACTERS[lobbySelectedChar].name}</h2>
+          <p className="text-[#4b5375] text-center text-xs md:text-sm leading-relaxed px-2 md:px-4">{userState.language === 'en' ? CHARACTERS[lobbySelectedChar].descriptionEn : CHARACTERS[lobbySelectedChar].description}</p>
           <RelationshipMeter
             familiarity={famOf(lobbySelectedChar)}
             affection={affOf(lobbySelectedChar)}
@@ -355,11 +345,7 @@ const LobbyScreen: React.FC<Props> = ({
             <button
               onClick={() => { if (canMessage(lobbySelectedChar)) { setLobbySelectedChar(null); onMessage(lobbySelectedChar); } }}
               disabled={!canMessage(lobbySelectedChar)}
-              className={`group relative w-full overflow-hidden font-black py-4 md:py-5 rounded-sm text-xs md:text-sm uppercase tracking-[0.3em] transition-all shadow-xl ${
-                canMessage(lobbySelectedChar)
-                  ? 'bg-emerald-700 hover:bg-emerald-600 text-white'
-                  : 'bg-white/10 text-white/35 cursor-not-allowed'
-              }`}
+              className={`w-full py-4 md:py-5 text-xs md:text-sm ${canMessage(lobbySelectedChar) ? 'ui-btn-primary' : 'ui-btn-primary !bg-none !bg-slate-200 !text-slate-400 !shadow-none cursor-not-allowed'}`}
             >
               <span className="relative z-10 flex items-center justify-center gap-3">
                 📱 {canMessage(lobbySelectedChar)
@@ -367,7 +353,7 @@ const LobbyScreen: React.FC<Props> = ({
                   : (userState.language === 'en' ? 'No number yet' : '还没有她的联系方式')}
               </span>
             </button>
-            <p className="text-[10px] md:text-[11px] text-white/35 text-center leading-relaxed px-2">
+            <p className="text-[10px] md:text-[11px] text-[#5b6286]/80 text-center leading-relaxed px-2">
               {userState.language === 'en'
                 ? 'Texting is not the same as being there. Find her in person for the real thing.'
                 : '发消息和见面不是一回事。想好好说话，得在对的地方碰到她。'}

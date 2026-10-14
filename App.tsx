@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { GameMode, ChatMode, Character, UserState, N3GrammarTopic, CharacterId, Message, CustomAssets, QuizData, CollectedWord, AffectionMap, FamiliarityMap, MemoryMap, RelationshipAxis, ProtagonistStats, GameCalendar, StatGainEvent, StatKey, StoryEffect, StoryFlags, StoryRelationEffect, StoryWord, PrologueResult, StoryProgress, StoryNode, PhoneChatMsg, StoryBgmTrack } from './types';
 import { resolvePrologueEncounter, buildPrologueBrief, PROLOGUE_INTRODUCIBLE_CHARS, findLevelStory, isLevelStoryReady, appendDay1Memories, DAY1_MEMORIES, LEVEL_STORIES, getWeatherScene, weekdayFor, advanceCalendarDay, isSchoolYearOver } from './constants';
 import { scriptFitsNow } from './story/timeContext';
@@ -9,6 +9,13 @@ import type { DialoguePage } from './types';
 import type { LevelStoryDef } from './constants';
 import Background from './components/Background';
 import SetupScreen from './components/SetupScreen';
+import OpeningMovie from './components/OpeningMovie';
+import { NUNOBIKI_ID, nunobikiApproach } from './story/nunobikiStory';
+
+// 去这些地方之前先演一段"怎么去"
+const APPROACH_SCRIPTS: Record<string, (cal: GameCalendar, flags: Record<string, boolean>) => StoryNode[]> = {
+  [NUNOBIKI_ID]: nunobikiApproach
+};
 import LobbyScreen from './components/LobbyScreen';
 import ChatScreen, { AffectionToast } from './components/ChatScreen';
 import SystemMenu from './components/SystemMenu';
@@ -176,6 +183,12 @@ const App: React.FC = () => {
   const [isDialogueFinished, setIsDialogueFinished] = useState(false);
 
   const [showSystemMenu, setShowSystemMenu] = useState(false);
+  // 🎬 开场动画：第一次打开游戏自动放一遍，之后从标题画面的「OPENING」重播
+  const [showOpening, setShowOpening] = useState(() => { try { return !localStorage.getItem('kobe_op_seen'); } catch { return false; } });
+  const closeOpening = useCallback(() => {
+    setShowOpening(false);
+    try { localStorage.setItem('kobe_op_seen', '1'); } catch { /* 无痕模式之类：下次再放一遍也无妨 */ }
+  }, []);
   const [showHistoryLog, setShowHistoryLog] = useState(false);
   const [showWordbook, setShowWordbook] = useState(false);
   const [showCgGallery, setShowCgGallery] = useState(false);
@@ -770,7 +783,7 @@ const App: React.FC = () => {
     const owed = nextMainChapter({
       calendar: gameCalendar, flags: storyFlags,
       familiarity: familiarityMap, met: metChars
-    }, { finale: true });
+    }, { finale: true, mainOnly: true });
     if (owed) { setShowRestPlan(false); setActiveMain(owed); return; }
     setShowRestPlan(false);
     setActiveLevelStory(null);
@@ -1282,7 +1295,10 @@ const App: React.FC = () => {
     // 「pay:金额」：剧情里花的钱（扭蛋、二手店的电子羊）。不够就扣到零为止。
     const paid = list.filter(f => f.startsWith('pay:')).reduce((n, f) => n + (Number(f.slice(4)) || 0), 0);
     if (paid) setLife(l => ({ ...l, yen: Math.max(0, l.yen - paid) }));
-    const flags = list.filter(f => !f.startsWith('give:') && !f.startsWith('pay:'));
+    // 「tire:数值」：剧情里多出来的体力消耗（布引走山路上去）
+    const tired = list.filter(f => f.startsWith('tire:')).reduce((n, f) => n + (Number(f.slice(5)) || 0), 0);
+    if (tired) setLife(l => ({ ...l, stamina: Math.max(0, (l.stamina ?? STAMINA_MAX) - tired) }));
+    const flags = list.filter(f => !f.startsWith('give:') && !f.startsWith('pay:') && !f.startsWith('tire:'));
     if (gifts.length) {
       setLife(l => {
         const items = { ...l.items };
@@ -1590,8 +1606,9 @@ const App: React.FC = () => {
 
     if (mainChapter) {
       list.push({
-        id: 'main', icon: '📕', primary: true,
-        titleZh: `第 ${mainChapter.n} 章 · ${mainChapter.titleZh}`, titleEn: `Chapter ${mainChapter.n} · ${mainChapter.titleEn}`,
+        id: 'main', icon: mainChapter.labelZh ? '⚔️' : '📕', primary: true,
+        titleZh: mainChapter.labelZh ? `${mainChapter.labelZh} · ${mainChapter.titleZh}` : `第 ${mainChapter.n} 章 · ${mainChapter.titleZh}`,
+        titleEn: mainChapter.labelEn ? `${mainChapter.labelEn} · ${mainChapter.titleEn}` : `Chapter ${mainChapter.n} · ${mainChapter.titleEn}`,
         descZh: mainChapter.teaseZh, descEn: mainChapter.teaseEn,
         onSelect: run(startMainChapter)
       });
@@ -1879,6 +1896,8 @@ const App: React.FC = () => {
     // 只有当玩家明确选择进入专属剧情（playLevelStory 为 true）时才演，
     // 常规出行决不自动截胡，保证地点场景探索与个人剧情互不干扰。
     const owed = (playLevelStory && !ev) ? pendingStoryAt(loc) : null;
+    // ⛰ 有的地方怎么去本身就是一段（布引：坐缆车还是爬山）。不管到了以后演什么，先走这一段。
+    const approach = APPROACH_SCRIPTS[loc.id]?.(gameCalendar, storyFlags) ?? [];
     if (owed) {
       setPendingLevelUps(q => q.filter(x => x !== owed.entry));
       setPendingEncounter(null);
@@ -1889,7 +1908,7 @@ const App: React.FC = () => {
           id: `lvstory_${owed.def.id}`, locationId: loc.id, chars: [owed.entry.charId],
           titleZh: owed.def.titleZh, titleEn: owed.def.titleEn, script: owed.def.script!
         },
-        script: owed.def.script!
+        script: [...approach, ...owed.def.script!]
       });
       setGameMode(GameMode.LOBBY);
       return;
@@ -2015,7 +2034,7 @@ const App: React.FC = () => {
     setActiveTrip({
       loc,
       event: ev,
-      script: ev
+      script: [...approach, ...((ev
         ? ev.script
         : avoided
         ? [
@@ -2036,7 +2055,7 @@ const App: React.FC = () => {
             awayNote: lunchAwayNote(loc.id, gameCalendar, zh),
             nameZh: met ? CHARACTERS[met].name : '',
             nameEn: met ? CHARACTERS[met].nameEn : ''
-          }), ...npcTalk]
+          }), ...npcTalk]) as StoryNode[])]
     });
     // 碰到了人：这一趟结束之后直接进面对面的对话
     setPendingEncounter(met);
@@ -3558,7 +3577,7 @@ ${wind}`;
     : '';
 
   return (
-    <div className="antialiased font-sans text-gray-900 selection:bg-yellow-500 selection:text-black w-full h-[100dvh] overflow-hidden bg-black" onClickCapture={handleUiClickSfx}>
+    <div className="antialiased font-sans text-gray-900 selection:bg-pink-400 selection:text-black w-full h-[100dvh] overflow-hidden bg-black" onClickCapture={handleUiClickSfx}>
       {gameMode === GameMode.SETUP && (
         <SetupScreen
           T={T}
@@ -3580,7 +3599,11 @@ ${wind}`;
           consentGiven={consentGiven}
           setConsentGiven={setConsentGiven}
           background={background}
+          onPlayOpening={() => setShowOpening(true)}
         />
+      )}
+      {gameMode === GameMode.SETUP && showOpening && (
+        <OpeningMovie language={userState.language} onClose={closeOpening} />
       )}
 
       {/* 序章。同意书弹出后、第一天开播后都要让位——
@@ -4060,7 +4083,7 @@ ${wind}`;
           script={activeMain.script}
           scriptVersion={`${activeMain.id}-v1`}
           progressKey={`kobe_study_main_${activeMain.id}`}
-          chapterNameZh={activeMain.finale ? '最终章' : `第 ${activeMain.n} 章`}
+          chapterNameZh={activeMain.finale ? '最终章' : activeMain.labelZh ? `${activeMain.labelZh} · ${activeMain.titleZh}` : `第 ${activeMain.n} 章`}
           chapterNameEn={activeMain.finale ? 'Final Chapter' : `Chapter ${activeMain.n}`}
           initialFlags={storyFlags}
           affectionMap={affectionMap}
@@ -4194,8 +4217,8 @@ ${wind}`;
       )}
 
       {lifeToast && (
-        <div className="fixed left-1/2 -translate-x-1/2 bottom-24 z-[150] bg-black/85 border border-emerald-500/60 px-5 py-2.5 transform -skew-x-12 pointer-events-none animate-in fade-in slide-in-from-bottom-3 duration-300">
-          <span className="block transform skew-x-12 text-emerald-300 font-bold text-sm">{lifeToast}</span>
+        <div className="fixed left-1/2 -translate-x-1/2 bottom-24 z-[150] ui-chip !px-5 !py-2.5 pointer-events-none animate-in fade-in slide-in-from-bottom-3 duration-300">
+          <span className="block text-emerald-700 font-bold text-sm">{lifeToast}</span>
         </div>
       )}
 
@@ -4236,19 +4259,19 @@ ${wind}`;
 
       {/* 🏫 午休要出校门，而下午还有课 */}
       {askSkipAfternoon && (
-        <div className="fixed inset-0 z-[95] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6"
+        <div className="fixed inset-0 z-[95] bg-[#141a33]/55 backdrop-blur-sm flex items-center justify-center p-6"
              onClick={() => setAskSkipAfternoon(null)}>
-          <div className="max-w-md w-full bg-neutral-950 border border-yellow-500/40 p-6 space-y-4"
+          <div className="ui-panel max-w-md w-full p-6 md:p-8 space-y-4"
                onClick={e => e.stopPropagation()}>
-            <div className="text-yellow-400 text-[11px] font-black tracking-widest">
+            <div className="font-ui text-pink-500 text-[11px] font-bold tracking-widest">
               {userState.language === 'en' ? 'LUNCH BREAK' : '午休'}
             </div>
-            <h3 className="text-white text-xl font-black">
+            <h3 className="font-ui text-[#1f2440] text-xl font-black">
               {userState.language === 'en'
                 ? 'Cut the afternoon and go wandering?'
                 : '下午翘掉，出去溜达？'}
             </h3>
-            <p className="text-white/60 text-sm leading-relaxed">
+            <p className="text-[#4b5375] text-sm leading-relaxed">
               {userState.language === 'en'
                 ? `${askSkipAfternoon.loc.nameEn} is off school grounds. Once you are out there you are not coming back for fifth period, and somebody will notice the empty desk.`
                 : `${askSkipAfternoon.loc.nameZh}在校外。走出这个校门，下午那两节就别想了，而且空着的座位是有人会看见的。`}
@@ -4256,17 +4279,17 @@ ${wind}`;
             <div className="flex gap-3 pt-1">
               <button
                 onClick={() => { const item = askSkipAfternoon; setAskSkipAfternoon(null); if (item) startTrip(item.loc, true, item.playLevelStory); }}
-                className="flex-1 bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2.5 text-xs font-black tracking-widest transform -skew-x-12"
+                className="flex-1 ui-btn-primary px-4 py-2.5 text-xs"
               >
-                <span className="block transform skew-x-12">
+                <span className="block">
                   {userState.language === 'en' ? 'Go anyway' : '去'}
                 </span>
               </button>
               <button
                 onClick={() => setAskSkipAfternoon(null)}
-                className="flex-1 bg-white/5 hover:bg-white/10 text-white/70 border border-white/20 px-4 py-2.5 text-xs font-black tracking-widest transform -skew-x-12"
+                className="flex-1 ui-chip justify-center !py-2.5"
               >
-                <span className="block transform skew-x-12">
+                <span className="block">
                   {userState.language === 'en' ? 'Back to class' : '算了，回教室'}
                 </span>
               </button>

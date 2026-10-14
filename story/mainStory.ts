@@ -1,6 +1,7 @@
 import { CharacterId, GameCalendar, StoryFlags, StoryNode, FamiliarityMap } from '../types';
 import { getInitialFamiliarity, schoolDayNumber } from '../constants';
 import { eventCgNode } from '../data/eventCgs';
+import { RIVAL_CHAPTERS } from './rivalStory';
 
 // ==========================================================
 // 📕 主线：外公那张地图
@@ -88,6 +89,8 @@ export interface MainChapterDef {
   minInariFamiliarity?: number;
   // 最终章：只在学年结束那一刻补演（修了式之前），大厅上不出现
   finale?: boolean;
+  // 大厅上那一栏的前缀。不写 = 「第 N 章」；宿敌线写「宿敌」（story/rivalStory.ts）
+  labelZh?: string; labelEn?: string;
   script: StoryNode[];
 }
 
@@ -1890,9 +1893,12 @@ const inariFam = (ctx: MainCtx) => {
 
 // 现在能演的下一章。没有就返回 null。
 // opts.finale：修了式之前那一次补演才传 true，最终章只在那时候演
-export const nextMainChapter = (ctx: MainCtx, opts: { finale?: boolean } = {}): MainChapterDef | null => {
+// opts.mainOnly：修了式前的补演只补主线（宿敌线错过了就错过了，它不负责收尾）
+// 主线和宿敌线同时有能演的，先演 minDay 小的那一章
+export const nextMainChapter = (ctx: MainCtx, opts: { finale?: boolean; mainOnly?: boolean } = {}): MainChapterDef | null => {
   const day = schoolDayNumber(ctx.calendar);
-  for (const ch of MAIN_CHAPTERS) {
+  const pool = opts.mainOnly ? MAIN_CHAPTERS : [...MAIN_CHAPTERS, ...RIVAL_CHAPTERS].sort((a, b) => a.minDay - b.minDay);
+  for (const ch of pool) {
     if (ctx.flags[`${ch.id}_done`]) continue;
     if (ch.finale && !opts.finale) continue;
     if (day < ch.minDay) continue;

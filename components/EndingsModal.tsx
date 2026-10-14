@@ -28,10 +28,10 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
   return (
     <div className="fixed inset-0 z-[220] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4" onClick={onClose}>
       <div
-        className="w-full max-w-4xl bg-zinc-950/95 border-2 border-yellow-500/40 rounded-xl p-6 md:p-8 shadow-[0_0_80px_rgba(234,179,8,0.2)] max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-4xl bg-zinc-950/95 border-2 border-pink-300/40 rounded-xl p-6 md:p-8 shadow-[0_0_80px_rgba(234,179,8,0.2)] max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between border-b border-yellow-500/30 pb-4 mb-6">
+        <div className="flex items-start justify-between border-b border-pink-300/30 pb-4 mb-6">
           <div>
             <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 tracking-wider">
               {en ? '🏁 ENDING RECORD' : '🏁 结局记录'}
@@ -56,8 +56,8 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
         </div>
 
         {all && (
-          <div className="mb-6 border border-yellow-400/50 bg-yellow-400/10 px-4 py-3 rounded">
-            <div className="text-yellow-300 font-black tracking-widest text-sm">
+          <div className="mb-6 border border-pink-300/50 bg-pink-400/10 px-4 py-3 rounded">
+            <div className="text-pink-200 font-black tracking-widest text-sm">
               {en ? 'ALL ENDINGS SEEN' : '全结局达成'}
             </div>
             <div className="text-white/60 text-xs mt-1">
@@ -95,7 +95,7 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
                     {list.map(e => (
                       <span
                         key={e.flag}
-                        className={`w-2.5 h-2.5 rounded-full ${isEndingUnlocked(e, storyFlags) ? 'bg-yellow-400' : 'bg-white/15'}`}
+                        className={`w-2.5 h-2.5 rounded-full ${isEndingUnlocked(e, storyFlags) ? 'bg-pink-400' : 'bg-white/15'}`}
                       />
                     ))}
                   </div>
@@ -127,7 +127,7 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
                         key={e.flag}
                         className={`px-3 py-2 rounded border text-xs ${
                           open
-                            ? 'border-yellow-400/40 bg-yellow-400/10 text-yellow-200'
+                            ? 'border-pink-300/40 bg-pink-400/10 text-yellow-200'
                             : 'border-white/10 bg-white/[0.03] text-white/35'
                         }`}
                       >

@@ -2,6 +2,8 @@
 //   node scripts/check-story-assets.mjs
 import fs from 'fs';
 import { MAIN_CHAPTERS } from '../story/mainStory';
+import { RIVAL_CHAPTERS, KAI_DAY1 } from '../story/rivalStory';
+import { NUNOBIKI_EVENTS, nunobikiApproach } from '../story/nunobikiStory';
 import { INARI_STORY_1 } from '../story/levelStories/inari1';
 import { INARI_STORY_2 } from '../story/levelStories/inari2';
 import { INARI_STORY_3 } from '../story/levelStories/inari3';
@@ -23,6 +25,9 @@ const walk = (nodes: StoryNode[], where: string) => {
     if (n.type === 'heart') { for (const [c, r] of Object.entries(n.routes)) walk(r as StoryNode[], `${where}/${c}`); walk(n.otherwise || [], where); }
   }
 };
-for (const ch of MAIN_CHAPTERS) walk(ch.script, ch.id);
+for (const ch of [...MAIN_CHAPTERS, ...RIVAL_CHAPTERS]) walk(ch.script, ch.id);
+walk(KAI_DAY1, 'kai_day1');
+for (const ev of NUNOBIKI_EVENTS) walk(ev.script, ev.id);
+walk(nunobikiApproach({ timeSlot: 'afternoon' } as any, {}), 'nunobiki_approach');
 walk(INARI_STORY_1, 'inari1'); walk(INARI_STORY_2, 'inari2'); walk(INARI_STORY_3, 'inari3'); walk(HIKARI_STORY_3, 'hikari3');
 console.log(bad.length ? bad.join('\n') : '全部存在');

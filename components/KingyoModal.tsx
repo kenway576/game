@@ -221,7 +221,7 @@ const KingyoModal: React.FC<Props> = ({ language, progress, onFinish, onCancel }
 
       <div className="relative z-10 flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="text-yellow-400 text-xs font-black tracking-widest">{en ? 'GOLDFISH SCOOPING' : '捞金鱼'}</span>
+          <span className="text-pink-300 text-xs font-black tracking-widest">{en ? 'GOLDFISH SCOOPING' : '捞金鱼'}</span>
           <span className="text-[10px] px-2 py-0.5 border border-white/25 text-white/70">{en ? TIER_RULES[tier].labelEn : TIER_RULES[tier].labelZh}</span>
         </div>
         <div className="flex items-center gap-4">
@@ -236,7 +236,7 @@ const KingyoModal: React.FC<Props> = ({ language, progress, onFinish, onCancel }
           <img src="/images/characters/npc_kingyo_oyaji.webp" alt="" className="h-28 lg:h-72 object-contain" />
           {msg && (
             <div className="max-w-xs">
-              <p className="text-yellow-300/90 text-[11px] font-black">{en ? 'Stall owner' : '摊主大叔'}</p>
+              <p className="text-pink-200/90 text-[11px] font-black">{en ? 'Stall owner' : '摊主大叔'}</p>
               <p className="text-white text-sm font-bold">「{msg.jp}」</p>
               <p className="text-white/45 text-xs">{en ? msg.en : msg.zh}</p>
             </div>
@@ -312,7 +312,7 @@ const KingyoModal: React.FC<Props> = ({ language, progress, onFinish, onCancel }
         <div className="absolute inset-0 z-20 bg-black/75 backdrop-blur-sm flex items-center justify-center p-6">
           <div className="max-w-sm w-full text-center space-y-4">
             <div className="text-5xl">{caught.length ? '🐟' : '🎐'}</div>
-            <h3 className="text-white text-2xl font-black italic">
+            <h3 className="text-white text-2xl font-black font-ui">
               {caught.length
                 ? (en ? `${caught.length} goldfish` : `捞到 ${caught.length} 条`)
                 : (en ? 'Not a single one' : '一条都没捞到')}
@@ -325,8 +325,8 @@ const KingyoModal: React.FC<Props> = ({ language, progress, onFinish, onCancel }
             )}
             {msg && <p className="text-white/80 text-sm">「{msg.jp}」<span className="block text-white/40 text-xs">{en ? msg.en : msg.zh}</span></p>}
             <button onClick={() => { audioManager.playSfx('confirm'); finish(); }}
-              className="bg-yellow-400 hover:bg-yellow-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12">
-              <span className="block transform skew-x-12">{en ? 'Carry them home' : '拎回家'}</span>
+              className="bg-pink-400 hover:bg-pink-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl">
+              <span className="block">{en ? 'Carry them home' : '拎回家'}</span>
             </button>
           </div>
         </div>

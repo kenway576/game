@@ -71,9 +71,11 @@ async function render(id, n) {
   const who = [];
   for (const { id: c, outfit } of sc.chars) {
     const card = CARDS.find(x => x.id === c);
-    parts.push({ text: `CHARACTER REFERENCE for ${c} (identity: face, hair, eyes, accessories):` }, imagePart(await small(cardOf(c), 1800, dir)), imagePart(await faceOf(c, dir)));
+    // lite：人多的时候（标题封面全员）只给角色卡——参考图张数有上限
+    if (sc.lite === true) parts.push({ text: `CHARACTER REFERENCE for ${c} (identity: face, hair, eyes, accessories):` }, imagePart(await small(cardOf(c), 1200, dir)));
+    else parts.push({ text: `CHARACTER REFERENCE for ${c} (identity: face, hair, eyes, accessories):` }, imagePart(await small(cardOf(c), 1800, dir)), imagePart(await faceOf(c, dir)));
     // outfit 写 null：这一幕穿的衣服没有立绘（比如八百年前的小稻荷），只靠文字
-    if (outfit) parts.push({ text: `OUTFIT REFERENCE for ${c} (the clothes she wears in this scene):` }, imagePart(await small(spriteOf(c, outfit), 1000, dir)));
+    if (outfit && !sc.lite) parts.push({ text: `OUTFIT REFERENCE for ${c} (the clothes she wears in this scene):` }, imagePart(await small(spriteOf(c, outfit), 1000, dir)));
     who.push(`- ${card.identity}${IDENTITY_EXTRA[c] ? ' ' + IDENTITY_EXTRA[c] : ''}${CG_EXTRA[c] ? ' ' + CG_EXTRA[c] : ''}`);
   }
   parts.push({ text: `${STYLE}\n\nCHARACTERS:\n${who.join('\n')}\n\nSCENE: ${sc.scene}\n\nLIGHT: ${sc.light}\n\nCAMERA: ${sc.camera}\n\nWide 16:9 event CG.` });

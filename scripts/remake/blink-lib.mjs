@@ -52,8 +52,8 @@ export const parseBoxes = text => {
 };
 
 export const BLINK_TEXT = {
-  half: 'her eyes HALF CLOSED, as in the middle of a natural blink: the upper eyelids lowered to cover the top half of each iris, the lash line lowered with it, the lower half of the iris still visible. Keep the eyebrows exactly as they are',
-  closed: 'her eyes GENTLY CLOSED, as at the bottom of a natural blink: each eye is a soft closed eyelid line with the lashes pointing down, the same width as the open eye and at the height of the lower lash line. Keep the eyebrows exactly as they are'
+  half: 'the eyes HALF CLOSED, as in the middle of a natural blink: the upper eyelids lowered to cover the top half of each iris, the lash line lowered with it, the lower half of the iris still visible. Keep the eyebrows exactly as they are',
+  closed: 'the eyes GENTLY CLOSED, as at the bottom of a natural blink: each eye is a soft closed eyelid line with the lashes pointing down, the same width as the open eye and at the height of the lower lash line. Keep the eyebrows exactly as they are'
 };
 export const blinkPrompt = k => `This is a close-up crop of the eyes of a finished anime character illustration. Return the SAME image with ONE change.
 

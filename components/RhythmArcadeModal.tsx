@@ -587,14 +587,14 @@ const stage = (children: React.ReactNode, dim = 0.5, blur = 0) => createPortal(
             </div>
             <div className="flex-1 bg-black/70 border border-fuchsia-300/40 p-4 backdrop-blur-sm w-full">
               <p className="text-fuchsia-300 text-[10px] font-black tracking-[0.3em]">NOW SELECTED</p>
-              <p className="text-2xl md:text-3xl font-black italic">{song.title}</p>
+              <p className="text-2xl md:text-3xl font-black font-ui">{song.title}</p>
               <p className="text-white/60 text-xs mt-1">{song.bpm} BPM · {chart.length} NOTES · {TIER_NAME(tier, en)} · {Math.round(song.length)}s</p>
               <div className="flex gap-2 mt-3">{KEY_LABEL.map((k, i) => <span key={k} className="w-9 h-9 flex items-center justify-center font-black border-2 rounded-lg" style={{ color: LANE_COLOR[i], borderColor: LANE_COLOR[i] }}>{k}</span>)}</div>
               <p className="text-white/40 text-[11px] mt-2">{en ? 'Tap a jacket to hear a preview. Or tap the lanes on a phone.' : '点封面可以试听。手机上直接点轨道。'}</p>
               <div className="flex gap-2 mt-3">
                 <button onClick={() => { audioManager.playSfx('click'); stopPreview(); setIntroStep(0); setPhase('intro'); }} className="px-4 py-3 border border-white/25 text-white/70 hover:text-white text-xs font-black tracking-widest">{en ? 'RULES' : '规则'}</button>
-                <button onClick={startGame} disabled={phase === 'loading'} className="flex-1 bg-fuchsia-400 hover:bg-fuchsia-300 disabled:opacity-60 text-black px-6 py-3 text-sm font-black tracking-widest transform -skew-x-12">
-                  <span className="block transform skew-x-12">{phase === 'loading' ? (en ? 'LOADING…' : '加载中…') : (en ? 'START (¥100)' : '开始（¥100）')}</span>
+                <button onClick={startGame} disabled={phase === 'loading'} className="flex-1 bg-fuchsia-400 hover:bg-fuchsia-300 disabled:opacity-60 text-black px-6 py-3 text-sm font-black tracking-widest rounded-xl">
+                  <span className="block">{phase === 'loading' ? (en ? 'LOADING…' : '加载中…') : (en ? 'START (¥100)' : '开始（¥100）')}</span>
                 </button>
                 <button onClick={() => { audioManager.playSfx('modal_close'); stopPreview(); onCancel(); }} className="px-4 py-3 border border-white/25 text-white/70 hover:text-white text-xs font-black tracking-widest">{en ? 'LEAVE' : '离开'}</button>
               </div>
@@ -613,7 +613,7 @@ const stage = (children: React.ReactNode, dim = 0.5, blur = 0) => createPortal(
           <img src={jacketOf(song)} alt="" className="w-16 h-16 md:w-20 md:h-20 object-cover border-2 border-fuchsia-300/60" draggable={false} />
           <div className="text-left">
             <p className="text-white/50 text-[10px] font-black tracking-widest">{TIER_NAME(tier, en)}</p>
-            <p className="text-xl md:text-2xl font-black italic">{song.title}</p>
+            <p className="text-xl md:text-2xl font-black font-ui">{song.title}</p>
           </div>
         </div>
         <div className="flex items-end gap-3">
@@ -623,13 +623,13 @@ const stage = (children: React.ReactNode, dim = 0.5, blur = 0) => createPortal(
         <p className="text-cyan-300 text-[11px] font-black tracking-[0.3em]">{r.won ? (en ? 'YOU WIN' : '你赢了') : r.mine === r.hers ? (en ? 'DRAW' : '平局') : (en ? 'MAKI WINS' : 'MAKI 赢了')}</p>
         <div className="flex items-center gap-8">
           <div><div className="text-4xl font-black text-fuchsia-300 tabular-nums">{r.mine.toLocaleString()}</div><div className="text-[10px] text-white/50 tracking-widest">{en ? 'YOU' : '你'}</div></div>
-          <div className="text-6xl font-black italic text-yellow-300 drop-shadow-[0_0_16px_rgba(253,224,71,0.8)]">{r.rank}</div>
+          <div className="text-6xl font-black font-ui text-yellow-300 drop-shadow-[0_0_16px_rgba(253,224,71,0.8)]">{r.rank}</div>
           <div><div className="text-4xl font-black text-cyan-300 tabular-nums">{r.hers.toLocaleString()}</div><div className="text-[10px] text-white/50 tracking-widest">MAKI</div></div>
         </div>
         <div className="flex gap-5 text-xs font-black">
           <span className="text-yellow-300">PERFECT {r.perfect}</span><span className="text-cyan-200">GOOD {r.good}</span><span className="text-rose-300">MISS {r.miss}</span><span className="text-white/70">MAX COMBO {r.maxCombo}</span>
         </div>
-        <button onClick={() => { audioManager.playSfx('confirm'); onFinish(r); }} className="mt-2 bg-fuchsia-400 hover:bg-fuchsia-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12"><span className="block transform skew-x-12">{en ? 'Done' : '收工'}</span></button>
+        <button onClick={() => { audioManager.playSfx('confirm'); onFinish(r); }} className="mt-2 bg-fuchsia-400 hover:bg-fuchsia-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl"><span className="block">{en ? 'Done' : '收工'}</span></button>
       </div>
     );
   }
@@ -663,7 +663,7 @@ const stage = (children: React.ReactNode, dim = 0.5, blur = 0) => createPortal(
         {/* 玩家侧提示 */}
         <div className="absolute left-2 md:left-8 top-4 z-10 pointer-events-none">
           <div className="text-[10px] font-black tracking-widest text-white/50">COMBO</div>
-          <div className={`text-5xl md:text-7xl font-black italic tabular-nums ${hud.combo >= 10 ? 'text-yellow-300 drop-shadow-[0_0_14px_rgba(253,224,71,0.9)]' : 'text-white/80'}`}>{hud.combo}</div>
+          <div className={`text-5xl md:text-7xl font-black font-ui tabular-nums ${hud.combo >= 10 ? 'text-yellow-300 drop-shadow-[0_0_14px_rgba(253,224,71,0.9)]' : 'text-white/80'}`}>{hud.combo}</div>
           {hud.combo >= 10 && <div className="text-xs font-black text-yellow-300">×{mult.toFixed(2)}</div>}
           <div className={`mt-2 text-[11px] font-black tracking-widest ${lead >= 0 ? 'text-fuchsia-300' : 'text-cyan-300'}`}>{lead >= 0 ? '▲' : '▼'} {Math.abs(lead).toLocaleString()}</div>
         </div>
@@ -672,14 +672,14 @@ const stage = (children: React.ReactNode, dim = 0.5, blur = 0) => createPortal(
           <canvas ref={canvasRef} className="w-full h-full block" />
           {/* 判定文字 */}
           {hud.judge && phase === 'play' && (
-            <div key={hud.jkey} className="absolute left-1/2 top-[56%] -translate-x-1/2 text-3xl md:text-5xl font-black italic pointer-events-none"
+            <div key={hud.jkey} className="absolute left-1/2 top-[56%] -translate-x-1/2 text-3xl md:text-5xl font-black font-ui pointer-events-none"
                  style={{ color: hud.judge === 'PERFECT' ? '#fde047' : hud.judge === 'GOOD' ? '#67e8f9' : '#f87171', textShadow: '0 0 14px currentColor', opacity: 0.95 }}>
               {hud.judge}
             </div>
           )}
           {phase === 'countdown' && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-              <span key={count} className="text-8xl md:text-9xl font-black italic text-white drop-shadow-[0_0_24px_rgba(232,121,249,0.9)]">{count}</span>
+              <span key={count} className="text-8xl md:text-9xl font-black font-ui text-white drop-shadow-[0_0_24px_rgba(232,121,249,0.9)]">{count}</span>
             </div>
           )}
         </div>

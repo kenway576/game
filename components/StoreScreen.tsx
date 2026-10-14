@@ -239,16 +239,16 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="bg-black/60 border border-yellow-500/50 px-3 py-1.5 transform -skew-x-12">
-            <span className="block transform skew-x-12 text-yellow-400 font-black text-sm md:text-base tabular-nums">
+          <div className="bg-black/60 border border-pink-300/50 px-3 py-1.5 rounded-xl">
+            <span className="block text-pink-300 font-black text-sm md:text-base tabular-nums">
               {yen(life.yen)}
             </span>
           </div>
           <button
             onClick={() => { audioManager.playSfx('click'); onClose(); }}
-            className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+            className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
           >
-            <span className="block transform skew-x-12">{en ? '◀ Leave' : '◀ 离开'}</span>
+            <span className="block">{en ? '◀ Leave' : '◀ 离开'}</span>
           </button>
         </div>
       </div>
@@ -264,11 +264,11 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
           <button
             key={t}
             onClick={() => { audioManager.playSfx('click'); setTab(t); setPickId(null); }}
-            className={`px-5 py-1.5 text-[11px] font-black tracking-widest transform -skew-x-12 transition-all ${
-              tab === t ? 'bg-yellow-400 text-black' : 'bg-white/5 text-white/50 hover:bg-white/10'
+            className={`px-5 py-1.5 text-[11px] font-black tracking-widest rounded-xl transition-all ${
+              tab === t ? 'bg-pink-400 text-black' : 'bg-white/5 text-white/50 hover:bg-white/10'
             }`}
           >
-            <span className="block transform skew-x-12">
+            <span className="block">
               {t === 'buy' ? (en ? 'BUY' : '买') : (en ? 'SELL' : '卖')}
             </span>
           </button>
@@ -290,7 +290,7 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
               key={r.id}
               onClick={() => { audioManager.playSfx('click'); setPickId(r.id); }}
               className={`w-full text-left px-4 py-3 border-b border-white/5 flex items-center gap-3 transition-colors ${
-                pick?.id === r.id ? 'bg-yellow-400/15' : 'hover:bg-white/5'
+                pick?.id === r.id ? 'bg-pink-400/15' : 'hover:bg-white/5'
               }`}
             >
               <ItemIcon id={r.icon} emoji={r.emoji} size={34} className="shrink-0" />
@@ -299,7 +299,7 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
                 <span className="block text-[10px] font-mono text-white/35 truncate">{r.nameJp}</span>
               </span>
               <span className="shrink-0 text-right">
-                <span className="block text-sm font-black text-yellow-400 tabular-nums">{yen(r.price)}</span>
+                <span className="block text-sm font-black text-pink-300 tabular-nums">{yen(r.price)}</span>
                 {!!r.owned && <span className="block text-[10px] text-white/40">{r.note || `×${r.owned}`}</span>}
                 {!r.owned && r.note && <span className="block text-[10px] text-white/40">{r.note}</span>}
               </span>
@@ -313,7 +313,7 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
             <>
               <ItemIcon id={pick.icon} emoji={pick.emoji} size={132} className="mb-4" />
               <h2 className="text-2xl md:text-3xl font-black text-white">{en ? pick.nameEn : pick.nameZh}</h2>
-              <div className="mt-1 text-sm font-mono text-yellow-400/80">
+              <div className="mt-1 text-sm font-mono text-pink-300/80">
                 {pick.nameJp}<span className="ml-2 text-[11px] text-white/35">{pick.reading}</span>
               </div>
               <p className="mt-4 max-w-xl text-sm md:text-base text-white/70 leading-relaxed">
@@ -323,13 +323,13 @@ const StoreScreen: React.FC<Props> = ({ kind, language, life, calendar, onClose,
                 <button
                   onClick={tab === 'buy' ? doBuy : doSell}
                   disabled={tab === 'buy' ? !canBuy : !(pick.owned && pick.owned > 0)}
-                  className={`px-8 py-3 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
+                  className={`px-8 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all ${
                     (tab === 'buy' ? canBuy : (pick.owned || 0) > 0)
-                      ? 'bg-yellow-400 text-black hover:bg-white'
+                      ? 'bg-pink-400 text-black hover:bg-white'
                       : 'bg-white/10 text-white/30 cursor-not-allowed'
                   }`}
                 >
-                  <span className="block transform skew-x-12">
+                  <span className="block">
                     {tab === 'buy'
                       ? (canBuy ? (en ? `Buy · ${yen(pick.price)}` : `买下 · ${yen(pick.price)}`)
                                : (pick.id === POT_ITEM && life.plots.length >= MAX_PLOTS

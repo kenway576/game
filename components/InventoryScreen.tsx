@@ -37,7 +37,7 @@ const yen = (n: number) => '¥' + n.toLocaleString('ja-JP');
 // 每一类给一个色，选中和角标都跟着它走。
 // 颜色是有分工的：黄色只留给纪念品——它们是唯一不能卖也不会消耗的东西。
 const KIND_COLOR: Record<ItemKind, { text: string; bg: string; border: string }> = {
-  keepsake: { text: 'text-yellow-300', bg: 'bg-yellow-400', border: 'border-yellow-400/60' },
+  keepsake: { text: 'text-pink-200', bg: 'bg-pink-400', border: 'border-pink-300/60' },
   fish:     { text: 'text-cyan-300',   bg: 'bg-cyan-400',   border: 'border-cyan-400/60' },
   crop:     { text: 'text-lime-300',   bg: 'bg-lime-400',   border: 'border-lime-400/60' },
   seed:     { text: 'text-amber-300',  bg: 'bg-amber-400',  border: 'border-amber-400/60' },
@@ -82,11 +82,11 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
         key={id}
         onClick={() => { audioManager.playSfx('page'); setFilter(id); setPick(null); }}
         disabled={n === 0}
-        className={`relative px-3 md:px-4 py-1.5 transform -skew-x-12 transition-all duration-200 ${
-          on ? 'bg-yellow-400 text-black' : n ? 'bg-black/60 text-white/60 hover:text-white hover:bg-white/10' : 'bg-black/30 text-white/20 cursor-not-allowed'
+        className={`relative px-3 md:px-4 py-1.5 rounded-xl transition-all duration-200 ${
+          on ? 'bg-pink-400 text-black' : n ? 'bg-black/60 text-white/60 hover:text-white hover:bg-white/10' : 'bg-black/30 text-white/20 cursor-not-allowed'
         } border ${on ? 'border-yellow-300' : 'border-white/15'}`}
       >
-        <span className="block transform skew-x-12 text-[10px] md:text-[11px] font-black uppercase tracking-widest whitespace-nowrap">
+        <span className="block text-[10px] md:text-[11px] font-black uppercase tracking-widest whitespace-nowrap">
           {label}
           <span className={`ml-1.5 font-mono ${on ? 'text-black/50' : 'text-white/30'}`}>{n}</span>
         </span>
@@ -106,12 +106,12 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
       />
       {/* 这块红是给左边那列垫底的。宽度要盖过整屏：只盖 70vw 的话，
           斜切的右边缘会在屏幕中间留下一道竖着的亮边，看着像没渲染完。 */}
-      <div className="pointer-events-none absolute -left-40 -right-40 top-0 bottom-0 bg-gradient-to-r from-rose-700/20 via-rose-700/8 to-transparent transform -skew-x-12" />
+      <div className="pointer-events-none absolute -left-40 -right-40 top-0 bottom-0 bg-gradient-to-r from-rose-700/20 via-rose-700/8 to-transparent rounded-xl" />
 
       {/* 顶栏 */}
       <div className="relative flex items-center justify-between gap-3 px-4 md:px-6 py-3 border-b border-white/10 shrink-0">
-        <div className="bg-yellow-400 text-black px-4 py-1.5 transform -skew-x-12 shadow-[6px_6px_0_rgba(0,0,0,0.6)]">
-          <span className="block transform skew-x-12 text-[11px] md:text-sm font-black tracking-widest">
+        <div className="bg-pink-400 text-black px-4 py-1.5 rounded-xl shadow-xl">
+          <span className="block text-[11px] md:text-sm font-black tracking-widest">
             {en ? 'WHAT YOU HAVE' : '持ち物'}
             <span className="ml-2 text-black/45 font-mono text-[10px]">{all.length}</span>
           </span>
@@ -119,9 +119,9 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
         <div className="hidden sm:block text-[11px] font-mono text-white/35">{yen(life.yen)}</div>
         <button
           onClick={() => { audioManager.playSfx('click'); onClose(); }}
-          className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+          className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
         >
-          <span className="block transform skew-x-12">{en ? '◀ Back' : '◀ 返回'}</span>
+          <span className="block">{en ? '◀ Back' : '◀ 返回'}</span>
         </button>
       </div>
 
@@ -147,13 +147,13 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
                 key={r.item.key}
                 onClick={() => choose(r.item.key)}
                 style={{ animationDelay: `${Math.min(i, 20) * 24}ms` }}
-                className={`group w-full mb-1.5 flex items-center gap-3 pl-3 pr-3 py-2 transform -skew-x-12 border transition-all duration-200 animate-in fade-in slide-in-from-left-6 fill-mode-backwards ${
+                className={`group w-full mb-1.5 flex items-center gap-3 pl-3 pr-3 py-2 rounded-xl border transition-all duration-200 animate-in fade-in slide-in-from-left-6 fill-mode-backwards ${
                   on
-                    ? `bg-white text-black ${c.border} translate-x-2 shadow-[6px_6px_0_rgba(0,0,0,0.5)]`
+                    ? `bg-white text-black ${c.border} translate-x-2 shadow-xl`
                     : 'bg-black/55 border-white/10 hover:bg-black/80 hover:translate-x-1'
                 }`}
               >
-                <span className="block transform skew-x-12 flex items-center gap-3 w-full min-w-0">
+                <span className="block flex items-center gap-3 w-full min-w-0">
                   <span className={`w-1.5 self-stretch shrink-0 ${on ? c.bg : 'bg-white/10'}`} />
                   <ItemIcon id={r.item.iconId} emoji={r.item.emoji} size={30} className="shrink-0" />
                   <span className="min-w-0 flex-1 text-left">
@@ -181,8 +181,8 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
           {sel && (
             <div key={sel.item.key} className="p-5 md:p-8 animate-in fade-in slide-in-from-bottom-3 duration-300">
               <div className="flex items-start gap-4 md:gap-6">
-                <div className={`shrink-0 w-20 h-20 md:w-28 md:h-28 flex items-center justify-center bg-black/60 border-2 transform -skew-x-6 ${KIND_COLOR[sel.item.kind].border}`}>
-                  <span className="block transform skew-x-6">
+                <div className={`shrink-0 w-20 h-20 md:w-28 md:h-28 flex items-center justify-center bg-black/60 border-2 rounded-2xl ${KIND_COLOR[sel.item.kind].border}`}>
+                  <span className="block">
                     <ItemIcon id={sel.item.iconId} emoji={sel.item.emoji} size={64} />
                   </span>
                 </div>
@@ -193,7 +193,7 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
                   <h2 className="mt-1 text-2xl md:text-4xl font-black text-white leading-tight">
                     {en ? sel.item.nameEn : sel.item.nameZh}
                   </h2>
-                  <p className="mt-0.5 text-sm md:text-lg font-mono text-yellow-400/85">
+                  <p className="mt-0.5 text-sm md:text-lg font-mono text-pink-300/85">
                     {sel.item.nameJp}
                     <span className="ml-2 text-[10px] md:text-xs text-white/35">{sel.item.reading}</span>
                   </p>
@@ -221,7 +221,7 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
                   </span>
                 ) : null}
                 {sel.item.kind === 'keepsake' && (
-                  <span className="text-[11px] px-2.5 py-1 border border-yellow-400/50 text-yellow-300/90">
+                  <span className="text-[11px] px-2.5 py-1 border border-pink-300/50 text-pink-200/90">
                     {en ? 'Not for selling' : '这个不卖'}
                   </span>
                 )}
@@ -229,9 +229,9 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
 
               {/* 挂着生词的东西顺手教一个 */}
               {sel.item.word && (
-                <div className="mt-6 inline-flex items-baseline gap-3 bg-black/60 border-l-4 border-yellow-400 px-4 py-2.5">
+                <div className="mt-6 inline-flex items-baseline gap-3 bg-black/60 border-l-4 border-pink-300 px-4 py-2.5">
                   <span className="text-lg md:text-2xl font-black text-white">{sel.item.word.jp}</span>
-                  <span className="text-[11px] font-mono text-yellow-400/80">{sel.item.word.reading}</span>
+                  <span className="text-[11px] font-mono text-pink-300/80">{sel.item.word.reading}</span>
                   <span className="text-xs md:text-sm text-white/65">
                     {en ? sel.item.word.en : sel.item.word.zh}
                   </span>
@@ -244,9 +244,9 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
                 <div className="mt-6">
                   <button
                     onClick={() => { audioManager.playSfx('page'); onAction?.(sel.item.action!); }}
-                    className="bg-yellow-400 hover:bg-white text-black px-5 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+                    className="bg-pink-400 hover:bg-white text-black px-5 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
                   >
-                    <span className="block transform skew-x-12">
+                    <span className="block">
                       {sel.item.action === 'map'
                         ? (en ? 'Spread it out' : '摊开来看')
                         : (en ? 'Read it' : '翻开读')}
@@ -259,9 +259,9 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
                 <div className="mt-6">
                   <button
                     onClick={() => { audioManager.playSfx('page'); setZoom(true); }}
-                    className="bg-yellow-400 hover:bg-white text-black px-5 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+                    className="bg-pink-400 hover:bg-white text-black px-5 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
                   >
-                    <span className="block transform skew-x-12">{en ? 'Take a look' : '拿出来看看'}</span>
+                    <span className="block">{en ? 'Take a look' : '拿出来看看'}</span>
                   </button>
                 </div>
               )}
@@ -279,9 +279,9 @@ const InventoryScreen: React.FC<Props> = ({ language, life, storyFlags, onAction
             <img src={sel.item.image} alt="" className="w-full border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.7)]" />
             <button
               onClick={() => { audioManager.playSfx('click'); setZoom(false); }}
-              className="mt-4 bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-5 py-2 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+              className="mt-4 bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-5 py-2 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
             >
-              <span className="block transform skew-x-12">{en ? 'Put it away' : '收起来'}</span>
+              <span className="block">{en ? 'Put it away' : '收起来'}</span>
             </button>
           </div>
         </div>

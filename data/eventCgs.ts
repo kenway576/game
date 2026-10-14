@@ -126,7 +126,14 @@ export const EVENT_CGS: EventCgDef[] = [
     'Someone asks "and next year?", and the cards stop in mid-air.', '「じゃあ、来年は？」'),
   ev('year_end', '修了式', 'Closing Ceremony', '课桌上的刻痕', 'The Scratch on the Desk',
     '第二个月手滑划的那道痕，一直没有人修。',
-    'The scratch you made by accident in your second month. Nobody ever fixed it.')
+    'The scratch you made by accident in your second month. Nobody ever fixed it.'),
+  // ---- 宿敌线（story/rivalStory.ts 的 eventKai） ----
+  ev('rival_speech', '宿敌 · 第五章', 'Rival · Chapter 5', 'フェンス', 'Fence',
+    '他的题目只有两个字。讲台上的灯很亮，他的手还在抖。',
+    'His title is a single word. The stage lights are very bright, and his hands are still shaking.', '「フェンス」'),
+  ev('rival_fence', '宿敌 · 第六章', 'Rival · Chapter 6', '铁丝网的那一边', 'The Other Side of the Fence',
+    '宜野湾的黄昏。铁丝网很长，草地修剪得很整齐，另一边有他六岁以前的父亲。',
+    'Dusk in Ginowan. The fence is very long, the lawn neatly mown, and on the far side is the father he had until he was six.')
 ];
 
 export const eventCgUrl = (id: string) => `/images/cg/${id}.webp`;

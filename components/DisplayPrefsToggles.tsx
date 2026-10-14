@@ -12,13 +12,13 @@ const DisplayPrefsToggles: React.FC<{ en: boolean }> = ({ en }) => {
         return (
           <div key={r.key} className="flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <div className="text-xs md:text-sm text-white font-bold">{en ? r.labelEn : r.labelZh}</div>
-              <div className="text-[10px] text-white/40 leading-snug">{en ? r.descEn : r.descZh}</div>
+              <div className="font-ui text-xs md:text-sm text-[#1f2440] font-bold">{en ? r.labelEn : r.labelZh}</div>
+              <div className="text-[10px] text-[#5b6286]/80 leading-snug">{en ? r.descEn : r.descZh}</div>
             </div>
             <button
               onClick={() => { audioManager.playSfx('click'); toggleDisplayPref(r.key); }}
               data-sfx-silent
-              className={`shrink-0 px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-colors ${on ? 'bg-cyan-600/70 border-cyan-400 text-white' : 'bg-white/10 border-white/20 text-white/50'}`}
+              className={`shrink-0 !text-[10px] ${on ? 'ui-chip ui-chip-on' : 'ui-chip !text-[#1f2440]/45'}`}
             >
               {on ? 'ON' : 'OFF'}
             </button>

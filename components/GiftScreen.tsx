@@ -65,9 +65,9 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, fam
           <p className="text-white text-lg leading-relaxed">{en ? given.lineEn : given.lineZh}</p>
           <button
             onClick={() => { setGiven(null); setItemKey(null); setWho(null); onClose(); }}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black px-8 py-2.5 text-xs font-black tracking-widest transform -skew-x-12"
+            className="bg-pink-400 hover:bg-pink-300 text-black px-8 py-2.5 text-xs font-black tracking-widest rounded-xl"
           >
-            <span className="block transform skew-x-12">{en ? 'Close' : '收起来'}</span>
+            <span className="block">{en ? 'Close' : '收起来'}</span>
           </button>
         </div>
       </div>
@@ -78,7 +78,7 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, fam
     <div className="fixed inset-0 z-[120] bg-black/90 backdrop-blur-sm flex flex-col">
       <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
         <div>
-          <h2 className="text-2xl font-black italic tracking-tighter text-white -skew-x-12">
+          <h2 className="text-2xl font-black font-ui tracking-tighter text-white rounded-xl">
             {en ? 'GIVE SOMETHING' : '送点东西'}
           </h2>
           <p className="text-white/45 text-[11px] font-bold tracking-widest">
@@ -87,8 +87,8 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, fam
           </p>
         </div>
         <button onClick={onClose}
-          className="bg-white/5 hover:bg-white/10 text-white/70 border border-white/20 px-4 py-2 text-[11px] font-black tracking-widest transform -skew-x-12">
-          <span className="block transform skew-x-12">{en ? 'Back' : '返回'}</span>
+          className="bg-white/5 hover:bg-white/10 text-white/70 border border-white/20 px-4 py-2 text-[11px] font-black tracking-widest rounded-xl">
+          <span className="block">{en ? 'Back' : '返回'}</span>
         </button>
       </div>
 
@@ -109,7 +109,7 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, fam
                 onClick={() => { audioManager.playSfx('click'); setItemKey(r.item.key); }}
                 className={`w-full text-left px-3 py-2 border transition-all flex items-center gap-3 ${
                   itemKey === r.item.key
-                    ? 'bg-yellow-400/15 border-yellow-400/60'
+                    ? 'bg-pink-400/15 border-pink-300/60'
                     : 'bg-white/[0.03] border-white/10 hover:bg-white/[0.07]'}`}
               >
                 {r.item.iconId
@@ -180,12 +180,12 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, fam
         <button
           disabled={!itemKey || !who}
           onClick={hand}
-          className={`px-8 py-2.5 text-xs font-black tracking-widest transform -skew-x-12 ${
+          className={`px-8 py-2.5 text-xs font-black tracking-widest rounded-xl ${
             itemKey && who
-              ? 'bg-yellow-400 hover:bg-yellow-300 text-black'
+              ? 'bg-pink-400 hover:bg-pink-300 text-black'
               : 'bg-white/5 text-white/25 cursor-not-allowed'}`}
         >
-          <span className="block transform skew-x-12">{en ? 'Hand it over' : '递过去'}</span>
+          <span className="block">{en ? 'Hand it over' : '递过去'}</span>
         </button>
       </div>
     </div>

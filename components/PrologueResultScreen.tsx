@@ -54,12 +54,12 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
 
         {/* ---------- 标题 ---------- */}
         <div className="animate-in slide-in-from-bottom-6 duration-700">
-          <div className="inline-block bg-red-600 px-5 py-1 transform -skew-x-12 shadow-[6px_6px_0px_rgba(0,0,0,0.7)]">
-            <span className="block transform skew-x-12 text-[11px] md:text-xs font-black uppercase tracking-[0.35em] text-white">
+          <div className="inline-block bg-red-600 px-5 py-1 rounded-xl shadow-xl">
+            <span className="block text-[11px] md:text-xs font-black uppercase tracking-[0.35em] text-white">
               {en ? 'Chapter 0 · Cleared' : '第 0 章 · 通关'}
             </span>
           </div>
-          <h1 className="mt-4 text-3xl md:text-6xl font-black italic text-white tracking-tight leading-none">
+          <h1 className="mt-4 text-3xl md:text-6xl font-black font-ui text-white tracking-tight leading-none">
             {en ? 'Day of the Sea Breeze' : '海风起航之日'}
           </h1>
           <p className="mt-3 text-sm md:text-base text-white/50 italic">
@@ -76,7 +76,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
         {/* ---------- 五维属性 ---------- */}
         <section className="bg-black/60 border-2 border-white/15 backdrop-blur-sm p-5 md:p-7 animate-in slide-in-from-bottom-6 duration-700 delay-100">
           <div className="flex items-baseline justify-between mb-5">
-            <h2 className="text-base md:text-xl font-black italic text-yellow-400 tracking-wide">
+            <h2 className="text-base md:text-xl font-black font-ui text-pink-300 tracking-wide">
               {en ? 'WHO YOU BECAME' : '你把自己养成了什么样的人'}
             </h2>
             <span className="text-[11px] md:text-sm text-white/40 font-black tabular-nums">
@@ -131,7 +131,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
         {/* ---------- 遇见的人 ---------- */}
         {encounters.length > 0 && (
           <section className="bg-black/60 border-2 border-sky-400/25 backdrop-blur-sm p-5 md:p-7 animate-in slide-in-from-bottom-6 duration-700 delay-200">
-            <h2 className="text-base md:text-xl font-black italic text-sky-300 tracking-wide mb-5">
+            <h2 className="text-base md:text-xl font-black font-ui text-sky-300 tracking-wide mb-5">
               {en ? 'WHO YOU MET' : '你遇见的人'}
             </h2>
             <div className="flex flex-col gap-4">
@@ -184,7 +184,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
         {/* ---------- 关键选择 ---------- */}
         {choices.length > 0 && (
           <section className="bg-black/60 border-2 border-white/15 backdrop-blur-sm p-5 md:p-7 animate-in slide-in-from-bottom-6 duration-700 delay-300">
-            <h2 className="text-base md:text-xl font-black italic text-white/90 tracking-wide mb-4">
+            <h2 className="text-base md:text-xl font-black font-ui text-white/90 tracking-wide mb-4">
               {en ? 'WHAT YOU DID' : '你做过的选择'}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2.5">
@@ -243,9 +243,9 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
           </p>
           <button
             onClick={onContinue}
-            className="group relative bg-red-600 hover:bg-yellow-400 text-white hover:text-black border-4 border-black px-12 md:px-20 py-4 md:py-5 font-black italic text-lg md:text-2xl tracking-[0.2em] transform -skew-x-12 shadow-[10px_10px_0px_rgba(0,0,0,0.7)] active:translate-y-1.5 active:shadow-[4px_4px_0px_rgba(0,0,0,0.7)] transition-all"
+            className="group relative bg-red-600 hover:bg-pink-400 text-white hover:text-black border-4 border-black px-12 md:px-20 py-4 md:py-5 font-black font-ui text-lg md:text-2xl tracking-[0.2em] rounded-xl shadow-xl active:translate-y-1.5 active:shadow-xl transition-all"
           >
-            <span className="block transform skew-x-12">
+            <span className="block">
               {en ? 'CHAPTER 1 ▶' : '进入第 1 章 ▶'}
             </span>
           </button>

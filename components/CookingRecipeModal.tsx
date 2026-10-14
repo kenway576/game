@@ -61,7 +61,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
       <div className="fixed inset-0 z-[170] bg-black/90 flex items-center justify-center p-6">
         <div className="text-center space-y-4">
           <p className="text-white">{en ? recipe.nameEn : recipe.nameZh}</p>
-          <button onClick={() => onFinish('success')} className="bg-yellow-400 text-black px-8 py-2 font-black text-xs">
+          <button onClick={() => onFinish('success')} className="bg-pink-400 text-black px-8 py-2 font-black text-xs">
             {en ? 'Done' : '做好了'}
           </button>
         </div>
@@ -109,7 +109,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
       <div className="fixed inset-0 z-[170] bg-black/90 backdrop-blur-sm flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-5 animate-in fade-in zoom-in-95 duration-300">
           <div className="text-6xl">{result === 'failed' ? '💨' : recipe.emoji}</div>
-          <h3 className={`text-2xl font-black italic ${result === 'perfect' ? 'text-amber-300' : result === 'success' ? 'text-white' : 'text-rose-300'}`}>
+          <h3 className={`text-2xl font-black font-ui ${result === 'perfect' ? 'text-amber-300' : result === 'success' ? 'text-white' : 'text-rose-300'}`}>
             {result === 'perfect'
               ? (en ? 'Perfect!' : '完美出锅！')
               : result === 'success'
@@ -153,18 +153,18 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => { audioManager.playSfx('confirm'); onFinish(result); }}
-              className="px-10 py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-black text-sm tracking-widest transform -skew-x-12"
+              className="px-10 py-3 bg-pink-400 hover:bg-pink-300 text-black font-black text-sm tracking-widest rounded-xl"
             >
-              <span className="block transform skew-x-12">
+              <span className="block">
                 {result === 'failed' ? (en ? 'Clean up' : '收拾灶台') : (en ? 'Eat it hot' : '趁热吃')}
               </span>
             </button>
             {result !== 'failed' && (
               <button
                 onClick={() => { audioManager.playSfx('confirm'); onFinish(result, true); }}
-                className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/25 text-white/85 font-black text-sm tracking-widest transform -skew-x-12"
+                className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/25 text-white/85 font-black text-sm tracking-widest rounded-xl"
               >
-                <span className="block transform skew-x-12">🍱 {en ? 'Pack it in a box' : '装进盒子带走'}</span>
+                <span className="block">🍱 {en ? 'Pack it in a box' : '装进盒子带走'}</span>
               </button>
             )}
           </div>
@@ -252,7 +252,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
                       ? 'opacity-25 border-white/5 bg-white/[0.02]'
                       : shake === t.id
                         ? 'border-rose-400 bg-rose-500/20 animate-[shake_0.4s]'
-                        : 'border-white/15 bg-white/[0.05] hover:bg-white/[0.1] hover:border-yellow-400/50'}`}>
+                        : 'border-white/15 bg-white/[0.05] hover:bg-white/[0.1] hover:border-pink-300/50'}`}>
                   <span className="text-xl shrink-0">{t.emoji}</span>
                   <span className="text-white text-sm font-bold">{en ? t.en : t.zh}</span>
                 </button>

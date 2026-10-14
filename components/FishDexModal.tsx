@@ -47,9 +47,9 @@ const FishDexModal: React.FC<Props> = ({ language, life, onClose }) => {
             <span className="ml-3 text-[11px] font-mono text-white/40">魚図鑑 さかなずかん</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm font-black text-yellow-400 tabular-nums">{owned} / {list.length}</span>
+            <span className="text-sm font-black text-pink-300 tabular-nums">{owned} / {list.length}</span>
             <button onClick={() => { audioManager.playSfx('click'); onClose(); }}
-              className="w-8 h-8 border border-white/25 text-white/70 hover:bg-yellow-400 hover:text-black transition-all font-black">✕</button>
+              className="w-8 h-8 border border-white/25 text-white/70 hover:bg-pink-400 hover:text-black transition-all font-black">✕</button>
           </div>
         </div>
 

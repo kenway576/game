@@ -119,9 +119,9 @@ const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, o
         </div>
         <button
           onClick={() => { audioManager.playSfx('click'); onClose(); }}
-          className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+          className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
         >
-          <span className="block transform skew-x-12">{en ? '◀ Back' : '◀ 返回'}</span>
+          <span className="block">{en ? '◀ Back' : '◀ 返回'}</span>
         </button>
       </div>
 
@@ -223,10 +223,10 @@ const KitchenScreen: React.FC<Props> = ({ language, life, storyFlags, onClose, o
 
               <div className="mt-7">
                 <button onClick={cook} disabled={!ok}
-                  className={`px-9 py-3 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
+                  className={`px-9 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all ${
                     ok ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-black hover:brightness-110 shadow-[0_0_20px_rgba(245,158,11,0.4)]' : 'bg-white/10 text-white/30 cursor-not-allowed'
                   }`}>
-                  <span className="block transform skew-x-12">
+                  <span className="block">
                     {ok ? (en ? 'Read the recipe ▶' : '看菜谱，开始做 ▶') : (en ? 'Missing ingredients' : '材料不够')}
                   </span>
                 </button>

@@ -17,6 +17,9 @@ const arg = (n, d) => { const i = process.argv.indexOf(`--${n}`); return i > -1 
 const SRC = arg('src');
 const MODEL = arg('model', 'veo-3.1-fast-generate-001');
 const SECONDS = Number(arg('seconds', 4));
+// 角色专属的演法（--act "..."）。通用那段只管'别乱动'，性格靠这一句：
+// 铃第一版没写，Veo 让她眨单眼、张嘴笑——一个安静的人被演成了卖萌。
+const ACT = arg('act', '');
 const KEY = process.env.GEMINI_API_KEY;
 const PROJECT = process.env.GEMINI_VERTEX_PROJECT || '389812341416';
 const LOC = 'us-central1';
@@ -52,7 +55,7 @@ const prompt = `A subtle, gentle idle animation of this anime character standing
 She breathes softly (chest and shoulders rise and fall slightly), blinks naturally once, and her long hair, hair ends and skirt sway very slightly as if in a soft breeze. A tiny natural weight shift.
 She does NOT walk, turn, wave, talk or change her pose, hands or expression. Keep her face, outfit, colours and art style exactly the same as the image in every frame; flat 2D anime cel shading, crisp lineart.
 The camera is completely static: no zoom, no pan, no camera movement. The background stays a perfectly flat, uniform solid green screen for the whole video, with no shadows, no light changes and no effects.
-The video ends in exactly the same pose as it starts, so it can loop seamlessly.`;
+The video ends in exactly the same pose as it starts, so it can loop seamlessly.${ACT ? '\n' + ACT : ''}`;
 
 // 2. 提交（首帧、尾帧都是同一张图）
 const base = `/v1/projects/${PROJECT}/locations/${LOC}/publishers/google/models/${MODEL}`;

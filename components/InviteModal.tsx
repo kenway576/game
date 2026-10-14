@@ -98,7 +98,7 @@ const InviteModal: React.FC<Props> = ({ language, calendar, flags, stamina, yen,
           <div className="flex items-center gap-4 min-w-0">
             {who && <Face id={who.id} className="w-14 h-14 rounded-full border-2 border-pink-300/60 shrink-0" />}
             <div className="min-w-0">
-              <span className="text-[10px] font-black tracking-[0.2em] text-black bg-pink-300 px-2 py-0.5 -skew-x-12">
+              <span className="text-[10px] font-black tracking-[0.2em] text-black bg-pink-300 px-2 py-0.5 rounded-xl">
                 {en ? 'INVITE' : '邀约'}
               </span>
               <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight italic mt-2">

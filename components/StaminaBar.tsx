@@ -18,12 +18,10 @@ const StaminaBar: React.FC<{ cur: number; en?: boolean; compact?: boolean }> = (
   const band = staminaBand(v);
 
   return (
-    <div className={`transform -skew-x-12 bg-black/80 backdrop-blur-md border border-white/15 ${
-      compact ? 'px-2.5 py-1.5' : 'px-3 md:px-3.5 py-2'
-    }`}>
-      <div className="transform skew-x-12 flex items-center gap-2 whitespace-nowrap">
+    <div className={`ui-chip ${compact ? '!px-2.5 !py-1.5' : '!py-2 md:!py-2.5'}`}>
+      <div className="flex items-center gap-2 whitespace-nowrap">
         <span className="text-[10px]">🔋</span>
-        <span className="relative block h-1.5 w-16 md:w-24 bg-white/12 overflow-hidden">
+        <span className="relative block h-1.5 w-16 md:w-24 bg-[#1f2440]/10 rounded-full overflow-hidden">
           <span
             className="absolute inset-y-0 left-0 transition-[width] duration-500"
             style={{ width: `${(v / STAMINA_MAX) * 100}%`, background: band.color }}
@@ -37,7 +35,7 @@ const StaminaBar: React.FC<{ cur: number; en?: boolean; compact?: boolean }> = (
         <span className="text-[10px] font-bold tracking-wider" style={{ color: band.color }}>
           {en ? band.en : band.zh}
         </span>
-        <span className="text-[9px] font-mono text-white/35">{v}</span>
+        <span className="text-[9px] font-mono text-[#5b6286]">{v}</span>
       </div>
     </div>
   );

@@ -10,6 +10,8 @@
 
 // 学校统一校服（所有学生角色共用）
 const UNIFORM = 'Japanese high school uniform: navy blue single-breasted blazer with two gold buttons, gold buttons on the cuffs, flap pockets, and a gold embroidered school crest on the left chest pocket; crisp white collared shirt; red ribbon bow tie at the collar; navy pleated skirt above the knee; black knee-high socks; brown penny loafers.';
+// 男生校服（同一所学校）：金城穿得不太守规矩——外套敞着、袖子挽起来、白运动鞋代替皮鞋
+const BOYS_UNIFORM = 'Japanese high school boys’ uniform of the same school: navy blue single-breasted blazer with two gold buttons and a gold embroidered school crest on the left chest pocket, worn OPEN with the sleeves pushed up to the forearms; crisp white collared shirt with the top button undone; a red necktie loosened slightly; navy slim trousers; plain white canvas sneakers (instead of the regulation loafers).';
 
 export const CARDS = [
   {
@@ -59,5 +61,11 @@ export const CARDS = [
     ref: 'public/images/characters/inari/school_neutral.webp',
     identity: 'Inari, a playful thousand-year-old fox goddess disguised as a student, looks about 17. Very long straight orange-red hair, a golden knotted-cord hair ornament with teal tassels on one side, upright orange fox ears with white inner fur, nine large fluffy golden-orange fox tails with cream tips fanning out behind her, golden eyes, a sly knowing smile.',
     uniform: UNIFORM
+  },
+  // ---- 宿敌（男，不能自由对话，只在剧情里出现）：冲绳来的转学生，冲绳人母亲 × 美军父亲 ----
+  {
+    id: 'kai', outfit: 'school_blazer',
+    identity: 'Kai Kinjo, a 16-year-old BOY, a confident, competitive transfer student from Okinawa, of mixed Okinawan and American heritage. Tall (a head taller than the girls), lean athletic build with broad shoulders and long legs, clearly male. Warm light-brown skin. Short dark-brown curly hair: neatly faded short on the sides, a mass of springy tight curls on top that fall a little over his forehead. Strong straight dark eyebrows, sharp hazel-green eyes, a defined jaw, a confident lopsided grin. A thin silver ball chain around his neck with a military-style dog tag (blank, no text) hanging just outside his shirt. A plain black wristwatch with an olive canvas strap on his left wrist. Handsome teenage anime rival, masculine but youthful, never bulky or adult-looking.',
+    uniform: BOYS_UNIFORM
   }
 ];

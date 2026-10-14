@@ -106,16 +106,16 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 backdrop-blur-md p-4" onClick={onSkip}>
       <div
-        className="w-full max-w-3xl bg-zinc-950/95 border-2 border-yellow-500/40 rounded-xl shadow-[0_0_80px_rgba(234,179,8,0.18)] max-h-[92vh] overflow-y-auto"
+        className="w-full max-w-3xl bg-zinc-950/95 border-2 border-pink-300/40 rounded-xl shadow-[0_0_80px_rgba(234,179,8,0.18)] max-h-[92vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* 标题 */}
-        <div className="px-6 md:px-8 pt-6 pb-5 border-b border-yellow-500/25">
+        <div className="px-6 md:px-8 pt-6 pb-5 border-b border-pink-300/25">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[10px] font-black tracking-[0.2em] text-black bg-yellow-400 px-2 py-0.5 -skew-x-12">
+            <span className="text-[10px] font-black tracking-[0.2em] text-black bg-pink-400 px-2 py-0.5 rounded-xl">
               {kindTag}
             </span>
-            <span className="text-[10px] font-black tracking-[0.2em] text-yellow-300 border border-yellow-400/50 px-2 py-0.5 -skew-x-12">
+            <span className="text-[10px] font-black tracking-[0.2em] text-pink-200 border border-pink-300/50 px-2 py-0.5 rounded-xl">
               {slotTag}
             </span>
             <span className="text-white/40 text-xs font-mono">
@@ -125,7 +125,7 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight italic">
             {heading}
           </h2>
-          {label && <p className="text-yellow-400/80 text-sm font-bold mt-1">{label}</p>}
+          {label && <p className="text-pink-300/80 text-sm font-bold mt-1">{label}</p>}
           <p className="text-white/45 text-xs mt-2 leading-relaxed">{mood}</p>
         </div>
 
@@ -145,8 +145,8 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
                       blocked
                         ? 'bg-white/[0.02] border-white/10 opacity-55 cursor-not-allowed'
                         : a.primary
-                          ? 'bg-yellow-400/15 border-yellow-400/60 hover:bg-yellow-400/25 hover:-translate-y-0.5'
-                          : 'bg-black/50 border-white/12 hover:border-yellow-400/60 hover:bg-yellow-400/10 hover:-translate-y-0.5'
+                          ? 'bg-pink-400/15 border-pink-300/60 hover:bg-pink-400/25 hover:-translate-y-0.5'
+                          : 'bg-black/50 border-white/12 hover:border-pink-300/60 hover:bg-pink-400/10 hover:-translate-y-0.5'
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -177,14 +177,14 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
                 <button
                   key={p.id}
                   onClick={() => onPick(p)}
-                  className="group text-left bg-black/50 hover:bg-yellow-400/10 border border-white/12 hover:border-yellow-400/60 rounded-lg p-4 transition-all hover:-translate-y-0.5"
+                  className="group text-left bg-black/50 hover:bg-pink-400/10 border border-white/12 hover:border-pink-300/60 rounded-lg p-4 transition-all hover:-translate-y-0.5"
                 >
                   <div className="flex items-start gap-3">
                     <span className="text-2xl leading-none shrink-0">{p.icon}</span>
                     <div className="min-w-0">
                       <div className="text-white font-black text-sm tracking-wide mb-1 flex items-center gap-2">
                         {en ? p.titleEn : p.titleZh}
-                        <span className="text-[9px] font-bold tracking-wider text-yellow-400/70 border border-yellow-400/30 px-1.5 py-px rounded">
+                        <span className="text-[9px] font-bold tracking-wider text-pink-300/70 border border-pink-300/30 px-1.5 py-px rounded">
                           {p.wholeDay ? (en ? 'ALL DAY' : '一整天') : (en ? 'HALF DAY' : '半天')}
                         </span>
                       </div>

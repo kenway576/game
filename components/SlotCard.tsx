@@ -80,13 +80,13 @@ const SlotCard: React.FC<Props> = ({ calendar, language, onDone }) => {
       }`}
       onClick={onDone}
     >
-      <div className="max-w-lg w-full bg-black/85 backdrop-blur-md border-l-4 border-yellow-400 px-5 py-3.5 shadow-[4px_4px_0_rgba(0,0,0,0.5)] transform -skew-x-6 cursor-pointer">
-        <div className="transform skew-x-6">
+      <div className="ui-panel max-w-lg w-full px-6 py-4 cursor-pointer">
+        <div>
           <div className="flex items-baseline gap-3">
-            <span className="text-yellow-400 text-lg font-black italic tracking-tight">{copy.tag}</span>
-            <span className="text-white/40 text-xs font-mono">{copy.time}</span>
+            <span className="font-ui text-rose-500 text-lg font-black tracking-wide">{copy.tag}</span>
+            <span className="text-[#5b6286] text-xs font-mono">{copy.time}</span>
           </div>
-          <p className="text-white/75 text-[13px] leading-relaxed mt-1">{copy.line}</p>
+          <p className="font-story text-[#2b3152] text-[13px] leading-relaxed mt-1">{copy.line}</p>
         </div>
       </div>
     </div>

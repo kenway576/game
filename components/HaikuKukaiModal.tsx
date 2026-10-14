@@ -365,7 +365,7 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
       <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center">
         <img src={REI[rate >= 0.8 ? 'smile' : rate >= 0.5 ? 'neutral' : 'thinking']} alt="" className="h-48 md:h-64 object-contain drop-shadow-2xl" draggable={false} />
         <p className="text-amber-300 text-[11px] font-black tracking-[0.3em]">{hy ? (en ? 'HYAKUNIN ISSHU' : '百人一首') : (en ? 'HAIKU' : '俳句づくり')}</p>
-        <h3 className="text-4xl font-black italic">
+        <h3 className="text-4xl font-black font-ui">
           {hy ? `${r.score} / ${r.total}` : `${r.score} ${en ? 'pts' : '点'}`}
         </h3>
         <p className="text-white/80 max-w-md text-sm leading-relaxed">
@@ -378,8 +378,8 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
               : (r.famous ? (en ? '...You reached the very same verse as Bashō.' : '……居然拼出了和芭蕉一样的句子。') : rate >= 0.8 ? (en ? 'You have a poet\'s touch.' : '有诗人的天分呢。') : (en ? 'Think again about the season word and the cutting word.' : '再留意一下季语和切れ字。'))}
           </span>
         </p>
-        <button onClick={() => { audioManager.playSfx('confirm'); onFinish(r); }} className="bg-amber-400 hover:bg-amber-300 text-black px-10 py-3 text-xs font-black tracking-widest transform -skew-x-12">
-          <span className="block transform skew-x-12">{en ? 'Done' : '收工'}</span>
+        <button onClick={() => { audioManager.playSfx('confirm'); onFinish(r); }} className="bg-amber-400 hover:bg-amber-300 text-black px-10 py-3 text-xs font-black tracking-widest rounded-xl">
+          <span className="block">{en ? 'Done' : '收工'}</span>
         </button>
       </div>
     );

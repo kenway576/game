@@ -23,13 +23,16 @@ export const EMOTIONS = {
   miyuki: ['neutral', 'happy', 'love', 'shy', 'sad', 'angry', 'thinking'],
   sora:   ['neutral', 'happy', 'cool', 'shy', 'love', 'angry', 'sad'],
   nao:    ['neutral', 'happy', 'curious', 'shy', 'love', 'angry', 'sad'],
-  maki:   ['neutral', 'smug', 'laugh', 'pout', 'shy', 'angry', 'happy']
+  maki:   ['neutral', 'smug', 'laugh', 'pout', 'shy', 'angry', 'happy'],
+  // 宿敌：不害羞、不撒娇。能露出来的软一点的表情只有 sad（只在冲绳那一段）
+  kai:    ['neutral', 'smug', 'happy', 'laugh', 'angry', 'surprised', 'thinking', 'sad']
 };
 
 // 底图（neutral）那张脸的样子：带一点她的性格，但仍然是"平常的脸"
 // 模型容易画偏的地方，单独强调。空：短发、运动、穿裤子的衣服，模型会直接画成男生
 export const IDENTITY_EXTRA = {
-  sora: 'IMPORTANT: Sora is a teenage GIRL, a sporty tomboy but unmistakably a girl. Draw a clearly feminine anime girl face exactly like the reference: large bright eyes with long lashes, soft rounded jaw and chin, small nose, soft lips. Slim, athletic FEMALE body: narrow waist, slightly wider hips, a modest but visible chest, slender limbs. She must never look like a boy, even in trousers or a T-shirt.'
+  sora: 'IMPORTANT: Sora is a teenage GIRL, a sporty tomboy but unmistakably a girl. Draw a clearly feminine anime girl face exactly like the reference: large bright eyes with long lashes, soft rounded jaw and chin, small nose, soft lips. Slim, athletic FEMALE body: narrow waist, slightly wider hips, a modest but visible chest, slender limbs. She must never look like a boy, even in trousers or a T-shirt.',
+  kai: 'IMPORTANT: Kai is a teenage BOY (about 16), clearly male: a masculine anime boy face with sharper eyes, thicker straight eyebrows, a defined jaw and chin, an Adam’s apple, flat chest, broad shoulders, narrow hips, large hands. Light-brown skin and short tight curly dark-brown hair exactly as in the reference. Handsome rival-character design, youthful, not muscular-bulky, not adult.'
 };
 
 export const NEUTRAL_FACE = {
@@ -40,7 +43,8 @@ export const NEUTRAL_FACE = {
   miyuki: 'a gentle, warm neutral look: soft kind eyes, a faint calm smile',
   sora:   'a relaxed, easygoing neutral look: eyes open and confident, mouth closed in a casual line',
   nao:    'a soft, sweet neutral look: round gentle eyes, mouth closed in a small relaxed smile',
-  maki:   'a cheeky neutral look: eyes lively, a tiny confident smirk showing the small fang'
+  maki:   'a cheeky neutral look: eyes lively, a tiny confident smirk showing the small fang',
+  kai:    'a confident, relaxed neutral look: steady sharp gaze, eyebrows level, the corner of the mouth very slightly lifted in a self-assured half-smile'
 };
 
 export const OUTFITS = {
@@ -345,6 +349,17 @@ export const OUTFITS = {
     swim: {
       outfit: 'Swimwear: a white bikini with a pink star and pixel heart print, side-tie strings, a beaded friendship anklet, her pink hair in two buns. Legwear: none. Footwear: barefoot.',
       gesture: 'both hands on her hips, grinning'
+    }
+  },
+  // ================= 金城カイ（宿敌）：橄榄绿 + 白，父亲留下的东西（狗牌、旧军外套） =================
+  kai: {
+    school: {
+      outfit: 'Japanese high school boys’ uniform: navy blue single-breasted blazer with two gold buttons and a gold embroidered school crest on the left chest pocket, worn OPEN with the sleeves pushed up to the forearms; crisp white collared shirt with the top button undone; a red necktie, slightly loosened; navy slim trousers; a thin silver ball chain with a blank military dog tag outside the shirt; a black wristwatch with an olive canvas strap. Legwear: white ankle socks. Footwear: plain white canvas sneakers.',
+      gesture: 'standing tall with his weight on one leg, one hand in his trouser pocket, the other hanging relaxed at his side, chin slightly raised'
+    },
+    casual: {
+      outfit: 'Off-duty outfit: an oversized faded olive-green military-style field jacket that used to be his father’s (sleeves a little too long, worn open, a blank rectangle where a name tape was removed), a plain white crew-neck T-shirt, the silver dog-tag chain, black slim jeans, a black wristwatch with an olive canvas strap. Legwear: none visible. Footwear: white canvas high-top sneakers.',
+      gesture: 'both hands in the jacket pockets, shoulders relaxed, a slight lean back, confident'
     }
   }
 };

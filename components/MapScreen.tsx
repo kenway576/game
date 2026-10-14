@@ -143,7 +143,7 @@ const MapScreen: React.FC<Props> = ({
       <span
         key={i}
         className={`inline-block w-2.5 h-2.5 border ${
-          i < total - used ? 'bg-yellow-400 border-yellow-300' : 'border-white/30 bg-transparent'
+          i < total - used ? 'bg-pink-400 border-yellow-300' : 'border-white/30 bg-transparent'
         } ${cls}`}
       />
     ));
@@ -178,10 +178,10 @@ const MapScreen: React.FC<Props> = ({
     <div className="fixed inset-0 z-[120] bg-[#0b0b10] overflow-hidden select-none flex flex-col">
       {/* 顶栏 */}
       <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10 shrink-0">
-        <div className="bg-black/70 border border-white/20 px-4 py-1.5 transform -skew-x-12">
-          <span className="block transform skew-x-12 text-[11px] md:text-sm font-black text-white tracking-widest">
+        <div className="bg-black/70 border border-white/20 px-4 py-1.5 rounded-xl">
+          <span className="block text-[11px] md:text-sm font-black text-white tracking-widest">
             {en ? 'WHERE TO' : '去哪儿'}
-            <span className="ml-3 text-yellow-400/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
+            <span className="ml-3 text-pink-300/80 font-mono text-[10px] md:text-xs">{timeLabel}</span>
           </span>
         </div>
         {/* 今天放学后还剩多少时间，以及这个点还有几处能去。
@@ -201,9 +201,9 @@ const MapScreen: React.FC<Props> = ({
         </div>
         <button
           onClick={() => { audioManager.playSfx('click'); onClose(); }}
-          className="bg-black/70 hover:bg-yellow-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest transform -skew-x-12 transition-all"
+          className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all"
         >
-          <span className="block transform skew-x-12">{en ? '◀ Back' : '◀ 返回'}</span>
+          <span className="block">{en ? '◀ Back' : '◀ 返回'}</span>
         </button>
       </div>
 
@@ -218,7 +218,7 @@ const MapScreen: React.FC<Props> = ({
             return (
               <div key={d}>
                 <div className="sticky top-0 z-10 bg-[#0b0b10]/95 backdrop-blur-sm px-4 py-2 border-b border-white/10 flex items-baseline gap-2">
-                  <span className={`text-[11px] font-black tracking-widest ${anyOpen ? 'text-yellow-400' : 'text-white/25'}`}>
+                  <span className={`text-[11px] font-black tracking-widest ${anyOpen ? 'text-pink-300' : 'text-white/25'}`}>
                     {en ? label.en : label.zh}
                   </span>
                   <span className="text-[10px] font-mono text-white/25">{label.jp}</span>
@@ -236,10 +236,10 @@ const MapScreen: React.FC<Props> = ({
                       key={loc.id}
                       onClick={() => pick(loc)}
                       className={`w-full text-left px-4 py-2.5 border-b border-white/5 transition-colors flex items-center gap-2 ${
-                        active ? 'bg-yellow-400/15' : 'hover:bg-white/5'
+                        active ? 'bg-pink-400/15' : 'hover:bg-white/5'
                       }`}
                     >
-                      <span className={`w-1 self-stretch shrink-0 ${active ? 'bg-yellow-400' : 'bg-transparent'}`} />
+                      <span className={`w-1 self-stretch shrink-0 ${active ? 'bg-pink-400' : 'bg-transparent'}`} />
                       <span className="min-w-0 flex-1">
                         <span className={`block text-sm font-bold truncate ${
                           open ? (now && !tooLate ? 'text-white' : 'text-white/45') : 'text-white/30'
@@ -251,7 +251,7 @@ const MapScreen: React.FC<Props> = ({
                         </span>
                       </span>
                       {open && isNew(loc.id) && (
-                        <span className="shrink-0 text-[9px] font-black text-black bg-yellow-400 px-1.5 py-0.5 tracking-widest">NEW</span>
+                        <span className="shrink-0 text-[9px] font-black text-black bg-pink-400 px-1.5 py-0.5 tracking-widest">NEW</span>
                       )}
                       {has && (
                         <span className="shrink-0 w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_2px_rgba(244,63,94,0.6)]" />
@@ -307,7 +307,7 @@ const MapScreen: React.FC<Props> = ({
                   {selUnlocked ? (en ? selected.nameEn : selected.nameZh) : (en ? 'Not yet' : '还去不了')}
                 </h2>
                 {selUnlocked && (
-                  <span className="text-sm md:text-base font-mono text-yellow-400/80">
+                  <span className="text-sm md:text-base font-mono text-pink-300/80">
                     {selected.nameJp}
                     <span className="ml-2 text-[10px] text-white/40">{selected.reading}</span>
                   </span>
@@ -395,14 +395,14 @@ const MapScreen: React.FC<Props> = ({
                 if (!acts.length) return null;
                 return (
                   <div className="mt-4 space-y-2 max-w-2xl">
-                    <p className="text-[10px] text-yellow-400/80 font-black tracking-widest">{en ? 'THINGS TO DO HERE' : '在这儿能做的事'}</p>
+                    <p className="text-[10px] text-pink-300/80 font-black tracking-widest">{en ? 'THINGS TO DO HERE' : '在这儿能做的事'}</p>
                     {acts.map(a => {
                       const chk = checkActivity(a, { calendar, life, slotsLeft, met: metChars, flags: storyFlags });
                       return (
                         <button key={a.id} disabled={!chk.ok}
                           onClick={() => { if (chk.ok) { audioManager.playSfx('confirm'); markVisited(selected.id); onActivity(selected, a); } }}
                           className={`w-full text-left px-3 py-2.5 border flex items-center gap-3 transition-all ${
-                            chk.ok ? 'border-yellow-400/40 bg-yellow-400/[0.06] hover:bg-yellow-400/15' : 'border-white/10 bg-white/[0.02] opacity-60 cursor-not-allowed'}`}>
+                            chk.ok ? 'border-pink-300/40 bg-pink-400/[0.06] hover:bg-pink-400/15' : 'border-white/10 bg-white/[0.02] opacity-60 cursor-not-allowed'}`}>
                           <span className="text-2xl shrink-0">{a.emoji}</span>
                           <span className="min-w-0 flex-1">
                             <span className="block text-white text-sm font-black">{en ? a.titleEn : a.titleZh}</span>
@@ -413,7 +413,7 @@ const MapScreen: React.FC<Props> = ({
                               {!chk.ok && <span className="text-rose-300 ml-2">{en ? chk.en : chk.zh}</span>}
                             </span>
                           </span>
-                          {chk.ok && <span className="text-yellow-300 text-xs font-black shrink-0">{en ? 'Do it ▶' : '去 ▶'}</span>}
+                          {chk.ok && <span className="text-pink-200 text-xs font-black shrink-0">{en ? 'Do it ▶' : '去 ▶'}</span>}
                         </button>
                       );
                     })}
@@ -452,14 +452,14 @@ const MapScreen: React.FC<Props> = ({
                     audioManager.playSfx('confirm'); setConfirmSkip(false); onSkipAfternoon();
                   }}
                   onMouseLeave={() => setConfirmSkip(false)}
-                  className={`px-3 md:px-4 py-2.5 text-[11px] md:text-xs font-black tracking-wider transform -skew-x-12 border transition-all ${
+                  className={`px-3 md:px-4 py-2.5 text-[11px] md:text-xs font-black tracking-wider rounded-xl border transition-all ${
                     confirmSkip
                       ? 'bg-rose-500 border-rose-400 text-white'
                       : 'bg-black/60 border-rose-400/60 text-rose-200 hover:bg-rose-500/20'
                   }`}
                   title={en ? 'Skip the afternoon classes and leave school' : '下午的课不上了，直接出校门'}
                 >
-                  <span className="block transform skew-x-12 whitespace-nowrap">
+                  <span className="block whitespace-nowrap">
                     {confirmSkip
                       ? (en ? 'Really skip? Click again' : '真的翘课？再点一次')
                       : (en ? '🏃 Skip the afternoon' : '🏃 翘掉下午的课')}
@@ -469,9 +469,9 @@ const MapScreen: React.FC<Props> = ({
               {selUnlocked && selOpen && affordable(selected) && storySpots.includes(selected.id) && (
                 <button
                   onClick={() => go(true)}
-                  className="px-4 md:px-6 py-2.5 text-sm font-black uppercase tracking-wider transform -skew-x-12 bg-pink-500 hover:bg-pink-400 text-white shadow-lg shadow-pink-500/20 transition-all cursor-pointer"
+                  className="px-4 md:px-6 py-2.5 text-sm font-black uppercase tracking-wider rounded-xl bg-pink-500 hover:bg-pink-400 text-white shadow-lg shadow-pink-500/20 transition-all cursor-pointer"
                 >
-                  <span className="block transform skew-x-12">
+                  <span className="block">
                     {en ? '♥ Story ▶' : '♥ 专属剧情 ▶'}
                   </span>
                 </button>
@@ -479,13 +479,13 @@ const MapScreen: React.FC<Props> = ({
               <button
                 onClick={() => go(false)}
                 disabled={!selUnlocked || !selOpen || !affordable(selected)}
-                className={`px-6 md:px-10 py-2.5 text-sm font-black uppercase tracking-widest transform -skew-x-12 transition-all ${
+                className={`px-6 md:px-10 py-2.5 text-sm font-black uppercase tracking-widest rounded-xl transition-all ${
                   selUnlocked && selOpen && affordable(selected)
-                    ? 'bg-yellow-400 text-black hover:bg-white cursor-pointer'
+                    ? 'bg-pink-400 text-black hover:bg-white cursor-pointer'
                     : 'bg-white/10 text-white/30 cursor-not-allowed'
                 }`}
               >
-                <span className="block transform skew-x-12">
+                <span className="block">
                   {!selUnlocked
                     ? (en ? 'Locked' : '未解锁')
                     : !selOpen
