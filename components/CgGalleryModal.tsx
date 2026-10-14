@@ -77,6 +77,9 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+                    {isUnlocked && cg.video && (
+                      <span className="absolute top-2 right-2 z-10 text-[10px] font-black text-white bg-pink-500/90 rounded-full px-2 py-0.5 shadow">▶ ANIME</span>
+                    )}
                     <div className="relative z-10">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-sky-300 bg-black/60 px-2 py-0.5 rounded border border-sky-400/30">
                         {language === 'en' ? cg.chapterEn : cg.chapterZh}
@@ -200,12 +203,26 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
             onClick={() => setSelectedStoryCg(null)}
           >
             <div className="relative max-w-5xl w-full flex flex-col items-center gap-4" onClick={e => e.stopPropagation()}>
-              <img
-                src={selectedStoryCg.cgUrl}
-                alt={selectedStoryCg.titleZh}
-                className="w-full max-h-[75vh] object-contain rounded-lg border-2 border-sky-400/80 shadow-[0_0_50px_rgba(56,189,248,0.4)]"
-                onError={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.15'; }}
-              />
+              {selectedStoryCg.video ? (
+                // 动画 CG：图鉴里点开就再放一遍
+                <video
+                  key={selectedStoryCg.video}
+                  src={selectedStoryCg.video}
+                  poster={selectedStoryCg.cgUrl}
+                  autoPlay
+                  muted
+                  playsInline
+                  controls
+                  className="w-full max-h-[75vh] object-contain rounded-lg border-2 border-sky-400/80 shadow-[0_0_50px_rgba(56,189,248,0.4)]"
+                />
+              ) : (
+                <img
+                  src={selectedStoryCg.cgUrl}
+                  alt={selectedStoryCg.titleZh}
+                  className="w-full max-h-[75vh] object-contain rounded-lg border-2 border-sky-400/80 shadow-[0_0_50px_rgba(56,189,248,0.4)]"
+                  onError={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.15'; }}
+                />
+              )}
               <div className="w-full bg-zinc-900/90 border border-white/20 p-4 rounded-lg flex flex-col gap-1 backdrop-blur-md">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-black text-sky-300">

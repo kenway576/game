@@ -826,12 +826,25 @@ const StoryScreen: React.FC<Props> = ({
           className="absolute inset-0 z-40 bg-black flex flex-col items-center justify-center p-4 md:p-10 cursor-pointer animate-in fade-in duration-700"
           onClick={() => { audioManager.playSfx('page'); advance(); }}
         >
-          <img
-            src={node.imageUrl}
-            alt={en ? node.titleEn : node.titleZh}
-            className="max-w-full max-h-[72dvh] object-contain shadow-[0_0_80px_rgba(0,0,0,0.9)] border-2 border-white/15"
-            onError={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.15'; }}
-          />
+          {node.video ? (
+            // 🎞️ 动画 CG：放一遍，停在最后一格（不循环——循环会把一个瞬间变成表情包）
+            <video
+              key={node.video}
+              src={node.video}
+              poster={node.imageUrl}
+              autoPlay
+              muted
+              playsInline
+              className="max-w-full max-h-[72dvh] object-contain shadow-[0_0_80px_rgba(0,0,0,0.9)] border-2 border-white/15"
+            />
+          ) : (
+            <img
+              src={node.imageUrl}
+              alt={en ? node.titleEn : node.titleZh}
+              className="max-w-full max-h-[72dvh] object-contain shadow-[0_0_80px_rgba(0,0,0,0.9)] border-2 border-white/15"
+              onError={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.15'; }}
+            />
+          )}
           <div className="mt-5 w-full max-w-3xl text-center">
             <h3 className="text-xl md:text-3xl font-black font-ui text-pink-300 tracking-wide">
               {en ? node.titleEn : node.titleZh}

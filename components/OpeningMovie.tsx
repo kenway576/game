@@ -17,24 +17,42 @@ import { Language } from '../types';
 //
 // 结尾标题字的动画也用 steps()，同一个节拍。
 // 不打人名卡：用户要的是纯粹的动漫 OP，人物让画面自己介绍。
+//
+// 【后日谈也用它】shots / music / subtitles 都能从外面传进来（不传就是 OP）。
+// 后日谈最后那一镜她转过来对着镜头说话——Veo 不出声音，所以台词是按时间点
+// 叠在画面上的字幕（subtitles），跟一拍三一样按格出现。
 // ---------------------------------------------------------
 
 const FPS = 8;                 // 一拍三：24 / 3
 const FLASH_FRAMES = 2;        // 每一刀开头白闪两格
 const TAIL = 1.6;              // 最后一个镜头结束后，留给音乐收尾的秒数
 
+// 一句字幕：start/end 是从音乐开头算的秒数
+export interface MovieLine { start: number; end: number; jp?: string; zh: string; en: string }
+
 interface Props {
   language: Language;
   onClose: () => void;
+  shots?: OpShot[];
+  music?: string;
+  subtitles?: MovieLine[];
+  // 跳过按钮上的字、点一下才能放时按钮上的字
+  playLabelZh?: string;
+  playLabelEn?: string;
+  // 字幕里的 {name} 换成玩家名（后日谈里她会叫主角的名字，也会叫屏幕前的你）
+  playerName?: string;
 }
 
-const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
+const OpeningMovie: React.FC<Props> = ({ language, onClose, shots = OP_SHOTS, music = OP_MUSIC, subtitles = [], playLabelZh = '播放开场动画', playLabelEn = 'PLAY OPENING', playerName = '' }) => {
+  const fillName = (t?: string) => (t ? t.replace(/\{name\}/g, playerName || (language === 'en' ? 'you' : '你')) : t);
+  const SHOTS = shots;
   const en = language === 'en';
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videos = useRef<Map<string, HTMLVideoElement>>(new Map());
   const images = useRef<Map<string, HTMLImageElement>>(new Map());
   const [shotIdx, setShotIdx] = useState(-1);
+  const [subIdx, setSubIdx] = useState(-1);
   const [needTap, setNeedTap] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const closed = useRef(false);
@@ -60,8 +78,8 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
 
   // 素材：图先全部挂上（小），视频只预取当前和后两个
   const ensureMedia = useCallback((i: number) => {
-    for (let k = i; k < Math.min(OP_SHOTS.length, i + 3); k++) {
-      const s = OP_SHOTS[k];
+    for (let k = i; k < Math.min(SHOTS.length, i + 3); k++) {
+      const s = SHOTS[k];
       if (s.video && !videos.current.has(s.id)) {
         const v = document.createElement('video');
         v.src = s.video; v.muted = true; v.playsInline = true; v.preload = 'auto';
@@ -72,14 +90,14 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
   }, []);
 
   useEffect(() => {
-    OP_SHOTS.forEach(s => {
+    SHOTS.forEach(s => {
       const im = new Image();
       im.src = s.image;
       images.current.set(s.id, im);
     });
     ensureMedia(0);
 
-    const a = new Audio(OP_MUSIC);
+    const a = new Audio(music);
     a.volume = Math.max(0, Math.min(1, audioManager.effectiveVolume('bgm') || 0));
     a.preload = 'auto';
     audioRef.current = a;
@@ -139,27 +157,28 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
       const frame = Math.floor(t * FPS);
       if (frame === lastFrame) return;
       lastFrame = frame;
+      setSubIdx(subtitles.findIndex(l => t >= l.start && t < l.end));
 
-      const i = OP_SHOTS.findIndex(s => t >= s.start && t < s.end);
-      const last = OP_SHOTS[OP_SHOTS.length - 1];
+      const i = SHOTS.findIndex(s => t >= s.start && t < s.end);
+      const last = SHOTS[SHOTS.length - 1];
       if (i === -1 && t >= last.end + TAIL) { finish(); return; }
 
       if (i !== lastShot) {
         // 换镜头：上一段停掉，这一段从镜头内的时间点开始走
-        const prev = OP_SHOTS[lastShot];
+        const prev = SHOTS[lastShot];
         if (prev) videos.current.get(prev.id)?.pause();
         lastShot = i;
         setShotIdx(i);
         if (i >= 0) {
           ensureMedia(i);
-          const v = videos.current.get(OP_SHOTS[i].id);
-          if (v) { try { v.currentTime = Math.max(0, t - OP_SHOTS[i].start); } catch { /* 还没加载好 */ } v.play().catch(() => {}); }
+          const v = videos.current.get(SHOTS[i].id);
+          if (v) { try { v.currentTime = Math.max(0, t - SHOTS[i].start); } catch { /* 还没加载好 */ } v.play().catch(() => {}); }
         }
       }
 
       ctx.fillStyle = '#0b0e1f';
       ctx.fillRect(0, 0, cv.width, cv.height);
-      const shot: OpShot | undefined = OP_SHOTS[i] ?? (t >= last.end ? last : undefined);
+      const shot: OpShot | undefined = SHOTS[i] ?? (t >= last.end ? last : undefined);
       if (!shot) return; // 第一刀之前：黑场
 
       const local = t - shot.start;
@@ -177,7 +196,7 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
 
       // 每一刀的开头白闪
       const fr = Math.floor(local * FPS);
-      if (fr < FLASH_FRAMES && shot === OP_SHOTS[i]) {
+      if (fr < FLASH_FRAMES && shot === SHOTS[i]) {
         ctx.fillStyle = `rgba(255,250,245,${fr === 0 ? 0.85 : 0.35})`;
         ctx.fillRect(0, 0, cv.width, cv.height);
       }
@@ -189,9 +208,10 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [ensureMedia, finish]);
+  }, [ensureMedia, finish]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const shot = shotIdx >= 0 ? OP_SHOTS[shotIdx] : null;
+  const shot = shotIdx >= 0 ? SHOTS[shotIdx] : null;
+  const line = subIdx >= 0 ? subtitles[subIdx] : null;
   const isTitle = shot?.id === 'op18_title';
 
   return (
@@ -203,6 +223,8 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
         @keyframes op-pop { 0% { transform: scale(1.35); opacity: 0 } 60% { transform: scale(0.96); opacity: 1 } 100% { transform: scale(1); opacity: 1 } }
         .op-title { animation: op-pop 0.75s steps(6, end) 1.2s both; }
         .op-sub { animation: op-slide 0.5s steps(4, end) 2.2s both; }
+        @keyframes op-fade { 0% { opacity: 0 } 100% { opacity: 1 } }
+        .op-line { animation: op-fade 0.375s steps(3, end) both; }
       `}</style>
 
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
@@ -218,6 +240,16 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
         </div>
       )}
 
+      {/* 字幕：后日谈最后那一镜她对着镜头说的话 */}
+      {line && (
+        <div key={subIdx} className="absolute inset-x-0 bottom-[7%] flex flex-col items-center px-6 pointer-events-none op-line">
+          {line.jp && (
+            <p className="font-story text-white text-xl md:text-4xl font-bold tracking-wide text-center leading-snug" style={{ textShadow: '0 2px 10px rgba(5,8,25,0.95), 0 0 2px rgba(5,8,25,1)' }}>{fillName(line.jp)}</p>
+          )}
+          <p className="mt-2 font-ui text-pink-100 text-sm md:text-xl text-center" style={{ textShadow: '0 2px 8px rgba(5,8,25,0.95)' }}>{fillName(en ? line.en : line.zh)}</p>
+        </div>
+      )}
+
       <button onClick={finish} className="absolute top-4 right-4 ui-chip !bg-white/20 !text-white !border-white/40 hover:!bg-white/40">
         {en ? 'SKIP' : '跳过'} ▸▸
       </button>
@@ -227,7 +259,7 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose }) => {
           onClick={() => { setNeedTap(false); audioRef.current?.play().catch(() => finish()); }}
           className="absolute inset-0 flex items-center justify-center bg-[#0b0e1f]/70"
         >
-          <span className="ui-btn-primary px-10 py-4 text-lg">▶ {en ? 'PLAY OPENING' : '播放开场动画'}</span>
+          <span className="ui-btn-primary px-10 py-4 text-lg">▶ {en ? playLabelEn : playLabelZh}</span>
         </button>
       )}
     </div>

@@ -13,11 +13,13 @@ interface Props {
   affectionMap: AffectionMap;
   familiarityMap: FamiliarityMap;
   onClose: () => void;
+  // 看过的后日谈可以从这里重播（那一分钟动画只在年终之后自动放一次）
+  onReplayEpilogue?: (c: CharacterId) => void;
 }
 
 const bar = (value: number, goal: number) => Math.max(0, Math.min(100, Math.round((value / goal) * 100)));
 
-const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, familiarityMap, onClose }) => {
+const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, familiarityMap, onClose, onReplayEpilogue }) => {
   const en = language === 'en';
   const got = unlockedCount(storyFlags);
   const cleared = clearedRouteCount(storyFlags);
@@ -91,7 +93,10 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
                       {en ? 'AFF' : '好感'} {aff}/{AFF_GOAL} · {en ? 'FAM' : '親密'} {fam}/{FAM_GOAL}
                     </div>
                   </div>
-                  <div className="ml-auto flex gap-1">
+                  {onReplayEpilogue && storyFlags[`epilogue_${id}_done`] && (
+                    <button onClick={() => onReplayEpilogue(id as CharacterId)} className="ml-auto ui-chip !py-1 !text-[11px]">▶ {en ? 'Epilogue' : '后日谈'}</button>
+                  )}
+                  <div className={`${onReplayEpilogue && storyFlags[`epilogue_${id}_done`] ? '' : 'ml-auto '}flex gap-1`}>
                     {list.map(e => (
                       <span
                         key={e.flag}

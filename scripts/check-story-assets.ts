@@ -8,7 +8,7 @@ import { INARI_STORY_1 } from '../story/levelStories/inari1';
 import { INARI_STORY_2 } from '../story/levelStories/inari2';
 import { INARI_STORY_3 } from '../story/levelStories/inari3';
 import { HIKARI_STORY_3 } from '../story/levelStories/hikari3';
-import { SCENE_MAP } from '../constants';
+import { SCENE_MAP, LEVEL_STORIES } from '../constants';
 import { StoryNode } from '../types';
 
 const bad: string[] = [];
@@ -28,6 +28,7 @@ const walk = (nodes: StoryNode[], where: string) => {
 for (const ch of [...MAIN_CHAPTERS, ...RIVAL_CHAPTERS]) walk(ch.script, ch.id);
 walk(KAI_DAY1, 'kai_day1');
 for (const ev of NUNOBIKI_EVENTS) walk(ev.script, ev.id);
+for (const defs of Object.values(LEVEL_STORIES)) for (const d of defs || []) walk(d.script || [], d.id);
 walk(nunobikiApproach({ timeSlot: 'afternoon' } as any, {}), 'nunobiki_approach');
 walk(INARI_STORY_1, 'inari1'); walk(INARI_STORY_2, 'inari2'); walk(INARI_STORY_3, 'inari3'); walk(HIKARI_STORY_3, 'hikari3');
 console.log(bad.length ? bad.join('\n') : '全部存在');

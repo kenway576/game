@@ -3,26 +3,34 @@ import { EVENT_CGS, eventCgUrl } from './data/eventCgs';
 import { HIKARI_STORY_1 } from './story/levelStories/hikari1';
 import { HIKARI_STORY_2 } from './story/levelStories/hikari2';
 import { HIKARI_STORY_3 } from './story/levelStories/hikari3';
+import { HIKARI_STORY_4, HIKARI_STORY_5 } from './story/levelStories/hikari45';
 import { REI_STORY_1 } from './story/levelStories/rei1';
 import { REI_STORY_2 } from './story/levelStories/rei2';
 import { REI_STORY_3 } from './story/levelStories/rei3';
+import { REI_STORY_4, REI_STORY_5 } from './story/levelStories/rei45';
 import { SORA_STORY_1 } from './story/levelStories/sora1';
 import { SORA_STORY_2 } from './story/levelStories/sora2';
 import { SORA_STORY_3 } from './story/levelStories/sora3';
+import { SORA_STORY_4, SORA_STORY_5 } from './story/levelStories/sora45';
 import { MIYUKI_STORY_1 } from './story/levelStories/miyuki1';
 import { MIYUKI_STORY_2 } from './story/levelStories/miyuki2';
 import { MIYUKI_STORY_3 } from './story/levelStories/miyuki3';
+import { MIYUKI_STORY_4, MIYUKI_STORY_5 } from './story/levelStories/miyuki45';
 import { NAO_STORY_1 } from './story/levelStories/nao1';
 import { MAKI_STORY_1 } from './story/levelStories/maki1';
 import { INARI_STORY_1 } from './story/levelStories/inari1';
 import { NAO_STORY_2 } from './story/levelStories/nao2';
 import { NAO_STORY_3 } from './story/levelStories/nao3';
+import { NAO_STORY_4, NAO_STORY_5 } from './story/levelStories/nao45';
 import { MAKI_STORY_2 } from './story/levelStories/maki2';
 import { MAKI_STORY_3 } from './story/levelStories/maki3';
+import { MAKI_STORY_4, MAKI_STORY_5 } from './story/levelStories/maki45';
 import { INARI_STORY_2 } from './story/levelStories/inari2';
 import { INARI_STORY_3 } from './story/levelStories/inari3';
+import { INARI_STORY_4, INARI_STORY_5 } from './story/levelStories/inari45';
 import { ASUKA_STORY_2 } from './story/levelStories/asuka';
 import { ASUKA_STORY_3 } from './story/levelStories/asuka3';
+import { ASUKA_STORY_4, ASUKA_STORY_5 } from './story/levelStories/asuka45';
 import { Character, CharacterId, RelationshipLevelDef, RelationshipAxis, RelationshipProfile, ProtagonistStats, StatKey, GameCalendar, CalendarEvent, StoryFlags, RoomHotspot, StoryNode, ViewSpot, TimeSlot } from './types';
 
 // ---------------------------------------------------------
@@ -1827,6 +1835,10 @@ export interface LevelStoryDef {
   // 只在这些时段演。不写的话按剧本自己的第一张场景图推——
   // 体育馆是上课时段，带 night 的是夜里。见 levelStorySlots。
   timeSlots?: TimeSlot[];
+  // 不挂在升级上、而是"另一段演完 N 天之后"才进队列（第④⑤段用）。
+  // ③挂在親密度 Lv.5 上，已经满级了，再往后就没有"升级"可以挂——
+  // 只能按时间排。level 那一栏随便写个 5 以上的数，只用来在队列里区分是哪一段。
+  after?: { story: string; days: number };
 }
 
 // 每个角色的专属剧情表。写好一个填一个——没填的角色照旧走 AI 即兴，
@@ -1858,6 +1870,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '放課後の残り日',
       titleEn: 'What Is Left of the Afternoon',
       script: ASUKA_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'asuka_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: '赤ペンの返却',
+      titleEn: 'Returning the Red Pen',
+      after: { story: 'asuka_3_twilight', days: 7 },
+      script: ASUKA_STORY_4
+    },
+    {
+      id: 'asuka_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: '立候補しない理由',
+      titleEn: 'Why She Isn\'t Running',
+      after: { story: 'asuka_4', days: 7 },
+      script: ASUKA_STORY_5
     }
   ],
   [CharacterId.HIKARI]: [
@@ -1886,6 +1917,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '二年目の海',
       titleEn: 'The Sea, Second Year',
       script: HIKARI_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'hikari_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: '練習のさよなら',
+      titleEn: 'Practising Goodbye',
+      after: { story: 'hikari_3_second_year', days: 7 },
+      script: HIKARI_STORY_4
+    },
+    {
+      id: 'hikari_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: '往復切符',
+      titleEn: 'Round Trip',
+      after: { story: 'hikari_4', days: 7 },
+      script: HIKARI_STORY_5
     }
   ],
   [CharacterId.REI]: [
@@ -1914,6 +1964,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '星図の余白',
       titleEn: 'The Margin of the Star Chart',
       script: REI_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'rei_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: '流星の数え方',
+      titleEn: 'How to Count Meteors',
+      after: { story: 'rei_3_margin', days: 7 },
+      script: REI_STORY_4
+    },
+    {
+      id: 'rei_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: '再建されたものの名前',
+      titleEn: 'The Name of a Rebuilt Thing',
+      after: { story: 'rei_4', days: 7 },
+      script: REI_STORY_5
     }
   ],
   [CharacterId.SORA]: [
@@ -1942,6 +2011,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: 'ゴールの向こう',
       titleEn: 'Past the Hoop',
       script: SORA_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'sora_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: '最初の試合',
+      titleEn: 'The First Game',
+      after: { story: 'sora_3_past_hoop', days: 7 },
+      script: SORA_STORY_4
+    },
+    {
+      id: 'sora_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: '五センチの答え',
+      titleEn: 'The Answer to Five Centimetres',
+      after: { story: 'sora_4', days: 7 },
+      script: SORA_STORY_5
     }
   ],
   [CharacterId.MIYUKI]: [
@@ -1970,6 +2058,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '名前で呼んで',
       titleEn: 'Call Me by My Name',
       script: MIYUKI_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'miyuki_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: 'わがままの練習',
+      titleEn: 'Practising Selfishness',
+      after: { story: 'miyuki_3_name', days: 7 },
+      script: MIYUKI_STORY_4
+    },
+    {
+      id: 'miyuki_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: 'おかゆ、半分こ',
+      titleEn: 'Rice Porridge, Split Two Ways',
+      after: { story: 'miyuki_4', days: 7 },
+      script: MIYUKI_STORY_5
     }
   ],
   // 奈绪的親密度开局就 215（"无话不谈"），没有认识她这个阶段可走，
@@ -2003,6 +2110,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '十年分の距離',
       titleEn: 'Ten Years of Distance',
       script: NAO_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'nao_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: '答え合わせ',
+      titleEn: 'Checking the Answers',
+      after: { story: 'nao_3_ten_years', days: 7 },
+      script: NAO_STORY_4
+    },
+    {
+      id: 'nao_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: '十年後の予約',
+      titleEn: 'Booked for Ten Years From Now',
+      after: { story: 'nao_4', days: 7 },
+      script: NAO_STORY_5
     }
   ],
   [CharacterId.MAKI]: [
@@ -2031,6 +2157,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '一回だけ本音',
       titleEn: 'One Honest Thing, Once',
       script: MAKI_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'maki_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: '筐体の行方',
+      titleEn: 'Where the Cabinet Went',
+      after: { story: 'maki_3_honne', days: 7 },
+      script: MAKI_STORY_4
+    },
+    {
+      id: 'maki_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: 'ご褒美の頼み方',
+      titleEn: 'How to Ask for a Reward',
+      after: { story: 'maki_4', days: 7 },
+      script: MAKI_STORY_5
     }
   ],
   [CharacterId.INARI]: [
@@ -2059,6 +2204,25 @@ export const LEVEL_STORIES: Partial<Record<CharacterId, LevelStoryDef[]>> = {
       titleZh: '人の時間',
       titleEn: 'Human Time',
       script: INARI_STORY_3
+    },
+    // ④⑤：③演完 7 天后 / ④演完 7 天后（不挂升级，见 LevelStoryDef.after）
+    {
+      id: 'inari_4',
+      axis: 'familiarity',
+      level: 6,
+      titleZh: '空の箱',
+      titleEn: 'The Box in the Sky',
+      after: { story: 'inari_3_human_time', days: 7 },
+      script: INARI_STORY_4
+    },
+    {
+      id: 'inari_5',
+      axis: 'familiarity',
+      level: 7,
+      titleZh: 'なぞる日',
+      titleEn: 'The Day of Tracing',
+      after: { story: 'inari_4', days: 7 },
+      script: INARI_STORY_5
     }
   ],
   // 示例（等剧本写好后填 script）：
@@ -3415,6 +3579,8 @@ export interface StoryCgDef {
   quote: string;
   chapterZh: string;
   chapterEn: string;
+  // 动画 CG 的那段视频（图鉴里点开会放）
+  video?: string;
 }
 
 const BASE_STORY_CGS: StoryCgDef[] = [
@@ -3492,6 +3658,7 @@ export const STORY_CGS: StoryCgDef[] = [
   ...BASE_STORY_CGS,
   ...EVENT_CGS.map(c => ({
     id: c.id, titleZh: c.titleZh, titleEn: c.titleEn, descZh: c.captionZh, descEn: c.captionEn,
-    cgUrl: eventCgUrl(c.id), quote: c.quote, chapterZh: c.chapterZh, chapterEn: c.chapterEn
+    cgUrl: eventCgUrl(c.id), quote: c.quote, chapterZh: c.chapterZh, chapterEn: c.chapterEn,
+    ...(c.video ? { video: c.video } : {})
   }))
 ];

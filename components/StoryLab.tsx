@@ -3,7 +3,11 @@ import StoryScreen from './StoryScreen';
 import { MAIN_CHAPTERS } from '../story/mainStory';
 import { RIVAL_CHAPTERS, KAI_DAY1 } from '../story/rivalStory';
 import { NUNOBIKI_EVENTS, nunobikiApproach } from '../story/nunobikiStory';
-import { SCENE_MAP } from '../constants';
+import { SCENE_MAP, LEVEL_STORIES } from '../constants';
+import { EPILOGUES } from '../story/epilogue';
+import { EPILOGUE_FILMS } from '../data/epilogueFilms';
+import OpeningMovie from './OpeningMovie';
+import { CharacterId } from '../types';
 import { StoryNode } from '../types';
 
 // 🧪 开发用剧本试播台：不读也不写任何存档，直接把一章剧本放出来看。
@@ -19,7 +23,13 @@ const StoryLab: React.FC = () => {
   // ?story=kai_day1：开学第一天金城登场那一段
   // ?story=ev_nunobiki_*：先走上山那一段，再演到了以后的事件（&slot=night 试夜里只能坐缆车）
   const nb = NUNOBIKI_EVENTS.find(e => e.id === id);
+  // ?story=asuka_4 之类：任意一段专属剧情（LEVEL_STORIES 的 id）
+  const lv = Object.values(LEVEL_STORIES).flat().find(d => d?.id === id);
+  // ?story=epilogue_asuka：后日谈的剧本部分（动画另放）
+  const ep = id.startsWith('epilogue_') ? EPILOGUES[id.slice(9) as CharacterId] : null;
   const script: StoryNode[] = id === 'kai_day1' ? KAI_DAY1
+    : lv ? lv.script || []
+    : ep ? ep.script
     : nb ? [...nunobikiApproach({ timeSlot: q.get('slot') || 'afternoon' } as any, flags), ...nb.script]
     : ch?.script || [];
   const [scene, setScene] = useState('');
@@ -27,6 +37,22 @@ const StoryLab: React.FC = () => {
   const note = (s: string) => setLog(l => [...l.slice(-6), s]);
   const [key] = useState(() => `storylab_${id}_${Date.now()}`);
 
+  // ?story=epilogue_asuka&film（&flags=asuka_ending_love）：直接放后日谈那一分钟动画
+  if (ep && q.has('film')) {
+    const c = id.slice(9);
+    const film = EPILOGUE_FILMS[c];
+    return (
+      <OpeningMovie
+        language="zh"
+        shots={film.shots}
+        music={film.music}
+        subtitles={flags[`${c}_ending_love`] ? ep.love : ep.friend}
+        playerName={q.get('name') || ''}
+        playLabelZh="播放后日谈"
+        onClose={() => {}}
+      />
+    );
+  }
   if (!script.length) return <div style={{ color: '#fff', padding: 24 }}>没有这一章：{id}</div>;
   const bg = SCENE_MAP[scene];
   return (

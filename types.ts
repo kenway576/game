@@ -675,7 +675,9 @@ export type StoryNode =
       // 全部冒完之后底下那句旁白
       afterZh?: string; afterEn?: string;
     }
-  | { type: 'cg'; cgId: string; imageUrl: string; titleZh: string; titleEn: string; captionZh: string; captionEn: string }
+  // video：这一幕是一段 8 秒的动画（OP 同款画风、一拍三），imageUrl 是它的首帧，
+  // 图鉴里也拿首帧当缩略图。放不了视频就退回静帧。
+  | { type: 'cg'; cgId: string; imageUrl: string; titleZh: string; titleEn: string; captionZh: string; captionEn: string; video?: string }
   // 分歧选项
   | { type: 'choice'; promptZh: string; promptEn: string; options: StoryOption[] }
   // 自由购物（便利店）：预算内随便挑，结算时统一生效。

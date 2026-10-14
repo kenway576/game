@@ -11,6 +11,8 @@ import Background from './components/Background';
 import SetupScreen from './components/SetupScreen';
 import OpeningMovie from './components/OpeningMovie';
 import { NUNOBIKI_ID, nunobikiApproach } from './story/nunobikiStory';
+import { EPILOGUES, pickEpilogueHeroine, epilogueFlag } from './story/epilogue';
+import { EPILOGUE_FILMS } from './data/epilogueFilms';
 
 // 去这些地方之前先演一段"怎么去"
 const APPROACH_SCRIPTS: Record<string, (cal: GameCalendar, flags: Record<string, boolean>) => StoryNode[]> = {
@@ -183,6 +185,8 @@ const App: React.FC = () => {
   const [isDialogueFinished, setIsDialogueFinished] = useState(false);
 
   const [showSystemMenu, setShowSystemMenu] = useState(false);
+  // 🌸 后日谈：年终总结之后，走到结局的那个人。先演剧本（script），再放一分钟动画（film）
+  const [activeEpilogue, setActiveEpilogue] = useState<{ charId: CharacterId; phase: 'script' | 'film' } | null>(null);
   // 🎬 开场动画：第一次打开游戏自动放一遍，之后从标题画面的「OPENING」重播
   const [showOpening, setShowOpening] = useState(() => { try { return !localStorage.getItem('kobe_op_seen'); } catch { return false; } });
   const closeOpening = useCallback(() => {
@@ -1247,6 +1251,26 @@ const App: React.FC = () => {
     setGameMode(GameMode.LOBBY);
   };
 
+  // 📅 第④⑤段的入口：不挂在升级上，挂在"上一段演完过了几天"上（LevelStoryDef.after）。
+  // 条件到了就塞进待播队列，之后跟别的段一样——走到它的地方、对的时段才演。
+  // 旧存档里③演完时还没记日子：查不到就当作早就演完了。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    const today = dayIndex(gameCalendar);
+    const add: { charId: CharacterId; axis: RelationshipAxis; level: number }[] = [];
+    for (const [charId, defs] of Object.entries(LEVEL_STORIES) as [CharacterId, LevelStoryDef[]][]) {
+      for (const d of defs || []) {
+        if (!d.after || storyFlags[`lvstory_${d.id}`]) continue;
+        if (!storyFlags[`lvstory_${d.after.story}`]) continue;
+        const doneOn = life.activityOn?.[`lvdone_${d.after.story}`];
+        if (doneOn !== undefined && today - doneOn < d.after.days) continue;
+        if (pendingLevelUps.some(e => e.charId === charId && e.axis === d.axis && e.level === d.level)) continue;
+        add.push({ charId, axis: d.axis, level: d.level });
+      }
+    }
+    if (add.length) setPendingLevelUps(q => [...q, ...add]);
+  }, [gameMode, gameCalendar, storyFlags, life.activityOn, pendingLevelUps]);
+
   // 待播队列的出口一：回到大厅、手上没有别的东西在播 → 补播一段手写剧情。
   // 只补有剧本的那些；没剧本的那一级要靠 AI 即兴，而即兴得在聊天里演，
   // 所以留在队列里，等玩家下次找她说话（出口二）。
@@ -1257,7 +1281,7 @@ const App: React.FC = () => {
   // 不然它会接在一段毫无关系的出门后面自己冒出来（去咖啡店，出来直接进深雪家）。
   useEffect(() => {
     if (gameMode !== GameMode.LOBBY) return;
-    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || activeEpilogue) return;
     if (!pendingLevelUps.length) return;
     const eligible = (e: { charId: CharacterId; axis: RelationshipAxis; level: number }) => {
       const d = findLevelStory(e.charId, e.axis, e.level);
@@ -1274,7 +1298,7 @@ const App: React.FC = () => {
     const def = findLevelStory(entry.charId, entry.axis, entry.level)!;
     setPendingLevelUps(q => q.filter((_, i) => i !== idx));
     setActiveLevelStory({ charId: entry.charId, def });
-  }, [gameMode, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, pendingLevelUps, storyFlags, gameCalendar]);
+  }, [gameMode, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, pendingLevelUps, storyFlags, gameCalendar, activeEpilogue]);
 
   // 剧本台词里的生词进单词本。
   // 去重键走同步的 ref：StrictMode 会把 effect 跑两遍，
@@ -3862,6 +3886,9 @@ ${wind}`;
           onClose={() => {
             setShowYearEnd(false);
             setStoryFlags(prev => ({ ...prev, year_end_seen: true }));
+            // 🌸 有走到结局的人 → 她的后日谈
+            const heroine = pickEpilogueHeroine(storyFlags, affectionMap);
+            if (heroine && !storyFlags[epilogueFlag(heroine)]) setActiveEpilogue({ charId: heroine, phase: 'script' });
           }}
         />
       )}
@@ -3908,6 +3935,7 @@ ${wind}`;
           affectionMap={affectionMap}
           familiarityMap={familiarityMap}
           onClose={() => setShowEndings(false)}
+          onReplayEpilogue={(c) => { setShowEndings(false); setActiveEpilogue({ charId: c, phase: 'film' }); }}
         />
       )}
 
@@ -4009,10 +4037,64 @@ ${wind}`;
             const id = activeLevelStory.def.id;
             // 记一笔"演过了"，AI 那边的剧情回顾就靠它
             setStoryFlags(prev => ({ ...prev, ...flags, [`lvstory_${id}`]: true }));
+            // 记下是哪天演完的：第④⑤段按"上一段演完过了几天"排队（LevelStoryDef.after）
+            setLife(l => ({ ...l, activityOn: { ...(l.activityOn || {}), [`lvdone_${id}`]: dayIndex(gameCalendar) } }));
             setActiveLevelStory(null);
           }}
         />
         </div>
+      )}
+
+      {/* 🌸 后日谈：剧本部分 */}
+      {activeEpilogue?.phase === 'script' && (
+        <div className="fixed inset-0 z-[140] overflow-hidden">
+        <StoryScreen
+          key={`epilogue-${activeEpilogue.charId}`}
+          script={EPILOGUES[activeEpilogue.charId].script}
+          storyAffection={affectionMap[activeEpilogue.charId] || 0}
+          storyFamiliarity={familiarityMap[activeEpilogue.charId] ?? getInitialFamiliarity(activeEpilogue.charId)}
+          scriptVersion={`epilogue-${activeEpilogue.charId}-v1`}
+          progressKey={`kobe_study_story_epilogue_${activeEpilogue.charId}`}
+          initialFlags={storyFlags}
+          calendar={gameCalendar}
+          onAutoSave={triggerAutoSave}
+          language={userState.language}
+          stats={protagonistStats}
+          background={background}
+          playerName={userState.playerName}
+          onSetPlayerName={(name) => setUserState(prev => ({ ...prev, playerName: name }))}
+          onOpenSystemMenu={() => setShowSystemMenu(true)}
+          onEffects={applyStoryEffects}
+          onRelations={applyStoryRelations}
+          onFlags={applyStoryFlags}
+          onSceneChange={setCurrentScene}
+          onCollectWords={collectStoryWords}
+          onUnlockCg={unlockStoryCg}
+          onRestore={restoreStoryProgress}
+          renderMinigame={renderMinigame}
+          onFinish={(flags) => {
+            setStoryFlags(prev => ({ ...prev, ...flags }));
+            setActiveEpilogue(e => (e ? { ...e, phase: 'film' } : null));
+          }}
+        />
+        </div>
+      )}
+      {/* 🌸 后日谈：一分钟动画（最后她对着屏幕说话） */}
+      {activeEpilogue?.phase === 'film' && EPILOGUE_FILMS[activeEpilogue.charId] && (
+        <OpeningMovie
+          language={userState.language}
+          shots={EPILOGUE_FILMS[activeEpilogue.charId].shots}
+          music={EPILOGUE_FILMS[activeEpilogue.charId].music}
+          subtitles={storyFlags[`${activeEpilogue.charId}_ending_love`] ? EPILOGUES[activeEpilogue.charId].love : EPILOGUES[activeEpilogue.charId].friend}
+          playerName={userState.playerName}
+          playLabelZh="播放后日谈"
+          playLabelEn="PLAY EPILOGUE"
+          onClose={() => {
+            const c = activeEpilogue.charId;
+            setStoryFlags(prev => ({ ...prev, [epilogueFlag(c)]: true, epilogue_seen: true }));
+            setActiveEpilogue(null);
+          }}
+        />
       )}
 
       {gameMode === GameMode.MAP && !activeTrip && (
