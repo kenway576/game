@@ -12,6 +12,8 @@ import { spawnSync } from 'child_process';
 //             data 装成 public/images/cg/cg_ev_<id>.webp + public/videos/anime/cg_ev_<id>.webm（登记在 data/eventCgs.ts）
 //   epilogue  后日谈的一分钟（每人 8 个镜头）。分镜在 scripts/op/sets/epilogue.mjs；
 //             data 写 data/epilogueFilms.ts（每 8 秒一刀）
+//   op2       开场动画第二版（镜头动、人不乱动，专门的 OP 曲）。分镜在 scripts/op/sets/op2.mjs；
+//             reuse 的镜头直接拷第一版的首帧；data 按 .generated/op_music/op_beats.json 的小节切，写 data/opening.ts
 //
 // 画风锚定在 scripts/op/shots.mjs。用户给的画风/帧数提示词原样放在每条提示词的结尾。
 // Veo 单次最长 8 秒（Vertex 只给 4/6/8），所以一分钟 = 8 个镜头剪起来。
@@ -37,15 +39,15 @@ const SETMOD = SET === 'op' ? null : await import(`./sets/${SET}.mjs`);
 const SHOTS = SETMOD ? SETMOD.SHOTS : OP_SHOTS;
 const ONLY = arg('only') ? String(arg('only')).split(',') : null;
 const PICK = Object.fromEntries(String(arg('pick', '')).split(',').filter(Boolean).map(kv => kv.split('=')));
-const OUT = SET === 'op' ? '.generated/op' : `.generated/anime/${SET}`;
+const OUT = SET === 'op' ? '.generated/op' : SET === 'op2' ? '.generated/op2' : `.generated/anime/${SET}`;
 const KEY = process.env.GEMINI_API_KEY;
 const PROJECT = process.env.GEMINI_VERTEX_PROJECT || '389812341416';
 const VEO = arg('model', 'veo-3.1-fast-generate-001');
 const cost = (what, model, size) => fs.appendFileSync('.generated/remake2/_cost.log', `${new Date().toISOString()}\t${SET}/${what}\t${model}\t${size}\n`);
-const shots = SHOTS.filter(s => !ONLY || ONLY.includes(s.id) || (s.group && ONLY.includes(s.group)));
+const shots = SHOTS.filter(s => !s.from && (!ONLY || ONLY.includes(s.id) || (s.group && ONLY.includes(s.group))));
 const keyOf = s => path.join(OUT, s.id, `key_${PICK[s.id] || 1}.png`);
 // OP 是"开场动画的一格"；剧情和后日谈是"TV 动画正片里的一格"
-const FRAME_KIND = SET === 'op' ? 'a Japanese TV anime opening sequence' : 'a Japanese TV anime episode';
+const FRAME_KIND = SET === 'op' || SET === 'op2' ? 'a Japanese TV anime opening sequence' : 'a Japanese TV anime episode';
 
 // 角色卡（长相的唯一标准）
 const cardOf = c => [`public/images/character_cards/${c}/school_blazer_remake.webp`, `public/images/character_cards/${c}/cardigan_remake.webp`].find(f => fs.existsSync(f));
@@ -76,6 +78,8 @@ async function keys() {
   const run = async s => {
     const dir = path.join(OUT, s.id); fs.mkdirSync(dir, { recursive: true });
     if (!arg('n') && fs.readdirSync(dir).some(f => /^key_\d+\.png$/.test(f))) { console.log(`${s.id} 已有首帧`); return; }
+    // 第二版 OP：长相已经验证过的首帧直接拿第一版的
+    if (s.reuse) { fs.copyFileSync(path.join('.generated/op', s.reuse), path.join(dir, 'key_1.png')); console.log(`${s.id} ← 复用 ${s.reuse}`); return; }
     const parts = [];
     for (const c of s.chars) {
       const card = CARDS.find(x => x.id === c);
@@ -126,11 +130,12 @@ async function videos() {
     const prompt = `A shot from ${FRAME_KIND}. ${s.motion} Keep every character's face, hair, outfit and colours exactly as in the first frame. Limited animation on threes: held drawings, snappy pose-to-pose motion, no smooth interpolation. No text, no logos, no subtitles.\n\n${STYLE_ANCHOR_ZH}\n${FRAME_ANCHOR_ZH}`;
     const r = await post(`${base}:predictLongRunning`, {
       instances: [{ prompt, image: { bytesBase64Encoded: jpg.toString('base64'), mimeType: 'image/jpeg' } }],
-      parameters: { aspectRatio: '16:9', durationSeconds: 8, sampleCount: 1, generateAudio: false, resolution: '1080p', personGeneration: 'allow_all' }
+      parameters: { aspectRatio: '16:9', durationSeconds: SETMOD?.DURATION || 8, sampleCount: 1, generateAudio: false, resolution: '1080p', personGeneration: 'allow_all',
+        ...(SETMOD?.NEGATIVE ? { negativePrompt: SETMOD.NEGATIVE } : {}) }
     });
     if (!r.name) { console.log(`${s.id} 提交失败：${JSON.stringify(r).slice(0, 300)}`); continue; }
     fs.writeFileSync(opF, r.name);
-    cost(`${s.id}/clip`, VEO, '8s');
+    cost(`${s.id}/clip`, VEO, `${SETMOD?.DURATION || 8}s`);
     ops.push({ s, out, op: r.name });
     console.log(`${s.id} 已提交`);
     await new Promise(r => setTimeout(r, 2000));
@@ -167,9 +172,16 @@ const transcode = (clip, out, id) => {
   }
   return true;
 };
-const still = async (kf, out) => {
+// crop：四周各裁掉多少（比例）。Gemini 的首帧偶尔会画出一圈画纸边框
+const still = async (kf, out, crop = 0) => {
   fs.mkdirSync(path.dirname('public' + out), { recursive: true });
-  await sharp(kf).resize({ width: 1920 }).webp({ quality: 86 }).toFile('public' + out);
+  let img = sharp(kf);
+  if (crop) {
+    const { width: W, height: H } = await sharp(kf).metadata();
+    const x = Math.round(W * crop), y = Math.round(H * crop);
+    img = sharp(await sharp(kf).extract({ left: x, top: y, width: W - 2 * x, height: H - 2 * y }).png().toBuffer());
+  }
+  await img.resize({ width: 1920, height: 1080, fit: 'cover' }).webp({ quality: 86 }).toFile('public' + out);
 };
 
 async function dataOp() {
@@ -199,6 +211,39 @@ export const OP_BEATS: number[] = ${JSON.stringify(beats.beats)};
 export const OP_SHOTS: OpShot[] = ${body};
 `);
   console.log('写好了 data/opening.ts', rows.filter(r => r.video).length, '段视频');
+}
+
+// 第二版 OP：曲子是专门拼的 OP 曲（scripts/audio/build_op_music.py），每个镜头占 bars 小节，
+// 视频只取其中一段（clipIn 起），所以一个 8 秒的片段可以只用最稳的那两三秒。
+async function dataOp2() {
+  const song = JSON.parse(fs.readFileSync(SETMOD.SONG, 'utf8'));
+  const db = song.downbeats;
+  const at = b => (b < 0 || b >= db.length) ? song.seconds : db[b];
+  const rows = [];
+  for (const s of SHOTS) {
+    const start = +at(s.at[0]).toFixed(3), end = +at(s.at[1]).toFixed(3);
+    const src = s.from ? SHOTS.find(x => x.id === s.from) : s;
+    const kf = keyOf(src);
+    const img = `/images/op/${src.id}.webp`;
+    if (!s.from && fs.existsSync(kf)) await still(kf, img, s.crop || 0);
+    let video = null;
+    const clip = path.join(OUT, src.id, `clip_${PICK[src.id] || 1}.mp4`);
+    if (!s.still && fs.existsSync(clip)) {
+      video = `/videos/op/${src.id}.webm`;
+      if (!s.from && !transcode(clip, 'public' + video, src.id)) video = null;
+    }
+    // 片段入点：默认跳过开头那半秒（Veo 起步常有一下顿挫）；快切的那几镜各自写了更靠后的入点
+    const clipIn = s.clipIn ?? 0.5;
+    rows.push({ id: s.id, start, end, image: img, video, still: !!s.still, name: null, clipIn, ...(s.title ? { title: true } : {}) });
+  }
+  fs.writeFileSync('data/opening.ts', `// 自动生成：node scripts/op/gen-op.mjs data --set op2 —— 别手改
+// 开场动画第二版：用户的 OP 曲「一年だけの物語」（${song.tempo} BPM，${song.seconds}s），镜头卡在小节线上（分镜 scripts/op/sets/op2.mjs）
+export interface OpShot { id: string; start: number; end: number; image: string; video: string | null; still: boolean; name: [string, string, string] | null; clipIn?: number; title?: boolean }
+export const OP_MUSIC = '${SETMOD.MUSIC}';
+export const OP_BEATS: number[] = ${JSON.stringify(song.beats)};
+export const OP_SHOTS: OpShot[] = ${JSON.stringify(rows, null, 1)};
+`);
+  console.log('写好了 data/opening.ts', rows.filter(r => r.video).length, '镜用视频，', rows.length, '镜');
 }
 
 // 剧情里那一个镜头：首帧当 CG（图鉴缩略图），视频放进 /videos/anime/
@@ -243,5 +288,5 @@ export const EPILOGUE_FILMS: Record<string, EpilogueFilm> = ${JSON.stringify(fil
 
 if (STAGE === 'keys') await keys();
 else if (STAGE === 'videos') await videos();
-else if (STAGE === 'data') await (SET === 'op' ? dataOp() : SET === 'story' ? dataStory() : dataEpilogue());
+else if (STAGE === 'data') await (SET === 'op' ? dataOp() : SET === 'op2' ? dataOp2() : SET === 'story' ? dataStory() : dataEpilogue());
 else console.log('用法：keys | videos | data  [--set op|story|epilogue]');

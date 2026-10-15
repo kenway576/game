@@ -1,169 +1,318 @@
-// 自动生成：node scripts/op/gen-op.mjs data —— 别手改
-// 开场动画：曲子 Three O'clock in Kobe 的 0–123 秒，每 4 小节一个镜头（切点来自 librosa 量的小节）
+// 自动生成：node scripts/op/gen-op.mjs data --set op2 —— 别手改
+// 开场动画第二版：用户的 OP 曲「一年だけの物語」（172.27 BPM，86.94s），镜头卡在小节线上（分镜 scripts/op/sets/op2.mjs）
 export interface OpShot { id: string; start: number; end: number; image: string; video: string | null; still: boolean; name: [string, string, string] | null; clipIn?: number; title?: boolean }
-export const OP_MUSIC = '/audio/bgm/Three_O_clock_in_Kobe.mp3';
-export const OP_BEATS: number[] = [1.138,1.556,1.974,2.392,2.786,3.204,3.622,4.04,4.458,4.853,5.271,5.689,6.107,6.525,6.92,7.338,7.755,8.173,8.591,9.009,9.427,9.845,10.356,10.867,11.285,11.703,12.098,12.516,12.934,13.351,13.769,14.187,14.582,15,15.418,15.836,16.254,16.649,17.067,17.485,17.903,18.297,18.715,19.133,19.551,19.969,20.387,20.782,21.2,21.618,22.036,22.454,22.848,23.266,23.684,24.102,24.52,24.938,25.333,25.751,26.169,26.587,27.005,27.4,27.818,28.235,28.653,29.071,29.489,29.907,30.325,30.72,31.138,31.556,31.974,32.369,32.787,33.205,33.622,34.04,34.458,34.876,35.294,35.712,36.107,36.525,36.943,37.338,37.756,38.174,38.592,39.01,39.451,39.915,40.356,40.774,41.215,41.657,42.098,42.516,42.934,43.352,43.77,44.164,44.582,45,45.418,45.836,46.254,46.672,47.067,47.485,47.903,48.321,48.715,49.133,49.551,49.969,50.387,50.805,51.2,51.618,52.036,52.454,52.872,53.29,53.685,54.102,54.52,54.938,55.356,55.774,56.169,56.587,57.005,57.423,57.818,58.236,58.654,59.072,59.49,59.907,60.325,60.72,61.138,61.556,61.974,62.392,62.787,63.205,63.623,64.041,64.459,64.877,65.271,65.689,66.107,66.525,66.943,67.361,67.756,68.174,68.592,69.01,69.428,69.846,70.24,70.658,71.076,71.494,71.912,72.353,72.818,73.282,73.723,74.165,74.582,75,75.418,75.836,76.231,76.649,77.067,77.485,77.903,78.298,78.716,79.134,79.552,79.97,80.364,80.782,81.2,81.618,82.036,82.454,82.849,83.267,83.685,84.103,84.521,84.939,85.333,85.751,86.169,86.587,87.005,87.423,87.818,88.236,88.654,89.072,89.49,89.908,90.326,90.72,91.138,91.556,91.974,92.369,92.787,93.205,93.623,94.041,94.459,94.877,95.295,95.689,96.107,96.525,96.943,97.338,97.756,98.174,98.592,99.033,99.498,99.962,100.403,100.844,101.285,101.703,102.121,102.539,102.934,103.352,103.77,104.165,104.583,105.001,105.419,105.837,106.255,106.649,107.067,107.485,107.903,108.321,108.716,109.134,109.552,109.97,110.388,110.782,111.2,111.618,112.036,112.454,112.872,113.267,113.685,114.103,114.521,114.939,115.357,115.751,116.169,116.587,117.005,117.423,117.841,118.236,118.654,119.072,119.49,119.908,120.303,120.721,121.139,121.556,121.974,122.392,122.81,123.205,123.623,124.041,124.459,124.854];
+export const OP_MUSIC = '/audio/op/op_theme_vocal.mp3';
+export const OP_BEATS: number[] = [0.441,0.789,1.138,1.509,1.858,2.206,2.554,2.902,3.274,3.622,3.971,4.342,4.69,5.039,5.387,5.735,6.084,6.455,6.803,7.152,7.5,7.872,8.22,8.568,8.916,9.265,9.636,9.985,10.333,10.681,11.029,11.378,11.749,12.098,12.446,12.794,13.142,13.514,13.862,14.211,14.559,14.907,15.256,15.627,15.975,16.324,16.672,17.043,17.392,17.74,18.088,18.437,18.785,19.156,19.505,19.853,20.225,20.573,20.921,21.269,21.618,21.966,22.314,22.686,23.034,23.382,23.731,24.102,24.451,24.799,25.147,25.496,25.844,26.215,26.564,26.912,27.26,27.632,27.98,28.328,28.677,29.025,29.373,29.745,30.093,30.441,30.79,31.161,31.509,31.858,32.206,32.554,32.903,33.274,33.622,33.971,34.319,34.691,35.039,35.387,35.736,36.084,36.432,36.78,37.152,37.5,37.849,38.22,38.568,38.917,39.265,39.636,39.985,40.333,40.681,41.03,41.378,41.726,42.075,42.423,42.794,43.143,43.514,43.862,44.211,44.582,44.931,45.302,45.65,45.999,46.347,46.695,47.044,47.392,47.74,48.089,48.437,48.785,49.157,49.505,49.853,50.225,50.573,50.921,51.27,51.618,51.966,52.338,52.686,53.034,53.383,53.731,54.079,54.451,54.799,55.147,55.496,55.844,56.216,56.564,56.912,57.26,57.632,57.98,58.329,58.677,59.025,59.397,59.745,60.093,60.442,60.813,61.161,61.51,61.858,62.206,62.555,62.926,63.274,63.623,63.971,64.319,64.691,65.039,65.387,65.736,66.084,66.432,66.804,67.152,67.5,67.849,68.22,68.569,68.917,69.265,69.637,69.985,70.333,70.682,71.03,71.378,71.726,72.075,72.446,72.795,73.143,73.514,73.863,74.211,74.559,74.931,75.279,75.627,75.976,76.324,76.672,77.044,77.392,77.74,78.089,78.437,78.785,79.157,79.505,79.853,80.202,80.55,80.898,81.247,81.595,81.943,82.315,82.663];
 export const OP_SHOTS: OpShot[] = [
  {
-  "id": "op01_train",
-  "start": 2.392,
-  "end": 9.009,
-  "image": "/images/op/op01_train.webp",
-  "video": "/videos/op/op01_train.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op02_harbor",
-  "start": 9.009,
-  "end": 15.836,
-  "image": "/images/op/op02_harbor.webp",
-  "video": "/videos/op/op02_harbor.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op03_journal",
-  "start": 15.836,
-  "end": 22.454,
-  "image": "/images/op/op03_journal.webp",
-  "video": "/videos/op/op03_journal.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op04_hikari",
-  "start": 22.454,
-  "end": 29.071,
-  "image": "/images/op/op04_hikari.webp",
-  "video": "/videos/op/op04_hikari.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op05_asuka",
-  "start": 29.071,
-  "end": 35.712,
-  "image": "/images/op/op05_asuka.webp",
-  "video": "/videos/op/op05_asuka.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op06_rei",
-  "start": 35.712,
-  "end": 42.516,
-  "image": "/images/op/op06_rei.webp",
-  "video": "/videos/op/op06_rei.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op07_nao",
-  "start": 42.516,
-  "end": 49.133,
-  "image": "/images/op/op07_nao.webp",
-  "video": "/videos/op/op07_nao.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op08_miyuki",
-  "start": 49.133,
-  "end": 55.774,
-  "image": "/images/op/op08_miyuki.webp",
-  "video": "/videos/op/op08_miyuki.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op09_sora",
-  "start": 55.774,
-  "end": 62.392,
-  "image": "/images/op/op09_sora.webp",
-  "video": "/videos/op/op09_sora.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op10_maki",
-  "start": 62.392,
-  "end": 69.01,
-  "image": "/images/op/op10_maki.webp",
-  "video": "/videos/op/op10_maki.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op11_inari",
-  "start": 69.01,
-  "end": 75.836,
-  "image": "/images/op/op11_inari.webp",
-  "video": "/videos/op/op11_inari.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op12_kai",
-  "start": 75.836,
-  "end": 82.454,
-  "image": "/images/op/op12_kai.webp",
-  "video": "/videos/op/op12_kai.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op13_challenge",
-  "start": 82.454,
-  "end": 89.072,
-  "image": "/images/op/op13_challenge.webp",
-  "video": "/videos/op/op13_challenge.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op14_1184",
-  "start": 89.072,
-  "end": 95.689,
-  "image": "/images/op/op14_1184.webp",
-  "video": "/videos/op/op14_1184.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op15_fireworks",
-  "start": 95.689,
-  "end": 102.539,
-  "image": "/images/op/op15_fireworks.webp",
-  "video": "/videos/op/op15_fireworks.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op16_rooftop",
-  "start": 102.539,
-  "end": 109.134,
-  "image": "/images/op/op16_rooftop.webp",
-  "video": "/videos/op/op16_rooftop.webm",
-  "still": false,
-  "name": null
- },
- {
-  "id": "op17_lineup",
-  "start": 109.134,
-  "end": 115.751,
-  "image": "/images/op/op17_lineup.webp",
+  "id": "o2_sky",
+  "start": 0.441,
+  "end": 3.274,
+  "image": "/images/op/o2_sky.webp",
   "video": null,
   "still": true,
-  "name": null
+  "name": null,
+  "clipIn": 0.5
  },
  {
-  "id": "op18_title",
-  "start": 115.751,
-  "end": 122.392,
-  "image": "/images/op/op18_title.webp",
-  "video": "/videos/op/op18_title.webm",
+  "id": "o2_train",
+  "start": 3.274,
+  "end": 6.084,
+  "image": "/images/op/o2_train.webp",
+  "video": "/videos/op/o2_train.webm",
   "still": false,
-  "name": null
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_harbor",
+  "start": 6.084,
+  "end": 8.916,
+  "image": "/images/op/o2_harbor.webp",
+  "video": "/videos/op/o2_harbor.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_journal",
+  "start": 8.916,
+  "end": 13.142,
+  "image": "/images/op/o2_journal.webp",
+  "video": "/videos/op/o2_journal.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_hikari",
+  "start": 13.142,
+  "end": 15.975,
+  "image": "/images/op/o2_hikari.webp",
+  "video": "/videos/op/o2_hikari.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_asuka",
+  "start": 15.975,
+  "end": 18.785,
+  "image": "/images/op/o2_asuka.webp",
+  "video": "/videos/op/o2_asuka.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_rei",
+  "start": 18.785,
+  "end": 21.618,
+  "image": "/images/op/o2_rei.webp",
+  "video": "/videos/op/o2_rei.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_nao",
+  "start": 21.618,
+  "end": 24.451,
+  "image": "/images/op/o2_nao.webp",
+  "video": null,
+  "still": true,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_miyuki",
+  "start": 24.451,
+  "end": 27.26,
+  "image": "/images/op/o2_miyuki.webp",
+  "video": "/videos/op/o2_miyuki.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_sora",
+  "start": 27.26,
+  "end": 30.093,
+  "image": "/images/op/o2_sora.webp",
+  "video": "/videos/op/o2_sora.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_maki",
+  "start": 30.093,
+  "end": 32.903,
+  "image": "/images/op/o2_maki.webp",
+  "video": "/videos/op/o2_maki.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_inari",
+  "start": 32.903,
+  "end": 35.736,
+  "image": "/images/op/o2_inari.webp",
+  "video": "/videos/op/o2_inari.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_kai",
+  "start": 35.736,
+  "end": 37.152,
+  "image": "/images/op/o2_kai.webp",
+  "video": "/videos/op/o2_kai.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_duo_hikari_nao",
+  "start": 37.152,
+  "end": 39.985,
+  "image": "/images/op/o2_duo_hikari_nao.webp",
+  "video": "/videos/op/o2_duo_hikari_nao.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_duo_asuka_rei",
+  "start": 39.985,
+  "end": 42.794,
+  "image": "/images/op/o2_duo_asuka_rei.webp",
+  "video": "/videos/op/o2_duo_asuka_rei.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_duo_sora_maki",
+  "start": 42.794,
+  "end": 45.65,
+  "image": "/images/op/o2_duo_sora_maki.webp",
+  "video": "/videos/op/o2_duo_sora_maki.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_duo_miyuki_inari",
+  "start": 45.65,
+  "end": 48.437,
+  "image": "/images/op/o2_duo_miyuki_inari.webp",
+  "video": "/videos/op/o2_duo_miyuki_inari.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_fireworks",
+  "start": 48.437,
+  "end": 51.27,
+  "image": "/images/op/o2_fireworks.webp",
+  "video": "/videos/op/o2_fireworks.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_rooftop",
+  "start": 51.27,
+  "end": 54.079,
+  "image": "/images/op/o2_rooftop.webp",
+  "video": "/videos/op/o2_rooftop.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_m_hikari",
+  "start": 54.079,
+  "end": 55.496,
+  "image": "/images/op/o2_hikari.webp",
+  "video": "/videos/op/o2_hikari.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 1.6
+ },
+ {
+  "id": "o2_m_asuka",
+  "start": 55.496,
+  "end": 56.912,
+  "image": "/images/op/o2_asuka.webp",
+  "video": "/videos/op/o2_asuka.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 1.6
+ },
+ {
+  "id": "o2_m_rei",
+  "start": 56.912,
+  "end": 58.329,
+  "image": "/images/op/o2_rei.webp",
+  "video": "/videos/op/o2_rei.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 1.6
+ },
+ {
+  "id": "o2_m_nao",
+  "start": 58.329,
+  "end": 59.745,
+  "image": "/images/op/o2_nao.webp",
+  "video": null,
+  "still": true,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_m_miyuki",
+  "start": 59.745,
+  "end": 61.161,
+  "image": "/images/op/o2_miyuki.webp",
+  "video": "/videos/op/o2_miyuki.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 1.6
+ },
+ {
+  "id": "o2_m_sora",
+  "start": 61.161,
+  "end": 62.555,
+  "image": "/images/op/o2_sora.webp",
+  "video": "/videos/op/o2_sora.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 1.6
+ },
+ {
+  "id": "o2_m_maki",
+  "start": 62.555,
+  "end": 63.971,
+  "image": "/images/op/o2_maki.webp",
+  "video": "/videos/op/o2_maki.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 1.6
+ },
+ {
+  "id": "o2_m_inari",
+  "start": 63.971,
+  "end": 65.387,
+  "image": "/images/op/o2_inari.webp",
+  "video": "/videos/op/o2_inari.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 1.6
+ },
+ {
+  "id": "o2_hands",
+  "start": 65.387,
+  "end": 66.804,
+  "image": "/images/op/o2_hands.webp",
+  "video": "/videos/op/o2_hands.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_all",
+  "start": 66.804,
+  "end": 73.863,
+  "image": "/images/op/o2_all.webp",
+  "video": null,
+  "still": true,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_torii",
+  "start": 73.863,
+  "end": 78.089,
+  "image": "/images/op/o2_torii.webp",
+  "video": "/videos/op/o2_torii.webm",
+  "still": false,
+  "name": null,
+  "clipIn": 0.5
+ },
+ {
+  "id": "o2_title",
+  "start": 78.089,
+  "end": 86.94,
+  "image": "/images/op/o2_title.webp",
+  "video": null,
+  "still": true,
+  "name": null,
+  "clipIn": 0.5,
+  "title": true
  }
 ];

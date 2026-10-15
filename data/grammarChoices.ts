@@ -2402,5 +2402,437 @@ export const GRAMMAR_VARIANTS: Record<string, GrammarVariant> = {
   "major": "見たよ。本当に、真珠のはずだった。",
   "majorZh": "语法错误：“はずだった”表示“本应是”，意思变成了“本应是珍珠（但不是）”，与原意“看起来像珍珠”完全不同。",
   "majorEn": "Grammar error: Uses はずだった (was supposed to be), changing the meaning from 'it looked like a pearl' to 'it was supposed to be a pearl (but it wasn't).'"
+ },
+ "袖が狭いって、どういう意味？": {
+  "minor": "袖が狭いって、どういう意味だ？",
+  "minorZh": "句尾用了「だ？」，问人时显得生硬；口语里直接说「どういう意味？」。",
+  "minorEn": "Ending on だ？ sounds blunt when asking someone; just say どういう意味？",
+  "major": "袖が狭いって、どういう意味を？",
+  "majorZh": "「意味を？」不成句：「どういう意味」后面不接宾格助词「を」。",
+  "majorEn": "意味を？ does not work: どういう意味 takes no object particle."
+ },
+ "今度、一緒に歩いて見に行こうか。": {
+  "minor": "今度、一緒に歩いて見に行くか。",
+  "minorZh": "「行くか」是自言自语式的决定；邀请对方要用意志形「行こうか」。",
+  "minorEn": "行くか sounds like deciding to yourself; to invite someone use the volitional 行こうか.",
+  "major": "今度、一緒に歩かせて見に行こうか。",
+  "majorZh": "「歩かせて」是使役形，变成了「让（谁）走着去看」，意思不对。",
+  "majorEn": "歩かせて is causative — 'make someone walk' — not what you meant."
+ },
+ "もう一回、読んでくれる？": {
+  "minor": "もう一回、読んでもらう？",
+  "minorZh": "「読んでもらう？」是问\"要不要我请（别人）读\"；请对方帮忙读要用「読んでくれる？」。",
+  "minorEn": "読んでもらう？ asks whether someone will have it read; to ask her to read it, use 読んでくれる？",
+  "major": "もう一回、読んであげる？",
+  "majorZh": "「読んであげる」是\"我读给你听\"，授受方向反了。",
+  "majorEn": "読んであげる means 'shall I read it for you' — giving and receiving reversed."
+ },
+ "今日のことは、ぼやけないように覚えておくよ。": {
+  "minor": "今日のことは、ぼやけないで覚えておくよ。",
+  "minorZh": "表示\"为了不……\"要用「ないように」，「ないで」是\"不……就\"。",
+  "minorEn": "'So that it does not…' is ないように; ないで means 'without doing'.",
+  "major": "今日のことは、ぼやけるように覚えておくよ。",
+  "majorZh": "「ぼやけるように」变成\"为了让它变模糊而记住\"，意思反了。",
+  "majorEn": "ぼやけるように means 'so that it blurs' — the opposite."
+ },
+ "負けないからな。": {
+  "minor": "負けないからね。",
+  "minorZh": "意思一样，但「ね」比「な」软，少了跟对手较劲的那股劲。",
+  "minorEn": "Same meaning, but ね is softer than な and loses the rival edge.",
+  "major": "負けさせないからな。",
+  "majorZh": "「負けさせない」是\"不让（你）输\"，意思完全变了。",
+  "majorEn": "負けさせない means 'I will not let you lose' — a different meaning."
+ },
+ "走ったら、滝が見えないだろ。": {
+  "minor": "走ると、滝が見えないだろ。",
+  "minorZh": "「と」表示必然结果，这里说\"要是跑了的话\"，用「たら」更自然。",
+  "minorEn": "と states an inevitable result; for 'if you run' here, たら is more natural.",
+  "major": "走ったら、滝を見えないだろ。",
+  "majorZh": "「見える」是自动词，对象用「が」，不能用「を」。",
+  "majorEn": "見える is intransitive: the thing seen takes が, not を."
+ },
+ "次は歩いて来る。で、お前より先に着く。": {
+  "minor": "次は歩いて来る。で、お前より先に着いた。",
+  "minorZh": "说的是下一次，要用现在形「着く」，不能用过去形。",
+  "minorEn": "It is about next time, so use 着く, not the past 着いた.",
+  "major": "次は歩いて来る。で、お前より後に着く。",
+  "majorZh": "「後に」是\"比你晚到\"，意思反了。",
+  "majorEn": "後に means 'arrive after you' — the opposite."
+ },
+ "でも、上から見る神戸、きれいだったよ。": {
+  "minor": "でも、上から見る神戸、きれかったよ。",
+  "minorZh": "「きれい」是な形容词，过去形是「きれいだった」，不是「きれかった」。",
+  "minorEn": "きれい is a na-adjective: past is きれいだった, not きれかった.",
+  "major": "でも、上から見られる神戸、きれいだったよ。",
+  "majorZh": "「見られる」变成了被动\"被从上面看着的神户\"，句子变得别扭。",
+  "majorEn": "見られる turns it passive — 'Kobe being looked at from above' — awkward and off."
+ },
+ "知ってます。だから見てるんです。": {
+  "minor": "知ってます。だから見るんです。",
+  "minorZh": "\"正在看\"要用「見てる」；「見る」只是\"会看\"。",
+  "minorEn": "'I am watching' is 見てる; 見る is just 'I watch' in general.",
+  "major": "知ってます。だから見せてるんです。",
+  "majorZh": "「見せてる」是\"给（你）看\"，意思变了。",
+  "majorEn": "見せてる means 'I am showing it' — a different meaning."
+ },
+ "あ、いえ、その、見てただけで……": {
+  "minor": "あ、いえ、その、見ただけで……",
+  "minorZh": "解释\"刚才一直在看\"要用持续的「見てた」，「見た」只是看了一眼。",
+  "minorEn": "For 'I was just watching' use 見てた; 見た is a single look.",
+  "major": "あ、いえ、その、見られただけで……",
+  "majorZh": "「見られた」是\"被看了\"，主语变成了你被人看。",
+  "majorEn": "見られた means 'I was seen' — you became the one being watched."
+ },
+ "……なんでも知ってるんですか。": {
+  "minor": "……なんでも知るんですか。",
+  "minorZh": "\"知道\"的状态要说「知ってる」，「知る」是\"去得知\"。",
+  "minorEn": "The state of knowing is 知ってる; 知る means 'to find out'.",
+  "major": "……なんでも知らせるんですか。",
+  "majorZh": "「知らせる」是\"通知、告诉别人\"，意思完全不同。",
+  "majorEn": "知らせる means 'to inform someone' — a different verb."
+ },
+ "駅まで、入りますか。": {
+  "minor": "駅まで、入れますか。",
+  "minorZh": "邀请对方进伞要问「入りますか」；「入れますか」变成了\"能不能进得去\"。",
+  "minorEn": "Offering your umbrella is 入りますか; 入れますか asks whether she is able to fit.",
+  "major": "駅まで、入れさせますか。",
+  "majorZh": "使役形「入れさせる」意思乱了，听起来像\"要不要让人把（东西）放进去\"。",
+  "majorEn": "The causative 入れさせる garbles it into 'shall I make someone put it in'."
+ },
+ "あの、これ、落としましたよ。": {
+  "minor": "あの、これ、落ちましたよ。",
+  "minorZh": "「落ちる」是自动词\"掉了\"；提醒对方\"你掉了东西\"用他动词「落とした」。",
+  "minorEn": "落ちる is 'it fell'; to tell her she dropped it, use 落とした.",
+  "major": "あの、これ、落としてくださいよ。",
+  "majorZh": "「落としてください」是\"请把它扔掉\"，完全不是要还给她。",
+  "majorEn": "落としてください means 'please drop it' — not handing it back."
+ },
+ "あの、これは何ですか。": {
+  "minor": "あの、これは何ですか？ですか。",
+  "minorZh": "句尾的「ですか」重复了一次。",
+  "minorEn": "ですか is repeated twice.",
+  "major": "あの、これは誰ですか。",
+  "majorZh": "问雕花不能用「誰」（谁），东西要用「何」。",
+  "majorEn": "誰 is 'who'; for a carving you need 何 'what'."
+ },
+ "はい、今日、着いたばかりです。": {
+  "minor": "はい、今日、着くばかりです。",
+  "minorZh": "\"刚刚到\"要用过去形加「ばかり」：「着いたばかり」。",
+  "minorEn": "'Just arrived' is past + ばかり: 着いたばかり.",
+  "major": "はい、今日、着いたばかりではありません。",
+  "majorZh": "否定之后变成\"并不是今天刚到\"，意思反了。",
+  "majorEn": "The negative turns it into 'I did not just arrive today' — the opposite."
+ },
+ "どうして分かったんですか。": {
+  "minor": "どうして分かりたんですか。",
+  "minorZh": "「分かる」的过去形是「分かった」，没有「分かりた」。",
+  "minorEn": "The past of 分かる is 分かった, not 分かりた.",
+  "major": "どうして分からせたんですか。",
+  "majorZh": "使役「分からせた」是\"为什么让（我）明白\"，问错了。",
+  "majorEn": "分からせた is causative — 'why did you make me understand' — the wrong question."
+ },
+ "はい。今日、来ました。……これ、どうやって食べるんですか。": {
+  "minor": "はい。今日、来ました。……これ、どうやって食べますんですか。",
+  "minorZh": "「ます」后面不能再接「んですか」，说「食べるんですか」或「食べますか」。",
+  "minorEn": "You cannot stack ます and んですか; say 食べるんですか or 食べますか.",
+  "major": "はい。今日、来ました。……これ、どうやって食べさせるんですか。",
+  "majorZh": "「食べさせる」是\"怎么喂（别人）吃\"，意思完全不对。",
+  "majorEn": "食べさせる means 'how do I feed it to someone' — not what you meant."
+ },
+ "あ、はい。袋をお願いします。": {
+  "minor": "あ、はい。袋がお願いします。",
+  "minorZh": "「お願いします」前面的东西用「を」，不用「が」。",
+  "minorEn": "The thing you ask for takes を before お願いします, not が.",
+  "major": "あ、はい。袋はいりません、お願いします。",
+  "majorZh": "「いりません」是\"不要\"，跟\"要个袋子\"正好相反。",
+  "majorEn": "いりません means 'I do not need one' — the opposite."
+ },
+ "あの、すみません——": {
+  "minor": "あの、すみませんでした——",
+  "minorZh": "叫住别人用「すみません」；「すみませんでした」是为已经做的事道歉。",
+  "minorEn": "To call someone use すみません; すみませんでした apologises for something already done.",
+  "major": "あの、ありがとうございました——",
+  "majorZh": "\"谢谢您了\"是道谢收尾，不能用来叫住人。",
+  "majorEn": "ありがとうございました closes a thank-you; it cannot call someone over."
+ },
+ "あの、袋、一つ持ちましょうか。": {
+  "minor": "あの、袋、一つ持ちますか。",
+  "minorZh": "主动提出帮忙用「持ちましょうか」；「持ちますか」是在问对方要不要自己拿。",
+  "minorEn": "Offering help is 持ちましょうか; 持ちますか asks whether she will carry it herself.",
+  "major": "あの、袋、一つ持たせましょうか。",
+  "majorZh": "「持たせましょうか」是\"要不要让（你）拿着\"，反过来了。",
+  "majorEn": "持たせましょうか means 'shall I make you carry it' — reversed."
+ },
+ "この辺、どこで買うと安いですか。": {
+  "minor": "この辺、どこに買うと安いですか。",
+  "minorZh": "动作发生的地点用「で」，不是「に」。",
+  "minorEn": "The place where an action happens takes で, not に.",
+  "major": "この辺、どこで買うと高いですか。",
+  "majorZh": "问成了\"哪里买比较贵\"。",
+  "majorEn": "It now asks where things are expensive."
+ },
+ "あの……お名前、聞いてもいいですか。": {
+  "minor": "あの……お名前、聞いてはいいですか。",
+  "minorZh": "请求许可是「〜てもいいですか」，不是「〜てはいい」。",
+  "minorEn": "Asking permission is 〜てもいいですか, not 〜てはいい.",
+  "major": "あの……お名前、聞いてはいけませんか。",
+  "majorZh": "「〜てはいけません」是\"禁止\"，变成了很别扭的反问。",
+  "majorEn": "〜てはいけません expresses prohibition; it turns into an odd negative question."
+ },
+ "本日、欠席します。": {
+  "minor": "本日、欠席しました。",
+  "minorZh": "请假通知要说接下来的事，用「欠席します」；「しました」是已经缺席了。",
+  "minorEn": "A notice is about what will happen: 欠席します; しました means you already missed it.",
+  "major": "本日、出席します。",
+  "majorZh": "「出席」是\"出席\"，跟请假正好相反。",
+  "majorEn": "出席 means 'attend' — the opposite of taking the day off."
+ },
+ "馴染むのは、勝負じゃないだろ。": {
+  "minor": "馴染むのが、勝負じゃないだろ。",
+  "minorZh": "这里是拿\"融入\"当话题来否定，用「は」更自然；「が」听起来像在挑出某一样。",
+  "minorEn": "Here 馴染むの is the topic being denied, so は fits; が sounds like singling it out.",
+  "major": "馴染ませるのは、勝負じゃないだろ。",
+  "majorZh": "「馴染ませる」是\"让（别人）融入\"，主语变了。",
+  "majorEn": "馴染ませる means 'making someone fit in' — the subject changes."
+ },
+ "じゃあ、僕も旗はいいです。": {
+  "minor": "じゃあ、僕は旗もいいです。",
+  "minorZh": "「も」放错了位置：想说\"我也不要旗\"，「も」跟在「僕」后面。",
+  "minorEn": "も is in the wrong place: 'I don't need a flag either' puts も after 僕.",
+  "major": "じゃあ、僕も旗がほしいです。",
+  "majorZh": "「ほしい」是\"想要\"，意思反了。",
+  "majorEn": "ほしい means 'I want one' — the opposite."
+ },
+ "クラス全員で撮った方が、国際的じゃないですか。": {
+  "minor": "クラス全員で撮る方が、国際的じゃないですか。",
+  "minorZh": "建议\"……比较好\"常用过去形「撮った方が」，用「撮る方が」更像一般比较。",
+  "minorEn": "Suggestions usually take the past form: 撮った方が; 撮る方が sounds like a general comparison.",
+  "major": "クラス全員に撮られた方が、国際的じゃないですか。",
+  "majorZh": "被动「撮られた」是\"被全班拍\"，意思乱了。",
+  "majorEn": "撮られた is passive — 'being photographed by the class' — the meaning falls apart."
+ },
+ "お父さんに、会いたい？": {
+  "minor": "お父さんを、会いたい？",
+  "minorZh": "「会う」的对象用「に」，不用「を」。",
+  "minorEn": "The person you meet takes に with 会う, not を.",
+  "major": "お父さんに、会わせたい？",
+  "majorZh": "「会わせたい」是\"想让（别人）见你爸\"，问错了。",
+  "majorEn": "会わせたい means 'do you want to let someone meet him' — the wrong question."
+ },
+ "どっち側でもないなら、こっち側に来ればいい。": {
+  "minor": "どっち側でもないなら、こっち側に来たらいい。",
+  "minorZh": "意思差不多，但「来ればいい」更像在给出路；「来たらいい」偏随口一说。",
+  "minorEn": "Close, but 来ればいい offers a way out; 来たらいい sounds more offhand.",
+  "major": "どっち側でもないなら、こっち側に来てはいけない。",
+  "majorZh": "「来てはいけない」是\"不准来\"，意思完全反了。",
+  "majorEn": "来てはいけない means 'you must not come' — the complete opposite."
+ },
+ "帰ったら、向こうで一番になってやる。": {
+  "minor": "帰ったら、向こうで一番にしてやる。",
+  "minorZh": "\"成为第一\"是「一番になる」；「一番にする」是\"把（别人）弄成第一\"。",
+  "minorEn": "'Become number one' is 一番になる; 一番にする means 'make something number one'.",
+  "major": "帰ったら、向こうで一番になってもらう。",
+  "majorZh": "「なってもらう」是\"让别人当第一\"，主语换了人。",
+  "majorEn": "なってもらう means 'have someone else become number one' — a different subject."
+ },
+ "一年間、ずっと勝負してくれて、ありがとう。": {
+  "minor": "一年間、ずっと勝負してあげて、ありがとう。",
+  "minorZh": "感谢对方为你做的事用「してくれて」；「してあげて」是你为对方做。",
+  "minorEn": "Thanking her for what she did is してくれて; してあげて is what you did for her.",
+  "major": "一年間、ずっと勝負させてくれなくて、ありがとう。",
+  "majorZh": "\"谢谢你一直不让我比\"，意思完全乱了。",
+  "majorEn": "'Thank you for never letting me compete' — the meaning collapses."
+ },
+ "三月には帰る。": {
+  "minor": "三月では帰る。",
+  "minorZh": "表示时间点用「に」（「三月には」），不能用「では」。",
+  "minorEn": "A point in time takes に (三月には), not では.",
+  "major": "三月には帰らない。",
+  "majorZh": "否定之后变成\"三月不回去\"，意思反了。",
+  "majorEn": "The negative means 'I won't go back in March' — the opposite."
+ },
+ "大丈夫です。": {
+  "minor": "大丈夫でした。",
+  "minorZh": "拒绝店员现在的提议用「大丈夫です」；「でした」是过去的事。",
+  "minorEn": "Declining an offer now is 大丈夫です; でした refers to the past.",
+  "major": "大丈夫ではありません。",
+  "majorZh": "\"不行、有问题\"，跟\"不用了\"的意思相反。",
+  "majorEn": "大丈夫ではありません means 'I am not okay' — not 'no thanks'."
+ },
+ "お願いします。": {
+  "minor": "お願いしました。",
+  "minorZh": "现在请对方给的时候用「お願いします」；「お願いしました」是\"刚才已经拜托过了\"。",
+  "minorEn": "Asking now is お願いします; お願いしました means you already asked.",
+  "major": "お願いされます。",
+  "majorZh": "被动「お願いされます」是\"被人拜托\"，意思反了。",
+  "majorEn": "お願いされます is passive — 'I am asked' — reversed."
+ },
+ "釣った魚って、売るんですか。": {
+  "minor": "釣る魚って、売るんですか。",
+  "minorZh": "已经钓上来的鱼要用过去形修饰：「釣った魚」。",
+  "minorEn": "Fish already caught take the past form: 釣った魚.",
+  "major": "釣った魚って、売られるんですか。",
+  "majorZh": "被动「売られる」听起来像在说鱼被卖掉的可怜遭遇，问法不对。",
+  "majorEn": "売られる makes it 'are the fish sold off' as if pitying them — the wrong question."
+ },
+ "似合ってる。": {
+  "minor": "似合う。",
+  "minorZh": "\"（现在穿着）很合适\"要用状态「似合ってる」，「似合う」是一般性的\"适合\"。",
+  "minorEn": "For 'it suits you (right now)' use 似合ってる; 似合う is general.",
+  "major": "似合わせてる。",
+  "majorZh": "使役「似合わせる」不成话，像在说\"让它合适\"。",
+  "majorEn": "似合わせてる is causative nonsense — 'making it suit'."
+ },
+ "……どちら様ですか？": {
+  "minor": "……どなた様ですか？",
+  "minorZh": "「どなた様」不常这样说，礼貌地问\"哪位\"用「どちら様」。",
+  "minorEn": "どなた様 is not idiomatic here; the polite 'who is it' is どちら様.",
+  "major": "……どちらですか？",
+  "majorZh": "「どちらですか」是\"在哪边\"，问的是方向，玩笑就没了。",
+  "majorEn": "どちらですか asks 'which way' — the joke disappears."
+ },
+ "明日、なにが出ますか。": {
+  "minor": "明日、なにを出ますか。",
+  "minorZh": "\"会出什么\"里「出る」是自动词，主语用「が」。",
+  "minorEn": "出る is intransitive here, so the subject takes が.",
+  "major": "明日、なにが出ましたか。",
+  "majorZh": "过去形变成\"明天出了什么\"，时态矛盾。",
+  "majorEn": "The past tense makes it 'what came out tomorrow' — contradictory."
+ },
+ "ここ、長いんですか。": {
+  "minor": "ここ、長いですか。",
+  "minorZh": "意思能懂，但问对方情况时「長いんですか」带着好奇，更自然。",
+  "minorEn": "Understandable, but 長いんですか carries curiosity about her and sounds more natural.",
+  "major": "ここ、短くないんですか。",
+  "majorZh": "\"这里不短吗\"，听起来像在说地方的长度，不是问她做了多久。",
+  "majorEn": "'Is it not short here?' sounds like the place's length, not how long she has worked."
+ },
+ "今の俺でも読める本、ありますか。": {
+  "minor": "今の俺でも読む本、ありますか。",
+  "minorZh": "\"能读的书\"要用可能形「読める」。",
+  "minorEn": "'A book I can read' needs the potential form 読める.",
+  "major": "今の俺でも読ませる本、ありますか。",
+  "majorZh": "使役「読ませる」是\"让（别人）读的书\"，意思不对。",
+  "majorEn": "読ませる is causative — 'a book that makes someone read'."
+ },
+ "先生は、ホームシックとかないんですか。": {
+  "minor": "先生は、ホームシックとかありないんですか。",
+  "minorZh": "「ある」的否定是「ない」，没有「ありない」。",
+  "minorEn": "The negative of ある is ない, not ありない.",
+  "major": "先生は、ホームシックとかさせないんですか。",
+  "majorZh": "\"老师不让（人）想家吗\"，意思完全变了。",
+  "majorEn": "'Do you not make people homesick?' — a completely different question."
+ },
+ "この書類、どこ間違えやすいですか。": {
+  "minor": "この書類、どこ間違いやすいですか。",
+  "minorZh": "「やすい」接动词连用形：「間違え（る）」→「間違えやすい」。",
+  "minorEn": "やすい attaches to the verb stem: 間違える → 間違えやすい.",
+  "major": "この書類、どこ間違えにくいですか。",
+  "majorZh": "「にくい」是\"不容易\"，问成了\"哪里不容易错\"。",
+  "majorEn": "にくい means 'hard to' — it asks where it is hard to make mistakes."
+ },
+ "……ちょっとだけ、いいですか。": {
+  "minor": "……ちょっとしか、いいですか。",
+  "minorZh": "「しか」要接否定，这里说\"就一会儿\"用「だけ」。",
+  "minorEn": "しか needs a negative; for 'just a little' use だけ.",
+  "major": "……ちょっとだけ、だめですか。",
+  "majorZh": "\"一会儿也不行吗\"，从请求变成了抱怨。",
+  "majorEn": "'Is even a little not allowed?' turns the request into a complaint."
+ },
+ "さっきの、なんですか。": {
+  "minor": "さっきの、なんでしたか。",
+  "minorZh": "能懂，但问\"刚才那个是什么\"口语里用「なんですか」就够了。",
+  "minorEn": "Understandable, but なんですか is enough for 'what was that just now'.",
+  "major": "さっきの、だれですか。",
+  "majorZh": "问烧的东西不能用「だれ」（谁）。",
+  "majorEn": "だれ is 'who' — not for something being burned."
+ },
+ "今日、どうですか。": {
+  "minor": "今日、どうでしたか。",
+  "minorZh": "问今天鱼口\"怎么样\"（还在钓）用现在形；过去形像是钓完了。",
+  "minorEn": "He is still fishing, so ask in the present; the past sounds like it is over.",
+  "major": "今日、どこですか。",
+  "majorZh": "「どこ」是\"在哪儿\"，问错了东西。",
+  "majorEn": "どこ asks 'where' — the wrong question."
+ },
+ "今のおすすめ、何ですか？": {
+  "minor": "今のおすすめ、何をですか？",
+  "minorZh": "「何ですか」前不能加「を」。",
+  "minorEn": "You cannot put を before ですか here.",
+  "major": "今のおすすめ、誰ですか？",
+  "majorZh": "问推荐的款式要用「何」，不是「誰」。",
+  "majorEn": "For a recommended style you need 何, not 誰."
+ },
+ "サイズ、これだけですか？": {
+  "minor": "サイズ、これしかですか？",
+  "minorZh": "「しか」必须接否定（「これしかないですか」），不能直接接「ですか」。",
+  "minorEn": "しか must be followed by a negative (これしかないですか).",
+  "major": "サイズ、これだけじゃないですか？",
+  "majorZh": "反问变成\"这不就只有这个吗\"，像在抱怨，不是询问库存。",
+  "majorEn": "It becomes 'isn't this all there is?' — a complaint, not a question about stock."
+ },
+ "勉強で目が疲れるんですけど……": {
+  "minor": "勉強に目が疲れるんですけど……",
+  "minorZh": "表示原因用「で」：「勉強で疲れる」。",
+  "minorEn": "Cause takes で: 勉強で疲れる.",
+  "major": "勉強で目を疲れさせたいんですけど……",
+  "majorZh": "\"我想让眼睛累\"，意思完全反了。",
+  "majorEn": "'I want to tire my eyes out' — the opposite of what you need."
+ },
+ "新入荷っていつ出ますか？": {
+  "minor": "新入荷っていつに出ますか？",
+  "minorZh": "「いつ」后面不加「に」。",
+  "minorEn": "いつ does not take に.",
+  "major": "新入荷っていつ出しましたか？",
+  "majorZh": "过去形变成\"什么时候上过新\"，问的不是下一次。",
+  "majorEn": "The past asks when it came in before, not when it will."
+ },
+ "いいの、入ってますか？": {
+  "minor": "いいの、入りますか？",
+  "minorZh": "问\"现在有没有好货\"用状态「入ってますか」；「入りますか」像在问能不能放进去。",
+  "minorEn": "'Has anything good come in' is 入ってますか; 入りますか sounds like 'will it fit'.",
+  "major": "いいの、入れてますか？",
+  "majorZh": "「入れてます」是\"（你）有在放进去吗\"，主语和意思都偏了。",
+  "majorEn": "入れてます means 'are you putting some in' — subject and sense drift."
+ },
+ "あれ、どうやってるんですか。": {
+  "minor": "あれ、どうやるんですか。",
+  "minorZh": "问她\"正在用的手法\"，用「やってる」更贴切；「やる」是一般性的\"怎么做\"。",
+  "minorEn": "For the technique she is using, やってる fits; やる is general 'how is it done'.",
+  "major": "あれ、どうやらせるんですか。",
+  "majorZh": "使役「やらせる」是\"怎么让（别人）做\"，问错了。",
+  "majorEn": "やらせる is causative — 'how do you make someone do it'."
+ },
+ "なんで二回言うんですか。": {
+  "minor": "なんで二回言いますんですか。",
+  "minorZh": "「ます」和「んですか」不能叠在一起。",
+  "minorEn": "ます and んですか cannot be stacked.",
+  "major": "なんで二回言われるんですか。",
+  "majorZh": "被动「言われる」是\"为什么被说两遍\"，主语反了。",
+  "majorEn": "言われる is passive — 'why am I told twice' — reversed."
+ },
+ "「ゆっくり」って、どういう意味ですか。": {
+  "minor": "「ゆっくり」って、どんな意味ですか。",
+  "minorZh": "能懂，但问词义的固定说法是「どういう意味」。",
+  "minorEn": "Understandable, but the set phrase for asking a word's meaning is どういう意味.",
+  "major": "「ゆっくり」って、どういう意味でしたか。",
+  "majorZh": "过去形像是在问\"刚才那个是什么意思来着\"，不是第一次问。",
+  "majorEn": "The past makes it 'what did it mean again', not a first question."
+ },
+ "いつも二分前ですね。": {
+  "minor": "いつも二分前ですよ。",
+  "minorZh": "「よ」是在告诉对方；向对方确认他的习惯用「ね」。",
+  "minorEn": "よ informs; to remark on his habit to him, use ね.",
+  "major": "いつも二分後ですね。",
+  "majorZh": "「二分後」是\"晚两分钟\"，意思反了。",
+  "majorEn": "二分後 means two minutes late — the opposite."
+ },
+ "……たぶん、こっちです。": {
+  "minor": "……たぶん、こっちでした。",
+  "minorZh": "指路说的是现在的方向，用「です」。",
+  "minorEn": "Giving directions now, use です.",
+  "major": "……たぶん、こっちじゃありません。",
+  "majorZh": "\"大概不是这边\"，指路指反了。",
+  "majorEn": "'Probably not this way' — the directions point the wrong way."
  }
 };

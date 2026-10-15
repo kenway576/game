@@ -151,27 +151,9 @@ const clean = o => {
   return x;
 };
 function write() {
-  const d = fs.existsSync(`${DIR}/dates.json`) ? JSON.parse(fs.readFileSync(`${DIR}/dates.json`, 'utf8')) : {};
-  const out = {};
-  for (const [spot, vs] of Object.entries(d)) for (const v of vs) {
-    (out[spot] ||= {})[v.char] ||= [];
-    out[spot][v.char].push({ beat1: v.beat1, beat2: v.beat2, promptZh: v.choice.promptZh, promptEn: v.choice.promptEn, options: v.choice.options.map(clean) });
-  }
-  fs.writeFileSync('data/dateVariety.ts', `// 自动生成：node scripts/grammar/gen-variety.mjs write —— 别手改（改 .generated/variety/dates.json 再写）
-// 约会：每个地点 × 每个人的专属版本（她在这儿会做什么、一个只属于这次的选择）。用法见 data/dateData.ts。
-import { VarietyOption } from './varietyTypes';
-export interface DateVariant { beat1: { zh: string; en: string }; beat2: { zh: string; en: string }; promptZh: string; promptEn: string; options: VarietyOption[] }
-export const DATE_VARIETY: Record<string, Record<string, DateVariant[]>> = ${JSON.stringify(out)};
-`);
-  const r = fs.existsSync(`${DIR}/reveals_gen.json`) ? JSON.parse(fs.readFileSync(`${DIR}/reveals_gen.json`, 'utf8')) : {};
-  const rv = {};
-  for (const [c, outfits] of Object.entries(r)) for (const [k, opts] of Object.entries(outfits)) (rv[c] ||= {})[k] = opts.map(clean);
-  fs.writeFileSync('data/revealChoices.ts', `// 自动生成：node scripts/grammar/gen-variety.mjs write —— 别手改（改 .generated/variety/reveals_gen.json 再写）
-// 第一次看见她穿这一身：每套衣服三个专属的回应。用法见 data/dateData.ts。
-import { VarietyOption } from './varietyTypes';
-export const REVEAL_CHOICES: Record<string, Record<string, VarietyOption[]>> = ${JSON.stringify(rv)};
-`);
-  console.log('约会', Object.keys(out).length, '个地点；换装', Object.values(rv).reduce((n, o) => n + Object.keys(o).length, 0), '套');
+  // 约会和换装的内容都改成手写了（data/dates/<地点>.ts、data/reveals/<角色>.ts），
+  // 生成出来的只放在 .generated/variety/ 里当参考，不再覆盖游戏里的文件。
+  console.log('内容已改为手写：data/dates/、data/reveals/。生成结果见 .generated/variety/');
 }
 
 if (STAGE === 'dates') await dates();

@@ -15,3 +15,11 @@ export interface VarietyOption {
   // 换装那一组里"真心夸她"的那一个：她会记得，以后自己穿来
   praise?: boolean;
 }
+
+// 约会：某个地点 × 某个人的一套专属内容（她在这儿会做什么、一个只属于这次的选择）
+export interface DateVariant {
+  beat1: { zh: string; en: string };
+  beat2: { zh: string; en: string };
+  promptZh: string; promptEn: string;
+  options: VarietyOption[];
+}

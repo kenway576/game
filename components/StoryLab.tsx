@@ -42,6 +42,8 @@ const StoryLab: React.FC = () => {
   const note = (s: string) => setLog(l => [...l.slice(-6), s]);
   const [key] = useState(() => `storylab_${id}_${Date.now()}`);
 
+  // ?op：直接放开场动画（data/opening.ts）
+  if (q.has('op')) return <OpeningMovie language="zh" onClose={() => {}} />;
   // ?story=epilogue_asuka&film（&flags=asuka_ending_love）：直接放后日谈那一分钟动画
   if (ep && q.has('film')) {
     const c = id.slice(9);
