@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { ProtagonistStats, StatKey, Language } from '../types';
+import { ProtagonistStats, StatKey, Language, StoryFlags, GoalRecord } from '../types';
 import { STAT_METADATA, getStatRankInfo } from '../constants';
+import { goalStatus, schoolEval, N1_PASS, N1_SECTION_MIN, KOBE_DOC_MIN, EXAM_DATE_LABEL, INTERVIEW_DATE_LABEL } from '../story/futurePath';
 
 // ---------------------------------------------------------
 // 🪪 主人公档案：一张真的学生证 + 五维人格参数
@@ -18,6 +19,8 @@ interface Props {
   stats: ProtagonistStats;
   playerName: string;
   language: Language;
+  storyFlags?: StoryFlags;
+  goal?: GoalRecord;
   onClose: () => void;
 }
 
@@ -63,7 +66,59 @@ const Radar: React.FC<{ stats: ProtagonistStats; en: boolean; active: StatKey; o
   );
 };
 
-export const ProtagonistProfileModal: React.FC<Props> = ({ stats, playerName, language, onClose }) => {
+// 🎯 申请表上的那两行字：N1 和神户大学推荐（story/futurePath.ts）
+const STAGE_LABEL: Record<string, [string, string, string]> = {
+  pass: ['合格', 'Passed', 'bg-emerald-100 text-emerald-700'],
+  fail: ['未达成', 'Not this time', 'bg-rose-100 text-rose-600'],
+  waiting: ['等结果', 'Waiting', 'bg-amber-100 text-amber-700'],
+  todo: ['进行中', 'In progress', 'bg-sky-100 text-sky-700'],
+  locked: ['—', '—', 'bg-slate-100 text-slate-500']
+};
+const GoalPanel: React.FC<{ en: boolean; stats: ProtagonistStats; flags: StoryFlags; goal: GoalRecord }> = ({ en, stats, flags, goal }) => {
+  const g = goalStatus(flags, goal);
+  const doc = schoolEval(stats);
+  const n1Line = g.jlpt
+    ? `${g.jlpt.total}/180 · ${en ? 'lang' : '言语'} ${g.jlpt.lang} · ${en ? 'reading' : '阅读'} ${g.jlpt.read} · ${en ? 'listening' : '听力'} ${g.jlpt.listen}`
+    : g.n1 === 'waiting' ? (en ? 'Taken. Results in late January.' : '考完了 · 一月下旬放榜')
+    : g.mock ? (en ? `September mock: ${g.mock.total}/180 (pass ${N1_PASS}, every section ${N1_SECTION_MIN}+)` : `九月模拟考 ${g.mock.total}/180（合格线 ${N1_PASS}，每科 ≥${N1_SECTION_MIN}）`)
+    : (en ? 'Mock exam in September.' : '九月有一次模拟考');
+  const n1Hint = en
+    ? 'Language ← Knowledge + wordbook · Reading ← Knowledge + Guts · Listening ← Kindness + Knowledge'
+    : '言语知识 ← 知识 + 单词本 · 阅读 ← 知识 + 勇气 · 听力 ← 体贴 + 知识';
+  const kobeLine = g.kobeScore
+    ? (en ? `Interview ${g.kobeScore.interview} · essay ${g.kobeScore.essay} · school ${g.kobeScore.doc}` : `面试 ${g.kobeScore.interview} · 小论文 ${g.kobeScore.essay} · 校内评定 ${g.kobeScore.doc}`)
+    : g.recDenied ? (en ? 'The school’s one place went to someone else.' : '学校唯一的推荐名额给了别人')
+    : g.n1 === 'fail' ? (en ? 'Needs N1.' : '没有 N1，就没有推荐')
+    : g.recommended ? (en ? `Recommended. Interview and essay on ${INTERVIEW_DATE_LABEL.en}.` : `已获推荐 · ${INTERVIEW_DATE_LABEL.zh}面试 + 小论文`)
+    : (en ? `School assessment now: ${doc} (needs ${KOBE_DOC_MIN})` : `现在的校内评定 ${doc}（推荐要 ${KOBE_DOC_MIN}）`);
+  const kobeHint = en
+    ? 'N1 → school assessment (average of all five) → interview (Guts, Charm) + essay (Knowledge, Kindness)'
+    : 'N1 合格 → 校内评定（五维平均）→ 面试（勇气、魅力）+ 小论文（知识、体贴）';
+  const rows = [
+    { k: 'n1', title: 'JLPT N1', date: en ? EXAM_DATE_LABEL.en : EXAM_DATE_LABEL.zh, st: g.n1, line: n1Line, hint: n1Hint },
+    { k: 'kobe', title: en ? 'Kobe University · recommended entry' : '神户大学 · 推荐入学', date: en ? 'Feb–Mar' : '二月面试', st: g.kobe, line: kobeLine, hint: kobeHint }
+  ];
+  return (
+    <div className="w-full max-w-[520px] rounded-2xl bg-white/75 border border-white shadow-[0_6px_18px_rgba(16,20,44,0.08)] p-4">
+      <div className="font-ui text-[10px] font-bold tracking-[0.3em] text-pink-500 mb-2">{en ? 'WHAT YOU CAME FOR' : '申请表上的两行字'}</div>
+      <div className="flex flex-col gap-3">
+        {rows.map(r => (
+          <div key={r.k}>
+            <div className="flex items-center gap-2">
+              <span className="font-ui font-black text-[#1f2440] text-sm">{r.title}</span>
+              <span className="text-[10px] text-[#7a7fa0]">{r.date}</span>
+              <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full ${STAGE_LABEL[r.st][2]}`}>{en ? STAGE_LABEL[r.st][1] : STAGE_LABEL[r.st][0]}</span>
+            </div>
+            <div className="text-xs text-[#2b3152] mt-1">{r.line}</div>
+            <div className="text-[10px] text-[#7a7fa0] mt-0.5 leading-relaxed">{r.hint}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const ProtagonistProfileModal: React.FC<Props> = ({ stats, playerName, language, storyFlags = {}, goal = {}, onClose }) => {
   const en = language === 'en';
   const [selected, setSelected] = useState<StatKey>('knowledge');
   const [flipped, setFlipped] = useState(false);
@@ -200,6 +255,7 @@ export const ProtagonistProfileModal: React.FC<Props> = ({ stats, playerName, la
               </div>
             </div>
             <p className="text-[11px] text-[#7a7fa0]">{en ? 'Tap the card to turn it over' : '点一下卡片可以翻面'}</p>
+            <GoalPanel en={en} stats={stats} flags={storyFlags} goal={goal} />
           </div>
 
           {/* ---------- 右：五维 ---------- */}

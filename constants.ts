@@ -353,6 +353,9 @@ export const SCENE_MAP: Record<string, string> = {
   'nunobiki_herb_garden_night':    '/images/backgrounds/bg_nunobiki_herb_garden_night.webp',
   'nunobiki_ropeway':              '/images/backgrounds/bg_nunobiki_ropeway.webp',
   'nunobiki_falls':                '/images/backgrounds/bg_nunobiki_falls.webp',
+  // 进路线（story/futurePath.ts）
+  'jlpt_exam_hall':                '/images/backgrounds/bg_jlpt_exam_hall.webp',
+  'kobe_univ_campus':              '/images/backgrounds/bg_kobe_univ_campus.webp',
   'nunobiki_glasshouse':           '/images/backgrounds/bg_nunobiki_glasshouse.webp'
 };
 

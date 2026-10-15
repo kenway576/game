@@ -306,9 +306,9 @@ export const DAY1_SCRIPT: StoryNode[] = [
         type: 'speech',
         speakerZh: '你',
         speakerEn: 'You',
-        jp: '{name}です。今日から海星高校に通うことになりました。これからよろしくお願いします、深雪さん。',
-        zh: '我叫{name}。今天开始要在海星高中上学。今后请多关照，深雪小姐。',
-        en: 'I am {name}. Starting at Kaisei High School today. It\'s a pleasure to meet you, Miyuki-san.',
+        jp: '{name}です。今日から、坂の上の高校に通うことになりました。これからよろしくお願いします、深雪さん。',
+        zh: '我叫{name}。今天开始要去坡上那所高中上学。今后请多关照，深雪小姐。',
+        en: 'I am {name}. I start at the high school up the hill today. It\'s a pleasure to meet you, Miyuki-san.',
         color: 'bg-yellow-500'
       },
       {

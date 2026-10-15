@@ -1,12 +1,13 @@
 import React from 'react';
 import {
   Language, CharacterId, StoryFlags, AffectionMap, FamiliarityMap,
-  ProtagonistStats, CollectedWord
+  ProtagonistStats, CollectedWord, GoalRecord
 } from '../types';
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, SCHOOL_YEAR_LENGTH } from '../constants';
 import CharacterAvatar from './CharacterAvatar';
 import { ENDINGS, endingsFor, isEndingUnlocked, unlockedCount, clearedRouteCount, TOTAL_ENDINGS } from '../data/endingsData';
 import { EmoText } from './Emo';
+import { goalStatus } from '../story/futurePath';
 
 interface Props {
   language: Language;
@@ -17,6 +18,7 @@ interface Props {
   familiarityMap: FamiliarityMap;
   words: CollectedWord[];
   unlockedCgs: string[];
+  goal?: GoalRecord;
   onClose: () => void;
 }
 
@@ -31,9 +33,17 @@ interface Props {
 // ---------------------------------------------------------
 const YearEndScreen: React.FC<Props> = ({
   language, playerName, stats, storyFlags, affectionMap, familiarityMap,
-  words, unlockedCgs, onClose
+  words, unlockedCgs, goal, onClose
 }) => {
   const en = language === 'en';
+  const g = goalStatus(storyFlags, goal || {});
+  const STAGE: Record<string, [string, string, string]> = {
+    pass: ['合格', 'Passed', 'text-emerald-300'],
+    fail: ['未达成', 'Not this time', 'text-rose-300'],
+    waiting: ['等结果', 'Waiting', 'text-amber-300'],
+    todo: ['未考', 'Not taken', 'text-white/40'],
+    locked: ['—', '—', 'text-white/40']
+  };
 
   const people = VISIBLE_CHARACTER_IDS
     .filter(id => ENDINGS.some(e => e.char === id))
@@ -48,11 +58,11 @@ const YearEndScreen: React.FC<Props> = ({
 
   const closest = people[0];
   const statRows: { k: keyof ProtagonistStats; zh: string; en: string }[] = [
-    { k: 'knowledge', zh: '学识', en: 'Knowledge' },
+    { k: 'knowledge', zh: '知识', en: 'Knowledge' },
     { k: 'charm', zh: '魅力', en: 'Charm' },
-    { k: 'guts', zh: '胆识', en: 'Guts' },
+    { k: 'guts', zh: '勇气', en: 'Guts' },
     { k: 'kindness', zh: '体贴', en: 'Kindness' },
-    { k: 'proficiency', zh: '熟练', en: 'Proficiency' }
+    { k: 'proficiency', zh: '灵巧', en: 'Proficiency' }
   ];
 
   return (
@@ -129,6 +139,35 @@ const YearEndScreen: React.FC<Props> = ({
                 <div className="text-[10px] text-white/40 tracking-wider uppercase mt-0.5">{x.label}</div>
               </div>
             ))}
+          </div>
+
+          {/* 申请表上那两行字（story/futurePath.ts） */}
+          <div className="mb-8">
+            <h2 className="text-sm font-black text-pink-300 tracking-[0.2em] mb-3">
+              {en ? 'WHAT YOU CAME FOR' : '申请表上的那两行字'}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {[
+                {
+                  k: 'n1', zh: 'JLPT N1', en: 'JLPT N1', st: g.n1,
+                  detail: g.jlpt ? `${g.jlpt.total}/180（${g.jlpt.lang} · ${g.jlpt.read} · ${g.jlpt.listen}）` : ''
+                },
+                {
+                  k: 'kobe', zh: '神户大学 推荐入学', en: 'Kobe University (recommended)', st: g.kobe,
+                  detail: g.kobeScore ? (en ? `interview ${g.kobeScore.interview} · essay ${g.kobeScore.essay}` : `面试 ${g.kobeScore.interview} · 小论文 ${g.kobeScore.essay}`)
+                    : g.recDenied ? (en ? 'not recommended by the school' : '没拿到校内推荐')
+                    : g.n1 === 'fail' ? (en ? 'needs N1' : '需要 N1') : ''
+                }
+              ].map(x => (
+                <div key={x.k} className="bg-black/40 border border-white/10 rounded px-3 py-2.5">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-white/70 text-xs">{en ? x.en : x.zh}</span>
+                    <span className={`text-sm font-black ${STAGE[x.st][2]}`}>{en ? STAGE[x.st][1] : STAGE[x.st][0]}</span>
+                  </div>
+                  {x.detail && <div className="text-[10px] text-white/35 font-mono mt-1">{x.detail}</div>}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 五维 */}

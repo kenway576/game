@@ -295,7 +295,26 @@ const INARI: EpilogueDef = {
   )
 };
 
+// 🎯 一年后你为什么在神户（story/futurePath.ts）。接在每一段后日谈的第一个场景后面：
+// 后日谈写的都是她的近况，主角自己这一年怎么样了，只有这一句交代。
+const WHY_BACK: StoryNode = {
+  type: 'branch', ifFlag: 'kobe_univ_pass',
+  then: [{ type: 'narration',
+    zh: '一年后的四月，你回到了神户。这一次口袋里是神户大学的学生证——要住的不是一年，是四年。',
+    en: 'A year later, in April, you are back in Kobe. This time there is a Kobe University student card in your pocket, and it is not for one year. It is for four.' }],
+  otherwise: [{
+    type: 'branch', ifFlag: 'jlpt_n1_pass',
+    then: [{ type: 'narration',
+      zh: '一年后。神大的推荐最后没能拿到，你回国念完了高中。N1 的证书一直夹在外公的手账里——回神户的机票，是你一年前就决定要买的。',
+      en: 'A year later. The Kobe University place never came; you finished school back home. Your N1 certificate has stayed tucked in your grandfather’s notebook, and the ticket back to Kobe was one you decided on a year ago.' }],
+    otherwise: [{ type: 'narration',
+      zh: '一年后。你回国念完了高中，七月在国内又考了一次 N1。回神户的机票，是你一年前就决定要买的。',
+      en: 'A year later. You finished school back home and sat N1 again that July. The ticket back to Kobe was one you decided on a year ago.' }]
+  }]
+};
+const withWhyBack = (d: EpilogueDef): EpilogueDef => ({ ...d, script: [d.script[0], WHY_BACK, ...d.script.slice(1)] });
+
 export const EPILOGUES: Record<CharacterId, EpilogueDef> = {
-  [CharacterId.ASUKA]: ASUKA, [CharacterId.HIKARI]: HIKARI, [CharacterId.REI]: REI, [CharacterId.SORA]: SORA,
-  [CharacterId.MIYUKI]: MIYUKI, [CharacterId.NAO]: NAO, [CharacterId.MAKI]: MAKI, [CharacterId.INARI]: INARI
+  [CharacterId.ASUKA]: withWhyBack(ASUKA), [CharacterId.HIKARI]: withWhyBack(HIKARI), [CharacterId.REI]: withWhyBack(REI), [CharacterId.SORA]: withWhyBack(SORA),
+  [CharacterId.MIYUKI]: withWhyBack(MIYUKI), [CharacterId.NAO]: withWhyBack(NAO), [CharacterId.MAKI]: withWhyBack(MAKI), [CharacterId.INARI]: withWhyBack(INARI)
 };

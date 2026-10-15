@@ -5,6 +5,7 @@ import { RIVAL_CHAPTERS, KAI_DAY1 } from '../story/rivalStory';
 import { NUNOBIKI_EVENTS, nunobikiApproach } from '../story/nunobikiStory';
 import { SCENE_MAP, LEVEL_STORIES } from '../constants';
 import { EPILOGUES } from '../story/epilogue';
+import { futureLabScript } from '../story/futurePath';
 import { EPILOGUE_FILMS } from '../data/epilogueFilms';
 import OpeningMovie from './OpeningMovie';
 import { CharacterId } from '../types';
@@ -27,7 +28,11 @@ const StoryLab: React.FC = () => {
   const lv = Object.values(LEVEL_STORIES).flat().find(d => d?.id === id);
   // ?story=epilogue_asuka：后日谈的剧本部分（动画另放）
   const ep = id.startsWith('epilogue_') ? EPILOGUES[id.slice(9) as CharacterId] : null;
-  const script: StoryNode[] = id === 'kai_day1' ? KAI_DAY1
+  // ?story=goal_result&stats=75,40,40,35,30&words=900：进路线（story/futurePath.ts）按给定五维试播
+  const st = (q.get('stats') || '60,60,60,60,60').split(',').map(Number);
+  const goalStats = { knowledge: st[0], guts: st[1], kindness: st[2], charm: st[3], proficiency: st[4] };
+  const script: StoryNode[] = id.startsWith('goal_') ? futureLabScript(id, goalStats, Number(q.get('words') || 800))
+    : id === 'kai_day1' ? KAI_DAY1
     : lv ? lv.script || []
     : ep ? ep.script
     : nb ? [...nunobikiApproach({ timeSlot: q.get('slot') || 'afternoon' } as any, flags), ...nb.script]

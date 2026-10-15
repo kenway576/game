@@ -80,6 +80,28 @@ export const YEAR_END: StoryNode[] = [
     zh: '你回头才发现，是有人替你纠正的。什么时候纠正的，你不知道。',
     en: 'Only afterwards does it occur to you that somebody must have corrected him. You do not know when.'
   },
+  // 🎯 申请表上那两行字（story/futurePath.ts）。成绩单是它们唯一会被当众提起的地方
+  {
+    type: 'branch', ifFlag: 'kobe_univ_pass',
+    then: [{
+      type: 'narration',
+      zh: '发完成绩单，他又补了一句：「四月から、神戸大学やな。」——全班都回过头来看你。不知道是谁先拍的手。',
+      en: 'When the report cards are done he adds one more thing: "Kobe University from April, then." The whole class turns round. You never find out who starts the clapping.'
+    }],
+    otherwise: [{
+      type: 'branch', ifFlag: 'jlpt_n1_pass',
+      then: [{
+        type: 'narration',
+        zh: '你的成绩单里夹着一张纸：N1 合格证书的复印件。是他替你复印的，说原件你得自己收好。',
+        en: 'Folded into your report card is a sheet of paper: a photocopy of your N1 certificate. He made it for you. The original, he says, is yours to keep safe.'
+      }],
+      otherwise: [{
+        type: 'narration',
+        zh: '成绩单最后一栏写着「日本語：よく伸びた」——进步很大。N1 那一格是空的。他的字很难看，但这一行写得很认真。',
+        en: 'The last box on your report card reads "Japanese: came on a long way." The N1 box is empty. His handwriting is awful, but this line he wrote carefully.'
+      }]
+    }]
+  },
 
   {
     type: 'choice',

@@ -369,6 +369,23 @@ export interface LifeState {
   rentPaidFor?: string;
   // 👋 今天已经碰见过谁（dayIndex + 名单）。同一天在别处再撞上同一个人的概率会压低。
   metToday?: { day: number; chars: CharacterId[] };
+  // 🎯 进路（story/futurePath.ts）：模拟考、N1、神户大学推荐入学的分数。
+  // 分数在考的那一刻按五维算好存下来，之后不再变——放榜念的就是那天的你。
+  goal?: GoalRecord;
+}
+
+export interface ExamScore {
+  // JLPT N1：言語知識 / 読解 / 聴解，各 0–60，合计 0–180
+  lang: number; read: number; listen: number; total: number; pass: boolean;
+}
+export interface KobeScore {
+  // 神户大学推荐入学：校内评定 / 小论文 / 面试，各 0–100
+  doc: number; essay: number; interview: number; total: number; pass: boolean;
+}
+export interface GoalRecord {
+  mock?: ExamScore;
+  jlpt?: ExamScore;
+  kobe?: KobeScore;
 }
 
 // ---------------------------------------------------------

@@ -64,6 +64,7 @@ import { buildClassSlot, classHeadline } from './story/classMorning';
 import { nextMainChapter, MainChapterDef } from './story/mainStory';
 import { buildJukuScript, JUKU_FEE } from './story/jukuScenes';
 import { SCHOOL_TRIP, tripDayOn } from './story/schoolTrip';
+import { futureEventDue } from './story/futurePath';
 import { promiseScriptFor } from './story/day2Promises';
 import GiftScreen from './components/GiftScreen';
 import SlotCard from './components/SlotCard';
@@ -1543,6 +1544,40 @@ const App: React.FC = () => {
     && !cultureFestivalDay(gameCalendar)
     && !storyFlags[classDoneFlag(gameCalendar, classSlotNow()!)]
     && !isSchoolYearOver(gameCalendar);
+
+  // 🎯 进路（story/futurePath.ts）：进路面谈 → 模拟考 → N1 → 放榜 → 推荐 → 神大面试 → 合格通知。
+  // 到了日子第一次回到大厅就演，跟修学旅行一样不用玩家点。
+  // 分数在开演之前就按当时的五维算好存进 life.goal——放榜念的是考试那天的你，不是放榜那天的你。
+  // ⚠️ 必须写在 classPending 后面：依赖数组是渲染时求值的，写在前面会碰到 TDZ。
+  useEffect(() => {
+    if (gameMode !== GameMode.LOBBY) return;
+    if (activeMain || activeClass || activeLevelStory || activeTrip || playingDay1 || levelUpEvent || showPhone || showYearEnd) return;
+    if (!day1Done || isSchoolYearOver(gameCalendar)) return;
+    if (tripDayOn(gameCalendar.month, gameCalendar.day) !== 0) return;
+    const due = futureEventDue({
+      calendar: gameCalendar, flags: storyFlags, stats: statsRef.current,
+      words: userState.collectedWords.length, goal: life.goal || {},
+      schoolDay: isSchoolDay(gameCalendar), classPending
+    });
+    if (!due) return;
+    if (due.record) setLife(l => ({ ...l, goal: { ...(l.goal || {}), ...due.record } }));
+    // 结果和"演过了"开演时就记上：点「跳过」走不到剧本末尾的 effect 节点
+    setStoryFlags(prev => ({ ...prev, ...Object.fromEntries(due.flags.map(f => [f, true])) }));
+    setShowRestPlan(false);
+    setActiveTrip({
+      loc: {
+        id: due.id, district: due.district,
+        nameJp: '', reading: '', nameZh: due.titleZh, nameEn: due.titleEn,
+        blurbZh: '', blurbEn: '',
+        mapScene: due.scene,
+        timeCost: due.timeCost,
+        // 考试、面试累一天；在学校里说几句话不算出门
+        stamina: due.district === 'far' ? 30 : 0
+      },
+      event: null,
+      script: due.script
+    });
+  }, [gameMode, gameCalendar, storyFlags, activeMain, activeClass, activeLevelStory, activeTrip, playingDay1, levelUpEvent, showPhone, showYearEnd, day1Done, classPending]);
 
   // 📕 现在能不能演主线。放学后和夜里都行，早上不行——
   // 早上要上学，而神社那段全是傍晚之后的天色。
@@ -3805,6 +3840,8 @@ ${wind}`;
           stats={protagonistStats}
           playerName={userState.playerName}
           language={userState.language}
+          storyFlags={storyFlags}
+          goal={life.goal}
           onClose={() => { setShowProtagonistProfile(false); backToPhone(); }}
         />
       )}
@@ -3884,6 +3921,7 @@ ${wind}`;
           familiarityMap={familiarityMap}
           words={userState.collectedWords}
           unlockedCgs={unlockedCgs}
+          goal={life.goal}
           onClose={() => {
             setShowYearEnd(false);
             setStoryFlags(prev => ({ ...prev, year_end_seen: true }));

@@ -302,8 +302,8 @@ const R3: StoryNode[] = [
 // ==========================================================
 const R4: StoryNode[] = [
   { type: 'scene', scene: 'school_gate', bgm: 'afternoon', titleZh: '宿敌 · 招生手册的照片', titleEn: 'Rival · The Brochure Photo', subtitleZh: '七月 · 校门前', subtitleEn: 'July · In front of the school gate' },
-  nar('教导主任说要给明年的招生手册拍一页照片，标题已经想好了：「国際色豊かな海星学園」。被叫来的是你和金城。',
-    'The vice principal wants a page for next year’s prospectus, and the headline is already decided: "Kaisei Academy — A Truly International School". The two people summoned are you and Kinjo.'),
+  nar('教导主任说要给明年的招生手册拍一页照片，标题已经想好了：「国際色豊かな港見高校」。被叫来的是你和金城。',
+    'The vice principal wants a page for next year’s prospectus, and the headline is already decided: "Minatomi High — A Truly International School". The two people summoned are you and Kinjo.'),
   nar('摄影师递过来两面小旗子。给你的是你自己国家的。给金城的是星条旗。', 'The photographer hands out two little flags. Yours is your own country’s. Kinjo’s is the Stars and Stripes.', face('neutral')),
   kai('neutral', '……俺、パスポート日本のしかないっすよ。', '……我只有日本的护照啊。', '...I’ve only got a Japanese passport, though.'),
   nar('教导主任笑了，笑得很和气：「ええやん、雰囲気、雰囲気。お父さん、アメリカの方やろ？」', 'The vice principal laughs, very kindly. "Oh, it’s about the feel of it. Your father’s American, isn’t he?"'),
