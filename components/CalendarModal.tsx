@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GameCalendar, Language, CharacterId } from '../types';
 import { KANSAI_CALENDAR_EVENTS, CHARACTERS } from '../constants';
+import { Emo } from './Emo';
 
 interface Props {
   calendar: GameCalendar;
@@ -112,7 +113,7 @@ export const CalendarModal: React.FC<Props> = ({
           <div className="absolute bottom-3 left-6 flex items-center gap-3">
             <div className="bg-black/80 border border-amber-500/60 backdrop-blur-md px-3.5 py-1.5 rounded-lg flex items-center gap-2 shadow-lg">
               <span className="text-amber-400 font-black text-sm">
-                📅 {calendar.month}月{calendar.day}日 ({calendar.dayOfWeek})
+                <Emo e="📅" /> {calendar.month}月{calendar.day}日 ({calendar.dayOfWeek})
               </span>
               <span className="text-white/40">|</span>
               <span className="text-zinc-200 text-xs font-bold uppercase">
@@ -120,7 +121,7 @@ export const CalendarModal: React.FC<Props> = ({
               </span>
               <span className="text-white/40">|</span>
               <span className="text-amber-300 text-xs">
-                ☀️ 晴空万里 (Fine)
+                <Emo e="☀️" /> 晴空万里 (Fine)
               </span>
             </div>
           </div>
@@ -165,7 +166,7 @@ export const CalendarModal: React.FC<Props> = ({
 
           {eventsInSelectedMonth.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-8 bg-zinc-950/60 rounded-xl border border-white/5 text-zinc-500 gap-2">
-              <span className="text-3xl">☕</span>
+              <span className="text-3xl"><Emo e="☕" /></span>
               <p className="text-xs">
                 {language === 'en' ? 'No major regional festivals scheduled. Ideal for daily study & free talk.' : '本月主要为常规学园日常与自由行动，适合在图书馆复习或与女孩们漫步神户。'}
               </p>
@@ -191,7 +192,7 @@ export const CalendarModal: React.FC<Props> = ({
                           {language === 'en' ? ev.titleEn : ev.titleZh}
                         </h4>
                         <span className="text-[11px] text-amber-300/80 font-medium">
-                          📍 {ev.city} · {ev.location}
+                          <Emo e="📍" /> {ev.city} · {ev.location}
                         </span>
                       </div>
                     </div>

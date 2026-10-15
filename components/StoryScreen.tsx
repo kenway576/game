@@ -12,6 +12,7 @@ import LivelySprite, { isLivelySprite, livelySpeakerOf } from './LivelySprite';
 import PuppetSprite, { hasPuppetRig } from './PuppetSprite';
 import { upgradeNodes } from '../data/retiredSprites';
 import { puppetSpeakerOf } from '../data/puppetRigs';
+import { EmoText, Emo } from './Emo';
 
 // StoryScreen 恢复出来的那份"已经拿到手的东西"，由 App 一次性灌回全局状态
 export interface StoryRestorePayload {
@@ -747,7 +748,7 @@ const StoryScreen: React.FC<Props> = ({
         >
           {/* 原来叫「快进」，和旁边的「自动」只差一个字，玩家点了它以为是自动翻页，
               结果剧情唰地飞过去。名字改成它实际干的事：跳到下一个选择。 */}
-          <span className="block">{fastForward ? '⏭ ...' : (en ? '⏭ To choice' : '⏭ 跳到选项')}</span>
+          <span className="block"><EmoText text={fastForward ? '⏭ ...' : (en ? '⏭ To choice' : '⏭ 跳到选项')} /></span>
         </button>
         <button
           onClick={() => { audioManager.playSfx('click'); setAuto(v => !v); }}
@@ -755,14 +756,14 @@ const StoryScreen: React.FC<Props> = ({
           className={`${auto ? ctrlBtnOn : ctrlBtn} disabled:opacity-30`}
         >
           <span className="block">
-            {auto ? (en ? '⏸ Auto ON' : '⏸ 自动中') : (en ? '▶ Auto' : '▶ 自动')}
+            <EmoText text={auto ? (en ? '⏸ Auto ON' : '⏸ 自动中') : (en ? '▶ Auto' : '▶ 自动')} />
           </span>
         </button>
         <button onClick={() => { audioManager.playSfx('click'); setShowBacklog(true); }} className={ctrlBtn}>
-          <span className="block">{en ? '📜 Log' : '📜 回想'}</span>
+          <span className="block"><EmoText text={en ? '📜 Log' : '📜 回想'} /></span>
         </button>
         <button onClick={() => { audioManager.playSfx('click'); setShowPrefs(true); }} className={ctrlBtn}>
-          <span className="block">⚙</span>
+          <span className="block"><Emo e="⚙" /></span>
         </button>
         {/* 序章也能存盘：序章有 100 多段，不给存档等于逼玩家一口气读完 */}
         <button
@@ -784,7 +785,7 @@ const StoryScreen: React.FC<Props> = ({
         <div key={wordToast.key} className="absolute top-16 right-3 z-50 animate-in fade-in slide-in-from-right-4 duration-300">
           <div className="ui-chip !text-emerald-700">
             <span className="block">
-              📖 {en ? `${wordToast.count} word${wordToast.count > 1 ? 's' : ''} added` : `生词本 +${wordToast.count}`}
+              <Emo e="📖" /> {en ? `${wordToast.count} word${wordToast.count > 1 ? 's' : ''} added` : `生词本 +${wordToast.count}`}
             </span>
           </div>
         </div>
@@ -1049,7 +1050,7 @@ const StoryScreen: React.FC<Props> = ({
                             borderColor: ok ? `${reqMeta.color}66` : '#f8717166'
                           }}
                         >
-                          {ok ? '🔓' : '🔒'}
+                          <EmoText text={ok ? '🔓' : '🔒'} />
                           {(en ? reqMeta.nameEn : reqMeta.nameZh.split(' ')[0])} {opt.requires.min}
                           <span className="opacity-60">
                             ({stats[opt.requires.stat] || 0}/{opt.requires.min})
@@ -1120,7 +1121,7 @@ const StoryScreen: React.FC<Props> = ({
                             onError={() => setImgFailed(f => ({ ...f, [item.id]: true }))}
                           />
                         ) : (
-                          <span className="text-3xl md:text-4xl select-none">{item.emoji}</span>
+                          <span className="text-3xl md:text-4xl select-none"><Emo e={item.emoji} /></span>
                         )}
                       </div>
 
@@ -1187,7 +1188,7 @@ const StoryScreen: React.FC<Props> = ({
           <div className="w-full max-w-3xl max-h-[85dvh] bg-zinc-950/95 border-2 border-white/20 shadow-2xl flex flex-col" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-3 border-b-2 border-white/10 shrink-0">
               <h3 className="text-lg md:text-2xl font-black font-ui text-pink-300 tracking-wide">
-                {en ? '📜 BACKLOG' : '📜 回想'}
+                <EmoText text={en ? '📜 BACKLOG' : '📜 回想'} />
               </h3>
               <button onClick={() => setShowBacklog(false)} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white font-bold transition-colors">✕</button>
             </div>

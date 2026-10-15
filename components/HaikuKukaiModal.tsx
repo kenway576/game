@@ -4,6 +4,7 @@ import { Language, PracticeProgress, PracticeTier, StoryWord } from '../types';
 import { buildPoemQuestions, PoemQuestion } from '../data/hyakuninIsshu';
 import { PUZZLES, Chunk, HaikuPuzzle, FAMOUS_SETS, countMora, scoreHaiku, HaikuScore } from '../data/haikuData';
 import { audioManager } from '../services/audioManager';
+import { Emo, EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 🍵 句会：跟铃玩两样东西
@@ -294,7 +295,7 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
       <div className="fixed inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/55" />
       <div className="relative min-h-full max-w-5xl mx-auto px-4 py-5 flex flex-col">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-amber-300 text-[11px] font-black tracking-[0.3em]">🍵 {en ? 'POETRY CIRCLE' : '句会'} · {tierLabel}</p>
+          <p className="text-amber-300 text-[11px] font-black tracking-[0.3em]"><Emo e="🍵" /> {en ? 'POETRY CIRCLE' : '句会'} · {tierLabel}</p>
           <button onClick={() => { audioManager.playSfx('modal_close'); onCancel(); }} className="text-white/45 hover:text-white text-[11px] font-black tracking-widest">{en ? 'LEAVE' : '离开'}</button>
         </div>
         {children}
@@ -400,7 +401,7 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
                 <img src={`${ART}menu_${k}.webp`} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" draggable={false} />
               </div>
               <div className="p-5 pt-3">
-              <div className="text-3xl mb-1">{ic}</div>
+              <div className="text-3xl mb-1"><Emo e={ic} /></div>
               <div className="text-xl font-black">{jp} <span className="text-white/40 text-sm font-bold">{title}</span></div>
               <p className="text-white/60 text-sm mt-1">{blurb}</p>
               <p className="text-amber-300/80 text-[10px] font-black tracking-widest mt-3">
@@ -423,8 +424,8 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
       <div className="flex-1 flex flex-col gap-3">
         <div className="flex items-center justify-between text-xs font-black tracking-widest text-white/60">
           <span>{qi + 1} / {qs.length}</span>
-          <span className="text-emerald-300">✓ {correct}{streak >= 3 ? ` · 🔥${streak}` : ''}</span>
-          {limit > 0 && <span className={`tabular-nums ${timeLeft <= 3 && !revealed ? 'text-rose-400 animate-pulse' : 'text-amber-300'}`}>⏱ {revealed ? '--' : timeLeft}</span>}
+          <span className="text-emerald-300">✓ {correct}<EmoText text={streak >= 3 ? ` · 🔥${streak}` : ''} /></span>
+          {limit > 0 && <span className={`tabular-nums ${timeLeft <= 3 && !revealed ? 'text-rose-400 animate-pulse' : 'text-amber-300'}`}><Emo e="⏱" /> {revealed ? '--' : timeLeft}</span>}
         </div>
         <div className="grid md:grid-cols-[auto_1fr] gap-4 items-start">
           <div className="hidden md:block">{reiBox}</div>
@@ -435,7 +436,7 @@ const HaikuKukaiModal: React.FC<Props> = ({ language, progress, introSeen, onSee
             {tier <= 2 && <p className="text-stone-600 text-sm mt-2">{q.poem.kamiR}</p>}
             {tier === 1 && <p className="text-stone-500 text-xs mt-2">{en ? q.poem.en : q.poem.zh}</p>}
             {hasVoice && (
-              <button onClick={() => speak(q.poem.kami.replace(/ /g, ''))} className="mt-3 text-[11px] font-black text-emerald-900 hover:text-black tracking-widest">🔊 {en ? 'READ AGAIN' : '再念一遍'}</button>
+              <button onClick={() => speak(q.poem.kami.replace(/ /g, ''))} className="mt-3 text-[11px] font-black text-emerald-900 hover:text-black tracking-widest"><Emo e="🔊" /> {en ? 'READ AGAIN' : '再念一遍'}</button>
             )}
           </div>
         </div>

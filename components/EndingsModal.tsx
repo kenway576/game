@@ -6,6 +6,7 @@ import {
   ENDINGS, endingsFor, isEndingUnlocked, unlockedCount, clearedRouteCount,
   endingGateFor, TOTAL_ENDINGS, TOTAL_ROUTES
 } from '../data/endingsData';
+import { EmoText } from './Emo';
 
 interface Props {
   language: Language;
@@ -36,7 +37,7 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
         <div className="flex items-start justify-between border-b border-pink-300/30 pb-4 mb-6">
           <div>
             <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 tracking-wider">
-              {en ? '🏁 ENDING RECORD' : '🏁 结局记录'}
+              <EmoText text={en ? '🏁 ENDING RECORD' : '🏁 结局记录'} />
             </h2>
             <p className="text-xs text-white/50 mt-1">
               {en
@@ -137,7 +138,7 @@ const EndingsModal: React.FC<Props> = ({ language, storyFlags, affectionMap, fam
                         }`}
                       >
                         <div className="flex items-center gap-2">
-                          <span>{e.kind === 'love' ? '💗' : '🤝'}</span>
+                          <span><EmoText text={e.kind === 'love' ? '💗' : '🤝'} /></span>
                           <span className="font-bold tracking-wide">
                             {open ? (en ? e.titleEn : e.titleZh) : '— — — —'}
                           </span>

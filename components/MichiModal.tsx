@@ -6,6 +6,7 @@ import {
 } from '../data/michiMap';
 import { TIER_RULES } from '../data/drillData';
 import { audioManager } from '../services/audioManager';
+import { Emo, SvgEmo } from './Emo';
 
 // ---------------------------------------------------------
 // 🗺️ 在三宫站前给游客指路
@@ -153,7 +154,7 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
     return (
       <div className="fixed inset-0 z-[160] bg-[#0b0b10] flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-5">
-          <div className="text-5xl">🗺️</div>
+          <div className="text-5xl"><Emo e="🗺️" /></div>
           <h3 className="text-white text-2xl font-black font-ui">
             {s >= scenarios.length ? (en ? 'Every one of them got there' : '每个人都找到了') : s >= scenarios.length / 2 ? (en ? 'Most of them got there' : '大部分人找到了') : (en ? 'A few wanderers' : '有几个人还在转圈')}
           </h3>
@@ -199,9 +200,11 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
           <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
             {/* 山和海 */}
             <rect x={0} y={0} width={W} height={PAD * 0.55} fill="#cfe2c3" />
-            <text x={W - 8} y={16} textAnchor="end" fontSize={12} fill="#4d6b3c" fontWeight={700}>⛰ 山側</text>
+            <text x={W - 8} y={16} textAnchor="end" fontSize={12} fill="#4d6b3c" fontWeight={700}>山側</text>
+            <SvgEmo e="⛰" x={W - 50} y={3} size={15} />
             <rect x={0} y={H - PAD * 0.55} width={W} height={PAD * 0.55} fill="#bcd9ee" />
-            <text x={W - 8} y={H - 6} textAnchor="end" fontSize={12} fill="#2f5d82" fontWeight={700}>🌊 海側</text>
+            <text x={W - 8} y={H - 6} textAnchor="end" fontSize={12} fill="#2f5d82" fontWeight={700}>海側</text>
+            <SvgEmo e="🌊" x={W - 50} y={H - 19} size={15} />
             {/* 街道 */}
             {Array.from({ length: MAP_H }).map((_, y) => (
               <g key={`h${y}`}>
@@ -234,7 +237,7 @@ const MichiModal: React.FC<Props> = ({ language, progress, onFinish, onCancel })
               return (
                 <g key={l.id}>
                   {isDest && <circle cx={p.x} cy={p.y} r={22} fill="none" stroke="#e23d3d" strokeWidth={3}><animate attributeName="r" values="18;26;18" dur="1.6s" repeatCount="indefinite" /></circle>}
-                  <text x={p.x} y={p.y + 6} textAnchor="middle" fontSize={20}>{l.emoji}</text>
+                  <SvgEmo e={l.emoji} x={p.x - 12} y={p.y - 12} size={24} />
                   <text x={p.x} y={p.y + 30} textAnchor="middle" fontSize={12} fontWeight={800} fill={isDest ? '#c02626' : '#3b3428'}>{l.jp}</text>
                 </g>
               );

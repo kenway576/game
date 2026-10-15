@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { DrillPack, DrillRound, DrillLine, Language, PracticeProgress, StoryWord } from '../types';
 import { TIER_RULES, settlePractice, PROMOTE_AFTER } from '../data/drillData';
 import { audioManager } from '../services/audioManager';
+import { EmoText, Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🗣️ 情景对答
@@ -235,7 +236,7 @@ const DrillModal: React.FC<Props> = ({
             {isPreview && (en ? ' · next level' : ' · 进阶题')}
           </span>
           {variant === 'shift' && (
-            <span className="text-sm tracking-tight truncate" title={en ? 'Queue' : '排队'}>{'🧍'.repeat(Math.max(1, queue))}</span>
+            <span className="text-sm tracking-tight truncate" title={en ? 'Queue' : '排队'}><EmoText text={'🧍'.repeat(Math.max(1, queue))} /></span>
           )}
         </div>
         <div className="flex items-center gap-4 shrink-0">
@@ -322,7 +323,7 @@ const DrillModal: React.FC<Props> = ({
                 <p className="text-white/80 text-sm leading-relaxed">{fill(en ? round.noteEn : round.noteZh)}</p>
                 {round.word && (
                   <p className="text-yellow-200/80 text-xs mt-2">
-                    📒 {round.word.jp}{round.word.reading ? `（${round.word.reading}）` : ''} — {en ? round.word.en : round.word.zh}
+                    <Emo e="📒" /> {round.word.jp}{round.word.reading ? `（${round.word.reading}）` : ''} — {en ? round.word.en : round.word.zh}
                     {chosenOk && <span className="text-white/35 ml-2">{en ? '→ wordbook' : '→ 已记进单词本'}</span>}
                   </p>
                 )}

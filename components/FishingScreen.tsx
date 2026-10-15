@@ -7,6 +7,7 @@ import {
 import { SCENE_MAP, SCENE_FALLBACK } from '../constants';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
+import { Emo, EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 🎣 钓鱼
@@ -197,15 +198,15 @@ const FishingScreen: React.FC<Props> = ({
             {en ? spotNameEn : spotNameZh}
           </div>
           <div className="text-[10px] font-mono text-white/40">
-            {rod ? `${rod.emoji} ${en ? rod.nameEn : rod.nameZh}` : (en ? 'no rod' : '没有鱼竿')}
-            <span className="ml-3">🐛 {bait}</span>
+            <EmoText text={rod ? `${rod.emoji} ${en ? rod.nameEn : rod.nameZh}` : (en ? 'no rod' : '没有鱼竿')} />
+            <span className="ml-3"><Emo e="🐛" /> {bait}</span>
             <span className="ml-3">{en ? `${left} casts left today` : `今天还能钓 ${left} 次`}</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => { audioManager.playSfx('click'); onOpenDex(); }}
             className="bg-black/70 hover:bg-cyan-400 hover:text-black text-white/80 border border-white/25 px-3 py-1.5 text-[11px] font-black tracking-widest rounded-xl transition-all">
-            <span className="block">📖 {dexCount}/{dexTotal}</span>
+            <span className="block"><Emo e="📖" /> {dexCount}/{dexTotal}</span>
           </button>
           <button onClick={() => { clearTimers(); audioManager.playSfx('click'); onClose(); }}
             className="bg-black/70 hover:bg-pink-400 hover:text-black text-white/80 border border-white/25 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all">
@@ -221,7 +222,7 @@ const FishingScreen: React.FC<Props> = ({
       >
         {!rod && (
           <div className="text-center max-w-sm">
-            <div className="text-6xl mb-4">🎣</div>
+            <div className="text-6xl mb-4"><Emo e="🎣" /></div>
             <p className="text-white/70 text-sm leading-relaxed">
               {en
                 ? 'You have no rod. Minato Tackle, down by the harbour, sells them.'
@@ -232,7 +233,7 @@ const FishingScreen: React.FC<Props> = ({
 
         {rod && left <= 0 && phase === 'idle' && (
           <div className="text-center max-w-sm">
-            <div className="text-6xl mb-4">🌙</div>
+            <div className="text-6xl mb-4"><Emo e="🌙" /></div>
             <p className="text-white/70 text-sm leading-relaxed">
               {en ? 'That is enough for today. The fish have stopped biting.' : '今天就到这儿吧。鱼不咬了。'}
             </p>
@@ -241,7 +242,7 @@ const FishingScreen: React.FC<Props> = ({
 
         {rod && left > 0 && phase === 'idle' && (
           <div className="text-center">
-            <div className="text-7xl mb-5">🎣</div>
+            <div className="text-7xl mb-5"><Emo e="🎣" /></div>
             <button onClick={cast}
               className="px-10 py-3 bg-cyan-400 text-black text-sm font-black uppercase tracking-widest rounded-xl hover:bg-white transition-all">
               <span className="block">{en ? 'Cast' : '抛竿'}</span>
@@ -256,14 +257,14 @@ const FishingScreen: React.FC<Props> = ({
 
         {phase === 'waiting' && (
           <div className="text-center">
-            <div className="text-6xl mb-4 animate-pulse">〰️</div>
+            <div className="text-6xl mb-4 animate-pulse"><Emo e="〰️" /></div>
             <p className="text-white/50 text-sm">{en ? 'Waiting...' : '等着……'}</p>
           </div>
         )}
 
         {phase === 'bite' && (
           <button onClick={strike} className="text-center focus:outline-none">
-            <div className="text-8xl mb-2 animate-bounce">❗</div>
+            <div className="text-8xl mb-2 animate-bounce"><Emo e="❗" /></div>
             <p className="text-pink-300 font-black text-xl tracking-widest">
               {en ? 'NOW!' : '就是现在！'}
             </p>
@@ -283,7 +284,7 @@ const FishingScreen: React.FC<Props> = ({
                 className="absolute left-1/2 -translate-x-1/2 text-3xl leading-none transition-none"
                 style={{ top: `calc(${fishY * 100}% - 0.6em)` }}
               >
-                {hooked.fish.emoji}
+                <Emo e={hooked.fish.emoji} />
               </div>
             </div>
             {/* 收线进度 */}
@@ -337,7 +338,7 @@ const FishingScreen: React.FC<Props> = ({
               </>
             ) : (
               <>
-                <div className="text-7xl mb-3">💨</div>
+                <div className="text-7xl mb-3"><Emo e="💨" /></div>
                 <h2 className="text-xl font-black text-white/70">{en ? 'It got away.' : '跑了。'}</h2>
                 <p className="mt-3 text-sm text-white/45">
                   {en ? 'The line goes slack. Somewhere out there it is telling the others.' : '线一下子松了。它大概正在跟同伴讲这件事。'}

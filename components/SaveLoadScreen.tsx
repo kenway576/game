@@ -1,5 +1,6 @@
 import React from 'react';
 import { SAVE_SLOT_PREFIX, MAX_SLOTS } from '../constants';
+import { emojiHtml } from './Emo';
 
 interface Props {
   T: Record<string, string>;
@@ -51,7 +52,7 @@ const SaveLoadScreen: React.FC<Props> = ({ T, mode, onClose, onSaveSlot, onLoadS
                   </div>
                   <div className="space-y-1.5">
                     <div className="text-[10px] md:text-xs text-[#4b5375] font-bold bg-[#f1eefc] inline-block px-3 py-1 rounded-full">{slot.data.meta.topic}</div>
-                    <div className="font-story text-[10px] md:text-[11px] text-[#7a7fa0] truncate" dangerouslySetInnerHTML={{__html: `"${slot.data.meta.previewText}"`}}></div>
+                    <div className="font-story text-[10px] md:text-[11px] text-[#7a7fa0] truncate" dangerouslySetInnerHTML={{__html: emojiHtml(`"${slot.data.meta.previewText}"`)}}></div>
                   </div>
                 </>) : (
                   <div className="h-full flex items-center justify-center flex-col text-[#1f2440]/25">

@@ -4,6 +4,7 @@ import { CHARACTERS } from '../constants';
 import { giftableRows, giftVerdict, GiftVerdict } from '../data/giftData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
+import { EmoText, Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🎁 把一样东西递给某个人
@@ -61,7 +62,7 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, fam
     return (
       <div className="fixed inset-0 z-[120] bg-black/90 backdrop-blur-sm flex items-center justify-center p-6">
         <div className="max-w-lg w-full space-y-5 text-center">
-          <div className="text-5xl">{given.band === 'perfect' ? '💖' : given.band === 'good' ? '🎁' : '🙂'}</div>
+          <div className="text-5xl"><EmoText text={given.band === 'perfect' ? '💖' : given.band === 'good' ? '🎁' : '🙂'} /></div>
           <p className="text-white text-lg leading-relaxed">{en ? given.lineEn : given.lineZh}</p>
           <button
             onClick={() => { setGiven(null); setItemKey(null); setWho(null); onClose(); }}
@@ -114,7 +115,7 @@ const GiftScreen: React.FC<Props> = ({ language, life, storyFlags, metChars, fam
               >
                 {r.item.iconId
                   ? <ItemIcon id={r.item.iconId} emoji={r.item.emoji} size={28} />
-                  : <span className="text-xl w-7 text-center">{r.item.emoji}</span>}
+                  : <span className="text-xl w-7 text-center"><Emo e={r.item.emoji} /></span>}
                 <span className="flex-1 min-w-0">
                   <span className="block text-white text-sm font-bold truncate">
                     {en ? r.item.nameEn : r.item.nameZh}

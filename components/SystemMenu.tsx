@@ -4,6 +4,7 @@ import { AVAILABLE_MODELS, CUSTOM_MODEL_VALUE } from '../constants';
 import { audioManager } from '../services/audioManager';
 import { useAudioSettings } from '../hooks/useAudioSettings';
 import DisplayPrefsToggles from './DisplayPrefsToggles';
+import { Emo, EmoText } from './Emo';
 
 interface Props {
   T: Record<string, string>;
@@ -50,7 +51,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
         data-sfx-silent
         className="w-full flex items-center justify-between font-ui text-[11px] md:text-xs text-[#5b6286] hover:text-pink-500 font-bold uppercase tracking-widest mb-2"
       >
-        <span>{title}</span>
+        <span><EmoText text={title} /></span>
         <span className={`transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
       </button>
       {open && (
@@ -90,7 +91,7 @@ const AudioSettingsPanel: React.FC<{ T: Record<string, string> }> = ({ T }) => {
         data-sfx-silent
         className="w-full flex items-center justify-between font-ui text-[11px] md:text-xs text-[#5b6286] hover:text-pink-500 font-bold uppercase tracking-widest mb-2"
       >
-        <span>🔊 {T.audioSettings || '音效设置'}</span>
+        <span><Emo e="🔊" /> {T.audioSettings || '音效设置'}</span>
         <span className={`transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
       </button>
 
@@ -177,7 +178,7 @@ const SystemMenu: React.FC<Props> = ({
               className="rounded-2xl bg-white/85 border-2 border-[#1f2440]/10 hover:border-pink-300 hover:bg-pink-50 text-[#1f2440] py-3 md:py-3.5 px-2 shadow-[0_3px_0_rgba(31,36,64,0.08)] transition-all duration-200 hover:-translate-y-0.5"
             >
               <span className="block font-ui text-[10px] md:text-[11px] font-bold uppercase tracking-wider leading-tight">
-                <span className="block text-lg mb-0.5">{b.icon}</span>
+                <span className="block text-lg mb-0.5"><Emo e={b.icon} /></span>
                 {b.label}
               </span>
             </button>
@@ -186,7 +187,7 @@ const SystemMenu: React.FC<Props> = ({
 
         {showExitToLobby && (
           <button onClick={onExitToLobby} className="group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all hover:!border-rose-300 hover:!bg-rose-50">
-            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-xs md:text-sm">🚪 {T.exit} {language === 'en' ? '' : '(返回休息室)'}</span>
+            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-xs md:text-sm"><Emo e="🚪" /> {T.exit} {language === 'en' ? '' : '(返回休息室)'}</span>
           </button>
         )}
         <button onClick={onReturnTitle} className="group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all hover:!border-rose-300 hover:!bg-rose-50">
@@ -264,10 +265,10 @@ const SystemMenu: React.FC<Props> = ({
         <div className="mt-2 md:mt-3 pt-4 border-t border-dashed border-[#1f2440]/15">
           <p className="font-ui text-[11px] md:text-xs text-[#5b6286] font-bold mb-2 md:mb-3 uppercase tracking-widest">{T.expDataTools}</p>
           <button onClick={onExportJson} className="w-full group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all mb-2">
-            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-[10px] md:text-xs">{T.exportJson}</span>
+            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-[10px] md:text-xs"><EmoText text={T.exportJson} /></span>
           </button>
           <button onClick={onSyncCloud} disabled={isSyncing} className="w-full group flex items-center justify-between rounded-2xl bg-white/80 hover:bg-pink-50 border-2 border-[#1f2440]/10 hover:border-pink-300 px-5 py-3.5 transition-all disabled:opacity-50">
-            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-[10px] md:text-xs">{isSyncing ? T.syncing : T.syncCloud}</span>
+            <span className="font-ui text-[#1f2440] font-bold tracking-widest text-[10px] md:text-xs"><EmoText text={isSyncing ? T.syncing : T.syncCloud} /></span>
           </button>
         </div>
 

@@ -8,6 +8,7 @@ import { COMMON_STICKERS } from '../data/stickers';
 import Sticker from './Sticker';
 import { audioManager } from '../services/audioManager';
 import { useDisplayPrefs } from '../services/displayPrefs';
+import { Emo, EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 📱 手机
@@ -155,7 +156,7 @@ const PhoneScreen: React.FC<Props> = ({
         {/* 状态栏 */}
         <div className="shrink-0 flex items-center justify-between px-6 pt-3 pb-1 text-[11px] font-mono text-white/70">
           <span>{time}</span>
-          <span className="flex items-center gap-1.5">{weatherIcon}<span className="text-white/40">▯▯▯</span></span>
+          <span className="flex items-center gap-1.5"><Emo e={weatherIcon} /><span className="text-white/40">▯▯▯</span></span>
         </div>
 
         {/* ---------- 锁屏 ---------- */}
@@ -222,7 +223,7 @@ const PhoneScreen: React.FC<Props> = ({
                   style={{ animation: `appIn 300ms cubic-bezier(.34,1.56,.64,1) ${i * 40}ms backwards` }}
                 >
                   <span className={`relative w-14 h-14 rounded-[1.05rem] bg-gradient-to-br ${a.tint} flex items-center justify-center text-2xl shadow-lg transition-transform duration-150 group-active:scale-90`}>
-                    {a.icon}
+                    <Emo e={a.icon} />
                     {a.id === 'messages' && unread > 0 && (
                       <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-rose-500 border-2 border-[#0e1014] text-white text-[11px] font-black flex items-center justify-center">
                         {unread}
@@ -305,7 +306,7 @@ const PhoneScreen: React.FC<Props> = ({
                         <span className="text-[10px] font-mono text-white/25 shrink-0">{c.savedAsJp}</span>
                       </span>
                       <span className={`block text-[11px] truncate mt-0.5 ${n > 0 ? 'text-white/75' : 'text-white/35'}`}>
-                        {preview || (en ? c.statusEn : c.statusZh)}
+                        <EmoText text={preview || (en ? c.statusEn : c.statusZh)} />
                       </span>
                     </span>
                     {n > 0 && (
@@ -361,7 +362,7 @@ const PhoneScreen: React.FC<Props> = ({
                       </div>
                     )}
                     {m.from === 'system' ? (
-                      <p className="text-center text-[10px] text-white/35 px-6 py-1 leading-relaxed">{m.jp}</p>
+                      <p className="text-center text-[10px] text-white/35 px-6 py-1 leading-relaxed"><EmoText text={m.jp} /></p>
                     ) : m.from === 'me' ? (
                       <div className="flex justify-end items-end gap-1.5" style={animate ? { animation: 'bubbleIn 220ms ease-out' } : undefined}>
                         <span className="flex flex-col items-end text-[9px] text-white/30 leading-tight shrink-0 mb-0.5">
@@ -384,8 +385,8 @@ const PhoneScreen: React.FC<Props> = ({
                         />
                         {m.delta && (m.delta.aff !== 0 || m.delta.fam !== 0) && (
                           <div className="pl-9 mt-1 flex gap-2 text-[10px] font-bold">
-                            {m.delta.fam !== 0 && <span className={m.delta.fam > 0 ? 'text-sky-300' : 'text-rose-300'}>🤝 {m.delta.fam > 0 ? '+' : ''}{m.delta.fam}</span>}
-                            {m.delta.aff !== 0 && <span className={m.delta.aff > 0 ? 'text-pink-300' : 'text-rose-300'}>♥ {m.delta.aff > 0 ? '+' : ''}{m.delta.aff}</span>}
+                            {m.delta.fam !== 0 && <span className={m.delta.fam > 0 ? 'text-sky-300' : 'text-rose-300'}><Emo e="🤝" /> {m.delta.fam > 0 ? '+' : ''}{m.delta.fam}</span>}
+                            {m.delta.aff !== 0 && <span className={m.delta.aff > 0 ? 'text-pink-300' : 'text-rose-300'}><Emo e="♥" /> {m.delta.aff > 0 ? '+' : ''}{m.delta.aff}</span>}
                           </div>
                         )}
                       </div>
@@ -429,7 +430,7 @@ const PhoneScreen: React.FC<Props> = ({
                     onClick={() => { audioManager.playSfx('click'); setTrayOpen(o => !o); }}
                     className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-lg transition ${trayOpen ? 'bg-emerald-500/25' : 'bg-white/10 hover:bg-white/15'}`}
                     aria-label="stickers"
-                  >😊</button>
+                  ><Emo e="😊" /></button>
                   <input
                     value={draft}
                     onChange={e => setDraft(e.target.value)}
@@ -483,8 +484,8 @@ const HerBubble: React.FC<{ avatar: string | null; jp?: string; tr?: string; sti
         <Sticker id={sticker} size={118} />
       ) : (
         <span className="max-w-[74%] bg-[#22252d] rounded-2xl rounded-bl-md px-3.5 py-2">
-          <span className="block text-[13px] text-white leading-relaxed break-words">{jp}</span>
-          {tr && showTranslation && <span className="block text-[11px] text-white/45 mt-0.5 leading-relaxed">{tr}</span>}
+          <span className="block text-[13px] text-white leading-relaxed break-words"><EmoText text={jp} /></span>
+          {tr && showTranslation && <span className="block text-[11px] text-white/45 mt-0.5 leading-relaxed"><EmoText text={tr} /></span>}
         </span>
       )}
       {time && <span className="text-[9px] text-white/25 shrink-0 mb-0.5">{time}</span>}

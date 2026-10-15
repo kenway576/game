@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Language, RecipeDef } from '../types';
 import { RECIPE_CARDS, RecipeStepAction } from '../data/recipeCards';
 import { audioManager } from '../services/audioManager';
+import { EmoText, Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🍳 做菜：读日文菜谱，按顺序动手
@@ -108,7 +109,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
     return (
       <div className="fixed inset-0 z-[170] bg-black/90 backdrop-blur-sm flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-5 animate-in fade-in zoom-in-95 duration-300">
-          <div className="text-6xl">{result === 'failed' ? '💨' : recipe.emoji}</div>
+          <div className="text-6xl"><EmoText text={result === 'failed' ? '💨' : recipe.emoji} /></div>
           <h3 className={`text-2xl font-black font-ui ${result === 'perfect' ? 'text-amber-300' : result === 'success' ? 'text-white' : 'text-rose-300'}`}>
             {result === 'perfect'
               ? (en ? 'Perfect!' : '完美出锅！')
@@ -164,7 +165,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
                 onClick={() => { audioManager.playSfx('confirm'); onFinish(result, true); }}
                 className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/25 text-white/85 font-black text-sm tracking-widest rounded-xl"
               >
-                <span className="block">🍱 {en ? 'Pack it in a box' : '装进盒子带走'}</span>
+                <span className="block"><Emo e="🍱" /> {en ? 'Pack it in a box' : '装进盒子带走'}</span>
               </button>
             )}
           </div>
@@ -178,7 +179,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
     <div className="fixed inset-0 z-[170] bg-black/92 backdrop-blur-sm flex flex-col">
       <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{recipe.emoji}</span>
+          <span className="text-2xl"><Emo e={recipe.emoji} /></span>
           <span className="text-white font-black">{recipe.nameJp}</span>
           <span className="text-white/40 text-xs">{en ? recipe.nameEn : recipe.nameZh}</span>
         </div>
@@ -239,7 +240,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
           </div>
 
           <p className={`min-h-[1.25rem] text-sm ${feedback?.ok ? 'text-emerald-300' : 'text-rose-300'}`}>
-            {feedback ? (en ? feedback.en : feedback.zh) : (en ? 'Read the card. Tap the next step.' : '读菜谱，点下一步要做的事。')}
+            <EmoText text={feedback ? (en ? feedback.en : feedback.zh) : (en ? 'Read the card. Tap the next step.' : '读菜谱，点下一步要做的事。')} />
           </p>
 
           <div className="grid grid-cols-2 gap-2">
@@ -253,7 +254,7 @@ export const CookingRecipeModal: React.FC<Props> = ({ recipe, language, firstTim
                       : shake === t.id
                         ? 'border-rose-400 bg-rose-500/20 animate-[shake_0.4s]'
                         : 'border-white/15 bg-white/[0.05] hover:bg-white/[0.1] hover:border-pink-300/50'}`}>
-                  <span className="text-xl shrink-0">{t.emoji}</span>
+                  <span className="text-xl shrink-0"><Emo e={t.emoji} /></span>
                   <span className="text-white text-sm font-bold">{en ? t.en : t.zh}</span>
                 </button>
               );

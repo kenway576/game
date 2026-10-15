@@ -6,6 +6,7 @@ import {
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, SCHOOL_YEAR_LENGTH } from '../constants';
 import CharacterAvatar from './CharacterAvatar';
 import { ENDINGS, endingsFor, isEndingUnlocked, unlockedCount, clearedRouteCount, TOTAL_ENDINGS } from '../data/endingsData';
+import { EmoText } from './Emo';
 
 interface Props {
   language: Language;
@@ -103,7 +104,7 @@ const YearEndScreen: React.FC<Props> = ({
                   <div className="text-[10px] font-bold w-28 text-right shrink-0">
                     {p.ending ? (
                       <span className="text-pink-200">
-                        {p.ending.kind === 'love' ? '💗 ' : '🤝 '}
+                        <EmoText text={p.ending.kind === 'love' ? '💗 ' : '🤝 '} />
                         {en ? p.ending.titleEn : p.ending.titleZh}
                       </span>
                     ) : (

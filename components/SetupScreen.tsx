@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserState, N3GrammarTopic } from '../types';
 import { AVAILABLE_MODELS, CUSTOM_MODEL_VALUE } from '../constants';
+import { Emo } from './Emo';
 
 // 🎴 标题封面。一张八个人的海报 + 四张"少人多脸"的，轮着播。
 //
@@ -167,8 +168,8 @@ const SetupScreen: React.FC<Props> = ({
                   <div className="group relative">
                     <label className="absolute -top-3 -left-2 bg-zinc-800 text-gray-400 px-3 py-1 font-bold text-[10px] md:text-xs uppercase rounded-xl border border-gray-600 z-20">API Key (Google / DeepSeek / Custom)</label>
                     <div className="absolute -top-3 right-0 flex gap-2 z-30">
-                      <a href="https://platform.deepseek.com/" target="_blank" rel="noreferrer" className="bg-blue-600/90 text-white hover:bg-pink-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] shadow-sm flex items-center gap-1"><span>🔑 DeepSeek</span></a>
-                      <a href="https://aistudio.google.com/api-keys?project=gen-lang-client-0367843531" target="_blank" rel="noreferrer" className="bg-red-600/90 text-white hover:bg-pink-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] shadow-sm flex items-center gap-1"><span>🔑 Google</span></a>
+                      <a href="https://platform.deepseek.com/" target="_blank" rel="noreferrer" className="bg-blue-600/90 text-white hover:bg-pink-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] shadow-sm flex items-center gap-1"><span><Emo e="🔑" /> DeepSeek</span></a>
+                      <a href="https://aistudio.google.com/api-keys?project=gen-lang-client-0367843531" target="_blank" rel="noreferrer" className="bg-red-600/90 text-white hover:bg-pink-400 hover:text-black transition-colors px-2 py-1 font-bold text-[8px] md:text-[10px] shadow-sm flex items-center gap-1"><span><Emo e="🔑" /> Google</span></a>
                     </div>
                     <input type="password" value={customApiKey} onChange={onApiKeyChange} className="w-full bg-black/50 border-2 border-white/10 text-pink-300 text-sm px-4 md:px-6 py-3 md:py-4 font-mono focus:border-pink-300 outline-none transition-all placeholder-white/10 shadow-inner" placeholder="留空则自动使用内置 API Key..." />
                   </div>

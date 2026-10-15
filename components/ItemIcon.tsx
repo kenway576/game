@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🎨 物品图标。图标文件名就是物品 id，所以不用再维护一张映射表。
@@ -20,8 +21,8 @@ const ItemIcon: React.FC<Props> = ({ id, emoji, size = 32, className = '' }) => 
   if (!id || failed) {
     return (
       <span className={`inline-flex items-center justify-center leading-none ${className}`}
-            style={{ width: size, height: size, fontSize: Math.round(size * 0.8) }}>
-        {emoji}
+            style={{ width: size, height: size }}>
+        <Emo e={emoji} size={Math.round(size * 0.9)} />
       </span>
     );
   }

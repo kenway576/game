@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { GameCalendar, Language, RoomHotspot, StoryFlags, ViewSpot } from '../types';
 import { ROOM_HOTSPOTS, ROOM_VIEW_LINES, WINDOW_VIEW_SPOTS, getRoomBackground } from '../constants';
 import { audioManager } from '../services/audioManager';
+import { Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🏠 海风庄 201 室 —— 可互动的自己的房间
@@ -109,7 +110,7 @@ const RoomScreen: React.FC<Props> = ({
             onClick={() => { audioManager.playSfx('click'); onOpenKitchen(); }}
             className="bg-black/70 hover:bg-amber-400 hover:text-black text-amber-300 border border-amber-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest rounded-xl transition-all backdrop-blur-sm"
           >
-            <span className="block">🍳 {en ? 'Kitchen' : '厨房'}</span>
+            <span className="block"><Emo e="🍳" /> {en ? 'Kitchen' : '厨房'}</span>
           </button>
           {/* 一个盆都没有的时候原来是不显示这个按钮的，理由是"点开也没东西"。
               但这样一来，没人告诉过你阳台能种菜，你也就永远不会去买盆——
@@ -120,7 +121,7 @@ const RoomScreen: React.FC<Props> = ({
               onClick={() => { audioManager.playSfx('click'); onOpenBalcony(); }}
               className="bg-black/70 hover:bg-emerald-400 hover:text-black text-emerald-300 border border-emerald-500/40 px-3 py-1.5 text-[11px] font-black tracking-widest rounded-xl transition-all backdrop-blur-sm"
             >
-              <span className="block">🏺 {en ? 'Balcony' : '阳台'} {plotCount > 0 ? plotCount : ''}</span>
+              <span className="block"><Emo e="🏺" /> {en ? 'Balcony' : '阳台'} {plotCount > 0 ? plotCount : ''}</span>
             </button>
           )}
           <button
@@ -202,7 +203,7 @@ const RoomScreen: React.FC<Props> = ({
               }`}
             >
               <span className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-black/55 backdrop-blur-md px-3 py-1.5 shadow-[0_6px_20px_rgba(0,0,0,0.45)]">
-                <span className="text-sm md:text-base leading-none">{h.icon}</span>
+                <span className="text-sm md:text-base leading-none"><Emo e={h.icon} /></span>
                 <span className="text-[11px] md:text-xs font-semibold tracking-wide text-amber-50/95">
                   {en ? h.labelEn : h.labelZh}
                 </span>
@@ -314,7 +315,7 @@ const RoomScreen: React.FC<Props> = ({
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl md:text-2xl">{active.hotspot.icon}</span>
+              <span className="text-xl md:text-2xl"><Emo e={active.hotspot.icon} /></span>
               <span className="text-[11px] md:text-xs font-black uppercase tracking-[0.3em] text-pink-300">
                 {en ? active.hotspot.labelEn : active.hotspot.labelZh}
               </span>

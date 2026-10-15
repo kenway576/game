@@ -2,6 +2,7 @@ import React from 'react';
 import { Language, PrologueResult, StatKey, CharacterId, FamiliarityMap } from '../types';
 import { CHARACTERS, STAT_METADATA, FAMILIARITY_LEVELS, getFamiliarityLevelIndex } from '../constants';
 import { PROLOGUE_FLAG_LABELS, PROLOGUE_PURCHASE_LABELS, PROLOGUE_FLAG_SUPERSEDED } from '../story/prologueMeta';
+import { Emo } from './Emo';
 
 interface Props {
   language: Language;
@@ -160,7 +161,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
                         </span>
                       </div>
                       <div className="text-[11px] md:text-sm text-white/55 leading-snug">
-                        {def.icon} {en ? def.en : def.zh}
+                        <Emo e={def.icon} /> {en ? def.en : def.zh}
                       </div>
                     </div>
                     <div className="shrink-0 text-right">
@@ -190,7 +191,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2.5">
               {choices.map(({ flag, def }) => (
                 <div key={flag} className="flex items-start gap-2.5 text-[12px] md:text-sm text-white/70 leading-snug">
-                  <span className="shrink-0 text-base leading-none mt-0.5">{def.icon}</span>
+                  <span className="shrink-0 text-base leading-none mt-0.5"><Emo e={def.icon} /></span>
                   <span>{en ? def.en : def.zh}</span>
                 </div>
               ))}
@@ -201,7 +202,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
         {/* ---------- 生词 & 战利品 ---------- */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in slide-in-from-bottom-6 duration-700 delay-500">
           <div className="bg-black/60 border-2 border-emerald-400/30 backdrop-blur-sm p-5 flex items-center gap-4">
-            <span className="text-4xl md:text-5xl">📖</span>
+            <span className="text-4xl md:text-5xl"><Emo e="📖" /></span>
             <div>
               <div className="text-2xl md:text-4xl font-black text-emerald-300 tabular-nums leading-none">
                 {wordsLearned}
@@ -226,7 +227,7 @@ const PrologueResultScreen: React.FC<Props> = ({ language, result, familiarityMa
               <div className="flex flex-wrap gap-1.5">
                 {purchases.map((p, i) => (
                   <span key={i} className="inline-flex items-center gap-1 bg-white/8 border border-white/15 rounded px-2 py-0.5 text-[11px] md:text-xs text-white/70">
-                    <span>{p.icon}</span>{en ? p.en : p.zh}
+                    <span><Emo e={p.icon} /></span>{en ? p.en : p.zh}
                   </span>
                 ))}
               </div>

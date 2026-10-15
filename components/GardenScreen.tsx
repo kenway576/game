@@ -3,6 +3,7 @@ import { Language, LifeState, GameCalendar, PlantPlot } from '../types';
 import { SEEDS, findSeed, dayIndex, plantStage, STAGE_EMOJI, MAX_PLOTS } from '../data/lifeData';
 import { audioManager } from '../services/audioManager';
 import ItemIcon from './ItemIcon';
+import { Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🏺 花盆。阳台（家）和天台（学校）是同一套界面的两个场地。
@@ -149,7 +150,7 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
         <div className="md:w-[420px] shrink-0">
           {here.length === 0 ? (
             <div className="border border-dashed border-white/20 p-6 text-center">
-              <div className="text-4xl mb-3">🏺</div>
+              <div className="text-4xl mb-3"><Emo e="🏺" /></div>
               <p className="text-sm text-white/50 leading-relaxed">
                 {elsewhere > 0
                   ? (en
@@ -184,8 +185,8 @@ const GardenScreen: React.FC<Props> = ({ site, language, life, calendar, onClose
                     </span>
                     <span className="h-3 flex items-center gap-1">
                       {st === 4 && <span className="text-[9px] font-black text-emerald-400">{en ? 'READY' : '可收'}</span>}
-                      {st > 0 && st < 4 && thirsty && <span className="text-[10px]">💧</span>}
-                      {p.wilted && <span className="text-[10px]">🥀</span>}
+                      {st > 0 && st < 4 && thirsty && <span className="text-[10px]"><Emo e="💧" /></span>}
+                      {p.wilted && <span className="text-[10px]"><Emo e="🥀" /></span>}
                     </span>
                   </button>
                 );

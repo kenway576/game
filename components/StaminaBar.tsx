@@ -1,5 +1,6 @@
 import React from 'react';
 import { STAMINA_MAX, STAMINA_TIRED, staminaBand } from '../data/staminaData';
+import { Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🔋 体力条
@@ -20,7 +21,7 @@ const StaminaBar: React.FC<{ cur: number; en?: boolean; compact?: boolean }> = (
   return (
     <div className={`ui-chip ${compact ? '!px-2.5 !py-1.5' : '!py-2 md:!py-2.5'}`}>
       <div className="flex items-center gap-2 whitespace-nowrap">
-        <span className="text-[10px]">🔋</span>
+        <span className="text-[10px]"><Emo e="🔋" /></span>
         <span className="relative block h-1.5 w-16 md:w-24 bg-[#1f2440]/10 rounded-full overflow-hidden">
           <span
             className="absolute inset-y-0 left-0 transition-[width] duration-500"

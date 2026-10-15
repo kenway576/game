@@ -6,6 +6,7 @@ import { CharacterId, UserState, CustomAssets, AffectionMap, FamiliarityMap, Gam
 import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLevel, getInitialFamiliarity, LOBBY_PORTRAITS } from '../constants';
 import CharacterSprite from './CharacterSprite';
 import RelationshipMeter from './AffectionMeter';
+import { Emo } from './Emo';
 
 interface Props {
   T: Record<string, string>;
@@ -213,7 +214,7 @@ const LobbyScreen: React.FC<Props> = ({
           >
             {/* 黄条从左边推进来，作为 hover 的唯一反馈 */}
             <span className="relative block text-[11px] md:text-xs whitespace-nowrap">
-              <span className="mr-1">{b.icon}</span>
+              <span className="mr-1"><Emo e={b.icon} /></span>
               {userState.language === 'en' ? b.en : b.zh}
             </span>
             {/* 未读数。这是大厅上唯一一个会自己变的数字，所以它值得一个红点。 */}
@@ -260,7 +261,7 @@ const LobbyScreen: React.FC<Props> = ({
               <span className={`block text-[10px] font-bold whitespace-nowrap ${
                 alarm ? 'text-rose-600' : rent.warn ? 'text-amber-600' : 'text-[#5b6286]'
               }`}>
-                🏠 {rent.owed > 0
+                <Emo e="🏠" /> {rent.owed > 0
                   ? (en ? `Rent owed ¥${rent.owed.toLocaleString('ja-JP')}` : `欠房租 ¥${rent.owed.toLocaleString('ja-JP')}`)
                   : (en ? `${rent.nextMonth}/1 bills −¥${rent.net.toLocaleString('ja-JP')}`
                         : `${rent.nextMonth}/1 房租水电 −¥${rent.net.toLocaleString('ja-JP')}`)}
@@ -275,7 +276,7 @@ const LobbyScreen: React.FC<Props> = ({
       {/* 谁都还没遇见时的空名单。理论上过完第 1 章不会出现，但跳过章节能走到这儿。 */}
       {lobbyChars.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center gap-3 px-8 text-center">
-          <span className="text-5xl opacity-30">🚪</span>
+          <span className="text-5xl opacity-30"><Emo e="🚪" /></span>
           <p className="text-sm md:text-base text-white/60 max-w-sm leading-relaxed">
             {userState.language === 'en'
               ? 'You have not met anyone yet. Head out and see who is around.'
@@ -309,9 +310,9 @@ const LobbyScreen: React.FC<Props> = ({
               <h3 className="font-ui text-2xl md:text-4xl font-black text-white tracking-wide drop-shadow-lg">{userState.language === 'en' ? char.nameEn : char.name}</h3>
               <p className="text-[10px] text-white/70 uppercase tracking-widest hidden md:block">{userState.language === 'en' ? char.roleEn : char.role}</p>
               <p className="text-[10px] md:text-xs font-bold mt-1 tracking-widest flex items-center gap-2">
-                <span className="text-sky-300">🤝 {levelName(getFamiliarityLevel(famOf(id)))}</span>
+                <span className="text-sky-300"><Emo e="🤝" /> {levelName(getFamiliarityLevel(famOf(id)))}</span>
                 <span className="text-white/25">·</span>
-                <span className="text-pink-400">♥ {levelName(getAffectionLevel(affOf(id)))}</span>
+                <span className="text-pink-400"><Emo e="♥" /> {levelName(getAffectionLevel(affOf(id)))}</span>
               </p>
             </div>
           </div>
@@ -348,7 +349,7 @@ const LobbyScreen: React.FC<Props> = ({
               className={`w-full py-4 md:py-5 text-xs md:text-sm ${canMessage(lobbySelectedChar) ? 'ui-btn-primary' : 'ui-btn-primary !bg-none !bg-slate-200 !text-slate-400 !shadow-none cursor-not-allowed'}`}
             >
               <span className="relative z-10 flex items-center justify-center gap-3">
-                📱 {canMessage(lobbySelectedChar)
+                <Emo e="📱" /> {canMessage(lobbySelectedChar)
                   ? (userState.language === 'en' ? 'Message her' : '发消息给她')
                   : (userState.language === 'en' ? 'No number yet' : '还没有她的联系方式')}
               </span>

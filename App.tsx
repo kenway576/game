@@ -107,6 +107,7 @@ import type { ChatPick } from './types';
 import { DAY1_GUARANTEED_FLAGS, missingSafetyFlags } from './story/flagRepair';
 import { DAY1_VERSION, DAY1_PROGRESS_KEY } from './story/day1Meta';
 import { PROLOGUE_SCRIPT_VERSION, PROLOGUE_PROGRESS_KEY } from './story/prologueMeta';
+import { EmoText, stripEmoji } from './components/Emo';
 
 const App: React.FC = () => {
   // ---------- 全局游戏状态 ----------
@@ -2894,7 +2895,7 @@ const App: React.FC = () => {
       setShowSystemMenu(false);
       alert(`${T.gameSaved} (Slot ${slotIndex + 1})`);
     } else {
-      alert("❌ 存档失败：设备存储空间可能已满，请删除部分旧存档后重试。");
+      alert("存档失败：设备存储空间可能已满，请删除部分旧存档后重试。");
     }
   };
 
@@ -3046,7 +3047,7 @@ const App: React.FC = () => {
     const WEBHOOK_URL = "https://hook.eu1.make.com/gh39lk2rhsdmoeztkx0sjt378k5rgbay";
 
     if (WEBHOOK_URL.includes("YOUR_WEBHOOK_URL_HERE")) {
-      alert(T.webhookWarning);
+      alert(stripEmoji(T.webhookWarning));
       return;
     }
 
@@ -3072,12 +3073,12 @@ const App: React.FC = () => {
       });
 
       if (response.ok) {
-        alert(T.syncSuccess);
+        alert(stripEmoji(T.syncSuccess));
       } else {
         throw new Error("Network response was not ok.");
       }
     } catch (error) {
-      alert(T.syncFailed);
+      alert(stripEmoji(T.syncFailed));
       console.error(error);
     } finally {
       setIsSyncing(false);
@@ -4300,7 +4301,7 @@ ${wind}`;
 
       {lifeToast && (
         <div className="fixed left-1/2 -translate-x-1/2 bottom-24 z-[150] ui-chip !px-5 !py-2.5 pointer-events-none animate-in fade-in slide-in-from-bottom-3 duration-300">
-          <span className="block text-emerald-700 font-bold text-sm">{lifeToast}</span>
+          <span className="block text-emerald-700 font-bold text-sm"><EmoText text={lifeToast} /></span>
         </div>
       )}
 

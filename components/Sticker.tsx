@@ -1,5 +1,6 @@
 import React from 'react';
 import { stickerById, StickerDef } from '../data/stickers';
+import { Emo } from './Emo';
 
 // 📱 一张表情包。
 // 角色贴图是裁好的胸像（白边已经烧在图里），字用 CSS 叠上去：
@@ -28,7 +29,7 @@ const Sticker: React.FC<Props> = ({ id, def, size = 120, showMeaning = false, en
                className="w-full h-full object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]" />
         ) : (
           <span className={`absolute inset-[8%] rounded-[28%] bg-gradient-to-br ${s.tint || 'from-zinc-300 to-zinc-500'} border-[3px] border-white shadow-[0_3px_8px_rgba(0,0,0,0.4)] flex items-center justify-center`}>
-            <span style={{ fontSize: size * 0.42, lineHeight: 1 }}>{s.emoji}</span>
+            <span style={{ fontSize: size * 0.42, lineHeight: 1 }}><Emo e={s.emoji} /></span>
           </span>
         )}
         <span

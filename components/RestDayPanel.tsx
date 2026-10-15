@@ -2,6 +2,7 @@ import React from 'react';
 import { Language, GameCalendar } from '../types';
 import { dayLabel, dayMood, dayKindOf, cultureFestivalDay } from '../data/calendarLife';
 import { RestPlan } from '../data/restDayPlans';
+import { Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 📋 行动
@@ -150,7 +151,7 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
                     }`}
                   >
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl leading-none shrink-0">{a.icon}</span>
+                      <span className="text-2xl leading-none shrink-0"><Emo e={a.icon} /></span>
                       <div className="min-w-0">
                         <div className="text-white font-black text-sm tracking-wide mb-1">{en ? a.titleEn : a.titleZh}</div>
                         <div className="text-white/45 text-[11px] leading-relaxed">{en ? a.descEn : a.descZh}</div>
@@ -180,7 +181,7 @@ const RestDayPanel: React.FC<Props> = ({ language, calendar, plans, actions, wak
                   className="group text-left bg-black/50 hover:bg-pink-400/10 border border-white/12 hover:border-pink-300/60 rounded-lg p-4 transition-all hover:-translate-y-0.5"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-2xl leading-none shrink-0">{p.icon}</span>
+                    <span className="text-2xl leading-none shrink-0"><Emo e={p.icon} /></span>
                     <div className="min-w-0">
                       <div className="text-white font-black text-sm tracking-wide mb-1 flex items-center gap-2">
                         {en ? p.titleEn : p.titleZh}

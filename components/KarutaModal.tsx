@@ -3,6 +3,7 @@ import { CollectedWord, Language, PracticeProgress, PracticeTier, StoryWord } fr
 import { buildDeck, KarutaCard } from '../data/karutaDeck';
 import { TIER_RULES, settlePractice } from '../data/drillData';
 import { audioManager } from '../services/audioManager';
+import { EmoText, Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🎴 歌留多：跟明日香抢牌
@@ -263,7 +264,7 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
           <span className="text-white/40 text-[10px] font-black">{Math.min(readNo + (phase === 'reading' ? 1 : 0), READS)} / {READS}</span>
           {hasVoice && tier > 1 && (
             <button onClick={() => setVoiceOn(v => !v)} className="text-white/50 hover:text-white text-sm" title={en ? 'Voice' : '朗读'}>
-              {voiceOn ? '🔊' : '🔇'}
+              <EmoText text={voiceOn ? '🔊' : '🔇'} />
             </button>
           )}
           <button onClick={onCancel} className="text-white/35 hover:text-white/70 text-[10px] font-black tracking-widest">
@@ -325,7 +326,7 @@ const KarutaModal: React.FC<Props> = ({ language, wordbook, progress, onFinish, 
                     : 'border-[#2f6b3a]'}`}>
                 <span className="text-[#2a2118] text-lg md:text-2xl font-black leading-tight text-center break-all">{c.jp}</span>
                 {tier === 1 && c.reading && <span className="text-[#6b5a45] text-[10px] md:text-xs mt-1">{c.reading}</span>}
-                {c.mine && <span className="absolute top-1 right-1.5 text-[9px] text-[#b4552d]" title={en ? 'From your wordbook' : '来自你的单词本'}>📒</span>}
+                {c.mine && <span className="absolute top-1 right-1.5 text-[9px] text-[#b4552d]" title={en ? 'From your wordbook' : '来自你的单词本'}><Emo e="📒" /></span>}
               </button>
             );
           })}

@@ -5,6 +5,7 @@ import CharacterSprite from './CharacterSprite';
 import DialogueBox from './DialogueBox';
 import RelationshipMeter from './AffectionMeter';
 import { audioManager } from '../services/audioManager';
+import { Emo, EmoText, emojiHtml } from './Emo';
 
 export interface AffectionToast {
   delta: number;       // 好感度变化
@@ -188,12 +189,12 @@ const ChatScreen: React.FC<Props> = ({
         <div key={affectionToast.key} className="absolute top-16 right-4 z-[200] pointer-events-none flex flex-col items-end gap-2 animate-in fade-in slide-in-from-bottom-2 duration-500">
           {affectionToast.famDelta !== 0 && (
             <div className={`font-ui px-4 py-2 rounded-full border-2 shadow-[0_6px_18px_rgba(16,20,44,0.3)] font-black text-sm md:text-base ${affectionToast.famDelta > 0 ? 'bg-sky-400 border-white text-white' : 'bg-white/85 border-white text-slate-500'}`}>
-              🤝 {affectionToast.famDelta > 0 ? `+${affectionToast.famDelta}` : affectionToast.famDelta}
+              <Emo e="🤝" /> {affectionToast.famDelta > 0 ? `+${affectionToast.famDelta}` : affectionToast.famDelta}
             </div>
           )}
           {affectionToast.delta !== 0 && (
             <div className={`font-ui px-4 py-2 rounded-full border-2 shadow-[0_6px_18px_rgba(16,20,44,0.3)] font-black text-sm md:text-base ${affectionToast.delta > 0 ? 'bg-gradient-to-r from-pink-400 to-rose-400 border-white text-white' : 'bg-white/85 border-white text-slate-500'}`}>
-              ♥ {affectionToast.delta > 0 ? `+${affectionToast.delta}` : affectionToast.delta}
+              <Emo e="♥" /> {affectionToast.delta > 0 ? `+${affectionToast.delta}` : affectionToast.delta}
             </div>
           )}
         </div>
@@ -201,16 +202,16 @@ const ChatScreen: React.FC<Props> = ({
 
       <div className="absolute top-0 left-0 w-full z-50 p-4 md:p-6 flex justify-between items-start pointer-events-none">
         <div className="flex gap-2 pointer-events-auto">
-          <button onClick={onOpenSystemMenu} className="ui-chip !px-5 !py-2.5 uppercase tracking-[0.15em]">⚙️ {T.system}</button>
+          <button onClick={onOpenSystemMenu} className="ui-chip !px-5 !py-2.5 uppercase tracking-[0.15em]"><Emo e="⚙️" /> {T.system}</button>
           {onLeaveChat && !dayClosed && (
             <button
               onClick={() => (confirmLeave ? onLeaveChat() : setConfirmLeave(true))}
               disabled={isLoading}
               className={`ui-chip !px-5 !py-2.5 tracking-[0.1em] disabled:opacity-40 ${confirmLeave ? '!bg-rose-500 !text-white' : ''}`}
             >
-              {confirmLeave
+              <EmoText text={confirmLeave
                 ? (userState.language === 'en' ? 'Leave? Tap again' : '确定结束？再点一次')
-                : (userState.language === 'en' ? '👋 End chat' : '👋 结束对话')}
+                : (userState.language === 'en' ? '👋 End chat' : '👋 结束对话')} />
             </button>
           )}
         </div>
@@ -227,7 +228,7 @@ const ChatScreen: React.FC<Props> = ({
           />
           {diceRoll && displayFace !== null && (
             <div className={`px-4 py-2 border-2 rounded-full shadow-xl font-black flex items-center gap-2 transition-colors duration-200 ${isRolling ? 'bg-white/80 border-white text-[#1f2440]' : `${diceStyle} dice-landed`}`}>
-              <span className={`text-lg leading-none ${isRolling ? 'dice-rolling' : ''}`}>🎲</span>
+              <span className={`text-lg leading-none ${isRolling ? 'dice-rolling' : ''}`}><Emo e="🎲" /></span>
               <span className={`text-sm md:text-base leading-none font-mono ${isRolling ? 'opacity-70' : ''}`}>{displayFace}<span className="opacity-50 text-[10px]"> /6</span></span>
             </div>
           )}
@@ -266,7 +267,7 @@ const ChatScreen: React.FC<Props> = ({
         return (
           <div className="absolute inset-0 z-[150] flex items-center justify-center bg-[#141a33]/55 backdrop-blur-md pointer-events-auto animate-in fade-in duration-500">
             <div className={`relative w-full max-w-lg mx-4 bg-gradient-to-b ${skin.panel} border-2 rounded-[28px] p-8 md:p-12 text-center animate-in zoom-in-90 duration-500`}>
-              <div className="text-5xl md:text-6xl mb-4 animate-bounce">{skin.icon}</div>
+              <div className="text-5xl md:text-6xl mb-4 animate-bounce"><Emo e={skin.icon} /></div>
               <p className={`font-ui ${skin.accent} font-black uppercase tracking-[0.4em] text-xs md:text-sm mb-2`}>{skin.title || T.levelUpTitle}</p>
               <h2 className={`font-ui text-4xl md:text-5xl font-black text-[#1f2440] mb-6 ${skin.glow}`}>Lv.{lv} <span className={skin.name}>{label}</span></h2>
               {/* 这里以前列的是「解锁了 casual / ikuta_shrine_gate」——
@@ -294,12 +295,12 @@ const ChatScreen: React.FC<Props> = ({
               <h3 className="font-ui text-base md:text-lg font-black text-pink-500 uppercase tracking-widest">{T.quizHeader} - {userState.grammarTopic}</h3>
               <button onClick={onCloseQuiz} className="ui-chip">✕ {T.close}</button>
             </div>
-            <p className="text-xl md:text-3xl text-[#1f2440] mb-8 font-black leading-relaxed" dangerouslySetInnerHTML={{ __html: String(currentQuiz.question || '') }} />
+            <p className="text-xl md:text-3xl text-[#1f2440] mb-8 font-black leading-relaxed" dangerouslySetInnerHTML={{ __html: emojiHtml(String(currentQuiz.question || '')) }} />
             <div className="grid grid-cols-1 gap-4">
               {Array.isArray(currentQuiz.options) && currentQuiz.options.map((opt: any, idx: number) => (
                 <button key={idx} onClick={() => onQuizAnswer(idx)} className="ui-choice font-bold py-5 pl-8 pr-6 text-left text-base md:text-xl">
                   <span className="font-ui text-pink-500 mr-4 font-black text-xl">{["A", "B", "C", "D"][idx] || "?"}.</span>
-                  <span dangerouslySetInnerHTML={{ __html: String(opt || '') }} />
+                  <span dangerouslySetInnerHTML={{ __html: emojiHtml(String(opt || '')) }} />
                 </button>
               ))}
             </div>
@@ -312,7 +313,7 @@ const ChatScreen: React.FC<Props> = ({
         {/* 🔥 答题反馈面板 */}
         {quizFeedback && (
           <div className="ui-panel mb-6 px-8 py-6 max-w-2xl z-[110] w-full pointer-events-auto">
-            <div className="flex items-start gap-4"><span className="text-4xl">💡</span><div className="flex-1"><p className="text-sm md:text-lg leading-relaxed whitespace-pre-wrap">{quizFeedback}</p></div></div>
+            <div className="flex items-start gap-4"><span className="text-4xl"><Emo e="💡" /></span><div className="flex-1"><p className="text-sm md:text-lg leading-relaxed whitespace-pre-wrap"><EmoText text={quizFeedback} /></p></div></div>
             <button onClick={onContinueAfterFeedback} className="mt-6 w-full py-3 ui-btn-primary uppercase">CONTINUE</button>
           </div>
         )}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CharacterId, Language } from '../types';
 import { CHARACTERS, CHARACTER_CGS, CHARACTER_ROOMS, VISIBLE_CHARACTER_IDS, CharacterCgDef, STORY_CGS, StoryCgDef } from '../constants';
+import { EmoText, Emo } from './Emo';
 
 interface Props {
   language: Language;
@@ -25,7 +26,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
         <div className="flex items-center justify-between border-b border-pink-300/30 pb-4 mb-6">
           <div>
             <h2 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 tracking-wider">
-              {language === 'en' ? '🌸 MEMORIES & EVENT CG GALLERY' : '🌸 特别回忆 · 事件 CG 画廊'}
+              <EmoText text={language === 'en' ? '🌸 MEMORIES & EVENT CG GALLERY' : '🌸 特别回忆 · 事件 CG 画廊'} />
             </h2>
             <p className="text-xs text-white/50 mt-1">
               {language === 'en' ? 'Unlocked through romantic affection progression with heroines' : '通过与女主角们增进好感度解锁专属心动回忆事件'}
@@ -43,7 +44,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
         {STORY_CGS.length > 0 && (
           <div className="mb-8">
             <h3 className="text-sm md:text-base font-black text-sky-300 tracking-wider mb-3 flex items-center gap-2">
-              📖 {language === 'en' ? 'STORY MEMORIES' : '剧情回忆'}
+              <Emo e="📖" /> {language === 'en' ? 'STORY MEMORIES' : '剧情回忆'}
               <span className="text-[10px] font-normal text-white/40 tracking-normal">
                 {language === 'en' ? 'unlocked by living through them' : '走过那段剧情即解锁'}
               </span>
@@ -70,7 +71,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 to-black flex flex-col items-center justify-center gap-2 p-4 text-center">
-                        <span className="text-3xl">🔒</span>
+                        <span className="text-3xl"><Emo e="🔒" /></span>
                         <span className="text-[10px] text-white/50">
                           {language === 'en' ? 'Not yet experienced' : '尚未经历'}
                         </span>
@@ -96,7 +97,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
         )}
 
         <h3 className="text-sm md:text-base font-black text-pink-300 tracking-wider mb-3 flex items-center gap-2">
-          💗 {language === 'en' ? 'HEROINE EVENT CG' : '心动事件 CG'}
+          <Emo e="💗" /> {language === 'en' ? 'HEROINE EVENT CG' : '心动事件 CG'}
           <span className="text-[10px] font-normal text-white/40 tracking-normal">
             {language === 'en' ? 'unlocked by affection' : '好感度解锁'}
           </span>
@@ -133,7 +134,7 @@ const CgGalleryModal: React.FC<Props> = ({ language, affectionMap, unlockedCgs, 
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 to-black flex flex-col items-center justify-center gap-2 p-4 text-center">
-                    <span className="text-3xl">🔒</span>
+                    <span className="text-3xl"><Emo e="🔒" /></span>
                     <span className="text-[10px] text-white/50">
                       {language === 'en' ? `Requires Affection Lv.2+ (${cg.unlockAffection})` : `好感度达标解锁 (需 ${cg.unlockAffection} 点)`}
                     </span>

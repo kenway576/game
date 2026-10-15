@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Language, PracticeProgress, PracticeTier, StoryWord } from '../types';
 import { TIER_RULES } from '../data/drillData';
 import { audioManager } from '../services/audioManager';
+import { Emo, EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 🐟 夜店捞金鱼
@@ -225,7 +226,7 @@ const KingyoModal: React.FC<Props> = ({ language, progress, onFinish, onCancel }
           <span className="text-[10px] px-2 py-0.5 border border-white/25 text-white/70">{en ? TIER_RULES[tier].labelEn : TIER_RULES[tier].labelZh}</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-white text-sm">🪣 {caught.length}</span>
+          <span className="text-white text-sm"><Emo e="🪣" /> {caught.length}</span>
           {!ended && <button onClick={stop} className="text-white/60 hover:text-white text-[10px] font-black tracking-widest border border-white/25 px-2 py-1">{en ? 'That’s enough' : '够了，不捞了'}</button>}
           <button onClick={onCancel} className="text-white/35 hover:text-white/70 text-[10px] font-black tracking-widest">{en ? 'LEAVE' : '走了'}</button>
         </div>
@@ -311,7 +312,7 @@ const KingyoModal: React.FC<Props> = ({ language, progress, onFinish, onCancel }
       {ended && (
         <div className="absolute inset-0 z-20 bg-black/75 backdrop-blur-sm flex items-center justify-center p-6">
           <div className="max-w-sm w-full text-center space-y-4">
-            <div className="text-5xl">{caught.length ? '🐟' : '🎐'}</div>
+            <div className="text-5xl"><EmoText text={caught.length ? '🐟' : '🎐'} /></div>
             <h3 className="text-white text-2xl font-black font-ui">
               {caught.length
                 ? (en ? `${caught.length} goldfish` : `捞到 ${caught.length} 条`)

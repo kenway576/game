@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import PuppetSprite from './PuppetSprite';
 import IdleVideoSprite, { IDLE_VIDEOS } from './IdleVideoSprite';
 import { PUPPET_RIGS } from '../data/puppetRigs';
+import { EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 🧪 木偶调试台（开发用）：网址带 ?puppet 打开
@@ -36,7 +37,7 @@ const PuppetLab: React.FC = () => {
         </div>
         {shown.map((s, i) => <div key={s} onClick={() => setCur(i)}
           style={{ cursor: 'pointer', padding: '2px 4px', background: s === src ? '#456' : 'transparent' }}>
-          {s.split('/').pop()} {PUPPET_RIGS[s].blink ? '👁' : ''}
+          {s.split('/').pop()} <EmoText text={PUPPET_RIGS[s].blink ? '👁' : ''} />
         </div>)}
         <label style={{ display: 'block', marginTop: 10 }}><input type="checkbox" checked={talk} onChange={e => setTalk(e.target.checked)} /> 说话中</label>
       </div>

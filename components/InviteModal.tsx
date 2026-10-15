@@ -7,6 +7,7 @@ import {
   SPEAKER, InviteReply, inviteReply, spotOpenNow, spotBlockedReason, spotKnownEnough, dateOutfitPlan, WearReason
 } from '../data/dateData';
 import { outfitLabel, seenOutfitFlag } from '../data/outfitContext';
+import { Emo, EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 💌 约人出去
@@ -44,7 +45,7 @@ interface Props {
   onClose: () => void;
 }
 
-const hearts = (n: number) => '♥'.repeat(n) + '♡'.repeat(4 - n);
+const hearts = (n: number) => Array.from({ length: 4 }, (_, i) => <Emo key={i} e="♥" className={i < n ? '' : 'opacity-25 grayscale'} />);
 
 // 圆形 / 方形头像：用 scripts/make-avatars-v2.mjs 从当前立绘里裁好的脸
 const Face: React.FC<{ id: CharacterId; className: string }> = ({ id, className }) => (
@@ -203,7 +204,7 @@ const InviteModal: React.FC<Props> = ({ language, calendar, flags, stamina, yen,
                       : 'bg-black/50 border-white/12 hover:border-pink-300/70 hover:bg-pink-400/10 hover:-translate-y-0.5'}`}
                   >
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl leading-none shrink-0">{s.icon}</span>
+                      <span className="text-2xl leading-none shrink-0"><Emo e={s.icon} /></span>
                       <div className="min-w-0 flex-1">
                         <div className="text-white font-black text-sm tracking-wide flex items-center gap-2 flex-wrap">
                           {en ? s.nameEn : s.nameZh}
@@ -211,7 +212,7 @@ const InviteModal: React.FC<Props> = ({ language, calendar, flags, stamina, yen,
                         </div>
                         <div className="text-white/45 text-[11px] leading-relaxed mt-0.5">{en ? s.blurbEn : s.blurbZh}</div>
                         <div className="text-[11px] mt-1.5 text-amber-200/80">
-                          {en ? 'She would wear: ' : '她会穿：'}{wear}
+                          {en ? 'She would wear: ' : '她会穿：'}<EmoText text={wear} />
                           {plan.reason === 'request' && <span className="text-pink-300/80">{en ? ' (your request)' : '（你点的）'}</span>}
                         </div>
                         <div className="text-[10px] mt-1 text-white/35">

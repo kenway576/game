@@ -3,6 +3,7 @@ import { Language, PracticeProgress, PracticeTier } from '../types';
 import { SHIRITORI_WORDS, ShiritoriWord, tailOf, headOf, endsInN, lookalikesOf } from '../data/shiritoriWords';
 import { TIER_RULES } from '../data/drillData';
 import { audioManager } from '../services/audioManager';
+import { EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 🔤 跟光玩接龙
@@ -229,7 +230,7 @@ const ShiritoriModal: React.FC<Props> = ({ language, progress, onFinish, onCance
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm">{'❤️'.repeat(lives)}<span className="opacity-25">{'🖤'.repeat(LIVES - lives)}</span></span>
+          <span className="text-sm"><EmoText text={'❤️'.repeat(lives)} /><span className="opacity-25"><EmoText text={'🖤'.repeat(LIVES - lives)} /></span></span>
           <span className="text-white/40 text-[10px] font-black">{turns} / {MAX_TURNS}</span>
           <button onClick={onCancel} className="text-white/35 hover:text-white/70 text-[10px] font-black tracking-widest">{en ? 'LEAVE' : '不玩了'}</button>
         </div>

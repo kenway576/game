@@ -16,6 +16,7 @@ import { activitiesAt, checkActivity, practiceKeyOf, ActivityDef } from '../data
 import { progressLine } from '../data/drillData';
 import { LifeState } from '../types';
 import { lunchSpotsToday, isWeekend } from '../data/scheduleData';
+import { Emo, EmoText } from './Emo';
 
 // ---------------------------------------------------------
 // 🗺️ 出门 —— 去哪儿
@@ -222,7 +223,7 @@ const MapScreen: React.FC<Props> = ({
                     {en ? label.en : label.zh}
                   </span>
                   <span className="text-[10px] font-mono text-white/25">{label.jp}</span>
-                  {!anyOpen && <span className="ml-auto text-[10px] text-white/25">🔒</span>}
+                  {!anyOpen && <span className="ml-auto text-[10px] text-white/25"><Emo e="🔒" /></span>}
                 </div>
                 {inDistrict.map(loc => {
                   const open = canEnter(loc);
@@ -258,11 +259,11 @@ const MapScreen: React.FC<Props> = ({
                       )}
                       {/* 💞 她在这儿，而且有话想说 */}
                       {!has && open && now && storySpots.includes(loc.id) && (
-                        <span className="shrink-0 text-[12px] text-pink-400 animate-pulse" title={en ? 'someone has something to tell you' : '有人有话想对你说'}>♥</span>
+                        <span className="shrink-0 text-[12px] text-pink-400 animate-pulse" title={en ? 'someone has something to tell you' : '有人有话想对你说'}><Emo e="♥" /></span>
                       )}
                       {/* 午休有人的地方打个人影。不写名字。 */}
                       {!has && lunchSpots.includes(loc.id) && (
-                        <span className="shrink-0 text-[11px] text-sky-300/80" title={en ? 'someone is here' : '有人在'}>👤</span>
+                        <span className="shrink-0 text-[11px] text-sky-300/80" title={en ? 'someone is here' : '有人在'}><Emo e="👤" /></span>
                       )}
                       {/* 要花两格的地方标出来，免得玩家点进去才发现今天去不了 */}
                       {open && now && cost > 1 && (
@@ -270,16 +271,16 @@ const MapScreen: React.FC<Props> = ({
                           {slotPips(0, cost)}
                         </span>
                       )}
-                      {tooLate && <span className="shrink-0 text-[10px] text-rose-300/70">⌛</span>}
+                      {tooLate && <span className="shrink-0 text-[10px] text-rose-300/70"><Emo e="⌛" /></span>}
                       {/* 关门的理由要对：白天去不了的是夜场，晚上去不了的才是打烊。
                           一律画月亮的话，午后看见铁板烧挂着月亮，像是在说"晚上再来"，
                           可它本来就只开晚上——玩家会以为自己看错了。 */}
                       {open && !now && (
                         <span className="shrink-0 text-[10px] text-white/30">
-                          {loc.timeSlots && !loc.timeSlots.includes('afternoon') ? '🌙' : '🌇'}
+                          <EmoText text={loc.timeSlots && !loc.timeSlots.includes('afternoon') ? '🌙' : '🌇'} />
                         </span>
                       )}
-                      {!open && <span className="shrink-0 text-[10px] text-white/25">🔒</span>}
+                      {!open && <span className="shrink-0 text-[10px] text-white/25"><Emo e="🔒" /></span>}
                     </button>
                   );
                 })}
@@ -340,7 +341,7 @@ const MapScreen: React.FC<Props> = ({
                   ))}
                   {!selHasEvent && selOpen && storySpots.includes(selected.id) && (
                     <span className="text-[11px] px-2 py-1 border border-pink-400/60 text-pink-300 font-bold">
-                      {en ? '♥ she seems to want to talk' : '♥ 她好像有话想对你说'}
+                      <EmoText text={en ? '♥ she seems to want to talk' : '♥ 她好像有话想对你说'} />
                     </span>
                   )}
                   {selHasEvent && (
@@ -362,7 +363,7 @@ const MapScreen: React.FC<Props> = ({
                     <span className={`text-[11px] px-2 py-1 border flex items-center gap-1.5 ${
                       canPay(selected) ? 'border-white/20 text-white/60' : 'border-rose-500/50 text-rose-300'
                     }`}>
-                      💴 ¥{JUKU_FEE.toLocaleString()}
+                      <Emo e="💴" /> ¥{JUKU_FEE.toLocaleString()}
                       {!canPay(selected) && (en ? ' · not enough' : ' · 钱不够')}
                     </span>
                   )}
@@ -381,8 +382,8 @@ const MapScreen: React.FC<Props> = ({
                     hasLegs(selected) ? 'border-white/20 text-white/60' : 'border-rose-500/50 text-rose-300'
                   }`}>
                     {tireOf(selected) < 0
-                      ? <span className="text-emerald-300">🔋 +{-tireOf(selected)}</span>
-                      : <>🔋 −{tireOf(selected)}</>}
+                      ? <span className="text-emerald-300"><Emo e="🔋" /> +{-tireOf(selected)}</span>
+                      : <><Emo e="🔋" /> −{tireOf(selected)}</>}
                     {!hasLegs(selected) && (en ? ' · not enough left in you' : ' · 撑不住了')}
                   </span>
                 </div>
@@ -403,13 +404,13 @@ const MapScreen: React.FC<Props> = ({
                           onClick={() => { if (chk.ok) { audioManager.playSfx('confirm'); markVisited(selected.id); onActivity(selected, a); } }}
                           className={`w-full text-left px-3 py-2.5 border flex items-center gap-3 transition-all ${
                             chk.ok ? 'border-pink-300/40 bg-pink-400/[0.06] hover:bg-pink-400/15' : 'border-white/10 bg-white/[0.02] opacity-60 cursor-not-allowed'}`}>
-                          <span className="text-2xl shrink-0">{a.emoji}</span>
+                          <span className="text-2xl shrink-0"><Emo e={a.emoji} /></span>
                           <span className="min-w-0 flex-1">
                             <span className="block text-white text-sm font-black">{en ? a.titleEn : a.titleZh}</span>
                             <span className="block text-white/55 text-[11px] leading-snug">{en ? a.blurbEn : a.blurbZh}</span>
                             <span className="block text-[10px] mt-0.5">
                               <span className="text-emerald-300/80">{progressLine(life.practice?.[practiceKeyOf(a)], en)}</span>
-                              <span className="text-white/35 ml-2">🔋 −{a.stamina}{a.fee ? ` · ¥${a.fee}` : ''}</span>
+                              <span className="text-white/35 ml-2"><Emo e="🔋" /> −{a.stamina}{a.fee ? ` · ¥${a.fee}` : ''}</span>
                               {!chk.ok && <span className="text-rose-300 ml-2">{en ? chk.en : chk.zh}</span>}
                             </span>
                           </span>
@@ -426,7 +427,7 @@ const MapScreen: React.FC<Props> = ({
           {/* 出发 */}
           <div className="shrink-0 px-4 md:px-6 py-3 border-t border-white/10 flex items-center justify-between gap-3">
             <span className="text-[11px] text-white/40">
-              {calendar.timeSlot === 'night'
+              <EmoText text={calendar.timeSlot === 'night'
                 ? (en
                     ? 'Night. You get one trip out — after that you go home, and the rest waits for tomorrow. Night trips take more out of you, too.'
                     : '夜里。只能出去一趟——回来就该睡了，剩下的明天再说。夜里出门也更费体力。')
@@ -440,7 +441,7 @@ const MapScreen: React.FC<Props> = ({
                         : '午休。走得到校内，还有坡下面那座神社。谁在哪儿要看星期几。👤 表示那儿有人。想去街上？那就得翘掉下午的课。'))
                 : (en
                     ? 'After school you have two blocks of time. A quick stop costs one; sitting down to a giant bowl of ramen or heading out of town costs both — after that you go home. 🔋 is a separate question: having the time does not mean you have the legs. Eat something, or go and sit in a hot spring.'
-                    : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。🔋 是另一回事：时间够、人不够也去不了。想缓过来就吃点东西，或者去泡个汤。')}
+                    : '放学后一共两格时间。顺路拐一下花 1 格；坐下来吃碗二郎系拉面、或者跑一趟市外要 2 格——去完就只能回家了。🔋 是另一回事：时间够、人不够也去不了。想缓过来就吃点东西，或者去泡个汤。')} />
             </span>
             <div className="flex items-center gap-2">
               {/* 🏃 午休翘掉下午的课。点一次变成"真的要翘？"，再点才算数——
@@ -460,9 +461,9 @@ const MapScreen: React.FC<Props> = ({
                   title={en ? 'Skip the afternoon classes and leave school' : '下午的课不上了，直接出校门'}
                 >
                   <span className="block whitespace-nowrap">
-                    {confirmSkip
+                    <EmoText text={confirmSkip
                       ? (en ? 'Really skip? Click again' : '真的翘课？再点一次')
-                      : (en ? '🏃 Skip the afternoon' : '🏃 翘掉下午的课')}
+                      : (en ? '🏃 Skip the afternoon' : '🏃 翘掉下午的课')} />
                   </span>
                 </button>
               )}
@@ -472,7 +473,7 @@ const MapScreen: React.FC<Props> = ({
                   className="px-4 md:px-6 py-2.5 text-sm font-black uppercase tracking-wider rounded-xl bg-pink-500 hover:bg-pink-400 text-white shadow-lg shadow-pink-500/20 transition-all cursor-pointer"
                 >
                   <span className="block">
-                    {en ? '♥ Story ▶' : '♥ 专属剧情 ▶'}
+                    <EmoText text={en ? '♥ Story ▶' : '♥ 专属剧情 ▶'} />
                   </span>
                 </button>
               )}

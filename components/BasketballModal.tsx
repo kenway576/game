@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Language, PracticeTier } from '../types';
 import { audioManager } from '../services/audioManager';
+import { Emo } from './Emo';
 
 // ---------------------------------------------------------
 // 🏀 投篮机（一分間シュート）
@@ -461,7 +462,7 @@ const BasketballModal: React.FC<Props> = ({ language, mode, tutorial, venue = 'g
         <div className="absolute top-[3%] left-[2%] text-white">
           <div className="text-[9px] md:text-[10px] text-white/55 font-black tracking-widest">{en ? 'TOTAL' : '总进球'}</div>
           <div className="text-xl md:text-4xl font-black text-pink-200 tabular-nums drop-shadow">{made}</div>
-          {combo >= 3 && phase === 'play' && <div className="text-[10px] md:text-xs font-black text-orange-300 animate-pulse">🔥 {combo} {en ? 'IN A ROW' : '连进'}</div>}
+          {combo >= 3 && phase === 'play' && <div className="text-[10px] md:text-xs font-black text-orange-300 animate-pulse"><Emo e="🔥" /> {combo} {en ? 'IN A ROW' : '连进'}</div>}
         </div>
 
         {onCancel && phase !== 'tutorial' && (

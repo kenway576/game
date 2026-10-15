@@ -5,6 +5,7 @@ import {
   getAffectionLevel, getFamiliarityLevel,
   getLevelProgress, getLevelSpan, isRomanceCapped
 } from '../constants';
+import { Emo } from './Emo';
 
 // 一条轴的样式：親密度偏冷色（认识程度），好感度偏暖色（恋爱线）
 const AXIS_STYLE: Record<RelationshipAxis, { icon: string; text: string; bar: string; border: string }> = {
@@ -46,12 +47,12 @@ const Bar: React.FC<BarProps> = ({ axis, value, language, label, compact, capped
   if (compact) {
     return (
       <div className="flex items-center gap-1.5">
-        <span className={`${style.text} text-xs`}>{style.icon}</span>
+        <span className={`${style.text} text-xs`}><Emo e={style.icon} /></span>
         <span className={`${style.text} text-[10px] md:text-xs font-bold uppercase tracking-wider`}>{levelLabel}</span>
         <div className="w-12 md:w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
           <div className={`h-full ${style.bar} transition-all duration-700`} style={{ width: `${percent}%` }} />
         </div>
-        {capped && <span className="text-white/40 text-[10px]" title={cappedLabel}>🔒</span>}
+        {capped && <span className="text-white/40 text-[10px]" title={cappedLabel}><Emo e="🔒" /></span>}
       </div>
     );
   }
@@ -59,7 +60,7 @@ const Bar: React.FC<BarProps> = ({ axis, value, language, label, compact, capped
   return (
     <div className="w-full flex flex-col gap-1.5">
       <div className="flex justify-between items-baseline">
-        <span className={`${style.text} text-[10px] md:text-xs font-black uppercase tracking-widest`}>{style.icon} {label}</span>
+        <span className={`${style.text} text-[10px] md:text-xs font-black uppercase tracking-widest`}><Emo e={style.icon} /> {label}</span>
         <span className="text-slate-400 text-[10px] md:text-xs font-mono">
           <span className={`${style.text} font-bold`}>{levelLabel}</span> · {progress} / {span}
         </span>
@@ -68,7 +69,7 @@ const Bar: React.FC<BarProps> = ({ axis, value, language, label, compact, capped
         <div className={`h-full ${style.bar} transition-all duration-700`} style={{ width: `${percent}%` }} />
       </div>
       {capped && cappedLabel && (
-        <span className="text-slate-400 text-[9px] md:text-[10px] tracking-wide">🔒 {cappedLabel}</span>
+        <span className="text-slate-400 text-[9px] md:text-[10px] tracking-wide"><Emo e="🔒" /> {cappedLabel}</span>
       )}
     </div>
   );

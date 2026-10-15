@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Character, DialoguePage, WordReading } from '../types';
 import { audioManager } from '../services/audioManager';
+import { emojiHtml } from './Emo';
 
 interface Props {
   character: Character;
@@ -93,7 +94,7 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-3 md:gap-5 animate-in fade-in slide-in-from-bottom-4">
       {step.narration && (
         <div className="ui-panel w-11/12 md:w-5/6 px-5 py-3 md:px-8 md:py-5 text-center cursor-pointer select-text" onClick={next}>
-          <p className="font-story text-xs md:text-lg text-[#2b3152] tracking-wide leading-relaxed" dangerouslySetInnerHTML={{ __html: dispN }} />
+          <p className="font-story text-xs md:text-lg text-[#2b3152] tracking-wide leading-relaxed" dangerouslySetInnerHTML={{ __html: emojiHtml(dispN) }} />
         </div>
       )}
 
@@ -105,7 +106,7 @@ const DialogueBox: React.FC<Props> = ({ character, pages, vocabulary, streaming 
               <span className="opacity-80 mr-1.5 text-[0.7em]">✦</span>{character.name}
             </div>
             <div className="w-full min-h-[100px] md:min-h-[140px] pt-4">
-              <p className="text-xl md:text-[2rem] text-[#1f2440] font-bold leading-[1.8] md:leading-[1.6] tracking-wider" dangerouslySetInnerHTML={{ __html: dispS }} />
+              <p className="text-xl md:text-[2rem] text-[#1f2440] font-bold leading-[1.8] md:leading-[1.6] tracking-wider" dangerouslySetInnerHTML={{ __html: emojiHtml(dispS) }} />
             </div>
           </div>
         )}
