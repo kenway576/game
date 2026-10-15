@@ -433,3 +433,11 @@ export const futureLabScript = (id: string, s: ProtagonistStats, words: number):
   }
   return [];
 };
+
+// 今天是不是"定死了日子"的那一天（考试、面试）：休息日面板这天不弹
+export const futureFixedToday = (cal: GameCalendar, flags: StoryFlags): boolean => {
+  const today = schoolDayNumber(cal);
+  if (today === DATE.exam && !flags.goal_jlpt_done) return true;
+  if (today === DATE.interview && flags.kobe_rec_yes && !flags.goal_interview_done) return true;
+  return false;
+};

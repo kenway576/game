@@ -8,6 +8,9 @@ import { INVITE_LINES, TAG_LINES, Line, WEAR_REQUEST_LINES, WEAR_PRAISED_LINES }
 import { OUTFIT_REVEALS, REVEAL_RESPONSES } from '../story/outfitReveals';
 import { DATE_INCIDENTS } from '../story/dateIncidents';
 import { pickDateEpisode, pastDateCount } from '../story/dateEpisodes';
+import { DATE_VARIETY } from './dateVariety';
+import { REVEAL_CHOICES } from './revealChoices';
+import { VarietyOption } from './varietyTypes';
 
 // ---------------------------------------------------------
 // 💌 放学后约她出去
@@ -222,6 +225,26 @@ export const buildDateScript = (o: DateScriptOpts): StoryNode[] => {
   const rel = (aff: number, fam: number, zh: string, en: string) =>
     [{ char, affection: aff, familiarity: fam, reasonZh: zh, reasonEn: en }];
 
+  // 生成出来的选项（data/dateVariety.ts、data/revealChoices.ts）→ 剧本选项：她的回答 + 接下来一句
+  const fromVariety = (op: VarietyOption, id: string, reasonZh: string, reasonEn: string, setFlags?: string[]): StoryOption => ({
+    id, labelZh: op.labelZh, labelEn: op.labelEn, ...(op.jp ? { jp: op.jp } : {}),
+    hintZh: op.hintZh, hintEn: op.hintEn,
+    relations: rel(op.aff, op.fam, reasonZh, reasonEn),
+    ...(setFlags ? { setFlags } : {}),
+    then: [say(op.reply, op.mood), ...(op.after ? [{ type: 'narration', zh: op.after.zh, en: op.after.en } as StoryNode] : [])]
+  });
+
+  // 🎲 这一次是哪一套：同一个人、同一个地方，先把她专属的几套演完，
+  // 都演过了就在专属的和原来的通用版之间按日子轮换——不会连着两次读到同一段。
+  const variants = DATE_VARIETY[spot.id]?.[char] || [];
+  const usedVar = (k: number) => `datevar_${char}_${spot.id}_${k}`;
+  let varIdx = variants.findIndex((_, k) => !flags[usedVar(k)]);
+  if (varIdx < 0 && variants.length) {
+    const pool = [...variants.keys(), -1];
+    varIdx = pool[Math.floor(hash01('datevar', day, char, spot.id) * pool.length) % pool.length];
+  }
+  const dv = varIdx >= 0 ? variants[varIdx] : null;
+
   const school = isSchoolDay(cal);
   const slotZh = cal.timeSlot === 'night' ? '夜' : cal.timeSlot === 'lunch' ? '白天' : (school ? '放学后' : '下午');
   const slotEn = cal.timeSlot === 'night' ? 'Night' : cal.timeSlot === 'lunch' ? 'Daytime' : (school ? 'After school' : 'Afternoon');
@@ -233,8 +256,8 @@ export const buildDateScript = (o: DateScriptOpts): StoryNode[] => {
       subtitleZh: `${slotZh} · 和${sp.zh}一起`, subtitleEn: `${slotEn} · with ${sp.en}`
     },
     { type: 'narration', ...her(spot.arrive), characterImage: '' },
-    // 地方的第一拍：大多数写的就是"她已经在那儿了"
-    { type: 'narration', ...her(spot.beats[0]), characterImage: img('neutral') }
+    // 地方的第一拍：大多数写的就是"她已经在那儿了"（有她专属的版本就用她的）
+    { type: 'narration', ...(dv ? dv.beat1 : her(spot.beats[0])), characterImage: img('neutral') }
   ];
 
   // 主角在邀约消息里点名要了这一身
@@ -252,6 +275,8 @@ export const buildDateScript = (o: DateScriptOpts): StoryNode[] => {
   const reveal = outfit ? OUTFIT_REVEALS[char]?.[outfit] : undefined;
   if (reveal && !flags[seenKey]) {
     const resp = REVEAL_RESPONSES[char];
+    // 这套衣服有没有专属的三个回应（data/revealChoices.ts）；没有就用以前那套通用的
+    const custom = REVEAL_CHOICES[char]?.[outfit];
     nodes.push(
       { type: 'narration', characterImage: img('neutral'), zh: `你走近了，这才好好看了她一眼——有那么半秒钟，你没认出来那是${sp.zh}。`, en: `You get closer and take a proper look at her, and for half a second you do not recognise ${sp.en}.` },
       { type: 'narration', zh: reveal.lookZh, en: reveal.lookEn },
@@ -259,7 +284,11 @@ export const buildDateScript = (o: DateScriptOpts): StoryNode[] => {
       {
         type: 'choice',
         promptZh: `${sp.zh}在等你说点什么。`, promptEn: `${sp.en} is waiting for you to say something.`,
-        options: [
+        options: custom?.length === 3 ? custom.map((op, k) => fromVariety(op, `reveal_${outfit}_${k}`,
+          `第一次看见她穿${outfitLabel(char, outfit, false)}：${op.labelZh.replace(/[「」]/g, '')}`,
+          `First time seeing her ${outfitLabel(char, outfit, true).toLowerCase()}: ${op.labelEn.replace(/"/g, '')}`,
+          // 真心夸的那一个：她会记得，以后普通的约会有时会自己穿这一身来
+          op.praise ? [praisedOutfitFlag(char, outfit)] : undefined)) : [
           {
             id: 'reveal_praise', labelZh: '「似合ってる。」', labelEn: '"It suits you."', jp: '似合ってる。',
             hintZh: '直球', hintEn: 'Straight to the point',
@@ -320,7 +349,7 @@ export const buildDateScript = (o: DateScriptOpts): StoryNode[] => {
   }
 
   // ---- 这个地方的第二拍 ----
-  nodes.push({ type: 'narration', ...her(spot.beats[1]), characterImage: img('happy') });
+  nodes.push({ type: 'narration', ...(dv ? dv.beat2 : her(spot.beats[1])), characterImage: img('happy') });
 
   // ---- 这一次碰上的小插曲（每次去都可能不一样） ----
   const incidents = DATE_INCIDENTS[spot.id];
@@ -332,7 +361,12 @@ export const buildDateScript = (o: DateScriptOpts): StoryNode[] => {
   }
 
   // ---- 一次选择 ----
-  nodes.push({
+  if (dv) nodes.push({
+    type: 'choice',
+    promptZh: dv.promptZh, promptEn: dv.promptEn,
+    options: dv.options.map((op, k) => fromVariety(op, `date_${spot.id}_v${varIdx}_${k}`, `${spot.nameZh}：${op.labelZh}`, `${spot.nameEn}: ${op.labelEn}`))
+  });
+  else nodes.push({
     type: 'choice',
     promptZh: her(spot.choice.prompt).zh, promptEn: her(spot.choice.prompt).en,
     options: spot.choice.options.map<StoryOption>(op => ({
@@ -364,7 +398,7 @@ export const buildDateScript = (o: DateScriptOpts): StoryNode[] => {
   nodes.push({
     type: 'effect',
     // 钱在这里扣（pay: 不进 flag 表）。约会途中退出的话不扣——那一趟本来就没成。
-    setFlags: [datedWithFlag(char), datedSpotFlag(char, spot.id), datedTodayFlag(cal), ...(spot.yen ? [`pay:${spot.yen}`] : [])],
+    setFlags: [datedWithFlag(char), datedSpotFlag(char, spot.id), datedTodayFlag(cal), ...(dv ? [usedVar(varIdx)] : []), ...(spot.yen ? [`pay:${spot.yen}`] : [])],
     relations: rel(3, 6, `放学后一起去了${spot.nameZh}`, `Went to ${spot.nameEn} together`),
     effects: [{ stat: spot.stat, amount: 2, reasonZh: `${spot.nameZh}的一段时间`, reasonEn: `Time at ${spot.nameEn}` }]
   });

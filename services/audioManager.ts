@@ -27,6 +27,15 @@ export type AudioBus = 'bgm' | 'sfx' | 'typing';
 // train/town/store/night 是序章分场景用的：整段序章共用一首大厅曲太平了。
 export type BgmTrack = StoryBgmTrack;
 
+// 🎚️ 换歌的节奏。
+// 以前每换一个场景就换一首（大厅 → 地图 → 剧情里每一场 → 聊天），一首歌常常放不到二十秒。
+// 现在分两种：
+//   · 情绪明确的（祭典、球场、游戏厅、标题、抒情、深夜……）立刻切——那是这一场戏要的声音；
+//   · 氛围类的（大厅、放学后、街上、聊天、学习、港口……）不打断正在放的歌，
+//     等这首放完，下一首从新场景的曲库里挑。
+// 正在放的是"情绪明确"的那种、而新场景是氛围类的（打完球回大厅），也立刻切回去。
+const HARD_BGM = new Set<BgmTrack>(['title', 'festival', 'sports', 'basketball', 'arcade', 'reflective', 'shrine_rain', 'late_night']);
+
 export interface AudioSettings {
   master: number;        // 0..1 总音量
   bgm: number;           // 0..1
@@ -122,6 +131,8 @@ class AudioManager {
 
   // BGM 运行时
   private currentBgm: { track: BgmTrack; url: string; audio: HTMLAudioElement } | null = null;
+  // 氛围类的换歌请求先记在这儿，等当前这首放完再换（见 HARD_BGM）
+  private deferredBgm: BgmTrack | null = null;
   // 场景想放哪首。BGM 关着的时候也记着，打开时接上。
   private wantedBgm: BgmTrack | null = null;
   private bgmDucked = false;
@@ -752,9 +763,16 @@ class AudioManager {
     // 正在放的这首也在新场景的曲库里（大厅 → 聊天、街上 → 地图）：接着放，不换歌
     if (cur && pool.includes(cur.url)) {
       cur.track = track;
+      this.deferredBgm = null;
       if (cur.audio.paused && this.unlocked) this.startBgmAudio(cur.audio, this.bgmGen, ms);
       return;
     }
+    // 氛围类的换场：这首还在好好地放着，就等它放完（nextInPool 会从 deferredBgm 的曲库里接）
+    if (cur && !cur.audio.paused && !HARD_BGM.has(track) && !HARD_BGM.has(cur.track)) {
+      this.deferredBgm = track;
+      return;
+    }
+    this.deferredBgm = null;
 
     const gen = ++this.bgmGen;
     this.currentBgm = null;
@@ -785,8 +803,11 @@ class AudioManager {
     if (!cur || cur.audio !== finished || !this.settings.bgmEnabled) return;
     const gen = ++this.bgmGen;
     this.retireBgm(finished, 0);
-    const url = this.pickFromPool(this.bgmPool(cur.track), cur.url) || cur.url;
-    this.playBgmFile(cur.track, url, gen, 1500);
+    // 中途换过场景（氛围类，等到现在才换）：从新场景的曲库里挑
+    const track = this.deferredBgm || cur.track;
+    this.deferredBgm = null;
+    const url = this.pickFromPool(this.bgmPool(track), cur.url) || cur.url;
+    this.playBgmFile(track, url, gen, 1500);
   }
 
   /** 升级庆祝或重要对白时压低 BGM。 */

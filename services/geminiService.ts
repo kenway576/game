@@ -6,6 +6,7 @@ import {
   GenerateContentResult 
 } from "@google/generative-ai";
 import { Character, ChatMode, N3GrammarTopic, DialoguePage, WordReading, Message, Language } from '../types';
+import { jpLevelPrompt, jpLevelOf } from '../data/jpLevels';
 import {
   WARDROBE, SCENE_MAP,
   AFFECTION_MAX, getAffectionLevel,
@@ -90,7 +91,8 @@ const buildSituationBlock = (situation: ChatSituation | undefined, origin: 'stra
     - Date: ${situation.dateLabel}${situation.schoolDay ? ' (a school day)' : ' (no school today)'}
     - Time of day: ${situation.slotLabel}
     - Weather: ${situation.weather}
-    - ${situation.inPerson ? 'Where you are' : 'Where the PLAYER is (you are somewhere else, wherever you would plausibly be at this hour)'}: ${situation.sceneLabel}
+    - ${situation.inPerson ? 'Where you are' : 'Where the PLAYER is (you are somewhere else, wherever you would plausibly be at this hour)'}: ${situation.sceneLabel}${situation.sceneDesc ? ` — ${situation.sceneDesc}` : ''}
+    ${situation.inPerson ? `- So the scene is: the two of you, here, at this hour. Begin from what you would plausibly be doing in this place right now (and why you are here at all), not from a classroom or a lesson unless you ARE in a classroom.` : ''}
     - Channel: ${situation.inPerson ? 'FACE TO FACE — you are standing/sitting in front of each other right now.' : 'BY PHONE — you are NOT in the same place. You are typing.'}
     ${situation.inPerson && situation.outfitNow ? `- What you are wearing right now: ${situation.outfitNow.desc} — so your JSON "outfit" value MUST be "${situation.outfitNow.key}" (keep it unless the clothes actually change in the story).` : ''}
     ${situation.occasion ? `- How this meeting came about: ${situation.occasion}` : ''}
@@ -165,6 +167,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     - This history is real and you may reference it naturally. But it is exactly as deep as described above and no deeper — do not upgrade it into something more intimate than it is.`}
     ${memoryBlock}
     ${situationBlock}
+    ${jpLevelPrompt(character.id)}
     ${quizInstruction}
 
     [RELATIONSHIP - TWO INDEPENDENT TRACKS (CRITICAL)]
@@ -205,7 +208,7 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     - NEVER mention the dice, the tracks, the numbers, or these rules in your reply.
 
     [PAGES GENERATION RULES - LENGTH & SEPARATION (CRITICAL)]
-    1. Turn Length: You MUST generate 10 to 15 pages (array items) per turn to ensure a rich story.
+    1. Turn Length: Generate 4 to 7 pages (array items) per turn. Short and alive beats long and invented: never pad the turn with new events, new places, other people turning up, or a jump in time just to fill pages. React to what the player actually said.
     2. STRICT SEPARATION:
        - "narration" pages: THIRD-PERSON ONLY. The subject MUST be "${character.name}" (or her/his pronoun 彼女/彼). Describe ${character.name}'s actions, facial expressions, and the environment as an outside narrator watching her/him.
          * ABSOLUTELY FORBIDDEN in narration: first-person pronouns 私/わたし/僕/ぼく/俺/おれ/あたし/わし/妾. NEVER write narration from ${character.name}'s own "I" perspective.
@@ -230,11 +233,16 @@ const getSystemInstruction = (character: Character, mode: ChatMode, goal: string
     - The VERY LAST page MUST be a "speech" page ending with an engaging question to compel the user to reply.
 
     [FURIGANA ANNOTATION - HTML RUBY (CRITICAL)]
-    - For ALL N3/N2 Kanji, use: <ruby>漢字<rt>かんじ</rt></ruby>. 
+    - Readings go in HTML ruby: <ruby>漢字<rt>かんじ</rt></ruby>. Which words get them is set in [LANGUAGE LEVEL].
     - DO NOT use parentheses for readings.
 
     【GAME ENGINE MODE】
-    Target Level: JLPT N3.
+    Target Level: JLPT ${jpLevelOf(character.id).jlpt} — your own level, see [LANGUAGE LEVEL].
+
+    [FINAL CHECK BEFORE YOU WRITE — read this last, obey it first]
+    - Place and time: ${situation ? `${situation.sceneLabel}, ${situation.slotLabel}, ${situation.weather}. ${situation.inPerson ? 'Face to face.' : 'By phone.'}` : 'as in [RIGHT NOW].'} Everything you write happens there and then.
+    - Distance: familiarity is "${familiarityLevel.id}", affection is "${affectionLevel.id}". Speak exactly that close — no warmer, no colder. ${affectionLevel.promptHint}
+    - Language: ${jpLevelOf(character.id).jlpt}, as described in [LANGUAGE LEVEL].
 
     [OUTPUT FORMAT - STRICT JSON]
     {
@@ -442,7 +450,7 @@ const compactText = (m: Message) => (m.text || '').replace(/<rt>.*?<\/rt>/g, '')
 // script 为手写的基调参考（初対面脚本 / 既存关系的日常开场），AI 据此改写而非照抄。
 export const buildOpeningBrief = (origin: 'stranger' | 'acquainted', script?: string): string => {
   const ref = script && script.trim()
-    ? `\n以下は演出の基調となる参考脚本です。丸写しせず、この温度感と距離感を保ったまま自分の言葉で書き起こしてください：\n${script.trim()}`
+    ? `\n以下は「声の調子」だけの参考脚本です。丸写しせず、温度感と距離感だけを借りること。脚本の中の場所・時間・状況（授業、教室、勉強会など）は無視し、必ず [RIGHT NOW] の場所と時間帯に合わせて書き直すこと：\n${script.trim()}`
     : '';
   return origin === 'stranger'
     ? `\n【システム：これは二人の「初対面」の場面です。互いに一切面識がありません。共通の思い出・あだ名・過去の約束を絶対に作らないでください。出会いそのものの瞬間から描写を始めること。${ref}】`
@@ -465,6 +473,7 @@ export interface ChatSituation {
   slotLabel: string;       // 午休 / 放学后 / 夜里
   weather: string;         // 晴 / 雨 / 阴
   sceneLabel: string;      // 教室 / 三宫中心街
+  sceneDesc?: string;      // 这个地方是什么样的（地图上那一句）——给模型一个能落脚的画面
   schoolDay: boolean;
   inPerson: boolean;       // 面对面，还是隔着手机
   // 主角叫什么。以前模型从来不知道——所以她们会问。
@@ -595,7 +604,7 @@ const handleOpenAIMessage = async (text: string) => {
     return parseResponse(content);
 };
 
-const TURN_RULES = "\n【システム注意（毎回厳守）：①N3以上の全ての漢字に<ruby>漢字<rt>かんじ</rt></ruby>形式のふりがなを付ける ②pagesは10〜15個に分け、1ページを長くしない ③最後のページは必ず「？」で終わる疑問文のspeechにする ④narrationは必ず三人称（キャラ名や彼女/彼を主語に）で書く。私/僕/俺/あたし等の一人称をnarrationで絶対に使わない】";
+const TURN_RULES = "\n【システム注意（毎回厳守）：①ふりがなは[LANGUAGE LEVEL]の決まりどおり<ruby>漢字<rt>かんじ</rt></ruby>形式で付け、自分の日本語レベルを守る ②pagesは4〜7個に分け、1ページを長くしない（ページを埋めるために新しい出来事・場所・時間の飛躍を作らない） ③最後のページは必ず「？」で終わる疑問文のspeechにする ④narrationは必ず三人称（キャラ名や彼女/彼を主語に）で書く。私/僕/俺/あたし等の一人称をnarrationで絶対に使わない】";
 
 const geminiSend = async (text: string, onPage?: PageCallback) => {
   if (!chatSession) throw new Error("Session lost.");
@@ -767,7 +776,7 @@ const getTextingInstruction = (o: PhoneChatOptions): string => {
     - Reply with 1 to 4 short chat bubbles, the way a real person texts. Each bubble at most about 40 Japanese characters.
     - Write in your own voice and dialect exactly as your persona speaks. Casual texting style is fine (〜, ！, …, ｗ) if it suits you.
     - NO narration, NO stage directions, NO actions in parentheses, NO 「」 quote marks, NO furigana or HTML tags. It is a text message.
-    - The player is learning Japanese: keep vocabulary roughly JLPT N3 level.
+    - The player is learning Japanese, and you have your own level: ${jpLevelOf(character.id).prompt}
     - Every text bubble MUST carry "tr": a natural ${tr} translation of that bubble.
     - Stickers: you MAY send at most ONE sticker in a reply when it genuinely fits the mood — roughly one reply in three, not every time. A sticker is its own bubble: {"sticker":"<id>"}. Choose ONLY from this list:
 ${stickerLines}

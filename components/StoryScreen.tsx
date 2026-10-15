@@ -13,6 +13,8 @@ import PuppetSprite, { hasPuppetRig } from './PuppetSprite';
 import { upgradeNodes } from '../data/retiredSprites';
 import { puppetSpeakerOf } from '../data/puppetRigs';
 import { EmoText, Emo } from './Emo';
+import { grammarVariantOf } from '../data/grammarLookup';
+import { GRAMMAR_REACTIONS, GENERIC_REACTION, SPEAKER_TO_CHAR } from '../data/grammarReactions';
 
 // StoryScreen 恢复出来的那份"已经拿到手的东西"，由 App 一次性灌回全局状态
 export interface StoryRestorePayload {
@@ -630,11 +632,88 @@ const StoryScreen: React.FC<Props> = ({
   const meetsRequirement = (opt: StoryOption) =>
     !opt.requires || (stats[opt.requires.stat] || 0) >= opt.requires.min;
 
+  // ---------- 🗣️ 日语作答 ----------
+  // 选项先选"想说什么"（中文意图），再从三种日语说法里挑：对的、错一处的、错得离谱的。
+  // 说错了不会卡住剧情——对方照样接话，只是接法不一样（data/grammarReactions.ts），
+  // 而且会把正确的说法说出来。这是整个游戏里玩家唯一一次主动"产出"日语的时刻，值得多停一下。
+  type SayPick = { text: string; kind: 'ok' | 'minor' | 'major' };
+  const [saying, setSaying] = useState<{ opt: StoryOption; picks: SayPick[] } | null>(null);
+  const grammarOn = display.grammarChallenge;
+  const sayable = (opt: StoryOption) => grammarOn && !!grammarVariantOf(opt.jp);
+  // 换一个节点就收起来（读档、跳过）
+  useEffect(() => { setSaying(null); }, [idx]);
+  // 同一句话三个说法的顺序固定（按句子算），读档重来不会变
+  const sayOrder = (jp: string): SayPick['kind'][] => {
+    let h = 0;
+    for (const ch of jp) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    const orders: SayPick['kind'][][] = [['ok', 'minor', 'major'], ['minor', 'ok', 'major'], ['major', 'minor', 'ok'], ['minor', 'major', 'ok'], ['ok', 'major', 'minor'], ['major', 'ok', 'minor']];
+    return orders[h % orders.length];
+  };
+  // 这句话是对谁说的：往回找最近一个开过口的人（不是"你"）
+  const listener = () => {
+    for (let k = idx - 1; k >= 0; k--) {
+      const n = nodes[k];
+      if (n?.type === 'speech' && n.speakerZh !== '你' && n.speakerEn !== 'You') return n;
+    }
+    return null;
+  };
+  const sayIt = (pick: SayPick) => {
+    if (!saying) return;
+    const { opt } = saying;
+    const v = grammarVariantOf(opt.jp)!;
+    setSaying(null);
+    if (pick.kind === 'ok') {
+      commitOption(opt, [], [{ stat: 'knowledge', amount: 1, reasonZh: '这句日语说对了', reasonEn: 'You said it right in Japanese' }]);
+      return;
+    }
+    audioManager.playSfx('error');
+    const correct = opt.jp!.trim();
+    const who = listener();
+    const char = who ? (SPEAKER_TO_CHAR[who.speakerZh] || SPEAKER_TO_CHAR[who.speakerEn]) : undefined;
+    const set = char ? GRAMMAR_REACTIONS[char] : undefined;
+    const fill = (t: string) => t.split('{c}').join(correct);
+    const extra: StoryNode[] = [
+      {
+        type: 'speech', speakerZh: '你', speakerEn: 'You', color: 'bg-yellow-500', jp: pick.text,
+        zh: `（你想说的是：${opt.labelZh.replace(/[「」]/g, '')}）`, en: `(What you meant: ${opt.labelEn.replace(/"/g, '')})`
+      },
+      set && who
+        ? {
+          type: 'speech', speakerZh: who.speakerZh, speakerEn: who.speakerEn, color: who.color, characterImage: who.characterImage,
+          jp: fill(set[pick.kind].jp), zh: fill(set[pick.kind].zh), en: fill(set[pick.kind].en)
+        }
+        : { type: 'narration', zh: GENERIC_REACTION[pick.kind].zh, en: GENERIC_REACTION[pick.kind].en },
+      {
+        type: 'narration',
+        zh: `【日语】正确的说法：${correct}　—— ${pick.kind === 'minor' ? v.minorZh : v.majorZh}`,
+        en: `[Japanese] The right way to say it: ${correct}${(pick.kind === 'minor' ? v.minorEn : v.majorEn) ? ` — ${pick.kind === 'minor' ? v.minorEn : v.majorEn}` : ''}`
+      }
+    ];
+    // 说得离谱，对方心里那一下好感就打了折（坏的不打折）
+    const rel = pick.kind === 'major'
+      ? opt.relations?.map(r => ({ ...r, affection: (r.affection ?? 0) > 0 ? Math.floor((r.affection ?? 0) / 2) : r.affection }))
+      : opt.relations;
+    commitOption({ ...opt, relations: rel }, extra, []);
+  };
+
   const pickOption = (opt: StoryOption) => {
     if (!meetsRequirement(opt)) { audioManager.playSfx('error'); return; }
+    if (sayable(opt)) {
+      audioManager.playSfx('click');
+      const v = grammarVariantOf(opt.jp)!;
+      const text = { ok: opt.jp!.trim(), minor: v.minor, major: v.major };
+      setSaying({ opt, picks: sayOrder(opt.jp!.trim()).map(kind => ({ kind, text: text[kind] })) });
+      return;
+    }
+    commitOption(opt, [], []);
+  };
+
+  // 选定了（日语作答的话，是说完之后）：结算这个选项，插进它后面的分支
+  const commitOption = (opt: StoryOption, before: StoryNode[], bonus: StoryEffect[]) => {
     audioManager.playSfx('confirm');
     applyFlags(opt.setFlags);
-    if (opt.effects?.length) onEffects(opt.effects);
+    const effects = [...(opt.effects || []), ...bonus];
+    if (effects.length) onEffects(effects);
     applyRelations(opt.relations);
     // 自己挑着说出口的那句话里的词，比读过去的记得牢，所以照样进单词本
     if (opt.words?.length) {
@@ -646,7 +725,7 @@ const StoryScreen: React.FC<Props> = ({
         setWordToast({ count: fresh.length, key: Date.now() });
       }
     }
-    spliceAfter(opt.then);
+    spliceAfter([...before, ...opt.then]);
     advance();
   };
 
@@ -997,8 +1076,30 @@ const StoryScreen: React.FC<Props> = ({
           </div>
         )}
 
+        {/* 🗣️ 日语作答：三种说法挑一句 */}
+        {node?.type === 'choice' && saying && (
+          <div className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-300">
+            <div className="text-center mb-4">
+              <span className="inline-block ui-panel font-story text-[#2b3152] text-sm md:text-lg px-6 py-2 !rounded-full">
+                {en ? `How do you say it? — ${saying.opt.labelEn}` : `用日语怎么说？—— ${saying.opt.labelZh}`}
+              </span>
+            </div>
+            <div className="flex flex-col gap-3">
+              {saying.picks.map((p, i) => (
+                <button key={i} onClick={() => sayIt(p)}
+                  className="ui-choice group w-full text-left pl-8 pr-5 md:pl-10 md:pr-8 py-4 md:py-5 cursor-pointer active:translate-y-0.5">
+                  <div className="text-base md:text-xl font-black tracking-wide text-[#1f2440]">{p.text}</div>
+                </button>
+              ))}
+              <button onClick={() => setSaying(null)} className="self-center ui-chip !text-[11px] mt-1">
+                {en ? '◀ Say something else' : '◀ 换一句想说的'}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* 选项 */}
-        {node?.type === 'choice' && (
+        {node?.type === 'choice' && !saying && (
           <div className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-500">
             <div className="text-center mb-5">
               <span className="inline-block ui-panel font-story text-[#2b3152] text-sm md:text-lg px-6 py-2 !rounded-full">
@@ -1021,7 +1122,7 @@ const StoryScreen: React.FC<Props> = ({
                     <div>
                       {/* 主角真的把这句话说出口的时候，大字就是那句日语，
                           译文退到下面一行。玩家选的是这句话，不是它的意思。 */}
-                      {opt.jp ? (
+                      {opt.jp && !sayable(opt) ? (
                         <>
                           <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-[#1f2440]' : 'text-[#1f2440]/50'}`}>
                             {opt.jp}
@@ -1035,6 +1136,11 @@ const StoryScreen: React.FC<Props> = ({
                       ) : (
                         <div className={`text-base md:text-xl font-black tracking-wide ${ok ? 'text-[#1f2440]' : 'text-[#1f2440]/50'}`}>
                           {en ? opt.labelEn : opt.labelZh}
+                          {sayable(opt) && (
+                            <span className="ml-2 align-middle text-[10px] md:text-xs font-bold text-pink-500 border border-pink-300 rounded-full px-2 py-0.5">
+                              {en ? 'say it in Japanese' : '用日语说'}
+                            </span>
+                          )}
                         </div>
                       )}
                       {display.showHints && (en ? opt.hintEn : opt.hintZh) && (

@@ -7,6 +7,7 @@ import { CHARACTERS, VISIBLE_CHARACTER_IDS, getAffectionLevel, getFamiliarityLev
 import CharacterSprite from './CharacterSprite';
 import RelationshipMeter from './AffectionMeter';
 import { Emo } from './Emo';
+import { jpLevelOf } from '../data/jpLevels';
 
 interface Props {
   T: Record<string, string>;
@@ -309,6 +310,11 @@ const LobbyScreen: React.FC<Props> = ({
               <div className={`h-1 w-8 md:w-12 mb-2 rounded-full ${char.color}`}></div>
               <h3 className="font-ui text-2xl md:text-4xl font-black text-white tracking-wide drop-shadow-lg">{userState.language === 'en' ? char.nameEn : char.name}</h3>
               <p className="text-[10px] text-white/70 uppercase tracking-widest hidden md:block">{userState.language === 'en' ? char.roleEn : char.role}</p>
+              {/* 她说哪一种日语：跟谁聊，练的就是哪一种（data/jpLevels.ts） */}
+              <p className="mt-1 inline-flex items-center gap-1.5 text-[9px] md:text-[10px] font-bold tracking-wider text-amber-200/90 bg-black/35 rounded-full px-2 py-0.5">
+                <span className="font-mono">{jpLevelOf(id).jlpt}</span>
+                <span className="text-white/60 font-normal">{userState.language === 'en' ? jpLevelOf(id).styleEn : jpLevelOf(id).styleZh}</span>
+              </p>
               <p className="text-[10px] md:text-xs font-bold mt-1 tracking-widest flex items-center gap-2">
                 <span className="text-sky-300"><Emo e="🤝" /> {levelName(getFamiliarityLevel(famOf(id)))}</span>
                 <span className="text-white/25">·</span>

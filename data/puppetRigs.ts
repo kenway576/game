@@ -151,7 +151,8 @@ const REMAKE: { dir: string; rig: BaseRig; files: string[]; closed?: string[]; w
     dir: 'rei', files: ['neutral', 'lecturing', 'school_lecturing', 'smile', 'shy', 'thinking', 'surprised', 'sad', 'angry'],
     wideFiles: ['surprised'],
     rig: {
-      box: { left: 736, top: 68, width: 2308, height: 5384 },
+      // 2026-10-15：这九张原图右边多出三分之一的空画布，人物不居中；裁到 575 宽，框跟着缩
+      box: { left: 736, top: 68, width: 1549, height: 5384 },
       headC: [0.47, 0.135], headR: [0.115, 0.095], neck: [0.47, 0.225],
       // 眼镜框贴着眼睛上下，眨眼的范围收窄，免得把镜框一起拉弯
       eyes: [[0.419, 0.156, 0.02, 0.0055], [0.52, 0.145, 0.02, 0.0055]],

@@ -16,10 +16,11 @@ export interface DisplayPrefs {
   showTranslation: boolean; // 日语原文下面的中/英译文
   showHints: boolean;       // 选项下方的斜体小字提示
   showWordChips: boolean;   // 台词下方的生词卡片
+  grammarChallenge: boolean; // 选项先选"想说什么"，再从三种日语说法里挑对的那句
 }
 
 const KEY = 'kobe_display_prefs_v1';
-const DEFAULTS: DisplayPrefs = { showTranslation: true, showHints: true, showWordChips: true };
+const DEFAULTS: DisplayPrefs = { showTranslation: true, showHints: true, showWordChips: true, grammarChallenge: true };
 
 const load = (): DisplayPrefs => {
   try {
@@ -29,7 +30,8 @@ const load = (): DisplayPrefs => {
     return {
       showTranslation: typeof p.showTranslation === 'boolean' ? p.showTranslation : DEFAULTS.showTranslation,
       showHints: typeof p.showHints === 'boolean' ? p.showHints : DEFAULTS.showHints,
-      showWordChips: typeof p.showWordChips === 'boolean' ? p.showWordChips : DEFAULTS.showWordChips
+      showWordChips: typeof p.showWordChips === 'boolean' ? p.showWordChips : DEFAULTS.showWordChips,
+      grammarChallenge: typeof p.grammarChallenge === 'boolean' ? p.grammarChallenge : DEFAULTS.grammarChallenge
     };
   } catch { return DEFAULTS; }
 };
@@ -54,5 +56,6 @@ export function useDisplayPrefs(): DisplayPrefs {
 export const DISPLAY_PREF_ROWS: { key: keyof DisplayPrefs; labelZh: string; labelEn: string; descZh: string; descEn: string }[] = [
   { key: 'showTranslation', labelZh: '显示译文', labelEn: 'Translations', descZh: '日语原文下面的中文翻译', descEn: 'The line under the Japanese' },
   { key: 'showHints',       labelZh: '选项提示', labelEn: 'Choice hints', descZh: '选项下方的语气 / 代价小字', descEn: 'Small italic notes under choices' },
-  { key: 'showWordChips',   labelZh: '生词卡片', labelEn: 'Word chips',   descZh: '台词下方的生词（仍会进单词本）', descEn: 'Vocab under lines (still saved to wordbook)' }
+  { key: 'showWordChips',   labelZh: '生词卡片', labelEn: 'Word chips',   descZh: '台词下方的生词（仍会进单词本）', descEn: 'Vocab under lines (still saved to wordbook)' },
+  { key: 'grammarChallenge', labelZh: '日语作答', labelEn: 'Say it in Japanese', descZh: '选项先选想说什么，再从三种说法里挑对的那句', descEn: 'Pick what to say, then pick the right Japanese for it' }
 ];

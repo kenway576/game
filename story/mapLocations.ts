@@ -453,7 +453,8 @@ export const MAP_LOCATIONS: MapLocation[] = [
     requiresFlag: 'day1_done',
     lockedHintZh: '你才刚到这座城市，还没往山下走过。',
     lockedHintEn: 'You have only just arrived. You have not been down the hill yet.',
-    timeSlots: ['morning', 'lunch', 'afternoon'],
+    // 午休不行：生田神社在三宫，学校在北野坡上，四十五分钟走不了一个来回
+    timeSlots: ['morning', 'afternoon'],
     regulars: [CharacterId.INARI],
     ambientZh: ['你在赛钱箱前站着，摸遍口袋只找到一枚十日元。你还是投了。'],
     ambientEn: ['You stand at the offering box, dig through your pockets and come up with a single ten-yen coin. You put it in anyway.']

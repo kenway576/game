@@ -133,10 +133,10 @@ export const LUNCH_SCHEDULE: LunchSpot[] = [
   },
   {
     char: CharacterId.INARI,
-    // 她不是学生。她只是碰巧住在学校旁边那片林子里一千年了。
-    week: { 1: 'ikuta_shrine', 4: 'ikuta_shrine' },
-    atZh: '她坐在那块石头上，手里拿着一个不知道从哪儿来的三明治。九条尾巴摊在四月的落叶上。',
-    atEn: 'She is sitting on that rock with a sandwich that has come from somewhere unspecified. Nine tails spread out across the April leaf litter.'
+    // 她不是学生，可她穿着这里的制服。午休的神社太远（在三宫），所以她在天台——离天近一点。
+    week: { 1: 'rooftop_sunset', 4: 'rooftop_sunset' },
+    atZh: '她坐在天台的栏杆上，手里拿着一个不知道从哪儿来的三明治。九条尾巴从栏杆外面垂下去，在风里晃。',
+    atEn: 'She is sitting on the rooftop railing with a sandwich that has come from somewhere unspecified. Nine tails hang down over the outside of the railing, swinging in the wind.'
   },
   {
     char: CharacterId.MIYUKI,

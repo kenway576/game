@@ -172,7 +172,7 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose, shots = OP_SHOTS, mu
         if (i >= 0) {
           ensureMedia(i);
           const v = videos.current.get(SHOTS[i].id);
-          if (v) { try { v.currentTime = Math.max(0, t - SHOTS[i].start); } catch { /* 还没加载好 */ } v.play().catch(() => {}); }
+          if (v) { try { v.currentTime = Math.max(0, (SHOTS[i].clipIn || 0) + t - SHOTS[i].start); } catch { /* 还没加载好 */ } v.play().catch(() => {}); }
         }
       }
 
@@ -212,7 +212,7 @@ const OpeningMovie: React.FC<Props> = ({ language, onClose, shots = OP_SHOTS, mu
 
   const shot = shotIdx >= 0 ? SHOTS[shotIdx] : null;
   const line = subIdx >= 0 ? subtitles[subIdx] : null;
-  const isTitle = shot?.id === 'op18_title';
+  const isTitle = shot?.id === 'op18_title' || !!shot?.title;
 
   return (
     <div
